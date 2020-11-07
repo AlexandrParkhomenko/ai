@@ -25,5 +25,15 @@ def gamma(x, y, th):
     print("a/b=",c)
     return(c[0][np.argmin(c)])
 
-print(gamma(data, labels, th))
+g = gamma(data, labels, th)
+print("gamma=",g)
 # 0.2683281572999747
+
+# 1B) What is the theoretical bound on the number of mistakes perceptron will make on this problem?
+#print(np.dot(data.T,data)**0.5) # oops, unable get matrix with lengths
+R = 0
+for i in data.T:
+   R = max( R, np.dot(i.T,i)**0.5 )
+print("R=",R)
+print("(R/g)**2=",(R/g)**2)
+# 8888911.666666672
