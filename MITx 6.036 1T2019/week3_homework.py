@@ -18,9 +18,9 @@ def gamma(x, y, th):
     a = y*np.dot(th,x)
     print("y*(np.dot(th_multy.T,x))=",a)
     b = np.dot(th[0].T,th[0])**0.5
-    print("||O||=",b)
+    print("||θ||=",b)
     b = np.linalg.norm(th.T)
-    print("||O||=",b) #//
+    print("||θ||=",b) #//
     c = a/b
     print("a/b=",c)
     return(c[0][np.argmin(c)])
