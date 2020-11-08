@@ -36,7 +36,8 @@ def one_hot(x, k):
 data2 = np.array([])
 for i in range(data[0].shape[0]):
     data2 = np.append( data2, [[one_hot(data[0][i],k)]] ) #
-print(np.reshape(data2,[data[0].shape[0],k]).T)
+data2 = np.reshape(data2,[data[0].shape[0],k]).T
+print(data2)
 
 # data_full == data2
 data_full =   np.array([
