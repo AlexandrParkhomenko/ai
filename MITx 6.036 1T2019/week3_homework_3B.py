@@ -218,7 +218,7 @@ def test_linear_classifier_with_features(dataFun, learner, feature_fun,
     th, th0 = learner(data, labels, hook = hook)
     if hook: hook((th, th0))
     print("Final score", int(score(data, labels, th, th0)))
-    print("Params", np.transpose(th), th0)
+    #print("Params", np.transpose(th), th0)
 
 def mul(seq):
     return functools.reduce(operator.mul, seq, 1)
@@ -253,7 +253,7 @@ def test_with_features(dataFun, order = 2, draw=True, pause=True):
 # labels is dimension 1 by n
 # T is a positive integer number of steps to run
 def perceptron(data, labels, params = {}, hook = None):
-    T = params.get('T', 100)
+    T = params.get('T', 2500) # be careful here!
     (d, n) = data.shape
     m = 0
     theta = np.zeros((d, 1)); theta_0 = np.zeros((1, 1))
@@ -266,6 +266,7 @@ def perceptron(data, labels, params = {}, hook = None):
                 theta = theta + y * x
                 theta_0 = theta_0 + y
                 if hook: hook((theta, theta_0))
+    print('m', m, m<T)
     return theta, theta_0
 
 
@@ -295,4 +296,45 @@ print("Also loaded: perceptron, one_hot_internal, test_one_hot")
 
 ######################################################################
 #   Example for part 3B) test_with_features()
-#test_with_features(super_simple_separable, 2, draw=True, pause=True)
+#
+for i in range(1,5):
+    print("i =",i)
+    test_with_features(super_simple_separable_through_origin, i, draw=False, pause=False)
+    test_with_features(super_simple_separable, i, draw=False, pause=False)
+    test_with_features(xor, i, draw=False, pause=False)
+    test_with_features(xor_more, i, draw=False, pause=False)
+    print("--------")
+
+
+'''
+i = 1
+m 12 True
+Final score 4
+m 59 True
+Final score 4
+m 9994 False
+Final score 2
+m 10002 False
+Final score 4
+--------
+i = 2
+m 8 True
+Final score 4
+m 39 True
+Final score 4
+m 65 True
+Final score 4
+m 12866 False
+Final score 4
+--------
+i = 3
+m 6 True
+Final score 4
+m 60 True
+Final score 4
+m 21 True
+Final score 4
+m 2202 True
+Final score 8  # my mistake here
+--------
+'''
