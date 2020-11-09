@@ -88,6 +88,11 @@ review_texts, review_label_list = zip(*((sample['text'], sample['sentiment']) fo
 
 # The dictionary of all the words for "bag of words"
 dictionary = hw3.bag_of_words(review_texts)
+# My code here
+stop_words = np.loadtxt("./stopwords.txt", dtype=str, skiprows=0)
+for w in stop_words:
+    del(dictionary[w])
+
 
 # The standard data arrays for the bag of words
 review_bow_data = hw3.extract_bow_feature_vectors(review_texts, dictionary)
@@ -99,11 +104,6 @@ print('review_bow_data and labels shape', review_bow_data.shape, review_labels.s
 #-------------------------------------------------------------------------------
 
 # Your code here to process the review data
-
-stop_words = np.loadtxt("./stopwords.txt", dtype=str, skiprows=0)
-for w in stop_words:
-    del(dictionary[w])
-
 
 T5_p = xval_learning_alg(perceptron, review_bow_data, review_labels, params = {'T':5}, k = 10)
 T5_a = xval_learning_alg(averaged_perceptron, review_bow_data, review_labels, params = {'T':5}, k = 10)
@@ -118,6 +118,7 @@ print(T5_p, T5_a)
 print(T10_P, T10_a)
 print(T50_P, T50_a)
 
+# with all words:
 # 0.7857000000000001 0.8254999999999999
 # 0.7871 0.8237
 # 0.8036 0.8157
