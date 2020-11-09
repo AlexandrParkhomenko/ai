@@ -88,10 +88,10 @@ review_texts, review_label_list = zip(*((sample['text'], sample['sentiment']) fo
 
 # The dictionary of all the words for "bag of words"
 dictionary = hw3.bag_of_words(review_texts)
-# My code here
-stop_words = np.loadtxt("./stopwords.txt", dtype=str, skiprows=0)
-for w in stop_words:
-    del(dictionary[w])
+# My code here. Some trouble.
+#stop_words = np.loadtxt("./stopwords.txt", dtype=str, skiprows=0)
+#for w in stop_words:
+#    del(dictionary[w])
 
 
 # The standard data arrays for the bag of words
