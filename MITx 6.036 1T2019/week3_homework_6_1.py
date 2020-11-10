@@ -7,7 +7,7 @@ def row_average_features(x):
     @param x (m,n) array with values in (0,1)
     @return (m,1) array where each entry is the average of a row
     """
-    print(np.array(x).shape)
+    #print(np.array(x).shape)
     return np.array([np.sum(x, axis=1)/np.array(x).shape[1]]).T
 
 
