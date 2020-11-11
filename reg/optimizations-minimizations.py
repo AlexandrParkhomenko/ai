@@ -71,7 +71,9 @@ def jacobian(x) :
 
 
 '''
-UserWarning: delta_grad == 0.0. Check if the approximated function is linear. If the function is linear better results can be obtained by defining the Hessian as zero instead of using quasi-Newton approximations.
+UserWarning: delta_grad == 0.0. Check if the approximated function is linear. 
+If the function is linear better results can be obtained by defining the Hessian 
+as zero instead of using quasi-Newton approximations.
   warn('delta_grad == 0.0. Check if the approximated '
 '''
 def hessian(x) :
