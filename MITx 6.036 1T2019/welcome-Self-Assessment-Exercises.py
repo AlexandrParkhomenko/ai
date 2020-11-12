@@ -10,6 +10,9 @@ def mul_two_lists(a, b):
 def add_two_lists(a, b):
     return [x+y for x,y in zip(a,b)]
 
+# Given two column vectors (each represented as a list of numbers),
+# write a procedure dot that returns the (scalar) dot product of two input
+# vectors, each represented as a list of numbers.
 def dot(v1, v2):
     return sum(x*y for x,y in zip(v1,v2))
 
