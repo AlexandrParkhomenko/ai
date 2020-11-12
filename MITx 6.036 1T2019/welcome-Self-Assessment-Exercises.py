@@ -19,6 +19,10 @@ def dot(v1, v2):
 # dot([1,2,3], [4,5,6])
 # 32
 
+# Write a function add_n that takes a single numeric argument n, and returns
+# a function. The returned function should take a vector v as an argument and 
+# return a new vector with the value for n added to each element of vector v.
+# For example, add_n(10)([1, 5, 3]) should return [11, 15, 13].
 def add_n(n):
     def fun(v):
         return [n+y for y in v]
