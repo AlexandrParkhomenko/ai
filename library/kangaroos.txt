@@ -1,0 +1,362 @@
+            Kangaroos and Training Neural Networks
+            --------------------------------------
+
+               Warren S. Sarle and Net Poohbahs
+                     revised Oct 22, 1994
+
+Training a NN is a form of numerical optimization, which can be likened
+to a kangaroo searching for the top of Mt. Everest.  Everest is the
+_global optimum_, the highest mountain in the world, but the top of any
+other really tall mountain such as K2 (a good _local optimum_) would be
+satisfactory. On the other hand, the top of a small hill like Chapel
+Hill, NC, (a bad local optimum) would not be acceptable.
+
+This analogy is framed in terms of maximization, while neural networks
+are usually discussed in terms of minimizing an error measure such as
+the least-squares criterion, but if you multiply the error measure by
+-1, it works out the same. So in this analogy, the higher the altitude,
+the smaller the error.
+
+The compass directions represent the values of synaptic weights in the
+network.  The north-south direction represents one weight, while the
+east-west direction represents another weight. Most networks have more
+than two weights, but representing additional weights would require a
+multidimensional landscape, which is difficult to visualize. Keep in
+mind that when you are training a network with more than two weights,
+everything gets more complicated.
+
+Initial weights are usually chosen randomly, which means that the
+kangaroo is dropped by parachute somewhere over Asia by a pilot who has
+lost the map.  If you know something about the scales of the inputs, you
+may be able to give the pilot adequate instructions to get the kangaroo
+to land near the Himalayas. However, if you make a really bad choice of
+distributions for the initial weights, the kangaroo may plummet into the
+Indian ocean and drown.
+
+With Newton-type (second-order) algorithms, the Himalayas are covered
+with fog, and the kangaroo can only see a little way around her
+location. Judging from the local terrain, the kangaroo makes a guess
+about where the top of the mountain is, assuming that the mountain has a
+nice, smooth, quadratic shape. The kangaroo then tries to leap all the
+way to the top in one jump.
+
+Since most mountains do not have a perfect quadratic shape, the kangaroo
+will rarely reach the top in one jump. Hence the kangaroo must
+_iterate_, i.e., jump repeatedly as previously described until she finds
+the top of a mountain. Unfortunately, there is no assurance that this
+mountain will be Everest.
+
+In a stabilized Newton algorithm, the kangaroo has an altimeter, and if
+the jump takes her to a lower point, she backs up to where she was and
+takes a shorter jump. If ridge stabilization is used, the kangaroo also
+adjusts the direction of her jump to go up a steeper slope.  If the
+algorithm isn't stabilized, the kangaroo may mistakenly jump to Shanghai
+and get served for dinner in a Chinese restaurant.
+
+In steepest ascent with line search, the fog is _very_ dense, and the
+kangaroo can only tell which direction leads up most steeply.  The
+kangaroo hops in this direction until the terrain starts going down.
+Then the kangaroo looks around again for the new steepest ascent
+direction and iterates.
+
+Using an ODE (ordinary differential equation) solver is similar to
+steepest ascent, except that the kangaroo crawls on all fives to the top
+of the nearest mountain, being sure to crawl in steepest direction at
+all times.
+
+The following description of conjugate gradient methods is adapted from
+Tony Plate (1993):
+
+   The environent for conjugate gradient search is just like that
+   for steepest ascent with line search\mdash the fog is dense and the
+   kangaroo can only tell which direction leads up.  The difference
+   is that the kangaroo has some memory of the directions it has
+   hopped in before, and the kangaroo assumes that the ridges are
+   straight (i.e., the surface is quadratic).  The kangaroo chooses
+   a direction to hop in that is upwards, but that does not result
+   in it going downwards in the previous directions it has hopped in.
+   That is, it chooses an upwards direction, moving along which will
+   not undo the work of previous steps.  It hops upwards until
+   the terrain starts going down again, then chooses another
+   direction.
+
+In standard backprop, the most common NN training method, the kangaroo
+is blind and has to feel around on the ground to make a guess about
+which way is up. A major problem with standard backprop is that the
+distance the kangaroo hops is related to the steepness of the terrain.
+If the kangaroo starts on a gently sloping plain instead of a mountain
+side, she will take very small hops and make very slow progress.  When
+she finally starts to ascend a mountain, her hops get longer and more
+dangerous, and she may hop off the mountain altogether.  If the kangaroo
+ever gets near the peak, she may jump back and forth across the peak
+without ever landing on it.  If you use a decaying step size, the
+kangaroo gets tired and makes smaller and smaller hops, so if she ever
+gets near the peak she has a better chance of actually landing on it
+before the Himalayas erode away.
+
+In backprop with momentum, the kangaroo has poor traction and can't make
+sharp turns.
+
+With on-line training, there are frequent earthquakes, and mountains
+constantly appear and disappear. This makes it difficult for the blind
+kangaroo to tell whether she has ever reached the top of a mountain, and
+she has to take small hops to avoid falling into the gaping chasms that
+can open up at any moment.
+
+Notice that in all the methods discussed so far, the kangaroo can hope
+at best to find the top of a mountain close to where she starts.  In
+other words, these are _local ascent_ methods.  There's no guarantee
+that this mountain will be Everest, or even a very high mountain. Many
+methods exist to try to find the global optimum.
+
+In simulated annealing, the kangaroo is drunk and hops around randomly
+for a long time. However, she gradually sobers up and the more sober she
+is, the more likely she is to hop up hill.
+
+In a random multistart method, lots of kangaroos are parachuted into the
+Himalayas at random places. You hope that at least one of them will find
+Everest.
+
+A genetic algorithm begins like random multistart. However, these
+kangaroos do not know that they are supposed to be looking for the top
+of a mountain. Every few years, you shoot the kangaroos at low altitudes
+and hope the ones that are left will be fruitful, multiply, and ascend.
+Current research suggests that fleas may be more effective than
+kangaroos in genetic algorithms, since their faster rate of reproduction
+more than compensates for their shorter hops.
+
+A tunneling algorithm can be applied in combination with any local
+ascent method but requires divine intervention and a jet ski. The
+kangaroo first finds the top of any nearby mountain. Then the kangaroo
+calls upon her deity to flood the earth to the point that the waters
+just reach the top of the current mountain. She then gets on her jet
+ski, goes off in search of a higher mountain, and repeats the process
+until no higher mountains can be found.
+
+Reference:
+
+   Plate, T. (1993), "Re: Kangaroos (Was Re: BackProp without Calculus?),
+   Usenet article <93Sep8.162519edt.997@neuron.ai.toronto.edu> in
+   comp.ai.neural-nets.
+
+______________________________________________________________________
+
+From: sef@sef-pmax.slisp.cs.cmu.edu
+Subject: Re: Kangaroos (Was Re: BackProp without Calculus?)
+Message-ID: <CCpILM.F8s.1@cs.cmu.edu>
+Organization: School of Computer Science, Carnegie Mellon
+Date: Wed, 1 Sep 93 23:20:07 EDT
+
+    From: saswss@hotellng.unx.sas.com (Warren Sarle)
+
+    Training a network is a form of numerical optimization, which can
+    be likened to a kangaroo searching for the top of Mt. Everest.
+
+Great post!  Of course, if you want the kangaroos to perform well, you
+first have to teach them calculus.
+
+    I have been unable to devise a kangaroo analogy for cascade correlation.
+    Any ideas, Scott?
+
+Never one to turn down a silly challenge when I should be doing research...
+
+The real story of all these algorithms is that we've got a big continent
+with an unknown number of mountains (components of the error).  Your task
+is to get one kangaroo on top of each mountain, all at the same time.  If
+you manage that without releasing too many extra kangaroos, you win.
+Excess kangaroos tend to find their way to army bases and attack the
+generals, leaving the army with poor generalization.  (Sorry about that!)
+
+Unlike the Himalayas, these are RUBBER mountains, so when a kangaroo is on
+top of one, it gets squashed down flat.  So a good solution is one in which
+all the mountains are squashed flat at once.  The problem is that these are
+"hidden unit" kangaroos, and are therefore invisible to one another (and to
+the generals).  This makes it impossible for them to coordinate their
+activities, which is a pity since we want them on DISTINCT mountains.  They
+can, however see the terrain from some distance away and see which
+mountains are flattened at any given time.  These kangaroos want to head
+uphill, but they have poor memories, so they tend to respond to whatever
+terrain they see at any given instant.
+
+Now, in backprop, you guess how many kangaroos you're going to need and
+release them all at once at random places.  Each kangaroo looks around,
+spots whatever distant mountain looks the biggest, and heads for it.  If
+that mountain suddenly goes flat, it looks around and finds some other
+mountain -- a sort of marsupial, elastic, Alpine version of musical chairs.
+A problem is that once a kangaroo is standing on top of a mountain, even if
+it is Everest, that mountain goes flat and that kangaroo may go hopping off
+to occupy some other mountain instead.
+
+As you might imagine, it takes a long time in such a chaotic situation to
+flatten all the mountains at once, even if you guessed right about the
+number of kangaroos, which is not an easy task without a detailed map.
+
+In Cascor, you release one kangaroo at a time.  He looks around, spots the
+highest mountain within view, and heads straight for it.  When he reaches
+the top, he stops.  Then we nail him to the ground so he won't wander away
+and release the next kangaroo, who goes off to find some other mountain.
+Even though we have given up a certain amount of parallel search, this
+orderly process is still faster than the total chaos of multi-kangaroo
+backprop.  When all the mountains are flat, you stop releasing kangaroos
+while the army still has plenty of generals.
+
+Actually, Cascor is a bit more complex than that, because the kangaroos can
+stand on one another and thus reach higher and more complicated places than
+they could reach otherwise.  (The kangaroos hate it when you nail down the
+ones standing on their heads.)
+
+There's something about granting tenure to the most successful kangaroos
+and killing off others, but I think I'd better stop now.
+
+-- Scott
+
+===========================================================================
+Scott E. Fahlman                        Internet:  sef+@cs.cmu.edu
+Senior Research Scientist               Phone:     412 268-2575
+School of Computer Science              Fax:       412 681-5739
+Carnegie Mellon University              Latitude:  40:26:33 N
+5000 Forbes Avenue                      Longitude: 79:56:48 W
+Pittsburgh, PA 15213
+===========================================================================
+______________________________________________________________________
+
+From: rrdjro@minyos.xx.rmit.OZ.AU (Jonathan O'Donnell)
+Newsgroups: comp.ai.neural-nets
+Subject: Re: Kangaroos (Was Re: BackProp without Calculus?)
+Date: Sun, 19 Sep 93 10:21:20 EDT
+Organization: Royal Melbourne Institute of Technology, Melbourne, Australia.
+Message-ID: <27hpt0$2l7@aggedor.rmit.OZ.AU>
+
+[... Wonderful descriptions deleted ...]
+
+Presumably, this is why Australia is so flat.
+
+Sorry, I couldn't resist.
+        Jonathan@RMIT.edu.au
+______________________________________________________________________
+
+From: prechelt@i41s18.ira.uka.de (Lutz Prechelt)
+Newsgroups: comp.ai.neural-nets
+Subject: Re: Kangaroos (Was Re: BackProp without Calculus?)
+Date: Thu, 2 Sep 93 12:31:45 EDT
+Organization: University of Karlsruhe, FRG
+Message-ID: <26575hINN1km@iraun1.ira.uka.de>
+
+In article <CCp2M8.uL@unx.sas.com>, saswss@hotellng.unx.sas.com (Warren Sarle) writes:
+|>
+|> Training a network is a form of numerical optimization, which can
+|> be likened to a kangaroo searching for the top of Mt. Everest.
+...
+|> Initial weights are usually chosen randomly, which means that the
+|> kangaroo may start out anywhere in Asia.
+
+To shed some more light on what this wonderful article means in respect
+to the original question (how to understand the backpropagation
+algorithm without calculus) here are a few additional remarks:
+
+1. The analogy only explains WHAT the algorithm does, but not HOW it does
+   the most intricate part: chosing the direction of the next jump.
+
+   Basically what the kangaroo does is the following: Wherever it stands,
+   it carves two ditches whose walls meet in a way so as to form a
+   V-shape; one ditch in north-south direction and one in east-west
+   direction. It plates the walls of these ditches first with steel then
+   with teflon so as to minimize friction (most, but not all variants of
+   backprop in fact minimize friction to zero) and so that all small
+   valleys or hills the ditch may have had are averaged out.
+
+   Then the kangaroo takes a bowling ball out of its pouch, puts it
+   into the north-south ditch and measures how far it rolls in a certain
+   time and in which direction it rolls away along the ditch. This
+   procedure is repeated for the east-west ditch. Let's assume the ball
+   rolled 8 centimeters in north direction in the first ditch and 14
+   centimeters in the east direction in the second ditch. Then a kangaroo
+   that uses learning rate 50 will jump to a point that is 4 meters north
+   and 7 meters east of where it was before.
+
+   It is not important for the algorithm whether the kangaroo uses the
+   same bowling ball over and over again, or throws it away after each
+   measurement and picks a new one from its pouch next time. This is
+   because in the backpropagation world, bowling balls bio-degrade in
+   zero time.
+
+
+2. As all nice simplifications, this one, too, has a slight drawback.
+   In this case, the limitation is that the analogy only explains the
+   case of a network with two weights (which is less than *any* useful
+   backpropagation network must have). These two weights are represented
+   by the two orthogonal search directions of the kangaroo (North-South
+   and East-West).
+
+   In order to generalize the example to, say, a fully connected
+   network with three layers containing 10 input nodes, 5 hidden
+   nodes, and 8 output nodes (having 10x5 + 5x8 = 50 + 40 = 90 weights)
+   you have to imagine the same situation in a world existing in
+   a 91-dimensional space instead of our 3-dimensional one.
+
+   I assure you that to visualize this generalization is just as easy for
+   a non-math person as it is for any calculus professor.
+
+
+3. Oh, yes, one more very important question:
+   Why does the Himalaya look just like it does ?
+   The answer is: it doesn't.
+
+   The mountains in which the kangaroo jumps around are `induced' by your
+   training data. Each example suggests certain hills or mountains at
+   certain points on the surface of the (otherwise absolutely flat)
+   earth.  If the kangaroo performs a `batch' search, the world looks
+   like the arithmetic average of what the training examples suggest. If
+   the kangaroo performs an `online' search, the situation is more
+   complicated: There is one world for each training example; each of
+   these worlds looks exactly like the one training example it was made
+   from suggests. The kangaroo takes one jump in the first world
+   according to the above method and is then magically transfered to the
+   equivalent point in the next world, that is, to the point with the
+   same longitude and latitude, er, the same x and y coordinates (since
+   the worlds have to be rectangular for backprop, instead of spheric).
+   In each of the worlds the same procedure is applied and then the
+   kangaroo continues in the first world again.
+
+   Interestingly enough, the magical inter-world transfer is so inspiring
+   to the kangaroo that it can make one jump in all of the `online'
+   worlds (no matter how many there are) in about the same time it needs
+   for only two jumps in the `batch' world. This is the reason why
+   `online' kangaroos often find the point that provides the best
+   compromise between the altitude in all worlds much faster than `batch'
+   kangaroos find the top of the highest mountain in their single world.
+   Sometimes, however, the inter-world transfers are so confusing to the
+   `online' kangaroo that it never (or only very slowly) finds the
+   optimal point.
+
+   There are lots of heuristics to further improve the speed and/or
+   precision of the kangaroo's search. Most of them, though, require
+   a pocket calculator or lots of note paper or both.
+
+From all this we can conclude that the best methods to find the Mount
+Everest are (in order):
+
+1. to know where it is
+2. to have a map on which you can find it
+3. to know someone how knows where it is or who has a map
+4. to send a kangaroo to search for it
+
+and even if you have to send a kangaroo, it is useful if you know
+at least
+
+1. where the mountain range is in which the Mount Everest may
+   be and
+2. how to bring your kangaroo to that mountain range.
+
+  Lutz
+
+P.S.: Newest research results in the neural network area indicate
+      that backprop also works with frogs if you replace the bowling
+      ball with something appropriate (for instance a solar-powered
+      electro-mechanic 3-bit steep-O-meter).
+
+--
+Lutz Prechelt   (email: prechelt@ira.uka.de)            | Whenever you
+Institut fuer Programmstrukturen und Datenorganisation  | complicate things,
+Universitaet Karlsruhe;  76128 Karlsruhe;  Germany      | they get
+(Voice: ++49/721/608-4068, FAX: ++49/721/694092)        | less simple.
