@@ -29,3 +29,27 @@ def add_n(n):
     return fun
 
 add_n(10)([1,5,3])
+
+# matrix multiplication without numpy
+M1 = [[1, 2, 3], [-2, 3, 7]]
+M2 = [[1,0,0],[0,1,0],[0,0,1]]
+
+def array_mult(M1, M2):
+    l = len(M1)
+    m = len(M1[0])
+    n = len(M2[0])
+    assert len(M1[0]) == len(M2)
+    o = [ [ None for y in range( n ) ] 
+                 for x in range( l ) ] 
+    
+    for i in range(l):
+        #print(o)
+        for j in range(n):
+            #print(j)
+            s = 0
+            for r in range(m):
+                s += M1[i][r]*M2[r][j]
+            o[i][j] = s
+    return o
+
+print(array_mult(M1, M2))
