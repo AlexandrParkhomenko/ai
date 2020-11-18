@@ -15,6 +15,5 @@ import numpy as np
 x = np.array([[1,1,3,3]])
 y = np.array([[3,1,2,6]])
 
-for i in range(4):
-    z = np.array([ -2*(y[:,i] -np.dot(θ.T,x[:,i]) -θ0)*x[:,i], -2*(y[:,i] -np.dot(θ.T,x[:,i]) -θ0)])
-    print("z:",z.T)
+z = np.array([ -2*(y -np.dot(θ.T,x) -θ0)*x, -2*(y -np.dot(θ.T,x) -θ0)])
+print("z:\n",z.T)
