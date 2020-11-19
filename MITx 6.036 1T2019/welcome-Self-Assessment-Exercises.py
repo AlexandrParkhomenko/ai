@@ -53,3 +53,7 @@ def array_mult(M1, M2):
     return o
 
 print(array_mult(M1, M2))
+
+# Transpose list of lists
+list(map(list, zip(*l)))
+
