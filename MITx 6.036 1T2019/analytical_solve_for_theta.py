@@ -1,3 +1,10 @@
+# week5_homework 
+# 3) Minimizing empirical risk
+# see https://openlearninglibrary.mit.edu/courses/course-v1:MITx+6.036+1T2019/courseware/Week5/week5_homework/1
+
+# Смотри https://github.com/esokolov/ml-course-hse/blob/master/2020-fall/lecture-notes/lecture02-linregr.pdf
+# 4 Обучение линейной регрессии
+
 import numpy as np
 
 # each column of X is an example, and each “column” of Y is the corresponding target output value
