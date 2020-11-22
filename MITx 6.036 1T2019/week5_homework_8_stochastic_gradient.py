@@ -78,3 +78,26 @@ ans=package_ans(sgd(X, y, J, dJ, hw5.cv([-0.1, 0.1]), lambda i: 0.01, 1000)) #
 # ws first and last elements: [[[0.0], [0.0]], [[-1.4118594928102899], [0.7705243986321614]]]
 # Length of fs: 1000
 # Length of ws: 1000
+
+# My solution produced the following value for ans:
+# Weights: [[-1.091762  ]
+#  [ 0.56427998]]
+# fs first and last elements: 0.0 1.6338242281820081
+# ws first and last elements: [[-0.1]
+#  [ 0.1]] [[-1.091762  ]
+#  [ 0.56427998]]
+# Length of fs: 1000
+# Length of ws: 1000
+
+# or
+
+# Weights: [[-1.23712057]
+#  [ 0.59448897]]
+# fs first and last elements: 0.272484 0.3038063031569558
+# ws first and last elements: [[-0.1]
+#  [ 0.1]] [[-1.23712057]
+#  [ 0.59448897]]
+# Length of fs: 1000
+# Length of ws: 1000
+
+# or anything else ...
