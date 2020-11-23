@@ -1,4 +1,5 @@
 # 1A) What is the margin γ of this data set with respect to that separator (up to 3 decimal places)?
+import numpy as np
 
 data = np.array([[200, 800, 200, 800],
 #             [-0.3,  -0.3,  0.3,  0.3],
