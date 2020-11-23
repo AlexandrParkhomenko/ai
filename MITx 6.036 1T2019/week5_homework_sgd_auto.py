@@ -165,4 +165,8 @@ def xval_averaged_perceptron():
     result = hw3.xval_learning_alg(hw3.averaged_perceptron, data, labels, 10)
     print(result)
 
-xval_averaged_perceptron()
+# xval_averaged_perceptron()
+
+data, labels = hw3.auto_data_and_labels(auto_data, features)
+result = hw3.xval_learning_alg(hw3.averaged_perceptron, data, labels, 10) # TODO need SGD function
+print(result)
