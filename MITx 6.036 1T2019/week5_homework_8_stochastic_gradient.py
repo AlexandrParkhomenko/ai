@@ -101,3 +101,11 @@ ans=package_ans(sgd(X, y, J, dJ, hw5.cv([-0.1, 0.1]), lambda i: 0.01, 1000)) #
 # Length of ws: 1000
 
 # or anything else ...
+
+'''
+# use random.seed
+import random
+random.seed(5)
+['%.2f' % random.random() for i in range(10)]
+# ['0.62', '0.74', '0.80', '0.94', '0.74', '0.92', '0.03', '0.47', '0.94', '0.65']
+'''
