@@ -604,7 +604,7 @@ def r():
     result = xval_learning_alg(data, labels, lam, k)
     print(result)
 
-results = s() 
+results = s() # I need global variables in https://www.spyder-ide.org/
 # [[5.0054957]]
 # 's' 1.88939 sec
 # poly
@@ -647,3 +647,74 @@ results = s()
 # result = np.amin(result)*sigma
 # # results = np.append(results,[feature,polynomial_order, lam, result])
 # print("feature:",2,"; polynomial_order:",polynomial_order,"; lam:", lam, "; result:", result)
+
+# APPENDIX. Full log
+# feature: 0 polynomial_order: 1 lam: 0.0 result: [4.27495712]
+# feature: 0 polynomial_order: 1 lam: 0.01 result: [4.27588322]
+# feature: 0 polynomial_order: 1 lam: 0.02 result: [4.27685901]
+# feature: 0 polynomial_order: 1 lam: 0.03 result: [4.27788368]
+# feature: 0 polynomial_order: 1 lam: 0.04 result: [4.27895641]
+# feature: 0 polynomial_order: 1 lam: 0.05 result: [4.28007639]
+# feature: 0 polynomial_order: 1 lam: 0.06 result: [4.28124283]
+# feature: 0 polynomial_order: 1 lam: 0.07 result: [4.28245494]
+# feature: 0 polynomial_order: 1 lam: 0.08 result: [4.28371196]
+# feature: 0 polynomial_order: 1 lam: 0.09 result: [4.28501311]
+# feature: 0 polynomial_order: 1 lam: 0.1 result: [4.28635766]
+# feature: 0 polynomial_order: 2 lam: 0.0 result: [4.02467658] # !!!
+# feature: 0 polynomial_order: 2 lam: 0.01 result: [4.02559093]
+# feature: 0 polynomial_order: 2 lam: 0.02 result: [4.02656024]
+# feature: 0 polynomial_order: 2 lam: 0.03 result: [4.02758354]
+# feature: 0 polynomial_order: 2 lam: 0.04 result: [4.02865984]
+# feature: 0 polynomial_order: 2 lam: 0.05 result: [4.02978816]
+# feature: 0 polynomial_order: 2 lam: 0.06 result: [4.03096757]
+# feature: 0 polynomial_order: 2 lam: 0.07 result: [4.03219712]
+# feature: 0 polynomial_order: 2 lam: 0.08 result: [4.03347589]
+# feature: 0 polynomial_order: 2 lam: 0.09 result: [4.03480296]
+# feature: 0 polynomial_order: 2 lam: 0.1 result: [4.03617743]
+# polynomial_order 3
+# feature: 0 polynomial_order: 3 lam: 0 result: [1.07852355e+08]
+# feature: 0 polynomial_order: 3 lam: 20 result: [7.16079608]
+# feature: 0 polynomial_order: 3 lam: 40 result: [5.98771428]
+# feature: 0 polynomial_order: 3 lam: 60 result: [6.02795894]
+# feature: 0 polynomial_order: 3 lam: 80 result: [6.03063491]
+# feature: 0 polynomial_order: 3 lam: 100 result: [6.03438616]
+# feature: 0 polynomial_order: 3 lam: 120 result: [6.05072868]
+# feature: 0 polynomial_order: 3 lam: 140 result: [6.08145809]
+# feature: 0 polynomial_order: 3 lam: 160 result: [6.12517968]
+# feature: 0 polynomial_order: 3 lam: 180 result: [6.18069472]
+# feature: 0 polynomial_order: 3 lam: 200 result: [6.2473764]
+
+# feature: 1 polynomial_order: 1 lam: 0.0 result: [4.14470244]
+# feature: 1 polynomial_order: 1 lam: 0.01 result: [4.14624393]
+# feature: 1 polynomial_order: 1 lam: 0.02 result: [4.14784927]
+# feature: 1 polynomial_order: 1 lam: 0.03 result: [4.14951726]
+# feature: 1 polynomial_order: 1 lam: 0.04 result: [4.15124669]
+# feature: 1 polynomial_order: 1 lam: 0.05 result: [4.15303638]
+# feature: 1 polynomial_order: 1 lam: 0.06 result: [4.15488519]
+# feature: 1 polynomial_order: 1 lam: 0.07 result: [4.15679197]
+# feature: 1 polynomial_order: 1 lam: 0.08 result: [4.15875558]
+# feature: 1 polynomial_order: 1 lam: 0.09 result: [4.16077492]
+# feature: 1 polynomial_order: 1 lam: 0.1 result: [4.1628489]
+# feature: 1 polynomial_order: 2 lam: 0.0 result: [3.88198768] # !!! OOPS. new combination
+# feature: 1 polynomial_order: 2 lam: 0.01 result: [3.88283672]
+# feature: 1 polynomial_order: 2 lam: 0.02 result: [3.8837323]
+# feature: 1 polynomial_order: 2 lam: 0.03 result: [3.88467363]
+# feature: 1 polynomial_order: 2 lam: 0.04 result: [3.88565989]
+# feature: 1 polynomial_order: 2 lam: 0.05 result: [3.88669028]
+# feature: 1 polynomial_order: 2 lam: 0.06 result: [3.88776403]
+# feature: 1 polynomial_order: 2 lam: 0.07 result: [3.88888036]
+# feature: 1 polynomial_order: 2 lam: 0.08 result: [3.89003851]
+# feature: 1 polynomial_order: 2 lam: 0.09 result: [3.89123773]
+# feature: 1 polynomial_order: 2 lam: 0.1 result: [3.89247729]
+# polynomial_order 3
+# feature: 1 polynomial_order: 3 lam: 0 result: [3194382.74539733]
+# feature: 1 polynomial_order: 3 lam: 20 result: [5.7186364]
+# feature: 1 polynomial_order: 3 lam: 40 result: [5.90900594]
+# feature: 1 polynomial_order: 3 lam: 60 result: [5.99867152]
+# feature: 1 polynomial_order: 3 lam: 80 result: [6.04795367]
+# feature: 1 polynomial_order: 3 lam: 100 result: [6.09143702]
+# feature: 1 polynomial_order: 3 lam: 120 result: [6.13967847]
+# feature: 1 polynomial_order: 3 lam: 140 result: [6.19509489]
+# feature: 1 polynomial_order: 3 lam: 160 result: [6.25749434]
+# feature: 1 polynomial_order: 3 lam: 180 result: [6.3257749]
+# feature: 1 polynomial_order: 3 lam: 200 result: [6.3988287]
