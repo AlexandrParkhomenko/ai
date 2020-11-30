@@ -1,0 +1,2 @@
+linear logistic classifier (LLC)
+negative log-likelihood (NLL)
