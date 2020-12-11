@@ -59,7 +59,7 @@ class ReLU(Module):  # Layer activation
         return self.A
 
     def backward(self, dLdA):  # uses stored self.A
-        return None  # Your code: return dLdZ (?, b)
+        return np.where(dLdA<0, 0, 1)  # Your code: return dLdZ (?, b)
 
 
 class SoftMax(Module):  # Output activation
