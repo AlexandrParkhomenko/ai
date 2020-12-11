@@ -64,7 +64,7 @@ class ReLU(Module):  # Layer activation
 
 class SoftMax(Module):  # Output activation
     def forward(self, Z):
-        return None  # Your code: (?, b)
+        return np.exp(Z)/np.sum(np.exp(Z))  # Your code: (?, b)
 
     def backward(self, dLdZ):  # Assume that dLdZ is passed in
         return dLdZ
