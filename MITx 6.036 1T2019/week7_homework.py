@@ -49,9 +49,9 @@ class Tanh(Module):  # Layer activation
         self.A = np.tanh(Z)
         return self.A
 
+# https://socratic.org/questions/what-is-the-derivative-of-tanh-x
     def backward(self, dLdA):  # Uses stored self.A
-        return None  # Your code: return dLdZ (?, b)
-
+        return 1 - np.tanh(dLdA)**2  # Your code: return dLdZ (?, b)
 
 class ReLU(Module):  # Layer activation
     def forward(self, Z):
