@@ -55,7 +55,7 @@ class Tanh(Module):  # Layer activation
 
 class ReLU(Module):  # Layer activation
     def forward(self, Z):
-        self.A = None  # Your code: (?, b)
+        self.A = np.maximum(Z, np.zeros(Z.shape))  # Your code: (?, b)
         return self.A
 
     def backward(self, dLdA):  # uses stored self.A
