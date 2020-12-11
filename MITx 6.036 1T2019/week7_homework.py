@@ -24,7 +24,7 @@ class Linear(Module):
 
     def forward(self, A):
         self.A = A   # (m x b)  Hint: make sure you understand what b stands for
-        return None  # Your code (n x b)
+        return self.W.T@A + self.W0  # Your code (n x b)
 
     def backward(self, dLdZ):  # dLdZ is (n x b), uses stored self.A
         self.dLdW  = None  # Your code
