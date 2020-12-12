@@ -1,5 +1,7 @@
 ## List of books
 
+- [Deep Learning. Ian Goodfellow, Yoshua Bengio and Aaron Courville.](https://www.deeplearningbook.org)
+
 - [Jaynes, E. T. (2003). Probability Theory: The Logic of Science. Cambridge University Press](http://www.med.mcgill.ca/epidemiology/hanley/bios601/GaussianModel/JaynesProbabilityTheory.pdf)
 
 - [ТensorFlow: Large-scale
