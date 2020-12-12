@@ -2,6 +2,13 @@ import numpy as np
 import modules_disp as disp
 from expected_results import *
 
+def cv(value_list):
+    return np.transpose(rv(value_list))
+
+def rv(value_list):
+    return np.array([value_list])
+
+
 
 class Module:
     def sgd_step(self, lrate): pass  # For modules w/o weights
@@ -24,22 +31,22 @@ class Linear(Module):
 
     def forward(self, A):
         self.A = A   # (m x b)  Hint: make sure you understand what b stands for
-        return self.W.T@A + self.W0  # Your code (n x b)
+        return self.W.T@A + self.W0 # Your code (n x b)
 
     def backward(self, dLdZ):  # dLdZ is (n x b), uses stored self.A
-        self.dLdW  = None  # Your code
-        self.dLdW0 = None  # Your code
-        return None        # Your code: return dLdA (m x b)
+        self.dLdW  =  self.A@dLdZ.T
+        self.dLdW0 =  cv(np.sum(dLdZ,axis=1)) #.reshape(-1,1)
+        return self.W@dLdZ # return dLdA
 
     def sgd_step(self, lrate):  # Gradient descent step
-        self.W  = None  # Your code
-        self.W0 = None  # Your code
+        self.W  = self.W  -lrate * self.dLdW
+        self.W0 = self.W0 -lrate * self.dLdW0
 
 
 # Activation modules
 #
 # Each activation module has a forward method that takes in a batch of
-# pre-activations Z and returns a batch of activations A.
+# pre-activations Z and returns a batch of activations A. b is the size of minibatch.
 #
 # Each activation module has a backward method that takes in dLdA and
 # returns dLdZ, with the exception of SoftMax, where we assume dLdZ is
@@ -47,30 +54,33 @@ class Linear(Module):
 class Tanh(Module):  # Layer activation
     def forward(self, Z):
         self.A = np.tanh(Z)
+        self.Z = Z
         return self.A
 
 # https://socratic.org/questions/what-is-the-derivative-of-tanh-x
     def backward(self, dLdA):  # Uses stored self.A
-        return 1 - np.tanh(dLdA)**2  # Your code: return dLdZ (?, b)
+        return dLdA*(1-np.tanh(self.Z)**2) # Your code: return dLdZ (n, b)
+
 
 class ReLU(Module):  # Layer activation
     def forward(self, Z):
-        self.A = np.maximum(Z, np.zeros(Z.shape))  # Your code: (?, b)
+        self.A = np.maximum(0,Z)  # Your code: (n, b)
         return self.A
 
     def backward(self, dLdA):  # uses stored self.A
-        return np.where(dLdA<0, 0, 1)  # Your code: return dLdZ (?, b)
+        dAdZ=np.where(self.A<=0.,0.,1.)
+        return dLdA*dAdZ  # Your code: return dLdZ (n, b)
 
 
 class SoftMax(Module):  # Output activation
     def forward(self, Z):
-        return np.exp(Z)/np.sum(np.exp(Z))  # Your code: (?, b)
+        return np.exp(Z)/np.sum(np.exp(Z),axis=0) # Your code: (n, b)
 
     def backward(self, dLdZ):  # Assume that dLdZ is passed in
         return dLdZ
 
     def class_fun(self, Ypred):  # Return class indices
-        return None  # Your code: (1, b)
+        return np.argmax(Ypred,axis=0)  # Your code: (1, b)
 
 
 # Loss modules
@@ -87,10 +97,10 @@ class NLL(Module):  # Loss
     def forward(self, Ypred, Y):
         self.Ypred = Ypred
         self.Y = Y
-        return None  # Your code: return loss (scalar)
+        return -np.sum(np.log(Ypred) * Y)  # Your code: return loss (scalar)
 
     def backward(self):  # Use stored self.Ypred, self.Y
-        return None  # Your code (?, b)
+        return self.Ypred -self.Y # Your code (n, b)
 
 
 # Neural Network implementation
@@ -98,11 +108,18 @@ class Sequential:
     def __init__(self, modules, loss):  # List of modules, loss module
         self.modules = modules
         self.loss = loss
-
+        
     def sgd(self, X, Y, iters=100, lrate=0.005):  # Train
         D, N = X.shape
         for it in range(iters):
-            pass  # Your code
+            i=np.random.randint(N)
+            X_i=cv(X[:,i]) #.reshape(-1,1)
+            Y_i=cv(Y[:,i]) #.reshape(-1,1)
+            Ypred=self.forward(X_i)
+            #cur_loss=self.loss.forward(Ypred,Y_i)
+            self.backward(Ypred-Y_i)
+            self.sgd_step(lrate)
+
 
     def forward(self, Xt):  # Compute Ypred
         for m in self.modules: Xt = m.forward(Xt)
@@ -253,13 +270,13 @@ def sgd_test(nn, test_values):
 # TODO: Create your own unit tests
 # You are encouraged to make your own test cases per each module. An
 # example is given below for the Linear module:
-
+'''
 np.random.seed(0)
 X, Y = super_simple_separable()  # data
 linear_1 = Linear(2, 3)  # module
 learning_rate = 0.005  #hyperparameter
 
-'''
+
 # test case:
 # forward
 z_1 = linear_1.forward(X)
@@ -286,6 +303,7 @@ linear_1.sgd_step(learning_rate)
 exp_linear_1_W = np.array([[1.2473734,  0.28294514,  0.68940437],
                            [1.58455079, 1.32055711, -0.69218045]]),
 unit_test("linear_sgd_step_W",  exp_linear_1_W,  linear_1.W)
+
 
 exp_linear_1_W0 = np.array([[6.66805339e-09],
                             [-2.90968033e-06],
@@ -344,7 +362,6 @@ def nn_pred_test():
     nn.sgd(X, Y, iters=1, lrate=0.005)
     Ypred = nn.forward(X)
     return nn.modules[-1].class_fun(Ypred).tolist(), [nn.loss.forward(Ypred, Y)]
-
 
 print(nn_tanh_test())
 '''
