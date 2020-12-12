@@ -57,3 +57,32 @@ print(array_mult(M1, M2))
 # Transpose list of lists
 list(map(list, zip(*l)))
 
+
+
+import numpy as np
+# Write a procedure that takes a list of numbers and returns a 2D numpy array representing a row vector containing those numbers.
+def rv(value_list):
+    return np.array([value_list])
+
+# Write a procedure that takes a list of numbers and returns a 2D numpy array representing a column vector containing those numbers. You can use the rv procedure.
+def cv(value_list):
+    return rv(value_list).T
+
+# Write a procedure that takes a column vector and returns the vector's Euclidean length (or equivalently, its magnitude) as a scalar. You may not use np.linalg.norm, and you may not use a loop.
+def length(col_v):
+    return np.asscalar(np.dot(col_v.T,col_v)**0.5)
+    
+# Write a procedure that takes a 2D array and returns the final column as a two dimensional array. You may not use a for loop.
+def index_final_col(A):
+    return A[:,A.shape[1]-1].reshape(A.shape[0],1)
+
+
+# abs(transpose(theta)@p+theta_0)/norm(theta) # как найти расстояние из произвольной точки до плоскости
+
+def signed_dist(x, th, th0):
+    return (np.dot(th.T,x)+th0)/np.linalg.norm(th)
+
+# в какой части плоскости X
+import numpy as np
+def positive(x, th, th0):
+    return np.sign(np.matmul(th.T,x)+th0)
