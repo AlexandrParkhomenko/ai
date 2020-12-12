@@ -11,7 +11,7 @@ def raw_mnist_features(x):
     return np.array(x).reshape((n,r*c)).T
 
 x = np.array([[[1,2,3,4],[5,6,7,8],[9,10,11,12]],[[13,14,15,16],[17,18,19,20],[21,22,23,24]]])
-y = x.reshape((4,2)).T
+y = x.reshape((4,6)).T
 print("y =",y)
 
 print("raw_mnist_features(x) =", raw_mnist_features(x))
