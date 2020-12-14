@@ -11,6 +11,10 @@ machine learning on heterogeneous systems.](https://www.researchgate.net/publica
 - [Ackley, D. H., Hinton, G. E., and Sejnowski, Т. J. (1985). A learning algorithm for
 Boltzmann machines. Cognitive Science, 9, 147–169.](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.90.7282&rep=rep1&type=pdf)
 
+- [552. Ng, A. (2015). Advice for applying machine learning. ML-advice](https://see.stanford.edu/materials/aimlcs229/ML-advice.pdf)
+
+- [CS229 - Machine Learning](https://see.stanford.edu/Course/CS229)
+
 - [Zhou, J. and Troyanskaya, O. G. (2014). Deep supervised and convolutional generative stochastic network for protein secondary structure prediction. In ICML’2014.](https://www.researchgate.net/publication/260604645_Deep_Supervised_and_Convolutional_Generative_Stochastic_Network_for_Protein_Secondary_Structure_Prediction)
 -
 
