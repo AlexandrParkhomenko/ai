@@ -7,3 +7,13 @@
 ### [**Samsung Research в Москве. Курсы.**](https://stepik.org/course/50352/promo)
 - [Игорь Слинько](https://github.com/SlinkoIgor)
 
+### Institut Polytechnique de Paris
+-[Nathan de Lara](https://github.com/nathandelara)
+
+
+### CONFERENCES
+- [ICML](https://icml.cc/Conferences/2020/)
+- [ICLR](https://iclr.cc/Conferences/2020/)
+    - [papers](https://iclr.cc/virtual_2020/papers.html?filter=keywords)
+- [AISТAТS](http://aistats.org/)
+
