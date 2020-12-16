@@ -15,5 +15,6 @@
 - [ICML](https://icml.cc/Conferences/2020/)
 - [ICLR](https://iclr.cc/Conferences/2020/)
     - [papers](https://iclr.cc/virtual_2020/papers.html?filter=keywords)
+- [NIPS](https://nips.cc/Conferences/2020/)
 - [AISТAТS](http://aistats.org/)
 
