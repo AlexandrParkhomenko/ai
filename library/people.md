@@ -17,6 +17,7 @@
     - [papers](https://iclr.cc/virtual_2020/papers.html?filter=keywords)
 - [NIPS](https://nips.cc/Conferences/2020/)
 - [AISТAТS](http://aistats.org/)
+- [CVPR](http://cvpr2020.thecvf.com/)
 
 - [SIGGRAPH](https://www.siggraph.org/)
 
