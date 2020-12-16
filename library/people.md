@@ -18,3 +18,5 @@
 - [NIPS](https://nips.cc/Conferences/2020/)
 - [AISТAТS](http://aistats.org/)
 
+- [SIGGRAPH](https://www.siggraph.org/)
+
