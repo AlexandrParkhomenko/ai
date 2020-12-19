@@ -834,6 +834,5 @@
 - [Rafael Irizarry is Professor and Chair of the Department of Data Science at Dana-Farber Cancer Institute and Professor of Applied Statistics at Harvard](https://rafalab.github.io)
 - [2010 - 2014 makerhacker](http://makerhacker.github.io/)
 - [The latest in Machine Learning | Papers With Code](https://paperswithcode.com)
-- [[6.00sc] Введение в информатику и программирование](https://www.youtube.com/playlist?list=PLehPTrwC3ep6cDHjUaacPrgAov8EM5DG4)
 - [The Rowland Institute at Harvard](https://www2.rowland.harvard.edu/publications)
 - [ai.stanford.edu](https://ai.stanford.edu/~ang/papers/)
