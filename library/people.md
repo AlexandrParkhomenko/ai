@@ -10,6 +10,10 @@
 ### Institut Polytechnique de Paris
 -[Nathan de Lara](https://github.com/nathandelara)
 
+### habr
+- [Павел Нестеров](https://github.com/mephistopheies) [ - Статьи mephistopheies](https://habr.com/en/users/mephistopheies/posts/)
+- [Вячеслав Архипов](https://github.com/VSArkhipov) [ - Статьи jamagava](https://habr.com/ru/users/jamagava/posts/)
+- []()
 
 ### CONFERENCES
 - [ICML](https://icml.cc/Conferences/2020/)
