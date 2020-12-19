@@ -8,7 +8,7 @@
 - [Игорь Слинько](https://github.com/SlinkoIgor)
 
 ### Institut Polytechnique de Paris
--[Nathan de Lara](https://github.com/nathandelara)
+- [Nathan de Lara](https://github.com/nathandelara)
 
 ### habr
 - [Павел Нестеров](https://github.com/mephistopheies) [ - Статьи mephistopheies](https://habr.com/en/users/mephistopheies/posts/)
