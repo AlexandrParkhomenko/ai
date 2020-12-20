@@ -55,7 +55,7 @@
 - **Patrick Fernandes**, MSR Cambridge
 - **Pau Riba**, Computer Vision Center
 - **Perouz Taslakian**, Element AI
-- **Petar Veličković**, DeepMind/University of Cambridge
+- [**Petar Veličković**, DeepMind/University of Cambridge](https://github.com/PetarV-)
 - **Razvan Pascanu**, DeepMind
 - **Renjie Liao**, University of Toronto
 - **Rex Ying**, Stanford University
