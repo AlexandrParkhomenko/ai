@@ -8,6 +8,8 @@
 
 - [**CS229 - Machine Learning**](https://see.stanford.edu/Course/CS229)
 
+- [Stuart Russell and Peter Norvig. (2021). Artificial Intelligence: A Modern Approach, Fourth edition. Code for the book. ](https://github.com/aimacode/aima-python)
+
 - [715. Sutton, R. and Barto, A. (1998). Reinforcement Learning: An Introduction. MIT Press. 2020](https://phillipi.github.io/6.882/2020/Resources.html)
 
 
