@@ -25,3 +25,42 @@
 
 - [SIGGRAPH](https://www.siggraph.org/)
 
+## ICLR 2019 Committee
+- **Andrea Tacchetti**, DeepMind
+- **Andreea Deac**, University of Cambridge
+- **Arantxa Casanova**, MILA
+- **Beliz Gunel**, Stanford University
+- **Ben J Day**, University of Cambridge
+- **Bryan Perozzi**, Google AI
+- **Caglar Gulcehre**, DeepMind
+- **Cătălina Cangea**, University of Cambridge
+- **Christopher Morris**, TU Dortmund
+- **Christos Louizos**, University of Amsterdam
+- **Ethan Fetaya**, University of Toronto
+- **Frederic Sala**, Stanford University
+- **Guillem Cucurull**, Element AI
+- **Jakub M Tomczak**, Qualcomm AI Research
+- **Jessica Hamrick**, DeepMind
+- **Jianwei Yang**, Georgia Institute of Technology
+- **Jiaxuan You**, Stanford University
+- **Joey Bose**, McGill University
+- **Koustuv Sinha**, McGill University
+- **Luca Venturi**, New York University
+- **Marinka Žitnik**, Stanford University
+- **Matthias Fey**, TU Dortmund
+- **Miltiadis Allamanis**, MSR Cambridge
+- **Min Jae Song**, New York University
+- **Nick Choma**, New York University
+- **Nicola De Cao**, University of Amsterdam
+- **Patrick Fernandes**, MSR Cambridge
+- **Pau Riba**, Computer Vision Center
+- **Perouz Taslakian**, Element AI
+- **Petar Veličković**, DeepMind/University of Cambridge
+- **Razvan Pascanu**, DeepMind
+- **Renjie Liao**, University of Toronto
+- **Rex Ying**, Stanford University
+- **Shagun Sodhani**, Mila
+- **Srijan Kumar**, Stanford University
+- **Víctor Garcia Satorras**, University of Amsterdam
+- **Yujia Li**, DeepMind
+- **Zhengdao Chen**, New York University
