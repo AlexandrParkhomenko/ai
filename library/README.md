@@ -11,9 +11,9 @@
 - [Stuart Russell and Peter Norvig. (2021). Artificial Intelligence: A Modern Approach, Fourth edition. Code for the book. ](https://github.com/aimacode/aima-python)
 
 - [715. Sutton, R. and Barto, A. (1998). Reinforcement Learning: An Introduction. MIT Press. 2020](https://phillipi.github.io/6.882/2020/Resources.html)
-<!--
+
 - [Britannica - Machine learning etc.](https://www.britannica.com/technology/machine-learning)
--->
+
 1. [Martı́n Abadi, Ashish Agarwal, Paul Barham, Eugene Brevdo, Zhifeng Chen, Craig Citro, Greg S. Corrado, Andy Davis, Jeffrey Dean, Matthieu Devin, Sanjay Ghemawat, Ian Goodfellow, Andrew Harp, Geoffrey Irving, Michael Isard, Yangqing Jia, Rafal Jozefowicz, Lukasz Kaiser, Manjunath Kudlur, Josh Levenberg, Dan Mané, Rajat Monga, Sherry Moore, Derek Murray, Chris Olah, Mike Schuster, Jonathon Shlens, Benoit Steiner, Ilya Sutskever, Kunal Talwar, Paul Tucker, Vincent Vanhoucke, Vijay Vasudevan, Fernanda Viégas, Oriol Vinyals, Pete Warden, Martin Wattenberg, Martin Wicke, Yuan Yu, and Xiaoqiang Zheng, Google Research. (2015). ТensorFlow: Large-scale machine learning on heterogeneous systems.](https://www.researchgate.net/publication/301839500_TensorFlow_Large-Scale_Machine_Learning_on_Heterogeneous_Distributed_Systems)
 2. [Ackley, D. H., Hinton, G. E., and Sejnowski, Т. J. (1985). A learning algorithm for Boltzmann machines. Cognitive Science, 9, 147–169.](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.90.7282&rep=rep1&type=pdf)
 3. [Alain, G. and Bengio, Y. (2013). What regularized auto-encoders learn from the data generating distribution. In ICLR’2013, arXiv:1211.4246 .](https://arxiv.org/pdf/1211.4246.pdf)
