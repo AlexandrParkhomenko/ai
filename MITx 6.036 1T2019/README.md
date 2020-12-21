@@ -1,3 +1,5 @@
+[![GitHub](https://raw.githubusercontent.com/AlexandrParkhomenko/ml/main/MITx%206.036%201T2019/images/LicenseMIT.svg)]()
+
 Problem solving. This is for me not to forget. Solve problems yourself. Don't look at the answers.
 
 Course taught by [Leslie Pack Kaelbling](http://people.csail.mit.edu/lpk/)
