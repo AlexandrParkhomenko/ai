@@ -1,6 +1,7 @@
 - [Andrew Ng](https://youtube.com/playlist?list=PLoROMvodv4rMiGQp3WXShtMGgzqpfVfbU)
 - [Andrej Karpathy](https://github.com/karpathy) | [CS231n Winter 2016](https://www.youtube.com/channel/UCPk8m_r6fkUSYmvgCBwq-sw) | [AI for Full-Self Driving at Tesla](https://youtu.be/hx7BXih7zx8)
 - [Hao Sheng](https://github.com/haossr)
+- [Justin Johnson](https://github.com/jcjohnson)
 
 ### [Research.Google](https://research.google)
 - [Fernanda Viegas](https://research.google/people/FernandaViegas/)
@@ -11,8 +12,13 @@
 ### [mlcourse.ai](https://mlcourse.ai/) 
 - [Yury Kashnitsky](https://github.com/Yorko) [habr](https://habr.com/ru/company/ods/blog/325654/)
 
+### yandex [Deep learning course](https://github.com/yandexdataschool/Practical_DL)
+
 ### Institut Polytechnique de Paris
 - [Nathan de Lara](https://github.com/nathandelara)
+
+### Skolkovo
+- [Dmitry Ulyanov](https://github.com/DmitryUlyanov)
 
 ### habr
 - [Павел Нестеров](https://github.com/mephistopheies) [ - Статьи mephistopheies](https://habr.com/en/users/mephistopheies/posts/)
