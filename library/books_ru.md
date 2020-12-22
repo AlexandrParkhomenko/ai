@@ -9,6 +9,7 @@
 - [Денис Турдаков. Основы обработки текстов. СП ВМК МГУ, ИСП РАН, ФКН ВШЭ ](http://tpc.at.ispras.ru/)
 
 ## Хабр
+- [**Хаб Машинное обучение**](https://habr.com/ru/hub/machine_learning/)
 - [Обучение с подкреплением для самых маленьких](https://habr.com/ru/post/308094/)
 [§ 4. Примеры дискретных распределений](https://nsu.ru/mmf/tvims/chernova/tv/lec/node26.html)
 - [Павел Нестеров - Статьи mephistopheies](https://habr.com/en/users/mephistopheies/posts/)
