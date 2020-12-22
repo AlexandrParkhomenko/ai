@@ -19,6 +19,8 @@
 
 ### Skolkovo
 - [Dmitry Ulyanov](https://github.com/DmitryUlyanov)
+- [Vadim Lebedev](https://github.com/vadim-v-lebedev)
+- [Victor Lempitsky]()
 
 ### habr
 - [Павел Нестеров](https://github.com/mephistopheies) [ - Статьи mephistopheies](https://habr.com/en/users/mephistopheies/posts/)
