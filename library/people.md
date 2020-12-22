@@ -7,6 +7,9 @@
 ### [**Samsung Research в Москве. Курсы.**](https://stepik.org/course/50352/promo)
 - [Игорь Слинько](https://github.com/SlinkoIgor)
 
+### [mlcourse.ai](https://mlcourse.ai/) 
+- [Yury Kashnitsky](https://github.com/Yorko) [habr](https://habr.com/ru/company/ods/blog/325654/)
+
 ### Institut Polytechnique de Paris
 - [Nathan de Lara](https://github.com/nathandelara)
 
