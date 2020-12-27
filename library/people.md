@@ -39,10 +39,10 @@
 - [SIGGRAPH](https://www.siggraph.org/)
 
 ## ICLR 2019 Committee
-- **Andrea Tacchetti**, DeepMind
+- [**Andrea Tacchetti**, DeepMind, 2016](https://github.com/atacchet)
 - **Andreea Deac**, University of Cambridge
 - **Arantxa Casanova**, MILA
-- **Beliz Gunel**, Stanford University
+- [**Beliz Gunel**, Stanford University](https://github.com/belizgunel) * [logml](https://logml.ai/speakers/)
 - **Ben J Day**, University of Cambridge
 - **Bryan Perozzi**, Google AI
 - **Caglar Gulcehre**, DeepMind
@@ -50,16 +50,16 @@
 - **Christopher Morris**, TU Dortmund
 - **Christos Louizos**, University of Amsterdam
 - **Ethan Fetaya**, University of Toronto
-- **Frederic Sala**, Stanford University
+- [**Frederic Sala**, Stanford University](https://github.com/fredsala)
 - **Guillem Cucurull**, Element AI
 - **Jakub M Tomczak**, Qualcomm AI Research
 - **Jessica Hamrick**, DeepMind
 - **Jianwei Yang**, Georgia Institute of Technology
-- **Jiaxuan You**, Stanford University
+- [**Jiaxuan You**, Stanford University, CS PhD](https://github.com/JiaxuanYou)
 - **Joey Bose**, McGill University
 - **Koustuv Sinha**, McGill University
 - **Luca Venturi**, New York University
-- **Marinka Žitnik**, Stanford University
+- [**Marinka Žitnik**, Stanford University](https://github.com/marinkaz)
 - **Matthias Fey**, TU Dortmund
 - **Miltiadis Allamanis**, MSR Cambridge
 - **Min Jae Song**, New York University
@@ -71,9 +71,13 @@
 - [**Petar Veličković**, DeepMind/University of Cambridge](https://github.com/PetarV-)
 - **Razvan Pascanu**, DeepMind
 - **Renjie Liao**, University of Toronto
-- **Rex Ying**, Stanford University
+- [**Rex Ying**, Stanford University](https://github.com/RexYing)
 - **Shagun Sodhani**, Mila
-- **Srijan Kumar**, Stanford University
+- [**Srijan Kumar**, Stanford University](https://github.com/srijankr)
 - **Víctor Garcia Satorras**, University of Amsterdam
 - **Yujia Li**, DeepMind
 - **Zhengdao Chen**, New York University
+
+### 
+- [Nishant Shukla, CS PhD UCLA.](https://github.com/BinRoot)
+- [Thomas Kipf](https://github.com/tkipf)
