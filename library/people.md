@@ -81,3 +81,4 @@
 ### 
 - [Nishant Shukla, CS PhD UCLA.](https://github.com/BinRoot)
 - [Thomas Kipf](https://github.com/tkipf)
+- [Jure Leskovec](https://github.com/profjure) [cs](https://cs.stanford.edu/people/jure/)
