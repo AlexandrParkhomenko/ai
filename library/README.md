@@ -841,3 +841,6 @@
 - [The latest in Machine Learning | Papers With Code](https://paperswithcode.com)
 - [The Rowland Institute at Harvard](https://www2.rowland.harvard.edu/publications)
 - [ai.stanford.edu](https://ai.stanford.edu/~ang/papers/)
+
+## Libraries
+- [Literature of Deep Learning for Graphs. Unsupervised Node Representation Learning, Node Representation Learning in Heterogeneous Graphs, Knowledge Graph Embedding ...](https://github.com/DeepGraphLearning/LiteratureDL4Graph)
