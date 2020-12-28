@@ -1,8 +1,9 @@
 - [Andrew Ng](https://youtube.com/playlist?list=PLoROMvodv4rMiGQp3WXShtMGgzqpfVfbU)
+- [Fei-Fei Li](https://github.com/feifeili)
+- [Jiajun Wu](https://github.com/jiajunwu)
+- [Justin Johnson](https://github.com/jcjohnson)
 - [Andrej Karpathy](https://github.com/karpathy) | [CS231n Winter 2016](https://www.youtube.com/channel/UCPk8m_r6fkUSYmvgCBwq-sw) | [AI for Full-Self Driving at Tesla](https://youtu.be/hx7BXih7zx8)
 - [Hao Sheng](https://github.com/haossr)
-- [Justin Johnson](https://github.com/jcjohnson)
-
 ### [Research.Google](https://research.google)
 - [Fernanda Viegas](https://research.google/people/FernandaViegas/)
 
@@ -82,6 +83,7 @@
 - [Nishant Shukla, CS PhD UCLA.](https://github.com/BinRoot)
 - [Thomas Kipf](https://github.com/tkipf)
 - [Jure Leskovec](https://github.com/profjure) [cs](https://cs.stanford.edu/people/jure/)
+- [Limber Cheng, Oxford](https://github.com/limberc)
 
 ### Shanghai
 - [Mufei Li](https://github.com/mufeili)
