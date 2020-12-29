@@ -1,6 +1,6 @@
 [![GitHub](https://github.com/AlexandrParkhomenko/ml/blob/main/stanford/images/LicenseStanford.svg)]()
-# ml
-Elements of machine learning.
+# ai
+Elements of artifical intelligence.
 
 The repository is under development.
 
