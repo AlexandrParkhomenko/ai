@@ -84,6 +84,7 @@
 - [Thomas Kipf](https://github.com/tkipf)
 - [Jure Leskovec](https://github.com/profjure) [cs](https://cs.stanford.edu/people/jure/)
 - [Limber Cheng, Oxford](https://github.com/limberc)
+- [Volodymyr Kuleshov, Stanford & Cornell](https://github.com/kuleshov)
 
 ### Shanghai
 - [Mufei Li](https://github.com/mufeili)
