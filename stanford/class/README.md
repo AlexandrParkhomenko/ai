@@ -2,6 +2,7 @@ course  | |  course name                                            | назва
 ------  |-| -----------                                            | --------------
  cs124  |*| From Languages to Information                          | От языков к информации
  cs157  |*| Computational Logic                                    | Вычислительная логика
+ cs202  |?| Stats                                                  | Статистика
  cs205l |*| Continuous Mathematical Methods <br>with an Emphasis on Machine Learning | Непрерывные математические методы <br> с упором на машинное обучение
  cs221  |*| Artificial Intelligence: Principles and Techniques     | Искусственный интеллект: принципы и методы
  cs223a |*| Introduction to Robotics                               | Введение в робототехнику
