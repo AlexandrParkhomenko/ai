@@ -7,8 +7,7 @@ course  | |  course name                                            | назва
  cs223a |*| Introduction to Robotics                               | Введение в робототехнику
  cs224n |*| Natural Language Processing with Deep Learning         | Обработка естественного языка с глубоким обучением
  cs224u |*| Natural Language Understanding                         | Понимание естественного языка
- cs224w |*| Machine Learning with Graphs                           | Машинное обучение с графами
- cs224w |*| Social and Information Network Analysis                | Анализ социальных и информационных сетей
+ cs224w |*| Machine Learning with Graphs. <br>Social and Information Network Analysis. | Машинное обучение с графами. <br>Анализ социальных и информационных сетей.
  cs225a |*| Experimental Robotics                                  | Экспериментальная робототехника
  cs228  | | Probabilistic Graphical Models                         | Вероятностные графические модели
  cs229  |*| Machine Learning                                       | Машинное обучение
