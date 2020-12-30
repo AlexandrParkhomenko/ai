@@ -10,6 +10,7 @@ course  | |  course name                                            | назва
  cs224w |*| Machine Learning with Graphs                           | Машинное обучение с графами
  cs224w |*| Social and Information Network Analysis                | Анализ социальных и информационных сетей
  cs225a |*| Experimental Robotics                                  | Экспериментальная робототехника
+ cs228  | | Probabilistic Graphical Models                         | Вероятностные графические модели
  cs229  |*| Machine Learning                                       | Машинное обучение
  cs230  |*| Deep Learning                                          | Глубокое обучение
  cs231a |*| Computer Vision: From 3D Reconstruction to Recognition | Компьютерное зрение: от 3D-реконструкции до распознавания
