@@ -15,6 +15,7 @@ course  | |  course name                                            | назва
  cs231a |*| Computer Vision: From 3D Reconstruction to Recognition | Компьютерное зрение: от 3D-реконструкции до распознавания
  cs231n |*| Convolutional Neural Networks for Visual Recognition   | Сверточные нейронные сети для визуального распознавания
  cs234  |*| Reinforcement Learning                                 | Обучение с подкреплением
+ cs236  | | Deep Generative Models                                 | Глубокие генеративные модели
  cs237a |*| Principles of Robotic Autonomy                         | Принципы автономности роботов
  cs238  |*| Decision Making Under Uncertainty                      | Принятие решений в условиях неопределенности
  cs273a |*| A Computational Tour of the Human Genome               | Вычислительный тур по геному человека
@@ -23,6 +24,7 @@ course  | |  course name                                            | назва
  cs327a |*| Advanced Robotic Manipulation                          | Продвинутая робототехника
  cs330  |*| Deep Multi-Task and Meta Learning                      | Глубокое многозадачное и мета-обучение
  cs331b |*| Representation Learning in Computer Vision             | Репрезентативное обучение в компьютерном зрении
+ cs336  | | Robot Perception and Decision-Making                   | Восприятие робота и принятие решений
  cs372  |*| Artificial Intelligence for Disease Diagnosis <br>and Information Recommendations | Искусственный интеллект для диагностики заболеваний <br>и информационных рекомендаций
  cs522  |*| Seminar in Artificial Intelligence in Healthcare       | Семинар по искусственному интеллекту в здравоохранении
 
