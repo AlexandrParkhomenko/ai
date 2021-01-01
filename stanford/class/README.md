@@ -33,4 +33,5 @@ stat202 | | Stats                                                  | Стати�
  cs372  |*| Artificial Intelligence for Disease Diagnosis <br>and Information Recommendations | Искусственный интеллект для диагностики заболеваний <br>и информационных рекомендаций
  cs522  |*| Seminar in Artificial Intelligence in Healthcare       | Семинар по искусственному интеллекту в здравоохранении
 
+[cs](https://cs.stanford.edu/academics/courses)
 
