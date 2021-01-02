@@ -58,3 +58,5 @@ if z[0] == z[1] and z[0] != z[2] and z[0] != z[3]:  # and z[3] == z[4] and z[4] 
     # print(w1, w2, w3, b1, b2, b3)
 else:
     print("Try another solution.")
+# [ array([ 1,  0, -1, -1]) , array([-1,  0,  1, -1]) , array([1, 1, 0]) ]
+# Try another solution.
