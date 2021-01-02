@@ -1,9 +1,10 @@
 - [Andrew Ng](https://youtube.com/playlist?list=PLoROMvodv4rMiGQp3WXShtMGgzqpfVfbU)
-- [Fei-Fei Li](https://github.com/feifeili)
-- [Jiajun Wu](https://github.com/jiajunwu)
+- [Fei-Fei Li](https://github.com/feifeili) -
+- [Jiajun Wu](https://github.com/jiajunwu)  -
 - [Justin Johnson](https://github.com/jcjohnson)
 - [Andrej Karpathy](https://github.com/karpathy) | [CS231n Winter 2016](https://www.youtube.com/channel/UCPk8m_r6fkUSYmvgCBwq-sw) | [AI for Full-Self Driving at Tesla](https://youtu.be/hx7BXih7zx8)
-- [Hao Sheng](https://github.com/haossr)
+- [Hao Sheng](https://github.com/haossr) ***
+- [**Christopher Potts**, Stanford Linguistics](https://github.com/cgpotts)
 ### [Research.Google](https://research.google)
 - [Fernanda Viegas](https://research.google/people/FernandaViegas/)
 
