@@ -1,12 +1,13 @@
 course  | |  course name                                           | название курса
 ------  |-| -----------                                            | --------------
+math51  | | Mathematica                                            | Математика
  cs103  | | Mathematical Foundations of Computing                  | Математические основы вычислений
  cs109  | | Probability for Computer Scientists                    | Вероятность для компьютерных ученых
  cs124  |*| From Languages to Information                          | От языков к информации
  cs145  | | Data Management and Data Systems                       | Управление данными и системы данных
  cs157  |*| Computational Logic                                    | Вычислительная логика
  cs161  | | Design and Analysis of Algorithms                      | Дизайн и анализ алгоритмов
-stat202 | | Stats                                                  | Статистика
+stats202| | Introduction to statistical / machine learning         | Введение в статистическое / машинное обучение
  cs205l |*| Continuous Mathematical Methods <br>with an Emphasis on Machine Learning | Непрерывные математические методы <br> с упором на машинное обучение
  cs221  |*| Artificial Intelligence: Principles and Techniques     | Искусственный интеллект: принципы и методы
  cs223a |*| Introduction to Robotics                               | Введение в робототехнику
