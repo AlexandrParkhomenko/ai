@@ -31,6 +31,7 @@
 - []()
 
 ### CONFERENCES
+- [rncai](http://2019.rncai.ru/about/)
 - [ICML](https://icml.cc/Conferences/2020/) [2019](https://rlgm.github.io/)
 - [ICLR](https://iclr.cc/Conferences/2020/)
     - [papers](https://iclr.cc/virtual_2020/papers.html?filter=keywords)
