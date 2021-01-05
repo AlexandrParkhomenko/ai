@@ -80,3 +80,6 @@
 
 ### Shanghai
 - [Mufei Li](https://github.com/mufeili)
+
+### Ranking
+- [Ranking for Computer Science](https://www.guide2research.com/scientists/)
