@@ -1,4 +1,4 @@
-[![GitHub](https://github.com/AlexandrParkhomenko/ml/blob/main/stanford/images/LicenseStanford.svg)]()
+[![GitHub](https://github.com/AlexandrParkhomenko/ml/blob/main/LicenseStanford.svg)]()
 # ai
 Elements of artifical intelligence.
 
