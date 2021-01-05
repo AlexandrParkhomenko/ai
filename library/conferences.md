@@ -1,4 +1,4 @@
-### CONFERENCES
+## Conferences
 
 - [rncai](http://2019.rncai.ru/about/)
 - [ICML](https://icml.cc/Conferences/2020/) [2019](https://rlgm.github.io/)
@@ -8,4 +8,9 @@
 - [AISТAТS](http://aistats.org/)
 - [CVPR](http://cvpr2020.thecvf.com/)
 
+### Computer Graphics
 - [SIGGRAPH](https://www.siggraph.org/)
+
+### Linguistics
+- [NAACL](https://2021.naacl.org/)
+- https://www.aclweb.org/
