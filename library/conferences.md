@@ -8,6 +8,7 @@
 - [AISТAТS](http://aistats.org/)
 - [CVPR](http://cvpr2020.thecvf.com/)
 - [ICCV](https://www.thecvf.com/)
+- [ECCV](https://eccv2020.eu) European Conference on Computer Vision
 
 ### Computer Graphics
 - [SIGGRAPH](https://www.siggraph.org/)
