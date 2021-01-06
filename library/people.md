@@ -8,6 +8,8 @@
 ### [Research.Google](https://research.google)
 - [Fernanda Viegas](https://research.google/people/FernandaViegas/)
 
+- [Po-Sen Huang](https://github.com/posenhuang) [io](https://posenhuang.github.io/)
+
 ### [**Samsung Research в Москве. Курсы.**](https://stepik.org/course/50352/promo)
 - [Игорь Слинько](https://github.com/SlinkoIgor)
 

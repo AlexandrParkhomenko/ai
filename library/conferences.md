@@ -7,6 +7,7 @@
 - [NIPS](https://nips.cc/Conferences/2020/)
 - [AISТAТS](http://aistats.org/)
 - [CVPR](http://cvpr2020.thecvf.com/)
+- [ICCV](https://www.thecvf.com/)
 
 ### Computer Graphics
 - [SIGGRAPH](https://www.siggraph.org/)
@@ -14,3 +15,4 @@
 ### Linguistics
 - [NAACL](https://2021.naacl.org/)
 - https://www.aclweb.org/
+- [ICASSP](https://2021.ieeeicassp.org/) Conference on Acoustics, Speech and Signal Processing
