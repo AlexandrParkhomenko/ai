@@ -6,7 +6,7 @@
     - [papers](https://iclr.cc/virtual_2020/papers.html?filter=keywords)
 - [NIPS](https://nips.cc/Conferences/2020/)
 - [AISТAТS](http://aistats.org/)
-- [CVPR](http://cvpr2020.thecvf.com/)
+- [CVPR](http://cvpr2020.thecvf.com/) Computer Vision and Pattern Recognition Conference
 - [ICCV](https://www.thecvf.com/)
 - [ECCV](https://eccv2020.eu) European Conference on Computer Vision
 
