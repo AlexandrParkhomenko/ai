@@ -42,7 +42,6 @@ title: "AI Projects"
 |   | [DTaoo/Multimodal-Aerial-Scene-Recognition](https://github.com/DTaoo/Multimodal-Aerial-Scene-Recognition) |
 |   | [Davidzhangyuanhan/CelebA-Spoof](https://github.com/Davidzhangyuanhan/CelebA-Spoof) |
 |   | [DeLightCMU/RSC](https://github.com/DeLightCMU/RSC) |
-|   | [Diwata0909/Sketched_IRLS](https://github.com/Diwata0909/Sketched_IRLS) |
 |   | [Dong1P/MTRNN](https://github.com/Dong1P/MTRNN) |
 |   | [DonkeyShot21/batch-level-distillation](https://github.com/DonkeyShot21/batch-level-distillation) |
 |   | [Duankaiwen/CPNDet](https://github.com/Duankaiwen/CPNDet) |
