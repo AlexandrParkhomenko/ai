@@ -644,6 +644,7 @@ title: "AI Projects"
 |   | [yaelkon/GMM-CNN](https://github.com/yaelkon/GMM-CNN) |
 |   | [yanconglin/Deep-Hough-Transform-Line-Priors](https://github.com/yanconglin/Deep-Hough-Transform-Line-Priors) |
 |   | [yaodongyu/TRADES](https://github.com/yaodongyu/TRADES) |
+|   | [yaojieliu/ECCV20-STDN](https://github.com/yaojieliu/ECCV20-STDN) |
 |   | [ycao5602/SAL](https://github.com/ycao5602/SAL) |
 |   | [yccyenchicheng/SegVAE](https://github.com/yccyenchicheng/SegVAE) |
 |   | [yhw-yhw/PVAMVSNet](https://github.com/yhw-yhw/PVAMVSNet) |
@@ -685,8 +686,8 @@ title: "AI Projects"
 |   | [zzangjinsun/NLSPN_ECCV20](https://github.com/zzangjinsun/NLSPN_ECCV20) |
 |   | [zzh-tech/ESTRNN](https://github.com/zzh-tech/ESTRNN) |
 
+| P | groups                                            |
+| - | ------------------------------------------------- |
 |   | [NVlabs](https://github.com/NVlabs) |
 |   | [bigvideoresearch](https://github.com/bigvideoresearch) |
 |   | [google-research/corenet](https://github.com/google-research/corenet) |
-
-|   | [yaojieliu/ECCV20-STDN](https://github.com/yaojieliu/ECCV20-STDN)
