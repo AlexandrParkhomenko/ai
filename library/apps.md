@@ -690,4 +690,4 @@ title: "AI Projects"
 | - | ------------------------------------------------- |
 |   | [NVlabs](https://github.com/NVlabs) |
 |   | [bigvideoresearch](https://github.com/bigvideoresearch) |
-|   | [google-research/corenet](https://github.com/google-research/corenet) |
+|   | [google-research](https://github.com/google-research) |
