@@ -2,6 +2,7 @@ course  | |  course name                                           | назва�
 ------  |-| -----------                                            | --------------
 math51  | | Mathematica                                            | Математика
  cs103  | | Mathematical Foundations of Computing                  | Математические основы вычислений
+ cs106a | | Programming Methodologies                              | Методологии программирования
  cs109  | | Probability for Computer Scientists                    | Вероятность для компьютерных ученых
  cs124  |*| From Languages to Information                          | От языков к информации
  cs129  |*| Applied Machine Learning                               | Прикладное машинное обучение
