@@ -4,6 +4,7 @@ math51  | | Mathematica                                            | Матем�
  cs103  | | Mathematical Foundations of Computing                  | Математические основы вычислений
  cs109  | | Probability for Computer Scientists                    | Вероятность для компьютерных ученых
  cs124  |*| From Languages to Information                          | От языков к информации
+ cs129  |*| Applied Machine Learning                               | Прикладное машинное обучение
  cs145  | | Data Management and Data Systems                       | Управление данными и системы данных
  cs157  |*| Computational Logic                                    | Вычислительная логика
  cs161  | | Design and Analysis of Algorithms                      | Дизайн и анализ алгоритмов
