@@ -9,6 +9,7 @@ math51  | | Mathematica                                            | Матем�
  cs145  | | Data Management and Data Systems                       | Управление данными и системы данных
  cs157  |*| Computational Logic                                    | Вычислительная логика
  cs161  | | Design and Analysis of Algorithms                      | Дизайн и анализ алгоритмов
+ cs166  | | Data Structures                                        | Структуры данных
 stats202| | Introduction to statistical / machine learning         | Введение в статистическое / машинное обучение
  cs205l |*| Continuous Mathematical Methods <br>with an Emphasis on Machine Learning | Непрерывные математические методы <br> с упором на машинное обучение
  cs221  |*| Artificial Intelligence: Principles and Techniques     | Искусственный интеллект: принципы и методы
