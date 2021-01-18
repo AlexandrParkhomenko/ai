@@ -5,79 +5,24 @@
 | Jiajun | [Wu](https://github.com/jiajunwu) | Stanford University |
 | Justin | [Johnson](https://github.com/jcjohnson) | University of Michigan |
 | Andrej | [Karpathy](https://github.com/karpathy) | Stanford  [CS231n Winter 2016](https://www.youtube.com/channel/UCPk8m_r6fkUSYmvgCBwq-sw) <br> [AI for Full-Self Driving at Tesla](https://youtu.be/hx7BXih7zx8)|
-
-| first name | last name | organization |
-| ---------- | --------- | ------------ |
+| Fernanda | [Viegas](https://research.google/people/FernandaViegas/) | [Research.Google](https://research.google) |
+| Po-Sen | [Huang](https://github.com/posenhuang) | Google DeepMind [io](https://posenhuang.github.io/) |
+| Игорь | [Слинько](https://github.com/SlinkoIgor) | Samsung Research в Москве. [Курсы.](https://stepik.org/course/50352/promo) |
+| Yury | [Kashnitsky](https://github.com/Yorko) | [mlcourse.ai](https://mlcourse.ai/) [habr](https://habr.com/ru/company/ods/blog/325654/) |
+| Dmitry | [Ulyanov](https://github.com/DmitryUlyanov) | Skolkovo [Yandex Курсы.](https://github.com/yandexdataschool/Practical_DL) |
+| Vadim | [Lebedev](https://github.com/vadim-v-lebedev) | Skolkovo |
+| Victor | [Lempitsky](https://github.com/victorlempitsky) | Skolkovo |
+| Ivan | [Oseledets](https://github.com/oseledets) | Skolkovo |
+| Nathan | [de Lara](https://github.com/nathandelara) | Institut Polytechnique de Paris |
+| Павел | [Нестеров](https://github.com/mephistopheies) | habr [mephistopheies](https://habr.com/en/users/mephistopheies/posts/) |
+| Вячеслав | [Архипов](https://github.com/VSArkhipov) | habr [jamagava](https://habr.com/ru/users/jamagava/posts/) |
+|  |  |  |
 | Hao | [Sheng](https://github.com/haossr) | Stanford University |
 | Christopher | [Potts](https://github.com/cgpotts) | Stanford Linguistics |
 
-### [Research.Google](https://research.google)
-- [Fernanda Viegas](https://research.google/people/FernandaViegas/)
-
-- [Po-Sen Huang](https://github.com/posenhuang) [io](https://posenhuang.github.io/)
-
-### [**Samsung Research в Москве. Курсы.**](https://stepik.org/course/50352/promo)
-- [Игорь Слинько](https://github.com/SlinkoIgor)
-
-### [mlcourse.ai](https://mlcourse.ai/) 
-- [Yury Kashnitsky](https://github.com/Yorko) [habr](https://habr.com/ru/company/ods/blog/325654/)
-
-### yandex [Deep learning course](https://github.com/yandexdataschool/Practical_DL)
-
-### Institut Polytechnique de Paris
-- [Nathan de Lara](https://github.com/nathandelara)
-
-### Skolkovo
-- [Dmitry Ulyanov](https://github.com/DmitryUlyanov)
-- [Vadim Lebedev](https://github.com/vadim-v-lebedev)
-- [Victor Lempitsky](https://github.com/victorlempitsky)
-- [Ivan Oseledets](https://github.com/oseledets)
-
-### habr
-- [Павел Нестеров](https://github.com/mephistopheies) [ - Статьи mephistopheies](https://habr.com/en/users/mephistopheies/posts/)
-- [Вячеслав Архипов](https://github.com/VSArkhipov) [ - Статьи jamagava](https://habr.com/ru/users/jamagava/posts/)
-- []()
-
 
 ## ICLR 2019 Committee
-- [**Andrea Tacchetti**, DeepMind, 2016](https://github.com/atacchet)
-- **Andreea Deac**, University of Cambridge
-- **Arantxa Casanova**, MILA
-- [**Beliz Gunel**, Stanford University](https://github.com/belizgunel) * [logml](https://logml.ai/speakers/)
-- **Ben J Day**, University of Cambridge
-- **Bryan Perozzi**, Google AI
-- **Caglar Gulcehre**, DeepMind
-- **Cătălina Cangea**, University of Cambridge
-- **Christopher Morris**, TU Dortmund
-- **Christos Louizos**, University of Amsterdam
-- **Ethan Fetaya**, University of Toronto
-- [**Frederic Sala**, Stanford University](https://github.com/fredsala)
-- **Guillem Cucurull**, Element AI
-- **Jakub M Tomczak**, Qualcomm AI Research
-- **Jessica Hamrick**, DeepMind
-- **Jianwei Yang**, Georgia Institute of Technology
-- [**Jiaxuan You**, Stanford University, CS PhD](https://github.com/JiaxuanYou)
-- **Joey Bose**, McGill University
-- **Koustuv Sinha**, McGill University
-- **Luca Venturi**, New York University
-- [**Marinka Žitnik**, Stanford University](https://github.com/marinkaz)
-- **Matthias Fey**, TU Dortmund
-- **Miltiadis Allamanis**, MSR Cambridge
-- **Min Jae Song**, New York University
-- **Nick Choma**, New York University
-- **Nicola De Cao**, University of Amsterdam
-- **Patrick Fernandes**, MSR Cambridge
-- **Pau Riba**, Computer Vision Center
-- **Perouz Taslakian**, Element AI
-- [**Petar Veličković**, DeepMind/University of Cambridge](https://github.com/PetarV-)
-- **Razvan Pascanu**, DeepMind
-- **Renjie Liao**, University of Toronto
-- [**Rex Ying**, Stanford University](https://github.com/RexYing)
-- **Shagun Sodhani**, Mila
-- [**Srijan Kumar**, Stanford University](https://github.com/srijankr)
-- **Víctor Garcia Satorras**, University of Amsterdam
-- **Yujia Li**, DeepMind
-- **Zhengdao Chen**, New York University
+
 
 ### 
 - [Nishant Shukla, CS PhD UCLA.](https://github.com/BinRoot)
