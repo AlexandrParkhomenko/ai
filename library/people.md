@@ -1,8 +1,10 @@
 | first name | last name | organization |
 | ---------- | --------- | ------------ |
+| Yoshua | Bengio | University of Montreal |
+| Geoffrey | Hinton | University of Toronto |
 | Andrew | [Ng](https://youtube.com/playlist?list=PLoROMvodv4rMiGQp3WXShtMGgzqpfVfbU) | Stanford University |
-| Fei-Fei | [Li](https://github.com/feifeili) | Stanford University |
 | Jure | [Leskovec](https://github.com/profjure) | Stanford [cs](https://cs.stanford.edu/people/jure/) |
+| Fei-Fei | [Li](https://github.com/feifeili) | Stanford University |
 | Jiajun | [Wu](https://github.com/jiajunwu) | Stanford University |
 | Justin | [Johnson](https://github.com/jcjohnson) | University of Michigan |
 | Andrej | [Karpathy](https://github.com/karpathy) | Stanford  [CS231n Winter 2016](https://www.youtube.com/channel/UCPk8m_r6fkUSYmvgCBwq-sw) <br> [AI for Full-Self Driving at Tesla](https://youtu.be/hx7BXih7zx8)|
