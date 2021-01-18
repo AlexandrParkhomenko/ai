@@ -2,6 +2,7 @@
 | ---------- | --------- | ------------ |
 | Andrew | [Ng](https://youtube.com/playlist?list=PLoROMvodv4rMiGQp3WXShtMGgzqpfVfbU) | Stanford University |
 | Fei-Fei | [Li](https://github.com/feifeili) | Stanford University |
+| Jure | [Leskovec](https://github.com/profjure) | Stanford [cs](https://cs.stanford.edu/people/jure/) |
 | Jiajun | [Wu](https://github.com/jiajunwu) | Stanford University |
 | Justin | [Johnson](https://github.com/jcjohnson) | University of Michigan |
 | Andrej | [Karpathy](https://github.com/karpathy) | Stanford  [CS231n Winter 2016](https://www.youtube.com/channel/UCPk8m_r6fkUSYmvgCBwq-sw) <br> [AI for Full-Self Driving at Tesla](https://youtu.be/hx7BXih7zx8)|
@@ -16,23 +17,49 @@
 | Nathan | [de Lara](https://github.com/nathandelara) | Institut Polytechnique de Paris |
 | Павел | [Нестеров](https://github.com/mephistopheies) | habr [mephistopheies](https://habr.com/en/users/mephistopheies/posts/) |
 | Вячеслав | [Архипов](https://github.com/VSArkhipov) | habr [jamagava](https://habr.com/ru/users/jamagava/posts/) |
+| Andrea | [Tacchetti](https://github.com/atacchet) | DeepMind, 2016 |
+| Andreea | Deac | University of Cambridge |
+| Arantxa | Casanova | MILA |
+| Beliz | [Gunel](https://github.com/belizgunel) | Stanford University, [logml](https://logml.ai/speakers/) |
+| Ben J | Day | University of Cambridge |
+| Bryan | Perozzi | Google AI |
+| Caglar | Gulcehre | DeepMind |
+| Cătălina | Cangea | University of Cambridge |
+| Christopher | Morris | TU Dortmund |
+| Christos | Louizos | University of Amsterdam |
+| Ethan | Fetaya | University of Toronto |
+| Frederic | [Sala](https://github.com/fredsala) | Stanford University |
+| Guillem | Cucurull | Element AI |
+| Jakub M | Tomczak | Qualcomm AI Research |
+| Jessica | Hamrick | DeepMind |
+| Jianwei | Yang | Georgia Institute of Technology |
+| Jiaxuan | [You](https://github.com/JiaxuanYou) | Stanford University, CS PhD |
+| Joey | Bose | McGill University |
+| Koustuv | Sinha | McGill University |
+| Luca | Venturi | New York University |
+| Marinka | [Žitnik](https://github.com/marinkaz) | Stanford University |
+| Matthias | Fey | TU Dortmund |
+| Miltiadis | Allamanis | MSR Cambridge |
+| Min Jae | Song | New York University |
+| Nick | Choma | New York University |
+| Nicola | De Cao | University of Amsterdam |
+| Patrick | Fernandes | MSR Cambridge |
+| Pau | Riba | Computer Vision Center |
+| Perouz | Taslakian | Element AI |
+| Petar | [Veličković](https://github.com/PetarV-) | DeepMind/University of Cambridge |
+| Razvan | Pascanu | DeepMind |
+| Renjie | Liao | University of Toronto |
+| Rex | [Ying](https://github.com/RexYing) | Stanford University |
+| Shagun | Sodhani | Mila |
+| Srijan | [Kumar](https://github.com/srijankr) | Stanford University |
+| Víctor | Garcia Satorras | University of Amsterdam |
+| Yujia | Li | DeepMind |
+| Zhengdao | Chen | New York University |
+| Nishant | [Shukla](https://github.com/BinRoot) | CS PhD UCLA. |
+| Thomas | [Kipf](https://github.com/tkipf) | |
+| Volodymyr | [Kuleshov](https://github.com/kuleshov) | Stanford & Cornell |
 |  |  |  |
 | Hao | [Sheng](https://github.com/haossr) | Stanford University |
 | Christopher | [Potts](https://github.com/cgpotts) | Stanford Linguistics |
-
-
-## ICLR 2019 Committee
-
-
-### 
-- [Nishant Shukla, CS PhD UCLA.](https://github.com/BinRoot)
-- [Thomas Kipf](https://github.com/tkipf)
-- [Jure Leskovec](https://github.com/profjure) [cs](https://cs.stanford.edu/people/jure/)
-- [Limber Cheng, Oxford](https://github.com/limberc)
-- [Volodymyr Kuleshov, Stanford & Cornell](https://github.com/kuleshov)
-
-### Shanghai
-- [Mufei Li](https://github.com/mufeili)
-
-### Ranking
-- [Ranking for Computer Science](https://www.guide2research.com/scientists/)
+| Limber | [Cheng](https://github.com/limberc) | Oxford |
+| Mufei | [Li](https://github.com/mufeili) | Shanghai |
