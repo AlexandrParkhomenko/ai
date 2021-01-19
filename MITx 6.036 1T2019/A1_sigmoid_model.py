@@ -6,7 +6,7 @@ from scipy.optimize import differential_evolution
 import warnings
 
 xData = numpy.array([-4, -3, -2, -1, 0, 1, 2, 3, 4])
-yData = numpy.array([0,0,0,0,0,1,1,1,1])
+yData = numpy.array(([0,0,0,0.1,0.3,0.6,0.9,1,1]))
 
 
 def sigmoid(x, amplitude, x0, k):
