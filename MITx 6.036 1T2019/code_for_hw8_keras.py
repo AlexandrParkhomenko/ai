@@ -8,14 +8,14 @@ import itertools
 
 import math as m 
 
-from keras.models import Sequential
-from keras.optimizers import SGD, Adam
-from keras.layers import Conv1D, Conv2D, Dense, Dropout, Flatten, MaxPooling2D
-from keras.utils import np_utils
-from keras.callbacks import Callback
-from keras.datasets import mnist
-from keras import backend as K
-from keras.initializers import VarianceScaling
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.optimizers import SGD, Adam
+from tensorflow.keras.layers import Conv1D, Conv2D, Dense, Dropout, Flatten, MaxPooling2D
+from tensorflow.keras import utils as np_utils  # 
+from tensorflow.keras.callbacks import Callback
+from tensorflow.keras.datasets import mnist
+from tensorflow.keras import backend as K
+from tensorflow.keras.initializers import VarianceScaling
 from matplotlib import pyplot as plt
 
 ######################################################################
@@ -60,7 +60,7 @@ def get_data_set(name):
 
 class LossHistory(Callback):
     def on_train_begin(self, logs={}):
-        self.keys = ['loss', 'acc', 'val_loss', 'val_acc']
+        self.keys = ['loss', 'accuracy', 'val_loss', 'val_accuracy']
         self.values = {}
         for k in self.keys:
             self.values['batch_'+k] = []
@@ -79,6 +79,8 @@ class LossHistory(Callback):
                 self.values[ek].append(logs[k])
 
     def plot(self, keys):
+        # print("plot keys", keys)
+        # print("self.values", self.values)
         for key in keys:
             plt.plot(np.arange(len(self.values[key])), np.array(self.values[key]), label=key)
         plt.legend()
@@ -89,7 +91,7 @@ def run_keras(X_train, y_train, X_val, y_val, X_test, y_test, layers, epochs, sp
     for layer in layers:
         model.add(layer)
     # Define the optimization
-    model.compile(loss='categorical_crossentropy', optimizer=Adam(), metrics=["accuracy"])
+    model.compile(loss='categorical_crossentropy', optimizer=Adam(), metrics=['accuracy'])
     N = X_train.shape[0]
     # Pick batch size
     batch = 32 if N > 1000 else 1     # batch size
@@ -103,17 +105,22 @@ def run_keras(X_train, y_train, X_val, y_val, X_test, y_test, layers, epochs, sp
                   callbacks=[history], verbose=verbose)
     # Evaluate the model on validation data, if any
     if X_val is not None or split > 0:
-        val_acc, val_loss = history.values['epoch_val_acc'][-1], history.values['epoch_val_loss'][-1]
-        print ("\nLoss on validation set:"  + str(val_loss) + " Accuracy on validation set: " + str(val_acc))
+        # print("HISTORY",history.values)
+        if history.values['epoch_val_accuracy'] == []:
+            val_accuracy = None
+        else:
+            val_accuracy  = history.values['epoch_val_accuracy'][-1]
+        val_loss = history.values['epoch_val_loss'][-1]
+        print ("\nLoss on validation set:"  + str(val_loss) + " Accuracy on validation set: " + str(val_accuracy))
     else:
-        val_acc = None
+        val_accuracy = None
     # Evaluate the model on test data, if any
     if X_test is not None:
-        test_loss, test_acc = model.evaluate(X_test, y_test, batch_size=batch)
-        print ("\nLoss on test set:"  + str(test_loss) + " Accuracy on test set: " + str(test_acc))
+        test_loss, test_accuracy = model.evaluate(X_test, y_test, batch_size=batch)
+        print ("\nLoss on test set:"  + str(test_loss) + " Accuracy on test set: " + str(test_accuracy))
     else:
-        test_acc = None
-    return model, history, val_acc, test_acc
+        test_accuracy = None
+    return model, history, val_accuracy, test_accuracy
 
 def dataset_paths(data_name):
     return ["data/data"+data_name+"_"+suffix+".csv" for suffix in ("train", "validate", "test")]
@@ -133,23 +140,23 @@ def run_keras_2d(data_name, layers, epochs, display=True, split=0.25, verbose=Tr
         y_val = np_utils.to_categorical(y2, num_classes) # one-hot        
     if X_test is not None:
         y_test = np_utils.to_categorical(y3, num_classes) # one-hot
-    val_acc, test_acc = 0, 0
+    val_accuracy, test_accuracy = 0, 0
     for trial in range(trials):
         # Reset the weights
         # See https://github.com/keras-team/keras/issues/341
-        session = K.get_session()
-        for layer in layers:
-            for v in layer.__dict__:
-                v_arg = getattr(layer, v)
-                if hasattr(v_arg, 'initializer'):
-                    initializer_func = getattr(v_arg, 'initializer')
-                    initializer_func.run(session=session)
+        # session = K.get_session()
+        # for layer in layers:
+        #     for v in layer.__dict__:
+        #         v_arg = getattr(layer, v)
+        #         if hasattr(v_arg, 'initializer'):
+        #             initializer_func = getattr(v_arg, 'initializer')
+        #             initializer_func.run(session=session)
         # Run the model
         model, history, vacc, tacc, = \
                run_keras(X_train, y_train, X_val, y_val, X_test, y_test, layers, epochs,
                          split=split, verbose=verbose)
-        val_acc += vacc if vacc else 0
-        test_acc += tacc if tacc else 0
+        val_accuracy += vacc if vacc else 0
+        test_accuracy += tacc if tacc else 0
         if display:
             # plot classifier landscape on training data
             plot_heat(X_train, y, model)
@@ -160,22 +167,29 @@ def run_keras_2d(data_name, layers, epochs, display=True, split=0.25, verbose=Tr
                 plot_heat(X_test, y3, model)
                 plt.title('Testing data')
                 plt.show()
+            
             # Plot epoch loss
-            history.plot(['epoch_loss', 'epoch_val_loss'])
-            plt.xlabel('epoch')
+            detailed = False
+            if detailed:
+                p = 'batch'
+            else:
+                p = 'epoch'
+            history.plot([p+'_loss', p+'_val_loss'])
+            plt.xlabel(p)
             plt.ylabel('loss')
             plt.title('Epoch val_loss and loss')
             plt.show()
             # Plot epoch accuracy
-            history.plot(['epoch_acc', 'epoch_val_acc'])
-            plt.xlabel('epoch')
+            history.plot([p+'_accuracy', p+'_val_accuracy'])
+            plt.xlabel(p)
             plt.ylabel('accuracy')
-            plt.title('Epoch val_acc and acc')
+            plt.title('Epoch val_accuracy and accuracy')
             plt.show()
-    if val_acc:
-        print ("\nAvg. validation accuracy:"  + str(val_acc/trials))
-    if test_acc:
-        print ("\nAvg. test accuracy:"  + str(test_acc/trials))
+            
+    if val_accuracy:
+        print ("\nAvg. validation accuracy:"  + str(val_accuracy/trials))
+    if test_accuracy:
+        print ("\nAvg. test accuracy:"  + str(test_accuracy/trials))
     return X_train, y, model
 
 ######################################################################
@@ -210,9 +224,9 @@ def l1_reg(weight_matrix):
     return 0.01 * K.sum(K.abs(weight_matrix))    
 
 
-def filter_reg(weights):
-    lam=0
-    return lam* val
+# def filter_reg(weights):
+#     lam=0
+#     return lam* val
 
 def get_image_data_1d(tsize,image_size,prob):
     #prob controls the density of white pixels
@@ -228,7 +242,7 @@ def get_image_data_1d(tsize,image_size,prob):
     data=(X_train,Y_train,X_val,Y_val,X_test,Y_test)
     return data
 
-def train_neural_counter(layers,data,loss_func='mse',display=False):
+def train_neural_counter(layers,data,loss_func='mse',display=True):
     (X_train,Y_train,X_val,Y_val,X_test,Y_test)=data
     epochs=10
     batch=1
@@ -242,10 +256,32 @@ def train_neural_counter(layers,data,loss_func='mse',display=False):
     model.fit(X_train, Y_train, epochs=epochs, batch_size=batch, validation_data=(X_val, Y_val),callbacks=[history], verbose=True)
     err=model.evaluate(X_test,Y_test)
     ws=model.layers[-1].get_weights()[0]
+    # Evaluate the model on validation data, if any
+    if X_val is not None or split > 0:
+        # print("HISTORY",history.values)
+        if history.values['epoch_val_accuracy'] == []:
+            val_accuracy = None
+        else:
+            val_accuracy  = history.values['epoch_val_accuracy'][-1]
+        val_loss = history.values['epoch_val_loss'][-1]
+        print ("\nLoss on validation set:"  + str(val_loss) + " Accuracy on validation set: " + str(val_accuracy))
+    else:
+        val_accuracy = None
     if display:
         plt.plot(ws)
         plt.show()
     return model,err
+
+image_size = 1024
+classes = 1
+layers = [Conv1D(filters=1, kernel_size=2, strides=1, use_bias=False, activation='relu', batch_size=1, input_shape=(image_size, 1), padding='same'),
+          Flatten(data_format=None),
+          Dense(units=10, activation='relu', use_bias=True),
+          Dense(units=10, activation='relu', use_bias=True),
+          Dense(units=classes, activation=None, use_bias=False)]
+
+data = get_image_data_1d(tsize=10,image_size=image_size,prob=0.5)
+train_neural_counter(layers,data,loss_func='mse',display=False)
 
 ######################################################################
 # Problem 5
@@ -290,26 +326,26 @@ def run_keras_fc_mnist(train, test, layers, epochs, split=0.1, verbose=True, tri
     y_train = np_utils.to_categorical(y1, num_classes)
     y_val = np_utils.to_categorical(y2, num_classes)
     # Train, use split for validation
-    val_acc, test_acc = 0, 0
+    val_accuracy, test_accuracy = 0, 0
     for trial in range(trials):
         # Reset the weights
         # See https://github.com/keras-team/keras/issues/341
-        session = K.get_session()
-        for layer in layers:
-            for v in layer.__dict__:
-                v_arg = getattr(layer, v)
-                if hasattr(v_arg, 'initializer'):
-                    initializer_func = getattr(v_arg, 'initializer')
-                    initializer_func.run(session=session)
+        # session = K.get_session()
+        # for layer in layers:
+        #     for v in layer.__dict__:
+        #         v_arg = getattr(layer, v)
+        #         if hasattr(v_arg, 'initializer'):
+        #             initializer_func = getattr(v_arg, 'initializer')
+        #             initializer_func.run(session=session)
         # Run the model
         model, history, vacc, tacc = \
                 run_keras(X_train, y_train, X_val, y_val, None, None, layers, epochs, split=split, verbose=verbose)
-        val_acc += vacc if vacc else 0
-        test_acc += tacc if tacc else 0
-    if val_acc:
-        print ("\nAvg. validation accuracy:"  + str(val_acc/trials))
-    if test_acc:
-        print ("\nAvg. test accuracy:"  + str(test_acc/trials))
+        val_accuracy += vacc if vacc else 0
+        test_accuracy += tacc if tacc else 0
+    if val_accuracy:
+        print ("\nAvg. validation accuracy:"  + str(val_accuracy/trials))
+    if test_accuracy:
+        print ("\nAvg. test accuracy:"  + str(test_accuracy/trials))
 
 def run_keras_cnn_mnist(train, test, layers, epochs, split=0.1, verbose=True, trials=1):
     # Load the dataset
@@ -323,26 +359,26 @@ def run_keras_cnn_mnist(train, test, layers, epochs, split=0.1, verbose=True, tr
     y_train = np_utils.to_categorical(y1, num_classes)
     y_val = np_utils.to_categorical(y2, num_classes)
     # Train, use split for validation
-    val_acc, test_acc = 0, 0
+    val_accuracy, test_accuracy = 0, 0
     for trial in range(trials):
         # Reset the weights
         # See https://github.com/keras-team/keras/issues/341
-        session = K.get_session()
-        for layer in layers:
-            for v in layer.__dict__:
-                v_arg = getattr(layer, v)
-                if hasattr(v_arg, 'initializer'):
-                    initializer_func = getattr(v_arg, 'initializer')
-                    initializer_func.run(session=session)
+        # session = K.get_session()
+        # for layer in layers:
+        #     for v in layer.__dict__:
+        #         v_arg = getattr(layer, v)
+        #         if hasattr(v_arg, 'initializer'):
+        #             initializer_func = getattr(v_arg, 'initializer')
+        #             initializer_func.run(session=session)
         # Run the model
         model, history, vacc, tacc = \
                 run_keras(X_train, y_train, X_val, y_val, None, None, layers, epochs, split=split, verbose=verbose)
-        val_acc += vacc if vacc else 0
-        test_acc += tacc if tacc else 0
-    if val_acc:
-        print ("\nAvg. validation accuracy:"  + str(val_acc/trials))
-    if test_acc:
-        print ("\nAvg. test accuracy:"  + str(test_acc/trials))
+        val_accuracy += vacc if vacc else 0
+        test_accuracy += tacc if tacc else 0
+    if val_accuracy:
+        print ("\nAvg. validation accuracy:"  + str(val_accuracy/trials))
+    if test_accuracy:
+        print ("\nAvg. test accuracy:"  + str(test_accuracy/trials))
 
 # Example usage:
 # train, validation = get_MNIST_data()
@@ -455,3 +491,6 @@ def plot_decision(data, cl, diff=False):
         for i in range(cl):
             plot_separator(ax, W[:,i:i+1], W0[i:i+1,:])
     plt.show()
+
+
+# run_keras_2d('3class', archs(3)[5-1], epochs=10, split=0.5, display=True, trials=5)
