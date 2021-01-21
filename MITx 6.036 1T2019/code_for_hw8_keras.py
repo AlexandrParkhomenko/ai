@@ -272,17 +272,6 @@ def train_neural_counter(layers,data,loss_func='mse',display=True):
         plt.show()
     return model,err
 
-image_size = 1024
-classes = 1
-layers = [Conv1D(filters=1, kernel_size=2, strides=1, use_bias=False, activation='relu', batch_size=1, input_shape=(image_size, 1), padding='same'),
-          Flatten(data_format=None),
-          Dense(units=10, activation='relu', use_bias=True),
-          Dense(units=10, activation='relu', use_bias=True),
-          Dense(units=classes, activation=None, use_bias=False)]
-
-data = get_image_data_1d(tsize=10,image_size=image_size,prob=0.5)
-train_neural_counter(layers,data,loss_func='mse',display=False)
-
 ######################################################################
 # Problem 5
 ######################################################################
