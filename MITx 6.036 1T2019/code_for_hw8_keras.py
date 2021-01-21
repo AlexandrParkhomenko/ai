@@ -8,44 +8,15 @@ import itertools
 
 import math as m 
 
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.optimizers import SGD, Adam
-from tensorflow.keras.layers import Conv1D, Conv2D, Dense, Dropout, Flatten, MaxPooling2D
-from tensorflow.keras import utils as np_utils  # 
-from tensorflow.keras.callbacks import Callback
-from tensorflow.keras.datasets import mnist
-from tensorflow.keras import backend as K
-from tensorflow.keras.initializers import VarianceScaling
+from keras.models import Sequential
+from keras.optimizers import SGD, Adam
+from keras.layers import Conv1D, Conv2D, Dense, Dropout, Flatten, MaxPooling2D
+from keras.utils import np_utils
+from keras.callbacks import Callback
+from keras.datasets import mnist
+from keras import backend as K
+from keras.initializers import VarianceScaling
 from matplotlib import pyplot as plt
-
-import tensorflow as tf
-import os
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"] = '0' # Set to -1 if CPU should be used CPU = -1 , GPU = 0
-
-gpus = tf.config.experimental.list_physical_devices('GPU')
-print (gpus)
-cpus = tf.config.experimental.list_physical_devices('CPU')
-
-if gpus:
-    try:
-        # Currently, memory growth needs to be the same across GPUs
-        for gpu in gpus:
-            tf.config.experimental.set_memory_growth(gpu, True)
-        logical_gpus = tf.config.experimental.list_logical_devices('GPU')
-        print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPUs")
-    except RuntimeError as e:
-        # Memory growth must be set before GPUs have been initialized
-        print(e)
-elif cpus:
-    try:
-        # Currently, memory growth needs to be the same across GPUs
-        logical_cpus= tf.config.experimental.list_logical_devices('CPU')
-        print(len(cpus), "Physical CPU,", len(logical_cpus), "Logical CPU")
-    except RuntimeError as e:
-        # Memory growth must be set before GPUs have been initialized
-        print(e)
 
 ######################################################################
 # Problem 3 - 2D data
@@ -89,7 +60,7 @@ def get_data_set(name):
 
 class LossHistory(Callback):
     def on_train_begin(self, logs={}):
-        self.keys = ['loss', 'accuracy', 'val_loss', 'val_accuracy']
+        self.keys = ['loss', 'acc', 'val_loss', 'val_acc']
         self.values = {}
         for k in self.keys:
             self.values['batch_'+k] = []
@@ -108,8 +79,6 @@ class LossHistory(Callback):
                 self.values[ek].append(logs[k])
 
     def plot(self, keys):
-        # print("plot keys", keys)
-        # print("self.values", self.values)
         for key in keys:
             plt.plot(np.arange(len(self.values[key])), np.array(self.values[key]), label=key)
         plt.legend()
@@ -120,7 +89,7 @@ def run_keras(X_train, y_train, X_val, y_val, X_test, y_test, layers, epochs, sp
     for layer in layers:
         model.add(layer)
     # Define the optimization
-    model.compile(loss='categorical_crossentropy', optimizer=Adam(), metrics=['accuracy'])
+    model.compile(loss='categorical_crossentropy', optimizer=Adam(), metrics=["accuracy"])
     N = X_train.shape[0]
     # Pick batch size
     batch = 32 if N > 1000 else 1     # batch size
@@ -134,22 +103,17 @@ def run_keras(X_train, y_train, X_val, y_val, X_test, y_test, layers, epochs, sp
                   callbacks=[history], verbose=verbose)
     # Evaluate the model on validation data, if any
     if X_val is not None or split > 0:
-        # print("HISTORY",history.values)
-        if history.values['epoch_val_accuracy'] == []:
-            val_accuracy = None
-        else:
-            val_accuracy  = history.values['epoch_val_accuracy'][-1]
-        val_loss = history.values['epoch_val_loss'][-1]
-        print ("\nLoss on validation set:"  + str(val_loss) + " Accuracy on validation set: " + str(val_accuracy))
+        val_acc, val_loss = history.values['epoch_val_acc'][-1], history.values['epoch_val_loss'][-1]
+        print ("\nLoss on validation set:"  + str(val_loss) + " Accuracy on validation set: " + str(val_acc))
     else:
-        val_accuracy = None
+        val_acc = None
     # Evaluate the model on test data, if any
     if X_test is not None:
-        test_loss, test_accuracy = model.evaluate(X_test, y_test, batch_size=batch)
-        print ("\nLoss on test set:"  + str(test_loss) + " Accuracy on test set: " + str(test_accuracy))
+        test_loss, test_acc = model.evaluate(X_test, y_test, batch_size=batch)
+        print ("\nLoss on test set:"  + str(test_loss) + " Accuracy on test set: " + str(test_acc))
     else:
-        test_accuracy = None
-    return model, history, val_accuracy, test_accuracy
+        test_acc = None
+    return model, history, val_acc, test_acc
 
 def dataset_paths(data_name):
     return ["data/data"+data_name+"_"+suffix+".csv" for suffix in ("train", "validate", "test")]
@@ -169,23 +133,23 @@ def run_keras_2d(data_name, layers, epochs, display=True, split=0.25, verbose=Tr
         y_val = np_utils.to_categorical(y2, num_classes) # one-hot        
     if X_test is not None:
         y_test = np_utils.to_categorical(y3, num_classes) # one-hot
-    val_accuracy, test_accuracy = 0, 0
+    val_acc, test_acc = 0, 0
     for trial in range(trials):
         # Reset the weights
         # See https://github.com/keras-team/keras/issues/341
-        # session = K.get_session()
-        # for layer in layers:
-        #     for v in layer.__dict__:
-        #         v_arg = getattr(layer, v)
-        #         if hasattr(v_arg, 'initializer'):
-        #             initializer_func = getattr(v_arg, 'initializer')
-        #             initializer_func.run(session=session)
+        session = K.get_session()
+        for layer in layers:
+            for v in layer.__dict__:
+                v_arg = getattr(layer, v)
+                if hasattr(v_arg, 'initializer'):
+                    initializer_func = getattr(v_arg, 'initializer')
+                    initializer_func.run(session=session)
         # Run the model
         model, history, vacc, tacc, = \
                run_keras(X_train, y_train, X_val, y_val, X_test, y_test, layers, epochs,
                          split=split, verbose=verbose)
-        val_accuracy += vacc if vacc else 0
-        test_accuracy += tacc if tacc else 0
+        val_acc += vacc if vacc else 0
+        test_acc += tacc if tacc else 0
         if display:
             # plot classifier landscape on training data
             plot_heat(X_train, y, model)
@@ -196,29 +160,22 @@ def run_keras_2d(data_name, layers, epochs, display=True, split=0.25, verbose=Tr
                 plot_heat(X_test, y3, model)
                 plt.title('Testing data')
                 plt.show()
-            
             # Plot epoch loss
-            detailed = False
-            if detailed:
-                p = 'batch'
-            else:
-                p = 'epoch'
-            history.plot([p+'_loss', p+'_val_loss'])
-            plt.xlabel(p)
+            history.plot(['epoch_loss', 'epoch_val_loss'])
+            plt.xlabel('epoch')
             plt.ylabel('loss')
             plt.title('Epoch val_loss and loss')
             plt.show()
             # Plot epoch accuracy
-            history.plot([p+'_accuracy', p+'_val_accuracy'])
-            plt.xlabel(p)
+            history.plot(['epoch_acc', 'epoch_val_acc'])
+            plt.xlabel('epoch')
             plt.ylabel('accuracy')
-            plt.title('Epoch val_accuracy and accuracy')
+            plt.title('Epoch val_acc and acc')
             plt.show()
-            
-    if val_accuracy:
-        print ("\nAvg. validation accuracy:"  + str(val_accuracy/trials))
-    if test_accuracy:
-        print ("\nAvg. test accuracy:"  + str(test_accuracy/trials))
+    if val_acc:
+        print ("\nAvg. validation accuracy:"  + str(val_acc/trials))
+    if test_acc:
+        print ("\nAvg. test accuracy:"  + str(test_acc/trials))
     return X_train, y, model
 
 ######################################################################
@@ -253,9 +210,9 @@ def l1_reg(weight_matrix):
     return 0.01 * K.sum(K.abs(weight_matrix))    
 
 
-# def filter_reg(weights):
-#     lam=0
-#     return lam* val
+def filter_reg(weights):
+    lam=0
+    return lam* val
 
 def get_image_data_1d(tsize,image_size,prob):
     #prob controls the density of white pixels
@@ -333,26 +290,26 @@ def run_keras_fc_mnist(train, test, layers, epochs, split=0.1, verbose=True, tri
     y_train = np_utils.to_categorical(y1, num_classes)
     y_val = np_utils.to_categorical(y2, num_classes)
     # Train, use split for validation
-    val_accuracy, test_accuracy = 0, 0
+    val_acc, test_acc = 0, 0
     for trial in range(trials):
         # Reset the weights
         # See https://github.com/keras-team/keras/issues/341
-        # session = K.get_session()
-        # for layer in layers:
-        #     for v in layer.__dict__:
-        #         v_arg = getattr(layer, v)
-        #         if hasattr(v_arg, 'initializer'):
-        #             initializer_func = getattr(v_arg, 'initializer')
-        #             initializer_func.run(session=session)
+        session = K.get_session()
+        for layer in layers:
+            for v in layer.__dict__:
+                v_arg = getattr(layer, v)
+                if hasattr(v_arg, 'initializer'):
+                    initializer_func = getattr(v_arg, 'initializer')
+                    initializer_func.run(session=session)
         # Run the model
         model, history, vacc, tacc = \
                 run_keras(X_train, y_train, X_val, y_val, None, None, layers, epochs, split=split, verbose=verbose)
-        val_accuracy += vacc if vacc else 0
-        test_accuracy += tacc if tacc else 0
-    if val_accuracy:
-        print ("\nAvg. validation accuracy:"  + str(val_accuracy/trials))
-    if test_accuracy:
-        print ("\nAvg. test accuracy:"  + str(test_accuracy/trials))
+        val_acc += vacc if vacc else 0
+        test_acc += tacc if tacc else 0
+    if val_acc:
+        print ("\nAvg. validation accuracy:"  + str(val_acc/trials))
+    if test_acc:
+        print ("\nAvg. test accuracy:"  + str(test_acc/trials))
 
 def run_keras_cnn_mnist(train, test, layers, epochs, split=0.1, verbose=True, trials=1):
     # Load the dataset
@@ -366,26 +323,26 @@ def run_keras_cnn_mnist(train, test, layers, epochs, split=0.1, verbose=True, tr
     y_train = np_utils.to_categorical(y1, num_classes)
     y_val = np_utils.to_categorical(y2, num_classes)
     # Train, use split for validation
-    val_accuracy, test_accuracy = 0, 0
+    val_acc, test_acc = 0, 0
     for trial in range(trials):
         # Reset the weights
         # See https://github.com/keras-team/keras/issues/341
-        # session = K.get_session()
-        # for layer in layers:
-        #     for v in layer.__dict__:
-        #         v_arg = getattr(layer, v)
-        #         if hasattr(v_arg, 'initializer'):
-        #             initializer_func = getattr(v_arg, 'initializer')
-        #             initializer_func.run(session=session)
+        session = K.get_session()
+        for layer in layers:
+            for v in layer.__dict__:
+                v_arg = getattr(layer, v)
+                if hasattr(v_arg, 'initializer'):
+                    initializer_func = getattr(v_arg, 'initializer')
+                    initializer_func.run(session=session)
         # Run the model
         model, history, vacc, tacc = \
                 run_keras(X_train, y_train, X_val, y_val, None, None, layers, epochs, split=split, verbose=verbose)
-        val_accuracy += vacc if vacc else 0
-        test_accuracy += tacc if tacc else 0
-    if val_accuracy:
-        print ("\nAvg. validation accuracy:"  + str(val_accuracy/trials))
-    if test_accuracy:
-        print ("\nAvg. test accuracy:"  + str(test_accuracy/trials))
+        val_acc += vacc if vacc else 0
+        test_acc += tacc if tacc else 0
+    if val_acc:
+        print ("\nAvg. validation accuracy:"  + str(val_acc/trials))
+    if test_acc:
+        print ("\nAvg. test accuracy:"  + str(test_acc/trials))
 
 # Example usage:
 # train, validation = get_MNIST_data()
@@ -498,6 +455,3 @@ def plot_decision(data, cl, diff=False):
         for i in range(cl):
             plot_separator(ax, W[:,i:i+1], W0[i:i+1,:])
     plt.show()
-
-
-run_keras_2d('3class', archs(3)[5-1], epochs=10, split=0.5, display=True, trials=5)
