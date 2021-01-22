@@ -13,8 +13,9 @@ import numpy as np
 
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import SGD, Adam
-from tensorflow.keras.layers import Conv1D, Conv2D, Dense, Dropout, Flatten, MaxPooling2D
+from tensorflow.keras.layers import Conv1D, Conv2D, Dense, Dropout, Flatten, MaxPool1D
 from tensorflow.keras import backend as K
+from tensorflow.keras import regularizers
 
 def generate_1d_images(nsamples,image_size,prob):
     Xs=[]
@@ -92,7 +93,59 @@ for layer in layers:
 model.compile(loss='mse', optimizer=Adam())    
 model.layers[0].set_weights([np.array([1/2,1/2]).reshape(2,1,1)])
 model.layers[-1].set_weights(np.array([np.ones(imsize).reshape(imsize,1),
-                                       np.array([-10])])) # here
+                                        np.array([-10])])) # here
 model.evaluate(X_test,Y_test)
 
 # 32/32 [==============================] - 0s 2ms/step - loss: 12.7647
+
+def l1_reg(weight_matrix):
+    return 0.01 * K.sum(K.abs(weight_matrix))  # == regularizers.L1(0.01)
+
+def filter_reg(weights):
+    lam = K.abs(K.sum(weights))
+    val = 0.01
+    return lam * val
+
+tsize=1000
+imsize=128
+kernel_s=2
+stride=1
+batch=1
+data=get_image_data_1d(tsize,imsize,0.1)
+(X_train,Y_train,X_val,Y_val,X_test,Y_test)=data
+layers=[Conv1D(filters=1, kernel_size=kernel_s, strides=stride,use_bias=False,activation='relu',batch_size=batch,input_shape=(imsize,1),padding='same'),
+        # my error: strides=1
+        MaxPool1D(pool_size=2, strides=2, padding='valid',data_format='channels_last'),
+        Flatten(),
+        Dense(units=1, activation='linear',use_bias=False,
+              kernel_regularizer=filter_reg # here
+              )
+        ]
+model=Sequential()
+for layer in layers:
+    model.add(layer)
+model.compile(loss='mse', optimizer=Adam())
+model.layers[0].set_weights([np.array([1/2,1/2]).reshape(2,1,1)]) # here
+# model.layers[-1].set_weights([np.ones(imsize).reshape(imsize,1)])
+model.summary()
+# trials = 5
+# for trial in range(trials):
+model.evaluate(X_test,Y_test)
+
+# Model: "sequential_254"
+# _________________________________________________________________
+# Layer (type)                 Output Shape              Param #   
+# =================================================================
+# conv1d_110 (Conv1D)          (1, 128, 1)               2         
+# _________________________________________________________________
+# max_pooling1d_13 (MaxPooling (1, 64, 1)                0         
+# _________________________________________________________________
+# flatten_93 (Flatten)         (1, 64)                   0         
+# _________________________________________________________________
+# dense_490 (Dense)            (1, 1)                    64        
+# =================================================================
+# Total params: 66
+# Trainable params: 66
+# Non-trainable params: 0
+# _________________________________________________________________
+# 32/32 [==============================] - 0s 2ms/step - loss: 155.0701
