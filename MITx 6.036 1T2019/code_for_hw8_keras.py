@@ -297,8 +297,8 @@ def get_MNIST_data(shift=0):
     (X_train, y1), (X_val, y2) = mnist.load_data()
     if shift:
         size = 28+shift
-        X_train = shifted(X_train, shift)
-        X_val = shifted(X_val, shift)
+        X_train = shifted(X_train, shift) #* (1/256.0)
+        X_val = shifted(X_val, shift) #* (1/256.0)
     return (X_train, y1), (X_val, y2)
 
 # Example Usage:
@@ -374,6 +374,20 @@ def run_keras_cnn_mnist(train, test, layers, epochs, split=0.1, verbose=True, tr
 # layers = [Dense(input_dim=???, units=???, activation='softmax')]
 # run_keras_fc_mnist(train, validation, layers, 1, split=0.1, verbose=True, trials=5)
 # Same pattern applies to the function: run_keras_cnn_mnist
+epochs = 1
+train, validation = get_MNIST_data()
+# layers = [Dense(input_dim=784, units=10, activation='softmax')]
+# Avg. validation accuracy:0.8876599907875061 #############oops not 0.6
+layers = [Dense(input_dim=784, units=10, activation='softmax',
+                kernel_initializer=VarianceScaling(scale=0.001, mode='fan_in', distribution='normal', seed=None))]
+# Avg. validation accuracy:0.8814800024032593
+run_keras_fc_mnist(train, validation, layers, epochs, split=0.1, trials=5)
+# imsize = 784
+# batch = 1
+# layers = [Conv2D(filters=1, kernel_size=2, strides=1,use_bias=False,activation='relu',batch_size=batch,input_shape=(imsize,1),padding='same')
+          
+#           ]
+# run_keras_cnn_mnist(train, validation, layers, epochs, split=0.1, verbose=True, trials=5)
 
 ######################################################################
 # Plotting Functions
