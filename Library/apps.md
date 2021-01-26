@@ -3,6 +3,21 @@ layout: empty
 title: "AI Projects"
 ---
 
+## Software libraries 
+
+- Keras
+- TensorFlow
+- PyTorch
+- PyTorch Lightning
+- Scikit Learn
+- Fast.ai
+- JAX
+- SpaCy
+- XGBoost
+- Julia Flux
+- MLLib
+- MXNet
+
 | P | Apps                                                                            |
 | - | ------------------------------------------------------------------------------- |
 |   | [1Konny/idgan](https://github.com/1Konny/idgan) |
