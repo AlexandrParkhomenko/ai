@@ -3,705 +3,707 @@ layout: empty
 title: "AI Projects"
 ---
 
-## Software libraries 
+## Software libraries (legend)
 
-- Keras
+- Keras (see TensorFlow)
 - TensorFlow
-- PyTorch
-- PyTorch Lightning
-- Scikit Learn
-- Fast.ai
-- JAX
-- SpaCy
-- XGBoost
+- (T) PyTorch
+- (T) PyTorch Lightning
+- (F) Fast.ai (see PyTorch)
+- Scikit Learn [issues](https://github.com/scikit-learn/scikit-learn/issues)
+- Google [JAX](https://github.com/google/jax/)
+- [SpaCy](https://github.com/explosion/spaCy)
+- [XGBoost](https://github.com/dmlc/xgboost)
 - Julia Flux
-- MLLib
-- MXNet
+- MLLib (Java)
+- [MXNet](https://github.com/apache/incubator-mxnet)
+- (M) pure Mathlab
+- (m) Mathlab parts
 
-| P | Apps                                                                            |
-| - | ------------------------------------------------------------------------------- |
-|   | [1Konny/idgan](https://github.com/1Konny/idgan) |
-|   | [2han9x1a0release/RBF-Softmax](https://github.com/2han9x1a0release/RBF-Softmax) |
-|   | [AI-secure/SemanticAdv](https://github.com/AI-secure/SemanticAdv) |
-|   | [Abdullah-Abuolaim/defocus-deblurring-dual-pixel](https://github.com/Abdullah-Abuolaim/defocus-deblurring-dual-pixel) |
-|   | [AberHu/TF-NAS](https://github.com/AberHu/TF-NAS) |
-|   | [Academic-Hammer/SciTSR](https://github.com/Academic-Hammer/SciTSR) |
-|   | [Algy/fast-slic](https://github.com/Algy/fast-slic) |
-|   | [AmirooR/Pairwise-Similarity-knowledge-Transfer-WSOL](https://github.com/AmirooR/Pairwise-Similarity-knowledge-Transfer-WSOL) |
-|   | [AntheaLi/3DPartAssembly](https://github.com/AntheaLi/3DPartAssembly) |
-|   | [AutoML-4Paradigm/AutoSTR](https://github.com/AutoML-4Paradigm/AutoSTR) |
-|   | [BCV-Uniandes/Gabor_Layers_for_Robustness](https://github.com/BCV-Uniandes/Gabor_Layers_for_Robustness) |
-|   | [BenSaunders27/ProgressiveTransformersSLP](https://github.com/BenSaunders27/ProgressiveTransformersSLP) |
-|   | [BigRedT/no_frills_hoi_det](https://github.com/BigRedT/no_frills_hoi_det) |
-|   | [Binyr/ASDA](https://github.com/Binyr/ASDA) |
-|   | [BoChenGroup/BIRNAT](https://github.com/BoChenGroup/BIRNAT) |
-|   | [BramSW/Extending_SSRL_Across_Domains](https://github.com/BramSW/Extending_SSRL_Across_Domains) |
-|   | [BruceW91/CVSE](https://github.com/BruceW91/CVSE) |
-|   | [CASIA-IVA-Lab/ISP-reID](https://github.com/CASIA-IVA-Lab/ISP-reID) |
-|   | [CSAILVision/places365](https://github.com/CSAILVision/places365) |
-|   | [CSAILVision/semantic-segmentation-pytorch](https://github.com/CSAILVision/semantic-segmentation-pytorch) |
-|   | [Cadene/pretrained-models.pytorch](https://github.com/Cadene/pretrained-models.pytorch) |
-|   | [CalayZhou/MBNet](https://github.com/CalayZhou/MBNet) |
-|   | [Canjie-Luo/MORAN_v2](https://github.com/Canjie-Luo/MORAN_v2) |
-|   | [CenekAlbl/RnP](https://github.com/CenekAlbl/RnP) |
-|   | [ChenRocks/UNITER](https://github.com/ChenRocks/UNITER) |
-|   | [Chenglin-Yang/PatchAttack](https://github.com/Chenglin-Yang/PatchAttack) |
-|   | [ChenhongyiYang/SG-NMS](https://github.com/ChenhongyiYang/SG-NMS) |
-|   | [Chinmayrane16/Fashion-MNIST-Accuracy-93.4-](https://github.com/Chinmayrane16/Fashion-MNIST-Accuracy-93.4-) |
-|   | [ChrisAllenMing/LtC-MSDA](https://github.com/ChrisAllenMing/LtC-MSDA) |
-|   | [ClancyZhou/P_Net_Anomaly_Detection](https://github.com/ClancyZhou/P_Net_Anomaly_Detection) |
-|   | [Confusezius/Deep-Metric-Learning-Baselines](https://github.com/Confusezius/Deep-Metric-Learning-Baselines) |
-|   | [D-X-Y/AutoDL-Projects](https://github.com/D-X-Y/AutoDL-Projects) |
-|   | [DFLyan/MAC-Net](https://github.com/DFLyan/MAC-Net) |
-|   | [DLR-RM/SingleViewReconstruction](https://github.com/DLR-RM/SingleViewReconstruction) |
-|   | [DTaoo/Multimodal-Aerial-Scene-Recognition](https://github.com/DTaoo/Multimodal-Aerial-Scene-Recognition) |
-|   | [Davidzhangyuanhan/CelebA-Spoof](https://github.com/Davidzhangyuanhan/CelebA-Spoof) |
-|   | [DeLightCMU/RSC](https://github.com/DeLightCMU/RSC) |
-|   | [Dong1P/MTRNN](https://github.com/Dong1P/MTRNN) |
-|   | [DonkeyShot21/batch-level-distillation](https://github.com/DonkeyShot21/batch-level-distillation) |
-|   | [Duankaiwen/CPNDet](https://github.com/Duankaiwen/CPNDet) |
-|   | [DylanWusee/PointPWC](https://github.com/DylanWusee/PointPWC) |
-|   | [ElementAI/embedding-propagation](https://github.com/ElementAI/embedding-propagation) |
-|   | [EndlessSora/TSIT](https://github.com/EndlessSora/TSIT) |
-|   | [ErlerPhilipp/points2surf](https://github.com/ErlerPhilipp/points2surf) |
-|   | [EunhyeokPark/PROFIT](https://github.com/EunhyeokPark/PROFIT) |
-|   | [EvgenyKashin/stylegan2-distillation](https://github.com/EvgenyKashin/stylegan2-distillation) |
-|   | [FilippoAleotti/Reversing](https://github.com/FilippoAleotti/Reversing) |
-|   | [FluidSynth/fluidsynth](https://github.com/FluidSynth/fluidsynth) |
-|   | [GanlongZhao/CST_DA_detection](https://github.com/GanlongZhao/CST_DA_detection) |
-|   | [GeraldHan/TRN](https://github.com/GeraldHan/TRN) |
-|   | [Ha0Tang/XingGAN](https://github.com/Ha0Tang/XingGAN) |
-|   | [HeCraneChen/3D-Crowd-Pose-Estimation-Based-on-MVG](https://github.com/HeCraneChen/3D-Crowd-Pose-Estimation-Based-on-MVG) |
-|   | [HobbitLong/CMC](https://github.com/HobbitLong/CMC) |
-|   | [Howal/DNL-Object-Detection](https://github.com/Howal/DNL-Object-Detection) |
-|   | [HuangYG123/DDL](https://github.com/HuangYG123/DDL) |
-|   | [HuynhLam/DAV](https://github.com/HuynhLam/DAV) |
-|   | [Hwang64/PSIS](https://github.com/Hwang64/PSIS) |
-|   | [IBM/cdfsl-benchmark](https://github.com/IBM/cdfsl-benchmark) |
-|   | [IIT-PAVIS/acoustic-images-self-supervision](https://github.com/IIT-PAVIS/acoustic-images-self-supervision) |
-|   | [IPIU-detection/SEANet](https://github.com/IPIU-detection/SEANet) |
-|   | [ISICV/ManTraNet](https://github.com/ISICV/ManTraNet) |
-|   | [Intelligent-Systems-Research-Group/JOMS](https://github.com/Intelligent-Systems-Research-Group/JOMS) |
-|   | [JDAI-CV/FADA](https://github.com/JDAI-CV/FADA) |
-|   | [JDAI-CV/fast-reid](https://github.com/JDAI-CV/fast-reid) |
-|   | [JaeYeonKang/STVUN-Pytorch](https://github.com/JaeYeonKang/STVUN-Pytorch) |
-|   | [Jarr0d/ViTAA](https://github.com/Jarr0d/ViTAA) |
-|   | [JasonBoy1/TextZoom](https://github.com/JasonBoy1/TextZoom) |
-|   | [JialeCao001/SipMask](https://github.com/JialeCao001/SipMask) |
-|   | [JiayongO-O/PENonLocal](https://github.com/JiayongO-O/PENonLocal) |
-|   | [JirongZhang/DeepHomography](https://github.com/JirongZhang/DeepHomography) |
-|   | [JizeCao/VALUE](https://github.com/JizeCao/VALUE) |
-|   | [JoeHEZHAO/DAA](https://github.com/JoeHEZHAO/DAA) |
-|   | [JunHeum/BMBC](https://github.com/JunHeum/BMBC) |
-|   | [JunjH/Revisiting_Single_Depth_Estimation](https://github.com/JunjH/Revisiting_Single_Depth_Estimation) |
-|   | [Kainmueller-Lab/PatchPerPix](https://github.com/Kainmueller-Lab/PatchPerPix) |
-|   | [KeleiHe/DAAN](https://github.com/KeleiHe/DAAN) |
-|   | [Kenneth-Wong/het-eccv20](https://github.com/Kenneth-Wong/het-eccv20) |
-|   | [KevinMusgrave/powerful-benchmarker](https://github.com/KevinMusgrave/powerful-benchmarker) |
-|   | [Khrylx/DLow](https://github.com/Khrylx/DLow) |
-|   | [KovenYu/MAR](https://github.com/KovenYu/MAR) |
-|   | [KumapowerLIU/Rethinking-Inpainting-MEDFE](https://github.com/KumapowerLIU/Rethinking-Inpainting-MEDFE) |
-|   | [L-YeZhu/Video-Description-via-Dialog-Agents-ECCV2020](https://github.com/L-YeZhu/Video-Description-via-Dialog-Agents-ECCV2020) |
-|   | [LA30/Cas-Gnn](https://github.com/LA30/Cas-Gnn) |
-|   | [LauraFJulia/TFT_vs_Fund](https://github.com/LauraFJulia/TFT_vs_Fund) |
-|   | [Leotju/CaSe](https://github.com/Leotju/CaSe) |
-|   | [LiYingwei/Regional-Homogeneity](https://github.com/LiYingwei/Regional-Homogeneity) |
-|   | [Liuy8/MUC](https://github.com/Liuy8/MUC) |
-|   | [LuckyDC/generalizing-reid](https://github.com/LuckyDC/generalizing-reid) |
-|   | [LuoweiZhou/VLP](https://github.com/LuoweiZhou/VLP) |
-|   | [MCG-NJU/BCN](https://github.com/MCG-NJU/BCN) |
-|   | [MCG-NJU/CRCNN-Action](https://github.com/MCG-NJU/CRCNN-Action) |
-|   | [MCG-NJU/MOC-Detector](https://github.com/MCG-NJU/MOC-Detector) |
-|   | [MVIG-SJTU/AlphAction](https://github.com/MVIG-SJTU/AlphAction) |
-|   | [MVIG-SJTU/AlphaPose](https://github.com/MVIG-SJTU/AlphaPose) |
-|   | [MadryLab/robustness](https://github.com/MadryLab/robustness) |
-|   | [Majiker/STAR](https://github.com/Majiker/STAR) |
-|   | [MalongTech/research-charnet](https://github.com/MalongTech/research-charnet) |
-|   | [MarekKowalski/FaceSwap](https://github.com/MarekKowalski/FaceSwap) |
-|   | [Maunil/LsrGAN](https://github.com/Maunil/LsrGAN) |
-|   | [MhLiao/MaskTextSpotter](https://github.com/MhLiao/MaskTextSpotter) |
-|   | [MhLiao/MaskTextSpotterV3](https://github.com/MhLiao/MaskTextSpotterV3) |
-|   | [MichaelGrupp/evo](https://github.com/MichaelGrupp/evo) |
-|   | [MinglangQiao/MVVA-Database](https://github.com/MinglangQiao/MVVA-Database) |
-|   | [MuchHair/PD-Net](https://github.com/MuchHair/PD-Net) |
-|   | [NIEQiang001/unsupervised-human-pose](https://github.com/NIEQiang001/unsupervised-human-pose) |
-|   | [NUS-VIP/salicon-evaluation](https://github.com/NUS-VIP/salicon-evaluation) |
-|   | [NVIDIA/flownet2-pytorch](https://github.com/NVIDIA/flownet2-pytorch) |
-|   | [NVIDIA/pix2pixHD](https://github.com/NVIDIA/pix2pixHD) |
-|   | [NVlabs/MUNIT](https://github.com/NVlabs/MUNIT) |
-|   | [NVlabs/ffhq-dataset](https://github.com/NVlabs/ffhq-dataset) |
-|   | [NVlabs/stylegan2](https://github.com/NVlabs/stylegan2) |
-|   | [Open-Debin/Emotion-FAN](https://github.com/Open-Debin/Emotion-FAN) |
-|   | [OpenNMT/OpenNMT-py](https://github.com/OpenNMT/OpenNMT-py) |
-|   | [OshriHalimi/precise_shape_completion](https://github.com/OshriHalimi/precise_shape_completion) |
-|   | [PRIS-CV/PMG-Progressive-Multi-Granularity-Training](https://github.com/PRIS-CV/PMG-Progressive-Multi-Granularity-Training) |
-|   | [PeisenZhao/Bottom-Up-TAL-with-MR](https://github.com/PeisenZhao/Bottom-Up-TAL-with-MR) |
-|   | [PengWan-Yang/commonLocalization](https://github.com/PengWan-Yang/commonLocalization) |
-|   | [Peterchen111/FERNet](https://github.com/Peterchen111/FERNet) |
-|   | [Puzer/stylegan-encoder](https://github.com/Puzer/stylegan-encoder) |
-|   | [PyTorchLightning/pytorch-lightning](https://github.com/PyTorchLightning/pytorch-lightning) |
-|   | [PythonOrR/CASIA-V5](https://github.com/PythonOrR/CASIA-V5) |
-|   | [RICE-EIC/HALO](https://github.com/RICE-EIC/HALO) |
-|   | [Raykoooo/IAST](https://github.com/Raykoooo/IAST) |
-|   | [Regenerator/dpf-nets](https://github.com/Regenerator/dpf-nets) |
-|   | [RogerZhangzz/CAG_UDA](https://github.com/RogerZhangzz/CAG_UDA) |
-|   | [RuojinCai/ShapeGF](https://github.com/RuojinCai/ShapeGF) |
-|   | [SINTEF/PFV](https://github.com/SINTEF/PFV) |
-|   | [SSAW14/segmentation_membership_inference](https://github.com/SSAW14/segmentation_membership_inference) |
-|   | [SSSohn/LTCF](https://github.com/SSSohn/LTCF) |
-|   | [SUTDBrainLab/MGP-VAE](https://github.com/SUTDBrainLab/MGP-VAE) |
-|   | [Sandy-Zeng/NPAttack](https://github.com/Sandy-Zeng/NPAttack) |
-|   | [ShengcaiLiao/QAConv](https://github.com/ShengcaiLiao/QAConv) |
-|   | [ShinyWang33/eSL-Net](https://github.com/ShinyWang33/eSL-Net) |
-|   | [ShuLiu1993/PANet](https://github.com/ShuLiu1993/PANet) |
-|   | [StanfordASL/Trajectron-plus-plus](https://github.com/StanfordASL/Trajectron-plus-plus) |
-|   | [StanfordVL/taskonomy](https://github.com/StanfordVL/taskonomy) |
-|   | [SvenShade/Rel-AIR](https://github.com/SvenShade/Rel-AIR) |
-|   | [TAMU-VITA/DeepPS](https://github.com/TAMU-VITA/DeepPS) |
-|   | [THU-DA-6D-Pose-Group/Self6D-Diff-Renderer](https://github.com/THU-DA-6D-Pose-Group/Self6D-Diff-Renderer) |
-|   | [Thinklab-SJTU/CSL_RetinaNet_Tensorflow](https://github.com/Thinklab-SJTU/CSL_RetinaNet_Tensorflow) |
-|   | [TuSimple/tusimple-benchmark](https://github.com/TuSimple/tusimple-benchmark) |
-|   | [VDIGPKU/DADA](https://github.com/VDIGPKU/DADA) |
-|   | [VainF/DeepLabV3Plus-Pytorch](https://github.com/VainF/DeepLabV3Plus-Pytorch) |
-|   | [VeloDC/oshot_detection](https://github.com/VeloDC/oshot_detection) |
-|   | [VisionLearningGroup/Domain2Vec](https://github.com/VisionLearningGroup/Domain2Vec) |
-|   | [VisionLearningGroup/SANE](https://github.com/VisionLearningGroup/SANE) |
-|   | [VisionLearningGroup/VisionLearningGroup.github.io](https://github.com/VisionLearningGroup/VisionLearningGroup.github.io) |
-|   | [WangYueFt/pillar-od](https://github.com/WangYueFt/pillar-od) |
-|   | [WangYueFt/rfs](https://github.com/WangYueFt/rfs) |
-|   | [WellyZhang/RAVEN](https://github.com/WellyZhang/RAVEN) |
-|   | [Xiangyi1996/PPNet-PyTorch](https://github.com/Xiangyi1996/PPNet-PyTorch) |
-|   | [XiangyuZhu-open/Beyond3DMM](https://github.com/XiangyuZhu-open/Beyond3DMM) |
-|   | [Xiaoqi-Zhao-DLUT/DANet-RGBD-Saliency](https://github.com/Xiaoqi-Zhao-DLUT/DANet-RGBD-Saliency) |
-|   | [Xiaoqi-Zhao-DLUT/GateNet-RGB-Saliency](https://github.com/Xiaoqi-Zhao-DLUT/GateNet-RGB-Saliency) |
-|   | [XieQi2015/MHF-net](https://github.com/XieQi2015/MHF-net) |
-|   | [XingangPan/deep-generative-prior](https://github.com/XingangPan/deep-generative-prior) |
-|   | [XudongLinthu/context-gated-convolution](https://github.com/XudongLinthu/context-gated-convolution) |
-|   | [YU1ut/MixMatch-pytorch](https://github.com/YU1ut/MixMatch-pytorch) |
-|   | [Yang-Bob/PMMs](https://github.com/Yang-Bob/PMMs) |
-|   | [YapengTian/AVVP-ECCV20](https://github.com/YapengTian/AVVP-ECCV20) |
-|   | [Yonghongwei/Gradient-Centralization](https://github.com/Yonghongwei/Gradient-Centralization) |
-|   | [YuanXue1993/WireframeRenderer](https://github.com/YuanXue1993/WireframeRenderer) |
-|   | [Yuantian013/E2GAN](https://github.com/Yuantian013/E2GAN) |
-|   | [Yuexiaoxi10/Key-Frame-Proposal-Network-for-Efficient-Pose-Estimation-in-Videos](https://github.com/Yuexiaoxi10/Key-Frame-Proposal-Network-for-Efficient-Pose-Estimation-in-Videos) |
-|   | [YukangWang/IFVD](https://github.com/YukangWang/IFVD) |
-|   | [YunpengZhai/MEB-Net](https://github.com/YunpengZhai/MEB-Net) |
-|   | [YunseokJANG/l2l-da](https://github.com/YunseokJANG/l2l-da) |
-|   | [ZHANGDONG-NJUST/CONTA](https://github.com/ZHANGDONG-NJUST/CONTA) |
-|   | [ZhaoJ9014/face.evoLVe.PyTorch](https://github.com/ZhaoJ9014/face.evoLVe.PyTorch) |
-|   | [ZheC/GTA-IM-Dataset](https://github.com/ZheC/GTA-IM-Dataset) |
-|   | [Zheng222/IDN-tensorflow](https://github.com/Zheng222/IDN-tensorflow) |
-|   | [Zhongdao/Towards-Realtime-MOT](https://github.com/Zhongdao/Towards-Realtime-MOT) |
-|   | [aamir-mustafa/Transformation-CR](https://github.com/aamir-mustafa/Transformation-CR) |
-|   | [abhi4ssj/few-shot-segmentation](https://github.com/abhi4ssj/few-shot-segmentation) |
-|   | [acht7111020/DSMAP](https://github.com/acht7111020/DSMAP) |
-|   | [activitynet/ActivityNet](https://github.com/activitynet/ActivityNet) |
-|   | [adobe/antialiased-cnns](https://github.com/adobe/antialiased-cnns) |
-|   | [adrianlopezroche/fdupes](https://github.com/adrianlopezroche/fdupes) |
-|   | [ageitgey/face_recognition](https://github.com/ageitgey/face_recognition) |
-|   | [aharley/neural_3d_tracking](https://github.com/aharley/neural_3d_tracking) |
-|   | [aicip/uSDN](https://github.com/aicip/uSDN) |
-|   | [aimagelab/VKD](https://github.com/aimagelab/VKD) |
-|   | [airmachine/EM-MIL-WeaklyActionDetection](https://github.com/airmachine/EM-MIL-WeaklyActionDetection) |
-|   | [ajbrock/BigGAN-PyTorch](https://github.com/ajbrock/BigGAN-PyTorch) |
-|   | [ajhamdi/AdvPC](https://github.com/ajhamdi/AdvPC) |
-|   | [akamaster/pytorch_resnet_cifar10](https://github.com/akamaster/pytorch_resnet_cifar10) |
-|   | [akshitac8/tfvaegan](https://github.com/akshitac8/tfvaegan) |
-|   | [alanlai199/ColorizeDepthNet](https://github.com/alanlai199/ColorizeDepthNet) |
-|   | [albertpumarola/GANimation](https://github.com/albertpumarola/GANimation) |
-|   | [alessiamarcolini/deepstreet](https://github.com/alessiamarcolini/deepstreet) |
-|   | [alexeybokhovkin/CAD-Deform](https://github.com/alexeybokhovkin/CAD-Deform) |
-|   | [alfaiate/HySure](https://github.com/alfaiate/HySure) |
-|   | [alibaba/MNN](https://github.com/alibaba/MNN) |
-|   | [alirezazareian/gbnet](https://github.com/alirezazareian/gbnet) |
-|   | [ambekarsameer96/GLSS](https://github.com/ambekarsameer96/GLSS) |
-|   | [amiratag/ACE](https://github.com/amiratag/ACE) |
-|   | [andreasveit/convnet-aig](https://github.com/andreasveit/convnet-aig) |
-|   | [angmt2008/LFCA](https://github.com/angmt2008/LFCA) |
-|   | [anlthms/nips-2017](https://github.com/anlthms/nips-2017) |
-|   | [anonymous47823493/EagleEye](https://github.com/anonymous47823493/EagleEye) |
-|   | [anthonymlortiz/epitomes_lsr](https://github.com/anthonymlortiz/epitomes_lsr) |
-|   | [aosokin/os2d](https://github.com/aosokin/os2d) |
-|   | [ap229997/DRNET](https://github.com/ap229997/DRNET) |
-|   | [apsdehal/traffic-signs-recognition](https://github.com/apsdehal/traffic-signs-recognition) |
-|   | [arpg/calibu](https://github.com/arpg/calibu) |
-|   | [arthurdouillard/incremental_learning.pytorch](https://github.com/arthurdouillard/incremental_learning.pytorch) |
-|   | [ashesknight/tof-mpi-remove](https://github.com/ashesknight/tof-mpi-remove) |
-|   | [automan000/Camera-based-Person-ReID](https://github.com/automan000/Camera-based-Person-ReID) |
-|   | [autonomousvision/convolutional_occupancy_networks](https://github.com/autonomousvision/convolutional_occupancy_networks) |
-|   | [aviadlevis/pyshdom](https://github.com/aviadlevis/pyshdom) |
-|   | [ayumiymk/aster.pytorch](https://github.com/ayumiymk/aster.pytorch) |
-|   | [ayushidutta/multi-order-rnn](https://github.com/ayushidutta/multi-order-rnn) |
-|   | [ayziksha/DSIN](https://github.com/ayziksha/DSIN) |
-|   | [aztc/FNKD](https://github.com/aztc/FNKD) |
-|   | [baldassarreFe/ws-vrd](https://github.com/baldassarreFe/ws-vrd) |
-|   | [barisgecer/TBGAN](https://github.com/barisgecer/TBGAN) |
-|   | [basiclab/CPCStoryVisualization-Pytorch](https://github.com/basiclab/CPCStoryVisualization-Pytorch) |
-|   | [bearcatt/LaBERT](https://github.com/bearcatt/LaBERT) |
-|   | [bearpaw/pytorch-classification](https://github.com/bearpaw/pytorch-classification) |
-|   | [bethgelab/game-of-noise](https://github.com/bethgelab/game-of-noise) |
-|   | [bioinf-jku/TTUR](https://github.com/bioinf-jku/TTUR) |
-|   | [blue-blue272/VideoReID-TCLNet](https://github.com/blue-blue272/VideoReID-TCLNet) |
-|   | [bradyz/task-distillation](https://github.com/bradyz/task-distillation) |
-|   | [brezaei/G-LBM](https://github.com/brezaei/G-LBM) |
-|   | [bruno-31/groupsc](https://github.com/bruno-31/groupsc) |
-|   | [caiyuanhao1998/RSN](https://github.com/caiyuanhao1998/RSN) |
-|   | [camelot-dev/camelot](https://github.com/camelot-dev/camelot) |
-|   | [cavalli1234/AdaLAM](https://github.com/cavalli1234/AdaLAM) |
-|   | [cdcseacave/openMVS](https://github.com/cdcseacave/openMVS) |
-|   | [cfzd/Ultra-Fast-Lane-Detection](https://github.com/cfzd/Ultra-Fast-Lane-Detection) |
-|   | [chail/patch-forensics](https://github.com/chail/patch-forensics) |
-|   | [chan8972/Spike-FlowNet](https://github.com/chan8972/Spike-FlowNet) |
-|   | [charlesq34/frustum-pointnets](https://github.com/charlesq34/frustum-pointnets) |
-|   | [charlesq34/pointnet](https://github.com/charlesq34/pointnet) |
-|   | [charusharma1991/PointCorrespondence](https://github.com/charusharma1991/PointCorrespondence) |
-|   | [chenfengxu714/SqueezeSegV3](https://github.com/chenfengxu714/SqueezeSegV3) |
-|   | [chengchunhsu/EveryPixelMatters](https://github.com/chengchunhsu/EveryPixelMatters) |
-|   | [cherubicXN/afm_cvpr2019](https://github.com/cherubicXN/afm_cvpr2019) |
-|   | [chihyaoma/cyclical-visual-captioning](https://github.com/chihyaoma/cyclical-visual-captioning) |
-|   | [chiutaiyin/Iterative-feature-transformation-for-style-transfer](https://github.com/chiutaiyin/Iterative-feature-transformation-for-style-transfer) |
-|   | [chrysts/generative_preconditioner](https://github.com/chrysts/generative_preconditioner) |
-|   | [cjkvi/cjkvi-ids](https://github.com/cjkvi/cjkvi-ids) |
-|   | [cleardusk/3DDFA](https://github.com/cleardusk/3DDFA) |
-|   | [cleardusk/3DDFA_V2](https://github.com/cleardusk/3DDFA_V2) |
-|   | [clobotics/piou](https://github.com/clobotics/piou) |
-|   | [clovaai/dmfont](https://github.com/clovaai/dmfont) |
-|   | [cmhungsteve/TA3N](https://github.com/cmhungsteve/TA3N) |
-|   | [columbia/MTRobust](https://github.com/columbia/MTRobust) |
-|   | [constantinpape/affogato](https://github.com/constantinpape/affogato) |
-|   | [crs4/AtlantaNet](https://github.com/crs4/AtlantaNet) |
-|   | [csxmli2016/DFDNet](https://github.com/csxmli2016/DFDNet) |
-|   | [csyxwei/FFWM](https://github.com/csyxwei/FFWM) |
-|   | [cvai-repo/duality-diagram-similarity](https://github.com/cvai-repo/duality-diagram-similarity) |
-|   | [d-li14/PSConv](https://github.com/d-li14/PSConv) |
-|   | [d-li14/SAN](https://github.com/d-li14/SAN) |
-|   | [danfenghong/ECCV2020_CUCaNet](https://github.com/danfenghong/ECCV2020_CUCaNet) |
-|   | [daniilidis-group/EV-FlowNet](https://github.com/daniilidis-group/EV-FlowNet) |
-|   | [danini/affine-correspondences-for-camera-geometry](https://github.com/danini/affine-correspondences-for-camera-geometry) |
-|   | [danini/graph-cut-ransac](https://github.com/danini/graph-cut-ransac) |
-|   | [dariopavllo/style-semantics](https://github.com/dariopavllo/style-semantics) |
-|   | [daveredrum/ScanRefer](https://github.com/daveredrum/ScanRefer) |
-|   | [david-m-rosen/SE-Sync](https://github.com/david-m-rosen/SE-Sync) |
-|   | [davidsandberg/facenet](https://github.com/davidsandberg/facenet) |
-|   | [deepfakes/faceswap](https://github.com/deepfakes/faceswap) |
-|   | [deepinsight/insightface](https://github.com/deepinsight/insightface) |
-|   | [deepmind/dsprites-dataset](https://github.com/deepmind/dsprites-dataset) |
-|   | [detectRecog/PointTrack](https://github.com/detectRecog/PointTrack) |
-|   | [diegovalsesia/GPDNet](https://github.com/diegovalsesia/GPDNet) |
-|   | [dips4717/gcn-cnn](https://github.com/dips4717/gcn-cnn) |
-|   | [djidje/D-MMD](https://github.com/djidje/D-MMD) |
-|   | [doc-analysis/TableBank](https://github.com/doc-analysis/TableBank) |
-|   | [doc-doc/vRGV](https://github.com/doc-doc/vRGV) |
-|   | [dongkwonjin/Semantic-Line-DRM](https://github.com/dongkwonjin/Semantic-Line-DRM) |
-|   | [dongxinshuai/API-Net](https://github.com/dongxinshuai/API-Net) |
-|   | [donnyyou/torchcv](https://github.com/donnyyou/torchcv) |
-|   | [drimpossible/GDumb](https://github.com/drimpossible/GDumb) |
-|   | [dscig/TwoStageUC](https://github.com/dscig/TwoStageUC) |
-|   | [dvl-tum/group_loss](https://github.com/dvl-tum/group_loss) |
-|   | [dvornikita/SUR](https://github.com/dvornikita/SUR) |
-|   | [edongdongchen/DDN](https://github.com/edongdongchen/DDN) |
-|   | [eivan/one-ac-pose](https://github.com/eivan/one-ac-pose) |
-|   | [eleurent/highway-env](https://github.com/eleurent/highway-env) |
-|   | [endo-yuki-t/Animating-Landscape](https://github.com/endo-yuki-t/Animating-Landscape) |
-|   | [eugenelet/Meta-rPPG](https://github.com/eugenelet/Meta-rPPG) |
-|   | [facebook/fb.resnet.torch](https://github.com/facebook/fb.resnet.torch) |
-|   | [facebookarchive/fb.resnet.torch](https://github.com/facebookarchive/fb.resnet.torch) |
-|   | [facebookresearch/Adversarial-Continual-Learning](https://github.com/facebookresearch/Adversarial-Continual-Learning) |
-|   | [facebookresearch/Replica-Dataset](https://github.com/facebookresearch/Replica-Dataset) |
-|   | [facebookresearch/TorchRay](https://github.com/facebookresearch/TorchRay) |
-|   | [facebookresearch/detectron](https://github.com/facebookresearch/detectron) |
-|   | [facebookresearch/detectron2](https://github.com/facebookresearch/detectron2) |
-|   | [facebookresearch/detr](https://github.com/facebookresearch/detr) |
-|   | [facebookresearch/fair_self_supervision_benchmark](https://github.com/facebookresearch/fair_self_supervision_benchmark) |
-|   | [facebookresearch/maskrcnn-benchmark](https://github.com/facebookresearch/maskrcnn-benchmark) |
-|   | [facebookresearch/mmf](https://github.com/facebookresearch/mmf) |
-|   | [facebookresearch/pytorch3d](https://github.com/facebookresearch/pytorch3d) |
-|   | [facebookresearch/votenet](https://github.com/facebookresearch/votenet) |
-|   | [fanglinpu/JGR-P2O](https://github.com/fanglinpu/JGR-P2O) |
-|   | [fanq15/FewX](https://github.com/fanq15/FewX) |
-|   | [fchollet/keras](https://github.com/fchollet/keras) |
-|   | [federica-arrigoni/ECCV_20](https://github.com/federica-arrigoni/ECCV_20) |
-|   | [federica-arrigoni/ICCV_19](https://github.com/federica-arrigoni/ICCV_19) |
-|   | [feihuzhang/DSMNet](https://github.com/feihuzhang/DSMNet) |
-|   | [feihuzhang/LiDARSeg](https://github.com/feihuzhang/LiDARSeg) |
-|   | [fffffarmer/LNE_IMGM](https://github.com/fffffarmer/LNE_IMGM) |
-|   | [filipradenovic/cnnimageretrieval-pytorch](https://github.com/filipradenovic/cnnimageretrieval-pytorch) |
-|   | [flamingo-eccv/flamingo-data](https://github.com/flamingo-eccv/flamingo-data) |
-|   | [fmcarlucci/JigenDG](https://github.com/fmcarlucci/JigenDG) |
-|   | [fmfn/BayesianOptimization](https://github.com/fmfn/BayesianOptimization) |
-|   | [forwchen/HVTG](https://github.com/forwchen/HVTG) |
-|   | [fpthink/PDGN](https://github.com/fpthink/PDGN) |
-|   | [fregu856/ebms_regression](https://github.com/fregu856/ebms_regression) |
-|   | [fujiso/SODA](https://github.com/fujiso/SODA) |
-|   | [fyu/drn](https://github.com/fyu/drn) |
-|   | [gengshan-y/VCN](https://github.com/gengshan-y/VCN) |
-|   | [geosada/LVAT](https://github.com/geosada/LVAT) |
-|   | [gidariss/wDAE_GNN_FewShot](https://github.com/gidariss/wDAE_GNN_FewShot) |
-|   | [giddyyupp/coco-minitrain](https://github.com/giddyyupp/coco-minitrain) |
-|   | [gilshm/zap](https://github.com/gilshm/zap) |
-|   | [gongsixue/DebFace](https://github.com/gongsixue/DebFace) |
-|   | [google-research/augmix](https://github.com/google-research/augmix) |
-|   | [google-research/google-research](https://github.com/google-research/google-research) |
-|   | [google-research/valan](https://github.com/google-research/valan) |
-|   | [google/draco](https://github.com/google/draco) |
-|   | [google/gemmlowp](https://github.com/google/gemmlowp) |
-|   | [griffbr/ODMS](https://github.com/griffbr/ODMS) |
-|   | [gtolias/how](https://github.com/gtolias/how) |
-|   | [guxinqian/AP3D](https://github.com/guxinqian/AP3D) |
-|   | [gyhandy/Pose-Augmentation](https://github.com/gyhandy/Pose-Augmentation) |
-|   | [haidongz-usc/Curriculum-DeepSDF](https://github.com/haidongz-usc/Curriculum-DeepSDF) |
-|   | [hanxiao/bert-as-service](https://github.com/hanxiao/bert-as-service) |
-|   | [hanzhanggit/StackGAN-Pytorch](https://github.com/hanzhanggit/StackGAN-Pytorch) |
-|   | [happinesslz/EPNet](https://github.com/happinesslz/EPNet) |
-|   | [hassan-mahmood/TIES_DataGeneration](https://github.com/hassan-mahmood/TIES_DataGeneration) |
-|   | [hejingwenhejingwen/CResMD](https://github.com/hejingwenhejingwen/CResMD) |
-|   | [hejingwenhejingwen/CSRNet](https://github.com/hejingwenhejingwen/CSRNet) |
-|   | [hendrycks/robustness](https://github.com/hendrycks/robustness) |
-|   | [hkzhang95/DynamicRCNN](https://github.com/hkzhang95/DynamicRCNN) |
-|   | [hongsukchoi/Pose2Mesh_RELEASE](https://github.com/hongsukchoi/Pose2Mesh_RELEASE) |
-|   | [hou-yz/MVDet](https://github.com/hou-yz/MVDet) |
-|   | [huangkuns/wireframe](https://github.com/huangkuns/wireframe) |
-|   | [huangqx/map_synchronization](https://github.com/huangqx/map_synchronization) |
-|   | [huangzilingcv/HardGAN](https://github.com/huangzilingcv/HardGAN) |
-|   | [huiqu18/TDGAN-PyTorch](https://github.com/huiqu18/TDGAN-PyTorch) |
-|   | [hukim1124/GleNet](https://github.com/hukim1124/GleNet) |
-|   | [hukim1124/PieNet](https://github.com/hukim1124/PieNet) |
-|   | [huster-wgm/VSIAD](https://github.com/huster-wgm/VSIAD) |
-|   | [husthuaan/AoANet](https://github.com/husthuaan/AoANet) |
-|   | [hustvl/BMaskR-CNN](https://github.com/hustvl/BMaskR-CNN) |
-|   | [hyliang96/CSGCNN](https://github.com/hyliang96/CSGCNN) |
-|   | [hytseng0509/ArtEditing](https://github.com/hytseng0509/ArtEditing) |
-|   | [hzxie/GRNet](https://github.com/hzxie/GRNet) |
-|   | [hzykent/JSENet](https://github.com/hzykent/JSENet) |
-|   | [iVMCL/AOGNet-v2](https://github.com/iVMCL/AOGNet-v2) |
-|   | [iVMCL/AttentiveNorm_Detection](https://github.com/iVMCL/AttentiveNorm_Detection) |
-|   | [ibm-aur-nlp/PubTabNet](https://github.com/ibm-aur-nlp/PubTabNet) |
-|   | [ifnspaml/SGDepth](https://github.com/ifnspaml/SGDepth) |
-|   | [iiyama-lab/PS-VAEs](https://github.com/iiyama-lab/PS-VAEs) |
-|   | [iperov/DeepFaceLab](https://github.com/iperov/DeepFaceLab) |
-|   | [ishantshanu/ML-Minnorm](https://github.com/ishantshanu/ML-Minnorm) |
-|   | [jaehanlee-mcl/multi-loss-rebalancing-depth](https://github.com/jaehanlee-mcl/multi-loss-rebalancing-depth) |
-|   | [jeffmcneill/thai-font-collection](https://github.com/jeffmcneill/thai-font-collection) |
-|   | [jeromerony/dml_cross_entropy](https://github.com/jeromerony/dml_cross_entropy) |
-|   | [jfzhang95/pytorch-deeplab-xception](https://github.com/jfzhang95/pytorch-deeplab-xception) |
-|   | [jiahaoLjh/HumanDepth](https://github.com/jiahaoLjh/HumanDepth) |
-|   | [jiangzhengkai/LSTS](https://github.com/jiangzhengkai/LSTS) |
-|   | [jiasenlu/ViLBERT_beta](https://github.com/jiasenlu/ViLBERT_beta) |
-|   | [jiashu-zhu/ProgressFace](https://github.com/jiashu-zhu/ProgressFace) |
-|   | [jiaxi-wu/MPSR](https://github.com/jiaxi-wu/MPSR) |
-|   | [jiaxiangshang/MGCNet](https://github.com/jiaxiangshang/MGCNet) |
-|   | [jin-s13/COCO-WholeBody](https://github.com/jin-s13/COCO-WholeBody) |
-|   | [johnjaniczek/InfraRender](https://github.com/johnjaniczek/InfraRender) |
-|   | [jonasrauber/clipping-aware-rescaling](https://github.com/jonasrauber/clipping-aware-rescaling) |
-|   | [joshuajss/RTAA](https://github.com/joshuajss/RTAA) |
-|   | [jrzech/reproduce-chexnet](https://github.com/jrzech/reproduce-chexnet) |
-|   | [jsvine/pdfplumber](https://github.com/jsvine/pdfplumber) |
-|   | [jthsieh/DDPAE-video-prediction](https://github.com/jthsieh/DDPAE-video-prediction) |
-|   | [jumpynitro/MPCC](https://github.com/jumpynitro/MPCC) |
-|   | [jun-fang/PWLQ](https://github.com/jun-fang/PWLQ) |
-|   | [junleen/Expression-manipulator](https://github.com/junleen/Expression-manipulator) |
-|   | [junpan19/RSDN](https://github.com/junpan19/RSDN) |
-|   | [junsukchoe/ADL](https://github.com/junsukchoe/ADL) |
-|   | [junyanz/pytorch-CycleGAN-and-pix2pix](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix) |
-|   | [justimyhxu/Dense-RepPoints](https://github.com/justimyhxu/Dense-RepPoints) |
-|   | [jvanvugt/pytorch-unet](https://github.com/jvanvugt/pytorch-unet) |
-|   | [kaixin96/PANet](https://github.com/kaixin96/PANet) |
-|   | [kakaobrain/fast-autoaugment](https://github.com/kakaobrain/fast-autoaugment) |
-|   | [kami93/CMU-DATF](https://github.com/kami93/CMU-DATF) |
-|   | [kaonashi-tyc/Rewrite](https://github.com/kaonashi-tyc/Rewrite) |
-|   | [kaonashi-tyc/zi2zi](https://github.com/kaonashi-tyc/zi2zi) |
-|   | [kazuto1011/deeplab-pytorch](https://github.com/kazuto1011/deeplab-pytorch) |
-|   | [kchengiva/DecoupleGCN-DropGraph](https://github.com/kchengiva/DecoupleGCN-DropGraph) |
-|   | [kding1225/PackDet](https://github.com/kding1225/PackDet) |
-|   | [keras-team/keras](https://github.com/keras-team/keras) |
-|   | [khanhnamle1994/fashion-mnist](https://github.com/khanhnamle1994/fashion-mnist) |
-|   | [kjunelee/MetaOptNet](https://github.com/kjunelee/MetaOptNet) |
-|   | [kkhoot/PAA](https://github.com/kkhoot/PAA) |
-|   | [kmammou/v-hacd](https://github.com/kmammou/v-hacd) |
-|   | [kmkolasinski/deep-learning-notes](https://github.com/kmkolasinski/deep-learning-notes) |
-|   | [knazeri/edge-connect](https://github.com/knazeri/edge-connect) |
-|   | [krishnakanthnakka/Indirectlocalattacks](https://github.com/krishnakanthnakka/Indirectlocalattacks) |
-|   | [kshitijd20/RSA-CVPR19-release](https://github.com/kshitijd20/RSA-CVPR19-release) |
-|   | [kuangliu/pytorch-cifar](https://github.com/kuangliu/pytorch-cifar) |
-|   | [kunhe/Deep-Metric-Learning-Baselines](https://github.com/kunhe/Deep-Metric-Learning-Baselines) |
-|   | [kzmttr/UMDFA](https://github.com/kzmttr/UMDFA) |
-|   | [lanha/SupResPALM](https://github.com/lanha/SupResPALM) |
-|   | [laoreja/HPLFlowNet](https://github.com/laoreja/HPLFlowNet) |
-|   | [lartpang/HDFNet](https://github.com/lartpang/HDFNet) |
-|   | [laura-wang/video-pace](https://github.com/laura-wang/video-pace) |
-|   | [lcosmo/amks-descriptor](https://github.com/lcosmo/amks-descriptor) |
-|   | [lelechen63/Talking-head-Generation-with-Rhythmic-Head-Motion](https://github.com/lelechen63/Talking-head-Generation-with-Rhythmic-Head-Motion) |
-|   | [leoxiaobin/pose.pytorch](https://github.com/leoxiaobin/pose.pytorch) |
-|   | [lihenryhfl/vdae](https://github.com/lihenryhfl/vdae) |
-|   | [linjieli222/VQA_ReGAT](https://github.com/linjieli222/VQA_ReGAT) |
-|   | [littleredxh/HardNegative](https://github.com/littleredxh/HardNegative) |
-|   | [liuaishan/ModelBiasedAttack](https://github.com/liuaishan/ModelBiasedAttack) |
-|   | [liuaishan/SpatiotemporalAttack](https://github.com/liuaishan/SpatiotemporalAttack) |
-|   | [liuzechun/ReActNet](https://github.com/liuzechun/ReActNet) |
-|   | [lld533/LST-Net](https://github.com/lld533/LST-Net) |
-|   | [lokhande-vishnu/FairALM](https://github.com/lokhande-vishnu/FairALM) |
-|   | [longrongyang/Learning-with-Noisy-Class-Labels-for-Instance-Segmentation](https://github.com/longrongyang/Learning-with-Noisy-Class-Labels-for-Instance-Segmentation) |
-|   | [lucidrains/reformer-pytorch](https://github.com/lucidrains/reformer-pytorch) |
-|   | [luoyan407/n-reference](https://github.com/luoyan407/n-reference) |
-|   | [luzhangada/code-for-WCS-Net](https://github.com/luzhangada/code-for-WCS-Net) |
-|   | [lwzeng/GC-Net](https://github.com/lwzeng/GC-Net) |
-|   | [lxtGH/DecoupleSegNets](https://github.com/lxtGH/DecoupleSegNets) |
-|   | [madhubabuv/NightDepthADFA](https://github.com/madhubabuv/NightDepthADFA) |
-|   | [magnusja/GTSRB-caffe-model](https://github.com/magnusja/GTSRB-caffe-model) |
-|   | [mahdihosseini/HistoLabelTransfer](https://github.com/mahdihosseini/HistoLabelTransfer) |
-|   | [mahsaep/Social-human-activity-understanding-and-grouping](https://github.com/mahsaep/Social-human-activity-understanding-and-grouping) |
-|   | [majedelhelou/SFM](https://github.com/majedelhelou/SFM) |
-|   | [mancinimassimiliano/CuMix](https://github.com/mancinimassimiliano/CuMix) |
-|   | [mapillary/OpenSfM](https://github.com/mapillary/OpenSfM) |
-|   | [mapillary/inplace_abn](https://github.com/mapillary/inplace_abn) |
-|   | [marhar19/HSR_via_tensor_decomposition](https://github.com/marhar19/HSR_via_tensor_decomposition) |
-|   | [martius-lab/blackbox-backprop](https://github.com/martius-lab/blackbox-backprop) |
-|   | [matbambbang/sspnet](https://github.com/matbambbang/sspnet) |
-|   | [matheusgadelha/PointCloudLearningACD](https://github.com/matheusgadelha/PointCloudLearningACD) |
-|   | [matterport/Mask_RCNN](https://github.com/matterport/Mask_RCNN) |
-|   | [matthewpurri/Teaching-Cameras-to-Feel](https://github.com/matthewpurri/Teaching-Cameras-to-Feel) |
-|   | [mattpoggi/self-adapting-confidence](https://github.com/mattpoggi/self-adapting-confidence) |
-|   | [max-andr/square-attack](https://github.com/max-andr/square-attack) |
-|   | [megvii-model/FunnelAct](https://github.com/megvii-model/FunnelAct) |
-|   | [megvii-model/WeightNet](https://github.com/megvii-model/WeightNet) |
-|   | [meijieru/crnn.pytorch](https://github.com/meijieru/crnn.pytorch) |
-|   | [menelaoskanakis/RCM](https://github.com/menelaoskanakis/RCM) |
-|   | [mengziyi64/TSA-Net](https://github.com/mengziyi64/TSA-Net) |
-|   | [mentian/object-deformnet](https://github.com/mentian/object-deformnet) |
-|   | [michuanhaohao/reid-strong-baseline](https://github.com/michuanhaohao/reid-strong-baseline) |
-|   | [microsoft/Oscar](https://github.com/microsoft/Oscar) |
-|   | [mikelzc1990/nsganetv2](https://github.com/mikelzc1990/nsganetv2) |
-|   | [mikuhatsune/wsod_transfer](https://github.com/mikuhatsune/wsod_transfer) |
-|   | [mjq11302010044/RRPN_pytorch](https://github.com/mjq11302010044/RRPN_pytorch) |
-|   | [mk-minchul/attend-and-compare](https://github.com/mk-minchul/attend-and-compare) |
-|   | [mks0601/I2L-MeshNet_RELEASE](https://github.com/mks0601/I2L-MeshNet_RELEASE) |
-|   | [mlperf/training_results_v0.6](https://github.com/mlperf/training_results_v0.6) |
-|   | [mmatl/pyrender](https://github.com/mmatl/pyrender) |
-|   | [mogvision/pattern-net](https://github.com/mogvision/pattern-net) |
-|   | [morduspordus/SingleClassRL](https://github.com/morduspordus/SingleClassRL) |
-|   | [mrakotosaon/intrinsic_interpolations](https://github.com/mrakotosaon/intrinsic_interpolations) |
-|   | [mrkieumy/task-conditioned](https://github.com/mrkieumy/task-conditioned) |
-|   | [mseitzer/pytorch-fid](https://github.com/mseitzer/pytorch-fid) |
-|   | [naivete5656/WSCTBFP](https://github.com/naivete5656/WSCTBFP) |
-|   | [nerminsamet/houghnet](https://github.com/nerminsamet/houghnet) |
-|   | [nghorbani/amass](https://github.com/nghorbani/amass) |
-|   | [nianticlabs/rectified-features](https://github.com/nianticlabs/rectified-features) |
-|   | [nianticlabs/stereo-from-mono](https://github.com/nianticlabs/stereo-from-mono) |
-|   | [niessner/Matterport](https://github.com/niessner/Matterport) |
-|   | [ninaqy/PUGeo](https://github.com/ninaqy/PUGeo) |
-|   | [ningyu1991/InclusiveGAN](https://github.com/ningyu1991/InclusiveGAN) |
-|   | [niuchuangnn/GATCluster](https://github.com/niuchuangnn/GATCluster) |
-|   | [nmwsharp/learned-triangulation](https://github.com/nmwsharp/learned-triangulation) |
-|   | [nvidia/apex](https://github.com/nvidia/apex) |
-|   | [nxsEdson/CVD-Physiological-Measurement](https://github.com/nxsEdson/CVD-Physiological-Measurement) |
-|   | [ofsoundof/dhp](https://github.com/ofsoundof/dhp) |
-|   | [omni-us/research-GANwriting](https://github.com/omni-us/research-GANwriting) |
-|   | [open-mmlab/mmaction](https://github.com/open-mmlab/mmaction) |
-|   | [open-mmlab/mmdetection](https://github.com/open-mmlab/mmdetection) |
-|   | [open-mmlab/mmdetection3d](https://github.com/open-mmlab/mmdetection3d) |
-|   | [open-mmlab/mmsegmentation](https://github.com/open-mmlab/mmsegmentation) |
-|   | [openMVG/openMVG](https://github.com/openMVG/openMVG) |
-|   | [openai/glow](https://github.com/openai/glow) |
-|   | [openai/improved-gan](https://github.com/openai/improved-gan) |
-|   | [openimages/dataset](https://github.com/openimages/dataset) |
-|   | [openseg-group/openseg.pytorch](https://github.com/openseg-group/openseg.pytorch) |
-|   | [parkseobin/MLSR](https://github.com/parkseobin/MLSR) |
-|   | [pbaylies/stylegan-encoder](https://github.com/pbaylies/stylegan-encoder) |
-|   | [pfnet-research/nips17-adversarial-attack](https://github.com/pfnet-research/nips17-adversarial-attack) |
-|   | [pkuxmq/Invertible-Image-Rescaling](https://github.com/pkuxmq/Invertible-Image-Rescaling) |
-|   | [polwork/LDDRS](https://github.com/polwork/LDDRS) |
-|   | [poojahira/image-captioning-bottom-up-top-down](https://github.com/poojahira/image-captioning-bottom-up-top-down) |
-|   | [prclibo/relative_pose](https://github.com/prclibo/relative_pose) |
-|   | [predictive-analytics-lab/nifr](https://github.com/predictive-analytics-lab/nifr) |
-|   | [princeton-vl/RAFT](https://github.com/princeton-vl/RAFT) |
-|   | [princeton-vl/pose-ae-train](https://github.com/princeton-vl/pose-ae-train) |
-|   | [princeton-vl/uniloss](https://github.com/princeton-vl/uniloss) |
-|   | [princetonvisualai/SPICE-U](https://github.com/princetonvisualai/SPICE-U) |
-|   | [princetonvisualai/revise-tool](https://github.com/princetonvisualai/revise-tool) |
-|   | [prithv1/DMG](https://github.com/prithv1/DMG) |
-|   | [pytorch/vision](https://github.com/pytorch/vision) |
-|   | [qfgaohao/pytorch-ssd](https://github.com/qfgaohao/pytorch-ssd) |
-|   | [qilong-zhang/Patch-wise-iterative-attack](https://github.com/qilong-zhang/Patch-wise-iterative-attack) |
-|   | [qizhangli/ila-plus-plus](https://github.com/qizhangli/ila-plus-plus) |
-|   | [quark0/darts](https://github.com/quark0/darts) |
-|   | [qw245/BlindFuse](https://github.com/qw245/BlindFuse) |
-|   | [ranjaykrishna/densevid_eval](https://github.com/ranjaykrishna/densevid_eval) |
-|   | [raziehkaviani/rdosr](https://github.com/raziehkaviani/rdosr) |
-|   | [rdroste/unisal](https://github.com/rdroste/unisal) |
-|   | [researchmm/STTN](https://github.com/researchmm/STTN) |
-|   | [researchmm/TracKit](https://github.com/researchmm/TracKit) |
-|   | [rgeirhos/texture-vs-shape](https://github.com/rgeirhos/texture-vs-shape) |
-|   | [richzhang/PerceptualSimilarity](https://github.com/richzhang/PerceptualSimilarity) |
-|   | [rkteddy/RK-CCSNet](https://github.com/rkteddy/RK-CCSNet) |
-|   | [royorel/FFHQ-Aging-Dataset](https://github.com/royorel/FFHQ-Aging-Dataset) |
-|   | [royorel/Lifespan_Age_Transformation_Synthesis](https://github.com/royorel/Lifespan_Age_Transformation_Synthesis) |
-|   | [rpautrat/LISRD](https://github.com/rpautrat/LISRD) |
-|   | [rshaojimmy/ECCV2020-OSAD](https://github.com/rshaojimmy/ECCV2020-OSAD) |
-|   | [rsong/UMVCNN](https://github.com/rsong/UMVCNN) |
-|   | [rubenvillegas/iclr2017mcnet](https://github.com/rubenvillegas/iclr2017mcnet) |
-|   | [ruotianluo/DiscCaptioning](https://github.com/ruotianluo/DiscCaptioning) |
-|   | [rusty1s/deep-graph-matching-consensus](https://github.com/rusty1s/deep-graph-matching-consensus) |
-|   | [ryersonvisionlab/two-stream-dyntex-synth](https://github.com/ryersonvisionlab/two-stream-dyntex-synth) |
-|   | [sKamiJ/DCCS](https://github.com/sKamiJ/DCCS) |
-|   | [sabarim/STEm-Seg](https://github.com/sabarim/STEm-Seg) |
-|   | [sachinraja13/TabStructNet](https://github.com/sachinraja13/TabStructNet) |
-|   | [salesforce/densecap](https://github.com/salesforce/densecap) |
-|   | [sariyanidi/3DI](https://github.com/sariyanidi/3DI) |
-|   | [schatzkara/cross-view-video](https://github.com/schatzkara/cross-view-video) |
-|   | [scott89/CLIFFNet](https://github.com/scott89/CLIFFNet) |
-|   | [seetaface/SeetaFaceEngine](https://github.com/seetaface/SeetaFaceEngine) |
-|   | [seoungwugoh/STM](https://github.com/seoungwugoh/STM) |
-|   | [seungryong/RTNs](https://github.com/seungryong/RTNs) |
-|   | [sharat29ag/CDAL](https://github.com/sharat29ag/CDAL) |
-|   | [shijieS/DMMN](https://github.com/shijieS/DMMN) |
-|   | [shijieS/OMOTDRecorder](https://github.com/shijieS/OMOTDRecorder) |
-|   | [shijieS/OmniMOTDataset](https://github.com/shijieS/OmniMOTDataset) |
-|   | [shvdiwnkozbw/Multi-Source-Sound-Localization](https://github.com/shvdiwnkozbw/Multi-Source-Sound-Localization) |
-|   | [sibeiyang/sgmn](https://github.com/sibeiyang/sgmn) |
-|   | [silvandeleemput/memcnn](https://github.com/silvandeleemput/memcnn) |
-|   | [silvia1993/ROS](https://github.com/silvia1993/ROS) |
-|   | [skynbe/Refer-Youtube-VOS](https://github.com/skynbe/Refer-Youtube-VOS) |
-|   | [soeaver/RP-R-CNN](https://github.com/soeaver/RP-R-CNN) |
-|   | [sony-si/ai-research](https://github.com/sony-si/ai-research) |
-|   | [speedystream/LCL](https://github.com/speedystream/LCL) |
-|   | [srihari-humbarwadi/DeepLabV3_Plus-Tensorflow2.0](https://github.com/srihari-humbarwadi/DeepLabV3_Plus-Tensorflow2.0) |
-|   | [srijandas07/VPN](https://github.com/srijandas07/VPN) |
-|   | [ssharmin/spikingNN-adversarial-attack](https://github.com/ssharmin/spikingNN-adversarial-attack) |
-|   | [strawberryfg/Senorita-HANDS19-Pose](https://github.com/strawberryfg/Senorita-HANDS19-Pose) |
-|   | [sundw2014/DCM](https://github.com/sundw2014/DCM) |
-|   | [sunniesuhyoung/DST](https://github.com/sunniesuhyoung/DST) |
-|   | [sunnychencool/AOQ](https://github.com/sunnychencool/AOQ) |
-|   | [sunset1995/HorizonNet](https://github.com/sunset1995/HorizonNet) |
-|   | [svip-lab/PPGNet](https://github.com/svip-lab/PPGNet) |
-|   | [svyas23/cross-view-action](https://github.com/svyas23/cross-view-action) |
-|   | [swz30/MIRNet](https://github.com/swz30/MIRNet) |
-|   | [sxlpris/PRNet](https://github.com/sxlpris/PRNet) |
-|   | [szzexpoi/AiR](https://github.com/szzexpoi/AiR) |
-|   | [tabulapdf/tabula-java](https://github.com/tabulapdf/tabula-java) |
-|   | [tackgeun/CausalityInTrafficAccident](https://github.com/tackgeun/CausalityInTrafficAccident) |
-|   | [taesungp/contrastive-unpaired-translation](https://github.com/taesungp/contrastive-unpaired-translation) |
-|   | [takashi310/VVD_Viewer](https://github.com/takashi310/VVD_Viewer) |
-|   | [takerum/vat_tf](https://github.com/takerum/vat_tf) |
-|   | [taki0112/StarGAN_v2-Tensorflow](https://github.com/taki0112/StarGAN_v2-Tensorflow) |
-|   | [tamarott/SinGAN](https://github.com/tamarott/SinGAN) |
-|   | [taoxugit/AttnGAN](https://github.com/taoxugit/AttnGAN) |
-|   | [taoyang1122/MutualNet](https://github.com/taoyang1122/MutualNet) |
-|   | [tegusi/EAGRNet](https://github.com/tegusi/EAGRNet) |
-|   | [tensorflow/cleverhans](https://github.com/tensorflow/cleverhans) |
-|   | [tensorflow/lingvo](https://github.com/tensorflow/lingvo) |
-|   | [tensorflow/models](https://github.com/tensorflow/models) |
-|   | [tensorflow/tensor2tensor](https://github.com/tensorflow/tensor2tensor) |
-|   | [tensorflow/tensorflow](https://github.com/tensorflow/tensorflow) |
-|   | [tensorflow/tpu](https://github.com/tensorflow/tpu) |
-|   | [terzakig/sqpnp](https://github.com/terzakig/sqpnp) |
-|   | [tesseract-ocr/tesseract](https://github.com/tesseract-ocr/tesseract) |
-|   | [theyoucheng/deepcover](https://github.com/theyoucheng/deepcover) |
-|   | [thoqbk/traprange](https://github.com/thoqbk/traprange) |
-|   | [thuml/Calibrated-Multiple-Uncertainties](https://github.com/thuml/Calibrated-Multiple-Uncertainties) |
-|   | [thuml/Versatile-Domain-Adaptation](https://github.com/thuml/Versatile-Domain-Adaptation) |
-|   | [tim-learn/BA3US](https://github.com/tim-learn/BA3US) |
-|   | [timduff35/PL1P](https://github.com/timduff35/PL1P) |
-|   | [timy90022/One-Shot-Object-Detection](https://github.com/timy90022/One-Shot-Object-Detection) |
-|   | [tneumann/minimal_glo](https://github.com/tneumann/minimal_glo) |
-|   | [tonyngjichun/SOLAR](https://github.com/tonyngjichun/SOLAR) |
-|   | [traveller59/second.pytorch](https://github.com/traveller59/second.pytorch) |
-|   | [trungmanhhuynh/Scene-LSTM](https://github.com/trungmanhhuynh/Scene-LSTM) |
-|   | [twangnh/SimCal](https://github.com/twangnh/SimCal) |
-|   | [tyler-hayes/REMIND](https://github.com/tyler-hayes/REMIND) |
-|   | [tzutalin/labelImg](https://github.com/tzutalin/labelImg) |
-|   | [ultralytics/yolov3](https://github.com/ultralytics/yolov3) |
-|   | [ultralytics/yolov5](https://github.com/ultralytics/yolov5) |
-|   | [una/CSSgram](https://github.com/una/CSSgram) |
-|   | [unibas-gravis/icp-proposal](https://github.com/unibas-gravis/icp-proposal) |
-|   | [uzh-rpg/rpg_asynet](https://github.com/uzh-rpg/rpg_asynet) |
-|   | [uzh-rpg/rpg_dvs_ros](https://github.com/uzh-rpg/rpg_dvs_ros) |
-|   | [uzh-rpg/rpg_event_representation_learning](https://github.com/uzh-rpg/rpg_event_representation_learning) |
-|   | [vccimaging/StereoEventPTV](https://github.com/vccimaging/StereoEventPTV) |
-|   | [vglsd/OpenSESAME](https://github.com/vglsd/OpenSESAME) |
-|   | [vinthony/depth-distillation](https://github.com/vinthony/depth-distillation) |
-|   | [visionml/pytracking](https://github.com/visionml/pytracking) |
-|   | [visipedia/fgvcx_fungi_comp](https://github.com/visipedia/fgvcx_fungi_comp) |
-|   | [visipedia/inat_comp](https://github.com/visipedia/inat_comp) |
-|   | [vivkul/Box2Seg](https://github.com/vivkul/Box2Seg) |
-|   | [vmurahari3/visdial-bert](https://github.com/vmurahari3/visdial-bert) |
-|   | [vpronina/DeepWienerRestoration](https://github.com/vpronina/DeepWienerRestoration) |
-|   | [wangguanan/light-reid](https://github.com/wangguanan/light-reid) |
-|   | [wangren09/TrojanNetDetector](https://github.com/wangren09/TrojanNetDetector) |
-|   | [waps101/LSQSurfaceReconstruction](https://github.com/waps101/LSQSurfaceReconstruction) |
-|   | [waps101/depth-from-polarisation](https://github.com/waps101/depth-from-polarisation) |
-|   | [warmspringwinds/pytorch-segmentation-detection](https://github.com/warmspringwinds/pytorch-segmentation-detection) |
-|   | [wctu/SEAL](https://github.com/wctu/SEAL) |
-|   | [wei-mao-2019/HisRepItself](https://github.com/wei-mao-2019/HisRepItself) |
-|   | [wenwen0319/GVCA](https://github.com/wenwen0319/GVCA) |
-|   | [willi-menapace/acids-clustering-domain-shift](https://github.com/willi-menapace/acids-clustering-domain-shift) |
-|   | [wpeebles/hessian_penalty](https://github.com/wpeebles/hessian_penalty) |
-|   | [wubaoyuan/Sparse-Adversarial-Attack](https://github.com/wubaoyuan/Sparse-Adversarial-Attack) |
-|   | [wvangansbeke/Unsupervised-Classification](https://github.com/wvangansbeke/Unsupervised-Classification) |
-|   | [xeanzheng/CSKD](https://github.com/xeanzheng/CSKD) |
-|   | [xh-liu/Open-Edit](https://github.com/xh-liu/Open-Edit) |
-|   | [xiaobaishu0097/ECCV-VN](https://github.com/xiaobaishu0097/ECCV-VN) |
-|   | [xiaomengyc/I2C](https://github.com/xiaomengyc/I2C) |
-|   | [xiaomi-automl/FairDARTS](https://github.com/xiaomi-automl/FairDARTS) |
-|   | [xieenze/Segment_Transparent_Objects.](https://github.com/xieenze/Segment_Transparent_Objects.) |
-|   | [xiezheng-cs/DTQ](https://github.com/xiezheng-cs/DTQ) |
-|   | [xiezw5/Component-Divide-and-Conquer-for-Real-World-Image-Super-Resolution](https://github.com/xiezw5/Component-Divide-and-Conquer-for-Real-World-Image-Super-Resolution) |
-|   | [xinge008/SSN](https://github.com/xinge008/SSN) |
-|   | [xingpingdong/CLNet-tracking](https://github.com/xingpingdong/CLNet-tracking) |
-|   | [xingyul/flownet3d](https://github.com/xingyul/flownet3d) |
-|   | [xinntao/EDVR](https://github.com/xinntao/EDVR) |
-|   | [xinzhuma/patchnet](https://github.com/xinzhuma/patchnet) |
-|   | [xiyang1012/Local-Crowd-Counting](https://github.com/xiyang1012/Local-Crowd-Counting) |
-|   | [xuanqing94/BayesianDefense](https://github.com/xuanqing94/BayesianDefense) |
-|   | [xuewyang/Fashion_Captioning](https://github.com/xuewyang/Fashion_Captioning) |
-|   | [xuguodong03/SSKD](https://github.com/xuguodong03/SSKD) |
-|   | [xushoukai/GDFQ](https://github.com/xushoukai/GDFQ) |
-|   | [yaelkon/GMM-CNN](https://github.com/yaelkon/GMM-CNN) |
-|   | [yanconglin/Deep-Hough-Transform-Line-Priors](https://github.com/yanconglin/Deep-Hough-Transform-Line-Priors) |
-|   | [yaodongyu/TRADES](https://github.com/yaodongyu/TRADES) |
-|   | [yaojieliu/ECCV20-STDN](https://github.com/yaojieliu/ECCV20-STDN) |
-|   | [ycao5602/SAL](https://github.com/ycao5602/SAL) |
-|   | [yccyenchicheng/SegVAE](https://github.com/yccyenchicheng/SegVAE) |
-|   | [yhw-yhw/PVAMVSNet](https://github.com/yhw-yhw/PVAMVSNet) |
-|   | [yi-ming-qian/interplane](https://github.com/yi-ming-qian/interplane) |
-|   | [yikaiw/RS-Nets](https://github.com/yikaiw/RS-Nets) |
-|   | [yinmh17/DNL-Semantic-Segmentation](https://github.com/yinmh17/DNL-Semantic-Segmentation) |
-|   | [yiweilu3/Few-shot-Scene-adaptive-Anomaly-Detection](https://github.com/yiweilu3/Few-shot-Scene-adaptive-Anomaly-Detection) |
-|   | [yluestc/derain](https://github.com/yluestc/derain) |
-|   | [yorkeyao/VehicleX](https://github.com/yorkeyao/VehicleX) |
-|   | [youkely/InfrasCal](https://github.com/youkely/InfrasCal) |
-|   | [youthHan/HVRNet](https://github.com/youthHan/HVRNet) |
-|   | [yrcong/NODIS](https://github.com/yrcong/NODIS) |
-|   | [yuanming-hu/exposure](https://github.com/yuanming-hu/exposure) |
-|   | [yuk6heo/IVOS-ATNet](https://github.com/yuk6heo/IVOS-ATNet) |
-|   | [yuliangguo/3D_Lane_Synthetic_Dataset](https://github.com/yuliangguo/3D_Lane_Synthetic_Dataset) |
-|   | [yuliangguo/Pytorch_Generalized_3D_Lane_Detection](https://github.com/yuliangguo/Pytorch_Generalized_3D_Lane_Detection) |
-|   | [yunjey/stargan](https://github.com/yunjey/stargan) |
-|   | [yunlu-chen/PointMixup](https://github.com/yunlu-chen/PointMixup) |
-|   | [yzhang559/vgg-face](https://github.com/yzhang559/vgg-face) |
-|   | [z-x-yang/CFBI](https://github.com/z-x-yang/CFBI) |
-|   | [zaiweizhang/H3DNet](https://github.com/zaiweizhang/H3DNet) |
-|   | [zaynmi/seada-vqa](https://github.com/zaynmi/seada-vqa) |
-|   | [zeliu98/CloserLook3D](https://github.com/zeliu98/CloserLook3D) |
-|   | [zhangzjn/DTVNet](https://github.com/zhangzjn/DTVNet) |
-|   | [zhenglab/cotere-net](https://github.com/zhenglab/cotere-net) |
-|   | [zhenglab/spiralnet](https://github.com/zhenglab/spiralnet) |
-|   | [zhihou7/VCL](https://github.com/zhihou7/VCL) |
-|   | [zhou13/lcnn](https://github.com/zhou13/lcnn) |
-|   | [zhoudaquan/rethinking_bottleneck_design](https://github.com/zhoudaquan/rethinking_bottleneck_design) |
-|   | [zhuogege1943/dgc](https://github.com/zhuogege1943/dgc) |
-|   | [zhuxinqimac/stylegan2vp](https://github.com/zhuxinqimac/stylegan2vp) |
-|   | [zju3dv/iMoCap](https://github.com/zju3dv/iMoCap) |
-|   | [zllrunning/face-parsing.PyTorch](https://github.com/zllrunning/face-parsing.PyTorch) |
-|   | [zlthinker/STBA](https://github.com/zlthinker/STBA) |
-|   | [zoogzog/chexnet](https://github.com/zoogzog/chexnet) |
-|   | [zouchuhang/LayoutNetv2](https://github.com/zouchuhang/LayoutNetv2) |
-|   | [zsyOAOA/DANet](https://github.com/zsyOAOA/DANet) |
-|   | [zyang-ur/ReSC](https://github.com/zyang-ur/ReSC) |
-|   | [zzangjinsun/NLSPN_ECCV20](https://github.com/zzangjinsun/NLSPN_ECCV20) |
-|   | [zzh-tech/ESTRNN](https://github.com/zzh-tech/ESTRNN) |
+| P | Author           | Apps                                                         |
+| - | ---------------- | ------------------------------------------------------------ |
+|   | 1Konny | [idgan](https://github.com/1Konny/idgan) |
+|   | 2han9x1a0release | [RBF-Softmax](https://github.com/2han9x1a0release/RBF-Softmax) |
+|   | AI-secure | [SemanticAdv](https://github.com/AI-secure/SemanticAdv) |
+|   | Abdullah-Abuolaim | [defocus-deblurring-dual-pixel](https://github.com/Abdullah-Abuolaim/defocus-deblurring-dual-pixel) |
+|   | AberHu | [TF-NAS](https://github.com/AberHu/TF-NAS) |
+|   | Academic-Hammer | [SciTSR](https://github.com/Academic-Hammer/SciTSR) |
+|   | Algy | [fast-slic](https://github.com/Algy/fast-slic) |
+|   | AmirooR | [Pairwise-Similarity-knowledge-Transfer-WSOL](https://github.com/AmirooR/Pairwise-Similarity-knowledge-Transfer-WSOL) |
+|   | AntheaLi | [3DPartAssembly](https://github.com/AntheaLi/3DPartAssembly) |
+|   | AutoML-4Paradigm | [AutoSTR](https://github.com/AutoML-4Paradigm/AutoSTR) |
+|   | BCV-Uniandes | [Gabor_Layers_for_Robustness](https://github.com/BCV-Uniandes/Gabor_Layers_for_Robustness) |
+|   | BenSaunders27 | [ProgressiveTransformersSLP](https://github.com/BenSaunders27/ProgressiveTransformersSLP) |
+|   | BigRedT | [no_frills_hoi_det](https://github.com/BigRedT/no_frills_hoi_det) |
+|   | Binyr | [ASDA](https://github.com/Binyr/ASDA) |
+|   | BoChenGroup | [BIRNAT](https://github.com/BoChenGroup/BIRNAT) |
+|   | BramSW | [Extending_SSRL_Across_Domains](https://github.com/BramSW/Extending_SSRL_Across_Domains) |
+|   | BruceW91 | [CVSE](https://github.com/BruceW91/CVSE) |
+|   | CASIA-IVA-Lab | [ISP-reID](https://github.com/CASIA-IVA-Lab/ISP-reID) |
+|   | CSAILVision | [places365](https://github.com/CSAILVision/places365) |
+|   | CSAILVision | [semantic-segmentation-pytorch](https://github.com/CSAILVision/semantic-segmentation-pytorch) |
+|   | Cadene | [pretrained-models.pytorch](https://github.com/Cadene/pretrained-models.pytorch) |
+|   | CalayZhou | [MBNet](https://github.com/CalayZhou/MBNet) |
+|   | Canjie-Luo | [MORAN_v2](https://github.com/Canjie-Luo/MORAN_v2) |
+|   | CenekAlbl | [RnP](https://github.com/CenekAlbl/RnP) |
+|   | ChenRocks | [UNITER](https://github.com/ChenRocks/UNITER) |
+|   | Chenglin-Yang | [PatchAttack](https://github.com/Chenglin-Yang/PatchAttack) |
+|   | ChenhongyiYang | [SG-NMS](https://github.com/ChenhongyiYang/SG-NMS) |
+|   | Chinmayrane16 | [Fashion-MNIST-Accuracy-93.4-](https://github.com/Chinmayrane16/Fashion-MNIST-Accuracy-93.4-) |
+|   | ChrisAllenMing | [LtC-MSDA](https://github.com/ChrisAllenMing/LtC-MSDA) |
+|   | ClancyZhou | [P_Net_Anomaly_Detection](https://github.com/ClancyZhou/P_Net_Anomaly_Detection) |
+|   | Confusezius | [Deep-Metric-Learning-Baselines](https://github.com/Confusezius/Deep-Metric-Learning-Baselines) |
+|   | D-X-Y | [AutoDL-Projects](https://github.com/D-X-Y/AutoDL-Projects) |
+|   | DFLyan | [MAC-Net](https://github.com/DFLyan/MAC-Net) |
+|   | DLR-RM | [SingleViewReconstruction](https://github.com/DLR-RM/SingleViewReconstruction) |
+|   | DTaoo | [Multimodal-Aerial-Scene-Recognition](https://github.com/DTaoo/Multimodal-Aerial-Scene-Recognition) |
+|   | Davidzhangyuanhan | [CelebA-Spoof](https://github.com/Davidzhangyuanhan/CelebA-Spoof) |
+|   | DeLightCMU | [RSC](https://github.com/DeLightCMU/RSC) |
+|   | Dong1P | [MTRNN](https://github.com/Dong1P/MTRNN) |
+|   | DonkeyShot21 | [batch-level-distillation](https://github.com/DonkeyShot21/batch-level-distillation) |
+|   | Duankaiwen | [CPNDet](https://github.com/Duankaiwen/CPNDet) |
+|   | DylanWusee | [PointPWC](https://github.com/DylanWusee/PointPWC) |
+|   | ElementAI | [embedding-propagation](https://github.com/ElementAI/embedding-propagation) |
+|   | EndlessSora | [TSIT](https://github.com/EndlessSora/TSIT) |
+|   | ErlerPhilipp | [points2surf](https://github.com/ErlerPhilipp/points2surf) |
+|   | EunhyeokPark | [PROFIT](https://github.com/EunhyeokPark/PROFIT) |
+|   | EvgenyKashin | [stylegan2-distillation](https://github.com/EvgenyKashin/stylegan2-distillation) |
+|   | FilippoAleotti | [Reversing](https://github.com/FilippoAleotti/Reversing) |
+|   | FluidSynth | [fluidsynth](https://github.com/FluidSynth/fluidsynth) |
+|   | GanlongZhao | [CST_DA_detection](https://github.com/GanlongZhao/CST_DA_detection) |
+|   | GeraldHan | [TRN](https://github.com/GeraldHan/TRN) |
+|   | Ha0Tang | [XingGAN](https://github.com/Ha0Tang/XingGAN) |
+|   | HeCraneChen | [3D-Crowd-Pose-Estimation-Based-on-MVG](https://github.com/HeCraneChen/3D-Crowd-Pose-Estimation-Based-on-MVG) |
+|   | HobbitLong | [CMC](https://github.com/HobbitLong/CMC) |
+|   | Howal | [DNL-Object-Detection](https://github.com/Howal/DNL-Object-Detection) |
+|   | HuangYG123 | [DDL](https://github.com/HuangYG123/DDL) |
+|   | HuynhLam | [DAV](https://github.com/HuynhLam/DAV) |
+|   | Hwang64 | [PSIS](https://github.com/Hwang64/PSIS) |
+|   | IBM | [cdfsl-benchmark](https://github.com/IBM/cdfsl-benchmark) |
+|   | IIT-PAVIS | [acoustic-images-self-supervision](https://github.com/IIT-PAVIS/acoustic-images-self-supervision) |
+|   | IPIU-detection | [SEANet](https://github.com/IPIU-detection/SEANet) |
+|   | ISICV | [ManTraNet](https://github.com/ISICV/ManTraNet) |
+|   | Intelligent-Systems-Research-Group | [JOMS](https://github.com/Intelligent-Systems-Research-Group/JOMS) |
+|   | JDAI-CV | [FADA](https://github.com/JDAI-CV/FADA) |
+|   | JDAI-CV | [fast-reid](https://github.com/JDAI-CV/fast-reid) |
+|   | JaeYeonKang | [STVUN-Pytorch](https://github.com/JaeYeonKang/STVUN-Pytorch) |
+|   | Jarr0d | [ViTAA](https://github.com/Jarr0d/ViTAA) |
+|   | JasonBoy1 | [TextZoom](https://github.com/JasonBoy1/TextZoom) |
+|   | JialeCao001 | [SipMask](https://github.com/JialeCao001/SipMask) |
+|   | JiayongO-O | [PENonLocal](https://github.com/JiayongO-O/PENonLocal) |
+|   | JirongZhang | [DeepHomography](https://github.com/JirongZhang/DeepHomography) |
+|   | JizeCao | [VALUE](https://github.com/JizeCao/VALUE) |
+|   | JoeHEZHAO | [DAA](https://github.com/JoeHEZHAO/DAA) |
+|   | JunHeum | [BMBC](https://github.com/JunHeum/BMBC) |
+|   | JunjH | [Revisiting_Single_Depth_Estimation](https://github.com/JunjH/Revisiting_Single_Depth_Estimation) |
+|   | Kainmueller-Lab | [PatchPerPix](https://github.com/Kainmueller-Lab/PatchPerPix) |
+|   | KeleiHe | [DAAN](https://github.com/KeleiHe/DAAN) |
+|   | Kenneth-Wong | [het-eccv20](https://github.com/Kenneth-Wong/het-eccv20) |
+|   | KevinMusgrave | [powerful-benchmarker](https://github.com/KevinMusgrave/powerful-benchmarker) |
+|   | Khrylx | [DLow](https://github.com/Khrylx/DLow) |
+|   | KovenYu | [MAR](https://github.com/KovenYu/MAR) |
+|   | KumapowerLIU | [Rethinking-Inpainting-MEDFE](https://github.com/KumapowerLIU/Rethinking-Inpainting-MEDFE) |
+|   | L-YeZhu | [Video-Description-via-Dialog-Agents-ECCV2020](https://github.com/L-YeZhu/Video-Description-via-Dialog-Agents-ECCV2020) |
+|   | LA30 | [Cas-Gnn](https://github.com/LA30/Cas-Gnn) |
+|   | LauraFJulia | [TFT_vs_Fund](https://github.com/LauraFJulia/TFT_vs_Fund) |
+|   | Leotju | [CaSe](https://github.com/Leotju/CaSe) |
+|   | LiYingwei | [Regional-Homogeneity](https://github.com/LiYingwei/Regional-Homogeneity) |
+|   | Liuy8 | [MUC](https://github.com/Liuy8/MUC) |
+|   | LuckyDC | [generalizing-reid](https://github.com/LuckyDC/generalizing-reid) |
+|   | LuoweiZhou | [VLP](https://github.com/LuoweiZhou/VLP) |
+|   | MCG-NJU | [BCN](https://github.com/MCG-NJU/BCN) |
+|   | MCG-NJU | [CRCNN-Action](https://github.com/MCG-NJU/CRCNN-Action) |
+|   | MCG-NJU | [MOC-Detector](https://github.com/MCG-NJU/MOC-Detector) |
+|   | MVIG-SJTU | [AlphAction](https://github.com/MVIG-SJTU/AlphAction) |
+|   | MVIG-SJTU | [AlphaPose](https://github.com/MVIG-SJTU/AlphaPose) |
+|   | MadryLab | [robustness](https://github.com/MadryLab/robustness) |
+|   | Majiker | [STAR](https://github.com/Majiker/STAR) |
+|   | MalongTech | [research-charnet](https://github.com/MalongTech/research-charnet) |
+|   | MarekKowalski | [FaceSwap](https://github.com/MarekKowalski/FaceSwap) |
+|   | Maunil | [LsrGAN](https://github.com/Maunil/LsrGAN) |
+|   | MhLiao | [MaskTextSpotter](https://github.com/MhLiao/MaskTextSpotter) |
+|   | MhLiao | [MaskTextSpotterV3](https://github.com/MhLiao/MaskTextSpotterV3) |
+|   | MichaelGrupp | [evo](https://github.com/MichaelGrupp/evo) |
+|   | MinglangQiao | [MVVA-Database](https://github.com/MinglangQiao/MVVA-Database) |
+|   | MuchHair | [PD-Net](https://github.com/MuchHair/PD-Net) |
+|   | NIEQiang001 | [unsupervised-human-pose](https://github.com/NIEQiang001/unsupervised-human-pose) |
+|   | NUS-VIP | [salicon-evaluation](https://github.com/NUS-VIP/salicon-evaluation) |
+|   | NVIDIA | [flownet2-pytorch](https://github.com/NVIDIA/flownet2-pytorch) |
+|   | NVIDIA | [pix2pixHD](https://github.com/NVIDIA/pix2pixHD) |
+|   | NVlabs | [MUNIT](https://github.com/NVlabs/MUNIT) |
+|   | NVlabs | [ffhq-dataset](https://github.com/NVlabs/ffhq-dataset) |
+|   | NVlabs | [stylegan2](https://github.com/NVlabs/stylegan2) |
+|   | Open-Debin | [Emotion-FAN](https://github.com/Open-Debin/Emotion-FAN) |
+|   | OpenNMT | [OpenNMT-py](https://github.com/OpenNMT/OpenNMT-py) |
+|   | OshriHalimi | [precise_shape_completion](https://github.com/OshriHalimi/precise_shape_completion) |
+|   | PRIS-CV | [PMG-Progressive-Multi-Granularity-Training](https://github.com/PRIS-CV/PMG-Progressive-Multi-Granularity-Training) |
+|   | PeisenZhao | [Bottom-Up-TAL-with-MR](https://github.com/PeisenZhao/Bottom-Up-TAL-with-MR) |
+|   | PengWan-Yang | [commonLocalization](https://github.com/PengWan-Yang/commonLocalization) |
+|   | Peterchen111 | [FERNet](https://github.com/Peterchen111/FERNet) |
+|   | Puzer | [stylegan-encoder](https://github.com/Puzer/stylegan-encoder) |
+|   | PyTorchLightning | [pytorch-lightning](https://github.com/PyTorchLightning/pytorch-lightning) |
+|   | PythonOrR | [CASIA-V5](https://github.com/PythonOrR/CASIA-V5) |
+|   | RICE-EIC | [HALO](https://github.com/RICE-EIC/HALO) |
+|   | Raykoooo | [IAST](https://github.com/Raykoooo/IAST) |
+|   | Regenerator | [dpf-nets](https://github.com/Regenerator/dpf-nets) |
+|   | RogerZhangzz | [CAG_UDA](https://github.com/RogerZhangzz/CAG_UDA) |
+|   | RuojinCai | [ShapeGF](https://github.com/RuojinCai/ShapeGF) |
+|   | SINTEF | [PFV](https://github.com/SINTEF/PFV) |
+|   | SSAW14 | [segmentation_membership_inference](https://github.com/SSAW14/segmentation_membership_inference) |
+|   | SSSohn | [LTCF](https://github.com/SSSohn/LTCF) |
+|   | SUTDBrainLab | [MGP-VAE](https://github.com/SUTDBrainLab/MGP-VAE) |
+|   | Sandy-Zeng | [NPAttack](https://github.com/Sandy-Zeng/NPAttack) |
+|   | ShengcaiLiao | [QAConv](https://github.com/ShengcaiLiao/QAConv) |
+|   | ShinyWang33 | [eSL-Net](https://github.com/ShinyWang33/eSL-Net) |
+|   | ShuLiu1993 | [PANet](https://github.com/ShuLiu1993/PANet) |
+|   | StanfordASL | [Trajectron-plus-plus](https://github.com/StanfordASL/Trajectron-plus-plus) |
+|   | StanfordVL | [taskonomy](https://github.com/StanfordVL/taskonomy) |
+|   | SvenShade | [Rel-AIR](https://github.com/SvenShade/Rel-AIR) |
+|   | TAMU-VITA | [DeepPS](https://github.com/TAMU-VITA/DeepPS) |
+|   | THU-DA-6D-Pose-Group | [Self6D-Diff-Renderer](https://github.com/THU-DA-6D-Pose-Group/Self6D-Diff-Renderer) |
+|   | Thinklab-SJTU | [CSL_RetinaNet_Tensorflow](https://github.com/Thinklab-SJTU/CSL_RetinaNet_Tensorflow) |
+|   | TuSimple | [tusimple-benchmark](https://github.com/TuSimple/tusimple-benchmark) |
+|   | VDIGPKU | [DADA](https://github.com/VDIGPKU/DADA) |
+|   | VainF | [DeepLabV3Plus-Pytorch](https://github.com/VainF/DeepLabV3Plus-Pytorch) |
+|   | VeloDC | [oshot_detection](https://github.com/VeloDC/oshot_detection) |
+|   | VisionLearningGroup | [Domain2Vec](https://github.com/VisionLearningGroup/Domain2Vec) |
+|   | VisionLearningGroup | [SANE](https://github.com/VisionLearningGroup/SANE) |
+|   | VisionLearningGroup | [VisionLearningGroup.github.io](https://github.com/VisionLearningGroup/VisionLearningGroup.github.io) |
+|   | WangYueFt | [pillar-od](https://github.com/WangYueFt/pillar-od) |
+|   | WangYueFt | [rfs](https://github.com/WangYueFt/rfs) |
+|   | WellyZhang | [RAVEN](https://github.com/WellyZhang/RAVEN) |
+|   | Xiangyi1996 | [PPNet-PyTorch](https://github.com/Xiangyi1996/PPNet-PyTorch) |
+|   | XiangyuZhu-open | [Beyond3DMM](https://github.com/XiangyuZhu-open/Beyond3DMM) |
+|   | Xiaoqi-Zhao-DLUT | [DANet-RGBD-Saliency](https://github.com/Xiaoqi-Zhao-DLUT/DANet-RGBD-Saliency) |
+|   | Xiaoqi-Zhao-DLUT | [GateNet-RGB-Saliency](https://github.com/Xiaoqi-Zhao-DLUT/GateNet-RGB-Saliency) |
+|   | XieQi2015 | [MHF-net](https://github.com/XieQi2015/MHF-net) |
+|   | XingangPan | [deep-generative-prior](https://github.com/XingangPan/deep-generative-prior) |
+|   | XudongLinthu | [context-gated-convolution](https://github.com/XudongLinthu/context-gated-convolution) |
+|   | YU1ut | [MixMatch-pytorch](https://github.com/YU1ut/MixMatch-pytorch) |
+|   | Yang-Bob | [PMMs](https://github.com/Yang-Bob/PMMs) |
+|   | YapengTian | [AVVP-ECCV20](https://github.com/YapengTian/AVVP-ECCV20) |
+|   | Yonghongwei | [Gradient-Centralization](https://github.com/Yonghongwei/Gradient-Centralization) |
+|   | YuanXue1993 | [WireframeRenderer](https://github.com/YuanXue1993/WireframeRenderer) |
+|   | Yuantian013 | [E2GAN](https://github.com/Yuantian013/E2GAN) |
+|   | Yuexiaoxi10 | [Key-Frame-Proposal-Network-for-Efficient-Pose-Estimation-in-Videos](https://github.com/Yuexiaoxi10/Key-Frame-Proposal-Network-for-Efficient-Pose-Estimation-in-Videos) |
+|   | YukangWang | [IFVD](https://github.com/YukangWang/IFVD) |
+|   | YunpengZhai | [MEB-Net](https://github.com/YunpengZhai/MEB-Net) |
+|   | YunseokJANG | [l2l-da](https://github.com/YunseokJANG/l2l-da) |
+|   | ZHANGDONG-NJUST | [CONTA](https://github.com/ZHANGDONG-NJUST/CONTA) |
+|   | ZhaoJ9014 | [face.evoLVe.PyTorch](https://github.com/ZhaoJ9014/face.evoLVe.PyTorch) |
+|   | ZheC | [GTA-IM-Dataset](https://github.com/ZheC/GTA-IM-Dataset) |
+|   | Zheng222 | [IDN-tensorflow](https://github.com/Zheng222/IDN-tensorflow) |
+|   | Zhongdao | [Towards-Realtime-MOT](https://github.com/Zhongdao/Towards-Realtime-MOT) |
+|   | aamir-mustafa | [Transformation-CR](https://github.com/aamir-mustafa/Transformation-CR) |
+|   | abhi4ssj | [few-shot-segmentation](https://github.com/abhi4ssj/few-shot-segmentation) |
+|   | acht7111020 | [DSMAP](https://github.com/acht7111020/DSMAP) |
+|   | activitynet | [ActivityNet](https://github.com/activitynet/ActivityNet) |
+|   | adobe | [antialiased-cnns](https://github.com/adobe/antialiased-cnns) |
+|   | adrianlopezroche | [fdupes](https://github.com/adrianlopezroche/fdupes) |
+|   | ageitgey | [face_recognition](https://github.com/ageitgey/face_recognition) |
+|   | aharley | [neural_3d_tracking](https://github.com/aharley/neural_3d_tracking) |
+|   | aicip | [uSDN](https://github.com/aicip/uSDN) |
+|   | aimagelab | [VKD](https://github.com/aimagelab/VKD) |
+|   | airmachine | [EM-MIL-WeaklyActionDetection](https://github.com/airmachine/EM-MIL-WeaklyActionDetection) |
+|   | ajbrock | [BigGAN-PyTorch](https://github.com/ajbrock/BigGAN-PyTorch) |
+|   | ajhamdi | [AdvPC](https://github.com/ajhamdi/AdvPC) |
+|   | akamaster | [pytorch_resnet_cifar10](https://github.com/akamaster/pytorch_resnet_cifar10) |
+|   | akshitac8 | [tfvaegan](https://github.com/akshitac8/tfvaegan) |
+|   | alanlai199 | [ColorizeDepthNet](https://github.com/alanlai199/ColorizeDepthNet) |
+|   | albertpumarola | [GANimation](https://github.com/albertpumarola/GANimation) |
+|   | alessiamarcolini | [deepstreet](https://github.com/alessiamarcolini/deepstreet) |
+|   | alexeybokhovkin | [CAD-Deform](https://github.com/alexeybokhovkin/CAD-Deform) |
+|   | alfaiate | [HySure](https://github.com/alfaiate/HySure) |
+|   | alibaba | [MNN](https://github.com/alibaba/MNN) |
+|   | alirezazareian | [gbnet](https://github.com/alirezazareian/gbnet) |
+|   | ambekarsameer96 | [GLSS](https://github.com/ambekarsameer96/GLSS) |
+|   | amiratag | [ACE](https://github.com/amiratag/ACE) |
+|   | andreasveit | [convnet-aig](https://github.com/andreasveit/convnet-aig) |
+|   | angmt2008 | [LFCA](https://github.com/angmt2008/LFCA) |
+|   | anlthms | [nips-2017](https://github.com/anlthms/nips-2017) |
+|   | anonymous47823493 | [EagleEye](https://github.com/anonymous47823493/EagleEye) |
+|   | anthonymlortiz | [epitomes_lsr](https://github.com/anthonymlortiz/epitomes_lsr) |
+|   | aosokin | [os2d](https://github.com/aosokin/os2d) |
+|   | ap229997 | [DRNET](https://github.com/ap229997/DRNET) |
+|   | apsdehal | [traffic-signs-recognition](https://github.com/apsdehal/traffic-signs-recognition) |
+|   | arpg | [calibu](https://github.com/arpg/calibu) |
+|   | arthurdouillard | [incremental_learning.pytorch](https://github.com/arthurdouillard/incremental_learning.pytorch) |
+|   | ashesknight | [tof-mpi-remove](https://github.com/ashesknight/tof-mpi-remove) |
+|   | automan000 | [Camera-based-Person-ReID](https://github.com/automan000/Camera-based-Person-ReID) |
+|   | autonomousvision | [convolutional_occupancy_networks](https://github.com/autonomousvision/convolutional_occupancy_networks) |
+|   | aviadlevis | [pyshdom](https://github.com/aviadlevis/pyshdom) |
+|   | ayumiymk | [aster.pytorch](https://github.com/ayumiymk/aster.pytorch) |
+|   | ayushidutta | [multi-order-rnn](https://github.com/ayushidutta/multi-order-rnn) |
+|   | ayziksha | [DSIN](https://github.com/ayziksha/DSIN) |
+|   | aztc | [FNKD](https://github.com/aztc/FNKD) |
+|   | baldassarreFe | [ws-vrd](https://github.com/baldassarreFe/ws-vrd) |
+|   | barisgecer | [TBGAN](https://github.com/barisgecer/TBGAN) |
+|   | basiclab | [CPCStoryVisualization-Pytorch](https://github.com/basiclab/CPCStoryVisualization-Pytorch) |
+|   | bearcatt | [LaBERT](https://github.com/bearcatt/LaBERT) |
+|   | bearpaw | [pytorch-classification](https://github.com/bearpaw/pytorch-classification) |
+|   | bethgelab | [game-of-noise](https://github.com/bethgelab/game-of-noise) |
+|   | bioinf-jku | [TTUR](https://github.com/bioinf-jku/TTUR) |
+|   | blue-blue272 | [VideoReID-TCLNet](https://github.com/blue-blue272/VideoReID-TCLNet) |
+|   | bradyz | [task-distillation](https://github.com/bradyz/task-distillation) |
+|   | brezaei | [G-LBM](https://github.com/brezaei/G-LBM) |
+|   | bruno-31 | [groupsc](https://github.com/bruno-31/groupsc) |
+|   | caiyuanhao1998 | [RSN](https://github.com/caiyuanhao1998/RSN) |
+|   | camelot-dev | [camelot](https://github.com/camelot-dev/camelot) |
+|   | cavalli1234 | [AdaLAM](https://github.com/cavalli1234/AdaLAM) |
+|   | cdcseacave | [openMVS](https://github.com/cdcseacave/openMVS) |
+|   | cfzd | [Ultra-Fast-Lane-Detection](https://github.com/cfzd/Ultra-Fast-Lane-Detection) |
+|   | chail | [patch-forensics](https://github.com/chail/patch-forensics) |
+|   | chan8972 | [Spike-FlowNet](https://github.com/chan8972/Spike-FlowNet) |
+|   | charlesq34 | [frustum-pointnets](https://github.com/charlesq34/frustum-pointnets) |
+|   | charlesq34 | [pointnet](https://github.com/charlesq34/pointnet) |
+|   | charusharma1991 | [PointCorrespondence](https://github.com/charusharma1991/PointCorrespondence) |
+|   | chenfengxu714 | [SqueezeSegV3](https://github.com/chenfengxu714/SqueezeSegV3) |
+|   | chengchunhsu | [EveryPixelMatters](https://github.com/chengchunhsu/EveryPixelMatters) |
+|   | cherubicXN | [afm_cvpr2019](https://github.com/cherubicXN/afm_cvpr2019) |
+|   | chihyaoma | [cyclical-visual-captioning](https://github.com/chihyaoma/cyclical-visual-captioning) |
+|   | chiutaiyin | [Iterative-feature-transformation-for-style-transfer](https://github.com/chiutaiyin/Iterative-feature-transformation-for-style-transfer) |
+|   | chrysts | [generative_preconditioner](https://github.com/chrysts/generative_preconditioner) |
+|   | cjkvi | [cjkvi-ids](https://github.com/cjkvi/cjkvi-ids) |
+|   | cleardusk | [3DDFA](https://github.com/cleardusk/3DDFA) |
+|   | cleardusk | [3DDFA_V2](https://github.com/cleardusk/3DDFA_V2) |
+|   | clobotics | [piou](https://github.com/clobotics/piou) |
+|   | clovaai | [dmfont](https://github.com/clovaai/dmfont) |
+|   | cmhungsteve | [TA3N](https://github.com/cmhungsteve/TA3N) |
+|   | columbia | [MTRobust](https://github.com/columbia/MTRobust) |
+|   | constantinpape | [affogato](https://github.com/constantinpape/affogato) |
+|   | crs4 | [AtlantaNet](https://github.com/crs4/AtlantaNet) |
+|   | csxmli2016 | [DFDNet](https://github.com/csxmli2016/DFDNet) |
+|   | csyxwei | [FFWM](https://github.com/csyxwei/FFWM) |
+|   | cvai-repo | [duality-diagram-similarity](https://github.com/cvai-repo/duality-diagram-similarity) |
+|   | d-li14 | [PSConv](https://github.com/d-li14/PSConv) |
+|   | d-li14 | [SAN](https://github.com/d-li14/SAN) |
+|   | danfenghong | [ECCV2020_CUCaNet](https://github.com/danfenghong/ECCV2020_CUCaNet) |
+|   | daniilidis-group | [EV-FlowNet](https://github.com/daniilidis-group/EV-FlowNet) |
+|   | danini | [affine-correspondences-for-camera-geometry](https://github.com/danini/affine-correspondences-for-camera-geometry) |
+|   | danini | [graph-cut-ransac](https://github.com/danini/graph-cut-ransac) |
+|   | dariopavllo | [style-semantics](https://github.com/dariopavllo/style-semantics) |
+|   | daveredrum | [ScanRefer](https://github.com/daveredrum/ScanRefer) |
+|   | david-m-rosen | [SE-Sync](https://github.com/david-m-rosen/SE-Sync) |
+|   | davidsandberg | [facenet](https://github.com/davidsandberg/facenet) |
+|   | deepfakes | [faceswap](https://github.com/deepfakes/faceswap) |
+|   | deepinsight | [insightface](https://github.com/deepinsight/insightface) |
+|   | deepmind | [dsprites-dataset](https://github.com/deepmind/dsprites-dataset) |
+|   | detectRecog | [PointTrack](https://github.com/detectRecog/PointTrack) |
+|   | diegovalsesia | [GPDNet](https://github.com/diegovalsesia/GPDNet) |
+|   | dips4717 | [gcn-cnn](https://github.com/dips4717/gcn-cnn) |
+|   | djidje | [D-MMD](https://github.com/djidje/D-MMD) |
+|   | doc-analysis | [TableBank](https://github.com/doc-analysis/TableBank) |
+|   | doc-doc | [vRGV](https://github.com/doc-doc/vRGV) |
+|   | dongkwonjin | [Semantic-Line-DRM](https://github.com/dongkwonjin/Semantic-Line-DRM) |
+|   | dongxinshuai | [API-Net](https://github.com/dongxinshuai/API-Net) |
+|   | donnyyou | [torchcv](https://github.com/donnyyou/torchcv) |
+|   | drimpossible | [GDumb](https://github.com/drimpossible/GDumb) |
+|   | dscig | [TwoStageUC](https://github.com/dscig/TwoStageUC) |
+|   | dvl-tum | [group_loss](https://github.com/dvl-tum/group_loss) |
+|   | dvornikita | [SUR](https://github.com/dvornikita/SUR) |
+|   | edongdongchen | [DDN](https://github.com/edongdongchen/DDN) |
+|   | eivan | [one-ac-pose](https://github.com/eivan/one-ac-pose) |
+|   | eleurent | [highway-env](https://github.com/eleurent/highway-env) |
+|   | endo-yuki-t | [Animating-Landscape](https://github.com/endo-yuki-t/Animating-Landscape) |
+|   | eugenelet | [Meta-rPPG](https://github.com/eugenelet/Meta-rPPG) |
+|   | facebook | [fb.resnet.torch](https://github.com/facebook/fb.resnet.torch) |
+|   | facebookarchive | [fb.resnet.torch](https://github.com/facebookarchive/fb.resnet.torch) |
+|   | facebookresearch | [Adversarial-Continual-Learning](https://github.com/facebookresearch/Adversarial-Continual-Learning) |
+|   | facebookresearch | [Replica-Dataset](https://github.com/facebookresearch/Replica-Dataset) |
+|   | facebookresearch | [TorchRay](https://github.com/facebookresearch/TorchRay) |
+|   | facebookresearch | [detectron](https://github.com/facebookresearch/detectron) |
+|   | facebookresearch | [detectron2](https://github.com/facebookresearch/detectron2) |
+|   | facebookresearch | [detr](https://github.com/facebookresearch/detr) |
+|   | facebookresearch | [fair_self_supervision_benchmark](https://github.com/facebookresearch/fair_self_supervision_benchmark) |
+|   | facebookresearch | [maskrcnn-benchmark](https://github.com/facebookresearch/maskrcnn-benchmark) |
+|   | facebookresearch | [mmf](https://github.com/facebookresearch/mmf) |
+|   | facebookresearch | [pytorch3d](https://github.com/facebookresearch/pytorch3d) |
+|   | facebookresearch | [votenet](https://github.com/facebookresearch/votenet) |
+|   | fanglinpu | [JGR-P2O](https://github.com/fanglinpu/JGR-P2O) |
+|   | fanq15 | [FewX](https://github.com/fanq15/FewX) |
+|   | fchollet | [keras](https://github.com/fchollet/keras) |
+|   | federica-arrigoni | [ECCV_20](https://github.com/federica-arrigoni/ECCV_20) |
+|   | federica-arrigoni | [ICCV_19](https://github.com/federica-arrigoni/ICCV_19) |
+|   | feihuzhang | [DSMNet](https://github.com/feihuzhang/DSMNet) |
+|   | feihuzhang | [LiDARSeg](https://github.com/feihuzhang/LiDARSeg) |
+|   | fffffarmer | [LNE_IMGM](https://github.com/fffffarmer/LNE_IMGM) |
+|   | filipradenovic | [cnnimageretrieval-pytorch](https://github.com/filipradenovic/cnnimageretrieval-pytorch) |
+|   | flamingo-eccv | [flamingo-data](https://github.com/flamingo-eccv/flamingo-data) |
+|   | fmcarlucci | [JigenDG](https://github.com/fmcarlucci/JigenDG) |
+|   | fmfn | [BayesianOptimization](https://github.com/fmfn/BayesianOptimization) |
+|   | forwchen | [HVTG](https://github.com/forwchen/HVTG) |
+|   | fpthink | [PDGN](https://github.com/fpthink/PDGN) |
+|   | fregu856 | [ebms_regression](https://github.com/fregu856/ebms_regression) |
+|   | fujiso | [SODA](https://github.com/fujiso/SODA) |
+|   | fyu | [drn](https://github.com/fyu/drn) |
+|   | gengshan-y | [VCN](https://github.com/gengshan-y/VCN) |
+|   | geosada | [LVAT](https://github.com/geosada/LVAT) |
+|   | gidariss | [wDAE_GNN_FewShot](https://github.com/gidariss/wDAE_GNN_FewShot) |
+|   | giddyyupp | [coco-minitrain](https://github.com/giddyyupp/coco-minitrain) |
+|   | gilshm | [zap](https://github.com/gilshm/zap) |
+|   | gongsixue | [DebFace](https://github.com/gongsixue/DebFace) |
+|   | google-research | [augmix](https://github.com/google-research/augmix) |
+|   | google-research | [google-research](https://github.com/google-research/google-research) |
+|   | google-research | [valan](https://github.com/google-research/valan) |
+|   | google | [draco](https://github.com/google/draco) |
+|   | google | [gemmlowp](https://github.com/google/gemmlowp) |
+|   | griffbr | [ODMS](https://github.com/griffbr/ODMS) |
+|   | gtolias | [how](https://github.com/gtolias/how) |
+|   | guxinqian | [AP3D](https://github.com/guxinqian/AP3D) |
+|   | gyhandy | [Pose-Augmentation](https://github.com/gyhandy/Pose-Augmentation) |
+|   | haidongz-usc | [Curriculum-DeepSDF](https://github.com/haidongz-usc/Curriculum-DeepSDF) |
+|   | hanxiao | [bert-as-service](https://github.com/hanxiao/bert-as-service) |
+|   | hanzhanggit | [StackGAN-Pytorch](https://github.com/hanzhanggit/StackGAN-Pytorch) |
+|   | happinesslz | [EPNet](https://github.com/happinesslz/EPNet) |
+|   | hassan-mahmood | [TIES_DataGeneration](https://github.com/hassan-mahmood/TIES_DataGeneration) |
+|   | hejingwenhejingwen | [CResMD](https://github.com/hejingwenhejingwen/CResMD) |
+|   | hejingwenhejingwen | [CSRNet](https://github.com/hejingwenhejingwen/CSRNet) |
+|   | hendrycks | [robustness](https://github.com/hendrycks/robustness) |
+|   | hkzhang95 | [DynamicRCNN](https://github.com/hkzhang95/DynamicRCNN) |
+|   | hongsukchoi | [Pose2Mesh_RELEASE](https://github.com/hongsukchoi/Pose2Mesh_RELEASE) |
+|   | hou-yz | [MVDet](https://github.com/hou-yz/MVDet) |
+|   | huangkuns | [wireframe](https://github.com/huangkuns/wireframe) |
+|   | huangqx | [map_synchronization](https://github.com/huangqx/map_synchronization) |
+|   | huangzilingcv | [HardGAN](https://github.com/huangzilingcv/HardGAN) |
+|   | huiqu18 | [TDGAN-PyTorch](https://github.com/huiqu18/TDGAN-PyTorch) |
+|   | hukim1124 | [GleNet](https://github.com/hukim1124/GleNet) |
+|   | hukim1124 | [PieNet](https://github.com/hukim1124/PieNet) |
+|   | huster-wgm | [VSIAD](https://github.com/huster-wgm/VSIAD) |
+|   | husthuaan | [AoANet](https://github.com/husthuaan/AoANet) |
+|   | hustvl | [BMaskR-CNN](https://github.com/hustvl/BMaskR-CNN) |
+|   | hyliang96 | [CSGCNN](https://github.com/hyliang96/CSGCNN) |
+|   | hytseng0509 | [ArtEditing](https://github.com/hytseng0509/ArtEditing) |
+|   | hzxie | [GRNet](https://github.com/hzxie/GRNet) |
+|   | hzykent | [JSENet](https://github.com/hzykent/JSENet) |
+|   | iVMCL | [AOGNet-v2](https://github.com/iVMCL/AOGNet-v2) |
+|   | iVMCL | [AttentiveNorm_Detection](https://github.com/iVMCL/AttentiveNorm_Detection) |
+|   | ibm-aur-nlp | [PubTabNet](https://github.com/ibm-aur-nlp/PubTabNet) |
+|   | ifnspaml | [SGDepth](https://github.com/ifnspaml/SGDepth) |
+|   | iiyama-lab | [PS-VAEs](https://github.com/iiyama-lab/PS-VAEs) |
+|   | iperov | [DeepFaceLab](https://github.com/iperov/DeepFaceLab) |
+|   | ishantshanu | [ML-Minnorm](https://github.com/ishantshanu/ML-Minnorm) |
+|   | jaehanlee-mcl | [multi-loss-rebalancing-depth](https://github.com/jaehanlee-mcl/multi-loss-rebalancing-depth) |
+|   | jeffmcneill | [thai-font-collection](https://github.com/jeffmcneill/thai-font-collection) |
+|   | jeromerony | [dml_cross_entropy](https://github.com/jeromerony/dml_cross_entropy) |
+|   | jfzhang95 | [pytorch-deeplab-xception](https://github.com/jfzhang95/pytorch-deeplab-xception) |
+|   | jiahaoLjh | [HumanDepth](https://github.com/jiahaoLjh/HumanDepth) |
+|   | jiangzhengkai | [LSTS](https://github.com/jiangzhengkai/LSTS) |
+|   | jiasenlu | [ViLBERT_beta](https://github.com/jiasenlu/ViLBERT_beta) |
+|   | jiashu-zhu | [ProgressFace](https://github.com/jiashu-zhu/ProgressFace) |
+|   | jiaxi-wu | [MPSR](https://github.com/jiaxi-wu/MPSR) |
+|   | jiaxiangshang | [MGCNet](https://github.com/jiaxiangshang/MGCNet) |
+|   | jin-s13 | [COCO-WholeBody](https://github.com/jin-s13/COCO-WholeBody) |
+|   | johnjaniczek | [InfraRender](https://github.com/johnjaniczek/InfraRender) |
+|   | jonasrauber | [clipping-aware-rescaling](https://github.com/jonasrauber/clipping-aware-rescaling) |
+|   | joshuajss | [RTAA](https://github.com/joshuajss/RTAA) |
+|   | jrzech | [reproduce-chexnet](https://github.com/jrzech/reproduce-chexnet) |
+|   | jsvine | [pdfplumber](https://github.com/jsvine/pdfplumber) |
+|   | jthsieh | [DDPAE-video-prediction](https://github.com/jthsieh/DDPAE-video-prediction) |
+|   | jumpynitro | [MPCC](https://github.com/jumpynitro/MPCC) |
+|   | jun-fang | [PWLQ](https://github.com/jun-fang/PWLQ) |
+|   | junleen | [Expression-manipulator](https://github.com/junleen/Expression-manipulator) |
+|   | junpan19 | [RSDN](https://github.com/junpan19/RSDN) |
+|   | junsukchoe | [ADL](https://github.com/junsukchoe/ADL) |
+|   | junyanz | [pytorch-CycleGAN-and-pix2pix](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix) |
+|   | justimyhxu | [Dense-RepPoints](https://github.com/justimyhxu/Dense-RepPoints) |
+|   | jvanvugt | [pytorch-unet](https://github.com/jvanvugt/pytorch-unet) |
+|   | kaixin96 | [PANet](https://github.com/kaixin96/PANet) |
+|   | kakaobrain | [fast-autoaugment](https://github.com/kakaobrain/fast-autoaugment) |
+|   | kami93 | [CMU-DATF](https://github.com/kami93/CMU-DATF) |
+|   | kaonashi-tyc | [Rewrite](https://github.com/kaonashi-tyc/Rewrite) |
+|   | kaonashi-tyc | [zi2zi](https://github.com/kaonashi-tyc/zi2zi) |
+|   | kazuto1011 | [deeplab-pytorch](https://github.com/kazuto1011/deeplab-pytorch) |
+|   | kchengiva | [DecoupleGCN-DropGraph](https://github.com/kchengiva/DecoupleGCN-DropGraph) |
+|   | kding1225 | [PackDet](https://github.com/kding1225/PackDet) |
+|   | keras-team | [keras](https://github.com/keras-team/keras) |
+|   | khanhnamle1994 | [fashion-mnist](https://github.com/khanhnamle1994/fashion-mnist) |
+|   | kjunelee | [MetaOptNet](https://github.com/kjunelee/MetaOptNet) |
+|   | kkhoot | [PAA](https://github.com/kkhoot/PAA) |
+|   | kmammou | [v-hacd](https://github.com/kmammou/v-hacd) |
+|   | kmkolasinski | [deep-learning-notes](https://github.com/kmkolasinski/deep-learning-notes) |
+|   | knazeri | [edge-connect](https://github.com/knazeri/edge-connect) |
+|   | krishnakanthnakka | [Indirectlocalattacks](https://github.com/krishnakanthnakka/Indirectlocalattacks) |
+|   | kshitijd20 | [RSA-CVPR19-release](https://github.com/kshitijd20/RSA-CVPR19-release) |
+|   | kuangliu | [pytorch-cifar](https://github.com/kuangliu/pytorch-cifar) |
+|   | kunhe | [Deep-Metric-Learning-Baselines](https://github.com/kunhe/Deep-Metric-Learning-Baselines) |
+|   | kzmttr | [UMDFA](https://github.com/kzmttr/UMDFA) |
+|   | lanha | [SupResPALM](https://github.com/lanha/SupResPALM) |
+|   | laoreja | [HPLFlowNet](https://github.com/laoreja/HPLFlowNet) |
+|   | lartpang | [HDFNet](https://github.com/lartpang/HDFNet) |
+|   | laura-wang | [video-pace](https://github.com/laura-wang/video-pace) |
+|   | lcosmo | [amks-descriptor](https://github.com/lcosmo/amks-descriptor) |
+|   | lelechen63 | [Talking-head-Generation-with-Rhythmic-Head-Motion](https://github.com/lelechen63/Talking-head-Generation-with-Rhythmic-Head-Motion) |
+|   | leoxiaobin | [pose.pytorch](https://github.com/leoxiaobin/pose.pytorch) |
+|   | lihenryhfl | [vdae](https://github.com/lihenryhfl/vdae) |
+|   | linjieli222 | [VQA_ReGAT](https://github.com/linjieli222/VQA_ReGAT) |
+|   | littleredxh | [HardNegative](https://github.com/littleredxh/HardNegative) |
+|   | liuaishan | [ModelBiasedAttack](https://github.com/liuaishan/ModelBiasedAttack) |
+|   | liuaishan | [SpatiotemporalAttack](https://github.com/liuaishan/SpatiotemporalAttack) |
+|   | liuzechun | [ReActNet](https://github.com/liuzechun/ReActNet) |
+|   | lld533 | [LST-Net](https://github.com/lld533/LST-Net) |
+|   | lokhande-vishnu | [FairALM](https://github.com/lokhande-vishnu/FairALM) |
+|   | longrongyang | [Learning-with-Noisy-Class-Labels-for-Instance-Segmentation](https://github.com/longrongyang/Learning-with-Noisy-Class-Labels-for-Instance-Segmentation) |
+|   | lucidrains | [reformer-pytorch](https://github.com/lucidrains/reformer-pytorch) |
+|   | luoyan407 | [n-reference](https://github.com/luoyan407/n-reference) |
+|   | luzhangada | [code-for-WCS-Net](https://github.com/luzhangada/code-for-WCS-Net) |
+|   | lwzeng | [GC-Net](https://github.com/lwzeng/GC-Net) |
+|   | lxtGH | [DecoupleSegNets](https://github.com/lxtGH/DecoupleSegNets) |
+|   | madhubabuv | [NightDepthADFA](https://github.com/madhubabuv/NightDepthADFA) |
+|   | magnusja | [GTSRB-caffe-model](https://github.com/magnusja/GTSRB-caffe-model) |
+|   | mahdihosseini | [HistoLabelTransfer](https://github.com/mahdihosseini/HistoLabelTransfer) |
+|   | mahsaep | [Social-human-activity-understanding-and-grouping](https://github.com/mahsaep/Social-human-activity-understanding-and-grouping) |
+|   | majedelhelou | [SFM](https://github.com/majedelhelou/SFM) |
+|   | mancinimassimiliano | [CuMix](https://github.com/mancinimassimiliano/CuMix) |
+|   | mapillary | [OpenSfM](https://github.com/mapillary/OpenSfM) |
+|   | mapillary | [inplace_abn](https://github.com/mapillary/inplace_abn) |
+|   | marhar19 | [HSR_via_tensor_decomposition](https://github.com/marhar19/HSR_via_tensor_decomposition) |
+|   | martius-lab | [blackbox-backprop](https://github.com/martius-lab/blackbox-backprop) |
+|   | matbambbang | [sspnet](https://github.com/matbambbang/sspnet) |
+|   | matheusgadelha | [PointCloudLearningACD](https://github.com/matheusgadelha/PointCloudLearningACD) |
+|   | matterport | [Mask_RCNN](https://github.com/matterport/Mask_RCNN) |
+|   | matthewpurri | [Teaching-Cameras-to-Feel](https://github.com/matthewpurri/Teaching-Cameras-to-Feel) |
+|   | mattpoggi | [self-adapting-confidence](https://github.com/mattpoggi/self-adapting-confidence) |
+|   | max-andr | [square-attack](https://github.com/max-andr/square-attack) |
+|   | megvii-model | [FunnelAct](https://github.com/megvii-model/FunnelAct) |
+|   | megvii-model | [WeightNet](https://github.com/megvii-model/WeightNet) |
+|   | meijieru | [crnn.pytorch](https://github.com/meijieru/crnn.pytorch) |
+|   | menelaoskanakis | [RCM](https://github.com/menelaoskanakis/RCM) |
+|   | mengziyi64 | [TSA-Net](https://github.com/mengziyi64/TSA-Net) |
+|   | mentian | [object-deformnet](https://github.com/mentian/object-deformnet) |
+|   | michuanhaohao | [reid-strong-baseline](https://github.com/michuanhaohao/reid-strong-baseline) |
+|   | microsoft | [Oscar](https://github.com/microsoft/Oscar) |
+|   | mikelzc1990 | [nsganetv2](https://github.com/mikelzc1990/nsganetv2) |
+|   | mikuhatsune | [wsod_transfer](https://github.com/mikuhatsune/wsod_transfer) |
+|   | mjq11302010044 | [RRPN_pytorch](https://github.com/mjq11302010044/RRPN_pytorch) |
+|   | mk-minchul | [attend-and-compare](https://github.com/mk-minchul/attend-and-compare) |
+|   | mks0601 | [I2L-MeshNet_RELEASE](https://github.com/mks0601/I2L-MeshNet_RELEASE) |
+|   | mlperf | [training_results_v0.6](https://github.com/mlperf/training_results_v0.6) |
+|   | mmatl | [pyrender](https://github.com/mmatl/pyrender) |
+|   | mogvision | [pattern-net](https://github.com/mogvision/pattern-net) |
+|   | morduspordus | [SingleClassRL](https://github.com/morduspordus/SingleClassRL) |
+|   | mrakotosaon | [intrinsic_interpolations](https://github.com/mrakotosaon/intrinsic_interpolations) |
+|   | mrkieumy | [task-conditioned](https://github.com/mrkieumy/task-conditioned) |
+|   | mseitzer | [pytorch-fid](https://github.com/mseitzer/pytorch-fid) |
+|   | naivete5656 | [WSCTBFP](https://github.com/naivete5656/WSCTBFP) |
+|   | nerminsamet | [houghnet](https://github.com/nerminsamet/houghnet) |
+|   | nghorbani | [amass](https://github.com/nghorbani/amass) |
+|   | nianticlabs | [rectified-features](https://github.com/nianticlabs/rectified-features) |
+|   | nianticlabs | [stereo-from-mono](https://github.com/nianticlabs/stereo-from-mono) |
+|   | niessner | [Matterport](https://github.com/niessner/Matterport) |
+|   | ninaqy | [PUGeo](https://github.com/ninaqy/PUGeo) |
+|   | ningyu1991 | [InclusiveGAN](https://github.com/ningyu1991/InclusiveGAN) |
+|   | niuchuangnn | [GATCluster](https://github.com/niuchuangnn/GATCluster) |
+|   | nmwsharp | [learned-triangulation](https://github.com/nmwsharp/learned-triangulation) |
+|   | nvidia | [apex](https://github.com/nvidia/apex) |
+|   | nxsEdson | [CVD-Physiological-Measurement](https://github.com/nxsEdson/CVD-Physiological-Measurement) |
+|   | ofsoundof | [dhp](https://github.com/ofsoundof/dhp) |
+|   | omni-us | [research-GANwriting](https://github.com/omni-us/research-GANwriting) |
+|   | open-mmlab | [mmaction](https://github.com/open-mmlab/mmaction) |
+|   | open-mmlab | [mmdetection](https://github.com/open-mmlab/mmdetection) |
+|   | open-mmlab | [mmdetection3d](https://github.com/open-mmlab/mmdetection3d) |
+|   | open-mmlab | [mmsegmentation](https://github.com/open-mmlab/mmsegmentation) |
+|   | openMVG | [openMVG](https://github.com/openMVG/openMVG) |
+|   | openai | [glow](https://github.com/openai/glow) |
+|   | openai | [improved-gan](https://github.com/openai/improved-gan) |
+|   | openimages | [dataset](https://github.com/openimages/dataset) |
+|   | openseg-group | [openseg.pytorch](https://github.com/openseg-group/openseg.pytorch) |
+|   | parkseobin | [MLSR](https://github.com/parkseobin/MLSR) |
+|   | pbaylies | [stylegan-encoder](https://github.com/pbaylies/stylegan-encoder) |
+|   | pfnet-research | [nips17-adversarial-attack](https://github.com/pfnet-research/nips17-adversarial-attack) |
+|   | pkuxmq | [Invertible-Image-Rescaling](https://github.com/pkuxmq/Invertible-Image-Rescaling) |
+|   | polwork | [LDDRS](https://github.com/polwork/LDDRS) |
+|   | poojahira | [image-captioning-bottom-up-top-down](https://github.com/poojahira/image-captioning-bottom-up-top-down) |
+|   | prclibo | [relative_pose](https://github.com/prclibo/relative_pose) |
+|   | predictive-analytics-lab | [nifr](https://github.com/predictive-analytics-lab/nifr) |
+|   | princeton-vl | [RAFT](https://github.com/princeton-vl/RAFT) |
+|   | princeton-vl | [pose-ae-train](https://github.com/princeton-vl/pose-ae-train) |
+|   | princeton-vl | [uniloss](https://github.com/princeton-vl/uniloss) |
+|   | princetonvisualai | [SPICE-U](https://github.com/princetonvisualai/SPICE-U) |
+|   | princetonvisualai | [revise-tool](https://github.com/princetonvisualai/revise-tool) |
+|   | prithv1 | [DMG](https://github.com/prithv1/DMG) |
+|   | pytorch | [vision](https://github.com/pytorch/vision) |
+|   | qfgaohao | [pytorch-ssd](https://github.com/qfgaohao/pytorch-ssd) |
+|   | qilong-zhang | [Patch-wise-iterative-attack](https://github.com/qilong-zhang/Patch-wise-iterative-attack) |
+|   | qizhangli | [ila-plus-plus](https://github.com/qizhangli/ila-plus-plus) |
+|   | quark0 | [darts](https://github.com/quark0/darts) |
+|   | qw245 | [BlindFuse](https://github.com/qw245/BlindFuse) |
+|   | ranjaykrishna | [densevid_eval](https://github.com/ranjaykrishna/densevid_eval) |
+|   | raziehkaviani | [rdosr](https://github.com/raziehkaviani/rdosr) |
+|   | rdroste | [unisal](https://github.com/rdroste/unisal) |
+|   | researchmm | [STTN](https://github.com/researchmm/STTN) |
+|   | researchmm | [TracKit](https://github.com/researchmm/TracKit) |
+|   | rgeirhos | [texture-vs-shape](https://github.com/rgeirhos/texture-vs-shape) |
+|   | richzhang | [PerceptualSimilarity](https://github.com/richzhang/PerceptualSimilarity) |
+|   | rkteddy | [RK-CCSNet](https://github.com/rkteddy/RK-CCSNet) |
+|   | royorel | [FFHQ-Aging-Dataset](https://github.com/royorel/FFHQ-Aging-Dataset) |
+|   | royorel | [Lifespan_Age_Transformation_Synthesis](https://github.com/royorel/Lifespan_Age_Transformation_Synthesis) |
+|   | rpautrat | [LISRD](https://github.com/rpautrat/LISRD) |
+|   | rshaojimmy | [ECCV2020-OSAD](https://github.com/rshaojimmy/ECCV2020-OSAD) |
+|   | rsong | [UMVCNN](https://github.com/rsong/UMVCNN) |
+|   | rubenvillegas | [iclr2017mcnet](https://github.com/rubenvillegas/iclr2017mcnet) |
+|   | ruotianluo | [DiscCaptioning](https://github.com/ruotianluo/DiscCaptioning) |
+|   | rusty1s | [deep-graph-matching-consensus](https://github.com/rusty1s/deep-graph-matching-consensus) |
+|   | ryersonvisionlab | [two-stream-dyntex-synth](https://github.com/ryersonvisionlab/two-stream-dyntex-synth) |
+|   | sKamiJ | [DCCS](https://github.com/sKamiJ/DCCS) |
+|   | sabarim | [STEm-Seg](https://github.com/sabarim/STEm-Seg) |
+|   | sachinraja13 | [TabStructNet](https://github.com/sachinraja13/TabStructNet) |
+|   | salesforce | [densecap](https://github.com/salesforce/densecap) |
+|   | sariyanidi | [3DI](https://github.com/sariyanidi/3DI) |
+|   | schatzkara | [cross-view-video](https://github.com/schatzkara/cross-view-video) |
+|   | scott89 | [CLIFFNet](https://github.com/scott89/CLIFFNet) |
+|   | seetaface | [SeetaFaceEngine](https://github.com/seetaface/SeetaFaceEngine) |
+|   | seoungwugoh | [STM](https://github.com/seoungwugoh/STM) |
+|   | seungryong | [RTNs](https://github.com/seungryong/RTNs) |
+|   | sharat29ag | [CDAL](https://github.com/sharat29ag/CDAL) |
+|   | shijieS | [DMMN](https://github.com/shijieS/DMMN) |
+|   | shijieS | [OMOTDRecorder](https://github.com/shijieS/OMOTDRecorder) |
+|   | shijieS | [OmniMOTDataset](https://github.com/shijieS/OmniMOTDataset) |
+|   | shvdiwnkozbw | [Multi-Source-Sound-Localization](https://github.com/shvdiwnkozbw/Multi-Source-Sound-Localization) |
+|   | sibeiyang | [sgmn](https://github.com/sibeiyang/sgmn) |
+|   | silvandeleemput | [memcnn](https://github.com/silvandeleemput/memcnn) |
+|   | silvia1993 | [ROS](https://github.com/silvia1993/ROS) |
+|   | skynbe | [Refer-Youtube-VOS](https://github.com/skynbe/Refer-Youtube-VOS) |
+|   | soeaver | [RP-R-CNN](https://github.com/soeaver/RP-R-CNN) |
+|   | sony-si | [ai-research](https://github.com/sony-si/ai-research) |
+|   | speedystream | [LCL](https://github.com/speedystream/LCL) |
+|   | srihari-humbarwadi | [DeepLabV3_Plus-Tensorflow2.0](https://github.com/srihari-humbarwadi/DeepLabV3_Plus-Tensorflow2.0) |
+|   | srijandas07 | [VPN](https://github.com/srijandas07/VPN) |
+|   | ssharmin | [spikingNN-adversarial-attack](https://github.com/ssharmin/spikingNN-adversarial-attack) |
+|   | strawberryfg | [Senorita-HANDS19-Pose](https://github.com/strawberryfg/Senorita-HANDS19-Pose) |
+|   | sundw2014 | [DCM](https://github.com/sundw2014/DCM) |
+|   | sunniesuhyoung | [DST](https://github.com/sunniesuhyoung/DST) |
+|   | sunnychencool | [AOQ](https://github.com/sunnychencool/AOQ) |
+|   | sunset1995 | [HorizonNet](https://github.com/sunset1995/HorizonNet) |
+|   | svip-lab | [PPGNet](https://github.com/svip-lab/PPGNet) |
+|   | svyas23 | [cross-view-action](https://github.com/svyas23/cross-view-action) |
+|   | swz30 | [MIRNet](https://github.com/swz30/MIRNet) |
+|   | sxlpris | [PRNet](https://github.com/sxlpris/PRNet) |
+|   | szzexpoi | [AiR](https://github.com/szzexpoi/AiR) |
+|   | tabulapdf | [tabula-java](https://github.com/tabulapdf/tabula-java) |
+|   | tackgeun | [CausalityInTrafficAccident](https://github.com/tackgeun/CausalityInTrafficAccident) |
+|   | taesungp | [contrastive-unpaired-translation](https://github.com/taesungp/contrastive-unpaired-translation) |
+|   | takashi310 | [VVD_Viewer](https://github.com/takashi310/VVD_Viewer) |
+|   | takerum | [vat_tf](https://github.com/takerum/vat_tf) |
+|   | taki0112 | [StarGAN_v2-Tensorflow](https://github.com/taki0112/StarGAN_v2-Tensorflow) |
+|   | tamarott | [SinGAN](https://github.com/tamarott/SinGAN) |
+|   | taoxugit | [AttnGAN](https://github.com/taoxugit/AttnGAN) |
+|   | taoyang1122 | [MutualNet](https://github.com/taoyang1122/MutualNet) |
+|   | tegusi | [EAGRNet](https://github.com/tegusi/EAGRNet) |
+|   | tensorflow | [cleverhans](https://github.com/tensorflow/cleverhans) |
+|   | tensorflow | [lingvo](https://github.com/tensorflow/lingvo) |
+|   | tensorflow | [models](https://github.com/tensorflow/models) |
+|   | tensorflow | [tensor2tensor](https://github.com/tensorflow/tensor2tensor) |
+|   | tensorflow | [tensorflow](https://github.com/tensorflow/tensorflow) |
+|   | tensorflow | [tpu](https://github.com/tensorflow/tpu) |
+|   | terzakig | [sqpnp](https://github.com/terzakig/sqpnp) |
+|   | tesseract-ocr | [tesseract](https://github.com/tesseract-ocr/tesseract) |
+|   | theyoucheng | [deepcover](https://github.com/theyoucheng/deepcover) |
+|   | thoqbk | [traprange](https://github.com/thoqbk/traprange) |
+|   | thuml | [Calibrated-Multiple-Uncertainties](https://github.com/thuml/Calibrated-Multiple-Uncertainties) |
+|   | thuml | [Versatile-Domain-Adaptation](https://github.com/thuml/Versatile-Domain-Adaptation) |
+|   | tim-learn | [BA3US](https://github.com/tim-learn/BA3US) |
+|   | timduff35 | [PL1P](https://github.com/timduff35/PL1P) |
+|   | timy90022 | [One-Shot-Object-Detection](https://github.com/timy90022/One-Shot-Object-Detection) |
+|   | tneumann | [minimal_glo](https://github.com/tneumann/minimal_glo) |
+|   | tonyngjichun | [SOLAR](https://github.com/tonyngjichun/SOLAR) |
+|   | traveller59 | [second.pytorch](https://github.com/traveller59/second.pytorch) |
+|   | trungmanhhuynh | [Scene-LSTM](https://github.com/trungmanhhuynh/Scene-LSTM) |
+|   | twangnh | [SimCal](https://github.com/twangnh/SimCal) |
+|   | tyler-hayes | [REMIND](https://github.com/tyler-hayes/REMIND) |
+|   | tzutalin | [labelImg](https://github.com/tzutalin/labelImg) |
+|   | ultralytics | [yolov3](https://github.com/ultralytics/yolov3) |
+|   | ultralytics | [yolov5](https://github.com/ultralytics/yolov5) |
+|   | una | [CSSgram](https://github.com/una/CSSgram) |
+|   | unibas-gravis | [icp-proposal](https://github.com/unibas-gravis/icp-proposal) |
+|   | uzh-rpg | [rpg_asynet](https://github.com/uzh-rpg/rpg_asynet) |
+|   | uzh-rpg | [rpg_dvs_ros](https://github.com/uzh-rpg/rpg_dvs_ros) |
+|   | uzh-rpg | [rpg_event_representation_learning](https://github.com/uzh-rpg/rpg_event_representation_learning) |
+| M | vccimaging | [StereoEventPTV](https://github.com/vccimaging/StereoEventPTV) |
+|   | vglsd | [OpenSESAME](https://github.com/vglsd/OpenSESAME) |
+|   | vinthony | [depth-distillation](https://github.com/vinthony/depth-distillation) |
+|   | visionml | [pytracking](https://github.com/visionml/pytracking) |
+|   | visipedia | [fgvcx_fungi_comp](https://github.com/visipedia/fgvcx_fungi_comp) |
+|   | visipedia | [inat_comp](https://github.com/visipedia/inat_comp) |
+|   | vivkul | [Box2Seg](https://github.com/vivkul/Box2Seg) |
+|   | vmurahari3 | [visdial-bert](https://github.com/vmurahari3/visdial-bert) |
+|   | vpronina | [DeepWienerRestoration](https://github.com/vpronina/DeepWienerRestoration) |
+|   | wangguanan | [light-reid](https://github.com/wangguanan/light-reid) |
+|   | wangren09 | [TrojanNetDetector](https://github.com/wangren09/TrojanNetDetector) |
+|   | waps101 | [LSQSurfaceReconstruction](https://github.com/waps101/LSQSurfaceReconstruction) |
+|   | waps101 | [depth-from-polarisation](https://github.com/waps101/depth-from-polarisation) |
+|   | warmspringwinds | [pytorch-segmentation-detection](https://github.com/warmspringwinds/pytorch-segmentation-detection) |
+|   | wctu | [SEAL](https://github.com/wctu/SEAL) |
+|   | wei-mao-2019 | [HisRepItself](https://github.com/wei-mao-2019/HisRepItself) |
+|   | wenwen0319 | [GVCA](https://github.com/wenwen0319/GVCA) |
+|   | willi-menapace | [acids-clustering-domain-shift](https://github.com/willi-menapace/acids-clustering-domain-shift) |
+|   | wpeebles | [hessian_penalty](https://github.com/wpeebles/hessian_penalty) |
+|   | wubaoyuan | [Sparse-Adversarial-Attack](https://github.com/wubaoyuan/Sparse-Adversarial-Attack) |
+|   | wvangansbeke | [Unsupervised-Classification](https://github.com/wvangansbeke/Unsupervised-Classification) |
+|   | xeanzheng | [CSKD](https://github.com/xeanzheng/CSKD) |
+|   | xh-liu | [Open-Edit](https://github.com/xh-liu/Open-Edit) |
+|   | xiaobaishu0097 | [ECCV-VN](https://github.com/xiaobaishu0097/ECCV-VN) |
+|   | xiaomengyc | [I2C](https://github.com/xiaomengyc/I2C) |
+|   | xiaomi-automl | [FairDARTS](https://github.com/xiaomi-automl/FairDARTS) |
+|   | xieenze | [Segment_Transparent_Objects.](https://github.com/xieenze/Segment_Transparent_Objects.) |
+|   | xiezheng-cs | [DTQ](https://github.com/xiezheng-cs/DTQ) |
+|   | xiezw5 | [Component-Divide-and-Conquer-for-Real-World-Image-Super-Resolution](https://github.com/xiezw5/Component-Divide-and-Conquer-for-Real-World-Image-Super-Resolution) |
+|   | xinge008 | [SSN](https://github.com/xinge008/SSN) |
+|   | xingpingdong | [CLNet-tracking](https://github.com/xingpingdong/CLNet-tracking) |
+|   | xingyul | [flownet3d](https://github.com/xingyul/flownet3d) |
+|   | xinntao | [EDVR](https://github.com/xinntao/EDVR) |
+|   | xinzhuma | [patchnet](https://github.com/xinzhuma/patchnet) |
+|   | xiyang1012 | [Local-Crowd-Counting](https://github.com/xiyang1012/Local-Crowd-Counting) |
+|   | xuanqing94 | [BayesianDefense](https://github.com/xuanqing94/BayesianDefense) |
+|   | xuewyang | [Fashion_Captioning](https://github.com/xuewyang/Fashion_Captioning) |
+|   | xuguodong03 | [SSKD](https://github.com/xuguodong03/SSKD) |
+|   | xushoukai | [GDFQ](https://github.com/xushoukai/GDFQ) |
+|   | yaelkon | [GMM-CNN](https://github.com/yaelkon/GMM-CNN) |
+|   | yanconglin | [Deep-Hough-Transform-Line-Priors](https://github.com/yanconglin/Deep-Hough-Transform-Line-Priors) |
+|   | yaodongyu | [TRADES](https://github.com/yaodongyu/TRADES) |
+|   | yaojieliu | [ECCV20-STDN](https://github.com/yaojieliu/ECCV20-STDN) |
+|   | ycao5602 | [SAL](https://github.com/ycao5602/SAL) |
+|   | yccyenchicheng | [SegVAE](https://github.com/yccyenchicheng/SegVAE) |
+|   | yhw-yhw | [PVAMVSNet](https://github.com/yhw-yhw/PVAMVSNet) |
+|   | yi-ming-qian | [interplane](https://github.com/yi-ming-qian/interplane) |
+|   | yikaiw | [RS-Nets](https://github.com/yikaiw/RS-Nets) |
+|   | yinmh17 | [DNL-Semantic-Segmentation](https://github.com/yinmh17/DNL-Semantic-Segmentation) |
+|   | yiweilu3 | [Few-shot-Scene-adaptive-Anomaly-Detection](https://github.com/yiweilu3/Few-shot-Scene-adaptive-Anomaly-Detection) |
+|   | yluestc | [derain](https://github.com/yluestc/derain) |
+|   | yorkeyao | [VehicleX](https://github.com/yorkeyao/VehicleX) |
+|   | youkely | [InfrasCal](https://github.com/youkely/InfrasCal) |
+|   | youthHan | [HVRNet](https://github.com/youthHan/HVRNet) |
+|   | yrcong | [NODIS](https://github.com/yrcong/NODIS) |
+|   | yuanming-hu | [exposure](https://github.com/yuanming-hu/exposure) |
+|   | yuk6heo | [IVOS-ATNet](https://github.com/yuk6heo/IVOS-ATNet) |
+|   | yuliangguo | [3D_Lane_Synthetic_Dataset](https://github.com/yuliangguo/3D_Lane_Synthetic_Dataset) |
+|   | yuliangguo | [Pytorch_Generalized_3D_Lane_Detection](https://github.com/yuliangguo/Pytorch_Generalized_3D_Lane_Detection) |
+|   | yunjey | [stargan](https://github.com/yunjey/stargan) |
+|   | yunlu-chen | [PointMixup](https://github.com/yunlu-chen/PointMixup) |
+|   | yzhang559 | [vgg-face](https://github.com/yzhang559/vgg-face) |
+|   | z-x-yang | [CFBI](https://github.com/z-x-yang/CFBI) |
+|   | zaiweizhang | [H3DNet](https://github.com/zaiweizhang/H3DNet) |
+|   | zaynmi | [seada-vqa](https://github.com/zaynmi/seada-vqa) |
+|   | zeliu98 | [CloserLook3D](https://github.com/zeliu98/CloserLook3D) |
+|   | zhangzjn | [DTVNet](https://github.com/zhangzjn/DTVNet) |
+|   | zhenglab | [cotere-net](https://github.com/zhenglab/cotere-net) |
+|   | zhenglab | [spiralnet](https://github.com/zhenglab/spiralnet) |
+|   | zhihou7 | [VCL](https://github.com/zhihou7/VCL) |
+|   | zhou13 | [lcnn](https://github.com/zhou13/lcnn) |
+|   | zhoudaquan | [rethinking_bottleneck_design](https://github.com/zhoudaquan/rethinking_bottleneck_design) |
+|   | zhuogege1943 | [dgc](https://github.com/zhuogege1943/dgc) |
+|   | zhuxinqimac | [stylegan2vp](https://github.com/zhuxinqimac/stylegan2vp) |
+|   | zju3dv | [iMoCap](https://github.com/zju3dv/iMoCap) |
+|   | zllrunning | [face-parsing.PyTorch](https://github.com/zllrunning/face-parsing.PyTorch) |
+|   | zlthinker | [STBA](https://github.com/zlthinker/STBA) |
+|   | zoogzog | [chexnet](https://github.com/zoogzog/chexnet) |
+|   | zouchuhang | [LayoutNetv2](https://github.com/zouchuhang/LayoutNetv2) |
+|   | zsyOAOA | [DANet](https://github.com/zsyOAOA/DANet) |
+|   | zyang-ur | [ReSC](https://github.com/zyang-ur/ReSC) |
+|   | zzangjinsun | [NLSPN_ECCV20](https://github.com/zzangjinsun/NLSPN_ECCV20) |
+|   | zzh-tech | [ESTRNN](https://github.com/zzh-tech/ESTRNN) |
 
 | P | groups                                            |
 | - | ------------------------------------------------- |
-|   | [NVlabs](https://github.com/NVlabs) |
-|   | [bigvideoresearch](https://github.com/bigvideoresearch) |
-|   | [google-research](https://github.com/google-research) |
+|   | NVlabs](https: | [/github.com/NVlabs) |
+|   | bigvideoresearch](https: | [/github.com/bigvideoresearch) |
+|   | google-research](https: | [/github.com/google-research) |
