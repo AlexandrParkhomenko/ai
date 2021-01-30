@@ -702,8 +702,9 @@ title: "AI Projects"
 |   | zzangjinsun | [NLSPN_ECCV20](https://github.com/zzangjinsun/NLSPN_ECCV20) |
 |   | zzh-tech | [ESTRNN](https://github.com/zzh-tech/ESTRNN) |
 
+
 | P | groups                                            |
 | - | ------------------------------------------------- |
-|   | NVlabs](https: | [/github.com/NVlabs) |
-|   | bigvideoresearch](https: | [/github.com/bigvideoresearch) |
-|   | google-research](https: | [/github.com/google-research) |
+|   | [NVlabs](https://github.com/NVlabs) |
+|   | [bigvideoresearch](https://github.com/bigvideoresearch) |
+|   | [google-research](https://github.com/google-research) |
