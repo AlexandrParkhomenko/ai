@@ -60,6 +60,7 @@
 | Nishant | [Shukla](https://github.com/BinRoot) | CS PhD UCLA. |
 | Thomas | [Kipf](https://github.com/tkipf) | |
 | Volodymyr | [Kuleshov](https://github.com/kuleshov) | Stanford & Cornell |
+| Ilia | [Larchenko](https://github.com/IliaLarchenko) | kaggle |
 |  |  |  |
 | Hao | [Sheng](https://github.com/haossr) | Stanford University |
 | Christopher | [Potts](https://github.com/cgpotts) | Stanford Linguistics |
