@@ -14,7 +14,7 @@ def a(m):
 
 x = np.array([[0,0],[0,1],[1,0],[1,1]]).T
 y = np.array([[0,1,1,0]]).T
-print(a([[1,1]]@x-0.5)) # OR, use tsis
+print(a([[1,1]]@x-0.5)) # OR, use this
 print(a([[1,1]]@x-1.5))
 
 b = a([[-1,1]]@x-0.5)
