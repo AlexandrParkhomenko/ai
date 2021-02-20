@@ -4,4 +4,6 @@ Elements of artifical intelligence.
 
 The repository is under development.
 
-I use https://www.spyder-ide.org/
+I use:
+- https://www.spyder-ide.org/
+- https://orangedatamining.com/
