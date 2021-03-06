@@ -23,7 +23,7 @@ stats202| | Introduction to statistical / machine learning         | Введе�
  cs230  |*| Deep Learning                                          | Глубокое обучение
  cs231a |*| Computer Vision: From 3D Reconstruction to Recognition | Компьютерное зрение: от 3D-реконструкции до распознавания
  cs231n |*| Convolutional Neural Networks for Visual Recognition   | Сверточные нейронные сети для визуального распознавания
- cs234  |*| Reinforcement Learning                                 | Обучение с подкреплением
+ [cs234](http://web.stanford.edu/class/cs234/index.html)  |*| Reinforcement Learning                                 | Обучение с подкреплением
  cs236  | | Deep Generative Models                                 | Глубокие генеративные модели
  cs237a |*| Principles of Robotic Autonomy                         | Принципы автономности роботов
  cs238  |*| Decision Making Under Uncertainty                      | Принятие решений в условиях неопределенности
