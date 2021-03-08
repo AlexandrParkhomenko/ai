@@ -22,6 +22,7 @@ title: "AI Projects"
 
 | P | Author           | Apps                                                         |
 | - | ---------------- | ------------------------------------------------------------ |
+|   | DLR-RM | [stable-baselines3 (reinforcement learning algorithms)](https://github.com/DLR-RM/stable-baselines3) |
 |   | 1Konny | [idgan](https://github.com/1Konny/idgan) |
 |   | 2han9x1a0release | [RBF-Softmax](https://github.com/2han9x1a0release/RBF-Softmax) |
 |   | AI-secure | [SemanticAdv](https://github.com/AI-secure/SemanticAdv) |
