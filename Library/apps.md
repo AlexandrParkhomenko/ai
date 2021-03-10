@@ -20,6 +20,16 @@ title: "AI Projects"
 - (M) pure Mathlab
 - (m) Mathlab parts
 
+## Mobile
+
+- [MediaPipe](https://github.com/google/mediapipe)
+- CoreML
+- PyTorch Mobile
+- TFLite
+- SNPE
+- Samsung Neural SDK <!-- https://www.youtube.com/watch?v=ASChrJhj-zY -->
+- ONNX
+
 | P | Author           | Apps                                                         |
 | - | ---------------- | ------------------------------------------------------------ |
 |   | DLR-RM | [stable-baselines3 (reinforcement learning algorithms)](https://github.com/DLR-RM/stable-baselines3) |
