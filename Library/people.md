@@ -10,7 +10,9 @@
 | Andrej | [Karpathy](https://github.com/karpathy) | Stanford  [CS231n Winter 2016](https://www.youtube.com/channel/UCPk8m_r6fkUSYmvgCBwq-sw) <br> [AI for Full-Self Driving at Tesla](https://youtu.be/hx7BXih7zx8)|
 | Fernanda | [Viegas](https://research.google/people/FernandaViegas/) | [Research.Google](https://research.google) |
 | Po-Sen | [Huang](https://github.com/posenhuang) | Google DeepMind [io](https://posenhuang.github.io/) |
+| Алексей | Ивахненко | Samsung Research [1](https://github.com/karfly/cuda_exercises) |
 | Игорь | [Слинько](https://github.com/SlinkoIgor) | Samsung Research в Москве. [Курсы.](https://stepik.org/course/50352/promo) [git](https://github.com/SlinkoIgor/Neural_Networks_and_CV) |
+|Георгий| [Труш](https://github.com/geotrush)||
 | Yury | [Kashnitsky](https://github.com/Yorko) | [mlcourse.ai](https://mlcourse.ai/) [habr](https://habr.com/ru/company/ods/blog/325654/) |
 | Dmitry | [Ulyanov](https://github.com/DmitryUlyanov) | Skolkovo [Yandex Курсы.](https://github.com/yandexdataschool/Practical_DL) |
 | Vadim | [Lebedev](https://github.com/vadim-v-lebedev) | Skolkovo |
