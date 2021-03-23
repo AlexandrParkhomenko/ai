@@ -1,4 +1,0 @@
-independent and identically distributed  (IID) (независимые и одинаково распределенные)
-linear logistic classifier (LLC)
-negative log-likelihood (NLL)
-negative log likelihood multiclass (NLLM)
