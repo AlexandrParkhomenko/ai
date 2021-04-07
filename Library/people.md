@@ -13,6 +13,7 @@
 | Алексей | Ивахненко | Samsung Research [1](https://www.youtube.com/watch?v=ASChrJhj-zY) [2](https://github.com/karfly/cuda_exercises) |
 | Игорь | [Слинько](https://github.com/SlinkoIgor) | Samsung Research в Москве. [Курсы.](https://stepik.org/course/50352/promo) [git](https://github.com/SlinkoIgor/Neural_Networks_and_CV) |
 | Михаил | Романов | [Samsung Research](https://www.youtube.com/playlist?list=PLJEYfuHbcEIB-DdeoWaQ6Bzt0903kbmWK) |
+| Алексей | Харламов | Samsung Research в Москве. |
 | Георгий | [Труш](https://github.com/geotrush) | |
 | Yury | [Kashnitsky](https://github.com/Yorko) | [mlcourse.ai](https://mlcourse.ai/) [habr](https://habr.com/ru/company/ods/blog/325654/) |
 | Dmitry | [Ulyanov](https://github.com/DmitryUlyanov) | Skolkovo [Yandex Курсы.](https://github.com/yandexdataschool/Practical_DL) |
