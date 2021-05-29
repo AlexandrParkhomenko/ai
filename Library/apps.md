@@ -30,6 +30,15 @@ title: "AI Projects"
 - Samsung Neural SDK <!-- https://www.youtube.com/watch?v=ASChrJhj-zY -->
 - ONNX
 
+## Annotation Tools
+- [Label Studio](https://github.com/heartexlabs/label-studio)
+- [Snorkel](https://github.com/snorkel-team/snorkel)
+- [Interactive Segmentation](https://github.com/saic-vul/fbrs_interactive_segmentation)
+- [Computer Vision Annotation Tool](https://github.com/openvinotoolkit/cvat)
+- [LabelMe annotation tool](https://github.com/CSAILVision/LabelMeAnnotationTool)
+- [web based tool to label images](https://github.com/NaturalIntelligence/imglab)
+- [Semantic Segmentation Editor](https://github.com/Hitachi-Automotive-And-Industry-Lab/semantic-segmentation-editor)
+
 | P | Author           | Apps                                                         |
 | - | ---------------- | ------------------------------------------------------------ |
 |   | DLR-RM | [stable-baselines3 (reinforcement learning algorithms)](https://github.com/DLR-RM/stable-baselines3) |
