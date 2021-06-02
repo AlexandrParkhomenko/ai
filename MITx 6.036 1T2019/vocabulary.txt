@@ -3,3 +3,6 @@ linear logistic classifier (LLC)
 negative log-likelihood (NLL)
 negative log likelihood multiclass (NLLM)
 stochastic-shortest-path (SSP)
+
+graph neural network (GNN)
+graph convolution policy network (GCPN)
