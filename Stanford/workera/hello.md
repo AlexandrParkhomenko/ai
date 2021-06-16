@@ -13,7 +13,7 @@ If you want your model to produce the minimum possible number of false positives
 Полнота показывает, какая часть положительных объектов была выделена классификатором.
 
 ### coursera
-[bcaffo/courses](https://github.com/bcaffo/courses)
-[Statistical Inference](https://leanpub.com/LittleInferenceBook/read#leanpub-auto-question)
+- [bcaffo/courses](https://github.com/bcaffo/courses)
+- [Statistical Inference](https://leanpub.com/LittleInferenceBook/read#leanpub-auto-question) [videos](https://www.youtube.com/playlist?list=PLpl-gQkQivXiBmGyzLrUjzsblmQsLtkzJ)
 
 
