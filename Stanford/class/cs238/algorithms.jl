@@ -5,7 +5,7 @@ using LightGraphs
 using JuMP
 using GLPK
 
-#import IterTools: subsets
+# import IterTools: subsets
 function Base.findmax(f::Function, xs)
     f_max = -Inf
     x_max = first(xs)
@@ -249,7 +249,7 @@ function update_gibbs_sample!(a, bn, evidence, ordering)
         if !haskey(evidence, name)
             b = blanket(bn, a, i)
             a[name] = rand(b)[name]
-        end
+    end
 end
 end
 
@@ -406,7 +406,7 @@ end
 
 ### HERE
 function are_markov_equivalent(G, H)
-    if  nv(G) != nv(H) || ne(G) != ne(H) ||
+    if nv(G) != nv(H) || ne(G) != ne(H) ||
         !all(has_edge(H, e) ||
         has_edge(H, reverse(e))
             for e in edges(G))
@@ -415,7 +415,7 @@ function are_markov_equivalent(G, H)
     for c in 1:nv(G)
         parents = inneighbors(G, c)
         for (a, b) in subsets(parents, 2)
-            if  !has_edge(G, a, b) && !has_edge(G, b, a) &&
+            if !has_edge(G, a, b) && !has_edge(G, b, a) &&
                 !(has_edge(H, a, c) && has_edge(H, b, c))
                     return false
             end
@@ -429,18 +429,18 @@ struct SimpleProblem
     chance_vars::Vector{Variable}
     decision_vars::Vector{Variable}
     utility_vars::Vector{Variable}
-    utilities::Dict{Symbol, Vector{Float64}}
+    utilities::Dict{Symbol,Vector{Float64}}
 end
 function solve(𝒫::SimpleProblem, evidence, M)
     query = [var.name for var in 𝒫.utility_vars]
     U(a) = sum(𝒫.utilities[uname][a[uname]] for uname in query)
-    best = (a=nothing, u=-Inf)
+    best = (a = nothing, u = -Inf)
     for assignment in assignments(𝒫.decision_vars)
         evidence = merge(evidence, assignment)
         ϕ = infer(M, 𝒫.bn, query, evidence)
-        u = sum(p*U(a) for (a, p) in ϕ.table)
+        u = sum(p * U(a) for (a, p) in ϕ.table)
         if u > best.u
-            best = (a=assignment, u=u)
+            best = (a = assignment, u = u)
         end
     end
     return best
@@ -449,11 +449,11 @@ end
 function value_of_information(𝒫, query, evidence, M)
     ϕ = infer(M, 𝒫.bn, query, evidence)
     voi = -solve(𝒫, evidence, M).u
-    query_vars = filter(v->v.name ∈ query, 𝒫.chance_vars)
+    query_vars = filter(v -> v.name ∈ query, 𝒫.chance_vars)
     for o′ in assignments(query_vars)
         oo′ = merge(evidence, o′)
         p = ϕ.table[o′]
-        voi += p*solve(𝒫, oo′, M).u
+        voi += p * solve(𝒫, oo′, M).u
     end
     return voi
 end
@@ -469,11 +469,11 @@ end
 
 function lookahead(𝒫::MDP, U, s, a)
     𝒮, T, R, γ = 𝒫.𝒮, 𝒫.T, 𝒫.R, 𝒫.γ
-    return R(s,a) + γ*sum(T(s,a,s′)*U(s′) for s′ in 𝒮)
+    return R(s, a) + γ * sum(T(s, a, s′) * U(s′) for s′ in 𝒮)
 end
 function lookahead(𝒫::MDP, U::Vector, s, a)
     𝒮, T, R, γ = 𝒫.𝒮, 𝒫.T, 𝒫.R, 𝒫.γ
-    return R(s,a) + γ*sum(T(s,a,s′)*U[i] for (i,s′) in enumerate(𝒮))
+    return R(s, a) + γ * sum(T(s, a, s′) * U[i] for (i, s′) in enumerate(𝒮))
 end
 
 function iterative_policy_evaluation(𝒫::MDP, π, k_max)
@@ -489,7 +489,7 @@ function policy_evaluation(𝒫::MDP, π)
     𝒮, R, T, γ = 𝒫.𝒮, 𝒫.R, 𝒫.T, 𝒫.γ
     R′ = [R(s, π(s)) for s in 𝒮]
     T′ = [T(s, π(s), s′) for s in 𝒮, s′ in 𝒮]
-    return (I - γ*T′)\R′
+    return (I - γ * T′) \ R′
 end
 
 struct ValueFunctionPolicy
@@ -497,11 +497,260 @@ struct ValueFunctionPolicy
     U # utility function
 end
 function greedy(𝒫::MDP, U, s)
-    u, a = findmax(a->lookahead(𝒫, U, s, a), 𝒫.𝒜)
-    return (a=a, u=u)
+    u, a = findmax(a -> lookahead(𝒫, U, s, a), 𝒫.𝒜)
+    return (a = a, u = u)
+end
+
+(π::ValueFunctionPolicy)(s) = greedy(π.𝒫, π.U, s).a
+
+struct PolicyIteration
+    π # initial policy
+    k_max # maximum number of iterations
+end
+function solve(M::PolicyIteration, 𝒫::MDP)
+    π, 𝒮 = M.π, 𝒫.𝒮
+    for k = 1:M.k_max
+        U = policy_evaluation(𝒫, π)
+        π′ = ValueFunctionPolicy(𝒫, U)
+        if all(π(s) == π′(s) for s in 𝒮)
+            break
+        end
+        π = π′
+    end
+    return π
+end
+
+function backup(𝒫::MDP, U, s)
+    return maximum(lookahead(𝒫, U, s, a) for a in 𝒫.𝒜)
+end
+
+struct ValueIteration
+    k_max # maximum number of iterations
+    end
+function solve(M::ValueIteration, 𝒫::MDP)
+    U = [0.0 for s in 𝒫.𝒮]
+    for k = 1:M.k_max
+        U = [backup(𝒫, U, s) for s in 𝒫.𝒮]
+    end
+    return ValueFunctionPolicy(𝒫, U)
+end
+
+struct GaussSeidelValueIteration
+    k_max # maximum number of iterations
+end
+function solve(M::GaussSeidelValueIteration, 𝒫::MDP)
+    U = [0.0 for s in 𝒮]
+    for k = 1:M.k_max
+        for (s, i) in enumerate(𝒫.𝒮)
+            U[i] = backup(𝒫, U, s)
+        end
+    end
+    return ValueFunctionPolicy(𝒫, U)
+end
+
+struct LinearProgramFormulation end
+function tensorform(𝒫::MDP)
+    𝒮, 𝒜, R, T = 𝒫.𝒮, 𝒫.𝒜, 𝒫.R, 𝒫.T
+    𝒮′ = eachindex(𝒮)
+    𝒜′ = eachindex(𝒜)
+    R′ = [R(s,a) for s in 𝒮, a in 𝒜]
+    T′ = [T(s,a,s′) for s in 𝒮, a in 𝒜, s′ in 𝒮]
+    return 𝒮′, 𝒜′, R′, T′
+end
+solve(𝒫::MDP) = solve(LinearProgramFormulation(), 𝒫)
+function solve(M::LinearProgramFormulation, 𝒫::MDP)
+    𝒮, 𝒜, R, T = tensorform(𝒫)
+    model = Model(GLPK.Optimizer)
+    @variable(model, U[𝒮])
+    @objective(model, Min, sum(U))
+    @constraint(model, [s=𝒮,a=𝒜], U[s] ≥ R[s,a] + 𝒫.γ*T[s,a,:]⋅U)
+    optimize!(model)
+    return ValueFunctionPolicy(𝒫, value.(U))
+end
+
+struct LinearQuadraticProblem
+    Ts # transition matrix with respect to state
+    Ta # transition matrix with respect to action
+    Rs # reward matrix with respect to state (negative semidefinite)
+    Ra # reward matrix with respect to action (negative definite)
+    h_max # horizon
+end
+function solve(𝒫::LinearQuadraticProblem)
+    Ts, Ta, Rs, Ra, h_max = 𝒫.Ts, 𝒫.Ta, 𝒫.Rs, 𝒫.Ra, 𝒫.h_max
+    V = zeros(size(Rs))
+    πs = Any[s -> zeros(size(Ta, 2))]
+    for h in 2:h_max
+        V = Ts'*(V - V*Ta*((Ta'*V*Ta + Ra) \ Ta'*V))*Ts + Rs
+        L = -(Ta'*V*Ta + Ra) \ Ta' * V * Ts
+        push!(πs, s -> L*s)
+    end
+    return πs
+end
+
+struct ApproximateValueIteration
+    Uθ    # initial parameterized value function that supports fit!
+    S     # set of discrete states for performing backups
+    k_max # maximum number of iterations
+end
+function solve(M::ApproximateValueIteration, 𝒫::MDP)
+    Uθ, S, k_max = M.Uθ, M.S, M.k_max
+    for k in 1:k_max
+        U = [backup(𝒫, Uθ, s) for s in S]
+        fit!(Uθ, S, U)
+    end
+    return ValueFunctionPolicy(𝒫, Uθ)
+end
+
+mutable struct NearestNeighborValueFunction
+    k # number of neighbors
+    d # distance function d(s, s′)
+    S # set of discrete states
+    θ # vector of values at states in S
+end
+
+function (Uθ::NearestNeighborValueFunction)(s)
+    dists = [Uθ.d(s,s′) for s′ in Uθ.S]
+    ind = sortperm(dists)[1:Uθ.k]
+    return mean(Uθ.θ[i] for i in ind)
+end
+function fit!(Uθ::NearestNeighborValueFunction, S, U)
+    Uθ.θ = U
+    return Uθ
+end
+
+mutable struct LocallyWeightedValueFunction
+    k # kernel function k(s, s′)
+    S # set of discrete states
+    θ # vector of values at states in S
+end
+
+function (Uθ::LocallyWeightedValueFunction)(s)
+    w = normalize([Uθ.k(s,s′) for s′ in Uθ.S], 1)
+    return Uθ.θ ⋅ w
+end
+function fit!(Uθ::LocallyWeightedValueFunction, S, U)
+    Uθ.θ = U
+    return Uθ
+end
+
+mutable struct MultilinearValueFunction
+    o # position of lower-left corner
+    δ # vector of widths
+    θ # vector of values at states in S
+end
+
+function (Uθ::MultilinearValueFunction)(s)
+    o, δ, θ = Uθ.o, Uθ.δ, Uθ.θ
+    Δ = (s - o)./δ
+    # Multidimensional index of lower-left cell
+    i = min.(floor.(Int, Δ) .+ 1, size(θ) .- 1)
+    vertex_index = similar(i)
+    d = length(s)
+    u = 0.0
+    for vertex in 0:2^d-1
+        weight = 1.0
+        for j in 1:d
+            # Check whether jth bit is set
+            if vertex & (1 << (j-1)) > 0
+                vertex_index[j] = i[j] + 1
+                weight *= Δ[j] - i[j] + 1
+            else
+                vertex_index[j] = i[j]
+                weight *= i[j] - Δ[j]
+            end
+        end
+        u += θ[vertex_index...]*weight
+    end
+    return u
+end
+function fit!(Uθ::MultilinearValueFunction, S, U)
+    Uθ.θ = U
+    return Uθ
+end
+
+mutable struct SimplexValueFunction
+    o # position of lower-left corner
+    δ # vector of widths
+    θ # vector of values at states in S
+end
+
+function (Uθ::SimplexValueFunction)(s)
+    Δ = (s - Uθ.o)./Uθ.δ
+    # Multidimensional index of upper-right cell
+    i = min.(floor.(Int, Δ) .+ 1, size(Uθ.θ) .- 1) .+ 1
+    u = 0.0
+    s′ = (s - (Uθ.o + Uθ.δ.*(i.-2))) ./ Uθ.δ
+    p = sortperm(s′) # increasing order
+    w_tot = 0.0
+    for j in p
+        w = s′[j] - w_tot
+        u += w*Uθ.θ[i...]
+        i[j] -= 1
+        w_tot += w
+    end
+    u += (1 - w_tot)*Uθ.θ[i...]
+    return u
+end
+
+function fit!(Uθ::SimplexValueFunction, S, U)
+    Uθ.θ = U
+    return Uθ
+end
+
+mutable struct LinearRegressionValueFunction
+    β # basis vector function
+    θ # vector of parameters
+end
+function (Uθ::LinearRegressionValueFunction)(s)
+    return Uθ.β(s) ⋅ Uθ.θ
+end
+function fit!(Uθ::LinearRegressionValueFunction, S, U)
+    X = hcat([Uθ.β(s) for s in S]...)'
+    Uθ.θ = pinv(X)*U
+    return Uθ
 end
 
 
+struct RolloutLookahead
+    𝒫 # problem
+    π # rollout policy
+    d # depth
+end
+randstep(𝒫::MDP, s, a) = 𝒫.TR(s, a)
+function rollout(𝒫, s, π, d)
+    ret = 0.0
+    for t in 1:d
+        a = π(s)
+        s, r = randstep(𝒫, s, a)
+        ret += 𝒫.γ^(t-1) * r
+    end
+    return ret
+ end
+function (π::RolloutLookahead)(s)
+    U(s) = rollout(π.𝒫, s, π.π, π.d)
+    return greedy(π.𝒫, U, s).a
+end
+
+struct ForwardSearch
+    𝒫 # problem
+    d # depth
+    U # value function at depth d
+end
+function forward_search(𝒫, s, d, U)
+    if d ≤ 0
+        return (a=nothing, u=U(s))
+    end
+    best = (a=nothing, u=-Inf)
+    U′(s) = forward_search(𝒫, s, d-1, U).u
+    for a in 𝒫.𝒜
+        u = lookahead(𝒫, U′, s, a)
+        if u > best.u
+            best = (a=a, u=u)
+        end
+    end
+    return best
+end
+(π::ForwardSearch)(s) = forward_search(π.𝒫, s, π.d, π.U).a
 
 
 
