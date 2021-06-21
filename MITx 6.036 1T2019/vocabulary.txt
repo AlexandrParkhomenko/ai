@@ -1,4 +1,5 @@
-probability density function (pdf)
+probability mass function (PMF)
+probability density function (PDF)
 
 independent and identically distributed  (IID) (независимые и одинаково распределенные)
 linear logistic classifier (LLC)
