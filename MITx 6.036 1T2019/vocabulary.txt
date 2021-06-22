@@ -11,3 +11,5 @@ reinforcement learning (RL)
 graph neural network (GNN)
 graph convolution policy network (GCPN)
 partially observable Markov decision process (POMDP)
+
+generative adversarial networks (GAN) (генеративные состязательные сети)
