@@ -1,5 +1,6 @@
 probability mass function (PMF)
 probability density function (PDF)
+cumulative distribution function (CDF)
 
 independent and identically distributed  (IID) (независимые и одинаково распределенные)
 linear logistic classifier (LLC)
