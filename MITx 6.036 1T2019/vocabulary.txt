@@ -15,3 +15,4 @@ partially observable Markov decision process (POMDP)
 partially observable Markov game (POMG)
 
 generative adversarial networks (GAN) (генеративные состязательные сети)
+stochastic mixing iterative learning (SMILe)
