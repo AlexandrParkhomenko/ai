@@ -16,4 +16,4 @@ If you want your model to produce the minimum possible number of false positives
 - [bcaffo/courses](https://github.com/bcaffo/courses)
 - [Statistical Inference](https://leanpub.com/LittleInferenceBook/read#leanpub-auto-question) [videos](https://www.youtube.com/playlist?list=PLpl-gQkQivXiBmGyzLrUjzsblmQsLtkzJ)
 
-
+expected values = mean and variance
