@@ -1,4 +1,8 @@
-probability mass function (PMF)
+
+| term                      | abbrevation | термин       | сокращение   |
+| ------------------------- | ----------- | ------------ | ------------ |
+| probability mass function | PMF         |              |              |
+
 probability density function (PDF)
 cumulative distribution function (CDF)
 
