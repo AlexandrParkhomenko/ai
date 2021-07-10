@@ -1,3 +1,5 @@
+You can't give up on them. Never.
+
 | first name | last name | organization |
 | ---------- | --------- | ------------ |
 | Yoshua | Bengio | University of Montreal |
