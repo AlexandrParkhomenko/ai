@@ -1,20 +1,20 @@
 | term                                    | abbrevation | термин                                             | сокращение   |
 | --------------------------------------- | ----------- | -------------------------------------------------- | ------------ |
-| probability mass function               | PMF         |                                                    |              |
-| probability density function            | PDF         |                                                    |              |
-| cumulative distribution function        | CDF         |                                                    |              |
-| independent and identically distributed | IID         | независимые и одинаково распределенные             |              |
-| linear logistic classifier              | LLC         |                                                    |              |
-| negative log-likelihood                 | NLL         |                                                    |              |
-| negative log likelihood multiclass      | NLLM        |                                                    |              |
-| stochastic-shortest-path                | SSP         |                                                    |              |
-| reinforcement learning                  | RL          |                                                    |              |
-| graph neural network                    | GNN         |                                                    |              |
-| graph convolution policy network        | GCPN        |                                                    |              |
-| partially observable Markov decision process | POMDP  |                                                    |              |
-| partially observable Markov game        | POMG        |                                                    |              |
-| generative adversarial networks         | GAN         | генеративные состязательные сети                   |              |
-| stochastic mixing iterative learning    | SMILe       |                                                    |              |
+| Probability Mass Function               | PMF         |                                                    |              |
+| Probability Density Function            | PDF         |                                                    |              |
+| Cumulative Distribution Function        | CDF         |                                                    |              |
+| Independent and Identically Distributed | IID         | независимые и одинаково распределенные             |              |
+| Linear Logistic Classifier              | LLC         |                                                    |              |
+| Negative Log-Likelihood                 | NLL         |                                                    |              |
+| Negative Log Likelihood Multiclass      | NLLM        |                                                    |              |
+| Stochastic-Shortest-Path                | SSP         |                                                    |              |
+| Reinforcement Learning                  | RL          |                                                    |              |
+| Graph Neural Network                    | GNN         |                                                    |              |
+| Graph Convolution Policy Network        | GCPN        |                                                    |              |
+| Partially Observable Markov Decision Process | POMDP  |                                                    |              |
+| Partially Observable Markov Game        | POMG        |                                                    |              |
+| Generative Adversarial Networks         | GAN         | генеративные состязательные сети                   |              |
+| Stochastic Mixing Iterative Learning    | SMILe       |                                                    |              |
 | Algebraic Decision Diagram | ADD | алгебраическая диаграмма решений | АДР |
 | Bayesian network Augmented Naive Bayes classifier | BAN | наивный байесовский классификатор, дополненный байесовской сетью | НБКБС |
 | Bayesian Chain Classifier | BCC | байесовская цепь (классификатор) | БЦ |
