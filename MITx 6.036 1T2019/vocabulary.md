@@ -19,7 +19,7 @@
 | Bayesian network Augmented Naive Bayes classifier | BAN | наивный байесовский классификатор, дополненный байесовской сетью | НБКБС |
 | Bayesian Chain Classifier | BCC | байесовская цепь (классификатор) | БЦ |
 | Bayesian Constraint-based Causal Discovery | BCCD | байесовский причинно-следственный анализ с учетом ограничений | БПСА |
-|  Bayesian Network | BN | байесовская сеть | БС |
+| Bayesian Network | BN | байесовская сеть | БС |
 | Causal Bayesian Network | CBN | причинно-следственная байесовская сеть | ПСБС |
 | Conditional Mutual Information | CMI | условная взаимная информация | УВИ |
 | Conditional Probability Table | CPT | таблица условных вероятностей | ТУВ |
@@ -29,7 +29,7 @@
 | Dynamic Bayesian Network Classifier | DBNC | классификатор на основе ДБС | КДБС |
 | Decision Diagram | DD | диаграмма решений | ДГР |
 | Dynamic Decision Network | DDN | динамическая сеть принятия решений | ДСР |
-| ecision Tree | DTD | дерево решений | ДР |
+| Decision Tree | DTD | дерево решений | ДР |
 | Expected Cost | EC | ожидаемые затраты | ОЗ |
 | Expectation Maximization EM-алгоритм | EM | |  |
 | False Negative | FN | ложноотрицательный | ЛО |
