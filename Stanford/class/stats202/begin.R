@@ -12,3 +12,4 @@ sum(x^2 * p) - sum(x * p)^2
 round(t.test(sort(mtcars$mpg))$conf)
 
 # (more in Russian)[https://coderlessons.com/tutorials/kompiuternoe-programmirovanie/learn-r-programmirovanie/uchebnik-po-r]
+# (basic)[https://github.com/DataScienceSpecialization/courses]
