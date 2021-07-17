@@ -12,3 +12,13 @@ sum(x^2 * p) - sum(x * p)^2
 round(t.test(sort(mtcars$mpg))$conf)
 
 # (basic)[https://github.com/DataScienceSpecialization/courses]
+
+# Consider the mtcars dataset. Construct a 95% T interval for MPG comparing 4 to 6 cylinder cars (subtracting in the order of 4 - 6) assume a constant variance.
+m4 <- mtcars$mpg[mtcars$cyl == 4]
+m6 <- mtcars$mpg[mtcars$cyl == 6]
+mtcars46 = mtcars[mtcars$cyl %in% c(4,6), ]
+mtcars46[order(mtcars46$cyl),,drop=FALSE]
+#this does 4 - 6
+confint <- as.vector(t.test(m4, m6, var.equal = TRUE)$conf.int)
+
+
