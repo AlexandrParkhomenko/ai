@@ -11,5 +11,4 @@ sum(x^2 * p) - sum(x * p)^2
 # Load the data set mtcars in the datasets R package. Calculate a 95% confidence interval to the nearest MPG for the variable mpg.
 round(t.test(sort(mtcars$mpg))$conf)
 
-# (more in Russian)[https://coderlessons.com/tutorials/kompiuternoe-programmirovanie/learn-r-programmirovanie/uchebnik-po-r]
 # (basic)[https://github.com/DataScienceSpecialization/courses]
