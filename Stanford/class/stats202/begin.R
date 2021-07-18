@@ -21,4 +21,6 @@ mtcars46[order(mtcars46$cyl),,drop=FALSE]
 #this does 4 - 6
 confint <- as.vector(t.test(m4, m6, var.equal = TRUE)$conf.int)
 
+# Bayes' Formula
+# P(B|A) = P(B&A)/P(A) = P(A|B)*P(B)/P(A) = P(A|B)*P(B)/( P(A|B)*P(B) + P(A|~B)*P(~B) )
 
