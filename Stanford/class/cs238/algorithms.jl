@@ -1993,14 +1993,14 @@ function optimize(M::BehavioralCloning, D, θ)
 end
 
 struct DatasetAggregation
-    𝒫 # problem with unknown reward function
-    bc # behavioral cloning struct
+    𝒫     # problem with unknown reward function
+    bc    # behavioral cloning struct
     k_max # number of iterations
-    m # number of rollouts per iteration
-    d # rollout depth
-    b # initial state distribution
-    πE # expert
-    πθ # parameterized policy
+    m     # number of rollouts per iteration
+    d     # rollout depth
+    b     # initial state distribution
+    πE    # expert
+    πθ    # parameterized policy
 end
 
 function optimize(M::DatasetAggregation, D, θ)
@@ -2023,15 +2023,15 @@ end
 
 
 struct SMILe
-    𝒫 # problem with unknown reward
-    bc # Behavioral cloning struct
+    𝒫     # problem with unknown reward
+    bc    # Behavioral cloning struct
     k_max # number of iterations
-    m # number of rollouts per iteration
-    d # rollout depth
-    b # initial state distribution
-    β # mixing scalar (e.g., d^-3)
-    πE # expert policy
-    πθ # parameterized policy
+    m     # number of rollouts per iteration
+    d     # rollout depth
+    b     # initial state distribution
+    β     # mixing scalar (e.g., d^-3)
+    πE    # expert policy
+    πθ    # parameterized policy
 end
 
 function optimize(M::SMILe, θ)
@@ -2134,14 +2134,14 @@ end
 
 
 struct MaximumEntropyIRL
-    𝒫 # problem
-    b # initial state distribution
-    d # depth
-    π # parameterized policy π(θ,s)
-    Pπ # parameterized policy likelihood π(θ, a, s)
-    ∇R # reward function gradient
-    RL # reinforcement learning method
-    α # step size
+    𝒫     # problem
+    b     # initial state distribution
+    d     # depth
+    π     # parameterized policy π(θ,s)
+    Pπ    # parameterized policy likelihood π(θ, a, s)
+    ∇R    # reward function gradient
+    RL    # reinforcement learning method
+    α     # step size
     k_max # number of iterations
 end
 
@@ -2178,13 +2178,13 @@ function optimize(M::MaximumEntropyIRL, D, ϕ, θ)
 end
 
 struct POMDP
-    γ # discount factor
-    𝒮 # state space
-    𝒜 # action space
-    𝒪 # observation space
-    T # transition function
-    R # reward function
-    O # observation function
+    γ   # discount factor
+    𝒮   # state space
+    𝒜   # action space
+    𝒪   # observation space
+    T   # transition function
+    R   # reward function
+    O   # observation function
     TRO # sample transition, reward, and observation
 end
 
@@ -2312,7 +2312,7 @@ function update(b::RejectionParticleFilter, 𝒫, a, o)
 end
 
 struct InjectionParticleFilter
-    states # vector of state samples
+    states   # vector of state samples
     m_inject # number of samples to inject
     D_inject # injection distribution
 end
@@ -2476,37 +2476,741 @@ function solve(M::ValueIteration, 𝒫::POMDP)
 end
 
 
+function ConditionalPlan(𝒫::POMDP, a, plans)
+    subplans = Dict(o=>π for (o, π) in zip(𝒫.𝒪, plans))
+    return ConditionalPlan(a, subplans)
+end
+function combine_lookahead(𝒫::POMDP, s, a, Γo)
+    𝒮, 𝒪, T, O, R, γ = 𝒫.𝒮, 𝒫.𝒪, 𝒫.T, 𝒫.O, 𝒫.R, 𝒫.γ
+    U′(s′,i) = sum(O(a,s′,o)*α[i] for (o,α) in zip(𝒪,Γo))
+    return R(s,a) + γ*sum(T(s,a,s′)*U′(s′,i) for (i,s′) in enumerate(𝒮))
+end
+function combine_alphavector(𝒫::POMDP, a, Γo)
+    return [combine_lookahead(𝒫, s, a, Γo) for s in 𝒫.𝒮]
+end
+function expand(plans, Γ, 𝒫)
+    𝒮, 𝒜, 𝒪, T, O, R = 𝒫.𝒮, 𝒫.𝒜, 𝒫.𝒪, 𝒫.T, 𝒫.O, 𝒫.R
+    plans′, Γ′ = [], []
+    for a in 𝒜
+        # iterate over all possible mappings from observations to plans
+        for inds in product([eachindex(plans) for o in 𝒪]...)
+            πo = plans[[inds...]]
+            Γo = Γ[[inds...]]
+            π = ConditionalPlan(𝒫, a, πo)
+            α = combine_alphavector(𝒫, a, Γo)
+            push!(plans′, π)
+            push!(Γ′, α)
+        end
+    end
+    return (plans′, Γ′)
+end
 
 
+# Offline Belief State Planning
+
+function alphavector_iteration(𝒫::POMDP, M, Γ)
+    for k in 1:M.k_max
+        Γ = update(𝒫, M, Γ)
+    end
+    return Γ
+end
+
+struct QMDP
+    k_max # maximum number of iterations
+end
+function update(𝒫::POMDP, M::QMDP, Γ)
+    𝒮, 𝒜, R, T, γ = 𝒫.𝒮, 𝒫.𝒜, 𝒫.R, 𝒫.T, 𝒫.γ
+    Γ′ = [[R(s,a) + γ*sum(T(s,a,s′)*maximum(α′[j] for α′ in Γ)
+        for (j,s′) in enumerate(𝒮)) for s in 𝒮] for a in 𝒜]
+    return Γ′
+end
+function solve(M::QMDP, 𝒫::POMDP)
+    Γ = [zeros(length(𝒫.𝒮)) for a in 𝒫.𝒜]
+    Γ = alphavector_iteration(𝒫, M, Γ)
+    return AlphaVectorPolicy(𝒫, Γ, 𝒫.𝒜)
+end
 
 
+struct FastInformedBound
+    k_max # maximum number of iterations
+end
+function update(𝒫::POMDP, M::FastInformedBound, Γ)
+    𝒮, 𝒜, 𝒪, R, T, O, γ = 𝒫.𝒮, 𝒫.𝒜, 𝒫.𝒪, 𝒫.R, 𝒫.T, 𝒫.O, 𝒫.γ
+    Γ′ = [[R(s, a) + γ*sum(maximum(sum(O(a,s′,o)*T(s,a,s′)*α′[j]
+        for (j,s′) in enumerate(𝒮)) for α′ in Γ) for o in 𝒪)
+        for s in 𝒮] for a in 𝒜]
+    return Γ′
+end
+function solve(M::FastInformedBound, 𝒫::POMDP)
+    Γ = [zeros(length(𝒫.𝒮)) for a in 𝒫.𝒜]
+    Γ = alphavector_iteration(𝒫, M, Γ)
+    return AlphaVectorPolicy(𝒫, Γ, 𝒫.𝒜)
+end
+
+function baws_lowerbound(𝒫::POMDP)
+    𝒮, 𝒜, R, γ = 𝒫.𝒮, 𝒫.𝒜, 𝒫.R, 𝒫.γ
+    r = maximum(minimum(R(s, a) for s in 𝒮) for a in 𝒜) / (1-γ)
+    α = fill(r, length(𝒮))
+    return α
+end
+
+function blind_lowerbound(𝒫, k_max)
+    𝒮, 𝒜, T, R, γ = 𝒫.𝒮, 𝒫.𝒜, 𝒫.T, 𝒫.R, 𝒫.γ
+    Q(s,a,α) = R(s,a) + γ*sum(T(s,a,s′)*α[j] for (j,s′) in enumerate(𝒮))
+    Γ = [baws_lowerbound(𝒫) for a in 𝒜]
+    for k in 1:k_max
+        Γ = [[Q(s,a,α) for s in 𝒮] for (α,a) in zip(Γ, 𝒜)]
+    end
+    return Γ
+end
+
+function backup(𝒫::POMDP, Γ, b)
+    𝒮, 𝒜, 𝒪, γ = 𝒫.𝒮, 𝒫.𝒜, 𝒫.𝒪, 𝒫.γ
+    R, T, O = 𝒫.R, 𝒫.T, 𝒫.O
+    Γa = []
+    for a in 𝒜
+        Γao = []
+        for o in 𝒪
+            b′ = update(b, 𝒫, a, o)
+            push!(Γao, argmax(α->α⋅b′, Γ))
+        end
+        α = [R(s, a) + γ*sum(sum(T(s, a, s′)*O(a, s′, o)*Γao[i][j]
+            for (j,s′) in enumerate(𝒮)) for (i,o) in enumerate(𝒪))
+            for s in 𝒮]
+        push!(Γa, α)
+    end
+    return argmax(α->α⋅b, Γa)
+end
+
+struct PointBasedValueIteration
+    B     # set of belief points
+    k_max # maximum number of iterations
+end
+function update(𝒫::POMDP, M::PointBasedValueIteration, Γ)
+    return [backup(𝒫, Γ, b) for b in M.B]
+end
+function solve(M::PointBasedValueIteration, 𝒫)
+    Γ = fill(baws_lowerbound(𝒫), length(𝒫.𝒜))
+    Γ = alphavector_iteration(𝒫, M, Γ)
+    return LookaheadAlphaVectorPolicy(𝒫, Γ)
+end
 
 
+struct RandomizedPointBasedValueIteration
+    B     # set of belief points
+    k_max # maximum number of iterations
+end
+function update(𝒫::POMDP, M::RandomizedPointBasedValueIteration, Γ)
+    Γ′, B′ = [], copy(M.B)
+    while !isempty(B′)
+        b = rand(B′)
+        α = argmax(α->α⋅b, Γ)
+        α′ = backup(𝒫, Γ, b)
+        if α′⋅b ≥ α⋅b
+            push!(Γ′, α′)
+        else
+            push!(Γ′, α)
+        end
+        filter!(b->maximum(α⋅b for α in Γ′) <
+            maximum(α⋅b for α in Γ), B′)
+    end
+    return Γ′
+end
+function solve(M::RandomizedPointBasedValueIteration, 𝒫)
+    Γ = [baws_lowerbound(𝒫)]
+    Γ = alphavector_iteration(𝒫, M, Γ)
+    return LookaheadAlphaVectorPolicy(𝒫, Γ)
+end
 
 
+struct SawtoothPolicy
+    𝒫 # POMDP problem
+    V # dictionary mapping beliefs to utilities
+end
+function basis(𝒫)
+    n = length(𝒫.𝒮)
+    e(i) = [j == i ? 1.0 : 0.0 for j in 1:n]
+    return [e(i) for i in 1:n]
+end
+function utility(π::SawtoothPolicy, b)
+    𝒫, V = π.𝒫, π.V
+    if haskey(V, b)
+        return V[b]
+    end
+    n = length(𝒫.𝒮)
+    E = basis(𝒫)
+    u = sum(V[E[i]] * b[i] for i in 1:n)
+    for (b′, u′) in V
+        if b′ ∉ E
+            i = argmax([norm(b-e, 1) - norm(b′-e, 1) for e in E])
+            w = [norm(b - e, 1) for e in E]
+            w[i] = norm(b - b′, 1)
+            w /= sum(w)
+            w = [1 - wi for wi in w]
+            α = [V[e] for e in E]
+            α[i] = u′
+            u = min(u, w⋅α)
+        end
+    end
+    return u
+end
+(π::SawtoothPolicy)(b) = greedy(π, b).a
 
 
+struct SawtoothIteration
+    V     # initial mapping from beliefs to utilities
+    B     # beliefs to compute values including those in V map
+    k_max # maximum number of iterations
+end
+function solve(M::SawtoothIteration, 𝒫::POMDP)
+    E = basis(𝒫)
+    π = SawtoothPolicy(𝒫, M.V)
+    for k in 1:M.k_max
+        V = Dict(b => (b ∈ E ? M.V[b] : greedy(π, b).u) for b in M.B)
+        π = SawtoothPolicy(𝒫, V)
+    end
+    return π
+end
+
+#=
+n = length(𝒫.𝒮)
+πfib = solve(FastInformedBound(1), 𝒫)
+V = Dict(e => utility(πfib, e) for e in basis(𝒫))
+B = [[p, 1 - p] for p in 0.0:0.2:1.0]
+π = solve(SawtoothIteration(V, B, 2), 𝒫)
+=#
+
+function randstep(𝒫::POMDP, b, a)
+    s = rand(SetCategorical(𝒫.𝒮, b))
+    s′, r, o = 𝒫.TRO(s, a)
+    b′ = update(b, 𝒫, a, o)
+    return b′, r
+end
+
+function random_belief_expansion(𝒫, B)
+    B′ = copy(B)
+    for b in B
+        a = rand(𝒫.𝒜)
+        b′, r = randstep(𝒫, b, a)
+        push!(B′, b′)
+    end
+    return unique!(B′)
+end
+
+function exploratory_belief_expansion(𝒫, B)
+    B′ = copy(B)
+    for b in B
+        best = (b=copy(b), d=0.0)
+        for a in 𝒫.𝒜
+            b′, r = randstep(𝒫, b, a)
+            d = minimum(norm(b - b′, 1) for b in B′)
+            if d > best.d
+                best = (b=b′, d=d)
+            end
+        end
+        push!(B′, best.b)
+    end
+    return unique!(B′)
+end
 
 
+struct SawtoothHeuristicSearch
+    b     # initial belief
+    δ     # gap threshold
+    d     # depth
+    k_max # maximum number of iterations
+    k_fib # number of iterations for fast informed bound
+end
+function explore!(M::SawtoothHeuristicSearch, 𝒫, πhi, πlo, b, d=0)
+    𝒮, 𝒜, 𝒪, γ = 𝒫.𝒮, 𝒫.𝒜, 𝒫.𝒪, 𝒫.γ
+    ϵ(b′) = utility(πhi, b′) - utility(πlo, b′)
+    if d ≥ M.d || ϵ(b) ≤ M.δ / γ^d
+        return
+    end
+    a = πhi(b)
+    o = argmax(o -> ϵ(update(b, 𝒫, a, o)), 𝒪)
+    b′ = update(b, 𝒫, a, o)
+    explore!(M, 𝒫, πhi, πlo, b′, d+1)
+    if b′ ∉ basis(𝒫)
+        πhi.V[b′] = greedy(πhi, b′).u
+    end
+    push!(πlo.Γ, backup(𝒫, πlo.Γ, b′))
+end
+function solve(M::SawtoothHeuristicSearch, 𝒫::POMDP)
+    πfib = solve(FastInformedBound(M.k_fib), 𝒫)
+    Vhi = Dict(e => utility(πfib, e) for e in basis(𝒫))
+    πhi = SawtoothPolicy(𝒫, Vhi)
+    πlo = LookaheadAlphaVectorPolicy(𝒫, [baws_lowerbound(𝒫)])
+    for i in 1:M.k_max
+        explore!(M, 𝒫, πhi, πlo, M.b)
+        if utility(πhi, M.b) - utility(πlo, M.b) < M.δ
+            break
+        end
+    end
+    return πlo
+end
 
 
+struct TriangulatedPolicy
+    𝒫 # POMDP problem
+    V # dictionary mapping beliefs to utilities
+    B # beliefs
+    T # Freudenthal triangulation
+end
+function TriangulatedPolicy(𝒫::POMDP, m)
+    T = FreudenthalTriangulation(length(𝒫.𝒮), m)
+    B = belief_vertices(T)
+    V = Dict(b => 0.0 for b in B)
+    return TriangulatedPolicy(𝒫, V, B, T)
+end
+function utility(π::TriangulatedPolicy, b)
+    B, λ = belief_simplex(π.T, b)
+    return sum(λi*π.V[b] for (λi, b) in zip(λ, B))
+end
+(π::TriangulatedPolicy)(b) = greedy(π, b).a
 
 
+struct TriangulatedIteration
+    m # granulatiry
+    k_max # maximum number of iterations
+end
+function solve(M::TriangulatedIteration, 𝒫)
+    π = TriangulatedPolicy(𝒫, M.m)
+    U(b) = utility(π, b)
+    for k in 1:M.k_max
+        U′ = [greedy(𝒫, U, b).u for b in π.B]
+        for (b, u′) in zip(π.B, U′)
+            π.V[b] = u′
+        end
+    end
+    return π
+end
 
 
+#  Online Belief State Planning
+
+#=
+k_max = 10 # maximum number of iterations of QMDP
+πQMDP = solve(QMDP(k_max), 𝒫)
+d = 5 # depth
+U(b) = utility(πQMDP, b)
+π = ForwardSearch(𝒫, d, U)
+π([0.5,0.2,0.3])
+
+k_max = 10 # maximum number of iterations for bounds
+πFIB = solve(FastInformedBound(k_max), 𝒫)
+d = 5 # depth
+Ulo(b) = utility(πFIB, b)
+B = [[p, 1 - p] for p in 0.0:0.2:1.0]
+πPBVI = solve(PointBasedValueIteration(B, k_max), 𝒫)
+Uhi(b) = utility(πPBVI, b)
+Qhi(b,a) = lookahead(𝒫, Uhi, b, a)
+π = BranchAndBound(𝒫, d, Ulo, Qhi)
+π([0.4,0.6])
+=#
+
+struct HistoryMonteCarloTreeSearch
+    𝒫 # problem
+    N # visit counts
+    Q # action value estimates
+    d # depth
+    m # number of simulations
+    c # exploration constant
+    U # value function estimate
+end
+function explore(π::HistoryMonteCarloTreeSearch, h)
+    𝒜, N, Q, c = π.𝒫.𝒜, π.N, π.Q, π.c
+    Nh = sum(get(N, (h,a), 0) for a in 𝒜)
+    return argmax(a->Q[(h,a)] + c*bonus(N[(h,a)], Nh), 𝒜)
+end
+function simulate(π::HistoryMonteCarloTreeSearch, s, h, d)
+    if d ≤ 0
+        return π.U(s)
+    end
+    𝒫, N, Q, c = π.𝒫, π.N, π.Q, π.c
+    𝒮, 𝒜, TRO, γ = 𝒫.𝒮, 𝒫.𝒜, 𝒫.TRO, 𝒫.γ
+    if !haskey(N, (h, first(𝒜)))
+        for a in 𝒜
+            N[(h,a)] = 0
+            Q[(h,a)] = 0.0
+        end
+        return π.U(s)
+    end
+    a = explore(π, h)
+    s′, r, o = TRO(s,a)
+    q = r + γ*simulate(π, s′, vcat(h, (a,o)), d-1)
+    N[(h,a)] += 1
+    Q[(h,a)] += (q-Q[(h,a)])/N[(h,a)]
+    return q
+end
+function (π::HistoryMonteCarloTreeSearch)(b, h=[])
+    for i in 1:π.m
+        s = rand(SetCategorical(π.𝒫.𝒮, b))
+        simulate(π, s, h, π.d)
+    end
+    return argmax(a->π.Q[(h,a)], π.𝒫.𝒜)
+end
 
 
+struct DeterminizedParticle
+    s # state
+    i # scenario index
+    j # depth index
+end
+function successor(𝒫, Φ, ϕ, a)
+    𝒮, 𝒪, T, O = 𝒫.𝒮, 𝒫.𝒪, 𝒫.T, 𝒫.O
+    p = 0.0
+    for (s′, o) in product(𝒮, 𝒪)
+        p += T(ϕ.s, a, s′) * O(a, s′, o)
+        if p ≥ Φ[ϕ.i, ϕ.j]
+            return (s′, o)
+        end
+    end
+    return last(𝒮), last(𝒪)
+end
+function possible_observations(𝒫, Φ, b, a)
+    𝒪 = []
+    for ϕ in b
+        s′, o = successor(𝒫, Φ, ϕ, a)
+        push!(𝒪, o)
+    end
+    return unique(𝒪)
+end
+function update(b, Φ, 𝒫, a, o)
+    b′ = []
+    for ϕ in b
+        s′, o′ = successor(𝒫, Φ, ϕ, a)
+        if o == o′
+            push!(b′, DeterminizedParticle(s′, ϕ.i, ϕ.j + 1))
+        end
+    end
+    return b′
+end
 
 
+struct DeterminizedSparseTreeSearch
+    𝒫 # problem
+    d # depth
+    Φ # m×d determinizing matrix
+    U # value function to use at leaf nodes
+end
+function determinized_sparse_tree_search(𝒫, b, d, Φ, U)
+    𝒮, 𝒜, 𝒪, T, R, O, γ = 𝒫.𝒮, 𝒫.𝒜, 𝒫.𝒪, 𝒫.T, 𝒫.R, 𝒫.O, 𝒫.γ
+    if d == 0
+        return (a=nothing, u=U(b))
+    end
+    best = (a=nothing, u=-Inf)
+    for a in 𝒜
+    u = sum(R(ϕ.s, a) for ϕ in b) / length(b)
+    for o in possible_observations(𝒫, Φ, b, a)
+        Poba = sum(sum(O(a,s′,o)*T(ϕ.s,a,s′) for s′ in 𝒮)
+            for ϕ in b) / length(b)
+        b′ = update(b, Φ, 𝒫, a, o)
+        u′ = determinized_sparse_tree_search(𝒫,b′,d-1,Φ,U).u
+        u += γ*Poba*u′
+    end
+    if u > best.u
+        best = (a=a, u=u)
+    end
+    end
+    return best
+end
+function determized_approximate_belief(b, 𝒫, m)
+    particles = []
+    for i in 1:m
+        s = rand(SetCategorical(𝒫.𝒮, b))
+        push!(particles, DeterminizedParticle(s, i, 1))
+    end
+    return particles
+end
+function (π::DeterminizedSparseTreeSearch)(b)
+    particles = determized_approximate_belief(b, π.𝒫, size(π.Φ,1))
+    return determinized_sparse_tree_search(π.𝒫,particles,π.d,π.Φ,π.U).a
+end
 
 
+struct GapHeuristicSearch
+    𝒫     # problem
+    Uhi   # upper bound on value function
+    Ulo   # lower bound on value function
+    π     # rollout policy
+    δ     # gap threshold
+    k_max # maximum number of simulations
+    d_max # maximum depth
+end
+function heuristic_search(π::GapHeuristicSearch, b, d)
+    𝒫, Uhi, Ulo, δ = π.𝒫, π.Uhi, π.Ulo, π.δ
+    𝒮, 𝒜, 𝒪, R, γ = 𝒫.𝒮, 𝒫.𝒜, 𝒫.𝒪, 𝒫.R, 𝒫.γ
+    B = Dict((a,o)=>update(b,𝒫,a,o) for (a,o) in product(𝒜,𝒪))
+    B = merge(B, Dict(()=>copy(b)))
+    Rmax = maximum(R(s,a) for (s,a) in product(𝒮,𝒜))
+    for (ao, b′) in B
+        if !haskey(Uhi, b′)
+            Uhi[b′], Ulo[b′] = Rmax/(1.0-γ), rollout(𝒫,b′,π.π,d)
+        end
+    end
+    if d == 0 || Uhi[b] - Ulo[b] ≤ δ
+        return
+    end
+    a = argmax(a -> lookahead(𝒫,b′->Uhi[b′],b,a), 𝒜)
+    o = argmax(o -> Uhi[B[(a, o)]] - Ulo[B[(a, o)]], 𝒪)
+    b′ = update(b,𝒫,a,o)
+    heuristic_search(π,b′,d-1)
+    Uhi[b] = maximum(lookahead(𝒫,b′->Uhi[b′],b,a) for a in 𝒜)
+    Ulo[b] = maximum(lookahead(𝒫,b′->Ulo[b′],b,a) for a in 𝒜)
+end
+function (π::GapHeuristicSearch)(b)
+    Uhi, Ulo, k_max, d_max, δ = π.Uhi, π.Ulo, π.k_max, π.d_max, M.δ
+    for i in 1:k_max
+        heuristic_search(π, b, d_max)
+    if Uhi[b] - Ulo[b] < δ
+        break
+    end
+    end
+    return argmax(a -> lookahead(𝒫,b′->Ulo[b′],b,a), 𝒫.𝒜)
+end
 
 
+# Controller Abstractions
+
+mutable struct ControllerPolicy
+    𝒫 # problem
+    X # set of controller nodes
+    ψ # action selection distribution
+    η # successor selection distribution
+end
+function (π::ControllerPolicy)(x)
+    𝒜, ψ = π.𝒫.𝒜, π.ψ
+    dist = [ψ[x, a] for a in 𝒜]
+    return rand(SetCategorical(𝒜, dist))
+end
+function update(π::ControllerPolicy, x, a, o)
+    X, η = π.X, π.η
+    dist = [η[x, a, o, x′] for x′ in X]
+    return rand(SetCategorical(X, dist))
+end
 
 
+function utility(π::ControllerPolicy, U, x, s)
+    𝒮, 𝒜, 𝒪 = π.𝒫.𝒮, π.𝒫.𝒜, π.𝒫.𝒪
+    T, O, R, γ = π.𝒫.T, π.𝒫.O, π.𝒫.R, π.𝒫.γ
+    X, ψ, η = π.X, π.ψ, π.η
+    U′(a,s′,o) = sum(η[x,a,o,x′]*U[x′,s′] for x′ in X)
+    U′(a,s′) = T(s,a,s′)*sum(O(a,s′,o)*U′(a,s′,o) for o in 𝒪)
+    U′(a) = R(s,a) + γ*sum(U′(a,s′) for s′ in 𝒮)
+    return sum(ψ[x,a]*U′(a) for a in 𝒜)
+end
+function iterative_policy_evaluation(π::ControllerPolicy, k_max)
+    𝒮, X = π.𝒫.𝒮, π.X
+    U = Dict((x, s) => 0.0 for x in X, s in 𝒮)
+    for k in 1:k_max
+        U = Dict((x, s) => utility(π, U, x, s) for x in X, s in 𝒮)
+    end
+    return U
+end
 
 
+struct ControllerPolicyIteration
+    k_max # number of iterations
+    eval_max # number of evaluation iterations
+end
+function solve(M::ControllerPolicyIteration, 𝒫::POMDP)
+    𝒜, 𝒪, k_max, eval_max = 𝒫.𝒜, 𝒫.𝒪, M.k_max, M.eval_max
+    X = [1]
+    ψ = Dict((x, a) => 1.0 / length(𝒜) for x in X, a in 𝒜)
+    η = Dict((x, a, o, x′) => 1.0 for x in X, a in 𝒜, o in 𝒪, x′ in X)
+    π = ControllerPolicy(𝒫, X, ψ, η)
+    for i in 1:k_max
+    prevX = copy(π.X)
+    U = iterative_policy_evaluation(π, eval_max)
+    policy_improvement!(π, U, prevX)
+    prune!(π, U, prevX)
+    end
+    return π
+end
+function policy_improvement!(π::ControllerPolicy, U, prevX)
+    𝒮, 𝒜, 𝒪 = π.𝒫.𝒮, π.𝒫.𝒜, π.𝒫.𝒪
+    X, ψ, η = π.X, π.ψ, π.η
+    repeatX𝒪 = fill(X, length(𝒪))
+    assign𝒜X′ = vec(collect(product(𝒜, repeatX𝒪...)))
+    for ax′ in assign𝒜X′
+        x, a = maximum(X) + 1, ax′[1]
+        push!(X, x)
+        successor(o) = ax′[findfirst(isequal(o), 𝒪) + 1]
+        U′(o,s′) = U[successor(o), s′]
+        for s in 𝒮
+            U[x, s] = lookahead(π.𝒫, U′, s, a)
+        end
+        for a′ in 𝒜
+            ψ[x, a′] = a′ == a ? 1.0 : 0.0
+            for (o, x′) in product(𝒪, prevX)
+                η[x, a′, o, x′] = x′ == successor(o) ? 1.0 : 0.0
+            end
+        end
+    end
+    for (x, a, o, x′) in product(X, 𝒜, 𝒪, X)
+        if !haskey(η, (x, a, o, x′))
+            η[x, a, o, x′] = 0.0
+        end
+    end
+end
 
+
+function prune!(π::ControllerPolicy, U, prevX)
+    𝒮, 𝒜, 𝒪, X, ψ, η = π.𝒫.𝒮, π.𝒫.𝒜, π.𝒫.𝒪, π.X, π.ψ, π.η
+    newX, removeX = setdiff(X, prevX), []
+    # prune dominated from previous nodes
+    dominated(x,x′) = all(U[x,s] ≤ U[x′,s] for s in 𝒮)
+    for (x,x′) in product(prevX, newX)
+        if x′ ∉ removeX && dominated(x, x′)
+            for s in 𝒮
+                U[x,s] = U[x′,s]
+            end
+            for a in 𝒜
+                ψ[x,a] = ψ[x′,a]
+                for (o,x′′) in product(𝒪, X)
+                    η[x,a,o,x′′] = η[x′,a,o,x′′]
+                end
+            end
+            push!(removeX, x′)
+        end
+    end
+    # prune identical from previous nodes
+    identical_action(x,x′) = all(ψ[x,a] ≈ ψ[x′,a] for a in 𝒜)
+    identical_successor(x,x′) = all(η[x,a,o,x′′] ≈ η[x′,a,o,x′′]
+        for a in 𝒜, o in 𝒪, x′′ in X)
+    identical(x,x′) = identical_action(x,x′) && identical_successor(x,x′)
+    for (x,x′) in product(prevX, newX)
+        if x′ ∉ removeX && identical(x,x′)
+            push!(removeX, x′)
+        end
+    end
+    # prune dominated from new nodes
+    for (x,x′) in product(X, newX)
+        if x′ ∉ removeX && dominated(x′,x) && x ≠ x′
+            push!(removeX, x′)
+        end
+    end
+    # update controller
+    π.X = setdiff(X, removeX)
+    π.ψ = Dict(k => v for (k,v) in ψ if k[1] ∉ removeX)
+    π.η = Dict(k => v for (k,v) in η if k[1] ∉ removeX)
+end
+
+
+struct NonlinearProgramming
+    b # initial belief
+    ℓ # number of nodes
+end
+function tensorform(𝒫::POMDP)
+    𝒮, 𝒜, 𝒪, R, T, O = 𝒫.𝒮, 𝒫.𝒜, 𝒫.𝒪, 𝒫.R, 𝒫.T, 𝒫.O
+    𝒮′ = eachindex(𝒮)
+    𝒜′ = eachindex(𝒜)
+    𝒪′ = eachindex(𝒪)
+    R′ = [R(s,a) for s in 𝒮, a in 𝒜]
+    T′ = [T(s,a,s′) for s in 𝒮, a in 𝒜, s′ in 𝒮]
+    O′ = [O(a,s′,o) for a in 𝒜, s′ in 𝒮, o in 𝒪]
+    return 𝒮′, 𝒜′, 𝒪′, R′, T′, O′
+end
+function solve(M::NonlinearProgramming, 𝒫::POMDP)
+    x1, X = 1, collect(1:M.ℓ)
+    𝒫, γ, b = 𝒫, 𝒫.γ, M.b
+    𝒮, 𝒜, 𝒪, R, T, O = tensorform(𝒫)
+    model = Model(Ipopt.Optimizer)
+    @variable(model, U[X,𝒮])
+    @variable(model, ψ[X,𝒜] ≥ 0)
+    @variable(model, η[X,𝒜,𝒪,X] ≥ 0)
+    @objective(model, Max, b⋅U[x1,:])
+    @NLconstraint(model, [x=X,s=𝒮],
+        U[x,s] == (sum(ψ[x,a]*(R[s,a] + γ*sum(T[s,a,s′]*sum(O[a,s′,o]
+        *sum(η[x,a,o,x′]*U[x′,s′] for x′ in X)
+        for o in 𝒪) for s′ in 𝒮)) for a in 𝒜)))
+    @constraint(model, [x=X], sum(ψ[x,:]) == 1)
+    @constraint(model, [x=X,a=𝒜,o=𝒪], sum(η[x,a,o,:]) == 1)
+    optimize!(model)
+    ψ′, η′ = value.(ψ), value.(η)
+    return ControllerPolicy(𝒫, X,
+        Dict((x, 𝒫.𝒜[a]) => ψ′[x, a] for x in X, a in 𝒜),
+        Dict((x, 𝒫.𝒜[a], 𝒫.𝒪[o], x′) => η′[x, a, o, x′]
+            for x in X, a in 𝒜, o in 𝒪, x′ in X))
+end
+
+
+struct ControllerGradient
+    b     # initial belief
+    ℓ     # number of nodes
+    α     # gradient step
+    k_max # maximum iterations
+end
+function solve(M::ControllerGradient, 𝒫::POMDP)
+    𝒜, 𝒪, ℓ, k_max = 𝒫.𝒜, 𝒫.𝒪, M.ℓ, M.k_max
+    X = collect(1:ℓ)
+    ψ = Dict((x, a) => rand() for x in X, a in 𝒜)
+    η = Dict((x, a, o, x′) => rand() for x in X, a in 𝒜, o in 𝒪, x′ in X)
+    π = ControllerPolicy(𝒫, X, ψ, η)
+    for i in 1:k_max
+        improve!(π, M, 𝒫)
+    end
+    return π
+end
+function improve!(π::ControllerPolicy, M::ControllerGradient, 𝒫::POMDP)
+    𝒮, 𝒜, 𝒪, X, x1, ψ, η = 𝒫.𝒮, 𝒫.𝒜, 𝒫.𝒪, π.X, 1, π.ψ, π.η
+    n, m, z, b, ℓ, α = length(𝒮), length(𝒜), length(𝒪), M.b, M.ℓ, M.α
+    ∂U′∂ψ, ∂U′∂η = gradient(π, M, 𝒫)
+    UIndex(x, s) = (s - 1) * ℓ + (x - 1) + 1
+    E(U, x1, b) = sum(b[s]*U[UIndex(x1,s)] for s in 1:n)
+    ψ′ = Dict((x, a) => 0.0 for x in X, a in 𝒜)
+    η′ = Dict((x, a, o, x′) => 0.0 for x in X, a in 𝒜, o in 𝒪, x′ in X)
+    for x in X
+        ψ′x = [ψ[x, a] + α * E(∂U′∂ψ(x, a), x1, b) for a in 𝒜]
+        ψ′x = project_to_simplex(ψ′x)
+        for (aIndex, a) in enumerate(𝒜)
+            ψ′[x, a] = ψ′x[aIndex]
+        end
+        for (a, o) in product(𝒜, 𝒪)
+            η′x = [(η[x, a, o, x′] +
+                α * E(∂U′∂η(x, a, o, x′), x1, b)) for x′ in X]
+            η′x = project_to_simplex(η′x)
+            for (x′Index, x′) in enumerate(X)
+                η′[x, a, o, x′] = η′x[x′Index]
+            end
+        end
+    end
+    π.ψ, π.η = ψ′, η′
+end
+function project_to_simplex(y)
+    u = sort(copy(y), rev=true)
+    i = maximum([j for j in eachindex(u)
+        if u[j] + (1 - sum(u[1:j])) / j > 0.0])
+    δ = (1 - sum(u[j] for j = 1:i)) / i
+    return [max(y[j] + δ, 0.0) for j in eachindex(u)]
+end
+
+
+function gradient(π::ControllerPolicy, M::ControllerGradient, 𝒫::POMDP)
+    𝒮, 𝒜, 𝒪, T, O, R, γ = 𝒫.𝒮, 𝒫.𝒜, 𝒫.𝒪, 𝒫.T, 𝒫.O, 𝒫.R, 𝒫.γ
+    X, x1, ψ, η = π.X, 1, π.ψ, π.η
+    n, m, z = length(𝒮), length(𝒜), length(𝒪)
+    X𝒮 = vec(collect(product(X, 𝒮)))
+    T′ = [sum(ψ[x, a] * T(s, a, s′) * sum(O(a, s′, o) * η[x, a, o, x′]
+        for o in 𝒪) for a in 𝒜) for (x, s) in X𝒮, (x′, s′) in X𝒮]
+    R′ = [sum(ψ[x, a] * R(s, a) for a in 𝒜) for (x, s) in X𝒮]
+    Z = 1.0I(length(X𝒮)) - γ * T′
+    invZ = inv(Z)
+    ∂Z∂ψ(hx, ha) = [x == hx ? (-γ * T(s, ha, s′)
+        * sum(O(ha, s′, o) * η[hx, ha, o, x′]
+        for o in 𝒪)) : 0.0
+            for (x, s) in X𝒮, (x′, s′) in X𝒮]
+    ∂Z∂η(hx, ha, ho, hx′) = [x == hx && x′ == hx′ ? (-γ * ψ[hx, ha]
+        * T(s, ha, s′) * O(ha, s′, ho)) : 0.0
+        for (x, s) in X𝒮, (x′, s′) in X𝒮]
+    ∂R′∂ψ(hx, ha) = [x == hx ? R(s, ha) : 0.0 for (x, s) in X𝒮]
+    ∂R′∂η(hx, ha, ho, hx′) = [0.0 for (x, s) in X𝒮]
+    ∂U′∂ψ(hx, ha) = invZ * (∂R′∂ψ(hx, ha) - ∂Z∂ψ(hx, ha) * invZ * R′)
+    ∂U′∂η(hx, ha, ho, hx′) = invZ * (∂R′∂η(hx, ha, ho, hx′)
+        - ∂Z∂η(hx, ha, ho, hx′) * invZ * R′)
+    return ∂U′∂ψ, ∂U′∂η
+end
 
 
 
