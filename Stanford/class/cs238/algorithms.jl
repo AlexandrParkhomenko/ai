@@ -1,4 +1,6 @@
 
+# Mykel J. Kochenderfer, Tim A. Wheeler, Kyle H. Wray (2022) Algorithms for Decision Making
+
 using LinearAlgebra
 using Distributions
 using LightGraphs
