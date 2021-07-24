@@ -7,6 +7,7 @@ The repository is under development.
 I use:
 - https://www.spyder-ide.org/
 - https://orangedatamining.com/
+- https://www.rstudio.com/
 
 ```
 - Chemical bonds are what make matter matter. 
