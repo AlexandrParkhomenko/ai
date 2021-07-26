@@ -24,3 +24,6 @@ confint <- as.vector(t.test(m4, m6, var.equal = TRUE)$conf.int)
 # Bayes' Formula
 # P(B|A) = P(B&A)/P(A) = P(A|B)*P(B)/P(A) = P(A|B)*P(B)/( P(A|B)*P(B) + P(A|~B)*P(~B) )
 
+
+# http://www.sci.utah.edu/~arpaiva/classes/UT_ece3530/hypothesis_testing.pdf
+
