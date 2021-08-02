@@ -27,3 +27,10 @@ confint <- as.vector(t.test(m4, m6, var.equal = TRUE)$conf.int)
 
 # http://www.sci.utah.edu/~arpaiva/classes/UT_ece3530/hypothesis_testing.pdf
 
+# Bernouli distribution
+# Suppose a friend has 8 children (oh my!), 7 of weach are girls.
+# If each gender has an independent probability 50% of each birth, what is a probability getting 7 or more girls birth out of 8 birth?
+choose(8,7)*.5^8 + choose(8,8)*.5^8
+# equal
+pbinom(6, size = 8, prob = .5, lower.tail = FALSE)
+
