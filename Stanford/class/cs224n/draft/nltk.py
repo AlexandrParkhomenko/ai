@@ -19,3 +19,6 @@ stemmer = SnowballStemmer("russian")
 l=[stemmer.stem(word) for word in tokens]
 print(l)
 # ['клен', 'ты', 'мо', 'опа', ',', 'клен', 'заледенел', ',', 'что', 'сто', 'нагнувш', 'под', 'метел', 'бел', '?', 'ил', 'что', 'увидел', '?', 'ил', 'что', 'услыша', '?', 'словн', 'за', 'деревн', 'погуля', 'ты', 'вышел', '.']
+'''
+More https://stackoverflow.com/questions/54962539/how-to-get-the-probability-of-bigrams-in-a-text-of-sentences
+'''
