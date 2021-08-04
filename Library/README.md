@@ -2,6 +2,8 @@
 
 - [Deep Learning. Ian Goodfellow, Yoshua Bengio and Aaron Courville.](https://www.deeplearningbook.org)
 
+- [Hal Daumé III (2016) A Course in Machine Learning](http://ciml.info/)
+
 - [Jaynes, E. T. (2003). Probability Theory: The Logic of Science. Cambridge University Press](http://www.med.mcgill.ca/epidemiology/hanley/bios601/GaussianModel/JaynesProbabilityTheory.pdf)
 
 - [**MIT Resources. 6.036 Lecture Notes**](https://phillipi.github.io/6.882/2020/Resources.html)
