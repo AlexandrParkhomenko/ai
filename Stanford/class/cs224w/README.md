@@ -65,3 +65,13 @@
 - 19.1 [Pre Training Graph Neural Networks](https://www.youtube.com/watch?v=JDW82csukhE&pp=sAQA)
 - 19.2 [Hyperbolic Graph Embeddings](https://www.youtube.com/watch?v=m2zoddmgvd0&pp=sAQA)
 - 19.3 [Design Space of Graph Neural Networks](https://www.youtube.com/watch?v=8OhnwzT9ypg&pp=sAQA)
+
+-------------------------------------------------------------------------------------------------------------------
+
+### Tools
+
+- [PyTorch Geometric (PyG)](https://github.com/rusty1s/pytorch_geometric)
+- [DeepSNAP](https://github.com/snap-stanford/deepsnap)
+- [GraphGym](https://github.com/snap-stanford/GraphGym)
+
+
