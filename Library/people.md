@@ -18,6 +18,7 @@ You can't give up on them. Never.
 | Алексей | Харламов | Samsung Research в Москве. |
 | Михаил | Галкин | TU Dresden & Fraunhofer IAIS [Курс по графам знаний (Knowledge Graphs)](https://ods.ai/tracks/kgcourse2021) |
 | Георгий | [Труш](https://github.com/geotrush) | |
+| Николай Юрьевич | Золотых | ННГУ [git](https://github.com/NikolaiZolotykh) |
 | Yury | [Kashnitsky](https://github.com/Yorko) | [mlcourse.ai](https://mlcourse.ai/) [habr](https://habr.com/ru/company/ods/blog/325654/) |
 | Dmitry | [Ulyanov](https://github.com/DmitryUlyanov) | Skolkovo [Yandex Курсы.](https://github.com/yandexdataschool/Practical_DL) |
 | Vadim | [Lebedev](https://github.com/vadim-v-lebedev) | Skolkovo |
