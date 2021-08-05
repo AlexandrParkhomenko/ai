@@ -60,6 +60,7 @@
 | Semi-Naïve Bayesian Classifier | SNBC | частично наивный байесовский классификатор | ЧНБК |
 | Stochastic Mixing Iterative Learning    | SMILe       |                                                    |              |
 | Stochastic-Shortest-Path                | SSP         |                                                    |              |
+| Strongly Connected Components           | SCCs        | Сильно Связанные Компоненты (Графа)                | ССК          |
 | Temporal Event Network | TEN | временнáя сеть событий | ВСС |
 | Temporal Node | TN | временной узел (сети) | ВУ |
 | Temporal Nodes Bayesian Network | TNBN | байесовская сеть с временнЫми узлами | БСВУ |
