@@ -48,6 +48,7 @@
 | Naïve Bayes Classifier | NBC | наивный байесовский классификатор | НБК |
 | Negative Log Likelihood Multiclass      | NLLM        |                                                    |              |
 | Negative Log-Likelihood                 | NLL         |                                                    |              |
+| Noise Contrastive Estimation            | NCE         | Оценка шума по контрасту                           |              |
 | Parental Ancestral Graph | PAG | родительский наследственный граф | РНГ |
 | Partially Observable Markov Decision Process | POMDP  |                                                    |              |
 | Partially Observable Markov Decision Process | POMDP | частично наблюдаемый марковский процесс принятия решений | ЧНМПР |
