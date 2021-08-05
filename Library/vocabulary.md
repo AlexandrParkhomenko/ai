@@ -24,7 +24,8 @@
 | Generative Adversarial Networks         | GAN         | генеративные состязательные сети                   |              |
 | Gibbs Random Field | GRM | случайное поле Гиббса | СПГ |
 | Graph Convolution Policy Network        | GCPN        |                                                    |              |
-| Graph Neural Network                    | GNN         |                                                    |              |
+| Graph Convolution Network               | GСN         | графовая сверточная сеть                           | ГСС          |
+| Graph Neural Network                    | GNN         | графовая нейронная сеть                            | ГНС          |
 | Hidden Markov Model | HMM | скрытая марковская модель | СММ |
 | Independent and Identically Distributed | IID         | независимые и одинаково распределенные             |              |
 | Inductive Logic Programming | ILP | индуктивное логическое программирование | ИЛП |
