@@ -17,7 +17,7 @@
 | Dynamic Bayesian Network | DBN | динамическая байесовская сеть | ДБС |
 | Dynamic Bayesian Network Classifier | DBNC | классификатор на основе ДБС | КДБС |
 | Dynamic Decision Network | DDN | динамическая сеть принятия решений | ДСР |
-| Expectation Maximization EM-алгоритм | EM | |  |
+| Expectation Maximization | EM | EM-алгоритм | EM |
 | Expected Cost | EC | ожидаемые затраты | ОЗ |
 | False Negative | FN | ложноотрицательный | ЛО |
 | False Positive | FP | ложноположительный | ЛП |
