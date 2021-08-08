@@ -17,6 +17,7 @@
 - [Вячеслав Архипов - «Правда, чистая правда и статистика» или «15 распределений вероятности на все случаи жизни»](https://habr.com/ru/post/311092/)
 - [Вячеслав Архипов - Нескучный туториал по NumPy](https://habr.com/ru/post/469355/)
 - [bollu](https://github.com/bollu/) - [Всё, что вы знали о word2vec, неправда](https://habr.com/ru/post/454926/) / [word2vec tensorflow](https://github.com/tensorflow/docs/blob/master/site/en/tutorials/text/word2vec.ipynb) / [word2vec++](https://github.com/maxoodf/word2vec) / [word2vec](https://github.com/danielfrg/word2vec)
+- node2vec / DeepWalk / struc2vec
 
 ## Библиотеки
 - [РАИИ](http://raai.org/library/library.shtml?link)
