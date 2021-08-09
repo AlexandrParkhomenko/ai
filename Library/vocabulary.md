@@ -23,6 +23,7 @@
 | False Negative | FN | ложноотрицательный | ЛО |
 | False Positive | FP | ложноположительный | ЛП |
 | Generative Adversarial Networks         | GAN         | генеративные состязательные сети                   |              |
+| Graph Attention Networks                | GAN         | графовые сети внимания                             |              |
 | Gibbs Random Field | GRM | случайное поле Гиббса | СПГ |
 | Graph Convolution Policy Network        | GCPN        |                                                    |              |
 | Graph Convolution Network               | GСN         | графовая сверточная сеть                           | ГСС          |
