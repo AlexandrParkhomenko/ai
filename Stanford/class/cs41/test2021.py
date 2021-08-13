@@ -4,6 +4,10 @@
 Created on Wed Feb  3 18:49:10 2021
 
 @author: a
+
+additional links:
+  https://fpk.unn.ru/kursy-programmirovaniya/programmirovanie-na-python/
+
 """
 
 '-'
