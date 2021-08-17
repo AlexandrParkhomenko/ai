@@ -27,6 +27,7 @@
 | Gibbs Random Field | GRM | случайное поле Гиббса | СПГ |
 | Graph Convolution Policy Network        | GCPN        |                                                    |              |
 | Graph Convolution Network               | GСN         | графовая сверточная сеть                           | ГСС          |
+| Graph Isomorphism Network               | GIN         | графовая изоморфная сеть                           | ГИС          |
 | Graph Neural Network                    | GNN         | графовая нейронная сеть                            | ГНС          |
 | Hidden Markov Model | HMM | скрытая марковская модель | СММ |
 | Independent and Identically Distributed | IID         | независимые и одинаково распределенные             |              |
