@@ -62,6 +62,7 @@
 | Probability Mass Function               | PMF         |                                                    |              |
 | Pseudolikelihood | PL | псевдоправдоподобие | ПП |
 | Reinforcement Learning                  | RL          |                                                    |              |
+| Relational Graph Convolution Network | RGCN | реляционная графовая сверточная сеть | РГСС |
 | Relational Probabilistic Graphical Model | RPGM | реляционная вероятностная графовая модель | РВГМ |
 | Semi-Naïve Bayesian Classifier | SNBC | частично наивный байесовский классификатор | ЧНБК |
 | Stochastic Mixing Iterative Learning    | SMILe       |                                                    |              |
