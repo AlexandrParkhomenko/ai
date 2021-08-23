@@ -72,6 +72,7 @@
 | Temporal Event Network | TEN | временнáя сеть событий | ВСС |
 | Temporal Node | TN | временной узел (сети) | ВУ |
 | Temporal Nodes Bayesian Network | TNBN | байесовская сеть с временнЫми узлами | БСВУ |
+| Translating Embeddings for Modeling Multi-relational Data | TransE | Трансляция вложений для моделирования многореляционных данных |  |
 | Tree Augmented Naive Bayes classifier | TAN | наивный байесовский классификатор, дополненный деревом | НБКД |
 
 
