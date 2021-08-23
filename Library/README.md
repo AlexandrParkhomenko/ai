@@ -12,7 +12,7 @@
 
 - [Stuart Russell and Peter Norvig. (2021). Artificial Intelligence: A Modern Approach, Fourth edition. Code for the book. ](https://github.com/aimacode/aima-python)
 
-- 715. [Sutton, R. and Barto, A. (1998). Reinforcement Learning: An Introduction. MIT Press. 2020](https://phillipi.github.io/6.882/2020/Resources.html)
+- 715 [Sutton, R. and Barto, A. (1998). Reinforcement Learning: An Introduction. MIT Press. 2020](https://phillipi.github.io/6.882/2020/Resources.html)
 
 - [Britannica - Machine learning etc. ](https://www.britannica.com/technology/machine-learning)
 
@@ -847,6 +847,7 @@
 - [ai.stanford.edu](https://ai.stanford.edu/~ang/papers/)
 
 ## Libraries
+- [Papers with Code ](https://paperswithcode.com/)
 - [Literature of Deep Learning for Graphs. Unsupervised Node Representation Learning, Node Representation Learning in Heterogeneous Graphs, Knowledge Graph Embedding ...](https://github.com/DeepGraphLearning/LiteratureDL4Graph)
 - [Deep Learning for Graphs in Chemistry and Biology](https://github.com/mufeili/DL4MolecularGraph)
 - [Deep Learning with Label Noise](https://github.com/gorkemalgan/deep_learning_with_noisy_labels_literature) Noisy marks in the data degrade the DeepNN result. Decision.
