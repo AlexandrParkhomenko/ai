@@ -43,7 +43,7 @@
 - 12.3 [Finding Frequent Subgraphs](https://www.youtube.com/watch?v=kUv4gY5e0hg&pp=sAQA)
 - 13.1 [Community Detection in Networks](https://www.youtube.com/watch?v=KXi4ha79o3s&pp=sAQA)
 - 13.2 [Network Communities](https://www.youtube.com/watch?v=mJQrtXZT5pw&pp=sAQA)
-- 13.3 [Louvain Algorithm](https://www.youtube.com/watch?v=0zuiLBOIcsw&pp=sAQA)
+- 13.3 [Louvain Algorithm](https://www.youtube.com/watch?v=0zuiLBOIcsw&pp=sAQA) [git](https://github.com/taynaud/python-louvain)
 - 13.4 [Detecting Overlapping Communities](https://www.youtube.com/watch?v=SHcVHrsgj8w&pp=sAQA)
 - 14.1 [Generative Models for Graphs](https://www.youtube.com/watch?v=OhjXpYIo9h4&pp=sAQA)
 - 14.2 [Erdos Renyi Random Graphs](https://www.youtube.com/watch?v=VC43S6Thwg0&pp=sAQA)
