@@ -32,6 +32,7 @@
 | Graph Convolution Network               | GСN         | графовая сверточная сеть                           | ГСС          |
 | Graph Isomorphism Network               | GIN         | графовая изоморфная сеть                           | ГИС          |
 | Graph Neural Network                    | GNN         | графовая нейронная сеть                            | ГНС          |
+| Hadamard Product, element-wise product | ⊙ | Произведение Адамара | ∘ |
 | Hidden Markov Model | HMM | скрытая марковская модель | СММ |
 | Independent and Identically Distributed | IID         | независимые и одинаково распределенные             |              |
 | Inductive Logic Programming | ILP | индуктивное логическое программирование | ИЛП |
