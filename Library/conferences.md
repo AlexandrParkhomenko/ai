@@ -10,6 +10,7 @@
 - [AISТAТS](http://aistats.org/) Society for Artificial Intelligence and Statistics
 - [CVPR](http://cvpr2021.thecvf.com/) Computer Vision and Pattern Recognition Conference
 - [ICCV](https://www.thecvf.com/) International Conference on Computer Vision
+    - [2019](https://iccv2019.thecvf.com/)
 - [ECCV](https://eccv2021.eu) European Conference on Computer Vision
 
 ### Computer Graphics
