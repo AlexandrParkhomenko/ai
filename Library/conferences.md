@@ -1,15 +1,16 @@
 ## Conferences
 
-- [rncai](http://2019.rncai.ru/about/)
-- [ICML](https://icml.cc/Conferences/2020/) [2019](https://rlgm.github.io/)
-- [ICLR](https://iclr.cc/Conferences/2020/) 
+- [rncai](http://2021.rncai.ru/about/)
+- [ICML](https://icml.cc/Conferences/2021/) 
+    - [2019](https://rlgm.github.io/)
+- [ICLR](https://iclr.cc/Conferences/2021/) 
     - [papers](https://iclr.cc/virtual_2020/papers.html?filter=keywords)
     - [simDL](https://simdl.github.io/papers/)
-- [NIPS](https://nips.cc/Conferences/2020/)
+- [NIPS](https://nips.cc/Conferences/2021/)
 - [AISТAТS](http://aistats.org/)
-- [CVPR](http://cvpr2020.thecvf.com/) Computer Vision and Pattern Recognition Conference
+- [CVPR](http://cvpr2021.thecvf.com/) Computer Vision and Pattern Recognition Conference
 - [ICCV](https://www.thecvf.com/)
-- [ECCV](https://eccv2020.eu) European Conference on Computer Vision
+- [ECCV](https://eccv2021.eu) European Conference on Computer Vision
 
 ### Computer Graphics
 - [SIGGRAPH](https://www.siggraph.org/)
