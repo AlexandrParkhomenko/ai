@@ -21,6 +21,7 @@
 | Dynamic Decision Network | DDN | динамическая сеть принятия решений | ДСР |
 | Erdős-Rényi model | ER | Модель Эрдёша-Реньи | ЭР |
 | Erdős-Rényi Random Graph | ERRG | Эрдёша-Реньи случайный граф | ЭРСГ |
+| Exestencial Positive First-Ordered, AND-OR | EPFO | Экзистенциально-позитивный первый порядок | ЭППП * |
 | Expectation Maximization | EM | EM-алгоритм | EM |
 | Expected Cost | EC | ожидаемые затраты | ОЗ |
 | False Negative | FN | ложноотрицательный | ЛО |
