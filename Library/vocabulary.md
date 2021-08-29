@@ -16,6 +16,7 @@
 | Decision Tree | DTD | дерево решений | ДР |
 | Decentralized Partially Observable Markov Decision Process | Dec-POMDP | децентрализованный частично наблюдаемый марковский процесс принятия решений | |
 | Directed Acyclic Graph | DAG | направленный ациклический граф | НАГ |
+| Disjunctive Normal Form | DNF | Дизъюнктивная нормальная форма  | ДНФ |
 | Dynamic Bayesian Network | DBN | динамическая байесовская сеть | ДБС |
 | Dynamic Bayesian Network Classifier | DBNC | классификатор на основе ДБС | КДБС |
 | Dynamic Decision Network | DDN | динамическая сеть принятия решений | ДСР |
