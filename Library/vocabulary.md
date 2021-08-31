@@ -73,6 +73,7 @@
 | Relational Graph Convolution Network | RGCN | реляционная графовая сверточная сеть | РГСС |
 | Relational Probabilistic Graphical Model | RPGM | реляционная вероятностная графовая модель | РВГМ |
 | Semi-Naïve Bayesian Classifier | SNBC | частично наивный байесовский классификатор | ЧНБК |
+| network Significance Profile | SP | Профиль значимости сети | ПЗ* |
 | Stochastic Mixing Iterative Learning    | SMILe       |                                                    |              |
 | Stochastic-Shortest-Path                | SSP         |                                                    |              |
 | Strongly Connected Components           | SCCs        | Сильно Связанные Компоненты (Графа)                | ССК          |
