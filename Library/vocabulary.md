@@ -81,6 +81,7 @@
 | Temporal Nodes Bayesian Network | TNBN | байесовская сеть с временнЫми узлами | БСВУ |
 | Translating Embeddings for Modeling Multi-relational Data | TransE | Трансляция вложений для моделирования многореляционных данных |  |
 | Tree Augmented Naive Bayes classifier | TAN | наивный байесовский классификатор, дополненный деревом | НБКД |
+| t-distributed Stochastic Neighbor Embedding | t-SNE | Стохастическое вложение соседей с t-распределением |  |
 
 
 
