@@ -248,7 +248,11 @@
 - Хранилище данных — версионирование анализа; создание и автоматизация пайплайнов данных; ребалансировка, смешивания и сочетания датасетов
 
 
+[cpython](https://github.com/python/cpython)
+The Python programming language
 
+[tensorflow](https://github.com/tensorflow/tensorflow)
+end-to-end open source platform for machine learning.
 
 [embox](https://github.com/embox/embox)
 Embox is a configurable RTOS designed for resource constrained and embedded systems.
