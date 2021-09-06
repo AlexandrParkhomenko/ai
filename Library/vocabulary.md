@@ -27,6 +27,7 @@
 | Expected Cost | EC | ожидаемые затраты | ОЗ |
 | False Negative | FN | ложноотрицательный | ЛО |
 | False Positive | FP | ложноположительный | ЛП |
+| Fast Gradient Sign Method | FGSM | Быстрый Знака Градиента Метод | БЗГМ* |
 | Generative Adversarial Networks         | GAN         | генеративные состязательные сети                   |              |
 | Graph Attention Networks                | GAT         | графовые сети внимания                             |              |
 | Gibbs Random Field | GRM | случайное поле Гиббса | СПГ |
