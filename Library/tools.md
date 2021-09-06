@@ -247,3 +247,8 @@
 - Управление и оркестровка GPU/CPU ресурсов, автоматическое масштабирование на облачных и локальных машинах
 - Хранилище данных — версионирование анализа; создание и автоматизация пайплайнов данных; ребалансировка, смешивания и сочетания датасетов
 
+
+
+
+[embox](https://github.com/embox/embox)
+Embox is a configurable RTOS designed for resource constrained and embedded systems.
