@@ -5,6 +5,7 @@
 | Bayesian Constraint-based Causal Discovery | BCCD | байесовский причинно-следственный анализ с учетом ограничений | БПСА |
 | Bayesian Network | BN | байесовская сеть | БС |
 | Bayesian network Augmented Naive Bayes classifier | BAN | наивный байесовский классификатор, дополненный байесовской сетью | НБКБС |
+| BigCLAM | Cluster Affiliation Model for Big Networks |  |  |
 | Breadth-First Search | BFS | поиск в ширину |  |
 | Causal Bayesian Network | CBN | причинно-следственная байесовская сеть | ПСБС |
 | Cross Entropy | CE | перекрёстная энтропия |  |
