@@ -1,6 +1,7 @@
 | term                                    | abbrevation | термин                                             | сокращение   |
 | --------------------------------------- | ----------- | -------------------------------------------------- | ------------ |
 | Algebraic Decision Diagram | ADD | алгебраическая диаграмма решений | АДР |
+| Affiliation Graph Model | AGM | Аффилированная графовая модель | АГМ |
 | Bayesian Chain Classifier | BCC | байесовская цепь (классификатор) | БЦ |
 | Bayesian Constraint-based Causal Discovery | BCCD | байесовский причинно-следственный анализ с учетом ограничений | БПСА |
 | Bayesian Network | BN | байесовская сеть | БС |
