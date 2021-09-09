@@ -256,6 +256,7 @@ end-to-end open source platform for machine learning.
 
 [pytorch](https://github.com/pytorch/pytorch)
 Tensors and Dynamic neural networks in Python with strong GPU and CPU acceleration.
+[examples](https://github.com/pytorch/examples)
 
 [embox](https://github.com/embox/embox)
 Embox is a configurable RTOS designed for resource constrained and embedded systems.
