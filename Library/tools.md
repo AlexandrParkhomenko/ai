@@ -253,6 +253,7 @@
 end-to-end open source platform for machine learning.
 
 - [facebookresearch](https://github.com/facebookresearch)
+    - [CompilerGym](https://github.com/facebookresearch/CompilerGym)
 - [pytorch](https://github.com/pytorch/pytorch)
 Tensors and Dynamic neural networks in Python with strong GPU and CPU acceleration.
     - [examples](https://github.com/pytorch/examples)
