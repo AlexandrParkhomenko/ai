@@ -70,7 +70,7 @@
 
 ### Tools
 
-- [PyTorch Geometric (PyG)](https://github.com/rusty1s/pytorch_geometric)
+- [PyTorch Geometric (PyG)](https://github.com/rusty1s/pytorch_geometric) | [colabs](https://pytorch-geometric.readthedocs.io/en/latest/notes/colabs.html)
 - [DeepSNAP](https://github.com/snap-stanford/deepsnap)
 - [GraphGym](https://github.com/snap-stanford/GraphGym)
 
