@@ -7,6 +7,7 @@
 ## Ресурсы
 - [[6.00sc] Введение в информатику и программирование](https://www.youtube.com/playlist?list=PLehPTrwC3ep6cDHjUaacPrgAov8EM5DG4)
 - [Денис Турдаков. Основы обработки текстов. СП ВМК МГУ, ИСП РАН, ФКН ВШЭ ](http://tpc.at.ispras.ru/)
+- neural-university [1](https://github.com/brs1977/neural-university) | [2](https://github.com/ikonushok/My_studying_Data-Science-and-Neyro-Nets-on-Python)
 
 ## Хабр
 - [**Хаб Машинное обучение**](https://habr.com/ru/hub/machine_learning/)
