@@ -7,6 +7,7 @@
 | Bayesian Network | BN | байесовская сеть | БС |
 | Bayesian network Augmented Naive Bayes classifier | BAN | наивный байесовский классификатор, дополненный байесовской сетью | НБКБС |
 | BigCLAM | Cluster Affiliation Model for Big Networks |  |  |
+| BlackBox | BB | атака с доступом только к входу и выходу модели | ЧЯ* |
 | Breadth-First Search | BFS | поиск в ширину |  |
 | Causal Bayesian Network | CBN | причинно-следственная байесовская сеть | ПСБС |
 | Cross Entropy | CE | перекрёстная энтропия |  |
@@ -86,7 +87,7 @@
 | Translating Embeddings for Modeling Multi-relational Data | TransE | Трансляция вложений для моделирования многореляционных данных |  |
 | Tree Augmented Naive Bayes classifier | TAN | наивный байесовский классификатор, дополненный деревом | НБКД |
 | t-distributed Stochastic Neighbor Embedding | t-SNE | Стохастическое вложение соседей с t-распределением |  |
+| WhiteBox | WB | атака при известной информации об обученной модели алгоритма | БЯ* |
 
-
-
+```*``` - предполагаемые мной сокращения
 
