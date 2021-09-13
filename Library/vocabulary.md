@@ -89,5 +89,7 @@
 | t-distributed Stochastic Neighbor Embedding | t-SNE | Стохастическое вложение соседей с t-распределением |  |
 | WhiteBox | WB | атака при известной информации об обученной модели алгоритма | БЯ* |
 
+embedding = converting to smaller set of futures
+
 ```*``` - предполагаемые мной сокращения
 
