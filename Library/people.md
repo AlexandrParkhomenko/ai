@@ -57,6 +57,7 @@ You can't give up on them. Never.
 | Pau | Riba | Computer Vision Center |
 | Perouz | Taslakian | Element AI |
 | Petar | [Veličković](https://github.com/PetarV-) | DeepMind/University of Cambridge |
+| Rachel | [Gardner](https://github.com/rachel-1/) | [Stanford University](https://web.stanford.edu/class/cs224n/index.html) |
 | Razvan | Pascanu | DeepMind |
 | Renjie | Liao | University of Toronto |
 | Rex | [Ying](https://github.com/RexYing) | Stanford University |
