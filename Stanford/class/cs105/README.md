@@ -10,5 +10,8 @@
 - [Lecture 2.3 Digital Images: Bitmaps vs. Objects](https://www.youtube.com/watch?v=qysuyTJ8FJY)
 - [Lecture 2.4 Digital Images: The Right Format for the Job](https://www.youtube.com/watch?v=hFaI3a91ugo)
 - [Lecture 3.1 Digital Music: Science of Sound & Recording](https://www.youtube.com/watch?v=KuLxqrdmais)
-- 
-- https://www.youtube.com/watch?v=GrV6BKNlCic
+- []()
+- [Lecture 9.1 Creating Webpages: Images](https://www.youtube.com/watch?v=eJ04XVHkr4s)
+- [Lecture 9.2 Creating Webpages: Specifying Colors](https://www.youtube.com/watch?v=6OxyB9yuSzo)
+- [Lecture 9.3 Hexadecimal](https://www.youtube.com/watch?v=GrV6BKNlCic)
+- [Lecture 9.4 Webpage Example: Captions](https://www.youtube.com/watch?v=ro34I0AgNs0)
