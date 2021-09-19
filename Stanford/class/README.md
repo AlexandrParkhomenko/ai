@@ -35,7 +35,7 @@ stats202| | Introduction to statistical / machine learning         | Введе�
  cs331b |*| Representation Learning in Computer Vision             | Репрезентативное обучение в компьютерном зрении
  cs336  | | Robot Perception and Decision-Making                   | Восприятие робота и принятие решений
  cs372  |*| Artificial Intelligence for Disease Diagnosis <br>and Information Recommendations | Искусственный интеллект для диагностики заболеваний <br>и информационных рекомендаций
- cs522  |*| Seminar in Artificial Intelligence in Healthcare       | Семинар по искусственному интеллекту в здравоохранении
+ cs522  |*| [Seminar in Artificial Intelligence in Healthcare](https://www.youtube.com/watch?v=taigNFbAyYY&list=PLYn-ZmPR1DtNQJ-ot-L2V2EgUEH6OH_7w)       | Семинар по искусственному интеллекту в здравоохранении
  ycs0002 | | [Game Theory II](https://online.stanford.edu/courses/soe-ycs0002-game-theory) | Теория игр
 
 [cs](https://cs.stanford.edu/academics/courses)
