@@ -88,6 +88,7 @@
 | Translating Embeddings for Modeling Multi-relational Data | TransE | Трансляция вложений для моделирования многореляционных данных |  |
 | Tree Augmented Naive Bayes classifier | TAN | наивный байесовский классификатор, дополненный деревом | НБКД |
 | t-distributed Stochastic Neighbor Embedding | t-SNE | Стохастическое вложение соседей с t-распределением |  |
+| Variational Auto Encoders | VAE | вариационные автоэнкодеры | ВАЭ* |
 | WhiteBox | WB | атака при известной информации об обученной модели алгоритма | БЯ* |
 
 embedding = converting to smaller set of futures
