@@ -23,6 +23,7 @@
 | Dynamic Bayesian Network | DBN | динамическая байесовская сеть | ДБС |
 | Dynamic Bayesian Network Classifier | DBNC | классификатор на основе ДБС | КДБС |
 | Dynamic Decision Network | DDN | динамическая сеть принятия решений | ДСР |
+| Earth Mover Distance | EMD | земного движетеля дистанция | ЗДД* |
 | Erdős-Rényi model | ER | Модель Эрдёша-Реньи | ЭР |
 | Erdős-Rényi Random Graph | ERRG | Эрдёша-Реньи случайный граф | ЭРСГ |
 | Exestencial Positive First-Ordered, AND-OR | EPFO | Экзистенциально-позитивный первый порядок | ЭППП * |
@@ -57,6 +58,7 @@
 | Markov Random Field | MRF | марковское случайное поле | МСП |
 | Maximal Ancestral Graph | MAG | максимальный наследственный граф | МНГ |
 | Maximum a Posteriori | MAP | оценка апостериорного максимума | ОАМ |
+| Maximum Mean Discrepancy | MMD | Максимальное среднее расхождение | МСР |
 | Minimum Description Length | MDL | принцип минимальной длины описания | ПМДО |
 | Most Probable Explanation | MPE | наиболее вероятное объяснение (обоснование) | НВО |
 | Multidimensional Bayesian network Classifier | MBC | многомерная байесовская сеть (классификатор) | МБС |
