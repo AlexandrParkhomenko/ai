@@ -42,6 +42,7 @@
 | Graph Neural Network                    | GNN         | графовая нейронная сеть                            | ГНС          |
 | Hadamard Product, element-wise product | ⊙ | Произведение Адамара | ∘ |
 | Hidden Markov Model | HMM | скрытая марковская модель | СММ |
+| Identity-aware GNN | ID-GNN | ГНС с идентификаторами | ГНСИ* |
 | Independent and Identically Distributed | IID         | независимые и одинаково распределенные             |              |
 | Inductive Logic Programming | ILP | индуктивное логическое программирование | ИЛП |
 | Influence Diagram | ID | диаграмма влияния | ДВ |
