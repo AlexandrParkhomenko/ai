@@ -13,7 +13,7 @@
 - [Lecture 3.2 Digital Music: From Analog to Digital](https://www.youtube.com/watch?v=ejJEzdUwFjQ)
 - [Lecture 3.3 Digital Music: Compress that Music](https://www.youtube.com/watch?v=TiipidPdVw4)
 - [Lecture 3.4 Digital Music: Digital Data vs. Analog World](https://www.youtube.com/watch?v=nOeh-WP4Xf0)
-- []()
+- [Lecture 3.5 Digital Music: Perfect Music & Alt. Formats](https://youtu.be/7LJF8uzDOZg)
 - []()
 - []()
 - []()
