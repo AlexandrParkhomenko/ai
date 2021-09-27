@@ -72,6 +72,7 @@
 | Partially Observable Markov Decision Process | POMDP  |                                                    |              |
 | Partially Observable Markov Decision Process | POMDP | частично наблюдаемый марковский процесс принятия решений | ЧНМПР |
 | Partially Observable Markov Game        | POMG        |                                                    |              |
+| Polypharmacy Knowledge Graph | PKG |  |  |
 | Probabilistic Graphical Model | PGM | вероятностная графовая модель | ВГМ |
 | Probabilistic Relational Model | PRM | вероятностная реляционная модель | ВРМ |
 | Probability Density Function            | PDF         |                                                    |              |
