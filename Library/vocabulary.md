@@ -41,6 +41,7 @@
 | Graph Isomorphism Network               | GIN         | графовая изоморфная сеть                           | ГИС          |
 | Graph Neural Network                    | GNN         | графовая нейронная сеть                            | ГНС          |
 | Hadamard Product, element-wise product | ⊙ | Произведение Адамара | ∘ |
+| Hyperbolic GNN | HGNN |  |  |
 | Hidden Markov Model | HMM | скрытая марковская модель | СММ |
 | Identity-aware GNN | ID-GNN | ГНС с идентификаторами | ГНСИ* |
 | Independent and Identically Distributed | IID         | независимые и одинаково распределенные             |              |
