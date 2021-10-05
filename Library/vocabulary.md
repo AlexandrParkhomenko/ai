@@ -50,6 +50,7 @@
 | Iterative Conditional Modes | ICM | итеративные условные методы (алгоритм) | ИУМ |
 | Knowledge Base | KB | база знаний | БЗ |
 | Knowledge Graph | KG | граф знаний | ГЗ |
+| Law of Large Numbers | LLN | Закон больших чисел | ЗБЧ |
 | Limited Memory Influence Diagram | LIMID | диаграмма влияния с ограниченной памятью | ДВОП |
 | Linear Logistic Classifier              | LLC         |                                                    |              |
 | Markov Blanket | MB | марковское ограждение | МО |
