@@ -10,6 +10,7 @@
 | BlackBox | BB | атака с доступом только к входу и выходу модели | ЧЯ* |
 | Breadth-First Search | BFS | поиск в ширину |  |
 | Causal Bayesian Network | CBN | причинно-следственная байесовская сеть | ПСБС |
+| Central Limit Theorem | CLT | Центральная предельная теорема | ЦПТ |
 | Cross Entropy | CE | перекрёстная энтропия |  |
 | Conditional Mutual Information | CMI | условная взаимная информация | УВИ |
 | Conditional Probability Table | CPT | таблица условных вероятностей | ТУВ |
