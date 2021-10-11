@@ -1,6 +1,7 @@
 | term                                    | abbrevation | термин                                             | сокращение   |
 | --------------------------------------- | ----------- | -------------------------------------------------- | ------------ |
 | Algebraic Decision Diagram | ADD | алгебраическая диаграмма решений | АДР |
+| Artificial Neural Networks | ANN | искусственная нейронная сеть | ИНС |
 | Affiliation Graph Model | AGM | Аффилированная графовая модель | АГМ |
 | Bayesian Chain Classifier | BCC | байесовская цепь (классификатор) | БЦ |
 | Bayesian Constraint-based Causal Discovery | BCCD | байесовский причинно-следственный анализ с учетом ограничений | БПСА |
@@ -69,6 +70,7 @@
 | Naïve Bayes Classifier | NBC | наивный байесовский классификатор | НБК |
 | Negative Log Likelihood Multiclass      | NLLM        |                                                    |              |
 | Negative Log-Likelihood                 | NLL         |                                                    |              |
+| NeuroEvolution of Augmenting Topologies | NEAT | Нейроэволюция дополнительных топологий | НЭДТ |
 | NonLinear Programming                   | NLP         | Нелинейное программирование                        | НЛП*         |
 | Noise Contrastive Estimation            | NCE         | Оценка шума по контрасту                           |              |
 | Parental Ancestral Graph | PAG | родительский наследственный граф | РНГ |
