@@ -845,6 +845,7 @@
 - [The latest in Machine Learning | Papers With Code](https://paperswithcode.com)
 - [The Rowland Institute at Harvard](https://www2.rowland.harvard.edu/publications)
 - [ai.stanford.edu](https://ai.stanford.edu/~ang/papers/)
+- [Stanford Human-Centered AI](https://www.youtube.com/channel/UChugFTK0KyrES9terTid8vA/videos)
 
 ## Libraries
 - [Papers with Code ](https://paperswithcode.com/)
