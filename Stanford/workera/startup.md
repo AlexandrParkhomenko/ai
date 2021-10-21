@@ -4,7 +4,8 @@
 - [innovation and entrepreneurship](https://online.stanford.edu/innovation-and-entrepreneurship/free-content?category=All&course=All)
     - [Stanford d.school](https://www.youtube.com/channel/UCVNJZuJsInOCnvrHFyHCMDw/videos)
 
-- [Курс лекций «Стартап». Питер Тиль. Стенфорд 2012.](https://habr.com/en/post/151193/)
+- [Питер Тиль. Курс лекций «Стартап». Стенфорд 2012.](https://habr.com/en/post/151193/)
+- [Tina Seelig: A crash course in creativity.](https://www.youtube.com/watch?v=gyM6rx69iqg)
 
 ## Companies
 - [ycombinator](https://www.youtube.com/c/ycombinator/videos)
