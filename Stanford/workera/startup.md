@@ -11,3 +11,6 @@
 - [ycombinator](https://www.youtube.com/c/ycombinator/videos)
 - [ML собеседования](https://habr.com/ru/post/579410/)
 
+## Digital Transformation
+
+- [Accelerating Digital Innovation Inside and Out](https://sloanreview.mit.edu/projects/accelerating-digital-innovation-inside-and-out/)
