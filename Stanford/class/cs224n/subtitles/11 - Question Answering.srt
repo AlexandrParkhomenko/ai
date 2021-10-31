@@ -1,0 +1,11182 @@
+1
+00:00:00,000 --> 00:00:05,580
+
+
+2
+00:00:05,580 --> 00:00:07,860
+OK, hi everyone.
+
+3
+00:00:07,860 --> 00:00:10,910
+Welcome back, we're now
+past the halfway point.
+
+4
+00:00:10,910 --> 00:00:12,740
+Week 6 of CS224N.
+
+5
+00:00:12,740 --> 00:00:16,040
+
+
+6
+00:00:16,040 --> 00:00:21,000
+And so let me just give a couple
+of quick announcements first.
+
+7
+00:00:21,000 --> 00:00:23,750
+So today is the day
+that you have to have
+
+8
+00:00:23,750 --> 00:00:27,680
+done the mid-quarter survey by.
+
+9
+00:00:27,680 --> 00:00:30,320
+Hundreds of people have,
+but if you haven't, this
+
+10
+00:00:30,320 --> 00:00:34,130
+is your last chance to get
+the half-point for that.
+
+11
+00:00:34,130 --> 00:00:39,320
+Today is also the day that
+final project proposals are due.
+
+12
+00:00:39,320 --> 00:00:41,510
+We really encourage you
+to try and hand them
+
+13
+00:00:41,510 --> 00:00:44,090
+in on-time or nearly on-time.
+
+14
+00:00:44,090 --> 00:00:46,020
+That's really just to help you.
+
+15
+00:00:46,020 --> 00:00:47,930
+So we can more quickly
+give you feedback
+
+16
+00:00:47,930 --> 00:00:50,960
+on final project proposals.
+
+17
+00:00:50,960 --> 00:00:53,960
+And in the background then,
+there's also assignment 5.
+
+18
+00:00:53,960 --> 00:00:56,570
+You'll all have seen the message
+that we're giving you one
+
+19
+00:00:56,570 --> 00:00:59,360
+extra day for that,
+but we do certainly
+
+20
+00:00:59,360 --> 00:01:03,410
+encourage you to be hard at work
+on assignment 5 at this point.
+
+21
+00:01:03,410 --> 00:01:05,840
+Hopefully it's a great,
+exciting opportunity
+
+22
+00:01:05,840 --> 00:01:10,370
+to be learning all the latest
+stuff about transformers.
+
+23
+00:01:10,370 --> 00:01:15,920
+And then today, delighted to
+have our first invited speaker.
+
+24
+00:01:15,920 --> 00:01:17,600
+Let me just mention
+that going along
+
+25
+00:01:17,600 --> 00:01:23,840
+within [INAUDIBLE] half-point
+of participation credit
+
+26
+00:01:23,840 --> 00:01:28,070
+is you guys writing a
+reaction paragraph talking
+
+27
+00:01:28,070 --> 00:01:31,190
+about something that
+the speaker talks about.
+
+28
+00:01:31,190 --> 00:01:34,760
+And there are instructions
+for that on Ed.
+
+29
+00:01:34,760 --> 00:01:40,370
+But without further ado,
+let me introduce Danqi Chen.
+
+30
+00:01:40,370 --> 00:01:43,400
+So Danqi is one of the foremost
+researchers in question
+
+31
+00:01:43,400 --> 00:01:45,590
+answering, and
+she's particularly
+
+32
+00:01:45,590 --> 00:01:49,040
+well known in recent
+work for being
+
+33
+00:01:49,040 --> 00:01:53,000
+one of the co-authors of the
+Roberta paper, the SpanBERT
+
+34
+00:01:53,000 --> 00:01:57,170
+paper, and on using
+dense passage retrieval
+
+35
+00:01:57,170 --> 00:01:59,870
+methods for open domain
+question answering,
+
+36
+00:01:59,870 --> 00:02:03,980
+and is the professor at
+the Princeton University.
+
+37
+00:02:03,980 --> 00:02:08,870
+But as one other comment,
+Danqi once upon a time
+
+38
+00:02:08,870 --> 00:02:12,920
+was the head TA of CS224N.
+
+39
+00:02:12,920 --> 00:02:17,130
+So she's quite familiar with
+the context of this class.
+
+40
+00:02:17,130 --> 00:02:19,850
+So I'm really delighted
+to have Danqi here
+
+41
+00:02:19,850 --> 00:02:21,680
+to give this lecture
+on question answering.
+
+42
+00:02:21,680 --> 00:02:24,130
+Thanks.
+
+43
+00:02:24,130 --> 00:02:26,800
+Thank you Chris, for
+the introduction.
+
+44
+00:02:26,800 --> 00:02:29,290
+For me it's a great
+opportunity for me
+
+45
+00:02:29,290 --> 00:02:33,430
+to come back to CS224N today
+and to give this lecture.
+
+46
+00:02:33,430 --> 00:02:35,200
+albeit virtually.
+
+47
+00:02:35,200 --> 00:02:36,790
+So question
+answering is the area
+
+48
+00:02:36,790 --> 00:02:39,530
+that I have been working quite
+a bit in the last few years.
+
+49
+00:02:39,530 --> 00:02:41,630
+So today I'm very happy
+to introduce to you some
+
+50
+00:02:41,630 --> 00:02:43,870
+of the fundamentals
+in this field,
+
+51
+00:02:43,870 --> 00:02:48,280
+as well as on cutting edge
+and state of the art topics.
+
+52
+00:02:48,280 --> 00:02:51,040
+So here's my plan
+for this lecture.
+
+53
+00:02:51,040 --> 00:02:54,160
+So first, I would give
+a brief introduction
+
+54
+00:02:54,160 --> 00:02:56,830
+of what is question answering,
+and what kind of problems
+
+55
+00:02:56,830 --> 00:02:58,840
+that people are studying today.
+
+56
+00:02:58,840 --> 00:03:02,270
+Then I'm going to spend the
+most of this lecture focused
+
+57
+00:03:02,270 --> 00:03:04,360
+on one type of question
+answering problems called
+
+58
+00:03:04,360 --> 00:03:05,858
+reading comprehension.
+
+59
+00:03:05,858 --> 00:03:07,400
+So it's just the
+base of the problems
+
+60
+00:03:07,400 --> 00:03:10,420
+of how we build systems
+to answer questions
+
+61
+00:03:10,420 --> 00:03:13,090
+over a single passage of text.
+
+62
+00:03:13,090 --> 00:03:14,800
+So I know that many
+of you are going
+
+63
+00:03:14,800 --> 00:03:17,510
+to do a different project on
+the Stanford Question Answering
+
+64
+00:03:17,510 --> 00:03:18,490
+Dataset.
+
+65
+00:03:18,490 --> 00:03:20,290
+So understanding this
+part will be very
+
+66
+00:03:20,290 --> 00:03:23,240
+crucial for your final project.
+
+67
+00:03:23,240 --> 00:03:25,120
+So at the end of
+this lecture, I'm
+
+68
+00:03:25,120 --> 00:03:28,090
+hoping to spend hopefully
+like 10-ish minutes
+
+69
+00:03:28,090 --> 00:03:31,120
+to talk about a more
+practical, and in my opinion,
+
+70
+00:03:31,120 --> 00:03:34,370
+more exciting problem called
+open domain question answering.
+
+71
+00:03:34,370 --> 00:03:36,130
+So basically try
+to answer questions
+
+72
+00:03:36,130 --> 00:03:39,430
+over a very large
+collection of the documents.
+
+73
+00:03:39,430 --> 00:03:42,070
+And so my point is to
+try to quickly go over
+
+74
+00:03:42,070 --> 00:03:44,430
+some of those state of the
+art measures in this area.
+
+75
+00:03:44,430 --> 00:03:47,100
+
+
+76
+00:03:47,100 --> 00:03:49,750
+OK so let's just get started.
+
+77
+00:03:49,750 --> 00:03:53,130
+So first, what is the
+question answering?
+
+78
+00:03:53,130 --> 00:03:54,720
+So it's the goal of
+question answering
+
+79
+00:03:54,720 --> 00:03:57,480
+is to build systems
+that can automatically
+
+80
+00:03:57,480 --> 00:04:01,955
+answer questions posed by
+humans in our natural language.
+
+81
+00:04:01,955 --> 00:04:05,050
+Question answering, or,
+let's say QA in short,
+
+82
+00:04:05,050 --> 00:04:07,780
+is one of the
+earliest NLP tasks,
+
+83
+00:04:07,780 --> 00:04:11,870
+and the early systems can
+even date back to the 1960s.
+
+84
+00:04:11,870 --> 00:04:17,560
+So here is one example
+of one of the early QA
+
+85
+00:04:17,560 --> 00:04:20,560
+systems back to 1964.
+
+86
+00:04:20,560 --> 00:04:22,280
+So as you can see,
+this system is
+
+87
+00:04:22,280 --> 00:04:25,735
+trying to answer a question
+like, "What do worms eat?"
+
+88
+00:04:25,735 --> 00:04:30,390
+And they'll finally retrieve
+the answer, that's the grass.
+
+89
+00:04:30,390 --> 00:04:33,130
+So this system is built to
+try to find some kind of text
+
+90
+00:04:33,130 --> 00:04:36,940
+matching between the question,
+and some kind of text segments,
+
+91
+00:04:36,940 --> 00:04:39,520
+and then by using some kind
+of dependency analysis.
+
+92
+00:04:39,520 --> 00:04:40,930
+I'll assume that
+you have already
+
+93
+00:04:40,930 --> 00:04:45,450
+learned the dependence
+parsing in this class.
+
+94
+00:04:45,450 --> 00:04:47,000
+And there are many
+different types
+
+95
+00:04:47,000 --> 00:04:48,890
+of question answering problems.
+
+96
+00:04:48,890 --> 00:04:52,760
+And we also have categories of
+these question answer problems,
+
+97
+00:04:52,760 --> 00:04:56,990
+based on the information source,
+or the type of the questions,
+
+98
+00:04:56,990 --> 00:04:59,070
+or the type of answers.
+
+99
+00:04:59,070 --> 00:05:01,160
+So for the
+information source, we
+
+100
+00:05:01,160 --> 00:05:04,360
+have built a system that
+can put like conditions
+
+101
+00:05:04,360 --> 00:05:08,670
+of short passage of text,
+or very large collection
+
+102
+00:05:08,670 --> 00:05:10,880
+of documents, or
+like a structure,
+
+103
+00:05:10,880 --> 00:05:14,840
+they have structured knowledge
+bases, or even tables
+
+104
+00:05:14,840 --> 00:05:16,710
+or images.
+
+105
+00:05:16,710 --> 00:05:18,770
+So for the question
+part, we can also
+
+106
+00:05:18,770 --> 00:05:21,380
+build systems that can
+answer factoid questions
+
+107
+00:05:21,380 --> 00:05:22,820
+or non-factoid questions.
+
+108
+00:05:22,820 --> 00:05:25,760
+Our open-domain questions
+or closed-domain questions
+
+109
+00:05:25,760 --> 00:05:29,450
+are simple questions versus
+more complex or compositional
+
+110
+00:05:29,450 --> 00:05:30,590
+questions.
+
+111
+00:05:30,590 --> 00:05:33,020
+And for the answer
+type, it can also
+
+112
+00:05:33,020 --> 00:05:37,430
+be a short segment in the text,
+or a paragraph, or a document,
+
+113
+00:05:37,430 --> 00:05:40,590
+or a list or even the
+yes or no questions.
+
+114
+00:05:40,590 --> 00:05:42,860
+So just have in mind
+there's many different types
+
+115
+00:05:42,860 --> 00:05:45,620
+of questions in problems
+and all these problems
+
+116
+00:05:45,620 --> 00:05:48,920
+may require very different
+techniques or different data,
+
+117
+00:05:48,920 --> 00:05:50,870
+or even different
+evaluation metrics
+
+118
+00:05:50,870 --> 00:05:53,030
+to evaluate all these
+different problems.
+
+119
+00:05:53,030 --> 00:05:56,020
+
+
+120
+00:05:56,020 --> 00:05:58,090
+And, the question and
+answer has enabled
+
+121
+00:05:58,090 --> 00:06:01,750
+a lot of really useful
+real world applications.
+
+122
+00:06:01,750 --> 00:06:03,955
+For example, today if you
+just put your question
+
+123
+00:06:03,955 --> 00:06:07,120
+in a search engine like Google.
+
+124
+00:06:07,120 --> 00:06:09,580
+So for example, you can
+put your question like,
+
+125
+00:06:09,580 --> 00:06:11,920
+where is the deepest
+lake in the world.
+
+126
+00:06:11,920 --> 00:06:13,670
+So we can see that
+it's the kind of system
+
+127
+00:06:13,670 --> 00:06:19,690
+that it can find a short
+snippet of text, including
+
+128
+00:06:19,690 --> 00:06:26,200
+Lake Baikal in Siberia holds
+the distinction of being both
+
+129
+00:06:26,200 --> 00:06:29,470
+the deepest lake in the world
+and the largest fresh water
+
+130
+00:06:29,470 --> 00:06:30,860
+lake, blah blah.
+
+131
+00:06:30,860 --> 00:06:34,370
+And then you can actually
+click on the correct answer,
+
+132
+00:06:34,370 --> 00:06:36,430
+which is actually our
+concise answer, which
+
+133
+00:06:36,430 --> 00:06:39,740
+should be Siberia.
+
+134
+00:06:39,740 --> 00:06:41,390
+And those kind of
+systems are also
+
+135
+00:06:41,390 --> 00:06:44,120
+able to handle more
+complex questions
+
+136
+00:06:44,120 --> 00:06:45,770
+like how-to questions.
+
+137
+00:06:45,770 --> 00:06:48,320
+I guess this is the probable
+question that everyone
+
+138
+00:06:48,320 --> 00:06:49,910
+currently cares about.
+
+139
+00:06:49,910 --> 00:06:54,320
+So the question is, how can I
+protect myself from COVID-19?
+
+140
+00:06:54,320 --> 00:06:56,810
+So there isn't really a
+simple and short answer
+
+141
+00:06:56,810 --> 00:06:58,200
+to this question.
+
+142
+00:06:58,200 --> 00:06:59,920
+So you can see that
+the system actually
+
+143
+00:06:59,920 --> 00:07:02,780
+returns a very long
+paragraph, including the best
+
+144
+00:07:02,780 --> 00:07:05,000
+way to prevent
+illness is to avoid
+
+145
+00:07:05,000 --> 00:07:06,920
+being exposed to this virus.
+
+146
+00:07:06,920 --> 00:07:09,860
+And to help prevent
+the spread of COVID-19,
+
+147
+00:07:09,860 --> 00:07:12,957
+you can do the following.
+
+148
+00:07:12,957 --> 00:07:14,540
+So actually this
+paragraph is actually
+
+149
+00:07:14,540 --> 00:07:18,240
+a summary from CDC article.
+
+150
+00:07:18,240 --> 00:07:21,330
+If you just click this link
+and read through the article.
+
+151
+00:07:21,330 --> 00:07:26,170
+So this is also one type of the
+question answering problems.
+
+152
+00:07:26,170 --> 00:07:28,430
+Now, this is our
+survey of the use cases
+
+153
+00:07:28,430 --> 00:07:30,987
+for the current digital
+assistants such as Alexa
+
+154
+00:07:30,987 --> 00:07:32,840
+or Google Home.
+
+155
+00:07:32,840 --> 00:07:36,950
+So according to the survey
+results in January 2020,
+
+156
+00:07:36,950 --> 00:07:40,310
+which is one year ago, so
+you can see that as of--
+
+157
+00:07:40,310 --> 00:07:43,700
+people actually really
+like to ask questions
+
+158
+00:07:43,700 --> 00:07:45,500
+on these digital assistants.
+
+159
+00:07:45,500 --> 00:07:47,480
+So you can see that ask
+a question is actually
+
+160
+00:07:47,480 --> 00:07:49,500
+the second most used case.
+
+161
+00:07:49,500 --> 00:07:52,675
+Only ranks after listening
+to music and before the check
+
+162
+00:07:52,675 --> 00:07:54,732
+the weather and set up timer.
+
+163
+00:07:54,732 --> 00:07:56,565
+So question answering
+has been really useful
+
+164
+00:07:56,565 --> 00:08:00,770
+in digital assistants.
+
+165
+00:08:00,770 --> 00:08:03,490
+And another very famous example
+of the question answering
+
+166
+00:08:03,490 --> 00:08:06,940
+system is this IBM Watson
+question answering system.
+
+167
+00:08:06,940 --> 00:08:13,030
+So in 19-- in 2011, so
+this IBM Watson QA system
+
+168
+00:08:13,030 --> 00:08:16,320
+has been shown to beat
+two national Jeopardy
+
+169
+00:08:16,320 --> 00:08:19,990
+champions in answering
+Jeopardy questions.
+
+170
+00:08:19,990 --> 00:08:24,340
+So this is a part of a
+historical event, at least
+
+171
+00:08:24,340 --> 00:08:27,230
+in the NLP history.
+
+172
+00:08:27,230 --> 00:08:30,320
+So if you look at the inner
+working of this kind of system
+
+173
+00:08:30,320 --> 00:08:32,990
+more closely, so you can
+see that it is actually
+
+174
+00:08:32,990 --> 00:08:36,990
+a very complicated and
+highly modularized system.
+
+175
+00:08:36,990 --> 00:08:40,400
+So the system is built on
+both the unstructured text
+
+176
+00:08:40,400 --> 00:08:43,058
+and also the structured data.
+
+177
+00:08:43,058 --> 00:08:47,220
+So if I look at the system both
+from the left to the right,
+
+178
+00:08:47,220 --> 00:08:48,890
+you can see that
+this system consists
+
+179
+00:08:48,890 --> 00:08:51,320
+of the four stages,
+including the question
+
+180
+00:08:51,320 --> 00:08:55,280
+processing, the candidate answer
+generation and the candidate
+
+181
+00:08:55,280 --> 00:08:58,472
+answer scoring, and the
+confidence merging and ranking.
+
+182
+00:08:58,472 --> 00:08:59,930
+And then if you
+look at each stage,
+
+183
+00:08:59,930 --> 00:09:02,910
+you can see that there are many
+different NLP techniques that
+
+184
+00:09:02,910 --> 00:09:05,480
+have been actually
+included in this complex QA
+
+185
+00:09:05,480 --> 00:09:09,350
+system, including the question
+classification, parsing,
+
+186
+00:09:09,350 --> 00:09:12,080
+relation extraction,
+co-reference.
+
+187
+00:09:12,080 --> 00:09:14,570
+So it's actually, there are
+really lots of NLP modules
+
+188
+00:09:14,570 --> 00:09:16,130
+that have included.
+
+189
+00:09:16,130 --> 00:09:18,980
+And now this system has been
+over 10 years older, actually,
+
+190
+00:09:18,980 --> 00:09:20,720
+exactly 10 years now.
+
+191
+00:09:20,720 --> 00:09:22,265
+And this is actually
+representative
+
+192
+00:09:22,265 --> 00:09:25,280
+of state of the art 10
+years ago at that time.
+
+193
+00:09:25,280 --> 00:09:28,280
+
+
+194
+00:09:28,280 --> 00:09:31,340
+So we know that this class
+is about deep learning.
+
+195
+00:09:31,340 --> 00:09:33,550
+So today different
+has completely
+
+196
+00:09:33,550 --> 00:09:36,890
+really transformed the landscape
+of the question answering
+
+197
+00:09:36,890 --> 00:09:37,810
+systems.
+
+198
+00:09:37,810 --> 00:09:39,670
+So there's no doubt
+that we can say
+
+199
+00:09:39,670 --> 00:09:41,920
+that almost all of the
+states are question answering
+
+200
+00:09:41,920 --> 00:09:45,155
+systems today built
+on top of the end
+
+201
+00:09:45,155 --> 00:09:47,630
+to end training of the
+deep neural networks
+
+202
+00:09:47,630 --> 00:09:50,510
+and the pre-trained language
+models such as BERT.
+
+203
+00:09:50,510 --> 00:09:52,180
+So today in this
+lecture, we're also
+
+204
+00:09:52,180 --> 00:09:54,520
+going to know a lot of the
+deep learning models used
+
+205
+00:09:54,520 --> 00:09:56,230
+for questions answering.
+
+206
+00:09:56,230 --> 00:09:59,570
+And this statement is probably
+also true for almost all
+
+207
+00:09:59,570 --> 00:10:01,900
+of the NLP problems
+that we can see today.
+
+208
+00:10:01,900 --> 00:10:04,390
+But we also argue that
+question answering is probably
+
+209
+00:10:04,390 --> 00:10:08,680
+one of those fields that we
+have seen the most remarkable
+
+210
+00:10:08,680 --> 00:10:12,190
+progress in the last couple of
+years driven by deep learning.
+
+211
+00:10:12,190 --> 00:10:17,180
+
+
+212
+00:10:17,180 --> 00:10:23,110
+So in this lecture, I
+will be mostly focusing
+
+213
+00:10:23,110 --> 00:10:25,970
+on the text based, or textual
+question answering problems.
+
+214
+00:10:25,970 --> 00:10:27,940
+So basically, we are
+trying to answer questions
+
+215
+00:10:27,940 --> 00:10:29,950
+based on the unstructured text.
+
+216
+00:10:29,950 --> 00:10:33,580
+So before I jump to
+that part, I also
+
+217
+00:10:33,580 --> 00:10:36,880
+want to quickly point out that
+there are many other really big
+
+218
+00:10:36,880 --> 00:10:38,380
+question answering problems.
+
+219
+00:10:38,380 --> 00:10:42,970
+And each of them can be
+really like a subfield in NLP
+
+220
+00:10:42,970 --> 00:10:45,430
+and they actually have
+very different challenges
+
+221
+00:10:45,430 --> 00:10:47,330
+and also model designs.
+
+222
+00:10:47,330 --> 00:10:49,620
+So one bigger class of
+question answering problem
+
+223
+00:10:49,620 --> 00:10:51,632
+is this knowledge-based
+question answering.
+
+224
+00:10:51,632 --> 00:10:53,465
+So basically we wanted
+you to question build
+
+225
+00:10:53,465 --> 00:10:55,840
+answering systems
+to answer questions
+
+226
+00:10:55,840 --> 00:11:01,000
+that can answer questions
+over a very large database.
+
+227
+00:11:01,000 --> 00:11:03,280
+So to solve this
+problem, some approaches
+
+228
+00:11:03,280 --> 00:11:06,760
+need to take this question
+and convert this question
+
+229
+00:11:06,760 --> 00:11:08,590
+into some kind of logic forms.
+
+230
+00:11:08,590 --> 00:11:10,060
+And these kind of
+logic forms can
+
+231
+00:11:10,060 --> 00:11:13,000
+be executed against
+this database
+
+232
+00:11:13,000 --> 00:11:14,310
+to give you the final answer.
+
+233
+00:11:14,310 --> 00:11:16,840
+
+
+234
+00:11:16,840 --> 00:11:19,980
+And another class, bigger
+class of the question answering
+
+235
+00:11:19,980 --> 00:11:22,040
+problems is called visual
+question answering.
+
+236
+00:11:22,040 --> 00:11:25,580
+So basically you need to answer
+questions based on the images.
+
+237
+00:11:25,580 --> 00:11:27,010
+So this problem
+basically requires
+
+238
+00:11:27,010 --> 00:11:30,220
+both understanding of the
+questions and also images,
+
+239
+00:11:30,220 --> 00:11:33,550
+and is actually a very active
+field between the computer
+
+240
+00:11:33,550 --> 00:11:34,870
+vision and NLP.
+
+241
+00:11:34,870 --> 00:11:37,330
+So if you have interest
+in these type of problems,
+
+242
+00:11:37,330 --> 00:11:39,550
+I encourage you to check
+out those problems,
+
+243
+00:11:39,550 --> 00:11:42,090
+but I'm not going to dig
+into these problems today.
+
+244
+00:11:42,090 --> 00:11:45,460
+
+
+245
+00:11:45,460 --> 00:11:45,960
+OK.
+
+246
+00:11:45,960 --> 00:11:48,580
+So next, I'm going to
+start with a part 2,
+
+247
+00:11:48,580 --> 00:11:50,398
+reading comprehension.
+
+248
+00:11:50,398 --> 00:11:51,940
+I just want to
+quickly check if there
+
+249
+00:11:51,940 --> 00:11:54,480
+are any quick
+questions I can answer
+
+250
+00:11:54,480 --> 00:11:58,002
+before I start us on part 2.
+
+251
+00:11:58,002 --> 00:12:00,620
+No, I think we're good for now.
+
+252
+00:12:00,620 --> 00:12:02,190
+OK.
+
+253
+00:12:02,190 --> 00:12:05,360
+So let's talk about the
+reading comprehension then.
+
+254
+00:12:05,360 --> 00:12:07,570
+So reading comprehension
+is a basic problem
+
+255
+00:12:07,570 --> 00:12:11,420
+that we want to comprehend
+a passage of text and answer
+
+256
+00:12:11,420 --> 00:12:13,367
+questions about the content.
+
+257
+00:12:13,367 --> 00:12:15,200
+So it's an input of
+this, probably basically
+
+258
+00:12:15,200 --> 00:12:17,455
+a passage of text or
+question, and the goal
+
+259
+00:12:17,455 --> 00:12:19,070
+is to return the
+answers that actually
+
+260
+00:12:19,070 --> 00:12:21,860
+can answer this question.
+
+261
+00:12:21,860 --> 00:12:24,550
+So here is one example.
+
+262
+00:12:24,550 --> 00:12:26,380
+So here is a passage of text.
+
+263
+00:12:26,380 --> 00:12:28,600
+And we want to
+answer a question.
+
+264
+00:12:28,600 --> 00:12:30,620
+The question is what
+language did Tesla
+
+265
+00:12:30,620 --> 00:12:32,780
+study while in school?
+
+266
+00:12:32,780 --> 00:12:33,280
+OK.
+
+267
+00:12:33,280 --> 00:12:36,250
+So I'm going to pause
+like 5 or 10 seconds
+
+268
+00:12:36,250 --> 00:12:40,428
+and see if people can find the
+answer to this question based
+
+269
+00:12:40,428 --> 00:12:41,095
+on this passage.
+
+270
+00:12:41,095 --> 00:12:54,760
+
+
+271
+00:12:54,760 --> 00:12:55,260
+Any guess?
+
+272
+00:12:55,260 --> 00:12:58,494
+
+
+273
+00:12:58,494 --> 00:12:59,890
+German.
+
+274
+00:12:59,890 --> 00:13:02,492
+People say it's German.
+
+275
+00:13:02,492 --> 00:13:04,130
+Yeah, German is correct.
+
+276
+00:13:04,130 --> 00:13:05,430
+So the answer should be German.
+
+277
+00:13:05,430 --> 00:13:07,440
+So basically to
+answer this question,
+
+278
+00:13:07,440 --> 00:13:10,260
+so you need to find this
+sentence, like, in 1861,
+
+279
+00:13:10,260 --> 00:13:13,950
+Tesla attended this school where
+he studied German, arithmetic,
+
+280
+00:13:13,950 --> 00:13:16,720
+and religion, and only
+German is a language.
+
+281
+00:13:16,720 --> 00:13:20,220
+So the answer to this
+question should be German.
+
+282
+00:13:20,220 --> 00:13:22,350
+OK, here is another example, OK?
+
+283
+00:13:22,350 --> 00:13:23,850
+Another passage of text.
+
+284
+00:13:23,850 --> 00:13:27,720
+And the question is, which
+linguistic minority is larger,
+
+285
+00:13:27,720 --> 00:13:36,880
+Hindi or Malayalam I think
+
+286
+00:13:36,880 --> 00:13:37,430
+5 seconds.
+
+287
+00:13:37,430 --> 00:13:49,640
+
+
+288
+00:13:49,640 --> 00:13:50,140
+OK.
+
+289
+00:13:50,140 --> 00:13:52,840
+So the answer to this
+question should be Hindi.
+
+290
+00:13:52,840 --> 00:13:56,080
+So this probably is not a
+very hard question for humans,
+
+291
+00:13:56,080 --> 00:13:58,630
+it's actually a pretty
+hard question for machines
+
+292
+00:13:58,630 --> 00:14:00,520
+because to get this
+question correctly.
+
+293
+00:14:00,520 --> 00:14:03,700
+So the machines basically need
+to understand for the Hindi.
+
+294
+00:14:03,700 --> 00:14:07,900
+Like 3.3% of the population
+speaks Hindi and only like
+
+295
+00:14:07,900 --> 00:14:12,430
+1.27% speaks Malayalam,
+this language.
+
+296
+00:14:12,430 --> 00:14:15,985
+And then also compared these
+two numbers in the final case.
+
+297
+00:14:15,985 --> 00:14:20,190
+So 3.3% is a bigger number,
+so the answer should
+
+298
+00:14:20,190 --> 00:14:23,590
+be Hindi to this question.
+
+299
+00:14:23,590 --> 00:14:24,340
+OK.
+
+300
+00:14:24,340 --> 00:14:26,350
+So next I'm going to
+talk a little bit so why
+
+301
+00:14:26,350 --> 00:14:27,920
+do we care about this problem?
+
+302
+00:14:27,920 --> 00:14:30,950
+So why do we care about the
+reading comprehension problem?
+
+303
+00:14:30,950 --> 00:14:34,750
+So besides that it has
+actually many useful real-world
+
+304
+00:14:34,750 --> 00:14:36,770
+practical applications--
+
+305
+00:14:36,770 --> 00:14:40,240
+so as I've already showed us
+some examples at the beginning,
+
+306
+00:14:40,240 --> 00:14:42,175
+I think there are also
+two other reasons.
+
+307
+00:14:42,175 --> 00:14:45,472
+
+
+308
+00:14:45,472 --> 00:14:47,930
+So the first reason, besides
+applications, the first reason
+
+309
+00:14:47,930 --> 00:14:48,980
+is--
+
+310
+00:14:48,980 --> 00:14:51,140
+so reading comprehension
+has been also viewed
+
+311
+00:14:51,140 --> 00:14:54,050
+as a very important
+test bed for evaluating
+
+312
+00:14:54,050 --> 00:14:58,110
+how well computer systems
+understand human language.
+
+313
+00:14:58,110 --> 00:15:01,940
+So this is really just similar
+to how we humans actually
+
+314
+00:15:01,940 --> 00:15:05,160
+test the reading
+comprehension test to evaluate
+
+315
+00:15:05,160 --> 00:15:07,740
+how well we actually
+understand one language.
+
+316
+00:15:07,740 --> 00:15:09,795
+So this is also the
+way that we actually
+
+317
+00:15:09,795 --> 00:15:13,370
+post questions to test
+the machine's language
+
+318
+00:15:13,370 --> 00:15:15,980
+understanding ability.
+
+319
+00:15:15,980 --> 00:15:20,660
+So it actually has been
+formally stated back in 1977
+
+320
+00:15:20,660 --> 00:15:25,370
+by Wendy Lehnert in
+her dissertation.
+
+321
+00:15:25,370 --> 00:15:27,800
+She says that,
+since questions can
+
+322
+00:15:27,800 --> 00:15:31,310
+be devised to query any
+aspect of text comprehension,
+
+323
+00:15:31,310 --> 00:15:32,990
+the ability to
+answer questions is
+
+324
+00:15:32,990 --> 00:15:35,972
+the strongest possible
+demonstration of understanding.
+
+325
+00:15:35,972 --> 00:15:37,430
+So that's why
+reading comprehension
+
+326
+00:15:37,430 --> 00:15:41,410
+can be a very important test
+bed because we can design very
+
+327
+00:15:41,410 --> 00:15:45,240
+complex questions to testbed.
+
+328
+00:15:45,240 --> 00:15:48,330
+And also I think there is
+another interesting and
+
+329
+00:15:48,330 --> 00:15:51,850
+important reason that reading
+comprehension is important.
+
+330
+00:15:51,850 --> 00:15:55,160
+So in recent few
+years, some researchers
+
+331
+00:15:55,160 --> 00:15:58,600
+actually found that, OK, well,
+there are many other NLP tasks.
+
+332
+00:15:58,600 --> 00:16:02,290
+So we also reduce them to a
+reading comprehension problem.
+
+333
+00:16:02,290 --> 00:16:04,900
+So I'm going to give
+you two examples.
+
+334
+00:16:04,900 --> 00:16:08,220
+So one example is the
+information extraction.
+
+335
+00:16:08,220 --> 00:16:10,590
+So basically if we want to--
+
+336
+00:16:10,590 --> 00:16:14,130
+so to answer about a personal
+subject, Barack Obama.
+
+337
+00:16:14,130 --> 00:16:16,650
+key to our relation,
+educated at.
+
+338
+00:16:16,650 --> 00:16:18,550
+So we want to fill in what is--
+
+339
+00:16:18,550 --> 00:16:20,640
+fill in this question
+mark and figure out, OK,
+
+340
+00:16:20,640 --> 00:16:23,780
+where Barack Obama
+was educated at.
+
+341
+00:16:23,780 --> 00:16:25,890
+So one way to solve this
+problem is basically
+
+342
+00:16:25,890 --> 00:16:29,890
+trying to convert this
+relation into a question.
+
+343
+00:16:29,890 --> 00:16:32,340
+So where did Barack
+Obama graduate from?
+
+344
+00:16:32,340 --> 00:16:35,310
+And taking all of that
+relevant piece of text
+
+345
+00:16:35,310 --> 00:16:38,070
+and then by applying a
+reading comprehension problem.
+
+346
+00:16:38,070 --> 00:16:40,880
+Then basically,
+we can find out--
+
+347
+00:16:40,880 --> 00:16:43,290
+the correct answer should
+be Columbia University.
+
+348
+00:16:43,290 --> 00:16:48,420
+That is also the output of this
+information extraction system.
+
+349
+00:16:48,420 --> 00:16:50,572
+And another example
+is actually called
+
+350
+00:16:50,572 --> 00:16:51,720
+a semantic role labeling.
+
+351
+00:16:51,720 --> 00:16:53,610
+I'm not sure you have learned
+this in the past year,
+
+352
+00:16:53,610 --> 00:16:54,260
+probably not.
+
+353
+00:16:54,260 --> 00:16:56,340
+But this is a class of
+those-- semantic role
+
+354
+00:16:56,340 --> 00:17:00,810
+labeling is trying
+to take one sentence
+
+355
+00:17:00,810 --> 00:17:03,870
+and then trying to identify
+the roles for different words,
+
+356
+00:17:03,870 --> 00:17:07,240
+at least for words in this
+case, in one sentence.
+
+357
+00:17:07,240 --> 00:17:08,520
+So basically try to--
+
+358
+00:17:08,520 --> 00:17:10,753
+given one sentence,
+given one word,
+
+359
+00:17:10,753 --> 00:17:13,868
+"finish" trying to figure
+out who did what to whom
+
+360
+00:17:13,868 --> 00:17:15,519
+and when and where.
+
+361
+00:17:15,520 --> 00:17:18,240
+So by trying to--
+
+362
+00:17:18,240 --> 00:17:22,550
+so the goal is to try to
+figure out all these roles
+
+363
+00:17:22,550 --> 00:17:24,290
+with respect to the words.
+
+364
+00:17:24,290 --> 00:17:26,750
+So one way to solve
+this problem is also
+
+365
+00:17:26,750 --> 00:17:30,080
+by converting all these
+different roles into questions,
+
+366
+00:17:30,080 --> 00:17:34,610
+such as who finished something,
+what did someone finish,
+
+367
+00:17:34,610 --> 00:17:36,710
+and what did someone
+finish something as.
+
+368
+00:17:36,710 --> 00:17:42,020
+So by converting all these kind
+of semantic role relations,
+
+369
+00:17:42,020 --> 00:17:45,020
+we can also just apply the
+reading comprehension problem
+
+370
+00:17:45,020 --> 00:17:46,985
+and give you the correct answer.
+
+371
+00:17:46,985 --> 00:17:49,110
+So this is actually a very
+interesting perspective,
+
+372
+00:17:49,110 --> 00:17:52,580
+that reading comprehension can
+be actually very universally
+
+373
+00:17:52,580 --> 00:17:56,600
+useful to many other tasks.
+
+374
+00:17:56,600 --> 00:18:00,130
+So next, I'm going to introduce
+this Stanford Question
+
+375
+00:18:00,130 --> 00:18:02,260
+Answering Dataset called SQuAD.
+
+376
+00:18:02,260 --> 00:18:04,960
+So if you are going to develop
+for the final projects,
+
+377
+00:18:04,960 --> 00:18:08,050
+you will need to
+use this dataset.
+
+378
+00:18:08,050 --> 00:18:09,940
+So Stanford Question
+Answering Dataset
+
+379
+00:18:09,940 --> 00:18:13,510
+is actually a supervised
+reading comprehension dataset,
+
+380
+00:18:13,510 --> 00:18:19,000
+which consists of 100K annotated
+passage question and answer
+
+381
+00:18:19,000 --> 00:18:19,930
+triples.
+
+382
+00:18:19,930 --> 00:18:22,480
+So here is one example
+from this data set.
+
+383
+00:18:22,480 --> 00:18:25,230
+
+
+384
+00:18:25,230 --> 00:18:28,470
+And I just want to say that
+also one important thing
+
+385
+00:18:28,470 --> 00:18:30,135
+to have in mind is that--
+
+386
+00:18:30,135 --> 00:18:34,830
+so this data set consists
+of 100K annotated examples.
+
+387
+00:18:34,830 --> 00:18:36,810
+And this kind of a
+large scale supervised
+
+388
+00:18:36,810 --> 00:18:39,780
+dataset are also
+very key ingredient
+
+389
+00:18:39,780 --> 00:18:42,360
+for training the effective
+neural models for reading
+
+390
+00:18:42,360 --> 00:18:43,480
+comprehension.
+
+391
+00:18:43,480 --> 00:18:46,890
+So after the SQuAD dataset,
+many other later data sets
+
+392
+00:18:46,890 --> 00:18:49,230
+have been also
+collected, basically
+
+393
+00:18:49,230 --> 00:18:51,750
+runs this size around 100K.
+
+394
+00:18:51,750 --> 00:18:54,450
+So 100K is actually
+very important
+
+395
+00:18:54,450 --> 00:18:56,500
+to train these neural models.
+
+396
+00:18:56,500 --> 00:18:58,440
+So for these datasets--
+
+397
+00:18:58,440 --> 00:19:04,140
+so the passages is like a
+single paragraph selected
+
+398
+00:19:04,140 --> 00:19:05,910
+from the English
+Wikipedia, which usually
+
+399
+00:19:05,910 --> 00:19:08,670
+consists of 100 to 150 words.
+
+400
+00:19:08,670 --> 00:19:11,060
+And the questions are
+crowd-sourced, basically
+
+401
+00:19:11,060 --> 00:19:13,260
+like from Mechanical Turking.
+
+402
+00:19:13,260 --> 00:19:16,710
+And this is a very important
+property of the dataset,
+
+403
+00:19:16,710 --> 00:19:20,910
+is that each answer is
+a short segment of text,
+
+404
+00:19:20,910 --> 00:19:23,070
+or we called it
+span in the passage.
+
+405
+00:19:23,070 --> 00:19:25,450
+So as you can see
+from this example--
+
+406
+00:19:25,450 --> 00:19:27,330
+so here are three
+different questions.
+
+407
+00:19:27,330 --> 00:19:30,990
+And each of these answers
+can be actually found off
+
+408
+00:19:30,990 --> 00:19:33,630
+on a short segment
+text in the passage.
+
+409
+00:19:33,630 --> 00:19:36,586
+So this is actually an
+interesting property
+
+410
+00:19:36,586 --> 00:19:40,680
+and it's also an important
+property of this data set.
+
+411
+00:19:40,680 --> 00:19:45,030
+But also just to caveat, that
+this is also a limitation.
+
+412
+00:19:45,030 --> 00:19:48,990
+Because not all the questions
+have the answers in this way.
+
+413
+00:19:48,990 --> 00:19:52,170
+So only the questions that
+you have found the answers
+
+414
+00:19:52,170 --> 00:19:54,330
+as a span in the
+passage can actually
+
+415
+00:19:54,330 --> 00:19:56,850
+be included in this
+dataset basically.
+
+416
+00:19:56,850 --> 00:20:00,138
+
+
+417
+00:20:00,138 --> 00:20:02,180
+But today, so this dataset,
+I forgot to say that.
+
+418
+00:20:02,180 --> 00:20:07,293
+This dataset was collected in
+2016 by several researchers
+
+419
+00:20:07,293 --> 00:20:09,585
+at Stanford, so it's called
+Stanford Question Answering
+
+420
+00:20:09,585 --> 00:20:10,800
+Dataset.
+
+421
+00:20:10,800 --> 00:20:13,180
+Today, after four
+or five years now,
+
+422
+00:20:13,180 --> 00:20:16,320
+so SQuAD still remains the most
+popular reading comprehension
+
+423
+00:20:16,320 --> 00:20:17,190
+data set.
+
+424
+00:20:17,190 --> 00:20:20,610
+So it's actually very clearly
+a high quality dataset,
+
+425
+00:20:20,610 --> 00:20:23,350
+but is also not a very
+difficult dataset.
+
+426
+00:20:23,350 --> 00:20:26,400
+So today, basically the SQuAD
+dataset itself has been almost
+
+427
+00:20:26,400 --> 00:20:30,210
+solved, and the state-of-the-art
+already exceeds estimated human
+
+428
+00:20:30,210 --> 00:20:31,385
+performance.
+
+429
+00:20:31,385 --> 00:20:34,360
+
+
+430
+00:20:34,360 --> 00:20:35,920
+And I also want
+to quickly mention
+
+431
+00:20:35,920 --> 00:20:40,650
+the evaluation for this Stanford
+Question Answering Dataset.
+
+432
+00:20:40,650 --> 00:20:42,810
+So there are basically
+two evaluation metrics
+
+433
+00:20:42,810 --> 00:20:46,140
+to evaluate how well the
+system can do on this dataset.
+
+434
+00:20:46,140 --> 00:20:50,070
+The two metrics are the
+exact match and the F1 score.
+
+435
+00:20:50,070 --> 00:20:53,910
+So exact match is basically
+just a binary indicator, 0 or 1.
+
+436
+00:20:53,910 --> 00:20:57,120
+Basic measures can
+actually be exactly matched
+
+437
+00:20:57,120 --> 00:20:58,290
+to the gold answer.
+
+438
+00:20:58,290 --> 00:21:00,260
+And the F1 score
+basically can measure
+
+439
+00:21:00,260 --> 00:21:04,590
+kind of some partial credit,
+enough to do the evaluation.
+
+440
+00:21:04,590 --> 00:21:07,290
+So basically for the
+development and testing set,
+
+441
+00:21:07,290 --> 00:21:09,870
+there will be three
+gold answers collected
+
+442
+00:21:09,870 --> 00:21:12,840
+because for some
+questions, there might be
+
+443
+00:21:12,840 --> 00:21:14,580
+not just one unique
+answer, there
+
+444
+00:21:14,580 --> 00:21:16,980
+could be multiple
+plausible answers.
+
+445
+00:21:16,980 --> 00:21:19,110
+And the evaluation
+matrix basically takes
+
+446
+00:21:19,110 --> 00:21:22,920
+the predicted answer and then
+compares the predicted answer
+
+447
+00:21:22,920 --> 00:21:26,910
+to each gold answer
+with some articles
+
+448
+00:21:26,910 --> 00:21:29,340
+and also the
+punctuation excluded.
+
+449
+00:21:29,340 --> 00:21:32,340
+And basically you can
+compare the exact match score
+
+450
+00:21:32,340 --> 00:21:37,020
+and also F1 score by
+comparing the predicted answer
+
+451
+00:21:37,020 --> 00:21:38,080
+to the gold answer.
+
+452
+00:21:38,080 --> 00:21:40,050
+And then finally you
+take the max scores.
+
+453
+00:21:40,050 --> 00:21:43,690
+And there are many different
+examples in the dev or test
+
+454
+00:21:43,690 --> 00:21:44,190
+set.
+
+455
+00:21:44,190 --> 00:21:45,940
+And then finally, we
+just take the average
+
+456
+00:21:45,940 --> 00:21:49,070
+of all the examples for both the
+exact match and the reference
+
+457
+00:21:49,070 --> 00:21:50,400
+score.
+
+458
+00:21:50,400 --> 00:21:53,040
+So by using this
+evaluation metric,
+
+459
+00:21:53,040 --> 00:22:00,480
+the estimated human performance
+estimated by the researchers
+
+460
+00:22:00,480 --> 00:22:01,560
+at the time is--
+
+461
+00:22:01,560 --> 00:22:08,580
+the exact match score is 82.3%
+and the F1 score is 91.2.
+
+462
+00:22:08,580 --> 00:22:12,160
+So here is just a quick example.
+
+463
+00:22:12,160 --> 00:22:16,740
+So here's the question what
+did Tesla do in December 1878?
+
+464
+00:22:16,740 --> 00:22:19,290
+And there's three
+possible answers.
+
+465
+00:22:19,290 --> 00:22:21,270
+So you can see that
+the first two answers
+
+466
+00:22:21,270 --> 00:22:23,550
+are the same, left Graz.
+
+467
+00:22:23,550 --> 00:22:27,930
+And then the second answer
+is left Graz and severed,
+
+468
+00:22:27,930 --> 00:22:33,090
+I think there's a typo here,
+all relations with his family.
+
+469
+00:22:33,090 --> 00:22:36,300
+And then you find that
+prediction is span,
+
+470
+00:22:36,300 --> 00:22:38,760
+which is left Graz and severed.
+
+471
+00:22:38,760 --> 00:22:41,780
+So we can see that
+there is an exact match
+
+472
+00:22:41,780 --> 00:22:44,040
+score between the
+predicted answer
+
+473
+00:22:44,040 --> 00:22:45,640
+and any of the gold answers.
+
+474
+00:22:45,640 --> 00:22:47,730
+So the exact match would be 0.
+
+475
+00:22:47,730 --> 00:22:50,340
+And the F1 score would
+be taking the max.
+
+476
+00:22:50,340 --> 00:22:53,400
+I'm not going to talk about
+how these are computed,
+
+477
+00:22:53,400 --> 00:22:56,110
+so I suggest you check
+out the original paper.
+
+478
+00:22:56,110 --> 00:22:59,490
+So by computing these
+scores and taking the max,
+
+479
+00:22:59,490 --> 00:23:03,180
+the final F1 score
+will be 0.67, which
+
+480
+00:23:03,180 --> 00:23:09,170
+is F1 score for this predicted
+answer on this dataset.
+
+481
+00:23:09,170 --> 00:23:11,555
+So Danqi, one question
+you might answer is,
+
+482
+00:23:11,555 --> 00:23:16,190
+so if you can do other tasks
+like named entity recognition
+
+483
+00:23:16,190 --> 00:23:19,310
+or relation extraction
+by sticking something
+
+484
+00:23:19,310 --> 00:23:22,790
+on top of BERT and
+fine tuning for it
+
+485
+00:23:22,790 --> 00:23:25,520
+or do it as a
+question answering,
+
+486
+00:23:25,520 --> 00:23:28,550
+does one or the other method
+work better and by how much?
+
+487
+00:23:28,550 --> 00:23:31,090
+
+
+488
+00:23:31,090 --> 00:23:32,440
+That's an interesting question.
+
+489
+00:23:32,440 --> 00:23:35,320
+
+
+490
+00:23:35,320 --> 00:23:36,610
+So I haven't really seen the--
+
+491
+00:23:36,610 --> 00:23:37,110
+OK.
+
+492
+00:23:37,110 --> 00:23:38,580
+So there has been
+some claim, OK,
+
+493
+00:23:38,580 --> 00:23:41,130
+that all the tasks
+can be converted
+
+494
+00:23:41,130 --> 00:23:42,540
+into question answering task.
+
+495
+00:23:42,540 --> 00:23:45,660
+But I'm not sure if there is
+really a very fair comparison,
+
+496
+00:23:45,660 --> 00:23:48,100
+let's say a yarn and
+entity recognition
+
+497
+00:23:48,100 --> 00:23:50,610
+by really converting that
+into question answering task.
+
+498
+00:23:50,610 --> 00:23:52,620
+So I don't have
+the answer to that.
+
+499
+00:23:52,620 --> 00:23:56,160
+So the kind of state-of-the-art
+AER systems still have time
+
+500
+00:23:56,160 --> 00:24:00,010
+to just train or sequence
+tagger on top of the word.
+
+501
+00:24:00,010 --> 00:24:03,030
+So yeah, I don't really have
+a precise answer to that.
+
+502
+00:24:03,030 --> 00:24:07,310
+
+
+503
+00:24:07,310 --> 00:24:10,160
+Shall I continue?
+
+504
+00:24:10,160 --> 00:24:10,840
+OK.
+
+505
+00:24:10,840 --> 00:24:11,340
+Yeah.
+
+506
+00:24:11,340 --> 00:24:13,830
+
+
+507
+00:24:13,830 --> 00:24:14,330
+OK.
+
+508
+00:24:14,330 --> 00:24:15,950
+So next, I'm going
+to talk about how
+
+509
+00:24:15,950 --> 00:24:18,830
+to build neural models
+for reading comprehension,
+
+510
+00:24:18,830 --> 00:24:21,410
+and in particular, how
+we can build a model
+
+511
+00:24:21,410 --> 00:24:24,400
+to solve the Stanford
+Question Answering Dataset.
+
+512
+00:24:24,400 --> 00:24:27,705
+I also to just quickly
+mention that because there
+
+513
+00:24:27,705 --> 00:24:29,330
+are many different
+papers that actually
+
+514
+00:24:29,330 --> 00:24:33,540
+use different notions to
+refer to the same thing,
+
+515
+00:24:33,540 --> 00:24:34,890
+so starting from--
+
+516
+00:24:34,890 --> 00:24:36,890
+so I'm going to use
+the passage, paragraph,
+
+517
+00:24:36,890 --> 00:24:38,900
+and context, and
+also question and
+
+518
+00:24:38,900 --> 00:24:41,242
+query basic interchangeably.
+
+519
+00:24:41,242 --> 00:24:42,950
+So they basically
+refer to the same thing
+
+520
+00:24:42,950 --> 00:24:46,200
+because different papers
+use also different notions.
+
+521
+00:24:46,200 --> 00:24:48,790
+So I just want to
+quickly mention that.
+
+522
+00:24:48,790 --> 00:24:49,290
+OK.
+
+523
+00:24:49,290 --> 00:24:52,350
+So how can we build a model
+to solve this problem?
+
+524
+00:24:52,350 --> 00:24:54,560
+So let's first
+formulate this problem.
+
+525
+00:24:54,560 --> 00:24:57,830
+So the input of this
+problem is let's
+
+526
+00:24:57,830 --> 00:24:59,720
+take a context or paragraph.
+
+527
+00:24:59,720 --> 00:25:04,250
+So C, which consists of
+the N tokens C1 to CN.
+
+528
+00:25:04,250 --> 00:25:06,410
+And also we take
+our question, Q.
+
+529
+00:25:06,410 --> 00:25:10,790
+And the question consists
+of n tokens q1 to qN.
+
+530
+00:25:10,790 --> 00:25:16,460
+So N could be something like
+between 100 and 200 for SQuAD.
+
+531
+00:25:16,460 --> 00:25:18,170
+And then N would
+be much shorter,
+
+532
+00:25:18,170 --> 00:25:20,660
+it would be something
+like 10 or 15.
+
+533
+00:25:20,660 --> 00:25:23,165
+And because the answer
+has these constraints,
+
+534
+00:25:23,165 --> 00:25:26,480
+the answer must be a section
+of text in the passage.
+
+535
+00:25:26,480 --> 00:25:29,960
+So the output can be
+just written this way.
+
+536
+00:25:29,960 --> 00:25:32,480
+We are going to predict
+a start and end.
+
+537
+00:25:32,480 --> 00:25:36,730
+So start and then end
+would be within the range
+
+538
+00:25:36,730 --> 00:25:38,900
+between the 1 and the
+N. So it's basically
+
+539
+00:25:38,900 --> 00:25:42,110
+just two checkpoints-- sorry,
+two end points of the answer.
+
+540
+00:25:42,110 --> 00:25:47,030
+
+
+541
+00:25:47,030 --> 00:25:51,200
+So SQuAD has been collected
+beginning late 2016.
+
+542
+00:25:51,200 --> 00:25:54,695
+So after 2016, there
+have been-- there
+
+543
+00:25:54,695 --> 00:26:01,440
+are two families of neural role
+models to solving this SQuAD
+
+544
+00:26:01,440 --> 00:26:02,480
+data set.
+
+545
+00:26:02,480 --> 00:26:05,295
+So the first family
+basically had
+
+546
+00:26:05,295 --> 00:26:07,340
+done a lot of
+models that came out
+
+547
+00:26:07,340 --> 00:26:10,820
+during that period
+between 2016 and 2018.
+
+548
+00:26:10,820 --> 00:26:14,230
+So this was a family of models,
+basically LSTM-based models
+
+549
+00:26:14,230 --> 00:26:15,530
+with attention.
+
+550
+00:26:15,530 --> 00:26:19,730
+So these are just a list
+of the representing models
+
+551
+00:26:19,730 --> 00:26:22,400
+that came out during
+that period and including
+
+552
+00:26:22,400 --> 00:26:25,455
+some work that I did when I
+was a PhD student at Stanford.
+
+553
+00:26:25,455 --> 00:26:28,373
+
+
+554
+00:26:28,373 --> 00:26:30,290
+And the second class of
+models that I put here
+
+555
+00:26:30,290 --> 00:26:33,920
+is really divided here before
+the BERT and after BERT.
+
+556
+00:26:33,920 --> 00:26:38,060
+So after BERT came out--
+so almost all these reading
+
+557
+00:26:38,060 --> 00:26:40,130
+comprehension models
+were built on how
+
+558
+00:26:40,130 --> 00:26:42,020
+to fine tune the BERT models.
+
+559
+00:26:42,020 --> 00:26:44,450
+Not just BERT models,
+for the BERT-like models.
+
+560
+00:26:44,450 --> 00:26:47,210
+So pre-trained language models
+for these kind of reading
+
+561
+00:26:47,210 --> 00:26:50,110
+comprehension problems.
+
+562
+00:26:50,110 --> 00:26:51,540
+So here are the two--
+
+563
+00:26:51,540 --> 00:26:54,162
+
+
+564
+00:26:54,162 --> 00:26:57,820
+the illustration of these
+two families of the models.
+
+565
+00:26:57,820 --> 00:27:01,800
+So on the left is an LSTM-based
+models with attention,
+
+566
+00:27:01,800 --> 00:27:06,726
+and on the right
+is the BERT model.
+
+567
+00:27:06,726 --> 00:27:09,690
+And then we need to fine-tunel
+this model for the reading
+
+568
+00:27:09,690 --> 00:27:11,130
+comprehension task.
+
+569
+00:27:11,130 --> 00:27:12,700
+So I know that for the--
+
+570
+00:27:12,700 --> 00:27:16,140
+so my plan today is
+first try to talk
+
+571
+00:27:16,140 --> 00:27:18,490
+about these LSTM-based models.
+
+572
+00:27:18,490 --> 00:27:21,390
+So I'm going to spend a little
+bit more time on this part
+
+573
+00:27:21,390 --> 00:27:24,060
+because I know that for
+the default final project,
+
+574
+00:27:24,060 --> 00:27:27,180
+you will need to implement
+this model from the scratch.
+
+575
+00:27:27,180 --> 00:27:29,650
+So I'm going to walk us through
+hard to build this model
+
+576
+00:27:29,650 --> 00:27:31,500
+step by step, and
+hopefully with that,
+
+577
+00:27:31,500 --> 00:27:34,190
+you'll have a good understanding
+of how this model works.
+
+578
+00:27:34,190 --> 00:27:35,880
+And so I'm just
+going to briefly tell
+
+579
+00:27:35,880 --> 00:27:38,850
+about how to build this
+BER-- use the BERT models
+
+580
+00:27:38,850 --> 00:27:42,090
+for the reading comprehension.
+
+581
+00:27:42,090 --> 00:27:45,000
+OK, so before I start talking
+about these LSTM models,
+
+582
+00:27:45,000 --> 00:27:47,070
+I know that you have
+already learned the sequence
+
+583
+00:27:47,070 --> 00:27:48,990
+to sequence models
+with attention
+
+584
+00:27:48,990 --> 00:27:52,152
+for machine translation.
+
+585
+00:27:52,152 --> 00:27:55,380
+So I want to draw some
+connections between the machine
+
+586
+00:27:55,380 --> 00:27:58,140
+translation problem and the
+reading comprehension problem
+
+587
+00:27:58,140 --> 00:28:01,740
+because they really share
+a lot of similarities.
+
+588
+00:28:01,740 --> 00:28:05,000
+So first, in the machine
+translation model
+
+589
+00:28:05,000 --> 00:28:07,050
+or this sequence
+to sequence model,
+
+590
+00:28:07,050 --> 00:28:10,140
+there are like a source
+and target sentence.
+
+591
+00:28:10,140 --> 00:28:12,990
+So basically there
+are two sequences.
+
+592
+00:28:12,990 --> 00:28:16,050
+But in our case, in this
+reading comprehension case,
+
+593
+00:28:16,050 --> 00:28:17,670
+we also have two sequences.
+
+594
+00:28:17,670 --> 00:28:20,438
+One is a passage and
+another is our question.
+
+595
+00:28:20,438 --> 00:28:22,230
+But the length could
+be slightly imbalanced
+
+596
+00:28:22,230 --> 00:28:24,605
+because a passage could be
+much longer than the question.
+
+597
+00:28:24,605 --> 00:28:27,216
+But essentially, you
+also choose sequences.
+
+598
+00:28:27,216 --> 00:28:30,440
+
+
+599
+00:28:30,440 --> 00:28:31,940
+And so in the reading
+comprehension,
+
+600
+00:28:31,940 --> 00:28:35,150
+we need to model which
+words in the passage
+
+601
+00:28:35,150 --> 00:28:37,180
+are most relevant
+to the question.
+
+602
+00:28:37,180 --> 00:28:39,890
+And if they are relevant
+to the question,
+
+603
+00:28:39,890 --> 00:28:41,880
+so these are also
+relevant to which
+
+604
+00:28:41,880 --> 00:28:43,600
+set of the question words.
+
+605
+00:28:43,600 --> 00:28:48,670
+So this is a very
+key important thing
+
+606
+00:28:48,670 --> 00:28:50,530
+that we actually need to model.
+
+607
+00:28:50,530 --> 00:28:53,170
+And that is actually very
+similar to the machine
+
+608
+00:28:53,170 --> 00:28:55,630
+translation model
+that we need to model
+
+609
+00:28:55,630 --> 00:28:57,760
+which words in the
+source sentence
+
+610
+00:28:57,760 --> 00:29:01,670
+that actually are most relevant
+to the current target words.
+
+611
+00:29:01,670 --> 00:29:03,760
+So you can imagine that
+attention would be also
+
+612
+00:29:03,760 --> 00:29:05,890
+really the key ingredient here.
+
+613
+00:29:05,890 --> 00:29:08,320
+Just like some sequence
+to sequence model,
+
+614
+00:29:08,320 --> 00:29:11,050
+we need to model the attention
+between the source sentence
+
+615
+00:29:11,050 --> 00:29:12,650
+and the target sentence.
+
+616
+00:29:12,650 --> 00:29:15,850
+We also need to model the
+attention between the passage
+
+617
+00:29:15,850 --> 00:29:16,570
+and the question.
+
+618
+00:29:16,570 --> 00:29:18,955
+So this is actually
+very similar.
+
+619
+00:29:18,955 --> 00:29:20,830
+So something that's
+actually not very similar
+
+620
+00:29:20,830 --> 00:29:23,620
+is for the sequence
+to sequence model,
+
+621
+00:29:23,620 --> 00:29:26,890
+we need to build a decoder,
+autoregressive decoder,
+
+622
+00:29:26,890 --> 00:29:29,860
+to generate the target
+sentence word by word.
+
+623
+00:29:29,860 --> 00:29:32,370
+But in this reading
+comprehension problem,
+
+624
+00:29:32,370 --> 00:29:34,810
+we don't need to really
+generate anything.
+
+625
+00:29:34,810 --> 00:29:37,180
+So we just take the
+path into question.
+
+626
+00:29:37,180 --> 00:29:40,510
+So at least for
+the SQuAD data set,
+
+627
+00:29:40,510 --> 00:29:42,340
+we just need to
+train two classifiers
+
+628
+00:29:42,340 --> 00:29:45,950
+to predict the start and
+end positions of answers.
+
+629
+00:29:45,950 --> 00:29:47,980
+So that part is
+actually simplified.
+
+630
+00:29:47,980 --> 00:29:51,140
+So we only need to train the
+decoder to generate the target
+
+631
+00:29:51,140 --> 00:29:53,540
+sentence.
+
+632
+00:29:53,540 --> 00:29:54,040
+OK.
+
+633
+00:29:54,040 --> 00:29:59,410
+So next, I'm going to talk
+about this model called BiDAF.
+
+634
+00:29:59,410 --> 00:30:02,180
+So it stands for
+Bidirectional Attention Flow
+
+635
+00:30:02,180 --> 00:30:03,910
+for Machine Comprehension.
+
+636
+00:30:03,910 --> 00:30:10,100
+So it was proposed by Minjoon
+Seo and other folks in 2017.
+
+637
+00:30:10,100 --> 00:30:12,520
+Before the BERT
+came out, It remains
+
+638
+00:30:12,520 --> 00:30:15,580
+one of the most popular
+reading comprehension models
+
+639
+00:30:15,580 --> 00:30:17,350
+and achieved a very
+good performance
+
+640
+00:30:17,350 --> 00:30:19,930
+at that time, at least
+on the SQuAD data set.
+
+641
+00:30:19,930 --> 00:30:24,460
+So you can see that this model
+seems to be pretty complicated.
+
+642
+00:30:24,460 --> 00:30:28,900
+But if you look at this model
+from the bottom to the top,
+
+643
+00:30:28,900 --> 00:30:34,460
+it actually can be decomposed
+into many different layers.
+
+644
+00:30:34,460 --> 00:30:38,170
+So next, I'm going to just
+dissect this model layer
+
+645
+00:30:38,170 --> 00:30:41,230
+by layer and talk about what
+this layer is actually doing
+
+646
+00:30:41,230 --> 00:30:43,960
+and how we can really build
+this model from the bottom layer
+
+647
+00:30:43,960 --> 00:30:45,745
+to the top layer,
+and the finally we
+
+648
+00:30:45,745 --> 00:30:47,970
+train this model in
+an end to end way.
+
+649
+00:30:47,970 --> 00:30:51,370
+
+
+650
+00:30:51,370 --> 00:30:51,870
+OK.
+
+651
+00:30:51,870 --> 00:30:56,570
+So the first part is actually
+the bottom three layers
+
+652
+00:30:56,570 --> 00:30:59,340
+called the character embedding
+layer, word embedding layer,
+
+653
+00:30:59,340 --> 00:31:00,780
+and the phrase embedding layer.
+
+654
+00:31:00,780 --> 00:31:02,820
+So I just put them
+together and called this
+
+655
+00:31:02,820 --> 00:31:05,080
+as an encoding function.
+
+656
+00:31:05,080 --> 00:31:07,020
+So the idea here
+is that OK, let's
+
+657
+00:31:07,020 --> 00:31:09,330
+take the context part of
+the passage in question.
+
+658
+00:31:09,330 --> 00:31:11,730
+We need to encode
+them separately.
+
+659
+00:31:11,730 --> 00:31:14,267
+
+
+660
+00:31:14,267 --> 00:31:15,850
+So to do this, so
+this model basically
+
+661
+00:31:15,850 --> 00:31:19,980
+proposed to use a concatenation
+of the word embedding
+
+662
+00:31:19,980 --> 00:31:22,320
+as well as the
+character embedding
+
+663
+00:31:22,320 --> 00:31:26,010
+for each word in the
+context and the query.
+
+664
+00:31:26,010 --> 00:31:27,820
+So the word embedding
+is straightforward.
+
+665
+00:31:27,820 --> 00:31:30,120
+So if you have the
+word embedding,
+
+666
+00:31:30,120 --> 00:31:32,370
+you can just look at
+the word for the--
+
+667
+00:31:32,370 --> 00:31:35,730
+just a word like "Seattle,"
+just use the GloVe embedding
+
+668
+00:31:35,730 --> 00:31:37,980
+as a representation
+for this word.
+
+669
+00:31:37,980 --> 00:31:40,290
+And for the character
+embedding part,
+
+670
+00:31:40,290 --> 00:31:42,540
+so you basically
+need to represent
+
+671
+00:31:42,540 --> 00:31:45,780
+each character in this
+word, like Seattle,
+
+672
+00:31:45,780 --> 00:31:49,260
+and bypass this to a
+convolutional neural network
+
+673
+00:31:49,260 --> 00:31:51,143
+with some kind of max
+pooling operations.
+
+674
+00:31:51,143 --> 00:31:52,560
+And then finally,
+you can just get
+
+675
+00:31:52,560 --> 00:31:54,220
+one representation at the top.
+
+676
+00:31:54,220 --> 00:31:57,370
+And then you just concatenate
+the word embedding
+
+677
+00:31:57,370 --> 00:31:59,050
+and the character embedding.
+
+678
+00:31:59,050 --> 00:32:00,570
+So these character
+embeddings have
+
+679
+00:32:00,570 --> 00:32:03,720
+been shown to improve the
+representation for the unseen
+
+680
+00:32:03,720 --> 00:32:05,940
+or the real words.
+
+681
+00:32:05,940 --> 00:32:10,080
+So mathematically, we can
+see that for each word
+
+682
+00:32:10,080 --> 00:32:12,900
+in the context of the
+query, we can just
+
+683
+00:32:12,900 --> 00:32:17,050
+represent as GloVes with the
+embedding and the character
+
+684
+00:32:17,050 --> 00:32:17,820
+embedding.
+
+685
+00:32:17,820 --> 00:32:20,180
+And then we just concatenate
+them and pass this
+
+686
+00:32:20,180 --> 00:32:21,930
+to a highway network.
+
+687
+00:32:21,930 --> 00:32:24,480
+So I didn't write
+the function here.
+
+688
+00:32:24,480 --> 00:32:28,020
+So you can just look
+at the original paper.
+
+689
+00:32:28,020 --> 00:32:29,370
+And the second part.
+
+690
+00:32:29,370 --> 00:32:33,660
+So after we encode the
+individual word, so next,
+
+691
+00:32:33,660 --> 00:32:36,750
+we are going to pass
+this word embedding
+
+692
+00:32:36,750 --> 00:32:40,170
+into two separate
+bidirectional LSTMs
+
+693
+00:32:40,170 --> 00:32:43,620
+separately to produce these
+contextualized embeddings
+
+694
+00:32:43,620 --> 00:32:45,880
+for both the context
+and the query.
+
+695
+00:32:45,880 --> 00:32:48,860
+So let's look at this equation.
+
+696
+00:32:48,860 --> 00:32:51,630
+So we take the
+representation of this word.
+
+697
+00:32:51,630 --> 00:32:53,190
+And then we just--
+basically, this
+
+698
+00:32:53,190 --> 00:32:56,700
+is one LSTM model
+from one direction
+
+699
+00:32:56,700 --> 00:33:00,190
+and this is a LSTM model
+from another direction.
+
+700
+00:33:00,190 --> 00:33:04,070
+So we just need to concatenate
+the two hidden representation
+
+701
+00:33:04,070 --> 00:33:05,410
+in two directions.
+
+702
+00:33:05,410 --> 00:33:09,460
+And finally, we can get a
+contextualized representation
+
+703
+00:33:09,460 --> 00:33:11,760
+for each single
+word in the context.
+
+704
+00:33:11,760 --> 00:33:15,060
+And we can do a similar
+thing for the question
+
+705
+00:33:15,060 --> 00:33:16,635
+representation.
+
+706
+00:33:16,635 --> 00:33:18,760
+I also want to quickly
+mention, because I mentioned
+
+707
+00:33:18,760 --> 00:33:20,340
+the sequence to sequence model.
+
+708
+00:33:20,340 --> 00:33:22,860
+So sequence to sequence model,
+we cannot really do these
+
+709
+00:33:22,860 --> 00:33:27,390
+bidirectional LSTMs for the two
+sequences because the decoder
+
+710
+00:33:27,390 --> 00:33:29,740
+is an autoregressive model.
+
+711
+00:33:29,740 --> 00:33:32,740
+So that's why the decoder
+is usually just implemented
+
+712
+00:33:32,740 --> 00:33:35,040
+as a unidirectional LSTM.
+
+713
+00:33:35,040 --> 00:33:38,700
+But because here we don't really
+care about the generation,
+
+714
+00:33:38,700 --> 00:33:40,975
+so we can just use two
+bidirectional LSTMs
+
+715
+00:33:40,975 --> 00:33:42,350
+to represent the
+representations.
+
+716
+00:33:42,350 --> 00:33:45,725
+This is actually very important.
+
+717
+00:33:45,725 --> 00:33:48,100
+This bidirectional [INAUDIBLE]
+is actually very important
+
+718
+00:33:48,100 --> 00:33:50,950
+to capture the context from
+both the left and right side.
+
+719
+00:33:50,950 --> 00:33:54,230
+
+
+720
+00:33:54,230 --> 00:33:54,730
+OK.
+
+721
+00:33:54,730 --> 00:33:57,160
+So the next component
+is our next layer.
+
+722
+00:33:57,160 --> 00:33:59,020
+It's called the
+attention flow layer.
+
+723
+00:33:59,020 --> 00:34:01,250
+So I just called
+it attention here.
+
+724
+00:34:01,250 --> 00:34:03,640
+So the idea of
+attention is trying
+
+725
+00:34:03,640 --> 00:34:06,895
+to capture the interactions
+between the context
+
+726
+00:34:06,895 --> 00:34:08,300
+and the query.
+
+727
+00:34:08,300 --> 00:34:10,510
+And I think in this
+paper, the BiDAF paper,
+
+728
+00:34:10,510 --> 00:34:14,109
+they proposed two
+kinds of attention.
+
+729
+00:34:14,109 --> 00:34:15,484
+So the first type
+of attention we
+
+730
+00:34:15,484 --> 00:34:18,070
+called context-to-query
+attention.
+
+731
+00:34:18,070 --> 00:34:22,810
+So the idea is for
+each context word,
+
+732
+00:34:22,810 --> 00:34:27,530
+can we find the
+most relevant words
+
+733
+00:34:27,530 --> 00:34:30,469
+from the question
+for the query words.
+
+734
+00:34:30,469 --> 00:34:32,070
+So is one example.
+
+735
+00:34:32,070 --> 00:34:35,110
+So here the context
+is Barack Obama
+
+736
+00:34:35,110 --> 00:34:37,190
+is the president of the USA.
+
+737
+00:34:37,190 --> 00:34:39,590
+So for each context
+word, we need
+
+738
+00:34:39,590 --> 00:34:41,690
+to find our alignment
+because we find
+
+739
+00:34:41,690 --> 00:34:44,120
+which words in the question
+can be actually aligned
+
+740
+00:34:44,120 --> 00:34:45,739
+with this context word.
+
+741
+00:34:45,739 --> 00:34:48,156
+So we can see that both
+Barack and Obama can
+
+742
+00:34:48,156 --> 00:34:50,360
+be aligned with who,
+and the president can
+
+743
+00:34:50,360 --> 00:34:54,080
+be aligned to leads, and the
+USA is aligned to United States.
+
+744
+00:34:54,080 --> 00:34:55,580
+So basically for
+each context, we're
+
+745
+00:34:55,580 --> 00:34:59,980
+trying to find the most
+relevant query words.
+
+746
+00:34:59,980 --> 00:35:02,110
+And then the second
+type of attention
+
+747
+00:35:02,110 --> 00:35:04,480
+is called the query
+to context attention.
+
+748
+00:35:04,480 --> 00:35:06,380
+So it's basically in
+the other direction.
+
+749
+00:35:06,380 --> 00:35:09,670
+So here the idea is
+to choose some context
+
+750
+00:35:09,670 --> 00:35:14,290
+words that are most relevant
+to one of the query words.
+
+751
+00:35:14,290 --> 00:35:16,700
+Because the context
+can be very long.
+
+752
+00:35:16,700 --> 00:35:20,020
+So a lot of the context
+could be just not relevant
+
+753
+00:35:20,020 --> 00:35:21,700
+to this question.
+
+754
+00:35:21,700 --> 00:35:26,080
+So we just ran over several
+examples you can see there.
+
+755
+00:35:26,080 --> 00:35:29,570
+The first thing we need to do
+to try to locate which part
+
+756
+00:35:29,570 --> 00:35:32,170
+of the sentences in this
+context can be actually
+
+757
+00:35:32,170 --> 00:35:33,710
+relevant to this question.
+
+758
+00:35:33,710 --> 00:35:36,490
+So this type of the query
+to context attention
+
+759
+00:35:36,490 --> 00:35:42,640
+is trying to capture which
+context words actually
+
+760
+00:35:42,640 --> 00:35:47,170
+can be most relevant to
+one of the query words.
+
+761
+00:35:47,170 --> 00:35:49,180
+So for this example,
+the question
+
+762
+00:35:49,180 --> 00:35:51,820
+is which city is
+gloomy in winter.
+
+763
+00:35:51,820 --> 00:35:54,670
+So because the question
+asked about gloomy,
+
+764
+00:35:54,670 --> 00:35:56,450
+so you guys can
+try to figure out,
+
+765
+00:35:56,450 --> 00:36:03,120
+OK, gloomy cities is actually
+very relevant to this question.
+
+766
+00:36:03,120 --> 00:36:06,120
+Now we also find this in winter
+because "in winter" is also
+
+767
+00:36:06,120 --> 00:36:07,650
+mentioned in the question.
+
+768
+00:36:07,650 --> 00:36:10,125
+So this part of
+the context words
+
+769
+00:36:10,125 --> 00:36:12,130
+can be also relevant
+to this question.
+
+770
+00:36:12,130 --> 00:36:16,050
+So these context
+words probably need
+
+771
+00:36:16,050 --> 00:36:19,860
+to be captured in this attention
+that OK, this is actually
+
+772
+00:36:19,860 --> 00:36:22,300
+relevant to this question.
+
+773
+00:36:22,300 --> 00:36:22,800
+OK.
+
+774
+00:36:22,800 --> 00:36:25,710
+So this is actually just
+an intuition of these two
+
+775
+00:36:25,710 --> 00:36:27,420
+types of attention.
+
+776
+00:36:27,420 --> 00:36:29,100
+And this is also
+why this model is
+
+777
+00:36:29,100 --> 00:36:32,220
+called a bidirectional
+attention flow because there's
+
+778
+00:36:32,220 --> 00:36:34,800
+a context-to-query
+attention and there is also
+
+779
+00:36:34,800 --> 00:36:39,070
+a query-to-context attention.
+
+780
+00:36:39,070 --> 00:36:43,405
+So let me just talk about,
+go through how to actually do
+
+781
+00:36:43,405 --> 00:36:46,600
+this query-to-context attention
+and the context-to-query
+
+782
+00:36:46,600 --> 00:36:48,260
+attention in this model.
+
+783
+00:36:48,260 --> 00:36:52,270
+So the way they do this is
+first to compute a similarity
+
+784
+00:36:52,270 --> 00:36:57,880
+score for every pair of the
+contextualized vector ci
+
+785
+00:36:57,880 --> 00:37:00,670
+and then for every pair
+of the question with qj.
+
+786
+00:37:00,670 --> 00:37:03,500
+So this is actually the
+output from an encoding layer.
+
+787
+00:37:03,500 --> 00:37:06,640
+So this already the output
+from the LSTM layers.
+
+788
+00:37:06,640 --> 00:37:09,290
+And the way they basically
+just compute our similarity
+
+789
+00:37:09,290 --> 00:37:14,890
+score by taking the
+ci, qj, and also
+
+790
+00:37:14,890 --> 00:37:19,060
+the element-wise multiplication
+of the ci and qj.
+
+791
+00:37:19,060 --> 00:37:22,270
+So they just concatenate
+these three vectors.
+
+792
+00:37:22,270 --> 00:37:26,620
+So the output would be
+a 6H dimensional vector.
+
+793
+00:37:26,620 --> 00:37:30,070
+And they just multiply this
+to compute the dot product
+
+794
+00:37:30,070 --> 00:37:32,680
+of another learnable vector.
+
+795
+00:37:32,680 --> 00:37:35,650
+And they finally just
+basically give you
+
+796
+00:37:35,650 --> 00:37:38,560
+one scalar or one
+number, the sij,
+
+797
+00:37:38,560 --> 00:37:43,330
+which measures the similarity
+between this context word ci
+
+798
+00:37:43,330 --> 00:37:47,100
+and also this question word qj.
+
+799
+00:37:47,100 --> 00:37:49,750
+So if I learned the
+attention before,
+
+800
+00:37:49,750 --> 00:37:52,867
+so this is actually just
+one choice of this model.
+
+801
+00:37:52,867 --> 00:37:54,700
+So there could have
+been many different ways
+
+802
+00:37:54,700 --> 00:37:58,530
+to define this similarity
+and similarities scores.
+
+803
+00:37:58,530 --> 00:38:02,340
+So this basically just one
+design choice of this model.
+
+804
+00:38:02,340 --> 00:38:02,840
+OK.
+
+805
+00:38:02,840 --> 00:38:05,430
+So after you find the
+similarities for sij--
+
+806
+00:38:05,430 --> 00:38:08,240
+
+
+807
+00:38:08,240 --> 00:38:10,045
+so the context-to-query
+attention again,
+
+808
+00:38:10,045 --> 00:38:13,760
+like which question words
+are most relevant to ci.
+
+809
+00:38:13,760 --> 00:38:16,250
+So the way they do
+this is basically
+
+810
+00:38:16,250 --> 00:38:20,040
+just taking these metrics,
+the similarities for sij,
+
+811
+00:38:20,040 --> 00:38:21,020
+for each row.
+
+812
+00:38:21,020 --> 00:38:23,930
+Each row basically correspond
+to one context word.
+
+813
+00:38:23,930 --> 00:38:26,247
+
+
+814
+00:38:26,247 --> 00:38:27,830
+For each row, let's
+say they are going
+
+815
+00:38:27,830 --> 00:38:30,870
+to compute a softmax
+for each row,
+
+816
+00:38:30,870 --> 00:38:34,730
+and this can give us
+normalization scores alpha ij,
+
+817
+00:38:34,730 --> 00:38:37,490
+which is our probability
+distribution over all
+
+818
+00:38:37,490 --> 00:38:40,450
+the question words alpha ij.
+
+819
+00:38:40,450 --> 00:38:44,140
+So this is just really similar
+to all the attention mechanisms
+
+820
+00:38:44,140 --> 00:38:46,240
+that you probably have
+seen in this class.
+
+821
+00:38:46,240 --> 00:38:48,970
+So basically for
+each context words
+
+822
+00:38:48,970 --> 00:38:54,410
+taking the softmax over
+all the question words and
+
+823
+00:38:54,410 --> 00:38:57,580
+get us a probability
+distribution.
+
+824
+00:38:57,580 --> 00:39:02,400
+And finally, you just take
+the weighted combination
+
+825
+00:39:02,400 --> 00:39:06,280
+of this attention score alpha
+ij and also the question vector,
+
+826
+00:39:06,280 --> 00:39:07,870
+the qj, and then
+finally, you can
+
+827
+00:39:07,870 --> 00:39:12,070
+get a vector ai, which is
+actually a 2H dimensional
+
+828
+00:39:12,070 --> 00:39:12,790
+vector.
+
+829
+00:39:12,790 --> 00:39:15,130
+So this context-to-query
+attention basically
+
+830
+00:39:15,130 --> 00:39:17,920
+just tries to capture
+which questions are most
+
+831
+00:39:17,920 --> 00:39:20,840
+relevant to each context word.
+
+832
+00:39:20,840 --> 00:39:23,930
+So the next part is a query to--
+
+833
+00:39:23,930 --> 00:39:25,865
+sorry, there's a
+typo here, sorry.
+
+834
+00:39:25,865 --> 00:39:29,180
+This is actually the
+query-to-context attention.
+
+835
+00:39:29,180 --> 00:39:31,670
+Which means that
+which context words
+
+836
+00:39:31,670 --> 00:39:34,600
+are relevant to
+some question words.
+
+837
+00:39:34,600 --> 00:39:36,110
+So a lot of context
+words will be
+
+838
+00:39:36,110 --> 00:39:38,100
+not relevant to this question.
+
+839
+00:39:38,100 --> 00:39:39,500
+So the idea is to do this.
+
+840
+00:39:39,500 --> 00:39:42,760
+They do this, is for
+each row of this sij,
+
+841
+00:39:42,760 --> 00:39:47,245
+it basically just takes the max
+scores over all the question
+
+842
+00:39:47,245 --> 00:39:47,900
+words.
+
+843
+00:39:47,900 --> 00:39:52,730
+And after taking this max score
+to compute the softmax over all
+
+844
+00:39:52,730 --> 00:39:54,660
+the context words here.
+
+845
+00:39:54,660 --> 00:39:58,070
+So here, i actually enumerates
+over all the context words.
+
+846
+00:39:58,070 --> 00:40:02,390
+And this can give us another
+attention score of beta i,
+
+847
+00:40:02,390 --> 00:40:05,660
+which captures how important
+this context word is
+
+848
+00:40:05,660 --> 00:40:08,340
+relevant to this question.
+
+849
+00:40:08,340 --> 00:40:11,520
+So after computing
+this beta i, so we
+
+850
+00:40:11,520 --> 00:40:18,500
+can again compute this
+like a weighted combination
+
+851
+00:40:18,500 --> 00:40:23,100
+by summing up the beta i and
+also the context vector ci,
+
+852
+00:40:23,100 --> 00:40:26,150
+and then finally, you get
+our vector bi, which is also
+
+853
+00:40:26,150 --> 00:40:29,490
+another 2H dimensional vector.
+
+854
+00:40:29,490 --> 00:40:31,400
+The final output of
+this attention function
+
+855
+00:40:31,400 --> 00:40:32,900
+is actually very
+complicated here.
+
+856
+00:40:32,900 --> 00:40:36,870
+It's also the design
+choice of this model.
+
+857
+00:40:36,870 --> 00:40:40,070
+So it takes a context
+vector ci and it
+
+858
+00:40:40,070 --> 00:40:44,630
+takes ai from this
+context-to-query attention
+
+859
+00:40:44,630 --> 00:40:48,000
+and takes the element of
+multiplication between the ci
+
+860
+00:40:48,000 --> 00:40:50,910
+and ai and also ci and
+bi, and finally, it
+
+861
+00:40:50,910 --> 00:40:57,670
+takes the concatenation and can
+produce 8H dimensional vector.
+
+862
+00:40:57,670 --> 00:40:58,170
+OK.
+
+863
+00:40:58,170 --> 00:40:59,880
+Maybe I want to
+pause a little bit
+
+864
+00:40:59,880 --> 00:41:02,255
+and check if there are any
+questions because this part is
+
+865
+00:41:02,255 --> 00:41:05,460
+a little bit complicated.
+
+866
+00:41:05,460 --> 00:41:09,250
+One question is why is
+query-to-context and
+
+867
+00:41:09,250 --> 00:41:11,680
+context-to-query
+attention not symmetrical?
+
+868
+00:41:11,680 --> 00:41:17,070
+
+
+869
+00:41:17,070 --> 00:41:18,855
+That's a good question, yes.
+
+870
+00:41:18,855 --> 00:41:21,180
+So here because essentially
+the goal you're trying--
+
+871
+00:41:21,180 --> 00:41:23,220
+because final
+goal, you're trying
+
+872
+00:41:23,220 --> 00:41:25,690
+to find a span in the passage.
+
+873
+00:41:25,690 --> 00:41:29,370
+So the point of this
+attention function
+
+874
+00:41:29,370 --> 00:41:31,680
+is trying to produce
+a representation
+
+875
+00:41:31,680 --> 00:41:34,935
+for each single context
+word in this context.
+
+876
+00:41:34,935 --> 00:41:37,695
+
+
+877
+00:41:37,695 --> 00:41:40,320
+So we are not trying to generate
+question representations.
+
+878
+00:41:40,320 --> 00:41:42,640
+Here, the goal is
+trying to generate
+
+879
+00:41:42,640 --> 00:41:44,930
+context representations.
+
+880
+00:41:44,930 --> 00:41:47,250
+So the difference
+between these two,
+
+881
+00:41:47,250 --> 00:41:49,560
+first it's trying to see
+which question words are
+
+882
+00:41:49,560 --> 00:41:51,150
+relevant to this context word.
+
+883
+00:41:51,150 --> 00:41:52,890
+Another kind is
+trying to figure out
+
+884
+00:41:52,890 --> 00:41:54,660
+which context word
+can be relevant
+
+885
+00:41:54,660 --> 00:41:58,030
+and which context word
+can be not relevant.
+
+886
+00:41:58,030 --> 00:42:00,760
+I hope this answers
+your question, yeah.
+
+887
+00:42:00,760 --> 00:42:03,760
+Here's an easier question sort
+of on the same topic which
+
+888
+00:42:03,760 --> 00:42:04,990
+might help.
+
+889
+00:42:04,990 --> 00:42:08,800
+Is there a reason why you
+use both query-to-context and
+
+890
+00:42:08,800 --> 00:42:10,810
+context-to-query attention?
+
+891
+00:42:10,810 --> 00:42:16,510
+Is it sometimes advantageous
+or OK to use just one?
+
+892
+00:42:16,510 --> 00:42:19,640
+Difficult question.
+
+893
+00:42:19,640 --> 00:42:20,470
+Yeah.
+
+894
+00:42:20,470 --> 00:42:23,150
+So I'm going to show us some
+operations from this figure,
+
+895
+00:42:23,150 --> 00:42:26,380
+so way we just find both
+directions can really
+
+896
+00:42:26,380 --> 00:42:29,200
+help by joining the
+context-to-query
+
+897
+00:42:29,200 --> 00:42:30,240
+and query-to-context.
+
+898
+00:42:30,240 --> 00:42:32,720
+So there'll be some
+operation studies.
+
+899
+00:42:32,720 --> 00:42:35,620
+So by using one set is
+useful, but just not
+
+900
+00:42:35,620 --> 00:42:37,720
+with us using the
+both directions.
+
+901
+00:42:37,720 --> 00:42:38,220
+Yeah.
+
+902
+00:42:38,220 --> 00:42:41,370
+
+
+903
+00:42:41,370 --> 00:42:42,400
+Right.
+
+904
+00:42:42,400 --> 00:42:44,970
+Let's see.
+
+905
+00:42:44,970 --> 00:42:48,180
+In the bottom right,
+we sum over i,
+
+906
+00:42:48,180 --> 00:42:51,570
+so why does the i remain in bi?
+
+907
+00:42:51,570 --> 00:42:54,550
+Is that correct or
+is that a typo there?
+
+908
+00:42:54,550 --> 00:42:56,220
+This is another typo.
+
+909
+00:42:56,220 --> 00:42:58,304
+So again, I'm sorry.
+
+910
+00:42:58,304 --> 00:42:59,721
+I know it's all
+getting confusing.
+
+911
+00:42:59,721 --> 00:43:04,950
+So the output of
+this module is to get
+
+912
+00:43:04,950 --> 00:43:07,830
+a representation for each
+context word at the end.
+
+913
+00:43:07,830 --> 00:43:11,630
+So both the output
+for ai and bi-
+
+914
+00:43:11,630 --> 00:43:15,180
+i is actually enumerated from--
+
+915
+00:43:15,180 --> 00:43:19,820
+actually enumerated, iterates
+over all the context words.
+
+916
+00:43:19,820 --> 00:43:22,130
+So bi will be still the--
+
+917
+00:43:22,130 --> 00:43:27,500
+just to try to aggregate
+over all the context words.
+
+918
+00:43:27,500 --> 00:43:30,380
+But the beta i
+measures the importance
+
+919
+00:43:30,380 --> 00:43:34,730
+of these context words compared
+to all the context words.
+
+920
+00:43:34,730 --> 00:43:37,250
+So both ai and bi are
+actually with respect
+
+921
+00:43:37,250 --> 00:43:39,230
+to the context words, yes.
+
+922
+00:43:39,230 --> 00:43:41,000
+So you can see that
+here it's basically
+
+923
+00:43:41,000 --> 00:43:44,330
+doing some kind of a
+element-wise multiplication.
+
+924
+00:43:44,330 --> 00:43:48,440
+So the output of gi will
+actually range from the 1
+
+925
+00:43:48,440 --> 00:43:52,010
+to N, which is the number
+of the context words.
+
+926
+00:43:52,010 --> 00:43:54,860
+There are lots of
+questions about this.
+
+927
+00:43:54,860 --> 00:43:58,580
+What is the rationale for
+the expression of the gi?
+
+928
+00:43:58,580 --> 00:44:02,780
+How does one come up
+with such an expression?
+
+929
+00:44:02,780 --> 00:44:03,980
+OK, I don't know.
+
+930
+00:44:03,980 --> 00:44:07,640
+I guess the authors try
+out a lot of things.
+
+931
+00:44:07,640 --> 00:44:09,140
+So, OK keep on
+hearing and trying
+
+932
+00:44:09,140 --> 00:44:12,710
+to understand the roles of
+the context-to-query attention
+
+933
+00:44:12,710 --> 00:44:14,660
+and query-to-context attention.
+
+934
+00:44:14,660 --> 00:44:17,180
+So I bet that there could be
+many different combinations
+
+935
+00:44:17,180 --> 00:44:17,840
+to do this.
+
+936
+00:44:17,840 --> 00:44:21,620
+I also think the authors have
+trialed many different variants
+
+937
+00:44:21,620 --> 00:44:25,030
+and those are the ones
+that come up at the end.
+
+938
+00:44:25,030 --> 00:44:29,300
+I think there could
+be smarter ways
+
+939
+00:44:29,300 --> 00:44:31,640
+to incorporate both
+attentions, but it doesn't
+
+940
+00:44:31,640 --> 00:44:32,890
+have to deal with in this way.
+
+941
+00:44:32,890 --> 00:44:37,540
+
+
+942
+00:44:37,540 --> 00:44:39,610
+I mean, one other
+question would be
+
+943
+00:44:39,610 --> 00:44:43,060
+in the query-to-context
+attention.
+
+944
+00:44:43,060 --> 00:44:46,423
+Why do you do a max
+inside the softmax?
+
+945
+00:44:46,423 --> 00:44:48,980
+
+
+946
+00:44:48,980 --> 00:44:49,480
+Yeah.
+
+947
+00:44:49,480 --> 00:44:49,980
+Sorry.
+
+948
+00:44:49,980 --> 00:44:52,160
+I should have explained
+this more clearly.
+
+949
+00:44:52,160 --> 00:44:54,670
+So here again,
+query-to-context attention
+
+950
+00:44:54,670 --> 00:44:58,940
+is trying to measure the
+importance of these context
+
+951
+00:44:58,940 --> 00:45:05,580
+words with respect to
+some question words.
+
+952
+00:45:05,580 --> 00:45:10,450
+So by taking the max for each
+row in this matrix, so it's
+
+953
+00:45:10,450 --> 00:45:14,380
+basically trying to see, OK,
+which question word is actually
+
+954
+00:45:14,380 --> 00:45:17,380
+most relevant to
+this context word?
+
+955
+00:45:17,380 --> 00:45:19,150
+If this number is
+still very low,
+
+956
+00:45:19,150 --> 00:45:21,430
+that means there
+isn't any question
+
+957
+00:45:21,430 --> 00:45:24,090
+words that could be aligned
+with this context world.
+
+958
+00:45:24,090 --> 00:45:26,740
+
+
+959
+00:45:26,740 --> 00:45:29,260
+So after taking the max, if
+this number is still very low,
+
+960
+00:45:29,260 --> 00:45:32,730
+that means this context
+word is not very relevant.
+
+961
+00:45:32,730 --> 00:45:35,920
+So basically, that's why
+we take the softmax--
+
+962
+00:45:35,920 --> 00:45:37,690
+take softmax over on
+top of the max, yeah.
+
+963
+00:45:37,690 --> 00:45:42,400
+
+
+964
+00:45:42,400 --> 00:45:42,900
+I know.
+
+965
+00:45:42,900 --> 00:45:46,690
+Do you want even more
+or do you want to go on?
+
+966
+00:45:46,690 --> 00:45:47,890
+I probably should go on.
+
+967
+00:45:47,890 --> 00:45:50,990
+We have a lot of slides, but
+I'm happy to answer questions
+
+968
+00:45:50,990 --> 00:45:52,520
+after those ones.
+
+969
+00:45:52,520 --> 00:45:54,440
+Maybe you should go on.
+
+970
+00:45:54,440 --> 00:45:56,030
+Yeah.
+
+971
+00:45:56,030 --> 00:45:56,530
+OK.
+
+972
+00:45:56,530 --> 00:46:01,270
+So the last part of this
+model is actually the easiest,
+
+973
+00:46:01,270 --> 00:46:04,246
+the most simplest one.
+
+974
+00:46:04,246 --> 00:46:06,290
+Lastly, these are two
+layers, modeling layer
+
+975
+00:46:06,290 --> 00:46:07,730
+and output layers.
+
+976
+00:46:07,730 --> 00:46:08,990
+So for the modeling layer--
+
+977
+00:46:08,990 --> 00:46:11,440
+so again, after the
+attention layer,
+
+978
+00:46:11,440 --> 00:46:15,390
+they take the key
+representation, so basically
+
+979
+00:46:15,390 --> 00:46:20,140
+the gi, which captures the
+attention between the context
+
+980
+00:46:20,140 --> 00:46:22,870
+and the query, and
+then basically just
+
+981
+00:46:22,870 --> 00:46:26,740
+pass this gi to another two
+layers of bidirectional LSTMs.
+
+982
+00:46:26,740 --> 00:46:28,540
+And there's many
+reasons they do this,
+
+983
+00:46:28,540 --> 00:46:31,090
+is the attention layer
+is basically modeling
+
+984
+00:46:31,090 --> 00:46:34,060
+the interactions between
+the query and context.
+
+985
+00:46:34,060 --> 00:46:35,830
+And by passing
+this to another two
+
+986
+00:46:35,830 --> 00:46:38,620
+layers of bidirectional
+LSTMs, the modeling layer,
+
+987
+00:46:38,620 --> 00:46:40,420
+the basic modeling
+layer, can also
+
+988
+00:46:40,420 --> 00:46:45,350
+first model the interactions
+within the context words.
+
+989
+00:46:45,350 --> 00:46:48,050
+So this is the formulation here.
+
+990
+00:46:48,050 --> 00:46:50,420
+So this is a two layer
+bidirectional LSTM.
+
+991
+00:46:50,420 --> 00:46:52,880
+By taking the gi's
+input and the output
+
+992
+00:46:52,880 --> 00:46:57,560
+will be on the mi, which
+is another 2H dimensional
+
+993
+00:46:57,560 --> 00:47:00,755
+vector for each context
+word in the passage.
+
+994
+00:47:00,755 --> 00:47:03,120
+
+
+995
+00:47:03,120 --> 00:47:03,620
+OK.
+
+996
+00:47:03,620 --> 00:47:05,480
+So the final is
+the output layers.
+
+997
+00:47:05,480 --> 00:47:07,190
+So final output
+layers are basically
+
+998
+00:47:07,190 --> 00:47:11,120
+just two classifiers just trying
+to predict the start and end
+
+999
+00:47:11,120 --> 00:47:13,530
+positions.
+
+1000
+00:47:13,530 --> 00:47:16,760
+So they first concatenate
+the gi and mi.
+
+1001
+00:47:16,760 --> 00:47:19,970
+So this will be actually
+a tanh dimensional vector.
+
+1002
+00:47:19,970 --> 00:47:23,300
+And then by computing the
+dot product of another vector
+
+1003
+00:47:23,300 --> 00:47:26,420
+called W start and this
+is resulting vector.
+
+1004
+00:47:26,420 --> 00:47:30,560
+And they basically get a
+score for each position
+
+1005
+00:47:30,560 --> 00:47:31,770
+in the context.
+
+1006
+00:47:31,770 --> 00:47:34,530
+And then you can just
+apply your softmax.
+
+1007
+00:47:34,530 --> 00:47:37,310
+And then this will
+give you a probability
+
+1008
+00:47:37,310 --> 00:47:41,180
+that OK, what is the
+probability of this condition i,
+
+1009
+00:47:41,180 --> 00:47:46,580
+would be actually based
+on the start position
+
+1010
+00:47:46,580 --> 00:47:48,680
+of the final answer string.
+
+1011
+00:47:48,680 --> 00:47:52,070
+And they also have
+another classifier
+
+1012
+00:47:52,070 --> 00:47:54,620
+to predict the end
+position of the answer.
+
+1013
+00:47:54,620 --> 00:47:57,240
+But they also give something
+a little bit more complicated.
+
+1014
+00:47:57,240 --> 00:48:00,540
+So they actually pass the mi
+to another bidirectional LSTM
+
+1015
+00:48:00,540 --> 00:48:01,040
+here.
+
+1016
+00:48:01,040 --> 00:48:02,870
+So they call it m prime i.
+
+1017
+00:48:02,870 --> 00:48:06,380
+And they concatenate
+gi and m prime i--
+
+1018
+00:48:06,380 --> 00:48:07,482
+sorry, this is a typo.
+
+1019
+00:48:07,482 --> 00:48:10,070
+So this should be w end.
+
+1020
+00:48:10,070 --> 00:48:14,330
+So they compute the dot product
+between w end and this vector,
+
+1021
+00:48:14,330 --> 00:48:19,280
+and this can produce
+all the probability
+
+1022
+00:48:19,280 --> 00:48:23,150
+over all the conditions
+which predict
+
+1023
+00:48:23,150 --> 00:48:25,820
+how likely this position
+will be the end the position
+
+1024
+00:48:25,820 --> 00:48:27,060
+of the answer.
+
+1025
+00:48:27,060 --> 00:48:30,810
+So by passing the mi to
+another bedirectional LSTM,
+
+1026
+00:48:30,810 --> 00:48:32,870
+their reasoning is
+that they're trying
+
+1027
+00:48:32,870 --> 00:48:35,040
+to capture some
+kind of dependence
+
+1028
+00:48:35,040 --> 00:48:36,980
+between the choice
+of the start and end.
+
+1029
+00:48:36,980 --> 00:48:39,350
+So you can imagine that
+start and end shouldn't
+
+1030
+00:48:39,350 --> 00:48:41,630
+be too separate.
+
+1031
+00:48:41,630 --> 00:48:44,240
+So it could be
+independent predicted
+
+1032
+00:48:44,240 --> 00:48:47,450
+by the-- if it's a
+claim that if you--
+
+1033
+00:48:47,450 --> 00:48:52,170
+adding some kind of dependence
+between the mi and the Pstart
+
+1034
+00:48:52,170 --> 00:48:56,140
+and Pend, this can
+actually perform better.
+
+1035
+00:48:56,140 --> 00:48:56,700
+OK.
+
+1036
+00:48:56,700 --> 00:49:01,600
+I'm done with this part,
+describing the BiDAF model.
+
+1037
+00:49:01,600 --> 00:49:05,520
+Any quick questions
+I can answer?
+
+1038
+00:49:05,520 --> 00:49:07,930
+I think you can actually go on.
+
+1039
+00:49:07,930 --> 00:49:10,172
+OK.
+
+1040
+00:49:10,172 --> 00:49:11,505
+Sorry, I forgot to mention this.
+
+1041
+00:49:11,505 --> 00:49:14,700
+OK, the final
+training loss will be
+
+1042
+00:49:14,700 --> 00:49:17,580
+by taking these two
+probability distributions.
+
+1043
+00:49:17,580 --> 00:49:22,000
+And it is basically just
+the negative log likelihood
+
+1044
+00:49:22,000 --> 00:49:26,940
+of the start position
+of the gold answer
+
+1045
+00:49:26,940 --> 00:49:31,640
+and the end position
+of the answer.
+
+1046
+00:49:31,640 --> 00:49:35,000
+It's basically taking
+the product of these two
+
+1047
+00:49:35,000 --> 00:49:38,530
+probabilities, but
+you apply it on log
+
+1048
+00:49:38,530 --> 00:49:42,510
+so it is the sum of the
+two negative log terms
+
+1049
+00:49:42,510 --> 00:49:44,160
+of this final training loss.
+
+1050
+00:49:44,160 --> 00:49:46,903
+And the whole model can
+be just trained in an end
+
+1051
+00:49:46,903 --> 00:49:48,980
+to end way from
+the encoding layer
+
+1052
+00:49:48,980 --> 00:49:52,200
+to attention layer to modeling
+layer and to output layer.
+
+1053
+00:49:52,200 --> 00:49:57,420
+So this just completes the
+whole model of the BiDAF model.
+
+1054
+00:49:57,420 --> 00:50:00,420
+
+
+1055
+00:50:00,420 --> 00:50:02,940
+OK, so this model is
+actually achieved--
+
+1056
+00:50:02,940 --> 00:50:07,710
+like on SQuAD data set, it
+achieved a 77.3 F1 score.
+
+1057
+00:50:07,710 --> 00:50:11,220
+So as I mentioned earlier, these
+are sum of operation study.
+
+1058
+00:50:11,220 --> 00:50:14,850
+They found that both
+attentions in two directions
+
+1059
+00:50:14,850 --> 00:50:16,290
+are actually important.
+
+1060
+00:50:16,290 --> 00:50:18,540
+If you remove the one
+direction, the performance
+
+1061
+00:50:18,540 --> 00:50:20,400
+will actually drop quite a bit.
+
+1062
+00:50:20,400 --> 00:50:22,810
+If you remove the
+context-to-query attention,
+
+1063
+00:50:22,810 --> 00:50:26,610
+the performance will
+drop to 67.7 F1 score.
+
+1064
+00:50:26,610 --> 00:50:28,110
+And then if you
+remove this part,
+
+1065
+00:50:28,110 --> 00:50:30,870
+it will drop a 4-point F1 score.
+
+1066
+00:50:30,870 --> 00:50:33,790
+And then also the character
+embeddings also help.
+
+1067
+00:50:33,790 --> 00:50:35,846
+So if you remove the
+character embeddings,
+
+1068
+00:50:35,846 --> 00:50:40,870
+you'll get like a
+basically 1.9 point drop.
+
+1069
+00:50:40,870 --> 00:50:45,730
+And on the right of this slide,
+you can see a very big table.
+
+1070
+00:50:45,730 --> 00:50:47,970
+So it's basically
+all the models that
+
+1071
+00:50:47,970 --> 00:50:51,900
+account at that time
+between 2016 and 2018.
+
+1072
+00:50:51,900 --> 00:50:55,240
+So you can see
+that BiDAF is here.
+
+1073
+00:50:55,240 --> 00:50:58,050
+So you can check
+the 77.3 F1 score.
+
+1074
+00:50:58,050 --> 00:51:00,300
+And basically all of
+the models are actually
+
+1075
+00:51:00,300 --> 00:51:02,070
+a very similar ballpark.
+
+1076
+00:51:02,070 --> 00:51:05,320
+So numbers range from
+the highest number
+
+1077
+00:51:05,320 --> 00:51:10,260
+here, 79.8 until after
+the ELMo was introduced,
+
+1078
+00:51:10,260 --> 00:51:12,840
+the numbers have actually
+improved quite a bit.
+
+1079
+00:51:12,840 --> 00:51:14,715
+So before the ELMo,
+basically all the numbers
+
+1080
+00:51:14,715 --> 00:51:16,200
+are actually kind of similar.
+
+1081
+00:51:16,200 --> 00:51:20,250
+So each model actually
+improved the previous model
+
+1082
+00:51:20,250 --> 00:51:23,800
+by one point or two points.
+
+1083
+00:51:23,800 --> 00:51:26,650
+And now here is our
+attention visualization
+
+1084
+00:51:26,650 --> 00:51:30,610
+to show that how this
+smorgasbord of attention
+
+1085
+00:51:30,610 --> 00:51:33,100
+actually can capture the
+similarity between the question
+
+1086
+00:51:33,100 --> 00:51:34,810
+words and the context words.
+
+1087
+00:51:34,810 --> 00:51:36,190
+So a clear example
+of a question,
+
+1088
+00:51:36,190 --> 00:51:39,530
+where did the Super
+Bowl 50 take place?
+
+1089
+00:51:39,530 --> 00:51:43,030
+So it show the actual
+question word here.
+
+1090
+00:51:43,030 --> 00:51:45,100
+And each column's
+matrix basically
+
+1091
+00:51:45,100 --> 00:51:49,300
+indicates the attention score,
+the similarity score that
+
+1092
+00:51:49,300 --> 00:51:51,140
+has been learned by this model.
+
+1093
+00:51:51,140 --> 00:51:54,280
+So you can see that on
+the right it's basically
+
+1094
+00:51:54,280 --> 00:52:00,700
+trying to print out or
+display the context words that
+
+1095
+00:52:00,700 --> 00:52:03,700
+had the highest scores.
+
+1096
+00:52:03,700 --> 00:52:06,060
+So you can see that
+the word has to be
+
+1097
+00:52:06,060 --> 00:52:10,120
+aligned very well with the
+at, the, Stadium, Levi.
+
+1098
+00:52:10,120 --> 00:52:13,270
+And also the Super Bowl 50
+basically aligns very well
+
+1099
+00:52:13,270 --> 00:52:14,680
+with Super Bowl 50.
+
+1100
+00:52:14,680 --> 00:52:16,530
+So basically this
+theory tells us
+
+1101
+00:52:16,530 --> 00:52:18,178
+that these kind of
+attention scores
+
+1102
+00:52:18,178 --> 00:52:20,470
+can actually capture those
+negative scores pretty well,
+
+1103
+00:52:20,470 --> 00:52:20,970
+yeah.
+
+1104
+00:52:20,970 --> 00:52:23,130
+
+
+1105
+00:52:23,130 --> 00:52:27,120
+OK, so next, I'm going
+to talk about BERT,
+
+1106
+00:52:27,120 --> 00:52:30,670
+how to use the BERT model
+to solve this problem.
+
+1107
+00:52:30,670 --> 00:52:34,020
+So I know that you have learned
+BERT in the last lecture,
+
+1108
+00:52:34,020 --> 00:52:35,440
+so I'm not going to repeat this.
+
+1109
+00:52:35,440 --> 00:52:37,030
+So very quick.
+
+1110
+00:52:37,030 --> 00:52:39,840
+So BERT is basically a deep
+bidirectional transformer
+
+1111
+00:52:39,840 --> 00:52:42,690
+encoder pre-trained on
+large amounts of text.
+
+1112
+00:52:42,690 --> 00:52:45,420
+And it is trained on the
+two training objectives,
+
+1113
+00:52:45,420 --> 00:52:47,760
+including masked language
+modeling and the next sentence
+
+1114
+00:52:47,760 --> 00:52:48,660
+prediction.
+
+1115
+00:52:48,660 --> 00:52:52,050
+And this model has
+a lot of parameters.
+
+1116
+00:52:52,050 --> 00:52:55,140
+So the BERTbase has
+110 million parameters
+
+1117
+00:52:55,140 --> 00:53:00,630
+and the BERT-large model
+has 330 million parameters.
+
+1118
+00:53:00,630 --> 00:53:04,660
+So, OK, we can actually use BERT
+for our reading comprehension.
+
+1119
+00:53:04,660 --> 00:53:07,360
+So it's actually very easy
+and very straightforward.
+
+1120
+00:53:07,360 --> 00:53:11,130
+The idea is to take the
+question as our segment A.
+
+1121
+00:53:11,130 --> 00:53:12,960
+So you got BERT
+[INAUDIBLE] these
+
+1122
+00:53:12,960 --> 00:53:17,170
+are our two segments for the
+next sentence prediction task.
+
+1123
+00:53:17,170 --> 00:53:20,430
+So then you apply the BERT over
+the reading comprehension task.
+
+1124
+00:53:20,430 --> 00:53:23,310
+You basically just take
+the question as a segment A
+
+1125
+00:53:23,310 --> 00:53:25,680
+and take the passage
+as a segment B.
+
+1126
+00:53:25,680 --> 00:53:27,390
+And then finally,
+you go with trying
+
+1127
+00:53:27,390 --> 00:53:32,540
+to predict two endpoints in
+segment B. So here is one more
+
+1128
+00:53:32,540 --> 00:53:33,690
+complex example.
+
+1129
+00:53:33,690 --> 00:53:36,374
+So question is how many
+parameters does BERT-large
+
+1130
+00:53:36,374 --> 00:53:37,320
+have?
+
+1131
+00:53:37,320 --> 00:53:39,170
+So you can see
+that they basically
+
+1132
+00:53:39,170 --> 00:53:44,120
+just take the questions here
+and then take the passage here.
+
+1133
+00:53:44,120 --> 00:53:47,880
+And then by putting the CLS
+token and the SEP token,
+
+1134
+00:53:47,880 --> 00:53:51,135
+and then by just concatenating
+the questions past the tokens.
+
+1135
+00:53:51,135 --> 00:53:52,760
+And also for the
+questions that we just
+
+1136
+00:53:52,760 --> 00:53:55,185
+need to pass the A to
+a segment embeddings.
+
+1137
+00:53:55,185 --> 00:53:57,227
+And the full passage, you
+just need to cut upward
+
+1138
+00:53:57,227 --> 00:54:00,200
+in the segment B embeddings.
+
+1139
+00:54:00,200 --> 00:54:03,000
+And then finally, the training
+loss is also the same.
+
+1140
+00:54:03,000 --> 00:54:06,710
+So you basically
+just try to maximize
+
+1141
+00:54:06,710 --> 00:54:09,650
+the sum of the negative
+log likelihood of both
+
+1142
+00:54:09,650 --> 00:54:11,840
+the start and end positions.
+
+1143
+00:54:11,840 --> 00:54:16,190
+Well here, the way that they
+compute the start and end
+
+1144
+00:54:16,190 --> 00:54:17,790
+probability is
+slightly different.
+
+1145
+00:54:17,790 --> 00:54:20,160
+So it's actually
+very straightforward.
+
+1146
+00:54:20,160 --> 00:54:24,060
+So you just have this
+input attention into BERT.
+
+1147
+00:54:24,060 --> 00:54:28,810
+And BERT can give you the hidden
+vector hi that can actually
+
+1148
+00:54:28,810 --> 00:54:31,370
+represent the
+hidden vector that's
+
+1149
+00:54:31,370 --> 00:54:35,360
+corresponding to
+the context word ci.
+
+1150
+00:54:35,360 --> 00:54:39,177
+So you can just introduce
+another two vectors Wstart
+
+1151
+00:54:39,177 --> 00:54:42,200
+and Wend by computing
+the dot product
+
+1152
+00:54:42,200 --> 00:54:43,830
+and then apply the softmax.
+
+1153
+00:54:43,830 --> 00:54:47,550
+Then it can just give you a very
+similar to what we had before.
+
+1154
+00:54:47,550 --> 00:54:50,990
+But here the hi is the
+output from the BERT encoder,
+
+1155
+00:54:50,990 --> 00:54:56,150
+and then we are training
+this two Wstart and Wend
+
+1156
+00:54:56,150 --> 00:54:59,090
+for these two probability
+distribution Pstart and Pend.
+
+1157
+00:54:59,090 --> 00:55:03,210
+
+
+1158
+00:55:03,210 --> 00:55:07,080
+OK, so for this model, so
+all the BERT parameters,
+
+1159
+00:55:07,080 --> 00:55:09,180
+that is actually a
+very large number.
+
+1160
+00:55:09,180 --> 00:55:12,780
+If you use the BERTbase,
+it's 110 million parameters.
+
+1161
+00:55:12,780 --> 00:55:15,210
+As well the newly
+introduced parameters,
+
+1162
+00:55:15,210 --> 00:55:18,690
+Hstart and the Hend, which
+is if you take the BERTbase,
+
+1163
+00:55:18,690 --> 00:55:21,580
+the hidden side will be 768.
+
+1164
+00:55:21,580 --> 00:55:25,360
+So it's only like
+1,500 new parameters.
+
+1165
+00:55:25,360 --> 00:55:27,790
+So we just have to
+optimize together jointly
+
+1166
+00:55:27,790 --> 00:55:31,810
+for this training objective L.
+And it actually works really,
+
+1167
+00:55:31,810 --> 00:55:33,690
+really well with this model.
+
+1168
+00:55:33,690 --> 00:55:36,650
+So if you just take
+this BERT model,
+
+1169
+00:55:36,650 --> 00:55:39,230
+and by just optimizing all
+the parameters together,
+
+1170
+00:55:39,230 --> 00:55:41,310
+it can give you a
+very high performance.
+
+1171
+00:55:41,310 --> 00:55:43,280
+I will show you
+BERT in a minute.
+
+1172
+00:55:43,280 --> 00:55:48,110
+And even if you use a stronger
+pre-training models or modern,
+
+1173
+00:55:48,110 --> 00:55:49,910
+like a--
+
+1174
+00:55:49,910 --> 00:55:52,010
+stronger models than
+the BERT models,
+
+1175
+00:55:52,010 --> 00:55:55,130
+they can even lead to
+better performance on SQuAD.
+
+1176
+00:55:55,130 --> 00:55:57,510
+And SQuAD has also
+become a standard dataset
+
+1177
+00:55:57,510 --> 00:56:00,150
+for testing these kind
+of pre-trained models.
+
+1178
+00:56:00,150 --> 00:56:02,340
+Let me show you some numbers.
+
+1179
+00:56:02,340 --> 00:56:07,430
+So again, human performance
+is 91 and BiDAF is 77.3.
+
+1180
+00:56:07,430 --> 00:56:10,415
+And if we just do this
+fine-tuning model,
+
+1181
+00:56:10,415 --> 00:56:13,430
+so BERTbase can
+give you of 88.5,
+
+1182
+00:56:13,430 --> 00:56:15,810
+BERTlarge can give you 90.9.
+
+1183
+00:56:15,810 --> 00:56:19,460
+So you can see that this is a
+huge jump from the BiDAF model
+
+1184
+00:56:19,460 --> 00:56:21,320
+to the BERT models.
+
+1185
+00:56:21,320 --> 00:56:23,090
+And then finally,
+if you see even
+
+1186
+00:56:23,090 --> 00:56:27,390
+the latest pre-trained
+language models, including
+
+1187
+00:56:27,390 --> 00:56:29,720
+the XLNet or RoBERTa or Albert.
+
+1188
+00:56:29,720 --> 00:56:31,880
+So these models
+are either bigger
+
+1189
+00:56:31,880 --> 00:56:33,980
+or these models are
+trained on bigger corpus,
+
+1190
+00:56:33,980 --> 00:56:35,690
+or the model size are bigger.
+
+1191
+00:56:35,690 --> 00:56:39,150
+So basically these
+models can give you
+
+1192
+00:56:39,150 --> 00:56:43,650
+another like 3, 4 F1 score
+compared to the BERTlarge
+
+1193
+00:56:43,650 --> 00:56:44,330
+model.
+
+1194
+00:56:44,330 --> 00:56:48,890
+So this is already way higher
+than our estimated F1 score.
+
+1195
+00:56:48,890 --> 00:56:50,620
+So this just works really well.
+
+1196
+00:56:50,620 --> 00:56:53,500
+
+
+1197
+00:56:53,500 --> 00:56:54,776
+Any quick questions?
+
+1198
+00:56:54,776 --> 00:56:59,470
+
+
+1199
+00:56:59,470 --> 00:57:00,765
+I think this may be OK.
+
+1200
+00:57:00,765 --> 00:57:04,890
+
+
+1201
+00:57:04,890 --> 00:57:08,100
+OK, so yeah, I guess I
+went a little bit fast
+
+1202
+00:57:08,100 --> 00:57:10,640
+for these BERT models.
+
+1203
+00:57:10,640 --> 00:57:13,080
+Next, so I want to also do
+a bit of the comparisons
+
+1204
+00:57:13,080 --> 00:57:16,380
+between the BiDAF models
+and the BERT models.
+
+1205
+00:57:16,380 --> 00:57:19,290
+So BERT model has many,
+many more parameters.
+
+1206
+00:57:19,290 --> 00:57:21,570
+So has it easily
+110 more million
+
+1207
+00:57:21,570 --> 00:57:24,275
+or 330 million parameters.
+
+1208
+00:57:24,275 --> 00:57:28,140
+But BiDAF has only like
+2.5 million parameters.
+
+1209
+00:57:28,140 --> 00:57:32,190
+And the BiDAF is built on top
+of several bidirectional LSTMs
+
+1210
+00:57:32,190 --> 00:57:34,620
+while BERT is built on
+top of their transformers.
+
+1211
+00:57:34,620 --> 00:57:38,730
+So transformer means that there
+isn't any recurrence structure
+
+1212
+00:57:38,730 --> 00:57:39,570
+architecture.
+
+1213
+00:57:39,570 --> 00:57:42,670
+So their transformers are
+much easier to parallelize.
+
+1214
+00:57:42,670 --> 00:57:45,840
+Another very key difference
+between the BERT models
+
+1215
+00:57:45,840 --> 00:57:47,970
+and the BiDAF models
+is BERT models
+
+1216
+00:57:47,970 --> 00:57:50,430
+are pre-trained while
+BiDAF models only
+
+1217
+00:57:50,430 --> 00:57:53,730
+builtd on top of the GloVe
+vectors, which is pre-trained
+
+1218
+00:57:53,730 --> 00:57:56,880
+and all the remaining
+parameters need
+
+1219
+00:57:56,880 --> 00:58:00,090
+to learn from this SQuAD
+dataset or the other supervision
+
+1220
+00:58:00,090 --> 00:58:01,560
+datasets.
+
+1221
+00:58:01,560 --> 00:58:06,750
+So here it is very clear that
+pre-training is a game changer
+
+1222
+00:58:06,750 --> 00:58:08,160
+here.
+
+1223
+00:58:08,160 --> 00:58:10,560
+Pre-training basically
+can just change everything
+
+1224
+00:58:10,560 --> 00:58:12,720
+and it also gives you a
+very, very large boost
+
+1225
+00:58:12,720 --> 00:58:16,030
+in terms of the performance.
+
+1226
+00:58:16,030 --> 00:58:18,620
+But I also want to
+raise another question.
+
+1227
+00:58:18,620 --> 00:58:22,650
+So if we first think
+of this pre-training,
+
+1228
+00:58:22,650 --> 00:58:24,407
+these BiDAF models
+and BERT models
+
+1229
+00:58:24,407 --> 00:58:27,560
+are really
+fundamentally different?
+
+1230
+00:58:27,560 --> 00:58:30,520
+I don't think so, so this
+is actually my argument.
+
+1231
+00:58:30,520 --> 00:58:33,070
+So let's try to see how
+these two models are actually
+
+1232
+00:58:33,070 --> 00:58:37,310
+connected, especially in
+terms of model design.
+
+1233
+00:58:37,310 --> 00:58:39,410
+So BiDAF models
+essentially are trying
+
+1234
+00:58:39,410 --> 00:58:41,890
+to model the interactions
+between the question
+
+1235
+00:58:41,890 --> 00:58:43,090
+and the passage, right?
+
+1236
+00:58:43,090 --> 00:58:46,970
+So both the question to passage
+and passage to question.
+
+1237
+00:58:46,970 --> 00:58:48,620
+And the BERT model
+essentially, they're
+
+1238
+00:58:48,620 --> 00:58:55,250
+trying to use a self-attention
+on top of the concatenation
+
+1239
+00:58:55,250 --> 00:58:56,600
+of the question and passage.
+
+1240
+00:58:56,600 --> 00:58:58,392
+So this is a transformer model.
+
+1241
+00:58:58,392 --> 00:59:00,350
+So you could take the
+question and the passage,
+
+1242
+00:59:00,350 --> 00:59:01,973
+so these are questions
+in the passage,
+
+1243
+00:59:01,973 --> 00:59:03,890
+and then you apply many,
+many different layers
+
+1244
+00:59:03,890 --> 00:59:05,540
+of the self-attention.
+
+1245
+00:59:05,540 --> 00:59:07,850
+Essentially, this
+self-attention is
+
+1246
+00:59:07,850 --> 00:59:12,410
+able to capture the attention
+between the context words,
+
+1247
+00:59:12,410 --> 00:59:15,230
+the attention between the
+passage words and the question
+
+1248
+00:59:15,230 --> 00:59:17,330
+words, and the attention
+from the questions
+
+1249
+00:59:17,330 --> 00:59:21,650
+to the passage side, and also of
+the attention from the question
+
+1250
+00:59:21,650 --> 00:59:24,350
+words to other question words.
+
+1251
+00:59:24,350 --> 00:59:28,280
+So compared to BiDAF, BiDAF
+is trying to model this part.
+
+1252
+00:59:28,280 --> 00:59:31,550
+But the BERT model essentially
+can capture the attention
+
+1253
+00:59:31,550 --> 00:59:33,860
+between all these four parts.
+
+1254
+00:59:33,860 --> 00:59:36,550
+And actually after
+the BiDAF cannot.
+
+1255
+00:59:36,550 --> 00:59:40,530
+This is also before
+the BERT can add.
+
+1256
+00:59:40,530 --> 00:59:43,250
+So we were happy also
+showing that if you just
+
+1257
+00:59:43,250 --> 00:59:46,790
+add a little self-attention
+layer for the passage side,
+
+1258
+00:59:46,790 --> 00:59:49,160
+so basically, you are
+trying to exclusively model
+
+1259
+00:59:49,160 --> 00:59:51,790
+this attention between the
+passage words and passage
+
+1260
+00:59:51,790 --> 00:59:53,120
+words to the BiDAF.
+
+1261
+00:59:53,120 --> 00:59:55,350
+This can also improve
+the performance.
+
+1262
+00:59:55,350 --> 00:59:57,400
+So we can see that
+these two models,
+
+1263
+00:59:57,400 --> 00:59:59,590
+you can really just
+trying to model
+
+1264
+00:59:59,590 --> 01:00:01,700
+the attention between
+the passage and question
+
+1265
+01:00:01,700 --> 01:00:04,010
+and also the attention
+between the passage
+
+1266
+01:00:04,010 --> 01:00:05,270
+words and the passage words.
+
+1267
+01:00:05,270 --> 01:00:07,763
+And this is actually was
+exactly the BERT model is doing.
+
+1268
+01:00:07,763 --> 01:00:13,010
+
+
+1269
+01:00:13,010 --> 01:00:15,900
+So if there's no
+further questions.
+
+1270
+01:00:15,900 --> 01:00:18,010
+So at this point,
+I'll talk about--
+
+1271
+01:00:18,010 --> 01:00:20,690
+BERT models can do really
+well on this kind of reading
+
+1272
+01:00:20,690 --> 01:00:22,070
+comprehension data set.
+
+1273
+01:00:22,070 --> 01:00:24,080
+And we just talk
+about pre-training
+
+1274
+01:00:24,080 --> 01:00:25,940
+can really change
+the performance,
+
+1275
+01:00:25,940 --> 01:00:28,970
+can be a game-changer in
+reading comprehension.
+
+1276
+01:00:28,970 --> 01:00:30,260
+Can I put in one--
+
+1277
+01:00:30,260 --> 01:00:33,230
+Danqi, can I add
+one question first?
+
+1278
+01:00:33,230 --> 01:00:36,620
+People wonder whether
+you can do well
+
+1279
+01:00:36,620 --> 01:00:39,620
+with a transformer that
+isn't pre-trained, right,
+
+1280
+01:00:39,620 --> 01:00:42,170
+if you tried to build a
+question answering system using
+
+1281
+01:00:42,170 --> 01:00:45,530
+a transformer rather than
+LSTMs but no pre-training.
+
+1282
+01:00:45,530 --> 01:00:47,680
+Does that work?
+
+1283
+01:00:47,680 --> 01:00:48,830
+That's a good question.
+
+1284
+01:00:48,830 --> 01:00:49,940
+Yeah, it works.
+
+1285
+01:00:49,940 --> 01:00:53,840
+But you probably cannot really
+build a model as big as 110
+
+1286
+01:00:53,840 --> 01:00:59,490
+million parameters or 330
+million parameters models.
+
+1287
+01:00:59,490 --> 01:01:06,740
+So as we train the model
+between these family
+
+1288
+01:01:06,740 --> 01:01:08,610
+of LSTM models and BERT models.
+
+1289
+01:01:08,610 --> 01:01:11,120
+They're called
+QANet from Google.
+
+1290
+01:01:11,120 --> 01:01:13,350
+So QANet is actually built
+on top of transformers
+
+1291
+01:01:13,350 --> 01:01:15,040
+to be solved around
+pre-training.
+
+1292
+01:01:15,040 --> 01:01:17,770
+So that the model actually can
+perform better than the BiDAF
+
+1293
+01:01:17,770 --> 01:01:18,970
+models and other models.
+
+1294
+01:01:18,970 --> 01:01:23,960
+But it actually under-performs
+BERT models a little bit.
+
+1295
+01:01:23,960 --> 01:01:25,600
+So just check it out on QANet.
+
+1296
+01:01:25,600 --> 01:01:29,450
+
+
+1297
+01:01:29,450 --> 01:01:29,950
+OK.
+
+1298
+01:01:29,950 --> 01:01:32,800
+I will just continue.
+
+1299
+01:01:32,800 --> 01:01:35,980
+OK, so here, pre-training
+has been so important.
+
+1300
+01:01:35,980 --> 01:01:39,460
+So next I will
+quickly talk about--
+
+1301
+01:01:39,460 --> 01:01:41,360
+OK, a question here is
+that can we actually
+
+1302
+01:01:41,360 --> 01:01:43,360
+even design better
+pre-training objectives
+
+1303
+01:01:43,360 --> 01:01:45,880
+for reading comprehension
+or question answering?
+
+1304
+01:01:45,880 --> 01:01:47,470
+And the answer is actually yes.
+
+1305
+01:01:47,470 --> 01:01:49,780
+So this is actually a work
+I did with Mandar Joshi
+
+1306
+01:01:49,780 --> 01:01:53,617
+and other folks one year
+ago called SpanBERT.
+
+1307
+01:01:53,617 --> 01:01:54,450
+So think about this.
+
+1308
+01:01:54,450 --> 01:01:59,210
+So for SQuAD and other a
+lot of extractable reading
+
+1309
+01:01:59,210 --> 01:02:01,060
+comprehension
+datasets, the goal is
+
+1310
+01:02:01,060 --> 01:02:02,870
+trying to predict
+the answer span
+
+1311
+01:02:02,870 --> 01:02:07,370
+from the passage of the
+question, the answer
+
+1312
+01:02:07,370 --> 01:02:08,970
+to this question.
+
+1313
+01:02:08,970 --> 01:02:12,870
+So there are two key ideas
+being proposed in SpanBERT.
+
+1314
+01:02:12,870 --> 01:02:15,590
+So first idea is
+that instead of using
+
+1315
+01:02:15,590 --> 01:02:18,440
+only the masking of
+individual words,
+
+1316
+01:02:18,440 --> 01:02:20,750
+we propose that we want
+to mask a contiguous
+
+1317
+01:02:20,750 --> 01:02:24,200
+spans of words in the passage.
+
+1318
+01:02:24,200 --> 01:02:26,000
+Because the final
+answer will be just
+
+1319
+01:02:26,000 --> 01:02:28,020
+a section of text
+in the passage.
+
+1320
+01:02:28,020 --> 01:02:32,255
+So we are trying to mask out
+all these possible answer
+
+1321
+01:02:32,255 --> 01:02:35,480
+spans from the passage as
+our training objective.
+
+1322
+01:02:35,480 --> 01:02:39,500
+And the second idea
+proposed in SpanBERT is--
+
+1323
+01:02:39,500 --> 01:02:41,390
+because at the end
+of it, it goes around
+
+1324
+01:02:41,390 --> 01:02:43,070
+to predict an answer span.
+
+1325
+01:02:43,070 --> 01:02:47,140
+So we're actually essentially
+try to predict two endpoints as
+
+1326
+01:02:47,140 --> 01:02:48,810
+well as the answer.
+
+1327
+01:02:48,810 --> 01:02:52,600
+So the idea here is that can
+you try to compress the two end
+
+1328
+01:02:52,600 --> 01:02:56,900
+points of answer span to--
+
+1329
+01:02:56,900 --> 01:03:00,260
+sorry, can we try to compress
+all the information in the span
+
+1330
+01:03:00,260 --> 01:03:02,340
+into the two end points?
+
+1331
+01:03:02,340 --> 01:03:04,070
+So here the idea is that--
+
+1332
+01:03:04,070 --> 01:03:05,550
+here, let's think about this.
+
+1333
+01:03:05,550 --> 01:03:07,910
+If we mask by the fours here.
+
+1334
+01:03:07,910 --> 01:03:12,470
+And can we try to use the two
+endpoints here in this figure,
+
+1335
+01:03:12,470 --> 01:03:16,670
+like x4 and x9, to predict
+all the words in the middle?
+
+1336
+01:03:16,670 --> 01:03:19,550
+So essentially, we are
+trying to take the two end
+
+1337
+01:03:19,550 --> 01:03:23,240
+points and also some kind
+of position encoding.
+
+1338
+01:03:23,240 --> 01:03:25,250
+And then finally we are
+going to try to predict
+
+1339
+01:03:25,250 --> 01:03:27,060
+all the words in this span.
+
+1340
+01:03:27,060 --> 01:03:29,700
+So this is why it
+is called SpanBERT.
+
+1341
+01:03:29,700 --> 01:03:32,600
+So I encourage you to
+check out our paper.
+
+1342
+01:03:32,600 --> 01:03:35,000
+And this actually
+really helps a lot,
+
+1343
+01:03:35,000 --> 01:03:37,290
+at least for the question
+answering data set.
+
+1344
+01:03:37,290 --> 01:03:39,570
+So as you can see
+from this figure--
+
+1345
+01:03:39,570 --> 01:03:42,920
+so this is SQuAD 1.1
+and this is SQuAD 2.0.
+
+1346
+01:03:42,920 --> 01:03:45,140
+And these are many
+other question answering
+
+1347
+01:03:45,140 --> 01:03:48,540
+data sets as you can see here.
+
+1348
+01:03:48,540 --> 01:03:51,320
+So the blue bars here,
+we call it Google BERT,
+
+1349
+01:03:51,320 --> 01:03:54,140
+are actually the
+original checkpoints
+
+1350
+01:03:54,140 --> 01:03:56,690
+that are released by
+Google for researchers.
+
+1351
+01:03:56,690 --> 01:03:58,860
+And our BERT is
+actually just the--
+
+1352
+01:03:58,860 --> 01:04:00,530
+is actually our
+re-implementation
+
+1353
+01:04:00,530 --> 01:04:04,250
+of the BERT model using
+the same data where
+
+1354
+01:04:04,250 --> 01:04:07,910
+we have been trying to train
+this model for slightly longer.
+
+1355
+01:04:07,910 --> 01:04:10,160
+So it's actually achieved
+a better performance
+
+1356
+01:04:10,160 --> 01:04:11,810
+than the original Google BERT.
+
+1357
+01:04:11,810 --> 01:04:13,850
+So as you can see,
+the yellow bars
+
+1358
+01:04:13,850 --> 01:04:15,560
+here is actually the SpanBERT.
+
+1359
+01:04:15,560 --> 01:04:18,780
+So SpanBERT actually
+greatly outperformed
+
+1360
+01:04:18,780 --> 01:04:21,400
+Google BERT and
+other BERT basically
+
+1361
+01:04:21,400 --> 01:04:22,880
+across all of the datasets.
+
+1362
+01:04:22,880 --> 01:04:26,180
+So that really tells us
+that OK, even if we are not
+
+1363
+01:04:26,180 --> 01:04:27,660
+going to increase
+the model size,
+
+1364
+01:04:27,660 --> 01:04:29,690
+that we are not going
+to increase the data,
+
+1365
+01:04:29,690 --> 01:04:31,850
+by designing better
+pre-training objectives
+
+1366
+01:04:31,850 --> 01:04:35,468
+can also go a long way and
+do a much better job at least
+
+1367
+01:04:35,468 --> 01:04:37,760
+in the question answering
+and the reading comprehension
+
+1368
+01:04:37,760 --> 01:04:40,940
+datasets.
+
+1369
+01:04:40,940 --> 01:04:43,070
+OK.
+
+1370
+01:04:43,070 --> 01:04:47,160
+So I have several few
+slides left in this part.
+
+1371
+01:04:47,160 --> 01:04:51,800
+So so far, we've demonstrated
+that by using BiDAF model
+
+1372
+01:04:51,800 --> 01:04:55,040
+and by using BERT models, we
+can get a very good performance
+
+1373
+01:04:55,040 --> 01:04:56,570
+on the SQuAD dataset.
+
+1374
+01:04:56,570 --> 01:04:59,810
+This number has already exceeded
+even the human performance
+
+1375
+01:04:59,810 --> 01:05:00,737
+on SQuAD.
+
+1376
+01:05:00,737 --> 01:05:02,945
+Does this means that reading
+comprehension is already
+
+1377
+01:05:02,945 --> 01:05:04,480
+solved?
+
+1378
+01:05:04,480 --> 01:05:08,650
+The answer is of course not.
+
+1379
+01:05:08,650 --> 01:05:10,680
+So in the recent
+last couple of years,
+
+1380
+01:05:10,680 --> 01:05:12,910
+there's been a lot
+of evidence showing
+
+1381
+01:05:12,910 --> 01:05:16,030
+that the current systems
+still perform poorly
+
+1382
+01:05:16,030 --> 01:05:18,700
+on adversarial examples
+or the examples
+
+1383
+01:05:18,700 --> 01:05:21,660
+from out of domain
+distributions.
+
+1384
+01:05:21,660 --> 01:05:25,380
+So here is a very
+classical example
+
+1385
+01:05:25,380 --> 01:05:28,860
+proposed by Robin Jia
+and Percy Liang in 2017.
+
+1386
+01:05:28,860 --> 01:05:34,440
+So the idea is to take a passage
+and then take a question.
+
+1387
+01:05:34,440 --> 01:05:38,460
+And they're trying to just
+insert a random sentence
+
+1388
+01:05:38,460 --> 01:05:40,150
+to the end of the paragraph.
+
+1389
+01:05:40,150 --> 01:05:41,880
+So you can see
+that this sentence
+
+1390
+01:05:41,880 --> 01:05:45,600
+has even a little sense entity,
+in this context, Jeff Dean
+
+1391
+01:05:45,600 --> 01:05:46,110
+here.
+
+1392
+01:05:46,110 --> 01:05:50,880
+But this sentence
+actually has some overlap
+
+1393
+01:05:50,880 --> 01:05:51,870
+between the question.
+
+1394
+01:05:51,870 --> 01:05:53,703
+It's actually very
+similar to this question,
+
+1395
+01:05:53,703 --> 01:05:56,010
+but actually the numbers
+have been changed.
+
+1396
+01:05:56,010 --> 01:05:57,810
+The entity length
+has been changed.
+
+1397
+01:05:57,810 --> 01:06:01,200
+And they found that these
+kind of adversarial examples
+
+1398
+01:06:01,200 --> 01:06:05,310
+are actually very easy to
+fool the current systems
+
+1399
+01:06:05,310 --> 01:06:11,120
+and makes the system to predict
+the answer to be Jeff Dean.
+
+1400
+01:06:11,120 --> 01:06:13,410
+So here the table
+shows that by adding
+
+1401
+01:06:13,410 --> 01:06:15,270
+a lot of these
+adversarial examples,
+
+1402
+01:06:15,270 --> 01:06:17,730
+they found the
+performance actually drops
+
+1403
+01:06:17,730 --> 01:06:19,490
+a lot for this BiDAF model.
+
+1404
+01:06:19,490 --> 01:06:23,640
+So drops from 75.5
+to even like 30%.
+
+1405
+01:06:23,640 --> 01:06:25,350
+So for you, like
+this kind of attack,
+
+1406
+01:06:25,350 --> 01:06:28,310
+the performance level just
+dropped to very low, like 4.8%.
+
+1407
+01:06:28,310 --> 01:06:31,090
+
+
+1408
+01:06:31,090 --> 01:06:34,720
+So here is another paper that
+actually just came out in 2020.
+
+1409
+01:06:34,720 --> 01:06:36,430
+So there has to be
+a lot of evidence
+
+1410
+01:06:36,430 --> 01:06:38,650
+showing the similar things.
+
+1411
+01:06:38,650 --> 01:06:42,520
+So today we compute a very good
+reading comprehension data set
+
+1412
+01:06:42,520 --> 01:06:44,380
+on the individual data sets.
+
+1413
+01:06:44,380 --> 01:06:47,260
+But these systems trained on one
+dataset basically cannot really
+
+1414
+01:06:47,260 --> 01:06:49,180
+generalize to other datasets.
+
+1415
+01:06:49,180 --> 01:06:53,145
+So the diagonal of
+this table is basically
+
+1416
+01:06:53,145 --> 01:06:56,170
+trying to model one
+dataset and evaluate it
+
+1417
+01:06:56,170 --> 01:06:57,430
+on the same dataset.
+
+1418
+01:06:57,430 --> 01:06:59,900
+And all the other
+numbers in this table
+
+1419
+01:06:59,900 --> 01:07:04,300
+basically shows that if you
+train one system on one dataset
+
+1420
+01:07:04,300 --> 01:07:06,220
+and then evaluate
+on another dataset,
+
+1421
+01:07:06,220 --> 01:07:08,470
+the performance will
+drop quite a lot.
+
+1422
+01:07:08,470 --> 01:07:11,140
+So it basically really cannot
+generalize from one dataset
+
+1423
+01:07:11,140 --> 01:07:12,890
+to another dataset.
+
+1424
+01:07:12,890 --> 01:07:17,480
+So finally, this is actually
+a very interesting result.
+
+1425
+01:07:17,480 --> 01:07:21,675
+So this table is actually
+the best paper from ACL 2020,
+
+1426
+01:07:21,675 --> 01:07:23,960
+it's called a checklist paper.
+
+1427
+01:07:23,960 --> 01:07:27,140
+So the idea is that
+these authors basically
+
+1428
+01:07:27,140 --> 01:07:30,970
+try to propose some
+kind of the test cases
+
+1429
+01:07:30,970 --> 01:07:35,260
+to checker whether these models
+can actually really answer
+
+1430
+01:07:35,260 --> 01:07:38,350
+some simple questions when there
+is some specific or particular
+
+1431
+01:07:38,350 --> 01:07:39,400
+phenomenon.
+
+1432
+01:07:39,400 --> 01:07:41,980
+They found that by just--
+
+1433
+01:07:41,980 --> 01:07:44,020
+come up with a really
+simple question.
+
+1434
+01:07:44,020 --> 01:07:48,610
+For example here, Jeremy is
+more optimistic than Taylor.
+
+1435
+01:07:48,610 --> 01:07:50,830
+And who is more pessimistic?
+
+1436
+01:07:50,830 --> 01:07:54,460
+And they found that a
+BERTlarge model cannot solve
+
+1437
+01:07:54,460 --> 01:08:01,730
+and basically failed these type
+of test cases 100% of the time.
+
+1438
+01:08:01,730 --> 01:08:03,660
+And now here is another table.
+
+1439
+01:08:03,660 --> 01:08:07,310
+So here is another
+coref example.
+
+1440
+01:08:07,310 --> 01:08:09,350
+Victoria and Alex are friends.
+
+1441
+01:08:09,350 --> 01:08:11,270
+Her mom is an agent.
+
+1442
+01:08:11,270 --> 01:08:13,130
+Whose mom is an agent?
+
+1443
+01:08:13,130 --> 01:08:15,740
+And so to get this
+kind of question
+
+1444
+01:08:15,740 --> 01:08:17,390
+correctly, so it
+has to understand
+
+1445
+01:08:17,390 --> 01:08:20,870
+the Victoria actually
+refers to a female person
+
+1446
+01:08:20,870 --> 01:08:23,000
+and Alex refers
+to a male person.
+
+1447
+01:08:23,000 --> 01:08:27,500
+So these kind of questions
+also make the current models,
+
+1448
+01:08:27,500 --> 01:08:28,970
+BERTlarge models
+trained on SQuAD
+
+1449
+01:08:28,970 --> 01:08:31,341
+totally fail on these
+kind of test cases.
+
+1450
+01:08:31,341 --> 01:08:35,318
+
+
+1451
+01:08:35,319 --> 01:08:36,939
+OK.
+
+1452
+01:08:36,939 --> 01:08:38,803
+So I have 10 minutes left.
+
+1453
+01:08:38,803 --> 01:08:41,220
+Chris, is there any question
+I should answer at this point
+
+1454
+01:08:41,220 --> 01:08:41,790
+here?
+
+1455
+01:08:41,790 --> 01:08:44,660
+I think you can go on.
+
+1456
+01:08:44,660 --> 01:08:45,160
+OK.
+
+1457
+01:08:45,160 --> 01:08:47,050
+So in the last 10
+minutes, I'm going
+
+1458
+01:08:47,050 --> 01:08:49,479
+to give you a very,
+very brief introduction
+
+1459
+01:08:49,479 --> 01:08:51,580
+of what is open-domain
+question answering
+
+1460
+01:08:51,580 --> 01:08:56,300
+and what we have been trying to
+do in the last couple of years.
+
+1461
+01:08:56,300 --> 01:08:59,380
+So open-domain question
+answering is a problem that--
+
+1462
+01:08:59,380 --> 01:09:01,240
+so it's different from
+reading comprehension
+
+1463
+01:09:01,240 --> 01:09:03,729
+that we don't assume
+a given passage.
+
+1464
+01:09:03,729 --> 01:09:06,189
+So here, we use the
+assumptions that we only
+
+1465
+01:09:06,189 --> 01:09:09,430
+have access to a large
+collection of documents.
+
+1466
+01:09:09,430 --> 01:09:12,760
+So one example is just taking
+the whole Wikipedia, which
+
+1467
+01:09:12,760 --> 01:09:14,770
+has five million articles.
+
+1468
+01:09:14,770 --> 01:09:17,560
+So we don't really know
+where the answer is located.
+
+1469
+01:09:17,560 --> 01:09:19,510
+And we're going to
+return the answer
+
+1470
+01:09:19,510 --> 01:09:22,050
+for any open-domain questions.
+
+1471
+01:09:22,050 --> 01:09:24,050
+So this problem, there
+isn't any single passage,
+
+1472
+01:09:24,050 --> 01:09:26,970
+so we have to answer questions
+against a very large collection
+
+1473
+01:09:26,970 --> 01:09:29,830
+of documents or even
+the whole web documents.
+
+1474
+01:09:29,830 --> 01:09:32,920
+So this is actually a much
+more challenging and also more
+
+1475
+01:09:32,920 --> 01:09:35,560
+practical problem.
+
+1476
+01:09:35,560 --> 01:09:38,850
+So if you look at the
+example of Google example
+
+1477
+01:09:38,850 --> 01:09:41,979
+I showed at the beginning,
+so these techniques
+
+1478
+01:09:41,979 --> 01:09:47,720
+will be very useful in the
+practical applications.
+
+1479
+01:09:47,720 --> 01:09:50,380
+So the term here open
+domains is just in contrast
+
+1480
+01:09:50,380 --> 01:09:54,434
+to closed domains that
+deal with questions
+
+1481
+01:09:54,434 --> 01:09:56,091
+under a specific domain, yeah.
+
+1482
+01:09:56,091 --> 01:09:59,170
+
+
+1483
+01:09:59,170 --> 01:10:03,113
+OK, so how can we solve
+this type of problem?
+
+1484
+01:10:03,113 --> 01:10:05,030
+Because for the reading
+comprehension problem,
+
+1485
+01:10:05,030 --> 01:10:06,250
+we just make sure
+to answer questions
+
+1486
+01:10:06,250 --> 01:10:07,630
+based on a simple passage.
+
+1487
+01:10:07,630 --> 01:10:11,410
+So this is a paper that I
+wrote in 2017, four years now.
+
+1488
+01:10:11,410 --> 01:10:14,530
+So the paper is called
+Reading Wikipedia
+
+1489
+01:10:14,530 --> 01:10:17,770
+to Answer Open-domain Questions
+on a system we call DrQA.
+
+1490
+01:10:17,770 --> 01:10:20,470
+So this paper basically
+proposed the idea
+
+1491
+01:10:20,470 --> 01:10:22,870
+that we can actually
+solve this problem
+
+1492
+01:10:22,870 --> 01:10:26,950
+by using a retrieval and
+also a reader framework.
+
+1493
+01:10:26,950 --> 01:10:30,190
+So the idea is that
+let's take a question--
+
+1494
+01:10:30,190 --> 01:10:31,750
+OK, so here, the
+article is trying
+
+1495
+01:10:31,750 --> 01:10:35,660
+to answer questions using a very
+large collection of documents
+
+1496
+01:10:35,660 --> 01:10:37,090
+such as the Wikipedia.
+
+1497
+01:10:37,090 --> 01:10:39,700
+So the idea is that there
+is a retrieval and also
+
+1498
+01:10:39,700 --> 01:10:41,020
+reader component.
+
+1499
+01:10:41,020 --> 01:10:43,240
+So the retrieval
+text in the question
+
+1500
+01:10:43,240 --> 01:10:46,990
+and try to find out a small
+number of documents that to be
+
+1501
+01:10:46,990 --> 01:10:48,610
+relevant to this question.
+
+1502
+01:10:48,610 --> 01:10:50,410
+And this reader
+model is basically
+
+1503
+01:10:50,410 --> 01:10:52,450
+trying to read through
+all the documents
+
+1504
+01:10:52,450 --> 01:10:55,780
+that this retrieval
+return and try
+
+1505
+01:10:55,780 --> 01:10:59,560
+to find out the correct answer.
+
+1506
+01:10:59,560 --> 01:11:03,210
+So formally defined here is that
+the input is a large collection
+
+1507
+01:11:03,210 --> 01:11:06,240
+of documents D and
+the question Q.
+
+1508
+01:11:06,240 --> 01:11:09,930
+And the output could
+be our answer string A.
+
+1509
+01:11:09,930 --> 01:11:12,083
+So we can just decompose
+this problem into,
+
+1510
+01:11:12,083 --> 01:11:14,250
+as I just mentioned, in our
+retrieval and the reader
+
+1511
+01:11:14,250 --> 01:11:15,270
+component.
+
+1512
+01:11:15,270 --> 01:11:16,770
+So the retrieval
+is basically trying
+
+1513
+01:11:16,770 --> 01:11:19,680
+to take the large collection
+of document D and Q,
+
+1514
+01:11:19,680 --> 01:11:24,190
+and is trying to return a set
+of documents or set of passages.
+
+1515
+01:11:24,190 --> 01:11:34,200
+So here, this number K could
+be very small, just like 100.
+
+1516
+01:11:34,200 --> 01:11:39,540
+So it's basically trying to find
+out 100 passages of documents
+
+1517
+01:11:39,540 --> 01:11:42,460
+from let's say 5
+million documents.
+
+1518
+01:11:42,460 --> 01:11:45,270
+And finally the reader
+basically takes the question
+
+1519
+01:11:45,270 --> 01:11:47,040
+and takes this type
+of the passages
+
+1520
+01:11:47,040 --> 01:11:50,025
+and finally returns the answer.
+
+1521
+01:11:50,025 --> 01:11:51,400
+So the second
+problem is actually
+
+1522
+01:11:51,400 --> 01:11:55,440
+the reading comprehension
+model that we just learned.
+
+1523
+01:11:55,440 --> 01:11:58,610
+So these are just from
+2017 paper we wrote.
+
+1524
+01:11:58,610 --> 01:12:01,220
+So it's actually doing
+a very simple thing.
+
+1525
+01:12:01,220 --> 01:12:04,730
+So the retrieval is just
+standard information retrieval
+
+1526
+01:12:04,730 --> 01:12:09,117
+model with a TF-IDF information
+retrieval sparse model.
+
+1527
+01:12:09,117 --> 01:12:10,700
+And the real model
+essentially is just
+
+1528
+01:12:10,700 --> 01:12:14,600
+the neural reading comprehension
+model I just talked about.
+
+1529
+01:12:14,600 --> 01:12:17,390
+So it's mainly trained on SQuAD
+and some other question answer
+
+1530
+01:12:17,390 --> 01:12:20,300
+datasets.
+
+1531
+01:12:20,300 --> 01:12:21,800
+So the idea is very
+simple, but it's
+
+1532
+01:12:21,800 --> 01:12:24,240
+trying to bridge
+with two things,
+
+1533
+01:12:24,240 --> 01:12:27,080
+how to have a bridge as the
+retrieval and also the reader
+
+1534
+01:12:27,080 --> 01:12:29,442
+to do this kind of open-domain
+question answering.
+
+1535
+01:12:29,442 --> 01:12:32,040
+
+
+1536
+01:12:32,040 --> 01:12:35,310
+So I'm just going
+to quickly go over
+
+1537
+01:12:35,310 --> 01:12:38,190
+some really exciting
+ideas that has
+
+1538
+01:12:38,190 --> 01:12:42,450
+been happening in the
+last two years basically.
+
+1539
+01:12:42,450 --> 01:12:45,630
+So the first idea is that
+this is retrieval part
+
+1540
+01:12:45,630 --> 01:12:46,830
+can be also trained.
+
+1541
+01:12:46,830 --> 01:12:48,950
+So we can actually
+even do this kind
+
+1542
+01:12:48,950 --> 01:12:51,150
+of training of the
+retriever and the reader.
+
+1543
+01:12:51,150 --> 01:12:53,220
+So here is actually--
+
+1544
+01:12:53,220 --> 01:12:57,000
+so this idea has been first
+proposed in Kenton Lee's paper
+
+1545
+01:12:57,000 --> 01:13:01,170
+in 2019 called Latent Retrieval
+for Weakly Supervised Open
+
+1546
+01:13:01,170 --> 01:13:02,940
+Domain Question Answering.
+
+1547
+01:13:02,940 --> 01:13:06,570
+So this part is
+basically the first model
+
+1548
+01:13:06,570 --> 01:13:09,780
+for reading comprehension,
+and this part is basically
+
+1549
+01:13:09,780 --> 01:13:11,130
+the retrieval model.
+
+1550
+01:13:11,130 --> 01:13:13,470
+So to get this
+retrieval model working,
+
+1551
+01:13:13,470 --> 01:13:16,500
+they also tried to use the
+BERT to encode the passage
+
+1552
+01:13:16,500 --> 01:13:18,222
+and also encode the
+question, and they
+
+1553
+01:13:18,222 --> 01:13:20,180
+tried to use a dot product
+between the question
+
+1554
+01:13:20,180 --> 01:13:22,055
+representation and the
+passage representation
+
+1555
+01:13:22,055 --> 01:13:27,210
+to model the relevance, the
+similarity between the question
+
+1556
+01:13:27,210 --> 01:13:28,530
+and the passage.
+
+1557
+01:13:28,530 --> 01:13:31,380
+But this is actually a very
+difficult problem because
+
+1558
+01:13:31,380 --> 01:13:33,930
+of scalability of this problem.
+
+1559
+01:13:33,930 --> 01:13:37,350
+Because there are 20 million
+passages in Wikipedia,
+
+1560
+01:13:37,350 --> 01:13:40,080
+so it's actually very
+hard to model this part.
+
+1561
+01:13:40,080 --> 01:13:41,940
+So I encourage you to
+check out this paper.
+
+1562
+01:13:41,940 --> 01:13:45,010
+
+
+1563
+01:13:45,010 --> 01:13:48,460
+And also second paper I
+want to quickly mention
+
+1564
+01:13:48,460 --> 01:13:51,790
+is also work I did last year.
+
+1565
+01:13:51,790 --> 01:13:54,280
+It's called the dense
+passage retrieval.
+
+1566
+01:13:54,280 --> 01:13:59,440
+So the idea is actually very
+similar to the previous paper.
+
+1567
+01:13:59,440 --> 01:14:02,780
+But the idea is an actually
+much more simplified model
+
+1568
+01:14:02,780 --> 01:14:05,800
+and a very easy, a very simple
+and straightforward approach.
+
+1569
+01:14:05,800 --> 01:14:08,380
+The idea is that we can also
+really just train the retrieval
+
+1570
+01:14:08,380 --> 01:14:11,470
+part by using two BERT models
+using only the question
+
+1571
+01:14:11,470 --> 01:14:12,640
+and answer pairs.
+
+1572
+01:14:12,640 --> 01:14:15,140
+And this model kind
+of works really well,
+
+1573
+01:14:15,140 --> 01:14:18,880
+and it can largely outperform
+the traditional IR retrieval
+
+1574
+01:14:18,880 --> 01:14:19,750
+models.
+
+1575
+01:14:19,750 --> 01:14:22,570
+If you see this figure,
+so the blue curve
+
+1576
+01:14:22,570 --> 01:14:27,040
+here is a traditional IR
+approach, like a BM25 approach.
+
+1577
+01:14:27,040 --> 01:14:29,695
+And so the other
+curve, the orange curve
+
+1578
+01:14:29,695 --> 01:14:32,350
+is basically training this kind
+of retrieval using only one
+
+1579
+01:14:32,350 --> 01:14:34,400
+solved and question
+answer pairs.
+
+1580
+01:14:34,400 --> 01:14:37,240
+So by looking at all these
+different curves basically
+
+1581
+01:14:37,240 --> 01:14:39,430
+using a different number
+of training examples,
+
+1582
+01:14:39,430 --> 01:14:43,700
+so it actually largely greatly
+outperforms the traditional IR
+
+1583
+01:14:43,700 --> 01:14:44,200
+models.
+
+1584
+01:14:44,200 --> 01:14:49,640
+
+
+1585
+01:14:49,640 --> 01:14:50,325
+OK.
+
+1586
+01:14:50,325 --> 01:14:51,950
+Again, really I don't
+have time to talk
+
+1587
+01:14:51,950 --> 01:14:54,800
+about the details of
+all this projects,
+
+1588
+01:14:54,800 --> 01:14:58,730
+so I just encourage you
+to check out these papers,
+
+1589
+01:14:58,730 --> 01:15:02,400
+and I think these results
+are really exciting.
+
+1590
+01:15:02,400 --> 01:15:05,240
+So here is actually
+a really nice demo.
+
+1591
+01:15:05,240 --> 01:15:08,425
+So demo is actually
+hosted on this website
+
+1592
+01:15:08,425 --> 01:15:11,240
+if you want to check out.
+
+1593
+01:15:11,240 --> 01:15:14,058
+So again, the database
+ferries the whole Wikipedia.
+
+1594
+01:15:14,058 --> 01:15:16,100
+And you can see that if
+you ask a question of who
+
+1595
+01:15:16,100 --> 01:15:20,270
+tells Harry Potter that he is
+a wizard in the Harry Potter
+
+1596
+01:15:20,270 --> 01:15:21,140
+series.
+
+1597
+01:15:21,140 --> 01:15:22,820
+And the system had
+really found out
+
+1598
+01:15:22,820 --> 01:15:25,370
+the correct article should
+be Harry Potter films
+
+1599
+01:15:25,370 --> 01:15:28,520
+series, and then finally
+gave you the correct answer,
+
+1600
+01:15:28,520 --> 01:15:30,650
+which is exactly what
+you have seen here
+
+1601
+01:15:30,650 --> 01:15:32,880
+from the Google example here.
+
+1602
+01:15:32,880 --> 01:15:35,660
+So the answer would
+be the Rubeus Hagrid,
+
+1603
+01:15:35,660 --> 01:15:38,660
+which is actually the
+person who told tells Harry
+
+1604
+01:15:38,660 --> 01:15:40,067
+Potter that he's a wizard.
+
+1605
+01:15:40,067 --> 01:15:42,400
+So this is actually the perfect
+answer to this question.
+
+1606
+01:15:42,400 --> 01:15:45,820
+
+
+1607
+01:15:45,820 --> 01:15:48,070
+OK, I'm going to
+skip this slide.
+
+1608
+01:15:48,070 --> 01:15:51,280
+And then finally, very quick.
+
+1609
+01:15:51,280 --> 01:15:54,940
+So this is something that
+came out very recently
+
+1610
+01:15:54,940 --> 01:15:58,720
+that some researchers have
+demonstrated that maybe you
+
+1611
+01:15:58,720 --> 01:16:01,700
+don't even need this
+retrieval stage.
+
+1612
+01:16:01,700 --> 01:16:04,450
+If you just use a very
+large language model,
+
+1613
+01:16:04,450 --> 01:16:06,610
+you can also just use
+all open-domain questions
+
+1614
+01:16:06,610 --> 01:16:07,580
+answering.
+
+1615
+01:16:07,580 --> 01:16:09,670
+So they way they
+did this is that--
+
+1616
+01:16:09,670 --> 01:16:12,560
+I hope that you have learned the
+T5 model in this class already.
+
+1617
+01:16:12,560 --> 01:16:15,250
+So they just take a
+pre-trained language model T5.
+
+1618
+01:16:15,250 --> 01:16:17,620
+And they are trying to
+fine tune this model
+
+1619
+01:16:17,620 --> 01:16:22,960
+by taking the question as the
+input and the answer as output
+
+1620
+01:16:22,960 --> 01:16:25,330
+without any explicit retrieval.
+
+1621
+01:16:25,330 --> 01:16:27,640
+And they just fine-tune
+this data set,
+
+1622
+01:16:27,640 --> 01:16:31,090
+and they find this model can do
+pretty well at the testing time
+
+1623
+01:16:31,090 --> 01:16:33,805
+by just taking the question
+and then directly generate
+
+1624
+01:16:33,805 --> 01:16:38,530
+the answer without resorting
+to any documents or a retrieval
+
+1625
+01:16:38,530 --> 01:16:39,285
+system.
+
+1626
+01:16:39,285 --> 01:16:40,660
+So this is actually
+very amazing.
+
+1627
+01:16:40,660 --> 01:16:44,485
+So this kind of QA model is
+also called Coastal QA systems.
+
+1628
+01:16:44,485 --> 01:16:47,700
+
+
+1629
+01:16:47,700 --> 01:16:48,810
+OK.
+
+1630
+01:16:48,810 --> 01:16:51,270
+The last slide.
+
+1631
+01:16:51,270 --> 01:16:54,000
+So this is one direction
+that personally, I'm
+
+1632
+01:16:54,000 --> 01:16:55,630
+very excited about.
+
+1633
+01:16:55,630 --> 01:16:58,030
+So this is actually
+a new direction
+
+1634
+01:16:58,030 --> 01:17:00,712
+that basically shows that maybe
+for the open-domain question
+
+1635
+01:17:00,712 --> 01:17:02,970
+answering, maybe this
+reader model is also
+
+1636
+01:17:02,970 --> 01:17:06,020
+not necessary anymore.
+
+1637
+01:17:06,020 --> 01:17:09,700
+So this idea was first
+proposed by Minjoon Seo in 2019
+
+1638
+01:17:09,700 --> 01:17:13,410
+and recently wrote a paper
+called dense phrases that
+
+1639
+01:17:13,410 --> 01:17:16,470
+tried to demonstrate
+that maybe you don't even
+
+1640
+01:17:16,470 --> 01:17:18,450
+need this reader model.
+
+1641
+01:17:18,450 --> 01:17:22,140
+So instead we can just
+record all the phrases
+
+1642
+01:17:22,140 --> 01:17:25,470
+in Wikipedia using some
+kind of dense vectors.
+
+1643
+01:17:25,470 --> 01:17:27,390
+So what you just
+need to do is just
+
+1644
+01:17:27,390 --> 01:17:29,910
+to do this kind of nearest
+neighbor search in the answer
+
+1645
+01:17:29,910 --> 01:17:30,690
+space.
+
+1646
+01:17:30,690 --> 01:17:34,200
+You just encode all the
+phrases in Wikipedia,
+
+1647
+01:17:34,200 --> 01:17:35,730
+encode them using vectors.
+
+1648
+01:17:35,730 --> 01:17:38,000
+And by taking a
+question, you can just
+
+1649
+01:17:38,000 --> 01:17:39,820
+encode this question
+in a single vector
+
+1650
+01:17:39,820 --> 01:17:43,170
+and then we can just do the
+nearest neighbor search.
+
+1651
+01:17:43,170 --> 01:17:46,300
+And then it can directly
+give you the answer.
+
+1652
+01:17:46,300 --> 01:17:48,150
+So this particular
+new paradigm is just
+
+1653
+01:17:48,150 --> 01:17:51,090
+kind of the question
+answering model.
+
+1654
+01:17:51,090 --> 01:17:53,590
+You just need the retriever,
+you don't need a reader.
+
+1655
+01:17:53,590 --> 01:17:55,920
+So a great advantage
+for doing this
+
+1656
+01:17:55,920 --> 01:17:58,630
+is that for the
+BERT reader model,
+
+1657
+01:17:58,630 --> 01:18:00,593
+you essentially have
+to run the BERT model
+
+1658
+01:18:00,593 --> 01:18:01,510
+at the inference time.
+
+1659
+01:18:01,510 --> 01:18:03,550
+This is actually very expensive.
+
+1660
+01:18:03,550 --> 01:18:05,910
+Well, you just get a read
+off the reader model.
+
+1661
+01:18:05,910 --> 01:18:07,590
+You can just do the
+similarities search,
+
+1662
+01:18:07,590 --> 01:18:09,480
+you can just do the
+nearest neighbor search
+
+1663
+01:18:09,480 --> 01:18:11,100
+without running a BERT model.
+
+1664
+01:18:11,100 --> 01:18:14,640
+So this could be very fast and
+they can even run on the CPUs
+
+1665
+01:18:14,640 --> 01:18:19,920
+without needing to run a very
+expensive deep neural network
+
+1666
+01:18:19,920 --> 01:18:25,440
+and then it can still run very
+well, perform very, very well.
+
+1667
+01:18:25,440 --> 01:18:27,820
+OK, finally, I hope this works.
+
+1668
+01:18:27,820 --> 01:18:31,540
+So I actually prepared a
+demo for the DensePhrases.
+
+1669
+01:18:31,540 --> 01:18:33,480
+So I want to show you
+how this actually works.
+
+1670
+01:18:33,480 --> 01:18:43,270
+
+
+1671
+01:18:43,270 --> 01:18:45,040
+So you can see
+that when you type
+
+1672
+01:18:45,040 --> 01:18:49,830
+this question of who won the
+Nobel Prize in peace in 2014.
+
+1673
+01:18:49,830 --> 01:18:53,160
+So everything just types a
+little piece of the input
+
+1674
+01:18:53,160 --> 01:18:56,520
+question, and the system
+can basically just find out
+
+1675
+01:18:56,520 --> 01:18:59,250
+the relevant answer and
+the relevant text passages.
+
+1676
+01:18:59,250 --> 01:19:02,040
+And then finally, the
+answer actually shows up.
+
+1677
+01:19:02,040 --> 01:19:04,745
+It's actually very fast because
+it has bigger real time.
+
+1678
+01:19:04,745 --> 01:19:07,680
+We don't run the BERT
+model, so it's just
+
+1679
+01:19:07,680 --> 01:19:10,660
+our retrieval model here.
+
+1680
+01:19:10,660 --> 01:19:11,370
+OK.
+
+1681
+01:19:11,370 --> 01:19:13,480
+I'm actually done
+with this lecture.
+
+1682
+01:19:13,480 --> 01:19:16,320
+So it is already 5:15 now, yeah.
+
+1683
+01:19:16,320 --> 01:19:18,630
+Thanks for joining me today.
+
+1684
+01:19:18,630 --> 01:19:23,160
+Thank you very much Danqi for
+that awesome survey of question
+
+1685
+01:19:23,160 --> 01:19:23,730
+answering.
+
+1686
+01:19:23,730 --> 01:19:25,260
+I guess given that
+demo at the end,
+
+1687
+01:19:25,260 --> 01:19:27,180
+people want to know
+whether you're launching
+
+1688
+01:19:27,180 --> 01:19:29,850
+your own search engine soon.
+
+1689
+01:19:29,850 --> 01:19:36,570
+But at any rate, Danqi can stay
+for a bit to answer questions,
+
+1690
+01:19:36,570 --> 01:19:37,980
+but not forever.
+
+1691
+01:19:37,980 --> 01:19:42,510
+but today, because she
+doesn't have a Stanford login,
+
+1692
+01:19:42,510 --> 01:19:45,900
+we're going to do
+questions inside Zoom.
+
+1693
+01:19:45,900 --> 01:19:48,660
+So if you'd like
+to ask a question,
+
+1694
+01:19:48,660 --> 01:19:51,150
+if you use the
+raise hand button,
+
+1695
+01:19:51,150 --> 01:19:54,570
+we can promote you so that
+you appear in the regular Zoom
+
+1696
+01:19:54,570 --> 01:19:59,740
+window and can just ask
+questions and see each other.
+
+1697
+01:19:59,740 --> 01:20:03,420
+And if you hang
+around and don't leave
+
+1698
+01:20:03,420 --> 01:20:05,130
+the Zoom for more
+than a few minutes,
+
+1699
+01:20:05,130 --> 01:20:08,130
+maybe we'll just promote
+everybody who's still there
+
+1700
+01:20:08,130 --> 01:20:13,830
+into people in the regular Zoom
+for some bits of discussion.
+
+1701
+01:20:13,830 --> 01:20:16,320
+But we'd welcome
+anyone who'd like
+
+1702
+01:20:16,320 --> 01:20:20,690
+to ask a question by asking
+it themselves at this point.
+
+1703
+01:20:20,690 --> 01:20:25,450
+
+
+1704
+01:20:25,450 --> 01:20:26,450
+OK.
+
+1705
+01:20:26,450 --> 01:20:28,070
+I've got one volunteer.
+
+1706
+01:20:28,070 --> 01:20:31,380
+
+
+1707
+01:20:31,380 --> 01:20:35,430
+I've got more volunteers.
+
+1708
+01:20:35,430 --> 01:20:36,730
+Should I read those questions?
+
+1709
+01:20:36,730 --> 01:20:38,970
+Should I look at the chat or?
+
+1710
+01:20:38,970 --> 01:20:39,780
+No.
+
+1711
+01:20:39,780 --> 01:20:44,070
+So there are now four
+people who've been promoted.
+
+1712
+01:20:44,070 --> 01:20:45,120
+There are four people.
+
+1713
+01:20:45,120 --> 01:20:48,420
+[AUDIO OUT] was the
+first, so maybe he
+
+1714
+01:20:48,420 --> 01:20:50,700
+could start by
+asking a question,
+
+1715
+01:20:50,700 --> 01:20:55,560
+and then the other people
+that we've promoted.
+
+1716
+01:20:55,560 --> 01:20:56,760
+OK.
+
+1717
+01:20:56,760 --> 01:20:59,170
+So thank you so much
+for the lecture today.
+
+1718
+01:20:59,170 --> 01:21:03,090
+My question is maybe if you
+use a model like for example
+
+1719
+01:21:03,090 --> 01:21:09,820
+BERT, how small can your
+training dataset be for you
+
+1720
+01:21:09,820 --> 01:21:13,560
+to get reasonable results?
+
+1721
+01:21:13,560 --> 01:21:16,800
+So the question is how we can
+train the reading comprehension
+
+1722
+01:21:16,800 --> 01:21:19,130
+model using only a small
+number of training examples.
+
+1723
+01:21:19,130 --> 01:21:21,765
+
+
+1724
+01:21:21,765 --> 01:21:23,640
+Yeah, I think this is
+a really cool question.
+
+1725
+01:21:23,640 --> 01:21:26,710
+
+
+1726
+01:21:26,710 --> 01:21:28,210
+It's actually like
+the, you probably
+
+1727
+01:21:28,210 --> 01:21:30,790
+have heard of GPT
+stream model that you
+
+1728
+01:21:30,790 --> 01:21:34,090
+showed that if you only
+use a very few examples,
+
+1729
+01:21:34,090 --> 01:21:37,790
+you can also do open-domain
+question answering pretty well.
+
+1730
+01:21:37,790 --> 01:21:43,850
+But this kind of model is
+huge, like what number?
+
+1731
+01:21:43,850 --> 01:21:47,270
+How many parameters I forgot
+in the GPT Stream model, yeah.
+
+1732
+01:21:47,270 --> 01:21:49,950
+So it's a very large
+variety of of model but--
+
+1733
+01:21:49,950 --> 01:21:50,450
+OK.
+
+1734
+01:21:50,450 --> 01:21:53,390
+So this is my answer, is
+that if we can leverage
+
+1735
+01:21:53,390 --> 01:21:58,520
+a very large and very powerful
+pre-trained language model,
+
+1736
+01:21:58,520 --> 01:22:01,240
+there is a possibility that we
+can actually do the question
+
+1737
+01:22:01,240 --> 01:22:05,090
+answering well with only a
+small number of examples.
+
+1738
+01:22:05,090 --> 01:22:08,460
+And also there are some
+other promising directions,
+
+1739
+01:22:08,460 --> 01:22:11,380
+including unsupervised
+question answering so
+
+1740
+01:22:11,380 --> 01:22:14,690
+by using some kind of
+approach like some form
+
+1741
+01:22:14,690 --> 01:22:18,800
+of unsupervised machine
+translation, this kind of idea.
+
+1742
+01:22:18,800 --> 01:22:22,160
+That can be borrowed--
+
+1743
+01:22:22,160 --> 01:22:25,190
+can borrow the idea
+from that and can also
+
+1744
+01:22:25,190 --> 01:22:29,010
+work pretty well, reasonably
+well in unsupervised question
+
+1745
+01:22:29,010 --> 01:22:29,620
+answering.
+
+1746
+01:22:29,620 --> 01:22:33,150
+
+
+1747
+01:22:33,150 --> 01:22:34,770
+Yeah, also I have
+seen a lot of works
+
+1748
+01:22:34,770 --> 01:22:39,600
+like [INAUDIBLE] showing that
+synthetic Pure-DSS can also
+
+1749
+01:22:39,600 --> 01:22:42,570
+help a lot in boosting
+the performance if you
+
+1750
+01:22:42,570 --> 01:22:48,400
+don't have enough
+supervised examples, yeah.
+
+1751
+01:22:48,400 --> 01:22:51,780
+So my question is I guess
+it's kind of interesting
+
+1752
+01:22:51,780 --> 01:22:54,465
+that there's not really
+that strong of a transfer
+
+1753
+01:22:54,465 --> 01:22:59,980
+effect between data sets that
+are kind of ostensibly similar.
+
+1754
+01:22:59,980 --> 01:23:04,260
+So my question is has there
+been any research done
+
+1755
+01:23:04,260 --> 01:23:08,280
+on how close I
+guess the formatting
+
+1756
+01:23:08,280 --> 01:23:12,210
+and the semantic content
+of these question answering
+
+1757
+01:23:12,210 --> 01:23:16,260
+datasets actually
+adheres to the data
+
+1758
+01:23:16,260 --> 01:23:19,540
+that BERT is pre trained on?
+
+1759
+01:23:19,540 --> 01:23:22,440
+And if so, has there been
+sort of any effect found
+
+1760
+01:23:22,440 --> 01:23:27,970
+between those similarities
+or differences?
+
+1761
+01:23:27,970 --> 01:23:31,452
+Is the question asking whether
+there has been like some kind
+
+1762
+01:23:31,452 --> 01:23:32,100
+of--
+
+1763
+01:23:32,100 --> 01:23:35,580
+OK, maybe I can just try
+to clarify a little bit why
+
+1764
+01:23:35,580 --> 01:23:38,875
+the current models cannot really
+generalize well from one data
+
+1765
+01:23:38,875 --> 01:23:41,400
+set to another data set, yeah.
+
+1766
+01:23:41,400 --> 01:23:46,158
+So I actually truly believe
+that most existing question
+
+1767
+01:23:46,158 --> 01:23:47,950
+answering datasets or
+reading comprehension
+
+1768
+01:23:47,950 --> 01:23:51,970
+datasets have been collected
+from Mechanical Turk.
+
+1769
+01:23:51,970 --> 01:23:56,275
+So it is very difficult to
+avoid some kind of artifact
+
+1770
+01:23:56,275 --> 01:24:00,050
+though, like a simple clues
+or superficial clues--
+
+1771
+01:24:00,050 --> 01:24:03,280
+let's say not superficial
+but some simple clues
+
+1772
+01:24:03,280 --> 01:24:05,600
+that are for the
+machines to pick up.
+
+1773
+01:24:05,600 --> 01:24:08,848
+So let's take those
+examples that--
+
+1774
+01:24:08,848 --> 01:24:11,140
+so you can see actually if
+you look at the dataset some
+
+1775
+01:24:11,140 --> 01:24:13,120
+more closely, there
+has been a lot
+
+1776
+01:24:13,120 --> 01:24:15,000
+of examples of the
+question having
+
+1777
+01:24:15,000 --> 01:24:17,260
+more like a large
+overlap in each
+
+1778
+01:24:17,260 --> 01:24:19,690
+of the words between the
+question and the passage.
+
+1779
+01:24:19,690 --> 01:24:22,480
+So the model is actually
+very good at picking up
+
+1780
+01:24:22,480 --> 01:24:27,100
+these kind of clues to
+get very high performance
+
+1781
+01:24:27,100 --> 01:24:28,720
+on this dataset.
+
+1782
+01:24:28,720 --> 01:24:31,630
+And a lot of dataset drop.
+
+1783
+01:24:31,630 --> 01:24:34,270
+So it's basically about
+comparisons with the two
+
+1784
+01:24:34,270 --> 01:24:35,620
+numbers, something like that.
+
+1785
+01:24:35,620 --> 01:24:38,930
+So that's the reason that
+more specialized models that
+
+1786
+01:24:38,930 --> 01:24:41,660
+have been trained very
+well in one data set,
+
+1787
+01:24:41,660 --> 01:24:44,890
+it's very easy to pick
+up these kind of clues,
+
+1788
+01:24:44,890 --> 01:24:47,330
+and is very hard to
+generalize this kind of thing
+
+1789
+01:24:47,330 --> 01:24:49,180
+to another data set.
+
+1790
+01:24:49,180 --> 01:24:51,340
+What about the natural
+questions data set?
+
+1791
+01:24:51,340 --> 01:24:54,950
+Doesn't that avoid
+that objection?
+
+1792
+01:24:54,950 --> 01:24:55,450
+Yeah.
+
+1793
+01:24:55,450 --> 01:24:58,737
+Natural questions
+will be much better,
+
+1794
+01:24:58,737 --> 01:25:00,070
+but there are some other issues.
+
+1795
+01:25:00,070 --> 01:25:02,290
+I'm not sure if
+you have seen that.
+
+1796
+01:25:02,290 --> 01:25:05,520
+There is a recent paper
+called a question or train
+
+1797
+01:25:05,520 --> 01:25:07,393
+test overlap paper.
+
+1798
+01:25:07,393 --> 01:25:08,685
+So that basically demonstrate--
+
+1799
+01:25:08,685 --> 01:25:09,730
+Can I just interrupt?
+
+1800
+01:25:09,730 --> 01:25:12,340
+So Natural Questions
+was a dataset
+
+1801
+01:25:12,340 --> 01:25:14,620
+that Google put out
+about a year and a half
+
+1802
+01:25:14,620 --> 01:25:17,110
+ago maybe where
+they were actually
+
+1803
+01:25:17,110 --> 01:25:21,520
+taking real questions
+from Google search logs
+
+1804
+01:25:21,520 --> 01:25:27,200
+and then trying to find answers
+for them in web documents.
+
+1805
+01:25:27,200 --> 01:25:27,760
+Sorry.
+
+1806
+01:25:27,760 --> 01:25:28,630
+Go on Danqi.
+
+1807
+01:25:28,630 --> 01:25:31,730
+
+
+1808
+01:25:31,730 --> 01:25:33,730
+Yeah, I think that
+definitely natural questions
+
+1809
+01:25:33,730 --> 01:25:36,432
+is a much better dataset because
+the questions are natural,
+
+1810
+01:25:36,432 --> 01:25:39,600
+like you're collecting
+real questions that
+
+1811
+01:25:39,600 --> 01:25:41,900
+are asked by users.
+
+1812
+01:25:41,900 --> 01:25:45,680
+So it kind of avoids this
+kind of superficial artifact
+
+1813
+01:25:45,680 --> 01:25:47,330
+between the question
+and the passage.
+
+1814
+01:25:47,330 --> 01:25:50,600
+But there's some other
+issues that people like
+
+1815
+01:25:50,600 --> 01:25:52,920
+to ask some common questions.
+
+1816
+01:25:52,920 --> 01:25:56,640
+So if you just do the remnant
+debate of the questions
+
+1817
+01:25:56,640 --> 01:25:58,340
+in your train, dev, and test.
+
+1818
+01:25:58,340 --> 01:26:00,290
+And there's a
+recent paper showing
+
+1819
+01:26:00,290 --> 01:26:03,164
+that there is actually a--
+
+1820
+01:26:03,164 --> 01:26:07,870
+it's inevitable that there is a
+high overlap between the train
+
+1821
+01:26:07,870 --> 01:26:10,045
+and dev.
+
+1822
+01:26:10,045 --> 01:26:11,420
+So if you have
+questions that you
+
+1823
+01:26:11,420 --> 01:26:15,960
+are trying to test in the
+dev set or the test set that
+
+1824
+01:26:15,960 --> 01:26:18,592
+has already appeared in the
+training set that is not
+
+1825
+01:26:18,592 --> 01:26:19,800
+really generalization, right?
+
+1826
+01:26:19,800 --> 01:26:23,600
+Yeah, but this is more
+on the open-domain
+
+1827
+01:26:23,600 --> 01:26:26,860
+setting not in the
+really [INAUDIBLE] here.
+
+1828
+01:26:26,860 --> 01:26:28,420
+Yeah.
+
+1829
+01:26:28,420 --> 01:26:31,080
+Do you want to ask a question?
+
+1830
+01:26:31,080 --> 01:26:31,580
+Yes.
+
+1831
+01:26:31,580 --> 01:26:35,940
+So you mentioned in the last
+part of the presentation
+
+1832
+01:26:35,940 --> 01:26:38,340
+that the reader model
+may not be necessary
+
+1833
+01:26:38,340 --> 01:26:41,220
+and you presented the
+DensePhrases which
+
+1834
+01:26:41,220 --> 01:26:43,290
+also work well on CPUs.
+
+1835
+01:26:43,290 --> 01:26:49,375
+So do we know how well it
+performs on the question
+
+1836
+01:26:49,375 --> 01:26:54,457
+and answering datasets compared
+to other models including
+
+1837
+01:26:54,457 --> 01:26:57,520
+BERT and those [INAUDIBLE]
+on computer of course.
+
+1838
+01:26:57,520 --> 01:26:58,020
+Yeah.
+
+1839
+01:26:58,020 --> 01:27:00,185
+I just encourage you to
+check out this paper.
+
+1840
+01:27:00,185 --> 01:27:06,080
+So this model basically performs
+on par with the dense passage
+
+1841
+01:27:06,080 --> 01:27:07,050
+retrieval model.
+
+1842
+01:27:07,050 --> 01:27:11,205
+So its performance on par
+with all the retrieval
+
+1843
+01:27:11,205 --> 01:27:12,600
+reader models.
+
+1844
+01:27:12,600 --> 01:27:14,480
+But it is actually--
+
+1845
+01:27:14,480 --> 01:27:16,403
+so I skipped one slide.
+
+1846
+01:27:16,403 --> 01:27:17,820
+So right now, the
+state of the art
+
+1847
+01:27:17,820 --> 01:27:21,540
+is actually dominated by this
+kind of dense passage retrieval
+
+1848
+01:27:21,540 --> 01:27:25,110
+plus the generative model.
+
+1849
+01:27:25,110 --> 01:27:28,320
+So using a T5 model has
+a better data retrieval.
+
+1850
+01:27:28,320 --> 01:27:30,210
+This actually
+performed really well.
+
+1851
+01:27:30,210 --> 01:27:33,060
+So I will just say dense
+phrases work basically
+
+1852
+01:27:33,060 --> 01:27:35,040
+similar in this block.
+
+1853
+01:27:35,040 --> 01:27:37,050
+But compared to this
+generative model,
+
+1854
+01:27:37,050 --> 01:27:39,980
+we're still a few
+points behind, yeah.
+
+1855
+01:27:39,980 --> 01:27:40,480
+OK.
+
+1856
+01:27:40,480 --> 01:27:45,010
+And what is kind
+of the intuition
+
+1857
+01:27:45,010 --> 01:27:48,610
+behind the dense phrases
+apart from the answers
+
+1858
+01:27:48,610 --> 01:27:51,070
+will probably be
+in close proximity?
+
+1859
+01:27:51,070 --> 01:27:57,070
+And what if the datasets has
+answers to a specific question
+
+1860
+01:27:57,070 --> 01:28:02,060
+like very far from the
+actual information?
+
+1861
+01:28:02,060 --> 01:28:04,700
+
+
+1862
+01:28:04,700 --> 01:28:07,202
+Say, the answers
+to your question
+
+1863
+01:28:07,202 --> 01:28:11,030
+may not resided
+in close proximity
+
+1864
+01:28:11,030 --> 01:28:14,790
+to the words in the question.
+
+1865
+01:28:14,790 --> 01:28:18,187
+So let me just clarify this.
+
+1866
+01:28:18,187 --> 01:28:19,770
+OK, the goal of this
+project is trying
+
+1867
+01:28:19,770 --> 01:28:24,920
+to ingest all the
+phrases in the Wikipedia.
+
+1868
+01:28:24,920 --> 01:28:28,620
+So these conversations
+are built using
+
+1869
+01:28:28,620 --> 01:28:31,490
+the training set of the
+question answering datasets.
+
+1870
+01:28:31,490 --> 01:28:34,970
+So the assumption is still
+that the distribution
+
+1871
+01:28:34,970 --> 01:28:36,950
+of the examples in
+the dev and test set
+
+1872
+01:28:36,950 --> 01:28:40,978
+would be similar to the
+training set for sure.
+
+1873
+01:28:40,978 --> 01:28:42,270
+Does this answer your question?
+
+1874
+01:28:42,270 --> 01:28:44,103
+So basically, we're
+still trying to consider
+
+1875
+01:28:44,103 --> 01:28:45,610
+all the phrases in Wikipedia.
+
+1876
+01:28:45,610 --> 01:28:47,810
+And our test now, we
+just take the question
+
+1877
+01:28:47,810 --> 01:28:50,800
+and try to compute
+the dot products.
+
+1878
+01:28:50,800 --> 01:28:54,840
+So if we use say a different
+data set that does not
+
+1879
+01:28:54,840 --> 01:28:58,020
+present the information
+using the structure presented
+
+1880
+01:28:58,020 --> 01:29:02,670
+in Wikipedias, this model
+may not work as well as.
+
+1881
+01:29:02,670 --> 01:29:05,430
+
+
+1882
+01:29:05,430 --> 01:29:08,080
+What do you mean by
+structure represent?
+
+1883
+01:29:08,080 --> 01:29:15,520
+So say if we lean more towards
+structures like the passages
+
+1884
+01:29:15,520 --> 01:29:18,100
+we see in standardized
+tests where
+
+1885
+01:29:18,100 --> 01:29:24,430
+the answers to the
+question may not
+
+1886
+01:29:24,430 --> 01:29:28,090
+be in close proximity to
+where the information was
+
+1887
+01:29:28,090 --> 01:29:31,640
+first introduced.
+
+1888
+01:29:31,640 --> 01:29:34,280
+Oh, so the answer doesn't have
+to be seen in the training set.
+
+1889
+01:29:34,280 --> 01:29:37,250
+So basically, the goal is
+to take the training set,
+
+1890
+01:29:37,250 --> 01:29:39,620
+train and encode
+them for the phrases.
+
+1891
+01:29:39,620 --> 01:29:42,500
+And by using end to end,
+we apply this encoder
+
+1892
+01:29:42,500 --> 01:29:48,850
+to all the phrases, like 60
+billion phrases in this region.
+
+1893
+01:29:48,850 --> 01:29:51,260
+So the model is definitely
+able to generalize
+
+1894
+01:29:51,260 --> 01:29:54,960
+from the training set to all
+the phrases in Wikipedia.
+
+1895
+01:29:54,960 --> 01:29:57,882
+So it doesn't have to
+have seen the phrase then.
+
+1896
+01:29:57,882 --> 01:29:59,090
+Is this what you were asking?
+
+1897
+01:29:59,090 --> 01:30:04,580
+
+
+1898
+01:30:04,580 --> 01:30:05,080
+I see, OK.
+
+1899
+01:30:05,080 --> 01:30:10,210
+
+
+1900
+01:30:10,210 --> 01:30:12,840
+So it's actually similar to the
+retrieval or the dense passage
+
+1901
+01:30:12,840 --> 01:30:13,680
+retrieval.
+
+1902
+01:30:13,680 --> 01:30:17,945
+So you still try to train
+on passage representation,
+
+1903
+01:30:17,945 --> 01:30:20,320
+here is the phrase
+representation.
+
+1904
+01:30:20,320 --> 01:30:22,840
+But the representation
+is only using
+
+1905
+01:30:22,840 --> 01:30:26,900
+the training set of the
+question answering datasets.
+
+1906
+01:30:26,900 --> 01:30:29,030
+But by taking the
+encoder and then
+
+1907
+01:30:29,030 --> 01:30:32,438
+we are going to encode
+all the representation,
+
+1908
+01:30:32,438 --> 01:30:34,520
+all the passages of
+phrases in Wikipedia.
+
+1909
+01:30:34,520 --> 01:30:37,760
+And then we can use text
+as the representation,
+
+1910
+01:30:37,760 --> 01:30:40,950
+can actually generalize well
+for the unseen questions.
+
+1911
+01:30:40,950 --> 01:30:41,450
+Yeah.
+
+1912
+01:30:41,450 --> 01:30:44,070
+
+
+1913
+01:30:44,070 --> 01:30:48,030
+So the question is what if
+the nearest neighbor search
+
+1914
+01:30:48,030 --> 01:30:49,230
+doesn't return the answer?
+
+1915
+01:30:49,230 --> 01:30:52,700
+
+
+1916
+01:30:52,700 --> 01:30:54,450
+So why do you think
+the nearest neighbor--
+
+1917
+01:30:54,450 --> 01:30:56,590
+I mean, you always can
+find something, right?
+
+1918
+01:30:56,590 --> 01:31:00,070
+The question is that whether
+it's close enough or not.
+
+1919
+01:31:00,070 --> 01:31:00,570
+Yes.
+
+1920
+01:31:00,570 --> 01:31:03,090
+So the question is
+what if in the datasets
+
+1921
+01:31:03,090 --> 01:31:05,340
+that the answer is
+not close enough?
+
+1922
+01:31:05,340 --> 01:31:08,612
+
+
+1923
+01:31:08,612 --> 01:31:09,820
+Yeah, that's a good question.
+
+1924
+01:31:09,820 --> 01:31:10,930
+I don't know.
+
+1925
+01:31:10,930 --> 01:31:13,150
+If you really come up with
+something that is really
+
+1926
+01:31:13,150 --> 01:31:15,910
+very far away from
+all the questions
+
+1927
+01:31:15,910 --> 01:31:17,952
+that we have been seeing
+in the training set,
+
+1928
+01:31:17,952 --> 01:31:18,910
+that could be possible.
+
+1929
+01:31:18,910 --> 01:31:21,370
+I don't know.
+
+1930
+01:31:21,370 --> 01:31:28,010
+Basically it depend on how
+the text are formatted.
+
+1931
+01:31:28,010 --> 01:31:30,640
+The nearest neighbor
+search may not
+
+1932
+01:31:30,640 --> 01:31:33,740
+work as well as other models.
+
+1933
+01:31:33,740 --> 01:31:36,460
+So again, the question
+the representation
+
+1934
+01:31:36,460 --> 01:31:40,540
+also returns the final
+question encoder.
+
+1935
+01:31:40,540 --> 01:31:42,820
+So the question is whether
+this question encoder
+
+1936
+01:31:42,820 --> 01:31:45,175
+can give you something
+reasonable in that space
+
+1937
+01:31:45,175 --> 01:31:47,080
+or not.
+
+1938
+01:31:47,080 --> 01:31:48,580
+But I don't know.
+
+1939
+01:31:48,580 --> 01:31:50,740
+So we have been testing
+a lot with a random--
+
+1940
+01:31:50,740 --> 01:31:53,650
+even the input
+sentences or even--
+
+1941
+01:31:53,650 --> 01:31:55,660
+the question doesn't have
+to be a real question.
+
+1942
+01:31:55,660 --> 01:31:56,890
+It could be a sentence.
+
+1943
+01:31:56,890 --> 01:32:00,630
+It doesn't seem to be
+a problem so far, yeah.
+
+1944
+01:32:00,630 --> 01:32:03,072
+Maybe we should give a
+couple of other people a go.
+
+1945
+01:32:03,072 --> 01:32:05,030
+And you're allowed to
+turn your camera on while
+
+1946
+01:32:05,030 --> 01:32:07,470
+asking a question if you want.
+
+1947
+01:32:07,470 --> 01:32:08,770
+So next person is [AUDIO OUT].
+
+1948
+01:32:08,770 --> 01:32:13,090
+
+
+1949
+01:32:13,090 --> 01:32:13,760
+All right.
+
+1950
+01:32:13,760 --> 01:32:14,500
+Hi.
+
+1951
+01:32:14,500 --> 01:32:17,070
+Thank you for taking
+the time to teach this.
+
+1952
+01:32:17,070 --> 01:32:18,310
+My question is kind of quick.
+
+1953
+01:32:18,310 --> 01:32:20,260
+So you mentioned
+work, they brought up
+
+1954
+01:32:20,260 --> 01:32:22,690
+a set of relatively
+simple questions
+
+1955
+01:32:22,690 --> 01:32:26,210
+that show how brittle or poor
+the current models can be,
+
+1956
+01:32:26,210 --> 01:32:27,970
+right?
+
+1957
+01:32:27,970 --> 01:32:31,300
+I'm curious if that--
+
+1958
+01:32:31,300 --> 01:32:33,610
+yeah, exactly.
+
+1959
+01:32:33,610 --> 01:32:35,620
+Did that kind of
+change the community
+
+1960
+01:32:35,620 --> 01:32:39,310
+to improve how to
+evaluate the models?
+
+1961
+01:32:39,310 --> 01:32:42,470
+Because they're actually doing
+pretty poorly on some of those,
+
+1962
+01:32:42,470 --> 01:32:44,130
+right?
+
+1963
+01:32:44,130 --> 01:32:44,630
+Yes.
+
+1964
+01:32:44,630 --> 01:32:49,820
+So first these questions
+are simple in terms of the--
+
+1965
+01:32:49,820 --> 01:32:53,140
+the wording is very simple,
+the template is very simple.
+
+1966
+01:32:53,140 --> 01:32:55,120
+But they're still trying
+to test a mutation
+
+1967
+01:32:55,120 --> 01:32:57,440
+or temporal or
+relational reference.
+
+1968
+01:32:57,440 --> 01:32:58,730
+So the questions are not--
+
+1969
+01:32:58,730 --> 01:33:00,835
+I mean, in terms of the
+reasoning of the capacity,
+
+1970
+01:33:00,835 --> 01:33:03,460
+it's not that simple, it's just
+the wording that's very simple.
+
+1971
+01:33:03,460 --> 01:33:06,300
+
+
+1972
+01:33:06,300 --> 01:33:06,800
+OK.
+
+1973
+01:33:06,800 --> 01:33:09,008
+So this paper definitely
+received a lot of attention,
+
+1974
+01:33:09,008 --> 01:33:13,550
+it was the best paper last year
+at the [INAUDIBLE] conference.
+
+1975
+01:33:13,550 --> 01:33:16,780
+So I think a lot of people are
+trying to solve the problem.
+
+1976
+01:33:16,780 --> 01:33:20,140
+I cannot tell you that whether
+we really have a solution
+
+1977
+01:33:20,140 --> 01:33:23,890
+for this yet or not, yeah.
+
+1978
+01:33:23,890 --> 01:33:26,410
+Cool, yeah, thank you
+for bringing this one up.
+
+1979
+01:33:26,410 --> 01:33:28,150
+It's really interesting.
+
+1980
+01:33:28,150 --> 01:33:28,650
+OK.
+
+1981
+01:33:28,650 --> 01:33:29,280
+Next is--
+
+1982
+01:33:29,280 --> 01:33:32,070
+
+
+1983
+01:33:32,070 --> 01:33:33,760
+Hi, thanks for taking the time.
+
+1984
+01:33:33,760 --> 01:33:36,630
+So my question is
+kind of non-relevant,
+
+1985
+01:33:36,630 --> 01:33:40,560
+but like computer robust
+system of question answering.
+
+1986
+01:33:40,560 --> 01:33:44,280
+In what extent can in
+context learning help models
+
+1987
+01:33:44,280 --> 01:33:48,948
+to be more robust with
+respect to different domains?
+
+1988
+01:33:48,948 --> 01:33:54,300
+Can you tell me what
+you mean by in context?
+
+1989
+01:33:54,300 --> 01:33:59,880
+So like basically you provide
+the template generated by BERT.
+
+1990
+01:33:59,880 --> 01:34:03,060
+And then instead of
+directly predicting
+
+1991
+01:34:03,060 --> 01:34:06,090
+the classes of text
+classifications,
+
+1992
+01:34:06,090 --> 01:34:10,980
+you just use some word
+to represent that class
+
+1993
+01:34:10,980 --> 01:34:12,886
+or predict the wordings there.
+
+1994
+01:34:12,886 --> 01:34:15,640
+
+
+1995
+01:34:15,640 --> 01:34:17,990
+OK.
+
+1996
+01:34:17,990 --> 01:34:19,972
+So I assume that
+you are actually
+
+1997
+01:34:19,972 --> 01:34:23,150
+referring to the in context
+learning in logic history
+
+1998
+01:34:23,150 --> 01:34:24,209
+or something like that.
+
+1999
+01:34:24,209 --> 01:34:29,150
+OK, actually, I have been
+through this something related
+
+2000
+01:34:29,150 --> 01:34:31,485
+to that recently.
+
+2001
+01:34:31,485 --> 01:34:33,110
+But I'm not sure of
+how we can actually
+
+2002
+01:34:33,110 --> 01:34:36,680
+use in context learning
+in everything for SQuAD
+
+2003
+01:34:36,680 --> 01:34:37,720
+type of model problems.
+
+2004
+01:34:37,720 --> 01:34:40,570
+
+
+2005
+01:34:40,570 --> 01:34:44,570
+Yeah, so I don't know if that is
+still done, robustness or not.
+
+2006
+01:34:44,570 --> 01:34:47,760
+I even [INAUDIBLE] used that
+technique for all the question
+
+2007
+01:34:47,760 --> 01:34:49,100
+answering use.
+
+2008
+01:34:49,100 --> 01:34:49,755
+I see, I see.
+
+2009
+01:34:49,755 --> 01:34:50,255
+Thanks.
+
+2010
+01:34:50,255 --> 01:34:53,840
+And the you also mentioned
+that we can train a retriever
+
+2011
+01:34:53,840 --> 01:34:54,875
+without a reader.
+
+2012
+01:34:54,875 --> 01:35:00,700
+So is there a paper about that
+current attempt to do that?
+
+2013
+01:35:00,700 --> 01:35:01,200
+Yeah.
+
+2014
+01:35:01,200 --> 01:35:04,395
+The paper is already
+out so, yeah.
+
+2015
+01:35:04,395 --> 01:35:04,895
+OK.
+
+2016
+01:35:04,895 --> 01:35:08,150
+
+
+2017
+01:35:08,150 --> 01:35:09,990
+Thanks a lot.
+
+2018
+01:35:09,990 --> 01:35:10,490
+OK.
+
+2019
+01:35:10,490 --> 01:35:13,470
+Next is--
+
+2020
+01:35:13,470 --> 01:35:15,020
+Hey, how is it going?
+
+2021
+01:35:15,020 --> 01:35:17,400
+Thanks so much for the lecture.
+
+2022
+01:35:17,400 --> 01:35:24,560
+A bit of a broader question
+sort of about the future of NLP.
+
+2023
+01:35:24,560 --> 01:35:28,420
+Do you think that in order
+to solve NLP in the sense
+
+2024
+01:35:28,420 --> 01:35:33,890
+that you can perform on par
+with humans on all NLP tasks
+
+2025
+01:35:33,890 --> 01:35:37,483
+it's sufficient to only
+interact with text data?
+
+2026
+01:35:37,483 --> 01:35:42,140
+Or do you think we'll eventually
+need the sort of experiences
+
+2027
+01:35:42,140 --> 01:35:46,530
+and common sense that you get
+only from seeing and viewing
+
+2028
+01:35:46,530 --> 01:35:48,500
+the world and having
+a set of interactions
+
+2029
+01:35:48,500 --> 01:35:49,820
+that we as humans have?
+
+2030
+01:35:49,820 --> 01:35:52,200
+
+
+2031
+01:35:52,200 --> 01:35:52,700
+Yeah.
+
+2032
+01:35:52,700 --> 01:35:55,800
+I mean, common sense is a very
+difficult-- even in the context
+
+2033
+01:35:55,800 --> 01:36:00,670
+question answering, common
+sense is a very important topic
+
+2034
+01:36:00,670 --> 01:36:05,740
+that I think still
+remains unresolved.
+
+2035
+01:36:05,740 --> 01:36:08,630
+For that part, the
+answer is definitely yes.
+
+2036
+01:36:08,630 --> 01:36:12,907
+And I also want to mention that
+OK, so for a lot of the reading
+
+2037
+01:36:12,907 --> 01:36:15,240
+comprehension data sets or
+question answering data sets,
+
+2038
+01:36:15,240 --> 01:36:18,795
+you have seen that all
+we QR start to achieve
+
+2039
+01:36:18,795 --> 01:36:20,260
+the human performance.
+
+2040
+01:36:20,260 --> 01:36:25,230
+But we also see how critical
+these systems are because they
+
+2041
+01:36:25,230 --> 01:36:27,780
+cannot really generalize
+or solve the easy problems.
+
+2042
+01:36:27,780 --> 01:36:29,540
+So all these things
+need to be resolved.
+
+2043
+01:36:29,540 --> 01:36:32,514
+
+
+2044
+01:36:32,514 --> 01:36:35,990
+Do you think that the current
+sort of benchmark data sets are
+
+2045
+01:36:35,990 --> 01:36:39,269
+maybe a little bit too easy for-
+
+2046
+01:36:39,269 --> 01:36:41,265
+[INTERPOSING VOICES]
+
+2047
+01:36:41,265 --> 01:36:43,530
+Or just like that.
+
+2048
+01:36:43,530 --> 01:36:44,030
+Yeah.
+
+2049
+01:36:44,030 --> 01:36:47,960
+One final thought is that having
+a lot of transversely trying
+
+2050
+01:36:47,960 --> 01:36:52,130
+to have a lot of humans in
+the loop of the frameworks
+
+2051
+01:36:52,130 --> 01:36:54,020
+to evaluate these
+kind of systems.
+
+2052
+01:36:54,020 --> 01:36:56,480
+Just try to break
+the current system,
+
+2053
+01:36:56,480 --> 01:37:00,260
+come up with some
+harder questions.
+
+2054
+01:37:00,260 --> 01:37:02,810
+So yeah, that means maybe
+the current static data sets
+
+2055
+01:37:02,810 --> 01:37:05,420
+are not good enough to
+measure the progress.
+
+2056
+01:37:05,420 --> 01:37:08,210
+So we actually really need
+some kind of dynamic evaluation
+
+2057
+01:37:08,210 --> 01:37:13,130
+and also introduce more just
+kind of adverse examples,
+
+2058
+01:37:13,130 --> 01:37:15,356
+harder questions also,
+things like that, yeah.
+
+2059
+01:37:15,356 --> 01:37:20,160
+Are you still game for
+a couple more questions?
+
+2060
+01:37:20,160 --> 01:37:20,660
+Sure.
+
+2061
+01:37:20,660 --> 01:37:26,210
+I did want to mention it is
+9:10 PM on the East Coast.
+
+2062
+01:37:26,210 --> 01:37:27,440
+OK.
+
+2063
+01:37:27,440 --> 01:37:30,770
+So next is--
+
+2064
+01:37:30,770 --> 01:37:31,270
+Hi.
+
+2065
+01:37:31,270 --> 01:37:33,670
+Thanks so much for the lecture.
+
+2066
+01:37:33,670 --> 01:37:38,800
+So in 2020, there was this
+efficient open-domain question
+
+2067
+01:37:38,800 --> 01:37:40,790
+answering challenge.
+
+2068
+01:37:40,790 --> 01:37:45,040
+And from performance
+it seemed like there
+
+2069
+01:37:45,040 --> 01:37:50,230
+was quite substantial decrease
+versus human accuracy.
+
+2070
+01:37:50,230 --> 01:37:56,053
+Probably primarily due to
+the quantization and drift
+
+2071
+01:37:56,053 --> 01:38:00,370
+that occurred when
+they were quantizing.
+
+2072
+01:38:00,370 --> 01:38:04,090
+So I recently
+encountered this paper
+
+2073
+01:38:04,090 --> 01:38:10,270
+called Learnable Quantizers,
+which essentially learns
+
+2074
+01:38:10,270 --> 01:38:13,150
+baseless representation
+for the quantizers
+
+2075
+01:38:13,150 --> 01:38:17,230
+jointly with the
+leads of the network.
+
+2076
+01:38:17,230 --> 01:38:21,970
+And while this would
+be extremely effective
+
+2077
+01:38:21,970 --> 01:38:24,363
+if you were to just like,
+say, train from scratch,
+
+2078
+01:38:24,363 --> 01:38:25,780
+I was just sort
+of curious, do you
+
+2079
+01:38:25,780 --> 01:38:31,860
+think there is some way to do
+this say a pre-trained BERT
+
+2080
+01:38:31,860 --> 01:38:33,740
+model or something like that?
+
+2081
+01:38:33,740 --> 01:38:36,850
+I had a few ideas with like
+beam search for instance,
+
+2082
+01:38:36,850 --> 01:38:41,210
+but I don't see a very
+clear way of doing that.
+
+2083
+01:38:41,210 --> 01:38:44,210
+
+
+2084
+01:38:44,210 --> 01:38:45,020
+Yeah.
+
+2085
+01:38:45,020 --> 01:38:48,105
+I don't think I'm really an
+expert to answer that question.
+
+2086
+01:38:48,105 --> 01:38:51,763
+Yeah, I'm not sure if I
+really have the answer,
+
+2087
+01:38:51,763 --> 01:38:53,180
+but I also want
+to quickly mention
+
+2088
+01:38:53,180 --> 01:38:55,280
+that quantization
+has been definitely
+
+2089
+01:38:55,280 --> 01:38:58,100
+a very useful technique
+to make the model smaller.
+
+2090
+01:38:58,100 --> 01:39:00,920
+So we have been also
+exploring the quantization
+
+2091
+01:39:00,920 --> 01:39:07,637
+in the DensePhrases project
+recently because the storage
+
+2092
+01:39:07,637 --> 01:39:08,720
+has been still very large.
+
+2093
+01:39:08,720 --> 01:39:13,190
+So we actually have been
+trying to reduce that storage.
+
+2094
+01:39:13,190 --> 01:39:15,532
+Yeah, I'm not sure
+about the question
+
+2095
+01:39:15,532 --> 01:39:17,240
+about the connection
+between quantization
+
+2096
+01:39:17,240 --> 01:39:19,220
+and also pre-training.
+
+2097
+01:39:19,220 --> 01:39:20,323
+I'm not sure.
+
+2098
+01:39:20,323 --> 01:39:22,490
+Yeah, I'm not sure I have
+an answer to that for you.
+
+2099
+01:39:22,490 --> 01:39:23,296
+Sorry.
+
+2100
+01:39:23,296 --> 01:39:24,128
+Thank you.
+
+2101
+01:39:24,128 --> 01:39:25,190
+Thanks.
+
+2102
+01:39:25,190 --> 01:39:28,020
+Danqi is too modest
+to mention that she
+
+2103
+01:39:28,020 --> 01:39:33,390
+was one of the co-organizers
+of the EfficientQA task.
+
+2104
+01:39:33,390 --> 01:39:33,890
+OK.
+
+2105
+01:39:33,890 --> 01:39:35,000
+Next question is--
+
+2106
+01:39:35,000 --> 01:39:40,200
+
+
+2107
+01:39:40,200 --> 01:39:40,830
+Hi Danqi.
+
+2108
+01:39:40,830 --> 01:39:43,330
+Thanks so much for
+being here today.
+
+2109
+01:39:43,330 --> 01:39:46,570
+So my question is
+a bit different.
+
+2110
+01:39:46,570 --> 01:39:48,780
+So one example you gave
+that caught my attention
+
+2111
+01:39:48,780 --> 01:39:52,397
+with this Alex Victoria
+example in the checklist.
+
+2112
+01:39:52,397 --> 01:39:54,897
+And I was thinking technically
+Alex wasn't the wrong answer,
+
+2113
+01:39:54,897 --> 01:39:55,620
+right?
+
+2114
+01:39:55,620 --> 01:39:57,210
+It's gender neutral
+and there wasn't
+
+2115
+01:39:57,210 --> 01:40:00,960
+enough context in the
+question to determine
+
+2116
+01:40:00,960 --> 01:40:02,530
+who it's referring to.
+
+2117
+01:40:02,530 --> 01:40:05,070
+So my question is how
+concerned should we
+
+2118
+01:40:05,070 --> 01:40:10,500
+be about potential encoding
+sort of biases into these record
+
+2119
+01:40:10,500 --> 01:40:13,560
+labels or how we
+evaluate them, or is that
+
+2120
+01:40:13,560 --> 01:40:16,730
+just more of a concern for
+more open ended questions?
+
+2121
+01:40:16,730 --> 01:40:19,980
+
+
+2122
+01:40:19,980 --> 01:40:21,710
+Yeah, this is definitely
+very important.
+
+2123
+01:40:21,710 --> 01:40:23,660
+Again, a lot of
+people are trying
+
+2124
+01:40:23,660 --> 01:40:27,110
+to study, OK, how much bias has
+been encoded in these models
+
+2125
+01:40:27,110 --> 01:40:31,340
+and how we can--
+yeah, I'm not sure I
+
+2126
+01:40:31,340 --> 01:40:34,400
+have a good answer to that.
+
+2127
+01:40:34,400 --> 01:40:36,630
+Again, I just want
+to say some people do
+
+2128
+01:40:36,630 --> 01:40:38,630
+a de-biasing of the
+pre-trained language models,
+
+2129
+01:40:38,630 --> 01:40:40,500
+all these things
+are very important.
+
+2130
+01:40:40,500 --> 01:40:43,260
+
+
+2131
+01:40:43,260 --> 01:40:45,760
+And this is just one-- so you're
+talking about this example,
+
+2132
+01:40:45,760 --> 01:40:46,260
+right?
+
+2133
+01:40:46,260 --> 01:40:47,760
+So this is just one test case.
+
+2134
+01:40:47,760 --> 01:40:51,810
+
+
+2135
+01:40:51,810 --> 01:40:53,732
+Yeah, I don't know, yeah.
+
+2136
+01:40:53,732 --> 01:40:56,190
+Right, so yeah, I guess I'm
+just a little worried about who
+
+2137
+01:40:56,190 --> 01:40:57,635
+comes up with the test cases?
+
+2138
+01:40:57,635 --> 01:40:59,760
+Who determines what the
+right answer is, thank you.
+
+2139
+01:40:59,760 --> 01:41:02,630
+
+
+2140
+01:41:02,630 --> 01:41:06,690
+I mean, we will have more
+discussion of toxicity and bias
+
+2141
+01:41:06,690 --> 01:41:10,290
+coming up very soon, including
+actually Thursday's lecture
+
+2142
+01:41:10,290 --> 01:41:14,890
+as well as a later lecture, not
+specifically about QA though.
+
+2143
+01:41:14,890 --> 01:41:15,390
+OK.
+
+2144
+01:41:15,390 --> 01:41:16,500
+Next person is--
+
+2145
+01:41:16,500 --> 01:41:19,940
+
+
+2146
+01:41:19,940 --> 01:41:22,750
+Thank you for the lecture.
+
+2147
+01:41:22,750 --> 01:41:25,548
+Yeah, my question is also
+related to the open domain
+
+2148
+01:41:25,548 --> 01:41:26,340
+question answering.
+
+2149
+01:41:26,340 --> 01:41:36,030
+So I was just wondering how much
+of the learning side of domain
+
+2150
+01:41:36,030 --> 01:41:41,280
+sort of generalization or
+domain alignment techniques
+
+2151
+01:41:41,280 --> 01:41:48,970
+can be combined with language
+level, like question answering.
+
+2152
+01:41:48,970 --> 01:41:50,980
+Like to what extent
+would they work,
+
+2153
+01:41:50,980 --> 01:41:55,030
+and what kind of
+language specific design
+
+2154
+01:41:55,030 --> 01:42:00,280
+should you leverage to combine
+with those to sort of like--
+
+2155
+01:42:00,280 --> 01:42:02,530
+if we want like
+higher performance
+
+2156
+01:42:02,530 --> 01:42:05,345
+and stuff like that?
+
+2157
+01:42:05,345 --> 01:42:06,970
+Is the question about
+how to generalize
+
+2158
+01:42:06,970 --> 01:42:11,260
+between different domains about
+how to design open domain QA
+
+2159
+01:42:11,260 --> 01:42:12,770
+system for different languages?
+
+2160
+01:42:12,770 --> 01:42:14,790
+I'm not sure I get that.
+
+2161
+01:42:14,790 --> 01:42:15,290
+Sorry.
+
+2162
+01:42:15,290 --> 01:42:17,250
+Just wondering.
+
+2163
+01:42:17,250 --> 01:42:24,820
+So there is some very specific
+designs like domain server
+
+2164
+01:42:24,820 --> 01:42:30,580
+alignments and efficient level
+disentanglement techniques
+
+2165
+01:42:30,580 --> 01:42:37,600
+that has shown some interesting
+performance on other tasks.
+
+2166
+01:42:37,600 --> 01:42:43,210
+And I saw recently some people
+also leveraged similar things
+
+2167
+01:42:43,210 --> 01:42:44,920
+for question answering.
+
+2168
+01:42:44,920 --> 01:42:50,260
+So I was just wondering to what
+extent these kind of techniques
+
+2169
+01:42:50,260 --> 01:42:54,640
+can work on one
+group of tasks, not
+
+2170
+01:42:54,640 --> 01:42:56,140
+just limited to
+question answering,
+
+2171
+01:42:56,140 --> 01:43:00,470
+but mainly question answering.
+
+2172
+01:43:00,470 --> 01:43:01,370
+Sorry.
+
+2173
+01:43:01,370 --> 01:43:02,780
+Which work are
+you talking about?
+
+2174
+01:43:02,780 --> 01:43:04,490
+I'm still not sure.
+
+2175
+01:43:04,490 --> 01:43:07,070
+What do you mean by disentangled
+solutions or question
+
+2176
+01:43:07,070 --> 01:43:07,670
+answering.
+
+2177
+01:43:07,670 --> 01:43:11,270
+
+
+2178
+01:43:11,270 --> 01:43:14,670
+This is a little bit
+more specific for--
+
+2179
+01:43:14,670 --> 01:43:20,570
+so there's a paper
+called domain--
+
+2180
+01:43:20,570 --> 01:43:22,710
+I forgot the exact name.
+
+2181
+01:43:22,710 --> 01:43:27,262
+It's sort of adversarially
+aligned to domains
+
+2182
+01:43:27,262 --> 01:43:29,046
+by disentangling--
+
+2183
+01:43:29,046 --> 01:43:29,730
+[INAUDIBLE]
+
+2184
+01:43:29,730 --> 01:43:30,230
+Got it.
+
+2185
+01:43:30,230 --> 01:43:35,210
+
+
+2186
+01:43:35,210 --> 01:43:36,127
+OK.
+
+2187
+01:43:36,127 --> 01:43:38,460
+I just want to be sure that
+we are all on the same page.
+
+2188
+01:43:38,460 --> 01:43:40,497
+So I have seem some
+work sort of trying
+
+2189
+01:43:40,497 --> 01:43:42,580
+to learn some kind of
+disentangled representations
+
+2190
+01:43:42,580 --> 01:43:46,160
+that can better generalize
+to the different domains
+
+2191
+01:43:46,160 --> 01:43:47,750
+on adversarial examples.
+
+2192
+01:43:47,750 --> 01:43:49,088
+Is this what you're saying?
+
+2193
+01:43:49,088 --> 01:43:50,840
+Yeah, yeah.
+
+2194
+01:43:50,840 --> 01:43:52,670
+And the question is
+whether this technique
+
+2195
+01:43:52,670 --> 01:43:57,780
+can be generally applied
+to question answering or?
+
+2196
+01:43:57,780 --> 01:44:01,790
+Yeah, I'm just wondering to
+what extent will they work.
+
+2197
+01:44:01,790 --> 01:44:06,620
+Because I think language
+has a lot of specific things
+
+2198
+01:44:06,620 --> 01:44:10,950
+like dependency and other
+sorts like these techniques
+
+2199
+01:44:10,950 --> 01:44:14,270
+does not actually take care of.
+
+2200
+01:44:14,270 --> 01:44:20,530
+
+
+2201
+01:44:20,530 --> 01:44:22,280
+Yeah, I'm not sure.
+
+2202
+01:44:22,280 --> 01:44:23,630
+I think we have to try that.
+
+2203
+01:44:23,630 --> 01:44:26,110
+But it's definitely
+an interesting point.
+
+2204
+01:44:26,110 --> 01:44:27,110
+Yeah, I don't know.
+
+2205
+01:44:27,110 --> 01:44:29,200
+At least for the work
+that I have seen so far,
+
+2206
+01:44:29,200 --> 01:44:34,240
+it all applied or operated
+at a very simple sentence
+
+2207
+01:44:34,240 --> 01:44:36,850
+classification task.
+
+2208
+01:44:36,850 --> 01:44:38,900
+Maybe that's not correct.
+
+2209
+01:44:38,900 --> 01:44:42,810
+So [INAUDIBLE] is a
+basic type of a encoder
+
+2210
+01:44:42,810 --> 01:44:45,500
+applied to a simple
+classification task
+
+2211
+01:44:45,500 --> 01:44:47,750
+and take a hidden
+representation through some kind
+
+2212
+01:44:47,750 --> 01:44:49,880
+of a transformation
+and make sure
+
+2213
+01:44:49,880 --> 01:44:53,800
+that it can learn some kind
+of envrironment features
+
+2214
+01:44:53,800 --> 01:44:56,040
+that the hidden representation
+is talking about.
+
+2215
+01:44:56,040 --> 01:44:57,160
+Right, right, yeah, cool.
+
+2216
+01:44:57,160 --> 01:44:57,930
+Cool.
+
+2217
+01:44:57,930 --> 01:44:59,780
+Fair input.
+
+2218
+01:44:59,780 --> 01:45:00,830
+Yeah, I'm not sure.
+
+2219
+01:45:00,830 --> 01:45:03,770
+I feel like QA is a
+more structured task
+
+2220
+01:45:03,770 --> 01:45:07,160
+and also handles
+longer bar sequences.
+
+2221
+01:45:07,160 --> 01:45:09,810
+
+
+2222
+01:45:09,810 --> 01:45:11,690
+Yeah, so I don't
+know if it works
+
+2223
+01:45:11,690 --> 01:45:14,560
+unless people have tried that.
+
+2224
+01:45:14,560 --> 01:45:16,190
+Thank you, thank you.
+
+2225
+01:45:16,190 --> 01:45:17,405
+OK then we've got--
+
+2226
+01:45:17,405 --> 01:45:19,405
+and maybe we should call
+this the last question.
+
+2227
+01:45:19,405 --> 01:45:22,100
+
+
+2228
+01:45:22,100 --> 01:45:25,130
+Hi, I'm just wondering what
+is the intrinsic difference
+
+2229
+01:45:25,130 --> 01:45:27,665
+between solving
+question answering
+
+2230
+01:45:27,665 --> 01:45:35,730
+with generative models like
+T5 versus encoders like BERT.
+
+2231
+01:45:35,730 --> 01:45:36,640
+OK.
+
+2232
+01:45:36,640 --> 01:45:39,420
+That's a good point.
+
+2233
+01:45:39,420 --> 01:45:41,490
+OK, so I skipped
+this slide still.
+
+2234
+01:45:41,490 --> 01:45:43,743
+Why this model works so well.
+
+2235
+01:45:43,743 --> 01:45:45,410
+The reason is, actually,
+it's not really
+
+2236
+01:45:45,410 --> 01:45:48,000
+about the extractive model
+versus generative model.
+
+2237
+01:45:48,000 --> 01:45:51,510
+The reason is that
+they [INAUDIBLE]
+
+2238
+01:45:51,510 --> 01:45:53,570
+for the extractive model.
+
+2239
+01:45:53,570 --> 01:45:57,300
+So if the retrieval returns
+like, say, 100 passages,
+
+2240
+01:45:57,300 --> 01:45:58,980
+so they have to
+extract the answer
+
+2241
+01:45:58,980 --> 01:46:01,650
+from each of the
+passages and then finally
+
+2242
+01:46:01,650 --> 01:46:04,320
+figure out which one
+has the highest score.
+
+2243
+01:46:04,320 --> 01:46:06,320
+But for the generative
+model, essentially they
+
+2244
+01:46:06,320 --> 01:46:08,280
+are trying to
+aggregate all the 100
+
+2245
+01:46:08,280 --> 01:46:10,470
+passages and the
+dense representations
+
+2246
+01:46:10,470 --> 01:46:14,320
+together and do the
+generation jointly.
+
+2247
+01:46:14,320 --> 01:46:15,522
+You understand?
+
+2248
+01:46:15,522 --> 01:46:17,730
+So essentially, you're taking
+the 100 representations
+
+2249
+01:46:17,730 --> 01:46:19,890
+together through
+the joint generation
+
+2250
+01:46:19,890 --> 01:46:21,960
+instead of only
+do the extraction
+
+2251
+01:46:21,960 --> 01:46:23,770
+from each of the passages.
+
+2252
+01:46:23,770 --> 01:46:26,440
+So I think that is actually
+the key difference.
+
+2253
+01:46:26,440 --> 01:46:27,930
+So that's why this
+generative model
+
+2254
+01:46:27,930 --> 01:46:32,199
+can do really well compared
+to the extractive models.
+
+2255
+01:46:32,199 --> 01:46:33,532
+So I also want to mention that--
+
+2256
+01:46:33,532 --> 01:46:39,240
+OK, so if you look at this
+RAG model, it's actually--
+
+2257
+01:46:39,240 --> 01:46:41,370
+compare this DPR and RAG model.
+
+2258
+01:46:41,370 --> 01:46:44,010
+So RAG model is always
+doing the generative model.
+
+2259
+01:46:44,010 --> 01:46:46,380
+But they are not doing
+this kind of aggregation.
+
+2260
+01:46:46,380 --> 01:46:48,700
+They're just trying to
+take on the single passage
+
+2261
+01:46:48,700 --> 01:46:50,640
+and then doing the generation.
+
+2262
+01:46:50,640 --> 01:46:52,710
+So the RAG model
+actually doesn't
+
+2263
+01:46:52,710 --> 01:46:54,457
+perform as well as this model.
+
+2264
+01:46:54,457 --> 01:46:56,790
+By the way, I also want to
+mention RAG model is actually
+
+2265
+01:46:56,790 --> 01:46:59,070
+not doing better than DPR
+because it's base model,
+
+2266
+01:46:59,070 --> 01:47:00,390
+this is large model.
+
+2267
+01:47:00,390 --> 01:47:03,490
+So these numbers are a
+little bit confusing.
+
+2268
+01:47:03,490 --> 01:47:05,430
+So it's actually
+basically really on par.
+
+2269
+01:47:05,430 --> 01:47:07,950
+Their base perform similarity.
+
+2270
+01:47:07,950 --> 01:47:10,500
+So the key difference
+between the generative model
+
+2271
+01:47:10,500 --> 01:47:12,960
+and the extractive model is
+that for generative models,
+
+2272
+01:47:12,960 --> 01:47:16,530
+you can actually leverage more
+input passage together and do
+
+2273
+01:47:16,530 --> 01:47:20,260
+the generation.
+
+2274
+01:47:20,260 --> 01:47:23,020
+Is that clear or not?
+
+2275
+01:47:23,020 --> 01:47:25,400
+Yes.
+
+2276
+01:47:25,400 --> 01:47:27,130
+Thanks.
+
+2277
+01:47:27,130 --> 01:47:29,650
+Yeah, otherwise, you should
+just check out this paper here.
+
+2278
+01:47:29,650 --> 01:47:31,067
+So this paper
+actually explains it
+
+2279
+01:47:31,067 --> 01:47:33,272
+pretty well why this
+model works better
+
+2280
+01:47:33,272 --> 01:47:34,730
+than the previous
+generative model.
+
+2281
+01:47:34,730 --> 01:47:37,240
+
+
+2282
+01:47:37,240 --> 01:47:43,270
+So are these generative
+models do a simple question
+
+2283
+01:47:43,270 --> 01:47:47,400
+answering over documents and
+where there is span prediction,
+
+2284
+01:47:47,400 --> 01:47:50,627
+can you use generative
+models to generate the span?
+
+2285
+01:47:50,627 --> 01:47:54,030
+
+
+2286
+01:47:54,030 --> 01:47:54,590
+You can.
+
+2287
+01:47:54,590 --> 01:47:55,090
+Yeah.
+
+2288
+01:47:55,090 --> 01:47:58,360
+You can definitely do that.
+
+2289
+01:47:58,360 --> 01:48:00,470
+So you are talking
+about this T5 model.
+
+2290
+01:48:00,470 --> 01:48:01,370
+Yeah.
+
+2291
+01:48:01,370 --> 01:48:05,950
+So I'm just wondering
+about if you use encoders,
+
+2292
+01:48:05,950 --> 01:48:08,620
+it's like you're
+finding similarities
+
+2293
+01:48:08,620 --> 01:48:10,330
+between the encodings.
+
+2294
+01:48:10,330 --> 01:48:12,750
+And then generative
+models are you're
+
+2295
+01:48:12,750 --> 01:48:17,410
+remembering the whole
+question and you
+
+2296
+01:48:17,410 --> 01:48:25,750
+try to retrieve the memory
+when you answer the question.
+
+2297
+01:48:25,750 --> 01:48:26,250
+OK.
+
+2298
+01:48:26,250 --> 01:48:29,813
+So for this model, there
+isn't any retrieval.
+
+2299
+01:48:29,813 --> 01:48:31,980
+So you can always find the
+answer from the question,
+
+2300
+01:48:31,980 --> 01:48:32,960
+right?
+
+2301
+01:48:32,960 --> 01:48:34,870
+So this model really
+has you relying
+
+2302
+01:48:34,870 --> 01:48:38,610
+on all the parameters you
+memorized, all the information.
+
+2303
+01:48:38,610 --> 01:48:40,340
+So by just taking
+this input, it has
+
+2304
+01:48:40,340 --> 01:48:44,430
+to just rely on the parameters
+to infer this answer.
+
+2305
+01:48:44,430 --> 01:48:46,230
+So it's actually very hard to--
+
+2306
+01:48:46,230 --> 01:48:50,070
+yeah, it's a definite
+balance between memory
+
+2307
+01:48:50,070 --> 01:48:52,260
+and the generalization
+from it, yeah.
+
+2308
+01:48:52,260 --> 01:48:52,900
+I see.
+
+2309
+01:48:52,900 --> 01:48:58,110
+So I'm just going
+to say what I--
+
+2310
+01:48:58,110 --> 01:49:02,460
+like when you bar this question,
+it's embedding in some space.
+
+2311
+01:49:02,460 --> 01:49:06,210
+And using that
+embedding, the generator
+
+2312
+01:49:06,210 --> 01:49:10,500
+matches that with [INAUDIBLE].
+
+2313
+01:49:10,500 --> 01:49:13,262
+Is that what is
+going on in there?
+
+2314
+01:49:13,262 --> 01:49:14,850
+Exactly, yes.
+
+2315
+01:49:14,850 --> 01:49:19,837
+The model is very large,
+like 11 billion parameters.
+
+2316
+01:49:19,837 --> 01:49:21,420
+So the parameters
+are basically trying
+
+2317
+01:49:21,420 --> 01:49:25,740
+to memorize a lot of
+information that has been.
+
+2318
+01:49:25,740 --> 01:49:28,650
+Because the model has been
+pre-trained on the text
+
+2319
+01:49:28,650 --> 01:49:30,218
+and also has been fine-tuned.
+
+2320
+01:49:30,218 --> 01:49:32,760
+So the model has been trying to
+memorize a lot of information
+
+2321
+01:49:32,760 --> 01:49:34,560
+from the text, yeah.
+
+2322
+01:49:34,560 --> 01:49:36,300
+All right, thanks.
+
+2323
+01:49:36,300 --> 01:49:38,185
+Do you want to call
+it a night or do
+
+2324
+01:49:38,185 --> 01:49:39,310
+you want one more question?
+
+2325
+01:49:39,310 --> 01:49:42,980
+
+
+2326
+01:49:42,980 --> 01:49:44,430
+Either way, yeah.
+
+2327
+01:49:44,430 --> 01:49:47,170
+It's up to you.
+
+2328
+01:49:47,170 --> 01:49:48,760
+Sure, I'll take
+one more question.
+
+2329
+01:49:48,760 --> 01:49:49,300
+OK.
+
+2330
+01:49:49,300 --> 01:49:50,350
+Let me just do--
+
+2331
+01:49:50,350 --> 01:49:51,550
+OK.
+
+2332
+01:49:51,550 --> 01:49:54,070
+One more question from--
+
+2333
+01:49:54,070 --> 01:49:54,640
+OK.
+
+2334
+01:49:54,640 --> 01:49:58,750
+The first question is about
+how easily are these techniques
+
+2335
+01:49:58,750 --> 01:50:02,410
+generalized to other
+languages or say
+
+2336
+01:50:02,410 --> 01:50:06,550
+languages that follow quite
+different grammatical rules
+
+2337
+01:50:06,550 --> 01:50:09,640
+like Chinese,
+Japanese, or Arabic,
+
+2338
+01:50:09,640 --> 01:50:11,740
+or some other languages?
+
+2339
+01:50:11,740 --> 01:50:14,970
+Another followup question
+maybe not exactly
+
+2340
+01:50:14,970 --> 01:50:17,860
+in your domain
+expertise is there's
+
+2341
+01:50:17,860 --> 01:50:20,960
+a lot of interest in
+modelling user behavior,
+
+2342
+01:50:20,960 --> 01:50:24,070
+so online searching behavior
+or browsing behavior
+
+2343
+01:50:24,070 --> 01:50:28,490
+as a sequence using, say,
+transformers of attention.
+
+2344
+01:50:28,490 --> 01:50:31,660
+And then you can use that
+to predict how users--
+
+2345
+01:50:31,660 --> 01:50:36,430
+like embed users, so that you
+can can predict user's actions.
+
+2346
+01:50:36,430 --> 01:50:38,560
+How promising do you
+think that would be?
+
+2347
+01:50:38,560 --> 01:50:41,470
+I know this may not be
+your domain expertise,
+
+2348
+01:50:41,470 --> 01:50:44,710
+but there is a lot of interest
+in extending these question
+
+2349
+01:50:44,710 --> 01:50:47,560
+answering techniques or just
+encoding techniques, embedding
+
+2350
+01:50:47,560 --> 01:50:52,070
+techniques to
+recommender systems.
+
+2351
+01:50:52,070 --> 01:50:56,930
+I just want get your
+thoughts on that.
+
+2352
+01:50:56,930 --> 01:50:57,830
+OK.
+
+2353
+01:50:57,830 --> 01:51:00,620
+The first question is whether
+these techniques can be
+
+2354
+01:51:00,620 --> 01:51:03,020
+generalized to other languages.
+
+2355
+01:51:03,020 --> 01:51:05,420
+I think the answer is yes.
+
+2356
+01:51:05,420 --> 01:51:08,300
+There has been a lot of actively
+searching is this section.
+
+2357
+01:51:08,300 --> 01:51:10,040
+But there has been
+some constraints
+
+2358
+01:51:10,040 --> 01:51:13,940
+that a lot of models or
+systems that I described here
+
+2359
+01:51:13,940 --> 01:51:16,350
+actually require a
+lot of them, require
+
+2360
+01:51:16,350 --> 01:51:19,220
+very strong pre-trained
+language model
+
+2361
+01:51:19,220 --> 01:51:21,620
+and also requires
+lots of training
+
+2362
+01:51:21,620 --> 01:51:24,290
+examples for the Pure-DSS.
+
+2363
+01:51:24,290 --> 01:51:27,470
+So that'll be
+actually I would say
+
+2364
+01:51:27,470 --> 01:51:31,410
+a bottleneck for many low
+resource languages, right?
+
+2365
+01:51:31,410 --> 01:51:33,800
+So it's very hard to
+collect so many examples
+
+2366
+01:51:33,800 --> 01:51:35,120
+for other languages.
+
+2367
+01:51:35,120 --> 01:51:38,660
+If we have, actually, I
+think that the techniques
+
+2368
+01:51:38,660 --> 01:51:42,470
+can be generally applied
+to other languages.
+
+2369
+01:51:42,470 --> 01:51:44,100
+And there has been
+also a lot of work
+
+2370
+01:51:44,100 --> 01:51:45,975
+trying to do cross-lingual
+question answering
+
+2371
+01:51:45,975 --> 01:51:48,020
+and stuff like that.
+
+2372
+01:51:48,020 --> 01:51:52,235
+
+

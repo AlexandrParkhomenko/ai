@@ -1,0 +1,6694 @@
+1
+00:00:00,000 --> 00:00:05,550
+
+
+2
+00:00:05,550 --> 00:00:09,420
+Hello, everyone, and
+welcome back into week four.
+
+3
+00:00:09,420 --> 00:00:14,620
+So for week four, it's
+going to come in two halves.
+
+4
+00:00:14,620 --> 00:00:17,970
+So today, I'm going to talk
+about machine translation
+
+5
+00:00:17,970 --> 00:00:19,290
+related topics.
+
+6
+00:00:19,290 --> 00:00:21,810
+And then in the second
+half of the week,
+
+7
+00:00:21,810 --> 00:00:25,590
+we take a little bit of a break
+from learning more and more
+
+8
+00:00:25,590 --> 00:00:27,840
+on neural network
+topics, and talk
+
+9
+00:00:27,840 --> 00:00:31,740
+about final projects, but
+also some practical tips
+
+10
+00:00:31,740 --> 00:00:35,020
+for building neural
+network systems.
+
+11
+00:00:35,020 --> 00:00:39,270
+So for today's lecture,
+this is an important content
+
+12
+00:00:39,270 --> 00:00:40,480
+full lecture.
+
+13
+00:00:40,480 --> 00:00:44,280
+So first of all, I'm going to
+introduce a new task, machine
+
+14
+00:00:44,280 --> 00:00:45,990
+translation.
+
+15
+00:00:45,990 --> 00:00:50,430
+And it turns out that
+our task is a major use
+
+16
+00:00:50,430 --> 00:00:53,820
+case of a new
+architectural technique
+
+17
+00:00:53,820 --> 00:00:55,980
+to teach you about
+deep learning, which
+
+18
+00:00:55,980 --> 00:00:57,810
+is sequence to sequence models.
+
+19
+00:00:57,810 --> 00:01:00,420
+And so we'll spend a
+lot of time on those.
+
+20
+00:01:00,420 --> 00:01:03,330
+And then there's a
+crucial way that's
+
+21
+00:01:03,330 --> 00:01:05,580
+been developed to
+improve sequence
+
+22
+00:01:05,580 --> 00:01:09,160
+to sequence models, which
+is the idea of attention.
+
+23
+00:01:09,160 --> 00:01:12,090
+And so that's what I'll
+talk about in the final part
+
+24
+00:01:12,090 --> 00:01:14,080
+of the class.
+
+25
+00:01:14,080 --> 00:01:16,860
+I'm just checking
+everyone's keeping up
+
+26
+00:01:16,860 --> 00:01:18,370
+with what's happening.
+
+27
+00:01:18,370 --> 00:01:24,090
+So first of all,
+assignment 3 is due today.
+
+28
+00:01:24,090 --> 00:01:27,360
+So hopefully you've all got in
+your neural dependency parses
+
+29
+00:01:27,360 --> 00:01:29,580
+parsing text well.
+
+30
+00:01:29,580 --> 00:01:32,460
+At the same time,
+assignment 4 is out today.
+
+31
+00:01:32,460 --> 00:01:36,510
+And really today's lecture
+is the primary content
+
+32
+00:01:36,510 --> 00:01:39,390
+for what you'll be using for
+building your assignment 4
+
+33
+00:01:39,390 --> 00:01:41,100
+systems.
+
+34
+00:01:41,100 --> 00:01:43,140
+Switching it up for a little.
+
+35
+00:01:43,140 --> 00:01:47,370
+For assignment 4, we give
+you a mighty two extra days.
+
+36
+00:01:47,370 --> 00:01:49,140
+So you get nine days for it.
+
+37
+00:01:49,140 --> 00:01:51,750
+And it's due on Thursday.
+
+38
+00:01:51,750 --> 00:01:55,380
+On the other hand,
+do please be aware
+
+39
+00:01:55,380 --> 00:01:59,610
+that assignment 4
+is bigger and harder
+
+40
+00:01:59,610 --> 00:02:01,570
+than the previous assignments.
+
+41
+00:02:01,570 --> 00:02:04,620
+So do make sure you get
+started on it early.
+
+42
+00:02:04,620 --> 00:02:07,470
+And then as I mentioned Thursday
+I'll turn to final projects.
+
+43
+00:02:07,470 --> 00:02:10,139
+
+
+44
+00:02:10,139 --> 00:02:10,639
+OK.
+
+45
+00:02:10,639 --> 00:02:16,590
+So let's get straight into
+this with machine translation.
+
+46
+00:02:16,590 --> 00:02:18,680
+So very quickly, I
+wanted to tell you
+
+47
+00:02:18,680 --> 00:02:25,160
+a little bit about where we were
+and what we did before we get
+
+48
+00:02:25,160 --> 00:02:27,360
+to neural machine translation.
+
+49
+00:02:27,360 --> 00:02:31,650
+And so let's do the prehistory
+of machine translation.
+
+50
+00:02:31,650 --> 00:02:34,160
+So machine translation
+is the task
+
+51
+00:02:34,160 --> 00:02:37,730
+of translating a sentence
+x from one language
+
+52
+00:02:37,730 --> 00:02:39,770
+which is called
+the source language
+
+53
+00:02:39,770 --> 00:02:44,510
+to another language, the target
+language forming a sentence y.
+
+54
+00:02:44,510 --> 00:02:48,230
+So we start off with a
+source language sentence x.
+
+55
+00:02:48,230 --> 00:02:54,380
+L'homme, and then we
+translate it and we get out
+
+56
+00:02:54,380 --> 00:02:56,750
+the translation
+man is born free,
+
+57
+00:02:56,750 --> 00:02:59,190
+but everywhere he is in chains.
+
+58
+00:02:59,190 --> 00:02:59,690
+OK.
+
+59
+00:02:59,690 --> 00:03:01,780
+So there's our
+machine translation.
+
+60
+00:03:01,780 --> 00:03:02,360
+OK.
+
+61
+00:03:02,360 --> 00:03:05,630
+So in the early
+1950s, there started
+
+62
+00:03:05,630 --> 00:03:09,445
+to be work on
+machine translation.
+
+63
+00:03:09,445 --> 00:03:11,570
+And so it's actually a
+thing about computer science
+
+64
+00:03:11,570 --> 00:03:14,480
+if you find things that
+have machine in the name,
+
+65
+00:03:14,480 --> 00:03:15,725
+most of them are old things.
+
+66
+00:03:15,725 --> 00:03:18,410
+
+
+67
+00:03:18,410 --> 00:03:21,950
+And this really kind of
+came about in the US context
+
+68
+00:03:21,950 --> 00:03:24,920
+in the context of the Cold War.
+
+69
+00:03:24,920 --> 00:03:27,800
+So there was this
+desire to keep tabs
+
+70
+00:03:27,800 --> 00:03:29,390
+on what the Russians were doing.
+
+71
+00:03:29,390 --> 00:03:32,660
+And people had the idea that
+because some of the earliest
+
+72
+00:03:32,660 --> 00:03:37,550
+computers had been so successful
+at doing code breaking
+
+73
+00:03:37,550 --> 00:03:39,200
+during the Second World War.
+
+74
+00:03:39,200 --> 00:03:42,140
+Then maybe we could
+set early computers
+
+75
+00:03:42,140 --> 00:03:47,270
+to work during the Cold
+War to do translation.
+
+76
+00:03:47,270 --> 00:03:49,760
+And hopefully this will play
+and you'll be able to hear it.
+
+77
+00:03:49,760 --> 00:03:52,190
+Here's a little
+video clip showing
+
+78
+00:03:52,190 --> 00:04:02,340
+some of the earliest work in
+machine translation from 1954.
+
+79
+00:04:02,340 --> 00:04:04,230
+They hadn't reckoned
+with ambiguity
+
+80
+00:04:04,230 --> 00:04:05,880
+when they set out
+to use computers
+
+81
+00:04:05,880 --> 00:04:08,040
+to translate languages.
+
+82
+00:04:08,040 --> 00:04:12,540
+$500,000 simple calculator,
+most versatile electronic brain
+
+83
+00:04:12,540 --> 00:04:15,390
+known, translates
+Russian into English.
+
+84
+00:04:15,390 --> 00:04:17,910
+Instead of mathematical
+wizardry, a sentence
+
+85
+00:04:17,910 --> 00:04:18,990
+in Russian, it could be--
+
+86
+00:04:18,990 --> 00:04:22,410
+One of the first non-numerical
+applications of computers,
+
+87
+00:04:22,410 --> 00:04:24,570
+it was hyped as the
+solution to the Cold War
+
+88
+00:04:24,570 --> 00:04:28,003
+obsession of keeping tabs on
+what the Russians were doing.
+
+89
+00:04:28,003 --> 00:04:29,670
+Claims were made that
+the computer would
+
+90
+00:04:29,670 --> 00:04:32,010
+replace most human translators.
+
+91
+00:04:32,010 --> 00:04:34,800
+Then of course, you're just
+in the experimental stage.
+
+92
+00:04:34,800 --> 00:04:36,900
+When you go in for
+full scale production
+
+93
+00:04:36,900 --> 00:04:38,070
+what will the capacity be?
+
+94
+00:04:38,070 --> 00:04:39,965
+We should be able
+to do about with
+
+95
+00:04:39,965 --> 00:04:43,300
+a modern commercial
+computer about one
+
+96
+00:04:43,300 --> 00:04:45,000
+to two million words an hour.
+
+97
+00:04:45,000 --> 00:04:47,020
+And this will be quite
+an adequate speed
+
+98
+00:04:47,020 --> 00:04:49,740
+to cope with the whole
+output of the Soviet Union
+
+99
+00:04:49,740 --> 00:04:52,337
+in just a few hours of
+computer time a week.
+
+100
+00:04:52,337 --> 00:04:54,420
+When do you hope to be
+able to achieve this speed?
+
+101
+00:04:54,420 --> 00:04:57,876
+I our experiments go well,
+then perhaps within five years
+
+102
+00:04:57,876 --> 00:04:58,680
+or so.
+
+103
+00:04:58,680 --> 00:05:00,690
+And finally, Mr.
+McDaniel, does this mean
+
+104
+00:05:00,690 --> 00:05:03,300
+the end of human translators?
+
+105
+00:05:03,300 --> 00:05:06,450
+I say yes for translators
+of scientific and technical
+
+106
+00:05:06,450 --> 00:05:07,140
+material.
+
+107
+00:05:07,140 --> 00:05:09,090
+But as regards to
+poetry and novels,
+
+108
+00:05:09,090 --> 00:05:11,640
+no, I don't think we'll
+ever replace the translators
+
+109
+00:05:11,640 --> 00:05:13,170
+of that type of material.
+
+110
+00:05:13,170 --> 00:05:15,510
+Mr. McDaniel, thank
+you very much.
+
+111
+00:05:15,510 --> 00:05:18,000
+But despite the hype it
+ran into deep trouble.
+
+112
+00:05:18,000 --> 00:05:20,670
+
+
+113
+00:05:20,670 --> 00:05:21,330
+Yeah.
+
+114
+00:05:21,330 --> 00:05:24,745
+So the experiments
+did not go well.
+
+115
+00:05:24,745 --> 00:05:27,280
+
+
+116
+00:05:27,280 --> 00:05:31,110
+And so in retrospect,
+it's not very surprising
+
+117
+00:05:31,110 --> 00:05:36,040
+that the early work did
+not work out very well.
+
+118
+00:05:36,040 --> 00:05:38,490
+I mean, this was in the
+sort of really beginning
+
+119
+00:05:38,490 --> 00:05:41,040
+of the computer
+age in the 1950s.
+
+120
+00:05:41,040 --> 00:05:44,910
+That it was also the
+beginning of people starting
+
+121
+00:05:44,910 --> 00:05:47,310
+to understand the science
+of human languages,
+
+122
+00:05:47,310 --> 00:05:48,650
+the field of linguistics.
+
+123
+00:05:48,650 --> 00:05:51,570
+So really people had
+not much understanding
+
+124
+00:05:51,570 --> 00:05:54,640
+of either side of
+what was happening.
+
+125
+00:05:54,640 --> 00:05:56,970
+So what you had was
+people were trying
+
+126
+00:05:56,970 --> 00:06:01,440
+to write systems on really
+incredibly primitive computers,
+
+127
+00:06:01,440 --> 00:06:02,040
+right?
+
+128
+00:06:02,040 --> 00:06:06,870
+It's probably the case that
+now if you have a USB C power
+
+129
+00:06:06,870 --> 00:06:09,780
+brick, that it has more
+computational capacity
+
+130
+00:06:09,780 --> 00:06:12,060
+inside it, than the
+computers that they
+
+131
+00:06:12,060 --> 00:06:14,380
+were using to translate.
+
+132
+00:06:14,380 --> 00:06:16,800
+And so effectively,
+what you were getting
+
+133
+00:06:16,800 --> 00:06:20,910
+were very simple rule based
+systems and word lookup.
+
+134
+00:06:20,910 --> 00:06:23,370
+So it was sort like,
+dictionary look up a word
+
+135
+00:06:23,370 --> 00:06:25,050
+and get its translation.
+
+136
+00:06:25,050 --> 00:06:26,700
+But that just didn't work well.
+
+137
+00:06:26,700 --> 00:06:30,150
+Because human languages are
+much more complex than that.
+
+138
+00:06:30,150 --> 00:06:33,780
+Often words have many
+meanings and different senses
+
+139
+00:06:33,780 --> 00:06:36,690
+as we've sort of
+discussed about a bit.
+
+140
+00:06:36,690 --> 00:06:38,213
+Often there are idioms.
+
+141
+00:06:38,213 --> 00:06:39,630
+You need to
+understand the grammar
+
+142
+00:06:39,630 --> 00:06:41,280
+to rewrite the sentences.
+
+143
+00:06:41,280 --> 00:06:45,120
+So for all sorts of reasons,
+it didn't work well.
+
+144
+00:06:45,120 --> 00:06:47,940
+And this idea was
+largely canned.
+
+145
+00:06:47,940 --> 00:06:50,700
+In particular, there was a
+famous US government report
+
+146
+00:06:50,700 --> 00:06:54,540
+in the mid 1960s, the ALPAC
+report, which basically
+
+147
+00:06:54,540 --> 00:06:57,650
+concluded this wasn't working.
+
+148
+00:06:57,650 --> 00:06:59,600
+Oops.
+
+149
+00:06:59,600 --> 00:07:01,610
+OK.
+
+150
+00:07:01,610 --> 00:07:05,270
+Work then did revive
+in AI at doing
+
+151
+00:07:05,270 --> 00:07:10,770
+rule based methods of machine
+translation in the 90s.
+
+152
+00:07:10,770 --> 00:07:14,060
+But when things
+really became alive
+
+153
+00:07:14,060 --> 00:07:17,720
+was once you got
+into the mid 90s,
+
+154
+00:07:17,720 --> 00:07:20,420
+and when they were in the
+period of statistical NLP
+
+155
+00:07:20,420 --> 00:07:24,060
+that we've seen in other
+places in the course.
+
+156
+00:07:24,060 --> 00:07:29,480
+And then the idea began,
+can we start with just data
+
+157
+00:07:29,480 --> 00:07:31,970
+about translation i.e.
+
+158
+00:07:31,970 --> 00:07:34,610
+sentences and
+their translations,
+
+159
+00:07:34,610 --> 00:07:37,070
+and learn a
+probabilistic model that
+
+160
+00:07:37,070 --> 00:07:40,490
+can predict the translations
+of fresh sentences?
+
+161
+00:07:40,490 --> 00:07:44,300
+So suppose we're translating
+French into English.
+
+162
+00:07:44,300 --> 00:07:47,810
+So what we want to do is
+build a probabilistic model
+
+163
+00:07:47,810 --> 00:07:49,940
+that given a French sentence.
+
+164
+00:07:49,940 --> 00:07:52,100
+We can say, what's
+the probability
+
+165
+00:07:52,100 --> 00:07:54,110
+of different English
+translations?
+
+166
+00:07:54,110 --> 00:07:58,390
+And then we'll choose the
+most likely translation.
+
+167
+00:07:58,390 --> 00:07:59,950
+We can then found--
+
+168
+00:07:59,950 --> 00:08:05,860
+it was found felicitous to break
+this down into two components
+
+169
+00:08:05,860 --> 00:08:09,100
+by just reversing
+this with Bayes' rule.
+
+170
+00:08:09,100 --> 00:08:13,540
+So if instead we
+had a probability
+
+171
+00:08:13,540 --> 00:08:18,760
+over English sentences
+p of y, and then
+
+172
+00:08:18,760 --> 00:08:21,910
+a probability of
+a French sentence
+
+173
+00:08:21,910 --> 00:08:24,580
+given an English
+sentence, that people
+
+174
+00:08:24,580 --> 00:08:26,200
+were able to make more progress.
+
+175
+00:08:26,200 --> 00:08:28,330
+And it's not
+immediately obvious as
+
+176
+00:08:28,330 --> 00:08:29,980
+to why this should
+be because this
+
+177
+00:08:29,980 --> 00:08:33,400
+is sort of just a trivial
+rewrite with Bayes' rule.
+
+178
+00:08:33,400 --> 00:08:36,970
+That allowed the problem to be
+separated into two parts which
+
+179
+00:08:36,970 --> 00:08:39,308
+proved to be more tractable.
+
+180
+00:08:39,308 --> 00:08:42,548
+So on the left hand
+side, you effectively
+
+181
+00:08:42,549 --> 00:08:45,250
+had a translation model
+where you could just
+
+182
+00:08:45,250 --> 00:08:49,390
+give a probability
+of words or phrases
+
+183
+00:08:49,390 --> 00:08:53,020
+being translated between
+the two languages
+
+184
+00:08:53,020 --> 00:08:55,780
+without having to bother
+about the structural word
+
+185
+00:08:55,780 --> 00:08:57,580
+order of the languages.
+
+186
+00:08:57,580 --> 00:09:00,610
+And then on the right hand,
+you saw precisely what
+
+187
+00:09:00,610 --> 00:09:04,750
+we spent a long time with last
+week, which is this is just
+
+188
+00:09:04,750 --> 00:09:07,220
+a probabilistic language model.
+
+189
+00:09:07,220 --> 00:09:10,150
+So if we have a very
+good model of what
+
+190
+00:09:10,150 --> 00:09:13,810
+good fluent English
+sentences sound like,
+
+191
+00:09:13,810 --> 00:09:16,450
+which we can build just
+from monolingual data,
+
+192
+00:09:16,450 --> 00:09:20,770
+we can then get it to make sure
+we're producing sentences that
+
+193
+00:09:20,770 --> 00:09:24,130
+sound good while the
+translation model hopefully
+
+194
+00:09:24,130 --> 00:09:27,990
+puts the right words into them.
+
+195
+00:09:27,990 --> 00:09:31,230
+So how do we learn
+the translation model
+
+196
+00:09:31,230 --> 00:09:32,910
+since we haven't covered that?
+
+197
+00:09:32,910 --> 00:09:36,090
+So the starting point
+was to get a large amount
+
+198
+00:09:36,090 --> 00:09:40,380
+of parallel data, which is
+human translated sentences.
+
+199
+00:09:40,380 --> 00:09:42,600
+At this point, it's
+mandatory that I
+
+200
+00:09:42,600 --> 00:09:45,840
+show a picture of
+the Rosetta Stone
+
+201
+00:09:45,840 --> 00:09:50,040
+which is the famous original
+piece of parallel data
+
+202
+00:09:50,040 --> 00:09:54,900
+that allowed the decoding
+of Egyptian hieroglyphs
+
+203
+00:09:54,900 --> 00:09:59,040
+because it had the same piece
+of text in different languages.
+
+204
+00:09:59,040 --> 00:10:02,700
+In the modern world, there
+are fortunately for people
+
+205
+00:10:02,700 --> 00:10:06,060
+who build natural language
+processing systems quite
+
+206
+00:10:06,060 --> 00:10:09,150
+a few places, where
+parallel data is
+
+207
+00:10:09,150 --> 00:10:11,250
+produced in large quantities.
+
+208
+00:10:11,250 --> 00:10:16,410
+So the European Union produces
+a huge amount of parallel text
+
+209
+00:10:16,410 --> 00:10:19,260
+across European languages.
+
+210
+00:10:19,260 --> 00:10:20,620
+The French.
+
+211
+00:10:20,620 --> 00:10:21,120
+Sorry.
+
+212
+00:10:21,120 --> 00:10:21,930
+Not the French.
+
+213
+00:10:21,930 --> 00:10:25,050
+The Canadian
+Parliament conveniently
+
+214
+00:10:25,050 --> 00:10:29,610
+produces parallel text
+between French and English,
+
+215
+00:10:29,610 --> 00:10:36,510
+and even a limited amount in
+Inuktitut, Canadian Eskimo.
+
+216
+00:10:36,510 --> 00:10:38,910
+And then the Hong
+Kong parliament
+
+217
+00:10:38,910 --> 00:10:41,640
+produces English and Chinese.
+
+218
+00:10:41,640 --> 00:10:45,430
+So there's a fair availability
+from different sources.
+
+219
+00:10:45,430 --> 00:10:48,730
+And we can use that
+to build models.
+
+220
+00:10:48,730 --> 00:10:50,820
+So how do we do it though?
+
+221
+00:10:50,820 --> 00:10:53,080
+All we have is these sentences.
+
+222
+00:10:53,080 --> 00:10:56,460
+And it's not quite obvious how
+to build a probabilistic model
+
+223
+00:10:56,460 --> 00:10:57,660
+out of those.
+
+224
+00:10:57,660 --> 00:11:02,680
+Well, as before, what we want to
+do is break this problem down.
+
+225
+00:11:02,680 --> 00:11:05,400
+So in this case, what
+we're going to do
+
+226
+00:11:05,400 --> 00:11:10,430
+is introduce an extra variable,
+which is an alignment variable.
+
+227
+00:11:10,430 --> 00:11:13,440
+So a is the alignment
+variable, which
+
+228
+00:11:13,440 --> 00:11:16,560
+is going to give a
+word level or sometimes
+
+229
+00:11:16,560 --> 00:11:20,070
+phrase level correspondence
+between parts
+
+230
+00:11:20,070 --> 00:11:23,520
+of the source sentence
+and the target sentence.
+
+231
+00:11:23,520 --> 00:11:27,000
+So this is an example
+of an alignment.
+
+232
+00:11:27,000 --> 00:11:32,460
+And so if we could induce
+this alignment between the two
+
+233
+00:11:32,460 --> 00:11:36,420
+sentences, then we
+can have probabilities
+
+234
+00:11:36,420 --> 00:11:40,680
+of pieces of how likely
+a word or a short phrase
+
+235
+00:11:40,680 --> 00:11:45,180
+is translated in
+a particular way.
+
+236
+00:11:45,180 --> 00:11:51,410
+And in general, alignment is
+working out the correspondence
+
+237
+00:11:51,410 --> 00:11:57,050
+between words that is capturing
+the grammatical differences
+
+238
+00:11:57,050 --> 00:11:58,550
+between languages.
+
+239
+00:11:58,550 --> 00:12:02,630
+So words will occur in different
+orders in different languages
+
+240
+00:12:02,630 --> 00:12:04,940
+depending on whether
+it's a language that
+
+241
+00:12:04,940 --> 00:12:07,730
+puts on the subject
+before the verb,
+
+242
+00:12:07,730 --> 00:12:11,150
+or the subject after the
+verb, or the verb before both
+
+243
+00:12:11,150 --> 00:12:12,860
+the subject and the object.
+
+244
+00:12:12,860 --> 00:12:16,100
+And the alignments will
+also capture something
+
+245
+00:12:16,100 --> 00:12:20,400
+about differences about the ways
+that work languages do things.
+
+246
+00:12:20,400 --> 00:12:24,920
+So what we find is that we get
+every possibility of how words
+
+247
+00:12:24,920 --> 00:12:27,470
+can align between languages.
+
+248
+00:12:27,470 --> 00:12:31,790
+So you can have words
+that don't get translated
+
+249
+00:12:31,790 --> 00:12:34,710
+at all in the other language.
+
+250
+00:12:34,710 --> 00:12:39,500
+So in French, you put a definite
+article "the" before country
+
+251
+00:12:39,500 --> 00:12:41,540
+names like Japon.
+
+252
+00:12:41,540 --> 00:12:44,930
+So when that gets translated
+to English, you just get Japan.
+
+253
+00:12:44,930 --> 00:12:47,460
+So there's no
+translation of the "the".
+
+254
+00:12:47,460 --> 00:12:49,860
+So it just goes away.
+
+255
+00:12:49,860 --> 00:12:55,220
+On the other hand, you can get
+many to one translations, where
+
+256
+00:12:55,220 --> 00:13:01,190
+one French word gets translated
+as several English words.
+
+257
+00:13:01,190 --> 00:13:04,310
+So for the last
+French word, it's
+
+258
+00:13:04,310 --> 00:13:09,590
+been translated as Aboriginal
+people as multiple words.
+
+259
+00:13:09,590 --> 00:13:11,720
+You can get the
+reverse, where you
+
+260
+00:13:11,720 --> 00:13:14,870
+can have several
+French words that get
+
+261
+00:13:14,870 --> 00:13:17,510
+translated as one English word.
+
+262
+00:13:17,510 --> 00:13:22,820
+So mis en application is getting
+translated as implemented.
+
+263
+00:13:22,820 --> 00:13:27,090
+And you can get even
+more complicated ones.
+
+264
+00:13:27,090 --> 00:13:31,190
+So here we sort of have
+four English words being
+
+265
+00:13:31,190 --> 00:13:33,800
+translated as two French words.
+
+266
+00:13:33,800 --> 00:13:37,700
+But they don't really break down
+and translate each other well.
+
+267
+00:13:37,700 --> 00:13:41,220
+I mean, these things don't
+only happen across languages.
+
+268
+00:13:41,220 --> 00:13:42,950
+They also happen
+within the language
+
+269
+00:13:42,950 --> 00:13:46,080
+when you have different ways
+of saying the same thing.
+
+270
+00:13:46,080 --> 00:13:49,640
+So another way you
+might have expressed
+
+271
+00:13:49,640 --> 00:13:53,840
+the poor don't have any money is
+to say the poor are moneyless.
+
+272
+00:13:53,840 --> 00:13:58,010
+And that's much more
+similar to how the French is
+
+273
+00:13:58,010 --> 00:13:59,400
+being rendered here.
+
+274
+00:13:59,400 --> 00:14:01,250
+And so even English
+to English, you
+
+275
+00:14:01,250 --> 00:14:05,390
+have the same kind
+of alignment problem.
+
+276
+00:14:05,390 --> 00:14:08,800
+So probabilistic or
+statistical machine translation
+
+277
+00:14:08,800 --> 00:14:11,350
+is more commonly known.
+
+278
+00:14:11,350 --> 00:14:15,310
+What we wanted to do is
+learn these alignments.
+
+279
+00:14:15,310 --> 00:14:18,970
+And there's a bunch of sources
+of information you could use.
+
+280
+00:14:18,970 --> 00:14:21,940
+If you start with
+parallel sentences,
+
+281
+00:14:21,940 --> 00:14:24,580
+you can see how often
+words and phrases
+
+282
+00:14:24,580 --> 00:14:27,380
+co-occur in parallel sentences.
+
+283
+00:14:27,380 --> 00:14:30,880
+You can look at their
+positions in the sentence.
+
+284
+00:14:30,880 --> 00:14:35,350
+And figure out what
+are good alignments.
+
+285
+00:14:35,350 --> 00:14:37,870
+But alignments are
+a categorical thing.
+
+286
+00:14:37,870 --> 00:14:43,370
+They're not probabilistic and
+so they are latent variables.
+
+287
+00:14:43,370 --> 00:14:45,640
+And so you need to use
+special learning algorithms
+
+288
+00:14:45,640 --> 00:14:48,610
+like the expectation
+maximization algorithm
+
+289
+00:14:48,610 --> 00:14:50,920
+for learning about
+latent variables.
+
+290
+00:14:50,920 --> 00:14:54,430
+In the olden days of CS224N
+before we start doing it
+
+291
+00:14:54,430 --> 00:14:56,620
+all with deep
+learning, we spent tons
+
+292
+00:14:56,620 --> 00:15:02,350
+of CS224N dealing with
+latent variable algorithms.
+
+293
+00:15:02,350 --> 00:15:04,450
+But these days, we
+don't cover that at all.
+
+294
+00:15:04,450 --> 00:15:08,020
+And you're going to have to
+go off and see CS228 if you
+
+295
+00:15:08,020 --> 00:15:09,500
+want to know more about that.
+
+296
+00:15:09,500 --> 00:15:11,380
+And we're not
+really expecting you
+
+297
+00:15:11,380 --> 00:15:13,450
+to understand the details here.
+
+298
+00:15:13,450 --> 00:15:17,200
+But I did then want to
+say a bit more about how
+
+299
+00:15:17,200 --> 00:15:23,600
+decoding was done in a
+statistical machine translation
+
+300
+00:15:23,600 --> 00:15:24,610
+system.
+
+301
+00:15:24,610 --> 00:15:29,000
+And so what we wanted to do
+is to say we had a translation
+
+302
+00:15:29,000 --> 00:15:31,250
+model and a language model.
+
+303
+00:15:31,250 --> 00:15:34,790
+And we want to pick
+out the most likely
+
+304
+00:15:34,790 --> 00:15:38,240
+why there's the translation
+of the sentence.
+
+305
+00:15:38,240 --> 00:15:43,520
+And what kind of process
+could we use to do that?
+
+306
+00:15:43,520 --> 00:15:46,980
+Well, the naive thing
+is to say, well,
+
+307
+00:15:46,980 --> 00:15:51,260
+let's just enumerate every
+possible y and calculate
+
+308
+00:15:51,260 --> 00:15:52,490
+its probability.
+
+309
+00:15:52,490 --> 00:15:55,190
+But we can't possibly
+do that because there's
+
+310
+00:15:55,190 --> 00:15:59,690
+a number of translation
+sentences in the target
+
+311
+00:15:59,690 --> 00:16:00,260
+language.
+
+312
+00:16:00,260 --> 00:16:03,000
+That's exponential in the
+length of the sentence.
+
+313
+00:16:03,000 --> 00:16:05,090
+So that's way too expensive.
+
+314
+00:16:05,090 --> 00:16:09,350
+So we need to have some
+way to break it down more.
+
+315
+00:16:09,350 --> 00:16:13,580
+And while we had a simple
+way for language models,
+
+316
+00:16:13,580 --> 00:16:18,830
+we just generated words one at a
+time and laid out the sentence.
+
+317
+00:16:18,830 --> 00:16:21,710
+And so that seems a
+reasonable thing to do.
+
+318
+00:16:21,710 --> 00:16:24,410
+But here we need to
+deal with the fact
+
+319
+00:16:24,410 --> 00:16:30,110
+that things occur in different
+orders in source languages
+
+320
+00:16:30,110 --> 00:16:31,260
+and in translations.
+
+321
+00:16:31,260 --> 00:16:33,960
+
+
+322
+00:16:33,960 --> 00:16:36,290
+And so we do want to
+break it into pieces
+
+323
+00:16:36,290 --> 00:16:39,260
+with an independence assumption
+like the language model.
+
+324
+00:16:39,260 --> 00:16:42,020
+But then we want a
+way of breaking things
+
+325
+00:16:42,020 --> 00:16:46,590
+apart and exploring it in what's
+called a decoding process.
+
+326
+00:16:46,590 --> 00:16:48,410
+So this is the way it was done.
+
+327
+00:16:48,410 --> 00:16:51,070
+So we start with
+a source sentence.
+
+328
+00:16:51,070 --> 00:16:53,990
+So this is a German sentence.
+
+329
+00:16:53,990 --> 00:16:58,520
+And as is standard in German.
+
+330
+00:16:58,520 --> 00:17:02,570
+You're getting this
+second position verb.
+
+331
+00:17:02,570 --> 00:17:05,660
+So that's probably not
+in the right position
+
+332
+00:17:05,660 --> 00:17:08,180
+for where the English
+translation is going to be.
+
+333
+00:17:08,180 --> 00:17:11,550
+So we might need to
+rearrange the words.
+
+334
+00:17:11,550 --> 00:17:16,069
+So what we have is based
+on the translation model.
+
+335
+00:17:16,069 --> 00:17:19,520
+We have words or
+phrases that are
+
+336
+00:17:19,520 --> 00:17:25,550
+reasonably likely translations
+of each German word,
+
+337
+00:17:25,550 --> 00:17:27,920
+or sometimes a German phrase.
+
+338
+00:17:27,920 --> 00:17:31,310
+So these are effectively
+the LEGO pieces out
+
+339
+00:17:31,310 --> 00:17:35,910
+of which we're going to want
+to create the translation.
+
+340
+00:17:35,910 --> 00:17:41,570
+And so then inside that,
+making use of this data,
+
+341
+00:17:41,570 --> 00:17:44,600
+we're going to generate
+the translation piece
+
+342
+00:17:44,600 --> 00:17:48,350
+by piece kind of like we
+did with our neural language
+
+343
+00:17:48,350 --> 00:17:49,190
+models.
+
+344
+00:17:49,190 --> 00:17:52,820
+So we going to start with
+an empty translation.
+
+345
+00:17:52,820 --> 00:17:54,560
+And then we're
+going to say, well,
+
+346
+00:17:54,560 --> 00:17:58,490
+we want to use one
+of these LEGO pieces.
+
+347
+00:17:58,490 --> 00:18:02,070
+And so we could explore
+different possible ones.
+
+348
+00:18:02,070 --> 00:18:03,660
+So there's a search process.
+
+349
+00:18:03,660 --> 00:18:05,630
+But one of the
+possible pieces is
+
+350
+00:18:05,630 --> 00:18:08,390
+we could translate
+"er" with "he",
+
+351
+00:18:08,390 --> 00:18:11,300
+or we could start the
+sentence with "are"
+
+352
+00:18:11,300 --> 00:18:12,930
+translating the second word.
+
+353
+00:18:12,930 --> 00:18:17,510
+So we could explore various
+likely possibilities.
+
+354
+00:18:17,510 --> 00:18:20,030
+And if we're guided
+by our language model,
+
+355
+00:18:20,030 --> 00:18:23,427
+it's probably much more likely
+to start the sentence with he
+
+356
+00:18:23,427 --> 00:18:25,760
+than it is to start the
+sentence with "are" though "are"
+
+357
+00:18:25,760 --> 00:18:27,690
+is not impossible..
+
+358
+00:18:27,690 --> 00:18:28,190
+OK.
+
+359
+00:18:28,190 --> 00:18:29,690
+And then the other
+thing we're doing
+
+360
+00:18:29,690 --> 00:18:32,000
+with these little blotches
+of black up at the top,
+
+361
+00:18:32,000 --> 00:18:36,080
+we're sort of recording which
+German words we've translated.
+
+362
+00:18:36,080 --> 00:18:43,070
+And so we explore forward
+in the translation process.
+
+363
+00:18:43,070 --> 00:18:46,120
+And we could decide
+that we could translate
+
+364
+00:18:46,120 --> 00:18:49,420
+next the second word
+goes, or we could
+
+365
+00:18:49,420 --> 00:18:54,580
+translate the negation here,
+and translate that as does not.
+
+366
+00:18:54,580 --> 00:18:57,730
+When we explore
+various continuations.
+
+367
+00:18:57,730 --> 00:19:00,130
+And in the process, I'll
+go through in more detail
+
+368
+00:19:00,130 --> 00:19:02,320
+later when we do the
+neural equivalent.
+
+369
+00:19:02,320 --> 00:19:07,360
+We sort of do this search where
+we explore likely translations
+
+370
+00:19:07,360 --> 00:19:08,530
+and prune.
+
+371
+00:19:08,530 --> 00:19:10,840
+And eventually, we've
+translated the whole
+
+372
+00:19:10,840 --> 00:19:12,340
+of the input sentence.
+
+373
+00:19:12,340 --> 00:19:15,100
+And I've worked out a
+fairly likely translation.
+
+374
+00:19:15,100 --> 00:19:16,660
+He does not go home.
+
+375
+00:19:16,660 --> 00:19:20,980
+And that's what we use
+as the translation.
+
+376
+00:19:20,980 --> 00:19:22,510
+OK.
+
+377
+00:19:22,510 --> 00:19:33,400
+So in the period from
+about 1997 to around 2013,
+
+378
+00:19:33,400 --> 00:19:38,500
+statistical machine translation
+was a huge research field.
+
+379
+00:19:38,500 --> 00:19:41,680
+The best systems were
+extremely complex.
+
+380
+00:19:41,680 --> 00:19:44,560
+And they had hundreds of
+details that I certainly
+
+381
+00:19:44,560 --> 00:19:46,060
+haven't mentioned here.
+
+382
+00:19:46,060 --> 00:19:49,300
+The systems have lots of
+separately designed and built
+
+383
+00:19:49,300 --> 00:19:50,390
+components.
+
+384
+00:19:50,390 --> 00:19:54,310
+So I mentioned language model
+and the translation model.
+
+385
+00:19:54,310 --> 00:19:57,250
+But they had lots of other
+components for reordering
+
+386
+00:19:57,250 --> 00:20:00,430
+models, and inflection
+models, and other things.
+
+387
+00:20:00,430 --> 00:20:03,520
+There was lots of
+feature engineering.
+
+388
+00:20:03,520 --> 00:20:09,460
+Typically, the models also made
+use of lots of extra resources.
+
+389
+00:20:09,460 --> 00:20:13,570
+And they were lots of
+human effort to maintain.
+
+390
+00:20:13,570 --> 00:20:16,580
+But nevertheless, they were
+already fairly successful.
+
+391
+00:20:16,580 --> 00:20:21,430
+So Google Translate
+launched in the mid 2000s.
+
+392
+00:20:21,430 --> 00:20:23,800
+And people thought
+wow, this is amazing.
+
+393
+00:20:23,800 --> 00:20:27,610
+You could start to get sort
+of semi-decent automatic
+
+394
+00:20:27,610 --> 00:20:32,690
+translations for
+different web pages.
+
+395
+00:20:32,690 --> 00:20:36,310
+But that was chugging
+along well enough.
+
+396
+00:20:36,310 --> 00:20:39,520
+And then we got to 2014.
+
+397
+00:20:39,520 --> 00:20:43,090
+And really with
+enormous suddenness,
+
+398
+00:20:43,090 --> 00:20:48,820
+people then worked out ways
+of doing machine translation
+
+399
+00:20:48,820 --> 00:20:51,280
+using a large neural network.
+
+400
+00:20:51,280 --> 00:20:54,310
+And these large
+neural networks proved
+
+401
+00:20:54,310 --> 00:20:58,420
+to be just extremely successful,
+and largely blew away
+
+402
+00:20:58,420 --> 00:21:00,430
+everything that preceded it.
+
+403
+00:21:00,430 --> 00:21:04,960
+So for the next big part of the
+lecture, what I'd like to do
+
+404
+00:21:04,960 --> 00:21:09,670
+is tell you something about
+neural machine translation.
+
+405
+00:21:09,670 --> 00:21:12,880
+Neural machine
+translation, well, it
+
+406
+00:21:12,880 --> 00:21:14,350
+means you're using
+a neural network
+
+407
+00:21:14,350 --> 00:21:16,120
+to do machine translation.
+
+408
+00:21:16,120 --> 00:21:19,750
+But in practice, it's meant
+slightly more than that.
+
+409
+00:21:19,750 --> 00:21:23,110
+It has meant that
+we're going to build
+
+410
+00:21:23,110 --> 00:21:27,700
+one very large neural
+network, which completely
+
+411
+00:21:27,700 --> 00:21:30,080
+does translation end to end.
+
+412
+00:21:30,080 --> 00:21:32,350
+So we're going to have
+a large neural network,
+
+413
+00:21:32,350 --> 00:21:35,440
+we're going to feed in the
+source sentence into the input.
+
+414
+00:21:35,440 --> 00:21:37,750
+And what's going to
+come out of the output
+
+415
+00:21:37,750 --> 00:21:42,580
+of the neural network is the
+translation of the sentence.
+
+416
+00:21:42,580 --> 00:21:44,350
+We're going to
+train that model end
+
+417
+00:21:44,350 --> 00:21:47,240
+to end on parallel sentences.
+
+418
+00:21:47,240 --> 00:21:50,230
+And it's the entire
+system rather
+
+419
+00:21:50,230 --> 00:21:52,840
+than being lots of
+separate components
+
+420
+00:21:52,840 --> 00:21:56,300
+as in an old fashioned
+machine translation system.
+
+421
+00:21:56,300 --> 00:21:58,640
+And we'll see that in a bit.
+
+422
+00:21:58,640 --> 00:22:01,150
+So these neural
+network architectures
+
+423
+00:22:01,150 --> 00:22:03,700
+are called sequence
+to sequence models
+
+424
+00:22:03,700 --> 00:22:07,030
+or commonly abbreviated seq2seq.
+
+425
+00:22:07,030 --> 00:22:11,530
+And they involve
+two neural networks.
+
+426
+00:22:11,530 --> 00:22:12,940
+Here it says two RNNs.
+
+427
+00:22:12,940 --> 00:22:16,090
+The version I'm presenting
+now has two RNNs.
+
+428
+00:22:16,090 --> 00:22:18,910
+But more generally, they
+involve two neural networks.
+
+429
+00:22:18,910 --> 00:22:22,360
+There's one neural
+network that is going
+
+430
+00:22:22,360 --> 00:22:24,430
+to encode the source center.
+
+431
+00:22:24,430 --> 00:22:27,490
+So if we have a
+source sentence here,
+
+432
+00:22:27,490 --> 00:22:30,160
+we are going to
+encode that sentence.
+
+433
+00:22:30,160 --> 00:22:33,380
+And what we know about a
+way that we can do that.
+
+434
+00:22:33,380 --> 00:22:37,870
+So using the kind of LSTMs
+that we saw last class,
+
+435
+00:22:37,870 --> 00:22:42,280
+we can start at the beginning
+and go through a sentence
+
+436
+00:22:42,280 --> 00:22:45,040
+and update the hidden
+state each time.
+
+437
+00:22:45,040 --> 00:22:49,090
+And that will give us a
+representation of the content
+
+438
+00:22:49,090 --> 00:22:50,990
+of the source sentence.
+
+439
+00:22:50,990 --> 00:22:55,840
+So that's the first
+sequence model, which
+
+440
+00:22:55,840 --> 00:22:57,850
+encodes the source sentence.
+
+441
+00:22:57,850 --> 00:23:02,320
+And we'll use the idea
+that the final hidden state
+
+442
+00:23:02,320 --> 00:23:08,330
+of the encode RNN is
+going to for instance,
+
+443
+00:23:08,330 --> 00:23:11,200
+represent the source sentence.
+
+444
+00:23:11,200 --> 00:23:13,630
+And we're going to
+feed it in directly
+
+445
+00:23:13,630 --> 00:23:17,320
+as the initial hidden state
+for the decoder, or RNN.
+
+446
+00:23:17,320 --> 00:23:19,250
+So then on the other
+side of the picture,
+
+447
+00:23:19,250 --> 00:23:21,730
+we have our decoder RNN.
+
+448
+00:23:21,730 --> 00:23:23,800
+And it's a language
+model that's going
+
+449
+00:23:23,800 --> 00:23:27,160
+to generate a target
+sentence conditioned
+
+450
+00:23:27,160 --> 00:23:34,090
+on the final hidden
+state of the encoder RNN.
+
+451
+00:23:34,090 --> 00:23:37,750
+So we're going to start with
+the input of start symbol.
+
+452
+00:23:37,750 --> 00:23:41,470
+We're going to feed in the
+hidden state from the encoder
+
+453
+00:23:41,470 --> 00:23:42,010
+RNN.
+
+454
+00:23:42,010 --> 00:23:46,480
+And now this second green
+RNN has completely separate
+
+455
+00:23:46,480 --> 00:23:47,110
+parameters.
+
+456
+00:23:47,110 --> 00:23:48,700
+I might just emphasize.
+
+457
+00:23:48,700 --> 00:23:52,360
+But we do the same kind
+of LSTM computations
+
+458
+00:23:52,360 --> 00:23:56,290
+and generate a first word
+of the sentence, "he."
+
+459
+00:23:56,290 --> 00:24:00,550
+And so then doing
+LSTM generation just
+
+460
+00:24:00,550 --> 00:24:04,840
+like last class, we copy
+that down as the next input.
+
+461
+00:24:04,840 --> 00:24:07,420
+We run the next
+step of the LSTM,
+
+462
+00:24:07,420 --> 00:24:11,660
+generate another word here,
+copy it down, and chug along.
+
+463
+00:24:11,660 --> 00:24:16,960
+And we've translated
+the sentence, right?
+
+464
+00:24:16,960 --> 00:24:21,910
+So this is showing
+the test time behavior
+
+465
+00:24:21,910 --> 00:24:25,150
+when we're generating
+the next sentence.
+
+466
+00:24:25,150 --> 00:24:27,490
+For the training
+time behavior, when
+
+467
+00:24:27,490 --> 00:24:30,700
+we have parallel
+sentences, we're
+
+468
+00:24:30,700 --> 00:24:34,750
+still using the same kind of
+sequence to sequence model.
+
+469
+00:24:34,750 --> 00:24:37,450
+But we're doing it
+with the decoder part
+
+470
+00:24:37,450 --> 00:24:41,320
+just like training a
+language model, where we're
+
+471
+00:24:41,320 --> 00:24:45,460
+wanting to do teacher forcing
+and predict each word that's
+
+472
+00:24:45,460 --> 00:24:47,965
+actually found in the
+source language sentence.
+
+473
+00:24:47,965 --> 00:24:50,700
+
+
+474
+00:24:50,700 --> 00:24:53,400
+Sequence to sequence
+models have been
+
+475
+00:24:53,400 --> 00:24:58,770
+an incredibly powerful,
+widely used work force
+
+476
+00:24:58,770 --> 00:25:02,010
+in neural networks for NLP.
+
+477
+00:25:02,010 --> 00:25:07,170
+So although historically,
+machine translation
+
+478
+00:25:07,170 --> 00:25:09,865
+was the first big
+use of them, and it's
+
+479
+00:25:09,865 --> 00:25:12,600
+sort of the canonical
+use, they're
+
+480
+00:25:12,600 --> 00:25:15,310
+used everywhere else as well.
+
+481
+00:25:15,310 --> 00:25:19,000
+So you can do many other
+NLP tasks for them.
+
+482
+00:25:19,000 --> 00:25:20,880
+So you can do summarization.
+
+483
+00:25:20,880 --> 00:25:23,190
+You can think of
+text summarization
+
+484
+00:25:23,190 --> 00:25:27,960
+as translating a long
+text into a short text.
+
+485
+00:25:27,960 --> 00:25:29,850
+But you can use them
+for other things
+
+486
+00:25:29,850 --> 00:25:33,010
+that are in no way a
+translation whatsoever.
+
+487
+00:25:33,010 --> 00:25:37,990
+So they're commonly used
+for neural dialogue systems.
+
+488
+00:25:37,990 --> 00:25:45,000
+So the encoder will encode the
+previous two utterances, say.
+
+489
+00:25:45,000 --> 00:25:47,400
+And then you will
+use the decoder
+
+490
+00:25:47,400 --> 00:25:50,430
+to generate a next utterance.
+
+491
+00:25:50,430 --> 00:25:54,450
+Some other uses
+are even freakier
+
+492
+00:25:54,450 --> 00:25:58,270
+but have proven to
+be quite successful.
+
+493
+00:25:58,270 --> 00:26:02,700
+So if you have any
+way of representing
+
+494
+00:26:02,700 --> 00:26:05,950
+the parse of a
+sentence as a string,
+
+495
+00:26:05,950 --> 00:26:07,950
+and if you sort
+of think a little
+
+496
+00:26:07,950 --> 00:26:12,300
+it's fairly obvious how you can
+turn the parse of a sentence
+
+497
+00:26:12,300 --> 00:26:16,320
+into a string by just
+making use of extra syntax
+
+498
+00:26:16,320 --> 00:26:22,170
+like parentheses, or putting in
+explicit words that are saying
+
+499
+00:26:22,170 --> 00:26:28,000
+left arc, right arc, shifts
+like the transition system
+
+500
+00:26:28,000 --> 00:26:30,180
+that you used for assignment 3.
+
+501
+00:26:30,180 --> 00:26:34,920
+Well, then we could say
+let's use the encoder.
+
+502
+00:26:34,920 --> 00:26:37,590
+Feed the input
+sentence to the encoder
+
+503
+00:26:37,590 --> 00:26:40,680
+and let it output the
+transition sequence
+
+504
+00:26:40,680 --> 00:26:42,510
+of our dependency parser.
+
+505
+00:26:42,510 --> 00:26:44,700
+And somewhat surprisingly
+that actually
+
+506
+00:26:44,700 --> 00:26:49,380
+works well as another way
+to build a dependency parser
+
+507
+00:26:49,380 --> 00:26:52,620
+or other kinds of parser.
+
+508
+00:26:52,620 --> 00:26:54,300
+These models have
+also been applied
+
+509
+00:26:54,300 --> 00:26:57,720
+not just to natural
+languages, but to other kinds
+
+510
+00:26:57,720 --> 00:27:01,440
+of languages, including
+music, and also
+
+511
+00:27:01,440 --> 00:27:03,360
+programming language code.
+
+512
+00:27:03,360 --> 00:27:07,380
+So you can train
+a seq2seq system,
+
+513
+00:27:07,380 --> 00:27:12,360
+where it reads in pseudocode
+in natural language,
+
+514
+00:27:12,360 --> 00:27:14,783
+and it generates
+out Python code.
+
+515
+00:27:14,783 --> 00:27:16,200
+And if you have a
+good enough one,
+
+516
+00:27:16,200 --> 00:27:17,790
+it can do the
+assignment for you.
+
+517
+00:27:17,790 --> 00:27:21,630
+
+
+518
+00:27:21,630 --> 00:27:25,280
+So this central new idea
+here with our sequence
+
+519
+00:27:25,280 --> 00:27:29,720
+to sequence models is we have an
+example of conditional language
+
+520
+00:27:29,720 --> 00:27:30,560
+models.
+
+521
+00:27:30,560 --> 00:27:34,220
+So previously, the main
+thing we were doing
+
+522
+00:27:34,220 --> 00:27:36,980
+was just to start at the
+beginning of the sentence
+
+523
+00:27:36,980 --> 00:27:41,720
+and generate a sentence
+based on nothing.
+
+524
+00:27:41,720 --> 00:27:44,780
+But here we have
+something that is
+
+525
+00:27:44,780 --> 00:27:47,900
+going to determine or
+partially determine
+
+526
+00:27:47,900 --> 00:27:50,990
+that is going to condition
+what we should produce.
+
+527
+00:27:50,990 --> 00:27:52,910
+So we have a source sentence.
+
+528
+00:27:52,910 --> 00:27:55,610
+And that's going to
+strongly determine
+
+529
+00:27:55,610 --> 00:27:57,930
+what is a good translation.
+
+530
+00:27:57,930 --> 00:28:02,600
+And so to achieve that,
+what we're going to do
+
+531
+00:28:02,600 --> 00:28:08,660
+is have some way of transferring
+information about the source
+
+532
+00:28:08,660 --> 00:28:12,440
+sentence from the
+encoder to trigger
+
+533
+00:28:12,440 --> 00:28:15,110
+what the decoder should do.
+
+534
+00:28:15,110 --> 00:28:17,690
+And the two standard ways
+of doing that are you
+
+535
+00:28:17,690 --> 00:28:22,040
+either feed in a hidden state
+as the initial hidden state
+
+536
+00:28:22,040 --> 00:28:25,910
+to the decoder, or sometimes
+you will feed something
+
+537
+00:28:25,910 --> 00:28:29,210
+in as the initial
+input to the decoder.
+
+538
+00:28:29,210 --> 00:28:34,220
+And so in neural
+machine translation
+
+539
+00:28:34,220 --> 00:28:38,990
+we are directly calculating this
+conditional model probability
+
+540
+00:28:38,990 --> 00:28:43,460
+of target language sentence
+given source language sentence.
+
+541
+00:28:43,460 --> 00:28:46,250
+And so at each step,
+as we break down
+
+542
+00:28:46,250 --> 00:28:50,330
+the word by word generation,
+that we're conditioning
+
+543
+00:28:50,330 --> 00:28:54,750
+not only on previous words
+of the target language,
+
+544
+00:28:54,750 --> 00:28:59,570
+but also each time on our
+source language sentence x.
+
+545
+00:28:59,570 --> 00:29:01,580
+Because of this,
+we actually know
+
+546
+00:29:01,580 --> 00:29:04,970
+a ton more about what our
+sentence that we generate
+
+547
+00:29:04,970 --> 00:29:06,060
+should be.
+
+548
+00:29:06,060 --> 00:29:09,620
+So if you look at
+the perplexities
+
+549
+00:29:09,620 --> 00:29:12,830
+of these kind of
+conditional language models,
+
+550
+00:29:12,830 --> 00:29:16,220
+you will find them like the
+numbers I showed last time.
+
+551
+00:29:16,220 --> 00:29:20,510
+They usually have almost
+freakily low perplexities,
+
+552
+00:29:20,510 --> 00:29:23,330
+that you will have
+models with perplexities
+
+553
+00:29:23,330 --> 00:29:28,070
+that are something like 4
+or even less, sometimes 2.5
+
+554
+00:29:28,070 --> 00:29:31,010
+because you get a lot of
+information about what words
+
+555
+00:29:31,010 --> 00:29:33,440
+you should be generating.
+
+556
+00:29:33,440 --> 00:29:34,940
+OK.
+
+557
+00:29:34,940 --> 00:29:37,130
+So then we have
+the same questions
+
+558
+00:29:37,130 --> 00:29:39,470
+as we had for language
+models in general.
+
+559
+00:29:39,470 --> 00:29:43,520
+How to train a neural machine
+translation system and then
+
+560
+00:29:43,520 --> 00:29:45,840
+how to use it at runtime?
+
+561
+00:29:45,840 --> 00:29:51,060
+So let's go through both of
+those in a bit more detail.
+
+562
+00:29:51,060 --> 00:29:55,910
+So the first step is we get
+a large parallel corpus.
+
+563
+00:29:55,910 --> 00:30:00,470
+So we run off to the
+European Union, for example.
+
+564
+00:30:00,470 --> 00:30:04,790
+And we grab a lot of
+parallel English French data
+
+565
+00:30:04,790 --> 00:30:07,790
+from the European
+parliament proceedings.
+
+566
+00:30:07,790 --> 00:30:11,600
+So then once we have
+our parallel sentences,
+
+567
+00:30:11,600 --> 00:30:18,770
+what we're going to do is take
+batches of source sentences
+
+568
+00:30:18,770 --> 00:30:20,990
+and target sentences.
+
+569
+00:30:20,990 --> 00:30:26,645
+We'll encode the source
+sentence with our encoder LSTM.
+
+570
+00:30:26,645 --> 00:30:34,820
+We'll feed its final hidden
+state into a target LSTM.
+
+571
+00:30:34,820 --> 00:30:37,760
+And this one, we
+are now then going
+
+572
+00:30:37,760 --> 00:30:42,980
+to train word by word by
+comparing what it predicts
+
+573
+00:30:42,980 --> 00:30:47,000
+is the most likely
+word to be produced,
+
+574
+00:30:47,000 --> 00:30:49,760
+versus what the actual
+first word, and then
+
+575
+00:30:49,760 --> 00:30:51,680
+the actual second word is.
+
+576
+00:30:51,680 --> 00:30:54,590
+And to the extent
+that we get it wrong,
+
+577
+00:30:54,590 --> 00:30:57,315
+we're going to suffer some loss.
+
+578
+00:30:57,315 --> 00:30:58,940
+So this is going to
+be the negative log
+
+579
+00:30:58,940 --> 00:31:04,460
+probability of generating
+the correct next word "he"
+
+580
+00:31:04,460 --> 00:31:06,500
+and so on along the sentence.
+
+581
+00:31:06,500 --> 00:31:10,160
+And so in the same way that
+we saw last time for language
+
+582
+00:31:10,160 --> 00:31:14,060
+models, we can work
+out our overall loss
+
+583
+00:31:14,060 --> 00:31:17,510
+for the sentence doing
+this teacher forcing style,
+
+584
+00:31:17,510 --> 00:31:20,780
+generate one word at a
+time, calculate a loss
+
+585
+00:31:20,780 --> 00:31:25,990
+relative to the word that
+you should have produced.
+
+586
+00:31:25,990 --> 00:31:29,860
+And so that loss then
+gives us information
+
+587
+00:31:29,860 --> 00:31:33,940
+that we can backpropagate
+through the entire network.
+
+588
+00:31:33,940 --> 00:31:37,960
+And the crucial thing
+about these sequence
+
+589
+00:31:37,960 --> 00:31:41,020
+to sequence models that
+has made them extremely
+
+590
+00:31:41,020 --> 00:31:46,330
+successful in practice is that
+the entire thing is optimized
+
+591
+00:31:46,330 --> 00:31:49,090
+as a single system end to end.
+
+592
+00:31:49,090 --> 00:31:53,500
+So starting with
+our final loss, we
+
+593
+00:31:53,500 --> 00:31:56,350
+backpropagate it right
+through the system.
+
+594
+00:31:56,350 --> 00:32:01,070
+So we not only update all
+the parameters of the decoder
+
+595
+00:32:01,070 --> 00:32:06,340
+model, but we also update all
+of the parameters of the encoder
+
+596
+00:32:06,340 --> 00:32:10,660
+model, which in turn will
+influence what conditioning
+
+597
+00:32:10,660 --> 00:32:14,005
+gets passed over from the
+encoder to the decoder.
+
+598
+00:32:14,005 --> 00:32:17,190
+
+
+599
+00:32:17,190 --> 00:32:19,460
+So this moment is a
+good moment for me
+
+600
+00:32:19,460 --> 00:32:24,020
+to return to the three
+slides that I skipped.
+
+601
+00:32:24,020 --> 00:32:26,960
+I'm running out of time at
+the end of last time, which
+
+602
+00:32:26,960 --> 00:32:31,700
+is to mention multilayer RNNs.
+
+603
+00:32:31,700 --> 00:32:34,857
+So the RNNs that
+we've looked at so far
+
+604
+00:32:34,857 --> 00:32:39,950
+are already deep on one
+dimension then unroll
+
+605
+00:32:39,950 --> 00:32:43,160
+horizontally over
+many time steps.
+
+606
+00:32:43,160 --> 00:32:45,800
+But they've been shallow
+in that there's just
+
+607
+00:32:45,800 --> 00:32:51,080
+been a single layer of recurrent
+structure about our sentences.
+
+608
+00:32:51,080 --> 00:32:53,900
+We can also make them deep
+in the other dimension
+
+609
+00:32:53,900 --> 00:32:58,190
+by applying multiple RNNs
+on top of each other.
+
+610
+00:32:58,190 --> 00:33:01,400
+And this gives us
+some multilayer RNN.
+
+611
+00:33:01,400 --> 00:33:04,900
+Often also called a step RNN.
+
+612
+00:33:04,900 --> 00:33:10,130
+And having a
+multilayer RNN allows
+
+613
+00:33:10,130 --> 00:33:14,300
+us the network to compute
+more complex representations.
+
+614
+00:33:14,300 --> 00:33:19,400
+So simply put the lower RNNs
+tend to compute lower level
+
+615
+00:33:19,400 --> 00:33:23,750
+features, and the higher RNNs
+should compute higher level
+
+616
+00:33:23,750 --> 00:33:24,860
+features.
+
+617
+00:33:24,860 --> 00:33:27,960
+And just like in
+other neural networks,
+
+618
+00:33:27,960 --> 00:33:30,230
+whether it's feed
+forward networks,
+
+619
+00:33:30,230 --> 00:33:33,470
+or the kind of networks
+you see in vision systems,
+
+620
+00:33:33,470 --> 00:33:37,400
+you get much greater
+power and success
+
+621
+00:33:37,400 --> 00:33:41,540
+by having a stack
+on multiple layers
+
+622
+00:33:41,540 --> 00:33:43,850
+of recurrent neural
+networks, right?
+
+623
+00:33:43,850 --> 00:33:46,580
+That you might think that
+oh, there are two things
+
+624
+00:33:46,580 --> 00:33:47,670
+I could do.
+
+625
+00:33:47,670 --> 00:33:51,110
+I could have a single LSTM with
+a hidden state of dimension
+
+626
+00:33:51,110 --> 00:33:55,940
+2000, or I could have
+four layers of LSTMs
+
+627
+00:33:55,940 --> 00:33:59,840
+with a hidden state of 500 each.
+
+628
+00:33:59,840 --> 00:34:01,340
+And it shouldn't
+make any difference
+
+629
+00:34:01,340 --> 00:34:04,340
+because I've got the same
+number of parameters roughly.
+
+630
+00:34:04,340 --> 00:34:05,600
+But that's not true.
+
+631
+00:34:05,600 --> 00:34:08,449
+In practice, it does
+make a big difference.
+
+632
+00:34:08,449 --> 00:34:12,259
+And multilayer or stacked
+RNNs are more powerful.
+
+633
+00:34:12,259 --> 00:34:15,460
+
+
+634
+00:34:15,460 --> 00:34:18,880
+Can I ask you, there's a
+good student question here?
+
+635
+00:34:18,880 --> 00:34:21,100
+What would lower level
+versus higher level features
+
+636
+00:34:21,100 --> 00:34:22,520
+mean in this context?
+
+637
+00:34:22,520 --> 00:34:24,270
+Sure.
+
+638
+00:34:24,270 --> 00:34:24,770
+Yeah.
+
+639
+00:34:24,770 --> 00:34:33,339
+So I mean, in some sense, these
+are somewhat flimsy terms.
+
+640
+00:34:33,339 --> 00:34:36,040
+
+
+641
+00:34:36,040 --> 00:34:38,469
+The meaning isn't precise.
+
+642
+00:34:38,469 --> 00:34:41,650
+But typically,
+what that's meaning
+
+643
+00:34:41,650 --> 00:34:44,438
+is that lower level
+features and knowing
+
+644
+00:34:44,438 --> 00:34:50,029
+sort of more basic things
+about words and phrases.
+
+645
+00:34:50,030 --> 00:34:54,159
+So that commonly might be
+things like what part of speech
+
+646
+00:34:54,159 --> 00:34:59,200
+is this word, or are these
+words the name of a person,
+
+647
+00:34:59,200 --> 00:35:01,810
+or the name of a company?
+
+648
+00:35:01,810 --> 00:35:06,010
+Whereas higher level
+features refer to things
+
+649
+00:35:06,010 --> 00:35:08,620
+that are at a higher
+semantic level.
+
+650
+00:35:08,620 --> 00:35:11,500
+So knowing more about
+the overall structure
+
+651
+00:35:11,500 --> 00:35:15,410
+of a sentence, knowing
+something about what it means,
+
+652
+00:35:15,410 --> 00:35:20,150
+whether a phrase has positive
+or negative connotations.
+
+653
+00:35:20,150 --> 00:35:24,970
+What its semantics are when
+you put together several words
+
+654
+00:35:24,970 --> 00:35:28,420
+into an idiomatic phrase,
+roughly the higher level
+
+655
+00:35:28,420 --> 00:35:29,155
+kinds of things.
+
+656
+00:35:29,155 --> 00:35:35,205
+
+
+657
+00:35:35,205 --> 00:35:35,705
+OK.
+
+658
+00:35:35,705 --> 00:35:38,290
+
+
+659
+00:35:38,290 --> 00:35:41,410
+Jump ahead.
+
+660
+00:35:41,410 --> 00:35:41,910
+OK.
+
+661
+00:35:41,910 --> 00:35:46,470
+So when we build
+one of these end
+
+662
+00:35:46,470 --> 00:35:51,420
+to end neural machine
+translation systems,
+
+663
+00:35:51,420 --> 00:35:58,340
+if we want them to work
+well, single layer LSTM
+
+664
+00:35:58,340 --> 00:36:01,670
+encoder-decoder in neurals
+machine translation systems
+
+665
+00:36:01,670 --> 00:36:04,110
+just don't work well.
+
+666
+00:36:04,110 --> 00:36:06,920
+But you can build
+something that is
+
+667
+00:36:06,920 --> 00:36:10,760
+no more complex than the model
+that I've just explained now.
+
+668
+00:36:10,760 --> 00:36:17,010
+That does work pretty well by
+making it a multi-layer stacked
+
+669
+00:36:17,010 --> 00:36:20,600
+LSTM neural machine
+translation system.
+
+670
+00:36:20,600 --> 00:36:23,560
+So therefore, the
+picture looks like this.
+
+671
+00:36:23,560 --> 00:36:26,690
+So we've got this
+multilayer LSTM
+
+672
+00:36:26,690 --> 00:36:29,150
+that's going through
+the source sentence.
+
+673
+00:36:29,150 --> 00:36:32,330
+And so now, at
+each point in time,
+
+674
+00:36:32,330 --> 00:36:35,540
+we calculate a new
+hidden representation
+
+675
+00:36:35,540 --> 00:36:40,190
+that rather than stopping there,
+we sort of feed it as the input
+
+676
+00:36:40,190 --> 00:36:43,610
+into another layer
+of LSTM, and we
+
+677
+00:36:43,610 --> 00:36:47,000
+calculate in the standard way
+its new hidden representation.
+
+678
+00:36:47,000 --> 00:36:50,780
+And the output of it, we feed
+into a third layer of LSTM.
+
+679
+00:36:50,780 --> 00:36:53,120
+And so we run that right along.
+
+680
+00:36:53,120 --> 00:36:58,280
+And so our representation
+of the source sentence
+
+681
+00:36:58,280 --> 00:37:02,375
+from our encoder is then this
+stack of three hidden layers,
+
+682
+00:37:02,375 --> 00:37:04,430
+whoops.
+
+683
+00:37:04,430 --> 00:37:11,510
+And then that we
+use to then feed
+
+684
+00:37:11,510 --> 00:37:16,610
+in as the initial, as
+the initial hidden layer
+
+685
+00:37:16,610 --> 00:37:20,240
+into then sort of
+generating translations,
+
+686
+00:37:20,240 --> 00:37:24,130
+or for training the model
+of comparing the losses.
+
+687
+00:37:24,130 --> 00:37:28,460
+So this is what the
+picture of a LSTM
+
+688
+00:37:28,460 --> 00:37:31,340
+encoder-decoder neural
+machine translation system
+
+689
+00:37:31,340 --> 00:37:34,310
+really looks like.
+
+690
+00:37:34,310 --> 00:37:40,480
+So in particular, to give
+you some idea of that.
+
+691
+00:37:40,480 --> 00:37:45,070
+So a 2017 paper by
+Denny Britz and others,
+
+692
+00:37:45,070 --> 00:37:49,560
+that what they found was
+that for the encoder RNN,
+
+693
+00:37:49,560 --> 00:37:53,500
+it worked best if it
+had two to four layers.
+
+694
+00:37:53,500 --> 00:37:59,050
+And four layers was best
+for the decoder RNN.
+
+695
+00:37:59,050 --> 00:38:02,020
+And the details here like
+for a lot of neural nets
+
+696
+00:38:02,020 --> 00:38:05,440
+depend so much on what you're
+doing, and how much data
+
+697
+00:38:05,440 --> 00:38:07,870
+you have, and things like that.
+
+698
+00:38:07,870 --> 00:38:11,180
+But as rules of thumb
+to have in your head,
+
+699
+00:38:11,180 --> 00:38:13,930
+it's almost invariably
+the case that
+
+700
+00:38:13,930 --> 00:38:19,240
+having a two layer LSTM works
+a lot better than having a one
+
+701
+00:38:19,240 --> 00:38:21,190
+layer LSTM.
+
+702
+00:38:21,190 --> 00:38:25,270
+After that, things
+become much less clear.
+
+703
+00:38:25,270 --> 00:38:28,210
+It's not so infrequent that
+if you try three layers,
+
+704
+00:38:28,210 --> 00:38:30,100
+it's a fraction better than two.
+
+705
+00:38:30,100 --> 00:38:31,060
+But not really.
+
+706
+00:38:31,060 --> 00:38:34,510
+And if you try four layers, it's
+actually getting worse again.
+
+707
+00:38:34,510 --> 00:38:37,690
+It depends on how much
+data, et cetera you have.
+
+708
+00:38:37,690 --> 00:38:42,970
+At any rate, it's normally
+very hard with the model
+
+709
+00:38:42,970 --> 00:38:45,790
+architecture that I
+just showed back here
+
+710
+00:38:45,790 --> 00:38:50,950
+to get better results with
+more than four layers of LSTM.
+
+711
+00:38:50,950 --> 00:38:55,750
+Normally to do
+deeper LSTM models
+
+712
+00:38:55,750 --> 00:38:58,270
+and get even better results.
+
+713
+00:38:58,270 --> 00:39:01,840
+You have to be adding extra
+skip connections of the kind
+
+714
+00:39:01,840 --> 00:39:07,920
+that I talked about at the
+very end of the last class.
+
+715
+00:39:07,920 --> 00:39:10,950
+Next week, John is going
+to talk about transformer
+
+716
+00:39:10,950 --> 00:39:12,510
+based networks.
+
+717
+00:39:12,510 --> 00:39:16,020
+In contrast, for fairly
+fundamental reasons.
+
+718
+00:39:16,020 --> 00:39:19,110
+They're typically much deeper.
+
+719
+00:39:19,110 --> 00:39:22,890
+But we'll leave discussing
+them until we get on further.
+
+720
+00:39:22,890 --> 00:39:31,450
+
+
+721
+00:39:31,450 --> 00:39:34,960
+So that was how we
+train the model.
+
+722
+00:39:34,960 --> 00:39:39,060
+So let's just go a bit more
+through what the possibilities
+
+723
+00:39:39,060 --> 00:39:44,280
+are for decoding and explore a
+more complex form of decoding
+
+724
+00:39:44,280 --> 00:39:45,750
+than we've looked at.
+
+725
+00:39:45,750 --> 00:39:48,660
+But the simplest way
+to decode is the one
+
+726
+00:39:48,660 --> 00:39:50,440
+that we presented so far.
+
+727
+00:39:50,440 --> 00:39:56,820
+So that we have our LSTM, we
+start, generate a hidden state.
+
+728
+00:39:56,820 --> 00:40:00,510
+It has a probability
+distribution over words.
+
+729
+00:40:00,510 --> 00:40:03,780
+And you choose the most
+probable one the argmax.
+
+730
+00:40:03,780 --> 00:40:07,440
+And you say "he", and you copy
+it down and you repeat over.
+
+731
+00:40:07,440 --> 00:40:11,520
+So doing this is referred
+to as greedy decoding.
+
+732
+00:40:11,520 --> 00:40:14,920
+Taking the most probable
+word on each step.
+
+733
+00:40:14,920 --> 00:40:18,570
+And it's sort of the
+obvious thing to do,
+
+734
+00:40:18,570 --> 00:40:22,040
+and doesn't seem like it
+could be a bad thing to do.
+
+735
+00:40:22,040 --> 00:40:24,360
+But it turns out
+that it actually
+
+736
+00:40:24,360 --> 00:40:27,400
+can be a fairly
+problematic thing to do.
+
+737
+00:40:27,400 --> 00:40:32,640
+And the idea of that is
+that with greedy decoding,
+
+738
+00:40:32,640 --> 00:40:36,520
+you're taking locally what
+seems the best choice.
+
+739
+00:40:36,520 --> 00:40:37,920
+And then you're stuck with it.
+
+740
+00:40:37,920 --> 00:40:41,620
+And you have no way
+to undo decisions.
+
+741
+00:40:41,620 --> 00:40:46,140
+So if these examples have been
+using this sentence about,
+
+742
+00:40:46,140 --> 00:40:49,080
+he hit me with a pie
+going from translating
+
+743
+00:40:49,080 --> 00:40:50,910
+from French to English.
+
+744
+00:40:50,910 --> 00:40:53,460
+So if you start
+off, then you say,
+
+745
+00:40:53,460 --> 00:40:58,260
+OK, "il" the first word in
+the translation, should be he.
+
+746
+00:40:58,260 --> 00:40:59,980
+That looks good.
+
+747
+00:40:59,980 --> 00:41:05,430
+But then you-- and then you say,
+well, hit, I'll generate hit.
+
+748
+00:41:05,430 --> 00:41:10,140
+Then somehow the model thinks
+that the most likely next word
+
+749
+00:41:10,140 --> 00:41:11,430
+after hit is "a".
+
+750
+00:41:11,430 --> 00:41:14,100
+And there are lots of
+reasons it could think so.
+
+751
+00:41:14,100 --> 00:41:19,010
+Because after hit most commonly,
+there's a direct object now
+
+752
+00:41:19,010 --> 00:41:24,990
+and then he hit a car, he
+hit a roadblock, right?
+
+753
+00:41:24,990 --> 00:41:27,330
+So that sounds pretty likely.
+
+754
+00:41:27,330 --> 00:41:32,280
+But once you've generated it,
+there's no way to go backwards.
+
+755
+00:41:32,280 --> 00:41:35,190
+And so you just have to
+keep on going from there
+
+756
+00:41:35,190 --> 00:41:37,950
+and you may not be able to
+generate the translation
+
+757
+00:41:37,950 --> 00:41:40,300
+you want.
+
+758
+00:41:40,300 --> 00:41:48,040
+At best you can generate,
+he hit a pie, or something.
+
+759
+00:41:48,040 --> 00:41:51,520
+So we'd like to be able
+to explore a bit more
+
+760
+00:41:51,520 --> 00:41:54,850
+in generating our translations.
+
+761
+00:41:54,850 --> 00:41:58,400
+And well, what could we do?
+
+762
+00:41:58,400 --> 00:42:01,420
+Well, I sort of mentioned
+this before looking
+
+763
+00:42:01,420 --> 00:42:04,090
+at the statistical empty models.
+
+764
+00:42:04,090 --> 00:42:09,910
+Overall, what we'd like
+to do is find translations
+
+765
+00:42:09,910 --> 00:42:14,350
+that maximize the
+probability of y given
+
+766
+00:42:14,350 --> 00:42:19,150
+x, and at least if we know what
+the length of that translation
+
+767
+00:42:19,150 --> 00:42:20,170
+is.
+
+768
+00:42:20,170 --> 00:42:23,780
+We can do that as a product of
+generating a word at a time.
+
+769
+00:42:23,780 --> 00:42:25,220
+And so to have a full model.
+
+770
+00:42:25,220 --> 00:42:26,740
+We also have to
+have a probability
+
+771
+00:42:26,740 --> 00:42:31,750
+distribution over how long the
+translation length would be.
+
+772
+00:42:31,750 --> 00:42:34,330
+So we could say
+this is the model.
+
+773
+00:42:34,330 --> 00:42:41,530
+And let's generate and score
+all possible sequences y
+
+774
+00:42:41,530 --> 00:42:43,130
+using this model.
+
+775
+00:42:43,130 --> 00:42:45,250
+And that's where
+that then requires
+
+776
+00:42:45,250 --> 00:42:49,780
+generating an exponential
+number of translations.
+
+777
+00:42:49,780 --> 00:42:52,720
+And it's far, far too expensive.
+
+778
+00:42:52,720 --> 00:42:58,030
+So beyond greedy decoding,
+the most important method
+
+779
+00:42:58,030 --> 00:42:59,020
+that is used.
+
+780
+00:42:59,020 --> 00:43:01,660
+And you'll see lots
+of places is something
+
+781
+00:43:01,660 --> 00:43:03,730
+called beam search decoding.
+
+782
+00:43:03,730 --> 00:43:07,690
+And so this isn't
+what neural, well,
+
+783
+00:43:07,690 --> 00:43:10,270
+any kind of machine
+translation has one place
+
+784
+00:43:10,270 --> 00:43:11,770
+where it's commonly used.
+
+785
+00:43:11,770 --> 00:43:13,600
+That this isn't
+a method specific
+
+786
+00:43:13,600 --> 00:43:15,490
+to machine translation.
+
+787
+00:43:15,490 --> 00:43:19,330
+You find lots of other places,
+including all other kinds
+
+788
+00:43:19,330 --> 00:43:21,280
+of sequence to sequence models.
+
+789
+00:43:21,280 --> 00:43:23,410
+It's not the only
+other decoding method.
+
+790
+00:43:23,410 --> 00:43:27,790
+Once when we got on to the
+language generation class,
+
+791
+00:43:27,790 --> 00:43:29,140
+we'll see a couple more.
+
+792
+00:43:29,140 --> 00:43:32,660
+But this is sort of the next
+one that you should know about.
+
+793
+00:43:32,660 --> 00:43:35,800
+So beam search's
+idea is that you're
+
+794
+00:43:35,800 --> 00:43:41,350
+going to keep some hypotheses to
+make it more likely that you'll
+
+795
+00:43:41,350 --> 00:43:47,320
+find a good generation while
+keeping the search tractable.
+
+796
+00:43:47,320 --> 00:43:50,950
+So what we do is
+choose a beam size.
+
+797
+00:43:50,950 --> 00:43:54,370
+And for neural MT, the beam
+size is normally fairly small,
+
+798
+00:43:54,370 --> 00:43:56,380
+something like 5 to 10.
+
+799
+00:43:56,380 --> 00:43:59,110
+And at each step of
+the decoder, we're
+
+800
+00:43:59,110 --> 00:44:01,450
+going to keep
+track of the k most
+
+801
+00:44:01,450 --> 00:44:04,090
+probable partial translation.
+
+802
+00:44:04,090 --> 00:44:08,030
+So initial sub- sequences
+of what we're generating,
+
+803
+00:44:08,030 --> 00:44:10,760
+which we call hypotheses.
+
+804
+00:44:10,760 --> 00:44:13,010
+So a hypothesis,
+which is then sort
+
+805
+00:44:13,010 --> 00:44:17,410
+of the prefix of a
+translation has a score
+
+806
+00:44:17,410 --> 00:44:20,050
+which is this log
+probability up to what's
+
+807
+00:44:20,050 --> 00:44:21,910
+been generated so far.
+
+808
+00:44:21,910 --> 00:44:25,270
+So we can generate that
+in the typical way using
+
+809
+00:44:25,270 --> 00:44:27,250
+our conditional language model.
+
+810
+00:44:27,250 --> 00:44:31,670
+So as written all of
+the scores are negative.
+
+811
+00:44:31,670 --> 00:44:35,050
+And so the least negative one,
+i.e., the highest probability
+
+812
+00:44:35,050 --> 00:44:36,940
+one is the best one.
+
+813
+00:44:36,940 --> 00:44:40,990
+So what we want to do is
+search for high probability
+
+814
+00:44:40,990 --> 00:44:43,790
+hypotheses.
+
+815
+00:44:43,790 --> 00:44:46,510
+So this is a heuristic method.
+
+816
+00:44:46,510 --> 00:44:50,560
+It's not guaranteed to find the
+highest probability decoding.
+
+817
+00:44:50,560 --> 00:44:52,840
+But at least, it gives
+you more of a shot
+
+818
+00:44:52,840 --> 00:44:55,780
+than simply doing
+greedy decoding.
+
+819
+00:44:55,780 --> 00:45:01,430
+So let's go through an
+example to see how it works.
+
+820
+00:45:01,430 --> 00:45:05,590
+So in this case, so I
+can fit it on a slide.
+
+821
+00:45:05,590 --> 00:45:08,350
+The size of our beam is just 2.
+
+822
+00:45:08,350 --> 00:45:10,390
+Though normally,
+it would actually
+
+823
+00:45:10,390 --> 00:45:11,920
+be a bit bigger than that.
+
+824
+00:45:11,920 --> 00:45:16,480
+And the blue numbers are
+the scores of the prefixes.
+
+825
+00:45:16,480 --> 00:45:20,480
+So these are these log
+probabilities of a prefix.
+
+826
+00:45:20,480 --> 00:45:23,540
+So we start off with
+our start symbol.
+
+827
+00:45:23,540 --> 00:45:26,270
+And we're going to say, OK.
+
+828
+00:45:26,270 --> 00:45:29,000
+What are the two
+most likely words,
+
+829
+00:45:29,000 --> 00:45:32,350
+to generate first according
+to our language model?
+
+830
+00:45:32,350 --> 00:45:37,090
+And so maybe the first two
+most likely words are he and I.
+
+831
+00:45:37,090 --> 00:45:40,450
+And there are the
+log probabilities.
+
+832
+00:45:40,450 --> 00:45:47,260
+Then what we do next is for
+each of these k hypotheses,
+
+833
+00:45:47,260 --> 00:45:51,190
+we find what are likely
+words to follow them?
+
+834
+00:45:51,190 --> 00:45:55,120
+In particular, we find what
+are the k most likely words
+
+835
+00:45:55,120 --> 00:45:57,350
+to follow each of those.
+
+836
+00:45:57,350 --> 00:46:03,190
+So we might generate he hit,
+he struck, I was, I got.
+
+837
+00:46:03,190 --> 00:46:03,890
+OK.
+
+838
+00:46:03,890 --> 00:46:06,250
+So at this point,
+it sort of looks
+
+839
+00:46:06,250 --> 00:46:08,530
+like we're heading
+down what will
+
+840
+00:46:08,530 --> 00:46:13,210
+turn into an exponential
+size tree structure again.
+
+841
+00:46:13,210 --> 00:46:16,600
+But what we do
+now is we work out
+
+842
+00:46:16,600 --> 00:46:20,870
+the scores of each of
+these partial hypotheses.
+
+843
+00:46:20,870 --> 00:46:23,350
+So we have four
+partial hypotheses.
+
+844
+00:46:23,350 --> 00:46:24,760
+He hit, he struck.
+
+845
+00:46:24,760 --> 00:46:26,320
+I was, I got.
+
+846
+00:46:26,320 --> 00:46:31,300
+And we can do that by taking
+the previous score that we have
+
+847
+00:46:31,300 --> 00:46:33,790
+the partial
+hypothesis and adding
+
+848
+00:46:33,790 --> 00:46:38,380
+on the log probability of
+generating the next word here,
+
+849
+00:46:38,380 --> 00:46:39,700
+he, hit.
+
+850
+00:46:39,700 --> 00:46:43,040
+So this gives the scores
+for each hypothesis.
+
+851
+00:46:43,040 --> 00:46:47,470
+And then we can say, which of
+those two partial hypotheses?
+
+852
+00:46:47,470 --> 00:46:51,850
+Because our beam size, k equals
+2, have the highest score?
+
+853
+00:46:51,850 --> 00:46:55,660
+And so they are,
+I was, and he hit.
+
+854
+00:46:55,660 --> 00:46:59,930
+So we keep those two
+and ignore the rest.
+
+855
+00:46:59,930 --> 00:47:02,710
+And so then for
+those two, we are
+
+856
+00:47:02,710 --> 00:47:06,310
+going to generate k
+hypotheses for the most
+
+857
+00:47:06,310 --> 00:47:08,380
+likely following word.
+
+858
+00:47:08,380 --> 00:47:13,510
+He hit a, he hit me, I
+was hit, I was struck.
+
+859
+00:47:13,510 --> 00:47:20,230
+And again, now, we want to find
+the k most likely hypotheses
+
+860
+00:47:20,230 --> 00:47:21,970
+out of this full set.
+
+861
+00:47:21,970 --> 00:47:24,850
+And so that's going
+to be he struck me
+
+862
+00:47:24,850 --> 00:47:27,700
+and I was, I don't
+know, he struck me.
+
+863
+00:47:27,700 --> 00:47:30,040
+And he hit a.
+
+864
+00:47:30,040 --> 00:47:32,800
+So we keep just those ones.
+
+865
+00:47:32,800 --> 00:47:36,640
+And then for each of
+those, we generate
+
+866
+00:47:36,640 --> 00:47:42,550
+the k most likely next
+words tart, pie, with, on.
+
+867
+00:47:42,550 --> 00:47:47,780
+And then again, we filter
+back down to size k by saying,
+
+868
+00:47:47,780 --> 00:47:52,360
+OK, the two most likely
+things here are pie or with.
+
+869
+00:47:52,360 --> 00:47:57,460
+So we continue working on
+those, generate things,
+
+870
+00:47:57,460 --> 00:48:01,180
+find the two most
+likely, generate things,
+
+871
+00:48:01,180 --> 00:48:04,510
+find the two most likely.
+
+872
+00:48:04,510 --> 00:48:09,700
+And at this point, we would
+generate end of string.
+
+873
+00:48:09,700 --> 00:48:13,600
+And say, OK, we've got
+a complete hypothesis.
+
+874
+00:48:13,600 --> 00:48:17,500
+He struck me with a pie.
+
+875
+00:48:17,500 --> 00:48:22,990
+And we could then trace
+back through the tree
+
+876
+00:48:22,990 --> 00:48:27,940
+to obtain the full
+hypothesis for this sentence.
+
+877
+00:48:27,940 --> 00:48:30,330
+So that's most of the algorithm.
+
+878
+00:48:30,330 --> 00:48:35,410
+There's one more detail, which
+is the stopping criterion.
+
+879
+00:48:35,410 --> 00:48:39,600
+So in greedy
+decoding, we usually
+
+880
+00:48:39,600 --> 00:48:42,960
+decode until the model
+produces an end token.
+
+881
+00:48:42,960 --> 00:48:47,970
+And when it produces the end
+token, we say we are done.
+
+882
+00:48:47,970 --> 00:48:52,020
+In beam search decoding,
+different hypotheses
+
+883
+00:48:52,020 --> 00:48:56,050
+may produce end tokens
+on different time steps.
+
+884
+00:48:56,050 --> 00:48:59,670
+And so we don't
+want to stop as soon
+
+885
+00:48:59,670 --> 00:49:04,350
+as one path through the
+search tree has generated end.
+
+886
+00:49:04,350 --> 00:49:05,940
+Because it could
+turn out there's
+
+887
+00:49:05,940 --> 00:49:08,400
+a different path through
+the search tree, which
+
+888
+00:49:08,400 --> 00:49:11,170
+will still prove to be better.
+
+889
+00:49:11,170 --> 00:49:16,650
+So what we do is sort of put it
+aside as a complete hypothesis
+
+890
+00:49:16,650 --> 00:49:21,660
+and continue exploring other
+hypotheses via our beam search.
+
+891
+00:49:21,660 --> 00:49:25,710
+And so usually, we
+will then either stop
+
+892
+00:49:25,710 --> 00:49:32,550
+when we've hit a cut off
+length, or when we've completed
+
+893
+00:49:32,550 --> 00:49:36,550
+n complete hypotheses.
+
+894
+00:49:36,550 --> 00:49:41,460
+And then we'll look through the
+hypotheses that we've completed
+
+895
+00:49:41,460 --> 00:49:43,920
+and say which is the
+best one of those.
+
+896
+00:49:43,920 --> 00:49:47,680
+And that's the one we'll use.
+
+897
+00:49:47,680 --> 00:49:48,180
+OK.
+
+898
+00:49:48,180 --> 00:49:53,190
+So at that point, we have our
+list of completed hypotheses.
+
+899
+00:49:53,190 --> 00:49:57,510
+And we want to select the top
+one with the highest score.
+
+900
+00:49:57,510 --> 00:49:59,680
+Well, that's exactly what
+we've been computing.
+
+901
+00:49:59,680 --> 00:50:06,780
+Each one has a probability
+that we've worked out.
+
+902
+00:50:06,780 --> 00:50:08,820
+But it turns out that
+we might not want
+
+903
+00:50:08,820 --> 00:50:11,820
+to use that just so naively.
+
+904
+00:50:11,820 --> 00:50:15,670
+Because that turns out to be a
+kind of a systematic problem,
+
+905
+00:50:15,670 --> 00:50:18,540
+which is not as a theorem.
+
+906
+00:50:18,540 --> 00:50:23,290
+But in general, longer
+hypotheses have lower scores.
+
+907
+00:50:23,290 --> 00:50:26,850
+So if you think about this as
+probabilities of successively
+
+908
+00:50:26,850 --> 00:50:30,990
+generating each word, that
+basically at each step,
+
+909
+00:50:30,990 --> 00:50:34,290
+you're multiplying by
+another chance of generating
+
+910
+00:50:34,290 --> 00:50:37,290
+the next word probability,
+and commonly those
+
+911
+00:50:37,290 --> 00:50:40,830
+might be 10 to the minus
+3, 10 to the minus 2.
+
+912
+00:50:40,830 --> 00:50:43,380
+So just from the
+length of the sentence,
+
+913
+00:50:43,380 --> 00:50:46,150
+your probabilities are
+getting much lower the longer
+
+914
+00:50:46,150 --> 00:50:47,430
+that they go on.
+
+915
+00:50:47,430 --> 00:50:51,570
+In a way that appears to
+be unfair since although
+
+916
+00:50:51,570 --> 00:50:53,850
+in some sense extremely
+long sentences
+
+917
+00:50:53,850 --> 00:50:55,770
+aren't as likely as short ones.
+
+918
+00:50:55,770 --> 00:50:58,170
+They're not less
+likely by that much.
+
+919
+00:50:58,170 --> 00:51:01,630
+A lot of the time we
+produce long sentences.
+
+920
+00:51:01,630 --> 00:51:08,670
+So for example, in a newspaper,
+the median length of sentences
+
+921
+00:51:08,670 --> 00:51:10,020
+is over 20.
+
+922
+00:51:10,020 --> 00:51:13,170
+So you wouldn't want to
+be having a decoding model
+
+923
+00:51:13,170 --> 00:51:16,192
+when translating news
+articles that says,
+
+924
+00:51:16,192 --> 00:51:18,880
+huh, just generate
+two word sentences.
+
+925
+00:51:18,880 --> 00:51:20,520
+They're just way
+high probability
+
+926
+00:51:20,520 --> 00:51:22,810
+according to my language model.
+
+927
+00:51:22,810 --> 00:51:24,840
+So the commonest way
+of dealing with that
+
+928
+00:51:24,840 --> 00:51:28,750
+is that we normalize by length.
+
+929
+00:51:28,750 --> 00:51:30,960
+So if we're working
+in log probabilities,
+
+930
+00:51:30,960 --> 00:51:34,200
+that means taking
+dividing through
+
+931
+00:51:34,200 --> 00:51:35,880
+by the length of the sentence.
+
+932
+00:51:35,880 --> 00:51:40,890
+And then you have a per
+word log probability score.
+
+933
+00:51:40,890 --> 00:51:45,270
+And you can argue that
+this isn't quite right.
+
+934
+00:51:45,270 --> 00:51:47,340
+In some theoretical
+sense, but in practice
+
+935
+00:51:47,340 --> 00:51:52,050
+it works pretty well and
+it's very commonly used.
+
+936
+00:51:52,050 --> 00:51:58,180
+Neural translation has proven
+to be much, much better.
+
+937
+00:51:58,180 --> 00:51:59,730
+I'll show you a
+couple of statistics
+
+938
+00:51:59,730 --> 00:52:02,380
+and about that in a moment.
+
+939
+00:52:02,380 --> 00:52:05,100
+It has many advantages.
+
+940
+00:52:05,100 --> 00:52:07,170
+It gives better performance.
+
+941
+00:52:07,170 --> 00:52:09,150
+The translations are better.
+
+942
+00:52:09,150 --> 00:52:12,030
+In particular,
+they're more fluent
+
+943
+00:52:12,030 --> 00:52:15,210
+because neural language
+models produce much more
+
+944
+00:52:15,210 --> 00:52:17,100
+fluent sentences.
+
+945
+00:52:17,100 --> 00:52:21,570
+But also, they much
+better use context
+
+946
+00:52:21,570 --> 00:52:24,600
+because neural language
+models, including
+
+947
+00:52:24,600 --> 00:52:27,210
+conditional neural
+language models
+
+948
+00:52:27,210 --> 00:52:29,910
+give us a very good
+way of conditioning
+
+949
+00:52:29,910 --> 00:52:31,110
+on a lot of contexts.
+
+950
+00:52:31,110 --> 00:52:35,970
+In particular, we can just run
+a long encoder and condition
+
+951
+00:52:35,970 --> 00:52:40,140
+on the previous sentence,
+or we can translate words
+
+952
+00:52:40,140 --> 00:52:44,730
+well in context by making
+use of neural context.
+
+953
+00:52:44,730 --> 00:52:50,010
+Neural models better understand
+phrase similarities and phrases
+
+954
+00:52:50,010 --> 00:52:54,010
+that mean approximately
+the same thing.
+
+955
+00:52:54,010 --> 00:52:59,050
+And then the technique of
+optimizing all parameters
+
+956
+00:52:59,050 --> 00:53:03,310
+of the model end to end in a
+single large neural network
+
+957
+00:53:03,310 --> 00:53:06,980
+has just proved to be
+a really powerful idea.
+
+958
+00:53:06,980 --> 00:53:09,670
+So previously, a
+lot of the time,
+
+959
+00:53:09,670 --> 00:53:12,940
+people were building
+separate components
+
+960
+00:53:12,940 --> 00:53:15,070
+and tuning them
+individually, which
+
+961
+00:53:15,070 --> 00:53:17,620
+just meant that they weren't
+actually optimal when
+
+962
+00:53:17,620 --> 00:53:20,450
+put into a much bigger system.
+
+963
+00:53:20,450 --> 00:53:25,150
+So really a hugely
+powerful guiding idea
+
+964
+00:53:25,150 --> 00:53:26,860
+in neural network land
+
+965
+00:53:26,860 --> 00:53:29,350
+is if you can sort of
+build one huge network,
+
+966
+00:53:29,350 --> 00:53:32,170
+and just optimize the
+entire thing end to end,
+
+967
+00:53:32,170 --> 00:53:34,300
+that will give you
+much better performance
+
+968
+00:53:34,300 --> 00:53:36,910
+than component-wise systems.
+
+969
+00:53:36,910 --> 00:53:42,430
+We'll come back to the costs
+of that later in the course.
+
+970
+00:53:42,430 --> 00:53:44,980
+The models are also actually
+great in other ways.
+
+971
+00:53:44,980 --> 00:53:48,400
+They actually require much
+less human effort to build.
+
+972
+00:53:48,400 --> 00:53:51,100
+There's no feature engineering.
+
+973
+00:53:51,100 --> 00:53:55,090
+There's in general, no
+language specific components.
+
+974
+00:53:55,090 --> 00:53:59,050
+You're using the same method
+for all language pairs.
+
+975
+00:53:59,050 --> 00:54:03,370
+Of course, it's rare for things
+to be perfect in every way.
+
+976
+00:54:03,370 --> 00:54:05,740
+So neural machine
+translation systems
+
+977
+00:54:05,740 --> 00:54:08,740
+also have some
+disadvantages compared
+
+978
+00:54:08,740 --> 00:54:12,910
+to the older statistical
+machine translation systems.
+
+979
+00:54:12,910 --> 00:54:14,570
+They're less interpretable.
+
+980
+00:54:14,570 --> 00:54:17,770
+It's harder to see why they're
+doing what they're doing,
+
+981
+00:54:17,770 --> 00:54:20,320
+where before you could
+actually look at phrase tables
+
+982
+00:54:20,320 --> 00:54:22,070
+and they were useful.
+
+983
+00:54:22,070 --> 00:54:23,830
+So they're hard to debug.
+
+984
+00:54:23,830 --> 00:54:28,070
+They also tend to be sort
+of difficult to control.
+
+985
+00:54:28,070 --> 00:54:32,380
+So compared to anything
+like writing rules,
+
+986
+00:54:32,380 --> 00:54:34,735
+you can't really give
+much specification
+
+987
+00:54:34,735 --> 00:54:39,430
+as if you like to say I'd like
+my translations to be more
+
+988
+00:54:39,430 --> 00:54:41,990
+casual or something like that.
+
+989
+00:54:41,990 --> 00:54:44,020
+It's hard to know
+what they'll generate.
+
+990
+00:54:44,020 --> 00:54:45,955
+So there are various
+safety concerns.
+
+991
+00:54:45,955 --> 00:54:49,000
+
+
+992
+00:54:49,000 --> 00:54:52,490
+I'll show a few examples
+of that in just a minute.
+
+993
+00:54:52,490 --> 00:54:56,770
+But first, before doing
+that, quickly how do we
+
+994
+00:54:56,770 --> 00:54:59,770
+evaluate machine translation?
+
+995
+00:54:59,770 --> 00:55:03,010
+The best way to evaluate
+machine translation
+
+996
+00:55:03,010 --> 00:55:08,320
+is to show a human being who's
+fluent in the source and target
+
+997
+00:55:08,320 --> 00:55:13,390
+languages the sentences, and
+get them to give judgment on how
+
+998
+00:55:13,390 --> 00:55:15,940
+good a translation it is.
+
+999
+00:55:15,940 --> 00:55:20,470
+But that's expensive to
+do, and might not even
+
+1000
+00:55:20,470 --> 00:55:23,650
+be possible if you don't have
+the right human beings around.
+
+1001
+00:55:23,650 --> 00:55:26,020
+So a lot of work
+was put into finding
+
+1002
+00:55:26,020 --> 00:55:29,680
+automatic methods of
+scoring translations that
+
+1003
+00:55:29,680 --> 00:55:30,940
+were good enough.
+
+1004
+00:55:30,940 --> 00:55:33,280
+And the most famous
+method of doing that
+
+1005
+00:55:33,280 --> 00:55:35,470
+is what's called BLEU.
+
+1006
+00:55:35,470 --> 00:55:39,700
+And the way you do
+BLEU is you have
+
+1007
+00:55:39,700 --> 00:55:43,720
+a human translation or
+several human translations
+
+1008
+00:55:43,720 --> 00:55:47,980
+of the source sentence, and
+you're comparing a machine
+
+1009
+00:55:47,980 --> 00:55:52,270
+generated translation to
+those pre-given human written
+
+1010
+00:55:52,270 --> 00:55:53,680
+translations.
+
+1011
+00:55:53,680 --> 00:55:56,440
+And you score them
+for similarity
+
+1012
+00:55:56,440 --> 00:56:00,880
+by calculating n-gram
+precisions, i.e., words
+
+1013
+00:56:00,880 --> 00:56:04,630
+that overlap between the
+computer and human reason
+
+1014
+00:56:04,630 --> 00:56:08,710
+translation, bi-grams,
+tri-grams, and 4-grams.
+
+1015
+00:56:08,710 --> 00:56:13,240
+And then working out
+a geometric average
+
+1016
+00:56:13,240 --> 00:56:16,600
+between overlaps of
+n-grams, plus there's
+
+1017
+00:56:16,600 --> 00:56:20,120
+a penalty for too short
+system translations.
+
+1018
+00:56:20,120 --> 00:56:24,370
+So BLEU has proven to be
+a really useful measure.
+
+1019
+00:56:24,370 --> 00:56:25,930
+But it's an imperfect measure.
+
+1020
+00:56:25,930 --> 00:56:28,060
+That commonly there
+are many valid ways
+
+1021
+00:56:28,060 --> 00:56:29,800
+to translate a sentence.
+
+1022
+00:56:29,800 --> 00:56:33,700
+And so there's some
+luck as to whether
+
+1023
+00:56:33,700 --> 00:56:37,510
+the human written
+translations you have happened
+
+1024
+00:56:37,510 --> 00:56:39,940
+to correspond to
+which what might
+
+1025
+00:56:39,940 --> 00:56:43,450
+be a good translation
+from the system.
+
+1026
+00:56:43,450 --> 00:56:47,350
+There's more to say
+about the details of BLEU
+
+1027
+00:56:47,350 --> 00:56:49,150
+and how it's implemented.
+
+1028
+00:56:49,150 --> 00:56:52,870
+That you're going to see all
+of that during assignment 4,
+
+1029
+00:56:52,870 --> 00:56:57,040
+because you will be building
+neural machine translation
+
+1030
+00:56:57,040 --> 00:57:01,870
+systems, and evaluating
+them with a BLEU algorithm.
+
+1031
+00:57:01,870 --> 00:57:07,000
+And there are full details about
+BLEU in the assignment handout.
+
+1032
+00:57:07,000 --> 00:57:12,520
+But at the end of the day, BLEU
+gives a score between 0 and 100
+
+1033
+00:57:12,520 --> 00:57:15,170
+where your score is 100.
+
+1034
+00:57:15,170 --> 00:57:17,860
+If you are exactly producing
+one of the human written
+
+1035
+00:57:17,860 --> 00:57:22,930
+translations, and 0 if there's
+not even a single unigram that
+
+1036
+00:57:22,930 --> 00:57:26,200
+overlaps between the two,
+
+1037
+00:57:26,200 --> 00:57:29,200
+With that rather
+brief intro, I wanted
+
+1038
+00:57:29,200 --> 00:57:32,080
+to show you sort
+of what happened
+
+1039
+00:57:32,080 --> 00:57:35,360
+in machine translation.
+
+1040
+00:57:35,360 --> 00:57:39,160
+So machine translation
+with statistical models,
+
+1041
+00:57:39,160 --> 00:57:41,470
+phrase-based statistical
+machine translation
+
+1042
+00:57:41,470 --> 00:57:43,720
+that I showed at the
+beginning of the class
+
+1043
+00:57:43,720 --> 00:57:48,370
+had been going on since
+the mid 2000s decade.
+
+1044
+00:57:48,370 --> 00:57:52,120
+And it had produced sort
+of semi-good results
+
+1045
+00:57:52,120 --> 00:57:55,060
+of the kind that are in Google
+Translate in those days.
+
+1046
+00:57:55,060 --> 00:58:00,887
+But by the time you entered
+the 2010s, basically progress
+
+1047
+00:58:00,887 --> 00:58:06,940
+in statistical machine
+translation had stalled.
+
+1048
+00:58:06,940 --> 00:58:11,030
+And you were getting barely
+any increase over time.
+
+1049
+00:58:11,030 --> 00:58:14,710
+And most of the increase
+you were getting over time
+
+1050
+00:58:14,710 --> 00:58:17,170
+was simply because you're
+training your models
+
+1051
+00:58:17,170 --> 00:58:19,360
+on more data.
+
+1052
+00:58:19,360 --> 00:58:25,900
+In those years, around
+the early 2010s,
+
+1053
+00:58:25,900 --> 00:58:30,070
+the big hope that
+most people had.
+
+1054
+00:58:30,070 --> 00:58:31,870
+Someone asked what
+is the y-axis here,
+
+1055
+00:58:31,870 --> 00:58:34,450
+this y-axis is this BLEU
+score that I told you
+
+1056
+00:58:34,450 --> 00:58:36,760
+about on the previous slide.
+
+1057
+00:58:36,760 --> 00:58:41,470
+In the early 2010s, the big hope
+that most people in the machine
+
+1058
+00:58:41,470 --> 00:58:46,180
+translation field had was, well,
+if we built a more complex kind
+
+1059
+00:58:46,180 --> 00:58:48,100
+of machine
+translation model that
+
+1060
+00:58:48,100 --> 00:58:51,940
+knows about the syntactic
+structure of languages, that
+
+1061
+00:58:51,940 --> 00:58:55,000
+makes use of tools like
+dependency parsers,
+
+1062
+00:58:55,000 --> 00:58:58,010
+we'll be able to build
+much better translations.
+
+1063
+00:58:58,010 --> 00:59:00,980
+And so those are the
+purple systems here,
+
+1064
+00:59:00,980 --> 00:59:03,520
+which I haven't
+described at all.
+
+1065
+00:59:03,520 --> 00:59:09,490
+But it's as the years went
+by it was pretty obvious that
+
+1066
+00:59:09,490 --> 00:59:12,490
+barely seemed to help.
+
+1067
+00:59:12,490 --> 00:59:19,360
+And so then in the
+mid 2010s, so in 2014
+
+1068
+00:59:19,360 --> 00:59:23,350
+was the first modern attempt
+to build a neural network
+
+1069
+00:59:23,350 --> 00:59:27,400
+from machine translations
+and encoded-decoder model.
+
+1070
+00:59:27,400 --> 00:59:32,200
+And by the time it was sort of
+evaluated in bake offs in 2015,
+
+1071
+00:59:32,200 --> 00:59:34,240
+it wasn't as good as
+what had been built up
+
+1072
+00:59:34,240 --> 00:59:36,370
+over the preceding decade.
+
+1073
+00:59:36,370 --> 00:59:38,570
+But it was already
+getting pretty good.
+
+1074
+00:59:38,570 --> 00:59:42,460
+But what was found was
+that these new models just
+
+1075
+00:59:42,460 --> 00:59:45,790
+really opened up a
+whole new pathway
+
+1076
+00:59:45,790 --> 00:59:48,820
+to start building much, much
+better machine translation
+
+1077
+00:59:48,820 --> 00:59:49,880
+systems.
+
+1078
+00:59:49,880 --> 00:59:53,290
+And since then, things have
+just sort of taken off.
+
+1079
+00:59:53,290 --> 00:59:56,980
+And year by year, neural
+machine translation systems
+
+1080
+00:59:56,980 --> 00:59:59,530
+are getting much
+better and far better
+
+1081
+00:59:59,530 --> 01:00:02,650
+than anything we
+had preceding that.
+
+1082
+01:00:02,650 --> 01:00:08,910
+So for at least the early
+part of the application
+
+1083
+01:00:08,910 --> 01:00:12,630
+of deep learning and
+natural language processing,
+
+1084
+01:00:12,630 --> 01:00:18,030
+neural machine translation was
+the huge big success story.
+
+1085
+01:00:18,030 --> 01:00:21,060
+In the last few
+years, when we've had
+
+1086
+01:00:21,060 --> 01:00:26,310
+models like GPT2 and GPT3,
+and other huge neural models
+
+1087
+01:00:26,310 --> 01:00:30,840
+like BERT improving web search.
+
+1088
+01:00:30,840 --> 01:00:32,490
+It's a bit more complex.
+
+1089
+01:00:32,490 --> 01:00:34,980
+But this was the
+first area where
+
+1090
+01:00:34,980 --> 01:00:37,530
+there was a neural
+network, which
+
+1091
+01:00:37,530 --> 01:00:42,600
+was hugely better than what
+had preceded, and was actually
+
+1092
+01:00:42,600 --> 01:00:46,800
+solving a practical problem
+that lots of people in the world
+
+1093
+01:00:46,800 --> 01:00:48,300
+need.
+
+1094
+01:00:48,300 --> 01:00:51,990
+And it was stunning
+with the speed
+
+1095
+01:00:51,990 --> 01:00:54,640
+at which success was achieved.
+
+1096
+01:00:54,640 --> 01:01:00,000
+So 2014 were the
+first what I call
+
+1097
+01:01:00,000 --> 01:01:03,780
+here fringe research attempts
+to build a neural machine
+
+1098
+01:01:03,780 --> 01:01:05,440
+translation system.
+
+1099
+01:01:05,440 --> 01:01:09,120
+Meaning that three
+or four people who
+
+1100
+01:01:09,120 --> 01:01:11,640
+are working on
+neural network models
+
+1101
+01:01:11,640 --> 01:01:14,220
+thought, oh, why don't we see
+if we can use one of these
+
+1102
+01:01:14,220 --> 01:01:17,910
+to translate, learn to translate
+sentences, where there weren't
+
+1103
+01:01:17,910 --> 01:01:21,240
+really people with a background
+in machine translation at all?
+
+1104
+01:01:21,240 --> 01:01:26,100
+But a success was
+achieved so quickly
+
+1105
+01:01:26,100 --> 01:01:29,640
+that within two
+years' time, Google
+
+1106
+01:01:29,640 --> 01:01:35,070
+had switched to using neural
+machine translation for most
+
+1107
+01:01:35,070 --> 01:01:36,180
+languages.
+
+1108
+01:01:36,180 --> 01:01:39,120
+And by a couple of
+years later, after that,
+
+1109
+01:01:39,120 --> 01:01:42,390
+essentially anybody who
+does machine translation
+
+1110
+01:01:42,390 --> 01:01:47,400
+is now deploying live neural
+machine translation systems
+
+1111
+01:01:47,400 --> 01:01:50,890
+and getting much,
+much better results.
+
+1112
+01:01:50,890 --> 01:01:52,650
+So that was sort
+of just an amazing
+
+1113
+01:01:52,650 --> 01:01:57,390
+technological transition that
+for the preceding decade,
+
+1114
+01:01:57,390 --> 01:01:59,610
+the big statistical
+machine translation
+
+1115
+01:01:59,610 --> 01:02:02,910
+systems like the previous
+generation of Google Translate
+
+1116
+01:02:02,910 --> 01:02:05,160
+had literally been
+built up by hundreds
+
+1117
+01:02:05,160 --> 01:02:08,310
+of engineers over the years.
+
+1118
+01:02:08,310 --> 01:02:15,150
+But a comparatively small
+group of deep learning people
+
+1119
+01:02:15,150 --> 01:02:18,997
+in a few months with a
+small amount of code.
+
+1120
+01:02:18,997 --> 01:02:20,580
+And hopefully, you'll
+even get a sense
+
+1121
+01:02:20,580 --> 01:02:25,020
+of this doing assignment 4, were
+able to build neural machine
+
+1122
+01:02:25,020 --> 01:02:30,360
+translation systems that
+proved to work much better.
+
+1123
+01:02:30,360 --> 01:02:33,420
+Does that mean that machine
+translation is solved?
+
+1124
+01:02:33,420 --> 01:02:34,680
+No.
+
+1125
+01:02:34,680 --> 01:02:36,360
+There are still
+lots of difficulties
+
+1126
+01:02:36,360 --> 01:02:40,170
+which people continue to
+work on very actively.
+
+1127
+01:02:40,170 --> 01:02:43,440
+And you can see more about it in
+the Skynet Today article that's
+
+1128
+01:02:43,440 --> 01:02:45,000
+linked at the bottom.
+
+1129
+01:02:45,000 --> 01:02:49,010
+But there are lots of problems
+with out of vocabulary words.
+
+1130
+01:02:49,010 --> 01:02:52,110
+There are domain mismatches
+between the training and test
+
+1131
+01:02:52,110 --> 01:02:52,990
+data.
+
+1132
+01:02:52,990 --> 01:02:55,680
+So it might be trained
+mainly on news wire data
+
+1133
+01:02:55,680 --> 01:03:00,720
+but you want to translate
+people's Facebook messages.
+
+1134
+01:03:00,720 --> 01:03:03,360
+There are still problems
+of maintaining context
+
+1135
+01:03:03,360 --> 01:03:04,830
+over longer text.
+
+1136
+01:03:04,830 --> 01:03:08,280
+We'd like to translate
+languages for which we
+
+1137
+01:03:08,280 --> 01:03:10,020
+don't have much data.
+
+1138
+01:03:10,020 --> 01:03:13,920
+And so these methods work
+by far the best when we have
+
+1139
+01:03:13,920 --> 01:03:17,460
+huge amounts of parallel data.
+
+1140
+01:03:17,460 --> 01:03:21,450
+Even our best
+multilayer LSTMs aren't
+
+1141
+01:03:21,450 --> 01:03:24,570
+that great of capturing
+sentence meaning.
+
+1142
+01:03:24,570 --> 01:03:28,110
+There are particular
+problems such as interpreting
+
+1143
+01:03:28,110 --> 01:03:31,170
+what pronouns refer
+to, or in languages
+
+1144
+01:03:31,170 --> 01:03:36,270
+like Chinese or Japanese,
+where there's often no pronoun
+
+1145
+01:03:36,270 --> 01:03:36,780
+present.
+
+1146
+01:03:36,780 --> 01:03:38,520
+But there is an
+implied reference
+
+1147
+01:03:38,520 --> 01:03:41,850
+to some person working
+out how to translate that.
+
+1148
+01:03:41,850 --> 01:03:46,840
+For languages that have lots
+of inflectional forms of nouns,
+
+1149
+01:03:46,840 --> 01:03:47,820
+verbs, and adjectives.
+
+1150
+01:03:47,820 --> 01:03:49,800
+These systems often
+get them wrong.
+
+1151
+01:03:49,800 --> 01:03:53,010
+So there's still
+tons of stuff to do.
+
+1152
+01:03:53,010 --> 01:03:57,060
+So here's just sort of quick
+funny examples of the kind
+
+1153
+01:03:57,060 --> 01:03:58,970
+of things that go wrong, right?
+
+1154
+01:03:58,970 --> 01:04:04,170
+So if you asked to
+translate paper jam.
+
+1155
+01:04:04,170 --> 01:04:06,510
+Google Translate is
+deciding that this is
+
+1156
+01:04:06,510 --> 01:04:10,170
+a kind of jam just like this.
+
+1157
+01:04:10,170 --> 01:04:14,250
+Raspberry jam and
+strawberry jam.
+
+1158
+01:04:14,250 --> 01:04:18,570
+And so this becomes
+a jam of paper.
+
+1159
+01:04:18,570 --> 01:04:24,100
+There are problems of
+agreement and choice.
+
+1160
+01:04:24,100 --> 01:04:28,960
+So if you have many languages
+don't distinguish gender.
+
+1161
+01:04:28,960 --> 01:04:34,770
+And so the sentences are
+neutral between things masculine
+
+1162
+01:04:34,770 --> 01:04:37,710
+or feminine, so Malay,
+or Turkish are two well
+
+1163
+01:04:37,710 --> 01:04:40,200
+known languages of that sort.
+
+1164
+01:04:40,200 --> 01:04:43,350
+But what happens when that
+gets translated into English
+
+1165
+01:04:43,350 --> 01:04:48,210
+by Google Translate is
+that the English language
+
+1166
+01:04:48,210 --> 01:04:52,350
+model just kicks in and
+applies stereotypical biases.
+
+1167
+01:04:52,350 --> 01:04:57,060
+And so these gender neutral
+sentences get translated into,
+
+1168
+01:04:57,060 --> 01:04:58,680
+she works as a nurse.
+
+1169
+01:04:58,680 --> 01:05:00,600
+He works as a programmer.
+
+1170
+01:05:00,600 --> 01:05:04,260
+So if you want to help solve
+this problem, all of you
+
+1171
+01:05:04,260 --> 01:05:08,910
+can help by using singular
+they in all contexts when
+
+1172
+01:05:08,910 --> 01:05:11,400
+you're putting material online.
+
+1173
+01:05:11,400 --> 01:05:13,320
+And that could then
+change the distribution
+
+1174
+01:05:13,320 --> 01:05:14,940
+of what's generated.
+
+1175
+01:05:14,940 --> 01:05:18,570
+And people also work on
+modeling improvements
+
+1176
+01:05:18,570 --> 01:05:20,520
+to try and avoid this.
+
+1177
+01:05:20,520 --> 01:05:25,770
+Here's one more example
+that's kind of funny.
+
+1178
+01:05:25,770 --> 01:05:29,700
+People noticed a
+couple of years ago.
+
+1179
+01:05:29,700 --> 01:05:34,290
+That if you choose one
+of the rarer languages
+
+1180
+01:05:34,290 --> 01:05:40,140
+that Google will
+translate such as Somali,
+
+1181
+01:05:40,140 --> 01:05:45,900
+and you just write in some
+rubbish like ag ag ag ag.
+
+1182
+01:05:45,900 --> 01:05:50,910
+Freakily, it had produced out of
+nowhere prophetic and biblical
+
+1183
+01:05:50,910 --> 01:05:53,400
+texts, as the name
+of the Lord was
+
+1184
+01:05:53,400 --> 01:05:54,840
+written in the Hebrew language.
+
+1185
+01:05:54,840 --> 01:05:57,960
+It was written in the
+language of the Hebrew nation,
+
+1186
+01:05:57,960 --> 01:06:01,740
+which makes no sense at all.
+
+1187
+01:06:01,740 --> 01:06:06,450
+Well, we're about to see a bit
+more about why this happens.
+
+1188
+01:06:06,450 --> 01:06:11,160
+But that was a bit worrying.
+
+1189
+01:06:11,160 --> 01:06:14,370
+As far as I can see, this
+problem is now fixed in 2021.
+
+1190
+01:06:14,370 --> 01:06:17,280
+I couldn't actually get
+Google Translate to generate
+
+1191
+01:06:17,280 --> 01:06:21,830
+examples like this anymore.
+
+1192
+01:06:21,830 --> 01:06:27,120
+So there are lots of ways
+to keep on doing research.
+
+1193
+01:06:27,120 --> 01:06:33,110
+NMT certainly is a flagship
+task for NLP and deep learning.
+
+1194
+01:06:33,110 --> 01:06:37,100
+And it was a place where
+many of the innovations
+
+1195
+01:06:37,100 --> 01:06:41,330
+of deep learning
+NLP were pioneered,
+
+1196
+01:06:41,330 --> 01:06:43,500
+and people continue
+to work hard on it,
+
+1197
+01:06:43,500 --> 01:06:47,060
+people have found many,
+many improvements.
+
+1198
+01:06:47,060 --> 01:06:50,810
+And actually for the last bit
+of the class and the minute
+
+1199
+01:06:50,810 --> 01:06:54,470
+I'm going to present one
+huge improvement, which
+
+1200
+01:06:54,470 --> 01:06:56,840
+is so important that
+it's really come
+
+1201
+01:06:56,840 --> 01:07:02,800
+to dominate the whole of the
+recent field of neural networks
+
+1202
+01:07:02,800 --> 01:07:03,920
+for NLP.
+
+1203
+01:07:03,920 --> 01:07:06,440
+And that's the
+idea of attention.
+
+1204
+01:07:06,440 --> 01:07:08,900
+But before I get
+onto attention, I
+
+1205
+01:07:08,900 --> 01:07:14,000
+want to spend three minutes
+on our assignment 4.
+
+1206
+01:07:14,000 --> 01:07:16,790
+So for assignment
+4 this year, we've
+
+1207
+01:07:16,790 --> 01:07:21,020
+got a new version of
+the assignment, which
+
+1208
+01:07:21,020 --> 01:07:22,910
+we hope will be interesting.
+
+1209
+01:07:22,910 --> 01:07:25,140
+But it's also a real challenge.
+
+1210
+01:07:25,140 --> 01:07:27,980
+So for assignment
+4 this year, we've
+
+1211
+01:07:27,980 --> 01:07:32,280
+decided to do Cherokee
+English machine translation.
+
+1212
+01:07:32,280 --> 01:07:35,600
+So Cherokee is an endangered
+Native American language that
+
+1213
+01:07:35,600 --> 01:07:38,690
+has about 2000 fluent speakers.
+
+1214
+01:07:38,690 --> 01:07:41,630
+It's an extremely low
+resource language.
+
+1215
+01:07:41,630 --> 01:07:44,690
+So it's just there
+isn't much written
+
+1216
+01:07:44,690 --> 01:07:47,330
+Cherokee data available period.
+
+1217
+01:07:47,330 --> 01:07:51,800
+And particularly, there's not
+a lot of parallel sentences
+
+1218
+01:07:51,800 --> 01:07:54,080
+between Cherokee and English.
+
+1219
+01:07:54,080 --> 01:07:58,880
+And here's the answer to
+Google's freaky prophetic
+
+1220
+01:07:58,880 --> 01:08:00,380
+translations.
+
+1221
+01:08:00,380 --> 01:08:05,480
+For languages for which there
+isn't much parallel data
+
+1222
+01:08:05,480 --> 01:08:09,380
+available, commonly
+the biggest place
+
+1223
+01:08:09,380 --> 01:08:14,640
+where you can get parallel data
+is from Bible translations.
+
+1224
+01:08:14,640 --> 01:08:18,319
+So you can have your
+own personal choice
+
+1225
+01:08:18,319 --> 01:08:21,770
+wherever it is over
+the map as to where you
+
+1226
+01:08:21,770 --> 01:08:23,880
+stand with respect to religion.
+
+1227
+01:08:23,880 --> 01:08:25,970
+But the fact of the
+matter is if you
+
+1228
+01:08:25,970 --> 01:08:30,830
+work on indigenous languages,
+what you very, very quickly
+
+1229
+01:08:30,830 --> 01:08:35,810
+find is that a lot of the work
+that's done on collecting data
+
+1230
+01:08:35,810 --> 01:08:39,290
+on indigenous languages, and
+a lot of the material that
+
+1231
+01:08:39,290 --> 01:08:43,490
+is available in written form
+for many indigenous languages
+
+1232
+01:08:43,490 --> 01:08:46,859
+is Bible translations.
+
+1233
+01:08:46,859 --> 01:08:47,560
+Yeah.
+
+1234
+01:08:47,560 --> 01:08:48,060
+OK.
+
+1235
+01:08:48,060 --> 01:08:53,040
+So this is what
+Cherokee looks like.
+
+1236
+01:08:53,040 --> 01:08:57,500
+And so you can see that the
+writing system has a mixture
+
+1237
+01:08:57,500 --> 01:09:02,060
+of things that look like English
+letters and then all sorts
+
+1238
+01:09:02,060 --> 01:09:03,750
+of letters that don't.
+
+1239
+01:09:03,750 --> 01:09:06,740
+And so here's the
+initial bit of a story
+
+1240
+01:09:06,740 --> 01:09:09,439
+long ago where
+seven boys who used
+
+1241
+01:09:09,439 --> 01:09:12,080
+to spend all their time
+down by the townhouse.
+
+1242
+01:09:12,080 --> 01:09:16,470
+So this is a piece of parallel
+data that we can learn from.
+
+1243
+01:09:16,470 --> 01:09:21,080
+So the Cherokee writing
+system has 85 letters.
+
+1244
+01:09:21,080 --> 01:09:23,870
+And the reason why it
+has so many letters
+
+1245
+01:09:23,870 --> 01:09:28,439
+is that each of these letters
+actually represents a syllable.
+
+1246
+01:09:28,439 --> 01:09:31,790
+So many languages
+of the world have
+
+1247
+01:09:31,790 --> 01:09:35,100
+strict consonant vowel
+syllable structure.
+
+1248
+01:09:35,100 --> 01:09:37,490
+So you have words
+like right up here
+
+1249
+01:09:37,490 --> 01:09:42,859
+or something like that
+for Cherokee, right?
+
+1250
+01:09:42,859 --> 01:09:46,670
+And another language
+like that's Hawaiian.
+
+1251
+01:09:46,670 --> 01:09:50,270
+And so each of the letters
+represents a combination
+
+1252
+01:09:50,270 --> 01:09:52,279
+of a consonant and a vowel.
+
+1253
+01:09:52,279 --> 01:09:56,240
+And that's the set of those.
+
+1254
+01:09:56,240 --> 01:10:01,710
+You then get 17 by 5
+gives you 85 letters.
+
+1255
+01:10:01,710 --> 01:10:03,740
+Yeah, so being able
+to do this assignment.
+
+1256
+01:10:03,740 --> 01:10:06,380
+Big thanks to people
+from University
+
+1257
+01:10:06,380 --> 01:10:11,810
+of North Carolina, Chapel Hill
+who've provided the resources
+
+1258
+01:10:11,810 --> 01:10:14,900
+were using for this assignment.
+
+1259
+01:10:14,900 --> 01:10:17,330
+Although you can do
+quite a lot of languages
+
+1260
+01:10:17,330 --> 01:10:19,010
+on Google Translate.
+
+1261
+01:10:19,010 --> 01:10:21,620
+Cherokee is not a
+language that Google
+
+1262
+01:10:21,620 --> 01:10:23,270
+offers on Google Translate.
+
+1263
+01:10:23,270 --> 01:10:26,660
+So we can see how
+far we can get.
+
+1264
+01:10:26,660 --> 01:10:29,000
+But we have to be modest
+in our expectations
+
+1265
+01:10:29,000 --> 01:10:31,730
+because it's hard to
+build a very good MT
+
+1266
+01:10:31,730 --> 01:10:35,730
+system with only a fairly
+limited amount of data.
+
+1267
+01:10:35,730 --> 01:10:38,030
+So we'll see how far we can get.
+
+1268
+01:10:38,030 --> 01:10:41,030
+There is a flipside, which
+is for you students doing
+
+1269
+01:10:41,030 --> 01:10:42,650
+the assignment.
+
+1270
+01:10:42,650 --> 01:10:45,230
+The advantage of having
+not too much data
+
+1271
+01:10:45,230 --> 01:10:48,330
+is that your models will
+train relatively quickly.
+
+1272
+01:10:48,330 --> 01:10:50,270
+So we'll actually
+have less trouble
+
+1273
+01:10:50,270 --> 01:10:53,960
+than we did last year with
+people's models taking hours
+
+1274
+01:10:53,960 --> 01:10:59,210
+to train as the assignment
+deadline closed in.
+
+1275
+01:10:59,210 --> 01:11:01,910
+There's a couple more
+words about Cherokee.
+
+1276
+01:11:01,910 --> 01:11:04,860
+So we have some idea
+what we're talking about.
+
+1277
+01:11:04,860 --> 01:11:09,650
+So the Cherokee originally
+lived in Western North Carolina
+
+1278
+01:11:09,650 --> 01:11:13,520
+and Eastern Tennessee.
+
+1279
+01:11:13,520 --> 01:11:18,470
+They then sort of got
+shunted Southwest from that.
+
+1280
+01:11:18,470 --> 01:11:22,260
+And then in particular,
+for those of you who
+
+1281
+01:11:22,260 --> 01:11:26,340
+went to American high
+schools and paid attention,
+
+1282
+01:11:26,340 --> 01:11:30,180
+you might remember discussion
+of the Trail of Tears
+
+1283
+01:11:30,180 --> 01:11:32,010
+when a lot of the
+Native Americans
+
+1284
+01:11:32,010 --> 01:11:35,430
+from the Southeast of
+the US got forcibly
+
+1285
+01:11:35,430 --> 01:11:39,120
+shoved a long way further West.
+
+1286
+01:11:39,120 --> 01:11:43,640
+And so most Cherokee
+now live in Oklahoma.
+
+1287
+01:11:43,640 --> 01:11:47,490
+There are some that
+are in North Carolina.
+
+1288
+01:11:47,490 --> 01:11:51,540
+The writing system that I
+showed on this previous slide,
+
+1289
+01:11:51,540 --> 01:11:56,370
+it was invented by a
+Cherokee man, Sequoyah.
+
+1290
+01:11:56,370 --> 01:11:59,430
+That's a drawing of him there.
+
+1291
+01:11:59,430 --> 01:12:02,680
+And that was actually kind
+of an incredible thing.
+
+1292
+01:12:02,680 --> 01:12:07,830
+So he started off
+illiterate and worked
+
+1293
+01:12:07,830 --> 01:12:12,990
+out how to produce a
+writing system that
+
+1294
+01:12:12,990 --> 01:12:16,170
+would be good for Cherokee.
+
+1295
+01:12:16,170 --> 01:12:19,260
+And given that it has this
+consonant-vowel structure,
+
+1296
+01:12:19,260 --> 01:12:24,570
+he chose a syllabary which
+turned out to be a good choice.
+
+1297
+01:12:24,570 --> 01:12:27,270
+So here's a neat
+historical fact.
+
+1298
+01:12:27,270 --> 01:12:32,580
+So in the 1830s and
+1840s, the percentage
+
+1299
+01:12:32,580 --> 01:12:38,790
+of Cherokee that were literate
+in Cherokee written like this
+
+1300
+01:12:38,790 --> 01:12:42,090
+was actually higher than the
+percentage of white people
+
+1301
+01:12:42,090 --> 01:12:46,950
+in the southeastern United
+States at that point in time.
+
+1302
+01:12:46,950 --> 01:12:48,480
+OK.
+
+1303
+01:12:48,480 --> 01:12:53,220
+Before time disappears, oops,
+time has almost disappeared.
+
+1304
+01:12:53,220 --> 01:12:55,710
+I was just starting
+to say, oh no, I'll
+
+1305
+01:12:55,710 --> 01:12:58,050
+have to do a bit more of this.
+
+1306
+01:12:58,050 --> 01:13:00,030
+We'll have to do a bit
+more of this next time.
+
+1307
+01:13:00,030 --> 01:13:01,290
+That'll be OK, right?
+
+1308
+01:13:01,290 --> 01:13:05,820
+So the final idea that's
+really important for sequence
+
+1309
+01:13:05,820 --> 01:13:09,780
+to sequence models is
+the idea of attention.
+
+1310
+01:13:09,780 --> 01:13:15,750
+And so we had this
+model of doing sequence
+
+1311
+01:13:15,750 --> 01:13:19,590
+to sequence models such as for
+neural machine translation.
+
+1312
+01:13:19,590 --> 01:13:23,280
+And the problem with
+this architecture
+
+1313
+01:13:23,280 --> 01:13:28,020
+is that we have this
+one hidden state, which
+
+1314
+01:13:28,020 --> 01:13:31,980
+has to encode all the
+information about the source
+
+1315
+01:13:31,980 --> 01:13:33,000
+sentence.
+
+1316
+01:13:33,000 --> 01:13:36,300
+So it acts as a kind of
+information bottleneck.
+
+1317
+01:13:36,300 --> 01:13:39,720
+And that's all the information
+that the generation
+
+1318
+01:13:39,720 --> 01:13:41,580
+is conditioned on.
+
+1319
+01:13:41,580 --> 01:13:46,300
+Well, I did already
+mention one idea last time
+
+1320
+01:13:46,300 --> 01:13:50,010
+of how to get more information
+where I said look maybe
+
+1321
+01:13:50,010 --> 01:13:52,680
+you could kind of average all
+of the vectors of the source
+
+1322
+01:13:52,680 --> 01:13:54,810
+to get a sentence
+representation.
+
+1323
+01:13:54,810 --> 01:13:57,900
+But that method turns
+out to be better
+
+1324
+01:13:57,900 --> 01:14:00,360
+for things like
+sentiment analysis.
+
+1325
+01:14:00,360 --> 01:14:03,090
+And not so good for
+machine translation,
+
+1326
+01:14:03,090 --> 01:14:07,050
+where the order of words is
+very important to preserve.
+
+1327
+01:14:07,050 --> 01:14:12,900
+So it seems like we would
+do better, if somehow, we
+
+1328
+01:14:12,900 --> 01:14:16,620
+could get more information
+from the source sentence
+
+1329
+01:14:16,620 --> 01:14:20,070
+while we're generating
+the translation.
+
+1330
+01:14:20,070 --> 01:14:22,410
+And in some sense, this
+just corresponds to what
+
+1331
+01:14:22,410 --> 01:14:24,510
+a human translator does, right?
+
+1332
+01:14:24,510 --> 01:14:27,900
+If you're a human translator,
+you read the sentence
+
+1333
+01:14:27,900 --> 01:14:29,610
+that you're meant to translate.
+
+1334
+01:14:29,610 --> 01:14:32,580
+And you maybe start
+translating a few words.
+
+1335
+01:14:32,580 --> 01:14:34,470
+But then you look back
+at the source sentence
+
+1336
+01:14:34,470 --> 01:14:38,220
+to see what else was in it
+and translate some more words.
+
+1337
+01:14:38,220 --> 01:14:42,300
+So very quickly after the first
+neural machine translation
+
+1338
+01:14:42,300 --> 01:14:46,110
+systems, people came up
+with the idea of maybe
+
+1339
+01:14:46,110 --> 01:14:50,730
+we could build a better
+neural empty MT that did that.
+
+1340
+01:14:50,730 --> 01:14:55,090
+And that's the
+idea of attention.
+
+1341
+01:14:55,090 --> 01:14:59,490
+So the core idea is on
+each step of the decoder,
+
+1342
+01:14:59,490 --> 01:15:04,920
+we're going to use a direct
+link between the encoder
+
+1343
+01:15:04,920 --> 01:15:07,320
+and the decoder
+that will allow us
+
+1344
+01:15:07,320 --> 01:15:13,440
+to focus on a particular word
+or words in the source sequence
+
+1345
+01:15:13,440 --> 01:15:19,530
+and use it to help us
+generate what words come next.
+
+1346
+01:15:19,530 --> 01:15:22,200
+I'll just go through
+now showing you
+
+1347
+01:15:22,200 --> 01:15:25,050
+the pictures of
+what attention does
+
+1348
+01:15:25,050 --> 01:15:26,940
+and then at the
+start of next time
+
+1349
+01:15:26,940 --> 01:15:31,830
+we'll go through the
+equations in more detail.
+
+1350
+01:15:31,830 --> 01:15:36,590
+So we use our encoder
+just as before
+
+1351
+01:15:36,590 --> 01:15:39,470
+and generate our
+representations,
+
+1352
+01:15:39,470 --> 01:15:42,380
+feed in our
+conditioning as before,
+
+1353
+01:15:42,380 --> 01:15:45,290
+and say we're starting
+our translation.
+
+1354
+01:15:45,290 --> 01:15:50,510
+But at this point, we take this
+hidden representation, and say,
+
+1355
+01:15:50,510 --> 01:15:54,380
+I'm going to use this hidden
+representation to look back
+
+1356
+01:15:54,380 --> 01:15:58,290
+at the source to get
+information directly from it.
+
+1357
+01:15:58,290 --> 01:16:03,320
+So what I will do
+is I will compare
+
+1358
+01:16:03,320 --> 01:16:06,680
+the hidden state of the
+decoder with the hidden
+
+1359
+01:16:06,680 --> 01:16:10,880
+state of the encoder
+at each position
+
+1360
+01:16:10,880 --> 01:16:15,920
+and generate an attention score,
+which is a kind of similarity
+
+1361
+01:16:15,920 --> 01:16:18,260
+score like a product.
+
+1362
+01:16:18,260 --> 01:16:21,980
+And then based on
+those attention scores,
+
+1363
+01:16:21,980 --> 01:16:26,750
+I'm going to calculate a
+probability distribution
+
+1364
+01:16:26,750 --> 01:16:31,820
+as to by using a
+softmax as usual to say
+
+1365
+01:16:31,820 --> 01:16:40,070
+which of these encoder states
+is most like my decoder state.
+
+1366
+01:16:40,070 --> 01:16:43,597
+And so we'll be training
+the model here to be saying,
+
+1367
+01:16:43,597 --> 01:16:45,680
+well, probably you should
+translate the first word
+
+1368
+01:16:45,680 --> 01:16:47,900
+of the sentence
+first, so that's where
+
+1369
+01:16:47,900 --> 01:16:50,150
+the attention should be placed.
+
+1370
+01:16:50,150 --> 01:16:53,480
+So then based on this
+attention distribution, which
+
+1371
+01:16:53,480 --> 01:16:56,990
+is a probability distribution
+coming out of the softmax,
+
+1372
+01:16:56,990 --> 01:17:05,210
+we're going to generate
+a new attention output.
+
+1373
+01:17:05,210 --> 01:17:08,270
+And so this attention
+output is going
+
+1374
+01:17:08,270 --> 01:17:11,840
+to be an average of the hidden
+states of the encoder model.
+
+1375
+01:17:11,840 --> 01:17:16,880
+That is going to be a weighted
+average based on our attention
+
+1376
+01:17:16,880 --> 01:17:18,470
+distribution.
+
+1377
+01:17:18,470 --> 01:17:21,980
+And so we then kind of
+take that attention output,
+
+1378
+01:17:21,980 --> 01:17:27,500
+combine it with the hidden
+state of the decoder RNN
+
+1379
+01:17:27,500 --> 01:17:32,330
+and together, the
+two of them are then
+
+1380
+01:17:32,330 --> 01:17:38,870
+going to be used to predict via
+a softmax what word to generate
+
+1381
+01:17:38,870 --> 01:17:42,710
+first, and we hope
+to generate he.
+
+1382
+01:17:42,710 --> 01:17:44,840
+And then at that
+point, we sort of
+
+1383
+01:17:44,840 --> 01:17:50,780
+chug along and keep doing
+the same kind of computations
+
+1384
+01:17:50,780 --> 01:17:53,210
+at each position.
+
+1385
+01:17:53,210 --> 01:17:56,510
+There's a little side note
+here that says sometimes
+
+1386
+01:17:56,510 --> 01:17:59,030
+we take the attention output
+from the previous step,
+
+1387
+01:17:59,030 --> 01:18:03,680
+and also feed into the decoder
+along with the usual decoder
+
+1388
+01:18:03,680 --> 01:18:04,240
+input.
+
+1389
+01:18:04,240 --> 01:18:05,782
+So we're taking this
+attention output
+
+1390
+01:18:05,782 --> 01:18:10,460
+and actually feeding it
+back in to the hidden state
+
+1391
+01:18:10,460 --> 01:18:11,540
+calculation.
+
+1392
+01:18:11,540 --> 01:18:14,300
+And that can sometimes
+improve performance.
+
+1393
+01:18:14,300 --> 01:18:17,870
+And we actually have that trick
+in the assignment 4 system.
+
+1394
+01:18:17,870 --> 01:18:20,130
+And you can try it out.
+
+1395
+01:18:20,130 --> 01:18:20,630
+OK.
+
+1396
+01:18:20,630 --> 01:18:25,670
+So we generate along and
+generate our whole sentence
+
+1397
+01:18:25,670 --> 01:18:27,510
+in this manner.
+
+1398
+01:18:27,510 --> 01:18:32,000
+And that's proven to be a
+very effective way of getting
+
+1399
+01:18:32,000 --> 01:18:35,240
+more information from
+the source sentence
+
+1400
+01:18:35,240 --> 01:18:40,730
+more flexibly to allow us to
+generate a good translation.
+
+1401
+01:18:40,730 --> 01:18:44,450
+I'll stop here for now and
+at the start of next time.
+
+1402
+01:18:44,450 --> 01:18:47,600
+I'll finish this off by going
+through the actual equations
+
+1403
+01:18:47,600 --> 01:18:49,900
+for how attention works.
+
+1404
+01:18:49,900 --> 01:18:54,000
+
+

@@ -1,0 +1,7073 @@
+1
+00:00:00,000 --> 00:00:04,990
+
+
+2
+00:00:04,990 --> 00:00:11,740
+So we're now starting in
+week three with lecture five.
+
+3
+00:00:11,740 --> 00:00:16,180
+So unfortunately, the
+last class, I guess,
+
+4
+00:00:16,180 --> 00:00:18,400
+I really got behind
+and went a bit slowly.
+
+5
+00:00:18,400 --> 00:00:21,700
+I guess, I must just enjoy
+talking about natural languages
+
+6
+00:00:21,700 --> 00:00:23,650
+too much and so I
+never really got
+
+7
+00:00:23,650 --> 00:00:25,660
+to the punchline
+of showing how you
+
+8
+00:00:25,660 --> 00:00:28,540
+could do good things with
+the neural dependency parser.
+
+9
+00:00:28,540 --> 00:00:31,420
+So today for the first
+piece I'll in some sense
+
+10
+00:00:31,420 --> 00:00:33,550
+be finishing the
+content of last time
+
+11
+00:00:33,550 --> 00:00:37,060
+and talk about neural dependency
+parsing, which also gives us
+
+12
+00:00:37,060 --> 00:00:41,140
+the opportunity to introduce
+a simple feed forward
+
+13
+00:00:41,140 --> 00:00:43,510
+neural net classifier.
+
+14
+00:00:43,510 --> 00:00:47,440
+That will then lead into a
+little bit of just background
+
+15
+00:00:47,440 --> 00:00:50,265
+things that you need to know
+about neural networks content
+
+16
+00:00:50,265 --> 00:00:51,640
+because the fact
+of the matter is
+
+17
+00:00:51,640 --> 00:00:53,057
+there is a bunch
+of stuff you need
+
+18
+00:00:53,057 --> 00:00:55,060
+to know about neural networks.
+
+19
+00:00:55,060 --> 00:00:57,280
+And then after both
+of those things,
+
+20
+00:00:57,280 --> 00:00:59,140
+I'll get into
+what's really meant
+
+21
+00:00:59,140 --> 00:01:01,420
+to be the topic of
+today's lecture, which
+
+22
+00:01:01,420 --> 00:01:06,040
+is looking at language modeling
+and recurrent neural networks.
+
+23
+00:01:06,040 --> 00:01:09,970
+And that's then going to
+lead into those two things
+
+24
+00:01:09,970 --> 00:01:14,360
+are important topics that we'll
+then be talking about, really,
+
+25
+00:01:14,360 --> 00:01:16,970
+for the whole of
+next week as well.
+
+26
+00:01:16,970 --> 00:01:19,600
+So the couple of reminders
+before we get underway,
+
+27
+00:01:19,600 --> 00:01:23,200
+the first is that you should
+have handed in assignment 2
+
+28
+00:01:23,200 --> 00:01:27,700
+before you joined this class
+and in turn assignment 3
+
+29
+00:01:27,700 --> 00:01:28,810
+is out today.
+
+30
+00:01:28,810 --> 00:01:31,840
+And this is an
+assignment where you're
+
+31
+00:01:31,840 --> 00:01:36,040
+going to build essentially
+the neural dependency parser
+
+32
+00:01:36,040 --> 00:01:38,780
+that I'm just about
+to present in PyTorch.
+
+33
+00:01:38,780 --> 00:01:40,870
+So part of the role
+of this assignment
+
+34
+00:01:40,870 --> 00:01:44,080
+is actually to get you
+up to speed with PyTorch.
+
+35
+00:01:44,080 --> 00:01:48,610
+So this assignment is
+highly scaffolded with lots
+
+36
+00:01:48,610 --> 00:01:51,080
+of comments and hints
+about what to do.
+
+37
+00:01:51,080 --> 00:01:55,100
+And so the hope is that by the
+time you come to the end of it,
+
+38
+00:01:55,100 --> 00:01:59,610
+you'll feel fairly familiar
+and comfortable with PyTorch.
+
+39
+00:01:59,610 --> 00:02:02,740
+Don't forget there was also a
+tutorial on PyTorch last week.
+
+40
+00:02:02,740 --> 00:02:04,480
+If you didn't catch
+that at the time,
+
+41
+00:02:04,480 --> 00:02:08,590
+you might want to go back
+and look at the video.
+
+42
+00:02:08,590 --> 00:02:10,919
+Another thing to mention
+about the assignments
+
+43
+00:02:10,919 --> 00:02:15,210
+is that assignment 3 is
+the last assignment where
+
+44
+00:02:15,210 --> 00:02:19,020
+our great team of TAs are
+happy to look at your code
+
+45
+00:02:19,020 --> 00:02:23,340
+and sort out your bugs for
+you, so maybe take advantage
+
+46
+00:02:23,340 --> 00:02:25,230
+of that but not too much.
+
+47
+00:02:25,230 --> 00:02:27,840
+But starting in assignment
+4 for assignments 4,
+
+48
+00:02:27,840 --> 00:02:30,660
+5 and the final
+project, the TAs are
+
+49
+00:02:30,660 --> 00:02:33,510
+very happy to help in
+general but it's just not
+
+50
+00:02:33,510 --> 00:02:35,850
+going to be their job
+to be actually sorting
+
+51
+00:02:35,850 --> 00:02:37,690
+out bugs for you.
+
+52
+00:02:37,690 --> 00:02:39,510
+You should be
+looking at your code
+
+53
+00:02:39,510 --> 00:02:42,210
+and discussing ideas
+and concepts and reasons
+
+54
+00:02:42,210 --> 00:02:46,080
+why things might
+not work with them.
+
+55
+00:02:46,080 --> 00:02:49,050
+OK, so if you remember
+where we were last time,
+
+56
+00:02:49,050 --> 00:02:51,330
+I'd introduced this
+idea of transition
+
+57
+00:02:51,330 --> 00:02:55,020
+based dependency
+parsers and that these
+
+58
+00:02:55,020 --> 00:02:58,710
+were an efficient linear
+time method for giving
+
+59
+00:02:58,710 --> 00:03:02,160
+the syntactic structure
+of natural language text.
+
+60
+00:03:02,160 --> 00:03:06,810
+And that they worked pretty well
+before neural nets came along
+
+61
+00:03:06,810 --> 00:03:08,670
+and took over NLP again.
+
+62
+00:03:08,670 --> 00:03:13,050
+But they had some disadvantages,
+and their biggest disadvantage
+
+63
+00:03:13,050 --> 00:03:16,710
+is that like most machine
+learning models of that time,
+
+64
+00:03:16,710 --> 00:03:19,290
+they worked with
+indicator features.
+
+65
+00:03:19,290 --> 00:03:23,850
+So that means that you are
+specifying some condition
+
+66
+00:03:23,850 --> 00:03:27,090
+and then checking whether it
+was true of a configuration.
+
+67
+00:03:27,090 --> 00:03:30,210
+So something like the word on
+the top of the stack is good
+
+68
+00:03:30,210 --> 00:03:32,550
+and its part of
+speech is adjective
+
+69
+00:03:32,550 --> 00:03:36,720
+or the next word coming
+up is a personal pronoun.
+
+70
+00:03:36,720 --> 00:03:38,640
+That those are
+conditions that would
+
+71
+00:03:38,640 --> 00:03:44,010
+be features in a
+conventional transition based
+
+72
+00:03:44,010 --> 00:03:45,720
+dependency parser.
+
+73
+00:03:45,720 --> 00:03:48,450
+And so what are the
+problems with doing that?
+
+74
+00:03:48,450 --> 00:03:53,550
+Well, one problem is that
+those features are very sparse.
+
+75
+00:03:53,550 --> 00:03:57,390
+A second problem is the
+features are incomplete.
+
+76
+00:03:57,390 --> 00:04:00,360
+Well, what I mean
+by that is depending
+
+77
+00:04:00,360 --> 00:04:05,880
+on what words and configurations
+occurred in the training data,
+
+78
+00:04:05,880 --> 00:04:08,070
+there are certain
+features that will
+
+79
+00:04:08,070 --> 00:04:11,670
+exist because you sort of
+saw a certain word preceding
+
+80
+00:04:11,670 --> 00:04:14,370
+a verb and certain features
+that just won't exist
+
+81
+00:04:14,370 --> 00:04:17,010
+because that word never
+occurred before a verb
+
+82
+00:04:17,010 --> 00:04:18,510
+in the training data.
+
+83
+00:04:18,510 --> 00:04:22,079
+But perhaps the biggest
+problem and opportunity
+
+84
+00:04:22,079 --> 00:04:25,020
+for doing better with the
+neural dependency parser
+
+85
+00:04:25,020 --> 00:04:29,760
+is that it turns out that in
+a symbolic dependency parser,
+
+86
+00:04:29,760 --> 00:04:32,460
+computing all these features
+just turns out to actually
+
+87
+00:04:32,460 --> 00:04:33,900
+be pretty expensive.
+
+88
+00:04:33,900 --> 00:04:36,030
+That although the
+actual transition system
+
+89
+00:04:36,030 --> 00:04:40,560
+that I showed last time is
+fast and efficient to run,
+
+90
+00:04:40,560 --> 00:04:43,830
+you actually have to compute
+all of these features.
+
+91
+00:04:43,830 --> 00:04:46,830
+And what you found
+was that about 95%
+
+92
+00:04:46,830 --> 00:04:49,830
+of the parsing time
+of one of these models
+
+93
+00:04:49,830 --> 00:04:52,770
+was spent just computing
+all of the features
+
+94
+00:04:52,770 --> 00:04:55,900
+of every configuration.
+
+95
+00:04:55,900 --> 00:04:58,870
+So that suggests that
+perhaps we can do better
+
+96
+00:04:58,870 --> 00:05:00,670
+with a neural
+approach where we're
+
+97
+00:05:00,670 --> 00:05:04,130
+going to learn a dense and
+compact feature representation.
+
+98
+00:05:04,130 --> 00:05:07,010
+And so that's what I
+want to go through now.
+
+99
+00:05:07,010 --> 00:05:09,370
+So this time we're
+still going to have
+
+100
+00:05:09,370 --> 00:05:14,950
+exactly the same configuration
+of a stack and a buffer
+
+101
+00:05:14,950 --> 00:05:18,580
+and running exactly the
+same transition sequence.
+
+102
+00:05:18,580 --> 00:05:22,420
+Except this time, rather than
+representing the configuration,
+
+103
+00:05:22,420 --> 00:05:25,480
+the stack and the buffer
+by having several million
+
+104
+00:05:25,480 --> 00:05:28,000
+symbolic features,
+we're instead going
+
+105
+00:05:28,000 --> 00:05:32,710
+to summarize this
+configuration as a dense vector
+
+106
+00:05:32,710 --> 00:05:37,010
+of dimensionality, perhaps
+approximately 1,000.
+
+107
+00:05:37,010 --> 00:05:39,440
+And our neural approach
+is going to learn
+
+108
+00:05:39,440 --> 00:05:42,750
+this dense compact
+feature representation.
+
+109
+00:05:42,750 --> 00:05:44,900
+And so quite
+explicitly, what I'm
+
+110
+00:05:44,900 --> 00:05:48,200
+going to show you
+now briefly and what
+
+111
+00:05:48,200 --> 00:05:52,310
+you're going to
+implement is essentially
+
+112
+00:05:52,310 --> 00:05:54,710
+the neural dependency
+parser that was developed
+
+113
+00:05:54,710 --> 00:05:57,920
+by Danqi Chen in 2014.
+
+114
+00:05:57,920 --> 00:06:01,250
+And to skip to the
+advertisement right
+
+115
+00:06:01,250 --> 00:06:04,790
+at the beginning as to
+how this works so well,
+
+116
+00:06:04,790 --> 00:06:07,190
+these are the
+results that you got
+
+117
+00:06:07,190 --> 00:06:10,910
+from it using the measures that
+I introduced at the last time.
+
+118
+00:06:10,910 --> 00:06:14,330
+The unlabeled attachments score,
+whether you attach dependencies
+
+119
+00:06:14,330 --> 00:06:18,980
+correctly to the right word and
+the labeled attachment score
+
+120
+00:06:18,980 --> 00:06:22,460
+as to whether you also get the
+type of grammatical relation
+
+121
+00:06:22,460 --> 00:06:24,950
+of that dependency correct.
+
+122
+00:06:24,950 --> 00:06:28,940
+And so essentially, this
+Chen and Manning parser
+
+123
+00:06:28,940 --> 00:06:32,540
+gave a natural
+version of something
+
+124
+00:06:32,540 --> 00:06:35,270
+like a transition
+based dependency parser
+
+125
+00:06:35,270 --> 00:06:37,370
+like MaltParser in yellow.
+
+126
+00:06:37,370 --> 00:06:39,650
+And the interesting
+thing was that
+
+127
+00:06:39,650 --> 00:06:43,280
+taking advantage of a
+neural classifier in ways
+
+128
+00:06:43,280 --> 00:06:47,960
+that I'm about to explain that
+that could produce something
+
+129
+00:06:47,960 --> 00:06:52,040
+that was about 2% more accurate
+than the symbolic dependency
+
+130
+00:06:52,040 --> 00:06:53,060
+parser.
+
+131
+00:06:53,060 --> 00:06:55,160
+And because of the
+fact that it's not
+
+132
+00:06:55,160 --> 00:06:58,310
+doing all of the symbolic
+feature computation
+
+133
+00:06:58,310 --> 00:07:01,040
+despite the fact that you might
+think at first that there's
+
+134
+00:07:01,040 --> 00:07:05,120
+a lot of real number math
+and matrix vector multiplies
+
+135
+00:07:05,120 --> 00:07:07,640
+in a neural dependency
+parser, it actually
+
+136
+00:07:07,640 --> 00:07:11,510
+ran noticeably faster than
+the symbolic dependency parser
+
+137
+00:07:11,510 --> 00:07:16,040
+because it didn't have all
+of feature computation.
+
+138
+00:07:16,040 --> 00:07:17,810
+The other major
+approach to dependency
+
+139
+00:07:17,810 --> 00:07:19,790
+parsing that I'm
+also showing here
+
+140
+00:07:19,790 --> 00:07:23,900
+and I'll get back to at the end
+is what's referred to as graph
+
+141
+00:07:23,900 --> 00:07:25,640
+based dependency parsing.
+
+142
+00:07:25,640 --> 00:07:28,970
+And so that's a different
+approach to dependency parsing.
+
+143
+00:07:28,970 --> 00:07:33,560
+And so these are two symbolic
+graph based dependency parsers.
+
+144
+00:07:33,560 --> 00:07:36,470
+And in the pre-neural
+world, they
+
+145
+00:07:36,470 --> 00:07:40,640
+were somewhat more accurate than
+the transition based parsers
+
+146
+00:07:40,640 --> 00:07:41,790
+as you could see.
+
+147
+00:07:41,790 --> 00:07:44,750
+But on the other hand, they
+were close to two orders
+
+148
+00:07:44,750 --> 00:07:46,950
+of magnitude slower.
+
+149
+00:07:46,950 --> 00:07:49,700
+And so essentially, with
+the Chen and Manning parser,
+
+150
+00:07:49,700 --> 00:07:52,700
+we were able to provide
+something that was basically
+
+151
+00:07:52,700 --> 00:07:56,060
+as accurate as the best graph
+based dependency parsers which
+
+152
+00:07:56,060 --> 00:07:59,300
+were the best dependency
+parsers while operating
+
+153
+00:07:59,300 --> 00:08:02,670
+about two orders of
+magnitude more quickly.
+
+154
+00:08:02,670 --> 00:08:04,200
+So how did we do it?
+
+155
+00:08:04,200 --> 00:08:09,390
+It was actually a very
+straightforward implementation,
+
+156
+00:08:09,390 --> 00:08:14,930
+which is part of what makes it
+great for doing assignment 3.
+
+157
+00:08:14,930 --> 00:08:17,640
+But this is how we
+did it and we got win.
+
+158
+00:08:17,640 --> 00:08:19,910
+So the first win which
+is what we've already
+
+159
+00:08:19,910 --> 00:08:23,030
+talked about extensively
+starting in week one,
+
+160
+00:08:23,030 --> 00:08:26,180
+is to make use of
+distributed representations.
+
+161
+00:08:26,180 --> 00:08:29,490
+So we represent each
+word as a word embedding.
+
+162
+00:08:29,490 --> 00:08:32,990
+And you've had a lot of
+experience with that already.
+
+163
+00:08:32,990 --> 00:08:36,110
+And so that means
+when words weren't
+
+164
+00:08:36,110 --> 00:08:38,539
+seen in a particular
+configuration,
+
+165
+00:08:38,539 --> 00:08:41,360
+we still know what
+they're like because we'll
+
+166
+00:08:41,360 --> 00:08:46,370
+have seen similar words in
+the correct configuration.
+
+167
+00:08:46,370 --> 00:08:50,360
+But we don't stop only
+with word embeddings.
+
+168
+00:08:50,360 --> 00:08:51,920
+The other things
+that are central
+
+169
+00:08:51,920 --> 00:08:54,500
+to our dependency
+parser, are the parts
+
+170
+00:08:54,500 --> 00:08:58,130
+of speech of words and
+the dependency labels.
+
+171
+00:08:58,130 --> 00:09:02,570
+And so what we decided to do
+is that although those are much
+
+172
+00:09:02,570 --> 00:09:07,610
+smaller sets, so the dependency
+labels are about 40 in number
+
+173
+00:09:07,610 --> 00:09:11,000
+and the parts of speech are of
+around that order of magnitude,
+
+174
+00:09:11,000 --> 00:09:13,700
+sometimes less,
+sometimes more, that even
+
+175
+00:09:13,700 --> 00:09:16,730
+within those sets
+of categories, there
+
+176
+00:09:16,730 --> 00:09:19,220
+are ones that are
+very strongly related.
+
+177
+00:09:19,220 --> 00:09:24,330
+So we also adopted distributed
+representations for them.
+
+178
+00:09:24,330 --> 00:09:26,180
+So for example,
+there might be parts
+
+179
+00:09:26,180 --> 00:09:28,940
+of speech for singular
+nouns and plural nouns.
+
+180
+00:09:28,940 --> 00:09:32,030
+And basically, most of the
+time, they behave similarly
+
+181
+00:09:32,030 --> 00:09:34,790
+and there are
+adjectival modifiers
+
+182
+00:09:34,790 --> 00:09:36,890
+and numerical modifiers
+that these are just
+
+183
+00:09:36,890 --> 00:09:38,690
+numbers like 3, 4, or 5.
+
+184
+00:09:38,690 --> 00:09:40,640
+And again, a lot
+of the time they
+
+185
+00:09:40,640 --> 00:09:45,530
+behave the same that you have
+both three cows and brown cows.
+
+186
+00:09:45,530 --> 00:09:48,140
+
+
+187
+00:09:48,140 --> 00:09:51,770
+OK, so everything is going to be
+represented in the distributed
+
+188
+00:09:51,770 --> 00:09:53,310
+representation.
+
+189
+00:09:53,310 --> 00:09:56,630
+So at that point, we have
+exactly the same kind
+
+190
+00:09:56,630 --> 00:10:00,950
+of configuration where we
+have our stack, our buffer,
+
+191
+00:10:00,950 --> 00:10:03,750
+and we've started
+to build some arcs.
+
+192
+00:10:03,750 --> 00:10:07,670
+And so the
+classification decisions
+
+193
+00:10:07,670 --> 00:10:10,550
+of the next transition
+are going to be made out
+
+194
+00:10:10,550 --> 00:10:12,775
+of a few elements of
+this configuration,
+
+195
+00:10:12,775 --> 00:10:14,150
+so we're looking
+at the top thing
+
+196
+00:10:14,150 --> 00:10:17,480
+on the stack, the
+second on the stack,
+
+197
+00:10:17,480 --> 00:10:19,440
+the first word on the buffer.
+
+198
+00:10:19,440 --> 00:10:22,460
+And then we actually added
+in some additional features
+
+199
+00:10:22,460 --> 00:10:23,330
+that are then--
+
+200
+00:10:23,330 --> 00:10:26,480
+to the extent that we've
+already built arcs for words
+
+201
+00:10:26,480 --> 00:10:28,580
+on the stack that
+we can be looking
+
+202
+00:10:28,580 --> 00:10:32,750
+at the dependents on the
+left and right of those words
+
+203
+00:10:32,750 --> 00:10:36,090
+that are on the stack that are
+already in the sets of arcs.
+
+204
+00:10:36,090 --> 00:10:40,550
+And so for each of those
+things, there is a word,
+
+205
+00:10:40,550 --> 00:10:42,950
+there is a part of speech.
+
+206
+00:10:42,950 --> 00:10:48,440
+And for some of them there is
+a dependency where it's already
+
+207
+00:10:48,440 --> 00:10:50,940
+connected up to something else.
+
+208
+00:10:50,940 --> 00:10:53,450
+So for example, the
+left corner of S2
+
+209
+00:10:53,450 --> 00:10:56,450
+here has an in
+sub-dependency back
+
+210
+00:10:56,450 --> 00:10:58,590
+to the second
+thing on the stack.
+
+211
+00:10:58,590 --> 00:11:02,150
+So we can take these
+elements of the configuration
+
+212
+00:11:02,150 --> 00:11:05,600
+and look up the
+embedding of each one.
+
+213
+00:11:05,600 --> 00:11:07,850
+So we have word embeddings,
+part of speech embeddings,
+
+214
+00:11:07,850 --> 00:11:10,580
+and dependency embeddings
+and just concatenate them
+
+215
+00:11:10,580 --> 00:11:13,670
+all together, kind of like
+we did before with the window
+
+216
+00:11:13,670 --> 00:11:17,060
+classifier and that will give
+us a neural representation
+
+217
+00:11:17,060 --> 00:11:19,750
+of the configuration.
+
+218
+00:11:19,750 --> 00:11:21,820
+Now, there's a
+second reason why we
+
+219
+00:11:21,820 --> 00:11:26,110
+can hope to win by using a deep
+learning classifier to predict
+
+220
+00:11:26,110 --> 00:11:27,550
+the next transition.
+
+221
+00:11:27,550 --> 00:11:29,840
+And we haven't really
+said much about that yet.
+
+222
+00:11:29,840 --> 00:11:32,890
+So I just wanted to detour
+and say a little bit more
+
+223
+00:11:32,890 --> 00:11:34,550
+about that.
+
+224
+00:11:34,550 --> 00:11:37,210
+So the simplest
+kind of classifier
+
+225
+00:11:37,210 --> 00:11:42,390
+that's close to what we've been
+talking about in neural models
+
+226
+00:11:42,390 --> 00:11:44,550
+is a softmax classifier.
+
+227
+00:11:44,550 --> 00:11:49,470
+So that if we have d dimensional
+vectors x and we have
+
+228
+00:11:49,470 --> 00:11:55,020
+y classes to assign
+things to, also y
+
+229
+00:11:55,020 --> 00:12:01,170
+is an element of a set of c
+classes to assign things to,
+
+230
+00:12:01,170 --> 00:12:04,770
+then we can build a softmax
+classifier using the softmax
+
+231
+00:12:04,770 --> 00:12:07,020
+distribution that
+we've seen before,
+
+232
+00:12:07,020 --> 00:12:09,360
+where we decide
+the classes based
+
+233
+00:12:09,360 --> 00:12:13,950
+on having a weight
+matrix that's c by d.
+
+234
+00:12:13,950 --> 00:12:18,812
+And we train on supervised data
+the values of this W, weight
+
+235
+00:12:18,812 --> 00:12:22,890
+matrix to minimize our
+negative log likelihood
+
+236
+00:12:22,890 --> 00:12:25,050
+loss that we've seen before.
+
+237
+00:12:25,050 --> 00:12:28,160
+A loss is also commonly referred
+to as cross-entropy loss,
+
+238
+00:12:28,160 --> 00:12:32,470
+a term that you'll see in
+PyTorch among other places.
+
+239
+00:12:32,470 --> 00:12:36,030
+So that is a straightforward
+machine learning classifier.
+
+240
+00:12:36,030 --> 00:12:41,040
+And if you've done 229, you've
+seen softmax classifiers.
+
+241
+00:12:41,040 --> 00:12:45,870
+But a simple softmax
+classifier like this shares
+
+242
+00:12:45,870 --> 00:12:48,150
+with most traditional
+machine learning
+
+243
+00:12:48,150 --> 00:12:50,400
+classifiers some
+models that include
+
+244
+00:12:50,400 --> 00:12:52,290
+Naive Bayes model,
+support vector
+
+245
+00:12:52,290 --> 00:12:54,840
+machines, logistic regression.
+
+246
+00:12:54,840 --> 00:12:56,940
+That at the end of
+the day, they're
+
+247
+00:12:56,940 --> 00:12:59,610
+not very powerful
+classifiers, they're
+
+248
+00:12:59,610 --> 00:13:03,280
+classifiers that only give
+linear decision boundaries.
+
+249
+00:13:03,280 --> 00:13:05,170
+And so this can
+be quite limiting.
+
+250
+00:13:05,170 --> 00:13:07,440
+So if you have a
+difficult problem
+
+251
+00:13:07,440 --> 00:13:11,130
+like the one I'm indicating in
+the picture in the bottom left,
+
+252
+00:13:11,130 --> 00:13:14,820
+well, there's just no way you
+can divide the green points
+
+253
+00:13:14,820 --> 00:13:18,430
+from the red points by simply
+drawing a straight line.
+
+254
+00:13:18,430 --> 00:13:21,480
+So you're going to have a
+quite imperfect classifier.
+
+255
+00:13:21,480 --> 00:13:25,650
+So the second big win
+of neural classifiers
+
+256
+00:13:25,650 --> 00:13:29,130
+is that they can be much
+more powerful because they
+
+257
+00:13:29,130 --> 00:13:32,070
+can provide nonlinear
+classification.
+
+258
+00:13:32,070 --> 00:13:34,110
+So rather than only being
+able to do something
+
+259
+00:13:34,110 --> 00:13:36,780
+like in the left
+picture, we can come up
+
+260
+00:13:36,780 --> 00:13:38,970
+with classifiers
+that do something
+
+261
+00:13:38,970 --> 00:13:42,300
+like in the right picture
+and therefore can separate
+
+262
+00:13:42,300 --> 00:13:45,180
+the green and the red points.
+
+263
+00:13:45,180 --> 00:13:48,890
+As an aside, these pictures I've
+taken from Andrej Karpathy's
+
+264
+00:13:48,890 --> 00:13:52,470
+ConvNetJS software, which
+is kind of a fun little tool
+
+265
+00:13:52,470 --> 00:13:56,650
+to play around with if you've
+got a bit of spare time.
+
+266
+00:13:56,650 --> 00:13:59,790
+And so there's something
+subtle going on here
+
+267
+00:13:59,790 --> 00:14:05,130
+is because our more powerful
+neural net classifiers
+
+268
+00:14:05,130 --> 00:14:08,040
+at the end of the day, what
+they have at the top of them
+
+269
+00:14:08,040 --> 00:14:10,560
+is the softmax layer.
+
+270
+00:14:10,560 --> 00:14:15,780
+And so this softmax layer is
+indeed a linear classifier
+
+271
+00:14:15,780 --> 00:14:18,270
+and it's still a
+linear classifier.
+
+272
+00:14:18,270 --> 00:14:22,950
+But what they have below that
+is other layers of neural net.
+
+273
+00:14:22,950 --> 00:14:28,080
+And so effectively what happens
+is that the classification
+
+274
+00:14:28,080 --> 00:14:31,500
+decisions are linear as
+far as the top softmax is
+
+275
+00:14:31,500 --> 00:14:36,510
+concerned but nonlinear in the
+original representation space.
+
+276
+00:14:36,510 --> 00:14:41,700
+So precisely what a neural net
+can do is warp the space around
+
+277
+00:14:41,700 --> 00:14:44,790
+and move the representation
+of data points
+
+278
+00:14:44,790 --> 00:14:47,640
+to provide something that
+at the end of the day
+
+279
+00:14:47,640 --> 00:14:51,650
+can be classified by
+a linear classifier.
+
+280
+00:14:51,650 --> 00:14:54,020
+And so that's what a
+simple feed forward
+
+281
+00:14:54,020 --> 00:14:57,430
+neural network multi-class
+classifier does.
+
+282
+00:14:57,430 --> 00:15:00,890
+So it starts with an
+input representation.
+
+283
+00:15:00,890 --> 00:15:05,260
+So these are some dense
+representation of the input.
+
+284
+00:15:05,260 --> 00:15:11,500
+It puts it through a hidden
+layer h with a matrix multiply
+
+285
+00:15:11,500 --> 00:15:13,360
+followed by a non-linearity.
+
+286
+00:15:13,360 --> 00:15:16,750
+So that matrix multiply can
+transform the space and map
+
+287
+00:15:16,750 --> 00:15:18,070
+things around.
+
+288
+00:15:18,070 --> 00:15:20,290
+And so then the
+output of that, we
+
+289
+00:15:20,290 --> 00:15:22,840
+can then put into
+a softmax layer
+
+290
+00:15:22,840 --> 00:15:25,810
+and get out softmax
+probabilities
+
+291
+00:15:25,810 --> 00:15:29,920
+from which we make our
+classification decisions.
+
+292
+00:15:29,920 --> 00:15:33,820
+And to the extent that our
+probabilities don't assign one
+
+293
+00:15:33,820 --> 00:15:36,970
+to the correct class, we
+then get some log loss
+
+294
+00:15:36,970 --> 00:15:39,100
+or cross entropy
+error, which we back
+
+295
+00:15:39,100 --> 00:15:44,300
+propagate towards the parameters
+and embeddings of our model.
+
+296
+00:15:44,300 --> 00:15:48,670
+And as the learning that
+goes on via back propagation,
+
+297
+00:15:48,670 --> 00:15:52,180
+we increasingly will
+learn parameters
+
+298
+00:15:52,180 --> 00:15:55,060
+of this hidden layer of
+the model, which learn
+
+299
+00:15:55,060 --> 00:15:57,250
+to re-represent the input.
+
+300
+00:15:57,250 --> 00:16:01,660
+They move the inputs around in
+an intermediate hidden vector
+
+301
+00:16:01,660 --> 00:16:04,570
+space so it can be
+easily classified
+
+302
+00:16:04,570 --> 00:16:09,040
+with what at the end of the
+day is the linear softmax.
+
+303
+00:16:09,040 --> 00:16:13,120
+So this is basically the
+whole of a simple feed forward
+
+304
+00:16:13,120 --> 00:16:16,030
+neural network
+multi-class classifier.
+
+305
+00:16:16,030 --> 00:16:20,140
+But and if we had something
+like a visual signal,
+
+306
+00:16:20,140 --> 00:16:23,470
+we'll just sort of feed
+straight in here real numbers
+
+307
+00:16:23,470 --> 00:16:24,730
+and we'll be done.
+
+308
+00:16:24,730 --> 00:16:27,820
+But normally with human
+language material,
+
+309
+00:16:27,820 --> 00:16:31,090
+we actually effectively
+have one more layer
+
+310
+00:16:31,090 --> 00:16:33,730
+that we're feeding in
+before that because really
+
+311
+00:16:33,730 --> 00:16:37,270
+below this dense input
+layer we actually
+
+312
+00:16:37,270 --> 00:16:40,660
+have one hot vectors for
+what words or parts of speech
+
+313
+00:16:40,660 --> 00:16:41,720
+were involved.
+
+314
+00:16:41,720 --> 00:16:44,060
+And then we're doing
+a lookup process,
+
+315
+00:16:44,060 --> 00:16:47,080
+which you can think of as
+one more matrix multiply
+
+316
+00:16:47,080 --> 00:16:52,720
+to convert the one hot features
+into our dense input layer.
+
+317
+00:16:52,720 --> 00:16:55,390
+OK, in my picture here, the one
+other thing that's different
+
+318
+00:16:55,390 --> 00:16:58,270
+is I've introduced a
+different non-linearity
+
+319
+00:16:58,270 --> 00:17:02,290
+in the hidden layer, which
+is a rectified linear unit.
+
+320
+00:17:02,290 --> 00:17:04,868
+And that's what we'll be
+using in our neural dependency
+
+321
+00:17:04,868 --> 00:17:06,098
+parses.
+
+322
+00:17:06,098 --> 00:17:08,139
+It looks like the picture
+in the bottom right
+
+323
+00:17:08,140 --> 00:17:11,079
+and I'll come back to
+that in a few minutes.
+
+324
+00:17:11,079 --> 00:17:16,260
+That's one of the extra neural
+net things to talk about.
+
+325
+00:17:16,260 --> 00:17:21,089
+OK, So our neural net dependency
+parser model architecture
+
+326
+00:17:21,089 --> 00:17:25,020
+is essentially exactly
+that but applied
+
+327
+00:17:25,020 --> 00:17:29,190
+to the configuration
+of our transition based
+
+328
+00:17:29,190 --> 00:17:30,630
+dependency parser.
+
+329
+00:17:30,630 --> 00:17:35,100
+So based on our transition
+based dependency parser
+
+330
+00:17:35,100 --> 00:17:38,460
+configuration, we
+construct an input layer
+
+331
+00:17:38,460 --> 00:17:41,730
+embedding by looking
+up the various elements
+
+332
+00:17:41,730 --> 00:17:43,540
+as I discussed previously.
+
+333
+00:17:43,540 --> 00:17:49,050
+And then we feed it through
+this hidden layer to the softmax
+
+334
+00:17:49,050 --> 00:17:53,070
+layer to get probabilities
+out of which we can
+
+335
+00:17:53,070 --> 00:17:56,010
+choose what the next action is.
+
+336
+00:17:56,010 --> 00:18:00,750
+And it's no more
+complicated than that.
+
+337
+00:18:00,750 --> 00:18:07,790
+But what we found is that
+just simply in some sense
+
+338
+00:18:07,790 --> 00:18:11,060
+using the simplest
+kind of feed forward,
+
+339
+00:18:11,060 --> 00:18:18,080
+neural classifier could
+provide a very accurate
+
+340
+00:18:18,080 --> 00:18:21,110
+dependency parser
+that determines
+
+341
+00:18:21,110 --> 00:18:23,540
+the structure of
+sentences supporting
+
+342
+00:18:23,540 --> 00:18:25,550
+meaning interpretation
+the kind of way
+
+343
+00:18:25,550 --> 00:18:28,020
+that I suggested last time.
+
+344
+00:18:28,020 --> 00:18:33,350
+Indeed despite the fact that it
+was quite simple architecture,
+
+345
+00:18:33,350 --> 00:18:37,580
+in 2014 this was the first
+successful neural dependency
+
+346
+00:18:37,580 --> 00:18:38,690
+parser.
+
+347
+00:18:38,690 --> 00:18:43,070
+And the dense representations
+especially, but also
+
+348
+00:18:43,070 --> 00:18:46,130
+partly the non-linearity
+of the classifier
+
+349
+00:18:46,130 --> 00:18:49,730
+gave us this good result
+that it could both outperform
+
+350
+00:18:49,730 --> 00:18:52,970
+symbolic parsers in
+terms of accuracy
+
+351
+00:18:52,970 --> 00:18:55,565
+and it could outperform
+them in terms of speed.
+
+352
+00:18:55,565 --> 00:18:58,260
+
+
+353
+00:18:58,260 --> 00:19:00,660
+So that was 2014.
+
+354
+00:19:00,660 --> 00:19:03,360
+Just quickly here a
+couple more slides
+
+355
+00:19:03,360 --> 00:19:06,820
+on what's happened since then.
+
+356
+00:19:06,820 --> 00:19:09,690
+So lots of people got
+excited by the success
+
+357
+00:19:09,690 --> 00:19:13,090
+of this neural dependency
+parser And a number of people,
+
+358
+00:19:13,090 --> 00:19:16,440
+particularly at Google,
+then set about building
+
+359
+00:19:16,440 --> 00:19:19,560
+a bigger fancier
+transition-based
+
+360
+00:19:19,560 --> 00:19:20,970
+neural dependency parser.
+
+361
+00:19:20,970 --> 00:19:23,220
+So they explored
+bigger, deeper networks.
+
+362
+00:19:23,220 --> 00:19:25,710
+There's no reason to only
+have one hidden layer.
+
+363
+00:19:25,710 --> 00:19:27,540
+You can have two hidden layers.
+
+364
+00:19:27,540 --> 00:19:31,457
+You can do beam search that I
+briefly mentioned last time.
+
+365
+00:19:31,457 --> 00:19:33,540
+Another thing that I'm not
+going to talk about now
+
+366
+00:19:33,540 --> 00:19:37,590
+is adding conditional
+random field style inference
+
+367
+00:19:37,590 --> 00:19:39,390
+over the decision sequences.
+
+368
+00:19:39,390 --> 00:19:43,590
+And that then led
+in 2016 for a model
+
+369
+00:19:43,590 --> 00:19:47,310
+that they called Parsey
+McParseface which
+
+370
+00:19:47,310 --> 00:19:49,770
+is hard to say with
+a straight face.
+
+371
+00:19:49,770 --> 00:19:55,350
+Which was then about 2 and 1/2,
+3% more accurate than the model
+
+372
+00:19:55,350 --> 00:19:56,550
+that we had produced.
+
+373
+00:19:56,550 --> 00:19:59,340
+But still in basically
+the same family
+
+374
+00:19:59,340 --> 00:20:02,730
+of transition-based
+parser with the neural net
+
+375
+00:20:02,730 --> 00:20:05,010
+classifier to choose
+the next transition.
+
+376
+00:20:05,010 --> 00:20:08,720
+
+
+377
+00:20:08,720 --> 00:20:11,420
+The alternative to
+transition-based parsers
+
+378
+00:20:11,420 --> 00:20:14,030
+is graph-based
+dependency parsers.
+
+379
+00:20:14,030 --> 00:20:18,200
+And for a graph-based dependency
+parser, what you're doing
+
+380
+00:20:18,200 --> 00:20:21,950
+is effectively considering
+every pair of words
+
+381
+00:20:21,950 --> 00:20:24,710
+and considering a word
+as a dependent of root.
+
+382
+00:20:24,710 --> 00:20:27,320
+And you're coming
+up with a score
+
+383
+00:20:27,320 --> 00:20:32,450
+as to how likely is that
+big is a dependent of root
+
+384
+00:20:32,450 --> 00:20:35,790
+or how likely is big to
+be a dependent of cat.
+
+385
+00:20:35,790 --> 00:20:37,430
+And similarly for
+every other word.
+
+386
+00:20:37,430 --> 00:20:41,330
+For the word sat,
+how likely is it
+
+387
+00:20:41,330 --> 00:20:46,020
+to be a dependent of root or
+a dependent of the, et cetera.
+
+388
+00:20:46,020 --> 00:20:49,460
+Well, to do that well, you need
+to know more than just what
+
+389
+00:20:49,460 --> 00:20:52,070
+the two words involved are.
+
+390
+00:20:52,070 --> 00:20:56,550
+And so what you want to do
+is understand the context.
+
+391
+00:20:56,550 --> 00:20:58,340
+So you want to have
+an understanding
+
+392
+00:20:58,340 --> 00:21:00,780
+of the context of big,
+what's to the left
+
+393
+00:21:00,780 --> 00:21:04,370
+or what's to the right of it to
+understand how you might get up
+
+394
+00:21:04,370 --> 00:21:06,890
+into the dependency
+representations
+
+395
+00:21:06,890 --> 00:21:09,600
+of the sentence.
+
+396
+00:21:09,600 --> 00:21:11,460
+And so while there
+have been previous work
+
+397
+00:21:11,460 --> 00:21:13,500
+in graph-based
+dependency parsing,
+
+398
+00:21:13,500 --> 00:21:18,120
+like the MST parser I showed
+on the earlier results slide,
+
+399
+00:21:18,120 --> 00:21:21,120
+it seemed appealing
+that we could come up
+
+400
+00:21:21,120 --> 00:21:24,000
+with a much better
+representation of context
+
+401
+00:21:24,000 --> 00:21:26,562
+using neural nets
+that look at context.
+
+402
+00:21:26,562 --> 00:21:28,020
+And how we do that
+is actually what
+
+403
+00:21:28,020 --> 00:21:30,930
+I'll be talking about in
+the end part of the lecture.
+
+404
+00:21:30,930 --> 00:21:36,150
+And so at Stanford, we
+became interested in trying
+
+405
+00:21:36,150 --> 00:21:39,720
+to work out how to come up with
+a better graph-based dependency
+
+406
+00:21:39,720 --> 00:21:41,780
+parser using context.
+
+407
+00:21:41,780 --> 00:21:44,250
+Sorry, I forgot this
+was showing that.
+
+408
+00:21:44,250 --> 00:21:46,770
+If we can score each
+pairwise dependency,
+
+409
+00:21:46,770 --> 00:21:49,090
+we can simply
+choose the best one.
+
+410
+00:21:49,090 --> 00:21:53,430
+So we can say probably
+big is a dependent of cat.
+
+411
+00:21:53,430 --> 00:21:55,920
+And your first
+approximation, we're
+
+412
+00:21:55,920 --> 00:21:59,130
+going to want to
+choose for each word
+
+413
+00:21:59,130 --> 00:22:02,370
+that it is a dependent
+of the word that seems
+
+414
+00:22:02,370 --> 00:22:04,290
+most likely to be a dependent.
+
+415
+00:22:04,290 --> 00:22:06,360
+But we want to do that
+with some constraints,
+
+416
+00:22:06,360 --> 00:22:08,040
+because we want to
+get out something
+
+417
+00:22:08,040 --> 00:22:12,060
+that is the tree with a single
+root as I discussed last time.
+
+418
+00:22:12,060 --> 00:22:15,660
+And you can do that by making
+use of a minimum spanning tree
+
+419
+00:22:15,660 --> 00:22:18,720
+algorithm that uses
+these scores of how
+
+420
+00:22:18,720 --> 00:22:21,830
+likely different
+dependencies are.
+
+421
+00:22:21,830 --> 00:22:22,330
+OK.
+
+422
+00:22:22,330 --> 00:22:27,000
+So then in 2017, another
+student, Tim Dozat
+
+423
+00:22:27,000 --> 00:22:30,010
+and me then worked
+on saying, well,
+
+424
+00:22:30,010 --> 00:22:34,020
+can we now also build
+a much better neural
+
+425
+00:22:34,020 --> 00:22:36,090
+graph-based dependency parser?
+
+426
+00:22:36,090 --> 00:22:43,060
+And we developed a novel method
+for scoring dependency parsers
+
+427
+00:22:43,060 --> 00:22:44,940
+in a graph-based
+model, which I'm not
+
+428
+00:22:44,940 --> 00:22:48,120
+going to get into the
+details of right now.
+
+429
+00:22:48,120 --> 00:22:50,310
+But' that also had
+a very nice result.
+
+430
+00:22:50,310 --> 00:22:53,850
+Because getting back to
+graph-based parsing we could
+
+431
+00:22:53,850 --> 00:22:57,000
+then build a graph-based parser
+that performed about a percent
+
+432
+00:22:57,000 --> 00:23:01,830
+better than the best of the
+Google transition-based neural
+
+433
+00:23:01,830 --> 00:23:03,390
+dependency parses.
+
+434
+00:23:03,390 --> 00:23:06,930
+But I should point out
+that this is a mixed win.
+
+435
+00:23:06,930 --> 00:23:10,350
+Because although its
+accuracy is better,
+
+436
+00:23:10,350 --> 00:23:12,660
+these graph-based
+parses are just
+
+437
+00:23:12,660 --> 00:23:15,810
+n squared in performance
+rather than linear time.
+
+438
+00:23:15,810 --> 00:23:18,930
+So kind of like the earlier
+results they showed.
+
+439
+00:23:18,930 --> 00:23:21,510
+They don't operate nearly
+as quickly when you're
+
+440
+00:23:21,510 --> 00:23:25,410
+wanting to parse
+large amounts of text
+
+441
+00:23:25,410 --> 00:23:29,530
+with complex long sentences.
+
+442
+00:23:29,530 --> 00:23:30,400
+OK.
+
+443
+00:23:30,400 --> 00:23:33,250
+So that's everything you need
+to know about dependency parsers
+
+444
+00:23:33,250 --> 00:23:35,170
+and to do assignment 3.
+
+445
+00:23:35,170 --> 00:23:38,560
+So grab it this evening
+and start to work.
+
+446
+00:23:38,560 --> 00:23:42,310
+But I did want to sort of before
+going on to the next topic
+
+447
+00:23:42,310 --> 00:23:46,770
+just mention a few more
+things about neural networks
+
+448
+00:23:46,770 --> 00:23:49,870
+since some of you know
+this well already.
+
+449
+00:23:49,870 --> 00:23:51,685
+Some of you have
+seen less of it,
+
+450
+00:23:51,685 --> 00:23:53,560
+but you know there just
+are a bunch of things
+
+451
+00:23:53,560 --> 00:23:57,100
+you have to be aware of for
+building neural networks.
+
+452
+00:23:57,100 --> 00:24:00,700
+Now again for assignment
+3, essentially we
+
+453
+00:24:00,700 --> 00:24:01,760
+give you everything.
+
+454
+00:24:01,760 --> 00:24:06,260
+And if you follow the recipe,
+your parser should work well.
+
+455
+00:24:06,260 --> 00:24:09,760
+But what you should
+have minimally do
+
+456
+00:24:09,760 --> 00:24:14,170
+is actually look carefully
+at some of the things
+
+457
+00:24:14,170 --> 00:24:17,110
+that this parser does,
+which is questions
+
+458
+00:24:17,110 --> 00:24:23,810
+like, how do we initialize our
+matrices of our neural network?
+
+459
+00:24:23,810 --> 00:24:26,110
+What kind of
+optimizers do we use?
+
+460
+00:24:26,110 --> 00:24:28,690
+And things like that.
+
+461
+00:24:28,690 --> 00:24:31,190
+Because these are all
+important decisions.
+
+462
+00:24:31,190 --> 00:24:35,350
+And so I wanted to say just
+a few words about that.
+
+463
+00:24:35,350 --> 00:24:36,040
+OK.
+
+464
+00:24:36,040 --> 00:24:39,010
+So the first thing that we
+haven't discussed at all
+
+465
+00:24:39,010 --> 00:24:42,280
+is the concept of
+regularization.
+
+466
+00:24:42,280 --> 00:24:45,160
+So when we're building
+these neural nets,
+
+467
+00:24:45,160 --> 00:24:50,480
+we're now building models with
+a huge number of parameters.
+
+468
+00:24:50,480 --> 00:24:54,790
+So essentially just about
+all neural net models
+
+469
+00:24:54,790 --> 00:25:00,820
+that work well, actually
+their full loss function
+
+470
+00:25:00,820 --> 00:25:03,260
+is a regularized loss function.
+
+471
+00:25:03,260 --> 00:25:08,560
+So for this loss
+function here of J, well,
+
+472
+00:25:08,560 --> 00:25:10,420
+this part here is
+the part that we've
+
+473
+00:25:10,420 --> 00:25:16,480
+seen before where we're
+using the softmax classifier
+
+474
+00:25:16,480 --> 00:25:18,460
+and then taking a
+negative log likelihood
+
+475
+00:25:18,460 --> 00:25:21,550
+loss, which we're then averaging
+over the different examples.
+
+476
+00:25:21,550 --> 00:25:25,270
+But actually, we then
+stick on the end of it
+
+477
+00:25:25,270 --> 00:25:27,550
+this regularization term.
+
+478
+00:25:27,550 --> 00:25:30,880
+And so this
+regularization term sums
+
+479
+00:25:30,880 --> 00:25:34,910
+the square of every
+parameter in the model.
+
+480
+00:25:34,910 --> 00:25:39,820
+And so what that
+effectively says is you only
+
+481
+00:25:39,820 --> 00:25:44,530
+want to make parameters
+non-zero if they're
+
+482
+00:25:44,530 --> 00:25:46,540
+really useful, right?
+
+483
+00:25:46,540 --> 00:25:49,600
+So to the extent that the
+parameters don't help much,
+
+484
+00:25:49,600 --> 00:25:54,100
+you're just being penalized
+here by making them non-zero.
+
+485
+00:25:54,100 --> 00:25:56,650
+But to the extent that
+the parameters do help,
+
+486
+00:25:56,650 --> 00:25:59,380
+you'll gain in your
+estimation of likelihood.
+
+487
+00:25:59,380 --> 00:26:02,440
+And therefore, it's OK
+for them to be non-zero.
+
+488
+00:26:02,440 --> 00:26:07,090
+In particular, notice that this
+penalty is assessed only once
+
+489
+00:26:07,090 --> 00:26:08,200
+per parameter.
+
+490
+00:26:08,200 --> 00:26:11,182
+It's not being assessed
+separately for each example,
+
+491
+00:26:11,182 --> 00:26:13,160
+OK?
+
+492
+00:26:13,160 --> 00:26:15,950
+And having this kind
+of regularization
+
+493
+00:26:15,950 --> 00:26:21,410
+is essential to build neural
+net models that regularize well.
+
+494
+00:26:21,410 --> 00:26:25,070
+So the classic problem is
+referred to as overfitting.
+
+495
+00:26:25,070 --> 00:26:27,650
+And what overfitting
+means is that if you
+
+496
+00:26:27,650 --> 00:26:30,140
+have a particular
+training data set and you
+
+497
+00:26:30,140 --> 00:26:33,860
+start training your
+model, your error
+
+498
+00:26:33,860 --> 00:26:36,830
+will go down because you'll
+shift the parameters so they
+
+499
+00:26:36,830 --> 00:26:41,840
+better predict the
+correct answer for data
+
+500
+00:26:41,840 --> 00:26:43,230
+points in the model.
+
+501
+00:26:43,230 --> 00:26:46,940
+And you can keep on doing
+that and it will keep
+
+502
+00:26:46,940 --> 00:26:49,370
+on reducing your error rate.
+
+503
+00:26:49,370 --> 00:26:53,630
+But if you then look at your
+partially trained classifier
+
+504
+00:26:53,630 --> 00:26:58,640
+and say, how well does
+this classifier classify
+
+505
+00:26:58,640 --> 00:27:02,210
+independent data, different
+test data that you
+
+506
+00:27:02,210 --> 00:27:04,070
+weren't training the model on?
+
+507
+00:27:04,070 --> 00:27:08,250
+What you'll find is up
+until a certain point,
+
+508
+00:27:08,250 --> 00:27:11,690
+you'll get better at classifying
+independent test examples
+
+509
+00:27:11,690 --> 00:27:12,660
+as well.
+
+510
+00:27:12,660 --> 00:27:16,220
+And after that, commonly
+what will happen
+
+511
+00:27:16,220 --> 00:27:18,590
+is you'll actually
+start to get worse
+
+512
+00:27:18,590 --> 00:27:22,040
+of classifying
+independent test examples,
+
+513
+00:27:22,040 --> 00:27:24,650
+even though you're continuing
+to get better at predicting
+
+514
+00:27:24,650 --> 00:27:26,060
+the training examples.
+
+515
+00:27:26,060 --> 00:27:30,140
+And so this was then referred
+to as your overfitting
+
+516
+00:27:30,140 --> 00:27:32,030
+the training
+examples, that you're
+
+517
+00:27:32,030 --> 00:27:34,098
+fiddling the
+parameters of the model
+
+518
+00:27:34,098 --> 00:27:36,140
+so they're really good at
+predicting the training
+
+519
+00:27:36,140 --> 00:27:40,400
+examples, which aren't
+useful things that can then
+
+520
+00:27:40,400 --> 00:27:47,340
+predict on independent examples
+that you'd come to at run time.
+
+521
+00:27:47,340 --> 00:27:48,800
+OK.
+
+522
+00:27:48,800 --> 00:27:52,070
+That classic view
+of regularization
+
+523
+00:27:52,070 --> 00:27:55,580
+is sort of actually
+outmoded and wrong
+
+524
+00:27:55,580 --> 00:27:58,950
+for modern neural networks.
+
+525
+00:27:58,950 --> 00:28:02,900
+So the right way to
+think of it for the kind
+
+526
+00:28:02,900 --> 00:28:06,440
+of modern big neural
+networks that we build
+
+527
+00:28:06,440 --> 00:28:12,350
+is that overfitting on the
+training data isn't a problem.
+
+528
+00:28:12,350 --> 00:28:18,200
+But nevertheless, you need
+regularization to make sure
+
+529
+00:28:18,200 --> 00:28:23,520
+that your models generalize
+well to independent test data.
+
+530
+00:28:23,520 --> 00:28:26,090
+So what you would
+like is for your graph
+
+531
+00:28:26,090 --> 00:28:31,190
+not to look like this example
+with test error starting
+
+532
+00:28:31,190 --> 00:28:32,120
+to head up.
+
+533
+00:28:32,120 --> 00:28:37,190
+You'd like to have it
+at worst case flat line
+
+534
+00:28:37,190 --> 00:28:40,100
+and best case still
+be gradually dropping.
+
+535
+00:28:40,100 --> 00:28:43,080
+It will always be higher
+than the training error,
+
+536
+00:28:43,080 --> 00:28:47,850
+but it's not actually showing
+a failure to generalize.
+
+537
+00:28:47,850 --> 00:28:52,640
+So when we train big
+neural nets these days,
+
+538
+00:28:52,640 --> 00:28:59,180
+our big neural nets always
+overfit on the training data.
+
+539
+00:28:59,180 --> 00:29:02,030
+They hugely overfit
+on the training data.
+
+540
+00:29:02,030 --> 00:29:04,760
+In fact, in many
+circumstances our neural nets
+
+541
+00:29:04,760 --> 00:29:07,700
+have so many parameters
+that you can continue
+
+542
+00:29:07,700 --> 00:29:09,890
+to train them on
+the training data
+
+543
+00:29:09,890 --> 00:29:12,590
+until the error on the
+training data is zero.
+
+544
+00:29:12,590 --> 00:29:14,630
+They get every
+single example right
+
+545
+00:29:14,630 --> 00:29:17,360
+because they can just
+memorize enough stuff about it
+
+546
+00:29:17,360 --> 00:29:19,260
+to predict the right answer.
+
+547
+00:29:19,260 --> 00:29:23,630
+But in general, providing the
+models are regularized well,
+
+548
+00:29:23,630 --> 00:29:27,590
+those models will still also
+generalize well and predict
+
+549
+00:29:27,590 --> 00:29:30,500
+well in independent data.
+
+550
+00:29:30,500 --> 00:29:33,590
+And so for part of what
+we want to do for that
+
+551
+00:29:33,590 --> 00:29:36,590
+is to work out how
+much to regularize.
+
+552
+00:29:36,590 --> 00:29:39,170
+And so this Lambda
+parameter here
+
+553
+00:29:39,170 --> 00:29:41,780
+is the strength
+of regularization.
+
+554
+00:29:41,780 --> 00:29:44,570
+So if you're making
+that Lambda number big,
+
+555
+00:29:44,570 --> 00:29:47,300
+you're getting more
+regularization.
+
+556
+00:29:47,300 --> 00:29:49,820
+And if you make it small,
+you're getting less.
+
+557
+00:29:49,820 --> 00:29:52,130
+And you don't want to have
+it be too big or else you
+
+558
+00:29:52,130 --> 00:29:53,510
+won't fit the data well.
+
+559
+00:29:53,510 --> 00:29:56,240
+And you don't want
+to be too small,
+
+560
+00:29:56,240 --> 00:30:01,500
+or else you have the problem
+that you don't generalize well.
+
+561
+00:30:01,500 --> 00:30:02,000
+OK.
+
+562
+00:30:02,000 --> 00:30:05,030
+So this is classic
+L2 regularization
+
+563
+00:30:05,030 --> 00:30:06,830
+and it's a starting point.
+
+564
+00:30:06,830 --> 00:30:09,530
+That our big neural nets
+are sufficiently complex
+
+565
+00:30:09,530 --> 00:30:11,570
+and have sufficiently
+many parameters
+
+566
+00:30:11,570 --> 00:30:15,710
+that essentially L2
+regularization doesn't cut it.
+
+567
+00:30:15,710 --> 00:30:18,380
+So the next thing that
+you should know about
+
+568
+00:30:18,380 --> 00:30:21,920
+and is a very
+standard good feature
+
+569
+00:30:21,920 --> 00:30:26,990
+for building neural nets is
+a technique called dropout.
+
+570
+00:30:26,990 --> 00:30:32,120
+So dropout is
+generally introduced
+
+571
+00:30:32,120 --> 00:30:35,090
+as a sort of a
+slightly funny process
+
+572
+00:30:35,090 --> 00:30:40,890
+that you do when training to
+avoid feature co-adaptation.
+
+573
+00:30:40,890 --> 00:30:45,530
+So in dropout what you do
+is that the time that you're
+
+574
+00:30:45,530 --> 00:30:50,960
+training your model,
+that for each instance
+
+575
+00:30:50,960 --> 00:30:55,040
+or for each batch
+in your training,
+
+576
+00:30:55,040 --> 00:30:58,430
+then for each
+neuron in the model,
+
+577
+00:30:58,430 --> 00:31:01,010
+you drop 50% of its inputs.
+
+578
+00:31:01,010 --> 00:31:03,230
+You just treat them as zero.
+
+579
+00:31:03,230 --> 00:31:06,110
+And so that you can do
+by sort of zeroing out
+
+580
+00:31:06,110 --> 00:31:12,070
+elements of the sort of layers.
+
+581
+00:31:12,070 --> 00:31:17,110
+And then at test time, you don't
+drop any of the model weight.
+
+582
+00:31:17,110 --> 00:31:18,400
+You keep them all.
+
+583
+00:31:18,400 --> 00:31:20,860
+But actually you have
+all the model weights
+
+584
+00:31:20,860 --> 00:31:23,500
+because you're now keeping
+twice as many things
+
+585
+00:31:23,500 --> 00:31:26,500
+as you used at training data.
+
+586
+00:31:26,500 --> 00:31:30,490
+And so effectively,
+that little recipe
+
+587
+00:31:30,490 --> 00:31:33,730
+prevents what's called
+feature co-adaptation.
+
+588
+00:31:33,730 --> 00:31:39,880
+So you can't have
+features that are only
+
+589
+00:31:39,880 --> 00:31:43,210
+useful in the presence of
+particular other features,
+
+590
+00:31:43,210 --> 00:31:45,700
+because the model
+can't guarantee
+
+591
+00:31:45,700 --> 00:31:48,670
+which features are going to be
+present for different examples.
+
+592
+00:31:48,670 --> 00:31:51,250
+Because different features
+are being randomly dropped
+
+593
+00:31:51,250 --> 00:31:52,730
+all of the time.
+
+594
+00:31:52,730 --> 00:31:55,600
+And so effectively
+dropout gives you
+
+595
+00:31:55,600 --> 00:31:58,090
+a kind of a middle ground
+between Naive Bayes
+
+596
+00:31:58,090 --> 00:31:59,860
+and a logistic regression model.
+
+597
+00:31:59,860 --> 00:32:03,460
+In Naive Bayes models, all the
+weights are set independently.
+
+598
+00:32:03,460 --> 00:32:06,100
+In a logistic regression
+model, all the weights
+
+599
+00:32:06,100 --> 00:32:08,300
+are set in the context
+of all the others.
+
+600
+00:32:08,300 --> 00:32:10,720
+And here you are aware
+of other weights,
+
+601
+00:32:10,720 --> 00:32:13,600
+but they can randomly
+disappear from you.
+
+602
+00:32:13,600 --> 00:32:17,200
+It's also related to ensemble
+models like model bagging,
+
+603
+00:32:17,200 --> 00:32:19,510
+because you're using different
+subsets of the features
+
+604
+00:32:19,510 --> 00:32:22,130
+every time.
+
+605
+00:32:22,130 --> 00:32:26,030
+But after all of
+those explanations,
+
+606
+00:32:26,030 --> 00:32:28,280
+there's actually
+another way of thinking
+
+607
+00:32:28,280 --> 00:32:31,710
+about dropout which was actually
+developed here at Stanford,
+
+608
+00:32:31,710 --> 00:32:35,120
+this paper by Percy
+Liang and students, which
+
+609
+00:32:35,120 --> 00:32:38,480
+is to argue that really
+what dropout gives
+
+610
+00:32:38,480 --> 00:32:41,930
+you is a strong
+regularizer that isn't
+
+611
+00:32:41,930 --> 00:32:45,740
+a uniform regularizer like L2
+that regularizes everything
+
+612
+00:32:45,740 --> 00:32:48,140
+with an L2 loss, but
+can learn a feature
+
+613
+00:32:48,140 --> 00:32:50,060
+dependent regularization.
+
+614
+00:32:50,060 --> 00:32:52,400
+And so that dropout
+has just emerged
+
+615
+00:32:52,400 --> 00:32:57,810
+as in general the best way to do
+regularization for neural nets.
+
+616
+00:32:57,810 --> 00:33:00,320
+I think you've already
+seen and heard this one,
+
+617
+00:33:00,320 --> 00:33:05,360
+but just have it
+on my slides once.
+
+618
+00:33:05,360 --> 00:33:08,990
+If you want to have your
+neural networks go fast,
+
+619
+00:33:08,990 --> 00:33:11,210
+it's really essential
+that you make
+
+620
+00:33:11,210 --> 00:33:14,960
+use of vectors,
+matrices, tensors and you
+
+621
+00:33:14,960 --> 00:33:16,860
+don't do things with for loops.
+
+622
+00:33:16,860 --> 00:33:20,210
+So here's a teeny
+example, where I'm
+
+623
+00:33:20,210 --> 00:33:23,915
+using timeit, which is a useful
+thing that you can use too
+
+624
+00:33:23,915 --> 00:33:26,180
+to see how fast
+your neural nets run
+
+625
+00:33:26,180 --> 00:33:28,700
+in different ways of writing it.
+
+626
+00:33:28,700 --> 00:33:36,860
+And so when I'm doing
+these dot products here,
+
+627
+00:33:36,860 --> 00:33:43,790
+I can either do the dot product
+in a for loop against each word
+
+628
+00:33:43,790 --> 00:33:48,080
+vector, or I can do the dot
+product with a single word
+
+629
+00:33:48,080 --> 00:33:49,430
+vector matrix.
+
+630
+00:33:49,430 --> 00:33:54,740
+And if I do it in a for
+loop, doing each loop
+
+631
+00:33:54,740 --> 00:33:57,980
+takes me almost a second.
+
+632
+00:33:57,980 --> 00:34:02,840
+Whereas if I do it
+with a matrix multiply,
+
+633
+00:34:02,840 --> 00:34:05,990
+it takes me an order
+of magnitude less time.
+
+634
+00:34:05,990 --> 00:34:09,110
+So you should always be looking
+to use vectors and matrices,
+
+635
+00:34:09,110 --> 00:34:10,370
+not for loops.
+
+636
+00:34:10,370 --> 00:34:13,550
+And this is a speed
+up of about 10 times
+
+637
+00:34:13,550 --> 00:34:16,250
+when you're doing
+things on a CPU.
+
+638
+00:34:16,250 --> 00:34:19,760
+Heading forward, we're
+going to be using GPUs
+
+639
+00:34:19,760 --> 00:34:23,120
+and they only further
+exaggerate the advantages
+
+640
+00:34:23,120 --> 00:34:25,820
+of using vectors and matrices,
+where you'll commonly
+
+641
+00:34:25,820 --> 00:34:27,650
+get two orders of
+magnitude speed
+
+642
+00:34:27,650 --> 00:34:31,040
+up by doing things that way.
+
+643
+00:34:31,040 --> 00:34:35,600
+Yeah, so for the
+backward parse, you
+
+644
+00:34:35,600 --> 00:34:39,469
+are running backward
+parses before on the
+
+645
+00:34:39,469 --> 00:34:42,739
+dropped out examples, right?
+
+646
+00:34:42,739 --> 00:34:45,590
+So for the things
+that were dropped out
+
+647
+00:34:45,590 --> 00:34:47,630
+no gradient is
+going through them
+
+648
+00:34:47,630 --> 00:34:49,100
+because they weren't present.
+
+649
+00:34:49,100 --> 00:34:51,530
+They're not affecting things.
+
+650
+00:34:51,530 --> 00:34:56,810
+So in a particular
+batch, you're only
+
+651
+00:34:56,810 --> 00:34:59,570
+training weights for the
+things that aren't dropped out.
+
+652
+00:34:59,570 --> 00:35:03,230
+But then since for
+each successive batch
+
+653
+00:35:03,230 --> 00:35:06,890
+you drop out different things
+that over a bunch of batches,
+
+654
+00:35:06,890 --> 00:35:11,240
+you're then training all of
+the weights of the model.
+
+655
+00:35:11,240 --> 00:35:14,560
+And so feature
+dependent regularizer
+
+656
+00:35:14,560 --> 00:35:21,610
+is meaning that the
+different features can
+
+657
+00:35:21,610 --> 00:35:29,930
+be regularized different
+amounts to maximize performance.
+
+658
+00:35:29,930 --> 00:35:34,030
+So back in this
+model, every feature
+
+659
+00:35:34,030 --> 00:35:38,740
+was just sort of being penalized
+by taking Lambda times that
+
+660
+00:35:38,740 --> 00:35:39,770
+squared value.
+
+661
+00:35:39,770 --> 00:35:44,290
+So this is sort of uniform
+regularization, where
+
+662
+00:35:44,290 --> 00:35:48,160
+the end result of this
+dropout style training
+
+663
+00:35:48,160 --> 00:35:53,110
+is that you end up with some
+features being regularized much
+
+664
+00:35:53,110 --> 00:35:58,480
+more strongly and some other
+features being regularized
+
+665
+00:35:58,480 --> 00:35:59,710
+less strongly.
+
+666
+00:35:59,710 --> 00:36:03,190
+And how much they
+are regularized
+
+667
+00:36:03,190 --> 00:36:05,300
+depends on how much
+they're being used.
+
+668
+00:36:05,300 --> 00:36:07,480
+So you're regularizing
+more features
+
+669
+00:36:07,480 --> 00:36:09,700
+that are being used less.
+
+670
+00:36:09,700 --> 00:36:13,900
+But I'm not going to get through
+into the details of how you can
+
+671
+00:36:13,900 --> 00:36:16,150
+understand that perspective.
+
+672
+00:36:16,150 --> 00:36:19,300
+That's outside of the
+context of what I'm
+
+673
+00:36:19,300 --> 00:36:21,540
+going to get through right now.
+
+674
+00:36:21,540 --> 00:36:23,270
+So the final bit
+is I just wanted
+
+675
+00:36:23,270 --> 00:36:26,060
+to give a little
+bit of perspective
+
+676
+00:36:26,060 --> 00:36:30,080
+on non-linearities
+in our neural nets.
+
+677
+00:36:30,080 --> 00:36:33,620
+So the first thing
+to remember is
+
+678
+00:36:33,620 --> 00:36:35,610
+you have to have non-linearity.
+
+679
+00:36:35,610 --> 00:36:39,080
+So if you're building a
+multi-layer neural net
+
+680
+00:36:39,080 --> 00:36:44,960
+and you've just got W1x plus
+b1 then you put it through W2x
+
+681
+00:36:44,960 --> 00:36:47,016
+plus b2 and then
+put it through W3x--
+
+682
+00:36:47,016 --> 00:36:49,970
+
+
+683
+00:36:49,970 --> 00:36:52,275
+Well, I guess they're
+different hidden layers.
+
+684
+00:36:52,275 --> 00:36:53,150
+So I shouldn't say x.
+
+685
+00:36:53,150 --> 00:36:55,080
+That should be hidden
+1, hidden 2, hidden 3.
+
+686
+00:36:55,080 --> 00:36:58,910
+W3 hidden 3 plus b3.
+
+687
+00:36:58,910 --> 00:37:02,870
+That multiple linear
+transformations
+
+688
+00:37:02,870 --> 00:37:05,300
+composed so they can
+be just collapsed down
+
+689
+00:37:05,300 --> 00:37:07,650
+into a single linear
+transformation.
+
+690
+00:37:07,650 --> 00:37:14,480
+So you don't get any power
+as a data representation
+
+691
+00:37:14,480 --> 00:37:17,720
+by having multiple
+linear layers.
+
+692
+00:37:17,720 --> 00:37:20,300
+There's a slightly longer story
+there because you actually
+
+693
+00:37:20,300 --> 00:37:22,310
+do get some interesting
+learning effects,
+
+694
+00:37:22,310 --> 00:37:24,950
+but I'm not going to
+talk about that now.
+
+695
+00:37:24,950 --> 00:37:31,070
+But standardly, we have to
+have some kind of non-linearity
+
+696
+00:37:31,070 --> 00:37:35,640
+to do something interesting
+in a deep neural network.
+
+697
+00:37:35,640 --> 00:37:36,140
+OK.
+
+698
+00:37:36,140 --> 00:37:41,810
+So a starting point is the
+most classic non-linearity
+
+699
+00:37:41,810 --> 00:37:43,370
+is the logistic.
+
+700
+00:37:43,370 --> 00:37:46,340
+Often just called the
+sigmoid non-linearity
+
+701
+00:37:46,340 --> 00:37:49,250
+because of its S
+shape, which we've seen
+
+702
+00:37:49,250 --> 00:37:51,300
+before in previous lectures.
+
+703
+00:37:51,300 --> 00:37:54,740
+So this will take any
+real number and method
+
+704
+00:37:54,740 --> 00:37:58,880
+on to the range of 0, 1.
+
+705
+00:37:58,880 --> 00:38:02,030
+And that was sort of
+basically what people used
+
+706
+00:38:02,030 --> 00:38:04,800
+in sort of 1980s neural nets.
+
+707
+00:38:04,800 --> 00:38:09,680
+Now one disadvantage
+of this non-linearity
+
+708
+00:38:09,680 --> 00:38:14,480
+is that it's moving everything
+into the positive space
+
+709
+00:38:14,480 --> 00:38:17,390
+because the output is
+always between 0 and 1.
+
+710
+00:38:17,390 --> 00:38:21,110
+So people then decided
+that for many purposes,
+
+711
+00:38:21,110 --> 00:38:24,800
+it was useful to have
+this variant sigmoid shape
+
+712
+00:38:24,800 --> 00:38:27,740
+of hyperbolic tan,
+which is then being
+
+713
+00:38:27,740 --> 00:38:30,620
+shown in the second picture.
+
+714
+00:38:30,620 --> 00:38:34,640
+Now you know logistic
+and hyperbolic tan,
+
+715
+00:38:34,640 --> 00:38:36,980
+they sound like they're
+very different things.
+
+716
+00:38:36,980 --> 00:38:40,280
+But actually, as you maybe
+remember from a math class,
+
+717
+00:38:40,280 --> 00:38:42,950
+hyperbolic tan can be
+represented in terms
+
+718
+00:38:42,950 --> 00:38:44,730
+of exponentials as well.
+
+719
+00:38:44,730 --> 00:38:46,970
+And if you do a bit of
+math, which possibly we
+
+720
+00:38:46,970 --> 00:38:49,520
+might make you do
+on an assignment,
+
+721
+00:38:49,520 --> 00:38:52,490
+it's actually the case that
+a hyperbolic tangent is just
+
+722
+00:38:52,490 --> 00:38:55,770
+a rescaled and shifted
+version of the logistic.
+
+723
+00:38:55,770 --> 00:38:59,400
+So it's really exactly the same
+curve, just squeezed a bit.
+
+724
+00:38:59,400 --> 00:39:03,950
+So it goes now symmetrically
+between minus 1 and 1.
+
+725
+00:39:03,950 --> 00:39:08,630
+Well, these kind of
+transcendental functions
+
+726
+00:39:08,630 --> 00:39:11,510
+like hyperbolic
+tangent, they're kind of
+
+727
+00:39:11,510 --> 00:39:13,670
+slow and expensive
+to compute, right,
+
+728
+00:39:13,670 --> 00:39:16,160
+even on our fast
+computers, calculating
+
+729
+00:39:16,160 --> 00:39:18,170
+exponentials is a bit slow.
+
+730
+00:39:18,170 --> 00:39:21,740
+So it's something people
+became interested in was well,
+
+731
+00:39:21,740 --> 00:39:25,330
+could we do things with much
+simpler non-linearities?
+
+732
+00:39:25,330 --> 00:39:29,270
+So what if we used a
+so-called hard tanh?
+
+733
+00:39:29,270 --> 00:39:34,310
+So the hard tanh,
+up to some point
+
+734
+00:39:34,310 --> 00:39:37,310
+it just flatlines
+at minus 1, then
+
+735
+00:39:37,310 --> 00:39:42,140
+it is y equals x up until 1.
+
+736
+00:39:42,140 --> 00:39:44,570
+And then it just
+flat lines again.
+
+737
+00:39:44,570 --> 00:39:48,140
+And that seems a
+slightly weird thing
+
+738
+00:39:48,140 --> 00:39:52,850
+to use because if your
+input is over on the left
+
+739
+00:39:52,850 --> 00:39:55,850
+or over on the right,
+you're sort of not
+
+740
+00:39:55,850 --> 00:39:57,450
+getting any discrimination.
+
+741
+00:39:57,450 --> 00:40:00,860
+And everything's
+giving the same output.
+
+742
+00:40:00,860 --> 00:40:03,110
+And somewhat
+surprisingly, I mean,
+
+743
+00:40:03,110 --> 00:40:06,062
+I was surprised when
+people started doing this.
+
+744
+00:40:06,062 --> 00:40:11,640
+These kind of models proved
+to be very successful.
+
+745
+00:40:11,640 --> 00:40:14,570
+And so that then led
+into what's proven
+
+746
+00:40:14,570 --> 00:40:18,290
+to be kind of the most
+successful and generally widely
+
+747
+00:40:18,290 --> 00:40:21,080
+used non-linearity in a
+lot of recent deep learning
+
+748
+00:40:21,080 --> 00:40:26,850
+work, which is what was being
+used in the dependency powers
+
+749
+00:40:26,850 --> 00:40:30,230
+model I showed is what's
+called the Rectified Linear
+
+750
+00:40:30,230 --> 00:40:31,860
+Unit or ReLU.
+
+751
+00:40:31,860 --> 00:40:35,090
+So a ReLU is the simplest
+kind of non-linearity
+
+752
+00:40:35,090 --> 00:40:36,510
+that you can imagine.
+
+753
+00:40:36,510 --> 00:40:40,490
+So if the value of x is
+negative, its value is 0.
+
+754
+00:40:40,490 --> 00:40:42,350
+So effectively it's just dead.
+
+755
+00:40:42,350 --> 00:40:44,870
+It's not doing anything
+in the computation.
+
+756
+00:40:44,870 --> 00:40:51,920
+And if its value of x is greater
+than 0, then it's just simply y
+
+757
+00:40:51,920 --> 00:40:52,910
+equals x.
+
+758
+00:40:52,910 --> 00:40:57,380
+The value is being
+passed through.
+
+759
+00:40:57,380 --> 00:41:00,560
+And at first sight, this might
+seem really, really weird
+
+760
+00:41:00,560 --> 00:41:04,100
+and how could this be
+useful as a non-linearity?
+
+761
+00:41:04,100 --> 00:41:07,520
+But if you sort of think a bit
+about how you can approximate
+
+762
+00:41:07,520 --> 00:41:11,870
+things with piecewise linear
+functions very accurately,
+
+763
+00:41:11,870 --> 00:41:13,790
+you might kind of
+start to see how
+
+764
+00:41:13,790 --> 00:41:17,000
+you could use this to
+do accurate function
+
+765
+00:41:17,000 --> 00:41:20,630
+approximation with
+piecewise linear functions.
+
+766
+00:41:20,630 --> 00:41:22,970
+And that's what
+ReLU units have been
+
+767
+00:41:22,970 --> 00:41:27,490
+found to do extremely,
+extremely successfully.
+
+768
+00:41:27,490 --> 00:41:31,740
+So logistic and tanh are
+still used in various places.
+
+769
+00:41:31,740 --> 00:41:34,760
+You use logistic when you
+want a probability output.
+
+770
+00:41:34,760 --> 00:41:37,790
+We'll see tanh's again
+very soon when we get
+
+771
+00:41:37,790 --> 00:41:39,950
+to recurrent neural networks.
+
+772
+00:41:39,950 --> 00:41:41,870
+But they're no
+longer the default
+
+773
+00:41:41,870 --> 00:41:43,340
+when making deep networks.
+
+774
+00:41:43,340 --> 00:41:45,470
+That in a lot of
+places, the first thing
+
+775
+00:41:45,470 --> 00:41:49,040
+you should think about trying
+is ReLU nonlinearities.
+
+776
+00:41:49,040 --> 00:41:55,880
+And so in particular
+part of why they're good
+
+777
+00:41:55,880 --> 00:42:00,620
+is that ReLU networks
+train very quickly,
+
+778
+00:42:00,620 --> 00:42:03,260
+because you get this sort
+of very straightforward
+
+779
+00:42:03,260 --> 00:42:04,520
+gradient back flow.
+
+780
+00:42:04,520 --> 00:42:08,180
+Because providing you're on
+the right hand side of it,
+
+781
+00:42:08,180 --> 00:42:11,270
+you're then just getting this
+sort of constant gradient back
+
+782
+00:42:11,270 --> 00:42:12,980
+flow from the slope 1.
+
+783
+00:42:12,980 --> 00:42:16,130
+And so they train very quickly.
+
+784
+00:42:16,130 --> 00:42:20,330
+The somewhat surprising fact
+is that almost the simplest
+
+785
+00:42:20,330 --> 00:42:22,730
+non-linearity
+imaginable is still
+
+786
+00:42:22,730 --> 00:42:27,860
+enough to have a very good
+neural network, but it just is.
+
+787
+00:42:27,860 --> 00:42:30,840
+People have played around
+with variants of that.
+
+788
+00:42:30,840 --> 00:42:32,330
+So people have
+then played around
+
+789
+00:42:32,330 --> 00:42:37,760
+with leaky ReLUs, where rather
+than the left-hand side just
+
+790
+00:42:37,760 --> 00:42:44,510
+going completely to 0, it goes
+slightly negative on a much
+
+791
+00:42:44,510 --> 00:42:45,830
+shallower slope.
+
+792
+00:42:45,830 --> 00:42:47,930
+And then there's been
+a parametric ReLU
+
+793
+00:42:47,930 --> 00:42:50,630
+where you have an extra
+parameter where you learn
+
+794
+00:42:50,630 --> 00:42:53,370
+the slope of the negative part.
+
+795
+00:42:53,370 --> 00:42:56,270
+Another thing that's
+been used recently
+
+796
+00:42:56,270 --> 00:43:01,160
+is this swish non-linearity,
+which looks almost like a ReLU,
+
+797
+00:43:01,160 --> 00:43:04,730
+but it sort of curves down
+just a little bit there
+
+798
+00:43:04,730 --> 00:43:06,150
+and starts to go up.
+
+799
+00:43:06,150 --> 00:43:09,770
+I mean, I think it's fair
+to say that none of these
+
+800
+00:43:09,770 --> 00:43:12,530
+have really proven
+themselves vastly superior.
+
+801
+00:43:12,530 --> 00:43:15,500
+There are papers saying I can
+get better results by using
+
+802
+00:43:15,500 --> 00:43:17,690
+one of these and maybe you can.
+
+803
+00:43:17,690 --> 00:43:21,080
+But it's not night and
+day and the vast majority
+
+804
+00:43:21,080 --> 00:43:23,900
+of work that you see
+around is still just using
+
+805
+00:43:23,900 --> 00:43:27,830
+ReLUs in many places.
+
+806
+00:43:27,830 --> 00:43:29,260
+OK.
+
+807
+00:43:29,260 --> 00:43:31,160
+Couple more things.
+
+808
+00:43:31,160 --> 00:43:33,470
+Parameter initialization.
+
+809
+00:43:33,470 --> 00:43:37,560
+So in almost all
+cases, you must, must,
+
+810
+00:43:37,560 --> 00:43:43,700
+must initialize the
+matrices of your neural nets
+
+811
+00:43:43,700 --> 00:43:46,550
+with small random values.
+
+812
+00:43:46,550 --> 00:43:50,210
+Neural nets just don't work
+if you start the matrices
+
+813
+00:43:50,210 --> 00:43:55,980
+off as zero, because effectively
+then everything is symmetric.
+
+814
+00:43:55,980 --> 00:43:59,450
+Nothing can specialize
+in different ways.
+
+815
+00:43:59,450 --> 00:44:05,960
+And you just don't have an
+ability for a neural net
+
+816
+00:44:05,960 --> 00:44:06,990
+to learn.
+
+817
+00:44:06,990 --> 00:44:09,960
+You sort of get this
+defective solution.
+
+818
+00:44:09,960 --> 00:44:13,700
+So standardly, you
+are using some methods
+
+819
+00:44:13,700 --> 00:44:18,920
+such as drawing random numbers
+uniformly between minus r and R
+
+820
+00:44:18,920 --> 00:44:21,710
+for a small value
+r and just filling
+
+821
+00:44:21,710 --> 00:44:24,260
+in all the parameters with that.
+
+822
+00:44:24,260 --> 00:44:26,750
+Exception is with bias weights.
+
+823
+00:44:26,750 --> 00:44:30,200
+It's fine to set bias weights
+to 0 and in some sense that's
+
+824
+00:44:30,200 --> 00:44:32,280
+better.
+
+825
+00:44:32,280 --> 00:44:35,580
+In terms of choosing
+what the r value
+
+826
+00:44:35,580 --> 00:44:40,830
+is, essentially for
+traditional neural nets,
+
+827
+00:44:40,830 --> 00:44:44,730
+what we want to set
+that r range for is
+
+828
+00:44:44,730 --> 00:44:47,340
+so that the numbers
+in our neural network
+
+829
+00:44:47,340 --> 00:44:49,620
+stay of a reasonable size.
+
+830
+00:44:49,620 --> 00:44:53,400
+They don't get too big and
+they don't get too small.
+
+831
+00:44:53,400 --> 00:44:57,510
+And whether they kind of
+blow up or not depends
+
+832
+00:44:57,510 --> 00:45:01,110
+on how many connections there
+are in the neural networks.
+
+833
+00:45:01,110 --> 00:45:03,720
+I'm looking at the
+fan in and fan out
+
+834
+00:45:03,720 --> 00:45:06,720
+of connections in
+the neural network.
+
+835
+00:45:06,720 --> 00:45:11,960
+And so a very common
+initialization
+
+836
+00:45:11,960 --> 00:45:14,420
+that you'll see in
+PyTorch is what's
+
+837
+00:45:14,420 --> 00:45:18,800
+called Xavier initialization,
+named after a person who
+
+838
+00:45:18,800 --> 00:45:20,450
+suggested that.
+
+839
+00:45:20,450 --> 00:45:24,320
+And it's working
+out a value based
+
+840
+00:45:24,320 --> 00:45:29,050
+on this fan in fan
+out of the layers
+
+841
+00:45:29,050 --> 00:45:30,850
+that you can just
+sort of ask for it,
+
+842
+00:45:30,850 --> 00:45:34,720
+say initialize with this
+initialization and it will.
+
+843
+00:45:34,720 --> 00:45:36,640
+This is another area
+where there have been
+
+844
+00:45:36,640 --> 00:45:38,990
+some subsequent developments.
+
+845
+00:45:38,990 --> 00:45:42,970
+So around week 5,
+will start talking
+
+846
+00:45:42,970 --> 00:45:44,470
+about layer normalization.
+
+847
+00:45:44,470 --> 00:45:46,630
+And if you're using
+layer normalization,
+
+848
+00:45:46,630 --> 00:45:48,340
+then it sort of
+doesn't matter the same
+
+849
+00:45:48,340 --> 00:45:49,632
+how you initialize the weights.
+
+850
+00:45:49,632 --> 00:45:52,060
+
+
+851
+00:45:52,060 --> 00:45:56,110
+So finally, we have
+to train our models.
+
+852
+00:45:56,110 --> 00:46:00,040
+And I've briefly introduced
+the idea of stochastic gradient
+
+853
+00:46:00,040 --> 00:46:00,910
+descent.
+
+854
+00:46:00,910 --> 00:46:05,830
+And the good news is that
+most of the time that
+
+855
+00:46:05,830 --> 00:46:08,890
+training neural networks with
+stochastic gradient descent
+
+856
+00:46:08,890 --> 00:46:16,260
+works just fine, use it and
+you will get good results.
+
+857
+00:46:16,260 --> 00:46:20,960
+However, often that requires
+choosing a suitable learning
+
+858
+00:46:20,960 --> 00:46:25,260
+rate, which is my final slide
+of tips on the next slide.
+
+859
+00:46:25,260 --> 00:46:27,920
+But there's been an
+enormous amount of work
+
+860
+00:46:27,920 --> 00:46:31,310
+on optimization
+of neural networks
+
+861
+00:46:31,310 --> 00:46:34,730
+and people have come up
+with a whole series of more
+
+862
+00:46:34,730 --> 00:46:37,920
+sophisticated optimizers.
+
+863
+00:46:37,920 --> 00:46:41,100
+And I'm not going to get into
+the details of optimization
+
+864
+00:46:41,100 --> 00:46:42,110
+in this class.
+
+865
+00:46:42,110 --> 00:46:46,220
+But the very loose idea
+is that these optimizers
+
+866
+00:46:46,220 --> 00:46:50,000
+are adaptive in that they
+can kind of keep track
+
+867
+00:46:50,000 --> 00:46:54,140
+of how much slope there
+was, how much gradient there
+
+868
+00:46:54,140 --> 00:46:56,000
+is for different parameters.
+
+869
+00:46:56,000 --> 00:46:58,220
+And therefore,
+based on that, make
+
+870
+00:46:58,220 --> 00:47:02,000
+decisions as to how much
+to adjust the weights when
+
+871
+00:47:02,000 --> 00:47:04,880
+doing the gradient update
+rather than adjusting it
+
+872
+00:47:04,880 --> 00:47:06,450
+by a constant amount.
+
+873
+00:47:06,450 --> 00:47:09,170
+And so in that
+family of methods,
+
+874
+00:47:09,170 --> 00:47:13,790
+there are methods that include
+Adagrad, RMSprop, Adam.
+
+875
+00:47:13,790 --> 00:47:18,890
+And then a variance of Adam
+including SparseAdam, AdamW, et
+
+876
+00:47:18,890 --> 00:47:20,380
+cetera.
+
+877
+00:47:20,380 --> 00:47:24,510
+The one called Adam is a
+pretty good place to start.
+
+878
+00:47:24,510 --> 00:47:27,230
+And a lot of the time,
+that's a good one to use.
+
+879
+00:47:27,230 --> 00:47:30,140
+And again from the
+perspective of PyTorch,
+
+880
+00:47:30,140 --> 00:47:32,360
+when you're initializing
+an optimizer,
+
+881
+00:47:32,360 --> 00:47:35,810
+you can just say please use
+Adam and you don't actually
+
+882
+00:47:35,810 --> 00:47:39,700
+need to know much more
+about it than that.
+
+883
+00:47:39,700 --> 00:47:44,650
+If you are using simple
+stochastic gradient descent,
+
+884
+00:47:44,650 --> 00:47:47,150
+you have to choose
+the learning rate.
+
+885
+00:47:47,150 --> 00:47:51,580
+So that was the eta value that
+you multiplied the gradient
+
+886
+00:47:51,580 --> 00:47:54,400
+by for how much to
+adjust the weights.
+
+887
+00:47:54,400 --> 00:47:56,920
+And so I talked
+about that slightly
+
+888
+00:47:56,920 --> 00:47:59,530
+how you didn't want
+it to be too big
+
+889
+00:47:59,530 --> 00:48:02,650
+or your model could
+diverge or bounce around.
+
+890
+00:48:02,650 --> 00:48:06,580
+You didn't want it to be too
+small or else the training
+
+891
+00:48:06,580 --> 00:48:09,760
+could take place
+exceedingly slowly
+
+892
+00:48:09,760 --> 00:48:13,270
+and you'll miss the
+assignment deadline.
+
+893
+00:48:13,270 --> 00:48:15,340
+How big it should
+be, depends on all
+
+894
+00:48:15,340 --> 00:48:17,210
+sorts of details of the model.
+
+895
+00:48:17,210 --> 00:48:18,760
+And so you want
+to sort of try out
+
+896
+00:48:18,760 --> 00:48:22,930
+some different order
+of magnitude numbers
+
+897
+00:48:22,930 --> 00:48:27,230
+to see what numbers seem to
+work well for it training stably
+
+898
+00:48:27,230 --> 00:48:28,900
+but reasonably quickly.
+
+899
+00:48:28,900 --> 00:48:31,930
+Something around 10 to the
+minus 3 or 10 to the minus 4
+
+900
+00:48:31,930 --> 00:48:34,510
+isn't a crazy place to start.
+
+901
+00:48:34,510 --> 00:48:36,400
+In principle, you
+can do fine just
+
+902
+00:48:36,400 --> 00:48:39,400
+using a constant
+learning rate in SGD.
+
+903
+00:48:39,400 --> 00:48:42,190
+In practice, people
+generally find
+
+904
+00:48:42,190 --> 00:48:45,880
+they can get better results
+by decreasing learning rates
+
+905
+00:48:45,880 --> 00:48:47,170
+as you train.
+
+906
+00:48:47,170 --> 00:48:51,610
+So a very common recipe is that
+you halve the learning rate
+
+907
+00:48:51,610 --> 00:48:55,000
+after every k epochs,
+where an epoch means
+
+908
+00:48:55,000 --> 00:48:58,270
+that you've made a pass through
+the entire set of training
+
+909
+00:48:58,270 --> 00:48:59,120
+data.
+
+910
+00:48:59,120 --> 00:49:01,690
+So perhaps something
+like every three epochs,
+
+911
+00:49:01,690 --> 00:49:05,050
+you have the learning rate.
+
+912
+00:49:05,050 --> 00:49:07,450
+And a final little
+note there in purple
+
+913
+00:49:07,450 --> 00:49:09,380
+is when you make a
+pass through the data,
+
+914
+00:49:09,380 --> 00:49:12,700
+you don't want to go through
+the data items in the same order
+
+915
+00:49:12,700 --> 00:49:13,870
+each time.
+
+916
+00:49:13,870 --> 00:49:16,750
+Because that leads
+you to to kind of
+
+917
+00:49:16,750 --> 00:49:20,770
+have a sort of patterning
+of the training examples
+
+918
+00:49:20,770 --> 00:49:23,980
+that the model will sort of
+fall into that periodicity
+
+919
+00:49:23,980 --> 00:49:24,970
+of those patterns.
+
+920
+00:49:24,970 --> 00:49:30,130
+So it's best to shuffle the data
+before each pass through it.
+
+921
+00:49:30,130 --> 00:49:30,700
+OK.
+
+922
+00:49:30,700 --> 00:49:34,750
+There are more sophisticated
+ways to set learning rates
+
+923
+00:49:34,750 --> 00:49:38,320
+and I won't really
+get into those now.
+
+924
+00:49:38,320 --> 00:49:42,140
+Fancier optimizers like Adam
+also have a learning rate.
+
+925
+00:49:42,140 --> 00:49:45,070
+So you still have to choose
+a learning rate value.
+
+926
+00:49:45,070 --> 00:49:47,260
+But it's effectively
+it's an initial learning
+
+927
+00:49:47,260 --> 00:49:50,920
+rate, which typically the
+optimizer shrinks as it runs.
+
+928
+00:49:50,920 --> 00:49:54,370
+And so you commonly want to
+have the number it starts off
+
+929
+00:49:54,370 --> 00:49:56,620
+with beyond the larger
+size because it'll
+
+930
+00:49:56,620 --> 00:50:00,600
+be shrinking as it goes.
+
+931
+00:50:00,600 --> 00:50:01,480
+OK.
+
+932
+00:50:01,480 --> 00:50:03,900
+So that's all by
+way of introduction,
+
+933
+00:50:03,900 --> 00:50:07,930
+and I'm now ready to start
+on language models and RNNs.
+
+934
+00:50:07,930 --> 00:50:10,140
+So what is language modeling?
+
+935
+00:50:10,140 --> 00:50:13,080
+I mean, as two words of
+English, language modeling
+
+936
+00:50:13,080 --> 00:50:15,090
+could mean just about anything.
+
+937
+00:50:15,090 --> 00:50:18,780
+But in the natural language
+processing literature,
+
+938
+00:50:18,780 --> 00:50:23,080
+language modeling has a very
+precise technical definition,
+
+939
+00:50:23,080 --> 00:50:24,300
+which you should know.
+
+940
+00:50:24,300 --> 00:50:28,350
+So language modeling is
+the task of predicting
+
+941
+00:50:28,350 --> 00:50:31,870
+the word that comes next.
+
+942
+00:50:31,870 --> 00:50:37,050
+So if you have some context
+like the students opened there,
+
+943
+00:50:37,050 --> 00:50:40,710
+you want to be able to predict
+what words will come next.
+
+944
+00:50:40,710 --> 00:50:44,550
+Is that their books, their
+laptops, their exams,
+
+945
+00:50:44,550 --> 00:50:45,930
+their minds.
+
+946
+00:50:45,930 --> 00:50:50,940
+And so in particular,
+what you want to be doing
+
+947
+00:50:50,940 --> 00:50:53,970
+is being able to
+give a probability
+
+948
+00:50:53,970 --> 00:50:58,480
+that different words will
+occur in this context.
+
+949
+00:50:58,480 --> 00:51:02,850
+So a language model is a
+probability distribution
+
+950
+00:51:02,850 --> 00:51:06,735
+over next words given
+a preceding context.
+
+951
+00:51:06,735 --> 00:51:10,190
+
+
+952
+00:51:10,190 --> 00:51:15,060
+And a system that does that
+is called a language model.
+
+953
+00:51:15,060 --> 00:51:19,680
+So as a result of that, you can
+also think of a language model
+
+954
+00:51:19,680 --> 00:51:22,530
+as a system that
+assigns a probability
+
+955
+00:51:22,530 --> 00:51:24,460
+score to a piece of text.
+
+956
+00:51:24,460 --> 00:51:26,910
+So if we have a piece
+of text, then we
+
+957
+00:51:26,910 --> 00:51:28,950
+can just work out
+its probability
+
+958
+00:51:28,950 --> 00:51:30,820
+according to a language model.
+
+959
+00:51:30,820 --> 00:51:33,510
+So the probability of
+a sequence of tokens,
+
+960
+00:51:33,510 --> 00:51:37,440
+we can decompose via
+the chain of probability
+
+961
+00:51:37,440 --> 00:51:40,110
+of the first times probability
+of the second given
+
+962
+00:51:40,110 --> 00:51:41,980
+the first et cetera, et cetera.
+
+963
+00:51:41,980 --> 00:51:45,660
+And then we can work that
+out using what our language
+
+964
+00:51:45,660 --> 00:51:49,890
+model provides as a product of
+each probability of predicting
+
+965
+00:51:49,890 --> 00:51:50,520
+the next word.
+
+966
+00:51:50,520 --> 00:51:53,290
+
+
+967
+00:51:53,290 --> 00:51:53,860
+OK.
+
+968
+00:51:53,860 --> 00:51:57,340
+Language models are
+really the cornerstone
+
+969
+00:51:57,340 --> 00:52:00,460
+of human language technology.
+
+970
+00:52:00,460 --> 00:52:03,980
+Everything that you
+do with computers
+
+971
+00:52:03,980 --> 00:52:09,320
+that involves human language,
+you are using language models.
+
+972
+00:52:09,320 --> 00:52:12,040
+So when you're using
+your phone and it's
+
+973
+00:52:12,040 --> 00:52:14,650
+suggesting, whether
+well or badly,
+
+974
+00:52:14,650 --> 00:52:17,680
+what the next word that you
+probably want to type is,
+
+975
+00:52:17,680 --> 00:52:20,680
+that's the language model
+working to try and predict
+
+976
+00:52:20,680 --> 00:52:23,170
+the likely next words.
+
+977
+00:52:23,170 --> 00:52:25,990
+When the same thing
+happens in a Google Doc
+
+978
+00:52:25,990 --> 00:52:29,510
+and it's suggesting a next
+word or a next few words,
+
+979
+00:52:29,510 --> 00:52:32,260
+that's a language model.
+
+980
+00:52:32,260 --> 00:52:35,500
+The main reason why
+the one in Google Docs
+
+981
+00:52:35,500 --> 00:52:37,960
+works much better than
+the one on your phone
+
+982
+00:52:37,960 --> 00:52:40,630
+is that for the
+keyboard phone models,
+
+983
+00:52:40,630 --> 00:52:44,350
+they have to be very compact
+so that they can run quickly
+
+984
+00:52:44,350 --> 00:52:46,000
+on not much memory.
+
+985
+00:52:46,000 --> 00:52:49,360
+So they're sort of only
+mediocre language models, where
+
+986
+00:52:49,360 --> 00:52:52,390
+something like Google Docs
+can do a much better language
+
+987
+00:52:52,390 --> 00:52:54,520
+modeling job.
+
+988
+00:52:54,520 --> 00:52:56,620
+Query completion, same thing.
+
+989
+00:52:56,620 --> 00:52:59,120
+There's a language model.
+
+990
+00:52:59,120 --> 00:53:01,400
+And so then the
+question is, well, how
+
+991
+00:53:01,400 --> 00:53:04,880
+do we build language models?
+
+992
+00:53:04,880 --> 00:53:08,930
+And so I briefly wanted
+to first again give
+
+993
+00:53:08,930 --> 00:53:12,020
+the traditional answer
+since you should
+
+994
+00:53:12,020 --> 00:53:15,380
+have at least some
+understanding of how NLP was
+
+995
+00:53:15,380 --> 00:53:17,660
+done without a neural network.
+
+996
+00:53:17,660 --> 00:53:22,310
+And the traditional answer
+that powered speech recognition
+
+997
+00:53:22,310 --> 00:53:25,620
+and other applications
+for at least two decades,
+
+998
+00:53:25,620 --> 00:53:29,450
+three decades really, was what
+were called n-gram language
+
+999
+00:53:29,450 --> 00:53:30,320
+models.
+
+1000
+00:53:30,320 --> 00:53:34,880
+And these were a very simple,
+but still quite effective idea.
+
+1001
+00:53:34,880 --> 00:53:39,930
+So we want to give
+probabilities of next words.
+
+1002
+00:53:39,930 --> 00:53:42,860
+So what we're gonna
+work with is what
+
+1003
+00:53:42,860 --> 00:53:44,720
+are referred to as n-grams.
+
+1004
+00:53:44,720 --> 00:53:49,520
+And so n-grams is just a
+chunk of n consecutive words
+
+1005
+00:53:49,520 --> 00:53:53,330
+which are usually referred to
+as unigrams, bigrams, trigrams.
+
+1006
+00:53:53,330 --> 00:53:55,940
+And then 4-grams and 5-grams.
+
+1007
+00:53:55,940 --> 00:54:00,590
+A horrible set of names, which
+would offend any humanist
+
+1008
+00:54:00,590 --> 00:54:03,590
+but that's what
+people normally say.
+
+1009
+00:54:03,590 --> 00:54:06,890
+And so effectively what
+we do is just collect
+
+1010
+00:54:06,890 --> 00:54:11,270
+statistics about how often
+different n-grams occur
+
+1011
+00:54:11,270 --> 00:54:13,460
+in a large amount
+of text and then
+
+1012
+00:54:13,460 --> 00:54:16,940
+use those to build
+a probability model.
+
+1013
+00:54:16,940 --> 00:54:19,930
+So the first thing we
+do is what's referred to
+
+1014
+00:54:19,930 --> 00:54:21,570
+as making a Markov assumption.
+
+1015
+00:54:21,570 --> 00:54:24,670
+So these are also referred
+to as Markov models.
+
+1016
+00:54:24,670 --> 00:54:29,650
+And we decide that the word
+in position t plus 1 only
+
+1017
+00:54:29,650 --> 00:54:32,695
+depends on the preceding
+n minus 1 words.
+
+1018
+00:54:32,695 --> 00:54:35,790
+
+
+1019
+00:54:35,790 --> 00:54:38,750
+So if we want to
+predict t plus 1
+
+1020
+00:54:38,750 --> 00:54:42,860
+given the entire preceding
+text, we actually
+
+1021
+00:54:42,860 --> 00:54:46,850
+throw away the early words
+and just use the preceding n
+
+1022
+00:54:46,850 --> 00:54:49,430
+minus 1 words as context.
+
+1023
+00:54:49,430 --> 00:54:52,160
+Well, once we made
+that simplification,
+
+1024
+00:54:52,160 --> 00:54:54,050
+we can then just
+use the definition
+
+1025
+00:54:54,050 --> 00:54:56,600
+of conditional
+probability and say all
+
+1026
+00:54:56,600 --> 00:54:59,870
+that conditional probability
+is the probability
+
+1027
+00:54:59,870 --> 00:55:07,050
+of n words divided by the
+preceding n minus 1 words.
+
+1028
+00:55:07,050 --> 00:55:09,440
+And so we have the
+probability of an n-gram
+
+1029
+00:55:09,440 --> 00:55:14,040
+over the probability
+of an n minus 1 gram.
+
+1030
+00:55:14,040 --> 00:55:16,110
+And so then how do we
+get these n-gram and n
+
+1031
+00:55:16,110 --> 00:55:18,060
+minus 1 gram probabilities?
+
+1032
+00:55:18,060 --> 00:55:22,320
+We simply take a large amount
+of text in some language
+
+1033
+00:55:22,320 --> 00:55:27,460
+and we count how often the
+different n-grams occur.
+
+1034
+00:55:27,460 --> 00:55:30,570
+And so our crude
+statistical approximation
+
+1035
+00:55:30,570 --> 00:55:34,545
+starts off as the count of
+the n-gram over the count
+
+1036
+00:55:34,545 --> 00:55:37,260
+of the n minus 1 gram.
+
+1037
+00:55:37,260 --> 00:55:38,910
+So here's an example of that.
+
+1038
+00:55:38,910 --> 00:55:41,840
+Suppose we are learning
+a 4-gram language model.
+
+1039
+00:55:41,840 --> 00:55:42,340
+OK.
+
+1040
+00:55:42,340 --> 00:55:46,860
+So we throw away all words
+apart from the last three words
+
+1041
+00:55:46,860 --> 00:55:48,540
+and they're our conditioning.
+
+1042
+00:55:48,540 --> 00:55:53,477
+
+
+1043
+00:55:53,477 --> 00:55:54,435
+We look in some large--
+
+1044
+00:55:54,435 --> 00:55:57,570
+We use the counts from
+some large training corpus
+
+1045
+00:55:57,570 --> 00:55:59,700
+and we see how
+often did students
+
+1046
+00:55:59,700 --> 00:56:02,880
+open their books occur,
+how often did students
+
+1047
+00:56:02,880 --> 00:56:04,770
+open their minds occur.
+
+1048
+00:56:04,770 --> 00:56:06,990
+And then for each
+of those counts,
+
+1049
+00:56:06,990 --> 00:56:09,810
+we divide through by the
+count of how often students
+
+1050
+00:56:09,810 --> 00:56:13,170
+open their occurred and that
+gives us our probability
+
+1051
+00:56:13,170 --> 00:56:16,020
+estimates.
+
+1052
+00:56:16,020 --> 00:56:18,530
+So for example,
+if in the corpus,
+
+1053
+00:56:18,530 --> 00:56:21,950
+students open their
+occurred 1,000 times,
+
+1054
+00:56:21,950 --> 00:56:25,580
+students opened their
+books occurred 400 times,
+
+1055
+00:56:25,580 --> 00:56:29,030
+we'd get a probability
+estimate of 0.4 for books.
+
+1056
+00:56:29,030 --> 00:56:33,380
+If exams occurred 100 times,
+we'd get 0.1 for exams.
+
+1057
+00:56:33,380 --> 00:56:37,100
+And we sort of see here
+already the disadvantage
+
+1058
+00:56:37,100 --> 00:56:39,440
+of having made the
+Markov assumption
+
+1059
+00:56:39,440 --> 00:56:43,760
+and have gotten rid of all of
+this earlier context, which
+
+1060
+00:56:43,760 --> 00:56:45,935
+would have been useful
+for helping us to predict.
+
+1061
+00:56:45,935 --> 00:56:48,590
+
+
+1062
+00:56:48,590 --> 00:56:51,560
+The one other point
+that I'll just
+
+1063
+00:56:51,560 --> 00:56:54,020
+mention that I
+confused myself on
+
+1064
+00:56:54,020 --> 00:56:58,350
+is this count of the
+n-gram language model.
+
+1065
+00:56:58,350 --> 00:57:01,130
+So for a 4-gram
+language model, it's
+
+1066
+00:57:01,130 --> 00:57:03,330
+called a 4-gram language model.
+
+1067
+00:57:03,330 --> 00:57:05,570
+Because in its
+estimation, you're
+
+1068
+00:57:05,570 --> 00:57:10,310
+using 4 grams in the
+numerator and trigrams
+
+1069
+00:57:10,310 --> 00:57:11,500
+in the denominator.
+
+1070
+00:57:11,500 --> 00:57:14,840
+So you use the size
+of the numerator.
+
+1071
+00:57:14,840 --> 00:57:18,830
+So that terminology is
+different to the terminology
+
+1072
+00:57:18,830 --> 00:57:21,030
+that's used in Markov models.
+
+1073
+00:57:21,030 --> 00:57:24,590
+So when people talk about
+the order of a Markov model,
+
+1074
+00:57:24,590 --> 00:57:28,200
+that refers to the amount
+of context you're using.
+
+1075
+00:57:28,200 --> 00:57:32,015
+So this would correspond to
+a third order Markov model.
+
+1076
+00:57:32,015 --> 00:57:35,490
+
+
+1077
+00:57:35,490 --> 00:57:40,680
+Yeah, so someone said is this
+similar to a Naive Bayes model?
+
+1078
+00:57:40,680 --> 00:57:42,150
+Sort of.
+
+1079
+00:57:42,150 --> 00:57:45,390
+Naive Bayes models, you also
+estimate the probabilities
+
+1080
+00:57:45,390 --> 00:57:47,640
+just by counting.
+
+1081
+00:57:47,640 --> 00:57:53,040
+So they're related and
+they're sort of in some sense
+
+1082
+00:57:53,040 --> 00:57:55,590
+two differences.
+
+1083
+00:57:55,590 --> 00:57:59,220
+The first difference
+or specialization
+
+1084
+00:57:59,220 --> 00:58:03,630
+is that Naive Bayes
+models work out
+
+1085
+00:58:03,630 --> 00:58:07,530
+probabilities of words
+independent of their neighbors.
+
+1086
+00:58:07,530 --> 00:58:12,240
+So what in one part that a
+Naive Bayes language model is
+
+1087
+00:58:12,240 --> 00:58:14,160
+a unigram brand language model.
+
+1088
+00:58:14,160 --> 00:58:17,250
+So you're just using the
+counts of individual words.
+
+1089
+00:58:17,250 --> 00:58:20,250
+But the other part of
+a Naive Bayes model
+
+1090
+00:58:20,250 --> 00:58:24,390
+is you're learning a different
+set of unigram counts
+
+1091
+00:58:24,390 --> 00:58:27,310
+for every class for
+your classifier.
+
+1092
+00:58:27,310 --> 00:58:32,910
+
+
+1093
+00:58:32,910 --> 00:58:35,250
+And so effectively
+a Naive Bayes model
+
+1094
+00:58:35,250 --> 00:58:41,310
+is you've got class specific
+unigram language models.
+
+1095
+00:58:41,310 --> 00:58:45,340
+
+
+1096
+00:58:45,340 --> 00:58:48,070
+Okay, I gave this as a
+simple statistical model
+
+1097
+00:58:48,070 --> 00:58:50,620
+for estimating
+your probabilities
+
+1098
+00:58:50,620 --> 00:58:52,060
+with an n-gram model.
+
+1099
+00:58:52,060 --> 00:58:55,330
+You can't actually get away
+with just doing that because you
+
+1100
+00:58:55,330 --> 00:58:57,310
+have sparsity problems.
+
+1101
+00:58:57,310 --> 00:59:01,330
+So it often will be the
+case that for many words,
+
+1102
+00:59:01,330 --> 00:59:04,480
+students open their
+books or students opened
+
+1103
+00:59:04,480 --> 00:59:09,490
+their backpacks just never
+occurred in the training data.
+
+1104
+00:59:09,490 --> 00:59:12,730
+That if you think about it,
+if you have something like 10
+
+1105
+00:59:12,730 --> 00:59:16,240
+to the 5th different words
+even and you want to have then
+
+1106
+00:59:16,240 --> 00:59:19,490
+a sequence of four
+words and there
+
+1107
+00:59:19,490 --> 00:59:20,950
+are 10 to the 5th
+of each, there's
+
+1108
+00:59:20,950 --> 00:59:24,290
+sort of 10 to the 20th
+different combinations.
+
+1109
+00:59:24,290 --> 00:59:27,910
+So unless you're seeing this
+truly astronomical amount
+
+1110
+00:59:27,910 --> 00:59:31,630
+of data, most four word
+sequences you've never seen.
+
+1111
+00:59:31,630 --> 00:59:35,680
+So then your numerator will be
+0 and your probability estimate
+
+1112
+00:59:35,680 --> 00:59:36,610
+will be 0.
+
+1113
+00:59:36,610 --> 00:59:37,960
+And so that's bad.
+
+1114
+00:59:37,960 --> 00:59:39,610
+And so the commonest
+way of solving
+
+1115
+00:59:39,610 --> 00:59:43,390
+that is just to add a little
+delta to every count and then
+
+1116
+00:59:43,390 --> 00:59:44,890
+everything is non-zero.
+
+1117
+00:59:44,890 --> 00:59:47,680
+And that's called smoothing.
+
+1118
+00:59:47,680 --> 00:59:49,690
+But well, sometimes
+it's worse than that
+
+1119
+00:59:49,690 --> 00:59:53,530
+because sometimes you won't even
+have seen students open theirs.
+
+1120
+00:59:53,530 --> 00:59:55,240
+And that's more
+problematic, because that
+
+1121
+00:59:55,240 --> 01:00:00,250
+means our denominator here
+is 0 and so the division
+
+1122
+01:00:00,250 --> 01:00:01,600
+will be ill-defined.
+
+1123
+01:00:01,600 --> 01:00:05,830
+And we can't usefully calculate
+any probabilities in a context
+
+1124
+01:00:05,830 --> 01:00:07,310
+that we've never seen.
+
+1125
+01:00:07,310 --> 01:00:11,530
+And so the standard solution to
+that is to shorten the context
+
+1126
+01:00:11,530 --> 01:00:13,300
+and that's called back off.
+
+1127
+01:00:13,300 --> 01:00:16,450
+So we condition only
+on opened their.
+
+1128
+01:00:16,450 --> 01:00:19,990
+Or if we still haven't
+seen the opened their,
+
+1129
+01:00:19,990 --> 01:00:22,390
+we'll condition only on their.
+
+1130
+01:00:22,390 --> 01:00:25,120
+Or we could just
+forget all conditioning
+
+1131
+01:00:25,120 --> 01:00:28,330
+and actually use a unigram
+model for our probabilities.
+
+1132
+01:00:28,330 --> 01:00:33,940
+
+
+1133
+01:00:33,940 --> 01:00:37,030
+Yeah, and so as you
+increase the order n
+
+1134
+01:00:37,030 --> 01:00:41,200
+of the n-gram language model,
+these sparsity problems become
+
+1135
+01:00:41,200 --> 01:00:42,200
+worse and worse.
+
+1136
+01:00:42,200 --> 01:00:44,620
+So in the early days
+people normally worked
+
+1137
+01:00:44,620 --> 01:00:46,180
+with trigram models.
+
+1138
+01:00:46,180 --> 01:00:50,470
+As it became easier to collect
+billions of words of text,
+
+1139
+01:00:50,470 --> 01:00:53,320
+people commonly moved
+to 5-gram models.
+
+1140
+01:00:53,320 --> 01:00:58,600
+But every time you go up
+an order of conditioning,
+
+1141
+01:00:58,600 --> 01:01:01,540
+you effectively need
+to be collecting
+
+1142
+01:01:01,540 --> 01:01:03,640
+orders of magnitude
+more data because
+
+1143
+01:01:03,640 --> 01:01:06,820
+of the size of the vocabularies
+of human languages.
+
+1144
+01:01:06,820 --> 01:01:09,590
+
+
+1145
+01:01:09,590 --> 01:01:13,710
+There's also a problem
+that these models are huge.
+
+1146
+01:01:13,710 --> 01:01:15,980
+So you basically
+have to be caught
+
+1147
+01:01:15,980 --> 01:01:19,400
+storing counts of all
+of these word sequences
+
+1148
+01:01:19,400 --> 01:01:21,980
+so you can work out
+these probabilities.
+
+1149
+01:01:21,980 --> 01:01:24,260
+And I mean, that's
+actually had a big effect
+
+1150
+01:01:24,260 --> 01:01:27,630
+on what terms of what
+technology is available.
+
+1151
+01:01:27,630 --> 01:01:34,640
+So in the 2000s decade up until
+that, whenever it was, 2014,
+
+1152
+01:01:34,640 --> 01:01:39,560
+that there was already
+Google Translate using
+
+1153
+01:01:39,560 --> 01:01:43,130
+probabilistic models that
+included language models
+
+1154
+01:01:43,130 --> 01:01:45,110
+of the n-gram
+language model sort.
+
+1155
+01:01:45,110 --> 01:01:49,520
+But the only way they could
+possibly be run is in the cloud
+
+1156
+01:01:49,520 --> 01:01:54,560
+because you needed to have these
+huge tables of probabilities.
+
+1157
+01:01:54,560 --> 01:01:56,180
+But now we have
+neural nets and you
+
+1158
+01:01:56,180 --> 01:01:59,660
+can have Google Translate just
+actually run on your phone.
+
+1159
+01:01:59,660 --> 01:02:03,560
+And that's possible,
+because neural net models
+
+1160
+01:02:03,560 --> 01:02:07,320
+can be massively more compact
+than these old n-gram language
+
+1161
+01:02:07,320 --> 01:02:07,820
+models.
+
+1162
+01:02:07,820 --> 01:02:13,300
+
+
+1163
+01:02:13,300 --> 01:02:16,780
+But nevertheless, before we
+get onto the neural models,
+
+1164
+01:02:16,780 --> 01:02:24,420
+let's just sort of look at
+an example of how these work.
+
+1165
+01:02:24,420 --> 01:02:27,410
+So it's trivial to
+train an n-gram language
+
+1166
+01:02:27,410 --> 01:02:29,000
+model because you
+really just count
+
+1167
+01:02:29,000 --> 01:02:32,150
+how often word sequences
+occur in a corpus,
+
+1168
+01:02:32,150 --> 01:02:33,300
+and you're ready to go.
+
+1169
+01:02:33,300 --> 01:02:35,420
+So these models can
+be trained in seconds.
+
+1170
+01:02:35,420 --> 01:02:36,450
+That's really good.
+
+1171
+01:02:36,450 --> 01:02:39,570
+That's not like sitting around
+for training neural networks.
+
+1172
+01:02:39,570 --> 01:02:48,050
+So if I train on my laptop a
+small language model, about 1.7
+
+1173
+01:02:48,050 --> 01:02:50,990
+million words as
+a trigram model,
+
+1174
+01:02:50,990 --> 01:02:53,360
+I can then ask it
+to generate text.
+
+1175
+01:02:53,360 --> 01:02:55,760
+If I give it a couple
+of words, today the,
+
+1176
+01:02:55,760 --> 01:02:58,880
+I can then get it
+to sort of suggest
+
+1177
+01:02:58,880 --> 01:03:00,740
+a word that might come next.
+
+1178
+01:03:00,740 --> 01:03:03,710
+And the way I do that
+is the language model
+
+1179
+01:03:03,710 --> 01:03:06,050
+knows the probability
+distribution
+
+1180
+01:03:06,050 --> 01:03:08,720
+of things that can come next.
+
+1181
+01:03:08,720 --> 01:03:12,110
+Know that there's a kind of a
+crude probability distribution.
+
+1182
+01:03:12,110 --> 01:03:16,610
+I mean, because effectively over
+this relatively small corpus,
+
+1183
+01:03:16,610 --> 01:03:20,120
+there were things that occurred
+once, Italian and emirate.
+
+1184
+01:03:20,120 --> 01:03:22,430
+There are things that
+occurred twice, price.
+
+1185
+01:03:22,430 --> 01:03:26,360
+There were things that occurred
+four times, company and bank.
+
+1186
+01:03:26,360 --> 01:03:28,460
+It's sort of fairly
+crude and rough.
+
+1187
+01:03:28,460 --> 01:03:31,340
+But I nevertheless get
+probability estimates.
+
+1188
+01:03:31,340 --> 01:03:36,290
+I can then say,
+OK, based on this,
+
+1189
+01:03:36,290 --> 01:03:39,500
+let's take this
+probability distribution
+
+1190
+01:03:39,500 --> 01:03:42,000
+and then we'll just
+sample the next word.
+
+1191
+01:03:42,000 --> 01:03:45,650
+So the two most likely words
+to sample are company or bank.
+
+1192
+01:03:45,650 --> 01:03:48,290
+But we're rolling
+the dice and we
+
+1193
+01:03:48,290 --> 01:03:50,720
+might get any of the
+words that had come next.
+
+1194
+01:03:50,720 --> 01:03:53,750
+So maybe I sample price.
+
+1195
+01:03:53,750 --> 01:03:57,590
+Now I will condition
+on the price
+
+1196
+01:03:57,590 --> 01:04:00,440
+and look up the
+probability distribution
+
+1197
+01:04:00,440 --> 01:04:01,950
+of what comes next.
+
+1198
+01:04:01,950 --> 01:04:03,800
+The most likely thing is of.
+
+1199
+01:04:03,800 --> 01:04:06,920
+And so again, I'll sample
+and maybe this time I'll
+
+1200
+01:04:06,920 --> 01:04:09,140
+pick up of.
+
+1201
+01:04:09,140 --> 01:04:12,800
+And then I will now
+condition on price of,
+
+1202
+01:04:12,800 --> 01:04:16,080
+and I will look up the
+probability distribution
+
+1203
+01:04:16,080 --> 01:04:17,990
+of words following that.
+
+1204
+01:04:17,990 --> 01:04:21,380
+And I get this
+probability distribution.
+
+1205
+01:04:21,380 --> 01:04:24,260
+And I'll sample randomly
+some word from it
+
+1206
+01:04:24,260 --> 01:04:28,400
+and maybe this time I'll
+sample a rare but possible one
+
+1207
+01:04:28,400 --> 01:04:29,570
+like gold.
+
+1208
+01:04:29,570 --> 01:04:32,060
+And I can keep on
+going, and I'll
+
+1209
+01:04:32,060 --> 01:04:34,160
+get out something like this.
+
+1210
+01:04:34,160 --> 01:04:38,210
+Today the price of gold per ton,
+while production of shoe lasts
+
+1211
+01:04:38,210 --> 01:04:40,550
+and shoe industry,
+the bank intervened
+
+1212
+01:04:40,550 --> 01:04:43,700
+just after it considered
+and rejected the IMF demand
+
+1213
+01:04:43,700 --> 01:04:47,360
+to rebuild depleted
+European stocks, Sep 30 end
+
+1214
+01:04:47,360 --> 01:04:50,150
+primary $0.76 a share.
+
+1215
+01:04:50,150 --> 01:04:53,660
+So what just a
+simple trigram model
+
+1216
+01:04:53,660 --> 01:04:56,510
+can produce over
+not very much text
+
+1217
+01:04:56,510 --> 01:04:59,390
+is actually already
+kind of interesting.
+
+1218
+01:04:59,390 --> 01:05:02,120
+It's actually surprisingly
+grammatical, right?
+
+1219
+01:05:02,120 --> 01:05:04,940
+There are whole pieces of
+it while production of shoe
+
+1220
+01:05:04,940 --> 01:05:07,820
+lasts and shoe
+industry, the bank
+
+1221
+01:05:07,820 --> 01:05:10,040
+intervened just after it
+considered and rejected
+
+1222
+01:05:10,040 --> 01:05:14,360
+an IMF demand is really actually
+pretty good grammatical text.
+
+1223
+01:05:14,360 --> 01:05:17,870
+So it's sort of amazing that
+these simple n-gram models
+
+1224
+01:05:17,870 --> 01:05:21,930
+actually can model a
+lot of human language.
+
+1225
+01:05:21,930 --> 01:05:24,920
+On the other hand, it's not
+a very good piece of text.
+
+1226
+01:05:24,920 --> 01:05:29,140
+It's completely incoherent
+and makes no sense.
+
+1227
+01:05:29,140 --> 01:05:32,210
+And so to actually
+be able to generate
+
+1228
+01:05:32,210 --> 01:05:35,450
+text that seems
+like it makes sense,
+
+1229
+01:05:35,450 --> 01:05:38,120
+we're going to need a
+considerably better language
+
+1230
+01:05:38,120 --> 01:05:38,780
+model.
+
+1231
+01:05:38,780 --> 01:05:42,980
+And that's precisely what neural
+language models have allowed
+
+1232
+01:05:42,980 --> 01:05:46,130
+us to build as we'll see later.
+
+1233
+01:05:46,130 --> 01:05:46,630
+OK.
+
+1234
+01:05:46,630 --> 01:05:50,230
+So how can we build a
+neural language model?
+
+1235
+01:05:50,230 --> 01:05:53,980
+And so first of all, we're
+going to do a simple one
+
+1236
+01:05:53,980 --> 01:05:56,180
+and then we'll see where we get.
+
+1237
+01:05:56,180 --> 01:05:58,420
+But to move into
+recurrent neural nets
+
+1238
+01:05:58,420 --> 01:06:02,350
+might still take us
+to the next time.
+
+1239
+01:06:02,350 --> 01:06:05,500
+So we can have input
+sequence of words
+
+1240
+01:06:05,500 --> 01:06:07,780
+and we want a
+probability distribution
+
+1241
+01:06:07,780 --> 01:06:10,240
+over the next word.
+
+1242
+01:06:10,240 --> 01:06:12,490
+The simplest thing
+that we could try
+
+1243
+01:06:12,490 --> 01:06:15,820
+is to say, well,
+kind of the only tool
+
+1244
+01:06:15,820 --> 01:06:19,490
+we have so far is a
+window based classifier.
+
+1245
+01:06:19,490 --> 01:06:22,330
+
+
+1246
+01:06:22,330 --> 01:06:27,190
+So what we've done previously,
+either for our named entity
+
+1247
+01:06:27,190 --> 01:06:29,740
+recognizer in lecture three
+or what I just showed you
+
+1248
+01:06:29,740 --> 01:06:33,800
+for the dependency parser is
+we have some context window,
+
+1249
+01:06:33,800 --> 01:06:36,910
+we put it through a neural
+net and we predict something
+
+1250
+01:06:36,910 --> 01:06:38,390
+as a classifier.
+
+1251
+01:06:38,390 --> 01:06:41,770
+So before we were
+predicting a location.
+
+1252
+01:06:41,770 --> 01:06:47,320
+But maybe instead, we can reuse
+exactly the same technology.
+
+1253
+01:06:47,320 --> 01:06:50,980
+And say we're going to have
+a window based classifier.
+
+1254
+01:06:50,980 --> 01:06:52,900
+So we're discarding
+the further away
+
+1255
+01:06:52,900 --> 01:06:57,710
+words just like in a
+n-gram language model,
+
+1256
+01:06:57,710 --> 01:07:02,930
+but we'll feed this fixed
+window into a neural net.
+
+1257
+01:07:02,930 --> 01:07:06,010
+So we concatenate the
+word embeddings, we put it
+
+1258
+01:07:06,010 --> 01:07:11,590
+through a hidden layer and then
+we have a softmax classifier
+
+1259
+01:07:11,590 --> 01:07:14,710
+over our vocabulary.
+
+1260
+01:07:14,710 --> 01:07:17,020
+And so now rather than
+predicting something
+
+1261
+01:07:17,020 --> 01:07:21,790
+like location or left arc
+in the dependency parser,
+
+1262
+01:07:21,790 --> 01:07:25,660
+we're going to have a softmax
+over the entire vocabulary.
+
+1263
+01:07:25,660 --> 01:07:29,350
+Sort of like we did with the
+skip gram negative sampling
+
+1264
+01:07:29,350 --> 01:07:31,750
+model in the first two lectures.
+
+1265
+01:07:31,750 --> 01:07:34,930
+And so we're going
+to see this choice
+
+1266
+01:07:34,930 --> 01:07:37,750
+as predicting what
+word that comes next,
+
+1267
+01:07:37,750 --> 01:07:43,470
+whether it produces laptops,
+minds, books, et cetera.
+
+1268
+01:07:43,470 --> 01:07:47,340
+OK, so this is a fairly
+simple fixed window
+
+1269
+01:07:47,340 --> 01:07:49,980
+neural net classifier.
+
+1270
+01:07:49,980 --> 01:07:55,380
+But this is essentially
+a famous early model
+
+1271
+01:07:55,380 --> 01:08:00,130
+in the use of neural nets
+for NLP applications.
+
+1272
+01:08:00,130 --> 01:08:04,620
+So first a 2000 conference
+paper and then somewhat later,
+
+1273
+01:08:04,620 --> 01:08:05,790
+journal paper.
+
+1274
+01:08:05,790 --> 01:08:10,710
+Yoshua Bengio and colleagues
+introduced precisely this model
+
+1275
+01:08:10,710 --> 01:08:14,070
+as the neural probabilistic
+language model.
+
+1276
+01:08:14,070 --> 01:08:17,010
+And they were
+already able to show
+
+1277
+01:08:17,010 --> 01:08:20,160
+that this could give
+interesting, good results
+
+1278
+01:08:20,160 --> 01:08:21,660
+for language modeling.
+
+1279
+01:08:21,660 --> 01:08:26,340
+And so it wasn't a great
+solution for neural language
+
+1280
+01:08:26,340 --> 01:08:29,260
+modeling, but it
+still had value.
+
+1281
+01:08:29,260 --> 01:08:32,160
+So it didn't solve the
+problem of allowing
+
+1282
+01:08:32,160 --> 01:08:34,950
+us to have bigger
+contexts to predict what
+
+1283
+01:08:34,950 --> 01:08:36,870
+words are going to come next.
+
+1284
+01:08:36,870 --> 01:08:41,880
+It's in that way limited
+exactly like an n-gram language
+
+1285
+01:08:41,880 --> 01:08:45,479
+model is, but it does
+have all the advantages
+
+1286
+01:08:45,479 --> 01:08:47,819
+of distributed representations.
+
+1287
+01:08:47,819 --> 01:08:50,760
+So rather than
+having these counts
+
+1288
+01:08:50,760 --> 01:08:56,550
+for words sequences that are
+very sparse and very crude,
+
+1289
+01:08:56,550 --> 01:09:00,750
+we can use distributed
+representations of words
+
+1290
+01:09:00,750 --> 01:09:05,189
+which then make predictions
+that semantically similar words
+
+1291
+01:09:05,189 --> 01:09:09,130
+should give similar
+probability distributions.
+
+1292
+01:09:09,130 --> 01:09:13,229
+So the idea of that is if
+we use some other word here,
+
+1293
+01:09:13,229 --> 01:09:17,609
+like maybe the pupils
+opened their, well,
+
+1294
+01:09:17,609 --> 01:09:21,779
+maybe in our training data we'd
+seen sentences about students,
+
+1295
+01:09:21,779 --> 01:09:24,420
+but we've never seen
+sentences about pupils.
+
+1296
+01:09:24,420 --> 01:09:26,819
+An n-gram language
+model then would sort of
+
+1297
+01:09:26,819 --> 01:09:29,560
+have no idea what
+probabilities to use.
+
+1298
+01:09:29,560 --> 01:09:32,920
+Whereas a neural
+language model can say,
+
+1299
+01:09:32,920 --> 01:09:35,430
+well pupils is kind of
+similar to students.
+
+1300
+01:09:35,430 --> 01:09:37,260
+Therefore, I can
+predict similarly
+
+1301
+01:09:37,260 --> 01:09:41,040
+to what I would have
+predicted for students.
+
+1302
+01:09:41,040 --> 01:09:42,300
+OK.
+
+1303
+01:09:42,300 --> 01:09:45,359
+So there's now no
+sparsity problem.
+
+1304
+01:09:45,359 --> 01:09:51,450
+We don't need to store
+billions of n-gram counts,
+
+1305
+01:09:51,450 --> 01:09:56,070
+we simply need to
+store our word vectors
+
+1306
+01:09:56,070 --> 01:09:59,280
+and our W and new matrices.
+
+1307
+01:09:59,280 --> 01:10:02,550
+But we still have the remaining
+problems that our fixed window
+
+1308
+01:10:02,550 --> 01:10:04,620
+is too small.
+
+1309
+01:10:04,620 --> 01:10:07,590
+We can try and make
+the window larger.
+
+1310
+01:10:07,590 --> 01:10:11,280
+If we do that W, the
+W matrix gets bigger.
+
+1311
+01:10:11,280 --> 01:10:15,510
+But that also points out
+another problem with this model.
+
+1312
+01:10:15,510 --> 01:10:17,430
+Not only can the
+window never be large
+
+1313
+01:10:17,430 --> 01:10:23,070
+enough, but W is just
+a trained matrix.
+
+1314
+01:10:23,070 --> 01:10:27,420
+And so therefore, we're learning
+completely different weights
+
+1315
+01:10:27,420 --> 01:10:31,440
+for each position of context,
+the word minus 1 position,
+
+1316
+01:10:31,440 --> 01:10:35,190
+the word minus 2, the word
+minus 3, and the word minus 4.
+
+1317
+01:10:35,190 --> 01:10:40,590
+So that there's no sharing in
+the model as to how it treats
+
+1318
+01:10:40,590 --> 01:10:45,390
+words in different positions,
+even though in some sense
+
+1319
+01:10:45,390 --> 01:10:48,180
+they will contribute
+semantic components
+
+1320
+01:10:48,180 --> 01:10:52,530
+that are at least somewhat
+position independent.
+
+1321
+01:10:52,530 --> 01:10:55,320
+So again, if you
+sort of think back
+
+1322
+01:10:55,320 --> 01:10:57,660
+to either a Naive
+Bayes model or what
+
+1323
+01:10:57,660 --> 01:11:01,680
+we saw with the Word2Vec
+model at the beginning,
+
+1324
+01:11:01,680 --> 01:11:03,600
+the Word2Vec model
+or Naive Bayes
+
+1325
+01:11:03,600 --> 01:11:06,520
+model completely
+ignores word order.
+
+1326
+01:11:06,520 --> 01:11:09,450
+So it has one set of
+parameters regardless of what
+
+1327
+01:11:09,450 --> 01:11:11,250
+position things occur in.
+
+1328
+01:11:11,250 --> 01:11:13,740
+That doesn't work well
+for language modeling,
+
+1329
+01:11:13,740 --> 01:11:16,830
+because word order is really
+important in language modeling.
+
+1330
+01:11:16,830 --> 01:11:20,220
+If the last word is the,
+that's a really good predictor
+
+1331
+01:11:20,220 --> 01:11:23,190
+of there being an adjective
+or noun following where
+
+1332
+01:11:23,190 --> 01:11:27,000
+the word four back is
+the, it doesn't give you
+
+1333
+01:11:27,000 --> 01:11:28,240
+the same information.
+
+1334
+01:11:28,240 --> 01:11:33,760
+So you do want to somewhat
+make use of word order.
+
+1335
+01:11:33,760 --> 01:11:35,920
+But this model is
+at the opposite
+
+1336
+01:11:35,920 --> 01:11:39,070
+extreme that each
+position is being modeled
+
+1337
+01:11:39,070 --> 01:11:42,380
+completely independently.
+
+1338
+01:11:42,380 --> 01:11:46,000
+So what we'd like to have
+is a neural architecture
+
+1339
+01:11:46,000 --> 01:11:51,400
+that can process an
+arbitrary amount of context
+
+1340
+01:11:51,400 --> 01:11:54,400
+and have more sharing
+of the parameters
+
+1341
+01:11:54,400 --> 01:11:58,390
+while still be
+sensitive to proximity.
+
+1342
+01:11:58,390 --> 01:12:02,330
+And so that's the idea of
+recurrent neural networks.
+
+1343
+01:12:02,330 --> 01:12:06,350
+And I'll say about five
+minutes about these today.
+
+1344
+01:12:06,350 --> 01:12:10,450
+And then next time we'll return
+and do more about recurrent
+
+1345
+01:12:10,450 --> 01:12:11,930
+neural networks.
+
+1346
+01:12:11,930 --> 01:12:14,830
+So for the recurrent
+neural network,
+
+1347
+01:12:14,830 --> 01:12:18,400
+rather than having
+a single hidden
+
+1348
+01:12:18,400 --> 01:12:24,730
+layer inside our classifier
+here that we compute each time,
+
+1349
+01:12:24,730 --> 01:12:27,130
+for the recurrent
+neural network we
+
+1350
+01:12:27,130 --> 01:12:30,160
+have the hidden layer,
+which is often referred
+
+1351
+01:12:30,160 --> 01:12:32,290
+to as the hidden state.
+
+1352
+01:12:32,290 --> 01:12:38,180
+But we maintain it over time
+and we feed it back into itself.
+
+1353
+01:12:38,180 --> 01:12:39,700
+So that's what
+the word recurrent
+
+1354
+01:12:39,700 --> 01:12:43,720
+is meaning, that you're sort of
+feeding the hidden layer back
+
+1355
+01:12:43,720 --> 01:12:45,290
+into itself.
+
+1356
+01:12:45,290 --> 01:12:50,620
+So what we do is based
+on the first word
+
+1357
+01:12:50,620 --> 01:12:55,160
+we compute a hidden
+representation, like before,
+
+1358
+01:12:55,160 --> 01:12:58,820
+which can be used to
+predict the next word.
+
+1359
+01:12:58,820 --> 01:13:02,440
+But then for when
+we want to predict
+
+1360
+01:13:02,440 --> 01:13:04,780
+what comes after
+the second word,
+
+1361
+01:13:04,780 --> 01:13:07,420
+we not only feed
+in the second word,
+
+1362
+01:13:07,420 --> 01:13:13,750
+we feed in the hidden layer
+from the previous word
+
+1363
+01:13:13,750 --> 01:13:16,570
+to have it help predict
+the hidden layer
+
+1364
+01:13:16,570 --> 01:13:18,380
+above the second word.
+
+1365
+01:13:18,380 --> 01:13:20,980
+And so formally the way
+we're doing that is we're
+
+1366
+01:13:20,980 --> 01:13:24,730
+taking the hidden layer
+above the first word,
+
+1367
+01:13:24,730 --> 01:13:28,930
+multiplying it by a
+matrix W. And then
+
+1368
+01:13:28,930 --> 01:13:33,400
+that's going to be going in
+together with x2 to generate
+
+1369
+01:13:33,400 --> 01:13:35,530
+the next hidden step.
+
+1370
+01:13:35,530 --> 01:13:38,110
+And so we keep on
+doing that at each time
+
+1371
+01:13:38,110 --> 01:13:43,090
+step so that we're repeating
+a pattern of creating
+
+1372
+01:13:43,090 --> 01:13:47,590
+a next hidden layer
+based on the next input
+
+1373
+01:13:47,590 --> 01:13:50,980
+word and the
+previous hidden state
+
+1374
+01:13:50,980 --> 01:13:54,290
+by updating it by
+multiplying it by a matrix W.
+
+1375
+01:13:54,290 --> 01:13:54,790
+OK.
+
+1376
+01:13:54,790 --> 01:13:56,000
+So on my slide here.
+
+1377
+01:13:56,000 --> 01:13:58,000
+I've still only got
+four words of context
+
+1378
+01:13:58,000 --> 01:13:59,830
+because it's nice for my slide.
+
+1379
+01:13:59,830 --> 01:14:03,070
+But in principle, there
+could be any number
+
+1380
+01:14:03,070 --> 01:14:04,700
+of words of context now.
+
+1381
+01:14:04,700 --> 01:14:05,200
+OK.
+
+1382
+01:14:05,200 --> 01:14:11,620
+So what we're doing
+is that we start off
+
+1383
+01:14:11,620 --> 01:14:13,990
+by having input
+vectors, which can
+
+1384
+01:14:13,990 --> 01:14:17,440
+be our word vectors that
+we've looked up for each word.
+
+1385
+01:14:17,440 --> 01:14:21,277
+
+
+1386
+01:14:21,277 --> 01:14:23,360
+So sorry, yeah, so we can
+have the one hot vectors
+
+1387
+01:14:23,360 --> 01:14:25,150
+for word identity.
+
+1388
+01:14:25,150 --> 01:14:28,540
+We look up our word embedding,
+so then we got word embeddings
+
+1389
+01:14:28,540 --> 01:14:30,250
+for each word.
+
+1390
+01:14:30,250 --> 01:14:33,520
+And then we want to
+compute hidden states.
+
+1391
+01:14:33,520 --> 01:14:35,950
+So we need to start
+from somewhere.
+
+1392
+01:14:35,950 --> 01:14:40,390
+h0 is the initial hidden
+state, and h0 is normally
+
+1393
+01:14:40,390 --> 01:14:42,590
+taken as a 0 vector.
+
+1394
+01:14:42,590 --> 01:14:45,610
+So this is actually
+just initialized to 0s.
+
+1395
+01:14:45,610 --> 01:14:49,300
+And so for working out
+the first hidden state,
+
+1396
+01:14:49,300 --> 01:14:53,890
+we calculated based
+on the first word's
+
+1397
+01:14:53,890 --> 01:14:59,200
+embedding by multiplying this
+embedding by a matrix, W_e,
+
+1398
+01:14:59,200 --> 01:15:02,420
+and that gives us the
+first hidden state.
+
+1399
+01:15:02,420 --> 01:15:08,960
+But then as we go on, we want
+to apply the same formula over
+
+1400
+01:15:08,960 --> 01:15:09,750
+again.
+
+1401
+01:15:09,750 --> 01:15:14,000
+So we have just two
+parameter matrices
+
+1402
+01:15:14,000 --> 01:15:16,910
+in the recurrent neural network.
+
+1403
+01:15:16,910 --> 01:15:21,560
+One matrix for multiplying
+input embeddings and one matrix
+
+1404
+01:15:21,560 --> 01:15:24,710
+for updating the hidden
+state of the network.
+
+1405
+01:15:24,710 --> 01:15:29,250
+And so for the second word
+from its word embedding,
+
+1406
+01:15:29,250 --> 01:15:33,960
+we multiply it by
+the W_e matrix.
+
+1407
+01:15:33,960 --> 01:15:36,870
+We take the previous
+time steps in state
+
+1408
+01:15:36,870 --> 01:15:41,160
+and multiply it
+by the W_h matrix.
+
+1409
+01:15:41,160 --> 01:15:45,660
+And we use the two of those to
+generate the new hidden state.
+
+1410
+01:15:45,660 --> 01:15:49,110
+And precisely how we generate
+the new hidden state is then
+
+1411
+01:15:49,110 --> 01:15:52,380
+be shown on this
+equation on the left.
+
+1412
+01:15:52,380 --> 01:15:56,520
+So we take the previous hidden
+state, multiply it by W_h.
+
+1413
+01:15:56,520 --> 01:16:00,000
+We take the input embedding,
+multiply it by W_e.
+
+1414
+01:16:00,000 --> 01:16:06,690
+We sum those two, we add
+on a learn bias weight.
+
+1415
+01:16:06,690 --> 01:16:10,920
+And then we put that
+through a non-linearity.
+
+1416
+01:16:10,920 --> 01:16:13,650
+And although on this
+slide that non-linearity
+
+1417
+01:16:13,650 --> 01:16:17,760
+is written as sigma by far
+the most common non-linearity
+
+1418
+01:16:17,760 --> 01:16:22,260
+to use here actually is
+a tanh non-linearity.
+
+1419
+01:16:22,260 --> 01:16:27,960
+And so this is the core equation
+for a simple recurrent neural
+
+1420
+01:16:27,960 --> 01:16:28,830
+network.
+
+1421
+01:16:28,830 --> 01:16:31,230
+And for each
+successive time step,
+
+1422
+01:16:31,230 --> 01:16:33,510
+we're just going
+to keep on applying
+
+1423
+01:16:33,510 --> 01:16:36,030
+that to work out hidden states.
+
+1424
+01:16:36,030 --> 01:16:38,580
+And then from those
+hidden states,
+
+1425
+01:16:38,580 --> 01:16:42,840
+we can use them just like
+in our window classifier
+
+1426
+01:16:42,840 --> 01:16:45,490
+to predict what would
+be the next word.
+
+1427
+01:16:45,490 --> 01:16:51,000
+So at any position, we can
+take this hidden vector, put it
+
+1428
+01:16:51,000 --> 01:16:54,540
+through a softmax layer, which
+is multiplying by u matrix
+
+1429
+01:16:54,540 --> 01:16:57,480
+and adding on another bias
+and then making a softmax
+
+1430
+01:16:57,480 --> 01:16:58,890
+distribution out of that.
+
+1431
+01:16:58,890 --> 01:17:01,800
+And that will then give the
+probability distribution
+
+1432
+01:17:01,800 --> 01:17:03,990
+over next words.
+
+1433
+01:17:03,990 --> 01:17:08,790
+What we saw here, right,
+this is the entire math
+
+1434
+01:17:08,790 --> 01:17:11,760
+of a simple recurrent
+neural network.
+
+1435
+01:17:11,760 --> 01:17:16,290
+And next time I'll come back
+and say more about them,
+
+1436
+01:17:16,290 --> 01:17:19,920
+but this is the
+entirety of what you
+
+1437
+01:17:19,920 --> 01:17:22,800
+need to know in some
+sense for the computation
+
+1438
+01:17:22,800 --> 01:17:26,200
+of the forward model of a
+simple recurrent neural network.
+
+1439
+01:17:26,200 --> 01:17:30,270
+So the advantages we have
+now as it can process
+
+1440
+01:17:30,270 --> 01:17:34,320
+a text input of any length.
+
+1441
+01:17:34,320 --> 01:17:37,080
+In theory at least,
+it can use information
+
+1442
+01:17:37,080 --> 01:17:39,360
+from any number of steps back.
+
+1443
+01:17:39,360 --> 01:17:41,040
+We'll talk more
+about in practice
+
+1444
+01:17:41,040 --> 01:17:43,830
+how well that actually works.
+
+1445
+01:17:43,830 --> 01:17:45,730
+The model size is fixed.
+
+1446
+01:17:45,730 --> 01:17:49,770
+It doesn't matter how much
+of a past context there is.
+
+1447
+01:17:49,770 --> 01:17:53,880
+All we have is that
+W_h and W_e parameters.
+
+1448
+01:17:53,880 --> 01:17:58,290
+And at each time step, we
+use exactly the same weights
+
+1449
+01:17:58,290 --> 01:18:00,330
+to update our hidden state.
+
+1450
+01:18:00,330 --> 01:18:04,170
+So there's asymmetry in
+how different inputs are
+
+1451
+01:18:04,170 --> 01:18:08,010
+processed in producing
+our predictions.
+
+1452
+01:18:08,010 --> 01:18:12,180
+RNNs in practice though,
+the simple RNNs in practice
+
+1453
+01:18:12,180 --> 01:18:13,770
+aren't perfect.
+
+1454
+01:18:13,770 --> 01:18:18,120
+So a disadvantage is that
+they're actually kind of slow.
+
+1455
+01:18:18,120 --> 01:18:22,000
+Because with this recurrent
+computation, in some sense
+
+1456
+01:18:22,000 --> 01:18:24,090
+we are sort of stuck
+with having to have
+
+1457
+01:18:24,090 --> 01:18:25,980
+on the outside of for loop.
+
+1458
+01:18:25,980 --> 01:18:30,490
+So we can do vector matrix
+multiplies on the inside here,
+
+1459
+01:18:30,490 --> 01:18:34,470
+but really we have to do
+for time step equals 1
+
+1460
+01:18:34,470 --> 01:18:39,240
+to n calculate the
+success of hidden states.
+
+1461
+01:18:39,240 --> 01:18:42,570
+And so that's not a perfect
+neural net architecture
+
+1462
+01:18:42,570 --> 01:18:47,400
+and we'll discuss
+alternatives to that later.
+
+1463
+01:18:47,400 --> 01:18:49,770
+And although in
+theory this model
+
+1464
+01:18:49,770 --> 01:18:52,440
+can access information
+any number of steps
+
+1465
+01:18:52,440 --> 01:18:55,740
+back, in practice
+we find that it's
+
+1466
+01:18:55,740 --> 01:18:57,660
+pretty imperfect at doing that.
+
+1467
+01:18:57,660 --> 01:19:01,098
+And that will then lead
+to more advanced forms
+
+1468
+01:19:01,098 --> 01:19:02,640
+of recurrent neural
+network that I'll
+
+1469
+01:19:02,640 --> 01:19:08,010
+talk about next time that are
+able to more effectively access
+
+1470
+01:19:08,010 --> 01:19:09,990
+past context.
+
+1471
+01:19:09,990 --> 01:19:10,530
+OK.
+
+1472
+01:19:10,530 --> 01:19:13,190
+I think I'll stop
+there for the day.
+
+1473
+01:19:13,190 --> 01:19:17,120
+
+

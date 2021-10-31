@@ -1,0 +1,6741 @@
+1
+00:00:05,300 --> 00:00:07,530
+Hi, everybody.
+
+2
+00:00:07,530 --> 00:00:11,540
+Welcome to Stanford's
+CS224N, also known
+
+3
+00:00:11,540 --> 00:00:16,610
+as Ling284, Natural Language
+Processing with Deep Learning.
+
+4
+00:00:16,610 --> 00:00:19,370
+I'm Christopher Manning,
+and I'm the main instructor
+
+5
+00:00:19,370 --> 00:00:22,140
+for this class.
+
+6
+00:00:22,140 --> 00:00:27,300
+So what we hope to do
+today is to dive right in.
+
+7
+00:00:27,300 --> 00:00:29,570
+So I'm going to spend
+about 10 minutes talking
+
+8
+00:00:29,570 --> 00:00:32,390
+about the course,
+and then we're going
+
+9
+00:00:32,390 --> 00:00:34,520
+to get straight into
+content for reasons
+
+10
+00:00:34,520 --> 00:00:36,120
+I'll explain in a minute.
+
+11
+00:00:36,120 --> 00:00:39,740
+So we'll talk about human
+language and word meaning,
+
+12
+00:00:39,740 --> 00:00:43,490
+I'll then introduce the ideas
+of the word2vec algorithm
+
+13
+00:00:43,490 --> 00:00:45,170
+for learning word meaning.
+
+14
+00:00:45,170 --> 00:00:48,290
+And then going from there
+we'll kind of concretely
+
+15
+00:00:48,290 --> 00:00:51,200
+work through how you can
+work out objective function
+
+16
+00:00:51,200 --> 00:00:55,010
+gradients with respect to
+the word2vec algorithm,
+
+17
+00:00:55,010 --> 00:00:58,130
+and say a teeny bit about
+how optimization works.
+
+18
+00:00:58,130 --> 00:01:00,380
+And then right at
+the end of the class
+
+19
+00:01:00,380 --> 00:01:02,690
+I then want to spend
+a little bit of time
+
+20
+00:01:02,690 --> 00:01:06,290
+giving you a sense of how
+these word vectors work,
+
+21
+00:01:06,290 --> 00:01:08,340
+and what you can do with them.
+
+22
+00:01:08,340 --> 00:01:11,330
+So really the key
+learning for today
+
+23
+00:01:11,330 --> 00:01:16,370
+is, I want to give you a sense
+of how amazing deep learning
+
+24
+00:01:16,370 --> 00:01:17,870
+word vectors are.
+
+25
+00:01:17,870 --> 00:01:20,570
+So we have this really
+surprising result
+
+26
+00:01:20,570 --> 00:01:22,850
+that word meaning
+can be represented,
+
+27
+00:01:22,850 --> 00:01:25,220
+not perfectly but
+really rather well
+
+28
+00:01:25,220 --> 00:01:29,000
+by a large vector
+of real numbers.
+
+29
+00:01:29,000 --> 00:01:32,030
+And that's sort of in a way, a
+commonplace of the last decade
+
+30
+00:01:32,030 --> 00:01:36,470
+of deep learning, but it
+flies in the face of thousands
+
+31
+00:01:36,470 --> 00:01:38,030
+of years of tradition.
+
+32
+00:01:38,030 --> 00:01:40,670
+And it's really rather
+an unexpected result
+
+33
+00:01:40,670 --> 00:01:43,120
+to start focusing on.
+
+34
+00:01:43,120 --> 00:01:47,310
+OK, so quickly what do we
+hope to teach in this course?
+
+35
+00:01:47,310 --> 00:01:50,520
+So we've got three
+primary goals.
+
+36
+00:01:50,520 --> 00:01:54,140
+The first is to teach
+you the foundation,
+
+37
+00:01:54,140 --> 00:01:58,010
+say a good deep understanding
+of the effect of modern methods
+
+38
+00:01:58,010 --> 00:02:00,110
+for deep learning
+applied to NLP.
+
+39
+00:02:00,110 --> 00:02:04,010
+So we are going to start with
+and go through the basics,
+
+40
+00:02:04,010 --> 00:02:05,990
+and then go on to
+key methods that
+
+41
+00:02:05,990 --> 00:02:09,258
+are used in NLP, recurrent
+networks, attention
+
+42
+00:02:09,258 --> 00:02:11,930
+transformers, and
+things like that.
+
+43
+00:02:11,930 --> 00:02:14,970
+We want to do something
+more than just that.
+
+44
+00:02:14,970 --> 00:02:18,740
+We'd also like to give you
+some sense of a big picture
+
+45
+00:02:18,740 --> 00:02:21,260
+understanding of human
+languages and what
+
+46
+00:02:21,260 --> 00:02:23,180
+are the reasons for
+why they're actually
+
+47
+00:02:23,180 --> 00:02:25,820
+quite difficult to
+understand and produce
+
+48
+00:02:25,820 --> 00:02:29,640
+even though humans
+seem to do it easily.
+
+49
+00:02:29,640 --> 00:02:31,400
+Now obviously if you
+really want to learn
+
+50
+00:02:31,400 --> 00:02:33,560
+a lot about this topic,
+you should enroll in
+
+51
+00:02:33,560 --> 00:02:35,330
+and go and start
+doing some classes
+
+52
+00:02:35,330 --> 00:02:36,980
+in the linguistics department.
+
+53
+00:02:36,980 --> 00:02:39,000
+But nevertheless
+for a lot of you,
+
+54
+00:02:39,000 --> 00:02:42,170
+this is the only
+human language content
+
+55
+00:02:42,170 --> 00:02:44,760
+you'll see during your
+master's degree or whatever.
+
+56
+00:02:44,760 --> 00:02:49,890
+And so we do hope to spend a bit
+of time on that starting today.
+
+57
+00:02:49,890 --> 00:02:52,070
+And then finally,
+we want to give you
+
+58
+00:02:52,070 --> 00:02:56,660
+an understanding of an ability
+to build systems in PyTorch,
+
+59
+00:02:56,660 --> 00:02:58,820
+that's some of the
+major problems in NLP.
+
+60
+00:02:58,820 --> 00:03:02,600
+So we'll look at learning word
+meanings, dependency parsing,
+
+61
+00:03:02,600 --> 00:03:05,750
+machine translation,
+question answering.
+
+62
+00:03:05,750 --> 00:03:10,460
+Let's dive in to human language.
+
+63
+00:03:10,460 --> 00:03:14,660
+Once upon a time, I had a
+lot longer introduction that
+
+64
+00:03:14,660 --> 00:03:18,140
+gave lots of examples about
+how human languages can
+
+65
+00:03:18,140 --> 00:03:20,930
+be misunderstood
+and complex, I'll
+
+66
+00:03:20,930 --> 00:03:25,920
+show a few of those
+examples in later lectures.
+
+67
+00:03:25,920 --> 00:03:28,760
+But since right for
+today, we're going
+
+68
+00:03:28,760 --> 00:03:30,860
+to be focused on word meaning.
+
+69
+00:03:30,860 --> 00:03:34,790
+I thought I'd just give
+one example, which comes
+
+70
+00:03:34,790 --> 00:03:38,630
+from a very nice xkcd cartoon.
+
+71
+00:03:38,630 --> 00:03:42,200
+And that isn't
+sort of about some
+
+72
+00:03:42,200 --> 00:03:46,010
+of the syntactic
+ambiguities of sentences,
+
+73
+00:03:46,010 --> 00:03:49,850
+but instead it's really
+emphasizing the important point
+
+74
+00:03:49,850 --> 00:03:52,880
+that language is a social
+system, constructed
+
+75
+00:03:52,880 --> 00:03:54,980
+and interpreted by people.
+
+76
+00:03:54,980 --> 00:03:57,200
+And that's part of how--
+
+77
+00:03:57,200 --> 00:04:02,220
+and it changes as people decide
+to adapt its construction,
+
+78
+00:04:02,220 --> 00:04:03,800
+and that's part
+of the reason why
+
+79
+00:04:03,800 --> 00:04:07,220
+human languages, great
+as an adaptive system
+
+80
+00:04:07,220 --> 00:04:13,460
+for human beings but difficult
+as a system for our computers
+
+81
+00:04:13,460 --> 00:04:15,600
+to understand to this day.
+
+82
+00:04:15,600 --> 00:04:19,459
+So in this conversation between
+the two women, one says,
+
+83
+00:04:19,459 --> 00:04:21,350
+anyway I could care less.
+
+84
+00:04:21,350 --> 00:04:25,170
+And the other says, I think you
+mean you couldn't care less,
+
+85
+00:04:25,170 --> 00:04:27,740
+saying you could
+care less implies
+
+86
+00:04:27,740 --> 00:04:29,840
+you care at least some amount.
+
+87
+00:04:29,840 --> 00:04:32,600
+And the other one
+says, I don't know
+
+88
+00:04:32,600 --> 00:04:35,690
+where these unbelievably
+complicated brains drifting
+
+89
+00:04:35,690 --> 00:04:39,650
+through a void trying in vain
+to connect with one another,
+
+90
+00:04:39,650 --> 00:04:43,160
+by plainly fleeing words
+out into the darkness.
+
+91
+00:04:43,160 --> 00:04:47,330
+Every choice of phrasing,
+spelling, and tone, and timing
+
+92
+00:04:47,330 --> 00:04:51,650
+carries countless sync signals
+and contexts and subtext,
+
+93
+00:04:51,650 --> 00:04:54,650
+and more and every
+listener interprets
+
+94
+00:04:54,650 --> 00:04:56,990
+those signals in their own way.
+
+95
+00:04:56,990 --> 00:05:01,880
+Language isn't a formal system,
+language is glorious chaos.
+
+96
+00:05:01,880 --> 00:05:06,200
+You can never know for sure what
+any words will mean to anyone,
+
+97
+00:05:06,200 --> 00:05:09,020
+all you can do is try to
+get better at guessing
+
+98
+00:05:09,020 --> 00:05:11,160
+how your words affect people.
+
+99
+00:05:11,160 --> 00:05:13,820
+So you can have a chance
+of finding the ones that
+
+100
+00:05:13,820 --> 00:05:15,710
+will make them feel
+something like what
+
+101
+00:05:15,710 --> 00:05:17,370
+you want them to feel.
+
+102
+00:05:17,370 --> 00:05:19,610
+Everything else is pointless.
+
+103
+00:05:19,610 --> 00:05:22,930
+I assume you're giving me tips
+on how you interpret words
+
+104
+00:05:22,930 --> 00:05:25,810
+because you want me
+to feel less alone.
+
+105
+00:05:25,810 --> 00:05:29,740
+If so, then thank
+you, that means a lot.
+
+106
+00:05:29,740 --> 00:05:31,585
+But if you're just
+running my sentences
+
+107
+00:05:31,585 --> 00:05:34,150
+to pass some mental
+checklist so you
+
+108
+00:05:34,150 --> 00:05:38,580
+can show off how well you know
+it, then I could care less.
+
+109
+00:05:38,580 --> 00:05:41,670
+OK, so that's
+ultimately what our goal
+
+110
+00:05:41,670 --> 00:05:48,720
+is, how to do a better job at
+building computational systems
+
+111
+00:05:48,720 --> 00:05:53,220
+that try to get better at
+guessing how their words will
+
+112
+00:05:53,220 --> 00:05:56,700
+affect other people and what
+other people are meaning
+
+113
+00:05:56,700 --> 00:05:58,590
+by the words that
+they choose to say.
+
+114
+00:06:01,420 --> 00:06:05,590
+So an interesting thing
+about human language
+
+115
+00:06:05,590 --> 00:06:12,020
+is, it is a system that was
+constructed by human beings.
+
+116
+00:06:12,020 --> 00:06:17,980
+And it's a system that was
+constructed relatively recently
+
+117
+00:06:17,980 --> 00:06:19,670
+in some sense.
+
+118
+00:06:19,670 --> 00:06:23,110
+So in discussions of
+artificial intelligence,
+
+119
+00:06:23,110 --> 00:06:28,390
+a lot of the time people
+focus a lot on human brains
+
+120
+00:06:28,390 --> 00:06:32,620
+and the neurons passing
+by, and this intelligence
+
+121
+00:06:32,620 --> 00:06:35,300
+that's meant to be
+inside people's heads.
+
+122
+00:06:35,300 --> 00:06:40,120
+But I just wanted to focus for a
+moment on the role of language,
+
+123
+00:06:40,120 --> 00:06:41,320
+there's actually--
+
+124
+00:06:41,320 --> 00:06:45,430
+this is kind of
+controversial but it's not
+
+125
+00:06:45,430 --> 00:06:47,980
+necessarily the case
+that humans are much more
+
+126
+00:06:47,980 --> 00:06:52,000
+intelligent than some of the
+higher apes like chimpanzees
+
+127
+00:06:52,000 --> 00:06:53,630
+or bonobos.
+
+128
+00:06:53,630 --> 00:06:56,110
+So chimpanzees and
+bonobos have been
+
+129
+00:06:56,110 --> 00:06:59,260
+shown to be able to use
+tools, to make plans,
+
+130
+00:06:59,260 --> 00:07:02,380
+and in fact chimps have much
+better short term memory
+
+131
+00:07:02,380 --> 00:07:05,380
+than human beings do.
+
+132
+00:07:05,380 --> 00:07:08,710
+So relative to that, if you
+look through the history of life
+
+133
+00:07:08,710 --> 00:07:13,810
+on Earth, human beings develop
+language really recently.
+
+134
+00:07:13,810 --> 00:07:15,850
+How recently, we
+kind of actually
+
+135
+00:07:15,850 --> 00:07:18,460
+don't know because there's
+no fossils that say,
+
+136
+00:07:18,460 --> 00:07:21,040
+OK here's a language speaker.
+
+137
+00:07:21,040 --> 00:07:27,010
+But most people estimate that
+language arose for human beings
+
+138
+00:07:27,010 --> 00:07:32,110
+sort of somewhere in
+the range of 100,000
+
+139
+00:07:32,110 --> 00:07:33,480
+to a million years ago.
+
+140
+00:07:33,480 --> 00:07:35,680
+OK, that's the way I
+let go but compared
+
+141
+00:07:35,680 --> 00:07:38,530
+to the process of the
+evolution of life on Earth,
+
+142
+00:07:38,530 --> 00:07:42,040
+that's kind of
+blinking an eyelid.
+
+143
+00:07:42,040 --> 00:07:46,750
+But that powerful communication
+between human beings
+
+144
+00:07:46,750 --> 00:07:51,290
+quickly set off our ascendancy
+over other creatures.
+
+145
+00:07:51,290 --> 00:07:54,910
+So it's kind of interesting that
+the ultimate power turned out
+
+146
+00:07:54,910 --> 00:07:58,240
+not to have been poisonous
+fangs or being super
+
+147
+00:07:58,240 --> 00:08:02,350
+fast or super big, that having
+the ability to communicate
+
+148
+00:08:02,350 --> 00:08:05,230
+with other members
+of your tribe.
+
+149
+00:08:05,230 --> 00:08:08,960
+It was much more recently again
+that humans developed writing,
+
+150
+00:08:08,960 --> 00:08:12,580
+which allowed knowledge to be
+communicated across distances
+
+151
+00:08:12,580 --> 00:08:14,390
+of time and space.
+
+152
+00:08:14,390 --> 00:08:17,830
+And so that's only
+about 5,000 years old,
+
+153
+00:08:17,830 --> 00:08:19,310
+the power of writing.
+
+154
+00:08:19,310 --> 00:08:22,840
+So in just a few thousand
+years the ability
+
+155
+00:08:22,840 --> 00:08:26,770
+to preserve and share knowledge
+took us from the Bronze Age
+
+156
+00:08:26,770 --> 00:08:30,820
+to the smartphones
+and tablets of today.
+
+157
+00:08:30,820 --> 00:08:34,390
+So a key question for artificial
+intelligence and human-computer
+
+158
+00:08:34,390 --> 00:08:36,850
+interaction is how
+to get computers
+
+159
+00:08:36,850 --> 00:08:39,190
+to be able to understand
+the information
+
+160
+00:08:39,190 --> 00:08:41,380
+conveyed in human languages.
+
+161
+00:08:41,380 --> 00:08:43,929
+Simultaneously,
+artificial intelligence
+
+162
+00:08:43,929 --> 00:08:47,470
+requires computers with
+the knowledge of people.
+
+163
+00:08:47,470 --> 00:08:49,780
+Fortunately now,
+AI systems might
+
+164
+00:08:49,780 --> 00:08:52,780
+be able to benefit
+from a virtuous cycle.
+
+165
+00:08:52,780 --> 00:08:56,050
+We need knowledge to understand
+language and people well,
+
+166
+00:08:56,050 --> 00:08:59,500
+but it's also the case that
+a lot of that knowledge
+
+167
+00:08:59,500 --> 00:09:03,010
+is contained in language spread
+out across the books and web
+
+168
+00:09:03,010 --> 00:09:04,173
+pages of the world.
+
+169
+00:09:04,173 --> 00:09:05,590
+And that's one of
+the things we're
+
+170
+00:09:05,590 --> 00:09:07,780
+going to look at in
+this course is, how
+
+171
+00:09:07,780 --> 00:09:11,720
+that we can sort of build
+on that virtuous cycle.
+
+172
+00:09:11,720 --> 00:09:14,570
+A lot of progress
+has already been made
+
+173
+00:09:14,570 --> 00:09:18,810
+and I just want to very
+quickly give a sense of that.
+
+174
+00:09:18,810 --> 00:09:23,420
+So in the last decade
+or so and especially
+
+175
+00:09:23,420 --> 00:09:26,390
+in the last few years, with
+newer methods of machine
+
+176
+00:09:26,390 --> 00:09:30,710
+translation we're now in a
+space where machine translation
+
+177
+00:09:30,710 --> 00:09:33,750
+really works moderately well.
+
+178
+00:09:33,750 --> 00:09:35,970
+So again, from the
+history of the world,
+
+179
+00:09:35,970 --> 00:09:38,960
+this is just amazing, right
+for thousands of years
+
+180
+00:09:38,960 --> 00:09:41,420
+learning other
+people's languages was
+
+181
+00:09:41,420 --> 00:09:45,680
+a human task which
+required a lot of effort
+
+182
+00:09:45,680 --> 00:09:47,330
+and concentration.
+
+183
+00:09:47,330 --> 00:09:49,490
+But now we're in a world
+where you could just
+
+184
+00:09:49,490 --> 00:09:51,800
+hop on your web
+browser and think,
+
+185
+00:09:51,800 --> 00:09:54,950
+oh, I wonder what the
+news is in Kenya today,
+
+186
+00:09:54,950 --> 00:09:57,780
+and you can head off
+over to a Kenyan website
+
+187
+00:09:57,780 --> 00:09:59,700
+and you can see
+something like this.
+
+188
+00:09:59,700 --> 00:10:02,270
+And you can go, huh,
+and you can then
+
+189
+00:10:02,270 --> 00:10:06,380
+ask Google to translate
+it for you from Swahili,
+
+190
+00:10:06,380 --> 00:10:09,920
+and the translation
+isn't quite perfect
+
+191
+00:10:09,920 --> 00:10:12,050
+but it's reasonably good.
+
+192
+00:10:12,050 --> 00:10:15,830
+So the newspaper, Tuko, has been
+informed that local government
+
+193
+00:10:15,830 --> 00:10:19,460
+minister links on
+[NON-ENGLISH SPEECH] and his
+
+194
+00:10:19,460 --> 00:10:22,460
+transport counterparts
+[INAUDIBLE] died within two
+
+195
+00:10:22,460 --> 00:10:23,390
+separate hours.
+
+196
+00:10:23,390 --> 00:10:26,570
+So within two separate hours,
+this is kind of awkward,
+
+197
+00:10:26,570 --> 00:10:29,180
+but essentially we're
+doing pretty well
+
+198
+00:10:29,180 --> 00:10:31,800
+at getting the information
+out of this page,
+
+199
+00:10:31,800 --> 00:10:35,300
+and so that's quite amazing.
+
+200
+00:10:35,300 --> 00:10:39,020
+The single biggest
+development in NLP
+
+201
+00:10:39,020 --> 00:10:43,220
+for the last year certainly
+in the popular media
+
+202
+00:10:43,220 --> 00:10:48,020
+was GPT-3, which was
+a huge new model that
+
+203
+00:10:48,020 --> 00:10:51,060
+was released by OpenAI.
+
+204
+00:10:51,060 --> 00:10:55,710
+What GPT-3 is about and why it's
+great is actually a bit subtle,
+
+205
+00:10:55,710 --> 00:10:59,930
+and so I can't really go through
+all the details of this here
+
+206
+00:10:59,930 --> 00:11:02,570
+but it's exciting
+because it seems
+
+207
+00:11:02,570 --> 00:11:05,540
+like it's the first step on
+the path to what we might call
+
+208
+00:11:05,540 --> 00:11:08,570
+universal models,
+where you can train up
+
+209
+00:11:08,570 --> 00:11:12,530
+one extremely large
+model on something like,
+
+210
+00:11:12,530 --> 00:11:14,900
+that library picture
+I showed before,
+
+211
+00:11:14,900 --> 00:11:17,970
+and it just has
+knowledge of the world
+
+212
+00:11:17,970 --> 00:11:22,050
+knowledge of human languages
+knowledge, of how to do tasks.
+
+213
+00:11:22,050 --> 00:11:25,230
+And then you can apply it
+to do all sorts of things.
+
+214
+00:11:25,230 --> 00:11:27,950
+So no longer are
+we building a model
+
+215
+00:11:27,950 --> 00:11:32,070
+to detect spam and then a
+model to detect pornography,
+
+216
+00:11:32,070 --> 00:11:36,290
+and then a model to detect
+whatever foreign language
+
+217
+00:11:36,290 --> 00:11:38,960
+content, and just building
+all these separate supervised
+
+218
+00:11:38,960 --> 00:11:41,130
+classifiers for
+every different task,
+
+219
+00:11:41,130 --> 00:11:44,660
+we've now just built up
+a model that understands.
+
+220
+00:11:44,660 --> 00:11:50,360
+So exactly what it does is it
+just predicts following words.
+
+221
+00:11:50,360 --> 00:11:56,810
+So on the left it's
+been told to write
+
+222
+00:11:56,810 --> 00:12:02,120
+about Elon Musk in the
+style of Doctor Seuss,
+
+223
+00:12:02,120 --> 00:12:05,060
+and it started
+off with some text
+
+224
+00:12:05,060 --> 00:12:06,950
+and then it's
+generating more text.
+
+225
+00:12:06,950 --> 00:12:10,970
+And the way it generates more
+text is literally by just
+
+226
+00:12:10,970 --> 00:12:13,850
+predicting one word
+at a time, following
+
+227
+00:12:13,850 --> 00:12:17,000
+words to complete its text.
+
+228
+00:12:17,000 --> 00:12:20,420
+But this has a very
+powerful facility
+
+229
+00:12:20,420 --> 00:12:24,380
+because what you
+can do with GPT-3
+
+230
+00:12:24,380 --> 00:12:26,750
+is you can give a
+couple of examples
+
+231
+00:12:26,750 --> 00:12:28,490
+of what you'd like it to do.
+
+232
+00:12:28,490 --> 00:12:32,990
+So I can give it some text
+and say, I broke the window,
+
+233
+00:12:32,990 --> 00:12:35,660
+change it into a question,
+what did I break?
+
+234
+00:12:35,660 --> 00:12:39,350
+I gracefully saved the day I
+changed it into a question.
+
+235
+00:12:39,350 --> 00:12:41,080
+What did I gracefully save?
+
+236
+00:12:41,080 --> 00:12:47,280
+So this prompt tells GPT-3
+what I'm wanting it to do.
+
+237
+00:12:47,280 --> 00:12:49,490
+And so then if I give it
+another statement like,
+
+238
+00:12:49,490 --> 00:12:51,330
+I gave John flowers.
+
+239
+00:12:51,330 --> 00:12:55,220
+I can then say three,
+predict what words come next.
+
+240
+00:12:55,220 --> 00:12:57,920
+And it'll follow my
+prompt and produce
+
+241
+00:12:57,920 --> 00:12:59,900
+who did I give flowers to?
+
+242
+00:12:59,900 --> 00:13:02,780
+Or I can say I gave her
+a rose and a guitar,
+
+243
+00:13:02,780 --> 00:13:05,840
+and it will follow the
+idea of the pattern
+
+244
+00:13:05,840 --> 00:13:08,720
+and to who did I give
+a rose and a guitar to?
+
+245
+00:13:08,720 --> 00:13:11,090
+And actually this
+one model can then
+
+246
+00:13:11,090 --> 00:13:14,000
+do an amazing range
+of things, including
+
+247
+00:13:14,000 --> 00:13:17,450
+many that's [AUDIO OUT]
+at all, to give
+
+248
+00:13:17,450 --> 00:13:18,990
+just one example of that.
+
+249
+00:13:18,990 --> 00:13:22,040
+Another thing that
+you can do is get
+
+250
+00:13:22,040 --> 00:13:27,020
+it to translate human
+language sentences into SQL.
+
+251
+00:13:27,020 --> 00:13:30,560
+So this can make it
+much easier to do CS145.
+
+252
+00:13:30,560 --> 00:13:36,410
+So having given that a couple
+of examples of SQL translation
+
+253
+00:13:36,410 --> 00:13:39,770
+of human language text which
+I'm in this time not showing
+
+254
+00:13:39,770 --> 00:13:41,510
+because it won't
+fit on my slide,
+
+255
+00:13:41,510 --> 00:13:44,300
+I can then give it a
+sentence like how many users
+
+256
+00:13:44,300 --> 00:13:47,180
+have signed up since
+the start of 2020,
+
+257
+00:13:47,180 --> 00:13:49,430
+and it turns it into SQL.
+
+258
+00:13:49,430 --> 00:13:51,380
+Or I can give it
+another query what
+
+259
+00:13:51,380 --> 00:13:53,900
+is the average number
+of influences each user
+
+260
+00:13:53,900 --> 00:14:00,110
+subscribed to, and again it
+then converts that into SQL.
+
+261
+00:14:00,110 --> 00:14:05,180
+So GPT-3 knows a lot about
+the meaning of language
+
+262
+00:14:05,180 --> 00:14:07,580
+and the meaning of
+other things like SQL,
+
+263
+00:14:07,580 --> 00:14:09,920
+and can fluently manipulate it.
+
+264
+00:14:13,110 --> 00:14:17,670
+OK, so that leads us trying
+to this [INAUDIBLE] meaning,
+
+265
+00:14:17,670 --> 00:14:20,910
+and how do we represent
+the meaning of a word?
+
+266
+00:14:20,910 --> 00:14:22,420
+Well, what is meaning?
+
+267
+00:14:22,420 --> 00:14:25,530
+Well, we can look up something
+like the Webster's dictionary
+
+268
+00:14:25,530 --> 00:14:30,960
+and say, OK, the idea that is
+represented by a word, the idea
+
+269
+00:14:30,960 --> 00:14:32,760
+that a person wants
+to express by using
+
+270
+00:14:32,760 --> 00:14:35,760
+words signs, et cetera.
+
+271
+00:14:35,760 --> 00:14:37,740
+That Webster's
+dictionary definition
+
+272
+00:14:37,740 --> 00:14:40,290
+is really focused on
+the word idea somehow,
+
+273
+00:14:40,290 --> 00:14:42,390
+but this is pretty close
+to the commonest way
+
+274
+00:14:42,390 --> 00:14:45,180
+that linguists
+think about meaning.
+
+275
+00:14:45,180 --> 00:14:48,300
+So do they think of
+word meaning as being
+
+276
+00:14:48,300 --> 00:14:52,290
+a pairing between a word
+which is a signifier
+
+277
+00:14:52,290 --> 00:14:55,680
+or symbol, and the
+thing that it signifies,
+
+278
+00:14:55,680 --> 00:14:58,210
+the signified thing which
+is an idea or thing.
+
+279
+00:14:58,210 --> 00:15:02,910
+So that the meaning of the
+word chair is the set of things
+
+280
+00:15:02,910 --> 00:15:04,530
+that are chairs.
+
+281
+00:15:04,530 --> 00:15:07,890
+And that's referred to as
+denotational semantics.
+
+282
+00:15:07,890 --> 00:15:11,310
+A term that's also used
+and similarly applied
+
+283
+00:15:11,310 --> 00:15:14,010
+for the semantics of
+programming languages.
+
+284
+00:15:14,010 --> 00:15:19,440
+This model isn't very
+deeply implementable,
+
+285
+00:15:19,440 --> 00:15:23,580
+like how do I go from
+the idea that chair means
+
+286
+00:15:23,580 --> 00:15:25,920
+the set of chairs in
+the world to something
+
+287
+00:15:25,920 --> 00:15:29,040
+I can manipulate meaning
+with my computers.
+
+288
+00:15:29,040 --> 00:15:34,140
+So traditionally the way
+that meaning has normally
+
+289
+00:15:34,140 --> 00:15:37,350
+been handled in natural
+language processing systems
+
+290
+00:15:37,350 --> 00:15:40,620
+is to make use of
+resources like dictionary,
+
+291
+00:15:40,620 --> 00:15:42,720
+and thesaurus in particular.
+
+292
+00:15:42,720 --> 00:15:47,490
+Popular ones, WordNet, which
+organized words and terms
+
+293
+00:15:47,490 --> 00:15:52,680
+into both synonyms sets of words
+that can mean the same thing,
+
+294
+00:15:52,680 --> 00:15:57,220
+and hypernyms which correspond
+to ISA relationships.
+
+295
+00:15:57,220 --> 00:15:59,490
+And so for the ISA
+relationships we
+
+296
+00:15:59,490 --> 00:16:02,070
+can kind of look at
+the hypernyms of panda,
+
+297
+00:16:02,070 --> 00:16:04,930
+and panda as a kind
+of procyonidae,
+
+298
+00:16:04,930 --> 00:16:09,060
+whatever those are, probably
+with red pandas, which
+
+299
+00:16:09,060 --> 00:16:13,020
+is a kind of carnivore, which
+is a kind of placental, which
+
+300
+00:16:13,020 --> 00:16:14,130
+is kind a mammal.
+
+301
+00:16:14,130 --> 00:16:19,390
+And you sort of head up
+this hypernyms hierarchy.
+
+302
+00:16:19,390 --> 00:16:23,200
+So word that has been a great
+resource for NLP, that's
+
+303
+00:16:23,200 --> 00:16:25,480
+also been highly deficient.
+
+304
+00:16:25,480 --> 00:16:30,940
+So it lacks a lot of nuance,
+so for example in WordNet,
+
+305
+00:16:30,940 --> 00:16:34,180
+proficient is listed
+as a synonym for good.
+
+306
+00:16:34,180 --> 00:16:36,580
+But maybe that's
+sometimes true but it
+
+307
+00:16:36,580 --> 00:16:38,745
+seems like in a lot of
+contexts it's not true.
+
+308
+00:16:38,745 --> 00:16:40,370
+And you mean something
+rather different
+
+309
+00:16:40,370 --> 00:16:43,000
+when you say
+proficient versus good,
+
+310
+00:16:43,000 --> 00:16:46,910
+it's limited as a human
+constructed thesaurus.
+
+311
+00:16:46,910 --> 00:16:49,600
+So in particular there's
+lots of words and lots
+
+312
+00:16:49,600 --> 00:16:52,400
+of uses of words that
+just aren't there,
+
+313
+00:16:52,400 --> 00:16:59,770
+including anything that is
+more current terminology.
+
+314
+00:16:59,770 --> 00:17:02,500
+Like wicked is there
+for the wicked witch,
+
+315
+00:17:02,500 --> 00:17:06,520
+but not for more
+modern colloquial uses.
+
+316
+00:17:06,520 --> 00:17:09,970
+Ninja's certainly isn't there
+for the kind of description
+
+317
+00:17:09,970 --> 00:17:13,240
+some people make of
+programmers, and it's
+
+318
+00:17:13,240 --> 00:17:15,490
+impossible to keep up to date.
+
+319
+00:17:15,490 --> 00:17:18,079
+So it requires a
+lot of human labor,
+
+320
+00:17:18,079 --> 00:17:23,829
+but even when you have that,
+it has a set of synonyms
+
+321
+00:17:23,829 --> 00:17:26,430
+but doesn't really have
+a good sense of words
+
+322
+00:17:26,430 --> 00:17:28,220
+that means something similar.
+
+323
+00:17:28,220 --> 00:17:33,100
+So fantastic and
+great means something
+
+324
+00:17:33,100 --> 00:17:37,120
+similar without
+really being synonyms.
+
+325
+00:17:37,120 --> 00:17:39,250
+And so this idea of
+meaning similarity
+
+326
+00:17:39,250 --> 00:17:42,250
+is something that would be
+really useful to make progress
+
+327
+00:17:42,250 --> 00:17:46,300
+on, and where deep
+learning models excel.
+
+328
+00:17:46,300 --> 00:17:50,470
+OK, so what's the problem
+with a lot of traditional NLP?
+
+329
+00:17:50,470 --> 00:17:54,280
+Well the problem with a
+lot of traditional NLP
+
+330
+00:17:54,280 --> 00:17:57,860
+is that words are regarded
+as discrete symbols.
+
+331
+00:17:57,860 --> 00:18:00,730
+So we have symbols
+like hotel, conference,
+
+332
+00:18:00,730 --> 00:18:04,420
+motel are words,
+which in deep learning
+
+333
+00:18:04,420 --> 00:18:08,350
+speak we refer to as a
+localized representation.
+
+334
+00:18:08,350 --> 00:18:14,680
+And that's because if you are in
+a statistical machine learning
+
+335
+00:18:14,680 --> 00:18:19,450
+systems, want to represent
+these symbols that each of them
+
+336
+00:18:19,450 --> 00:18:22,600
+is a separate thing so the
+standard way of representing
+
+337
+00:18:22,600 --> 00:18:25,570
+them and this is what
+you do in something
+
+338
+00:18:25,570 --> 00:18:28,060
+like a statistical
+model if you're building
+
+339
+00:18:28,060 --> 00:18:32,230
+a logistic regression model
+with words as features
+
+340
+00:18:32,230 --> 00:18:35,160
+is that you represent
+them as one word vector.
+
+341
+00:18:35,160 --> 00:18:37,940
+So you have a dimension
+for each different word.
+
+342
+00:18:37,940 --> 00:18:41,680
+So maybe like my example,
+here are my representations
+
+343
+00:18:41,680 --> 00:18:45,850
+as vectors for motel and hotel.
+
+344
+00:18:45,850 --> 00:18:47,950
+And so that means
+that we have to have
+
+345
+00:18:47,950 --> 00:18:51,400
+huge vectors corresponding
+to the number of words
+
+346
+00:18:51,400 --> 00:18:52,790
+in our vocabulary.
+
+347
+00:18:52,790 --> 00:18:55,990
+So the kind of if you had a high
+school English dictionary it
+
+348
+00:18:55,990 --> 00:19:00,310
+probably have about 250,000
+words in it, but there
+
+349
+00:19:00,310 --> 00:19:02,530
+are many, many more words
+in the language really.
+
+350
+00:19:02,530 --> 00:19:06,550
+So maybe we at least want to
+have a 500,000 dimensional
+
+351
+00:19:06,550 --> 00:19:10,410
+vector to be able
+to cope with that.
+
+352
+00:19:10,410 --> 00:19:13,750
+OK, but the bigger the
+even bigger problem
+
+353
+00:19:13,750 --> 00:19:17,970
+with discrete symbols is that we
+don't have this notion of word
+
+354
+00:19:17,970 --> 00:19:20,190
+relationships and similarity.
+
+355
+00:19:20,190 --> 00:19:22,890
+So for example in
+web search, if a user
+
+356
+00:19:22,890 --> 00:19:25,470
+searches for Seattle
+motel, we'd also
+
+357
+00:19:25,470 --> 00:19:29,310
+like to match on documents
+containing Seattle hotel.
+
+358
+00:19:29,310 --> 00:19:32,580
+But our problem is we've
+got this one word vectors
+
+359
+00:19:32,580 --> 00:19:33,940
+for the different words.
+
+360
+00:19:33,940 --> 00:19:36,360
+And so in a formal
+mathematical sense,
+
+361
+00:19:36,360 --> 00:19:38,710
+these two vectors
+are orthogonal,
+
+362
+00:19:38,710 --> 00:19:42,300
+that there's no natural notion
+of similarity between them
+
+363
+00:19:42,300 --> 00:19:43,680
+whatsoever.
+
+364
+00:19:43,680 --> 00:19:46,620
+Well, there are some things
+that we could do but try and do
+
+365
+00:19:46,620 --> 00:19:52,950
+about that, and people did
+do about that in before 2010.
+
+366
+00:19:52,950 --> 00:19:55,620
+We could say, hey we could
+use the WordNet synonyms
+
+367
+00:19:55,620 --> 00:19:59,010
+and we count things that lists
+of synonyms are similar anyway.
+
+368
+00:19:59,010 --> 00:20:01,560
+Or hey, maybe we
+could somehow build up
+
+369
+00:20:01,560 --> 00:20:05,040
+our representations of
+words that have meaning,
+
+370
+00:20:05,040 --> 00:20:07,710
+overlap and people did
+all of those things.
+
+371
+00:20:07,710 --> 00:20:11,580
+But they tended to fail
+badly from incompleteness,
+
+372
+00:20:11,580 --> 00:20:13,620
+so instead what I
+want to introduce
+
+373
+00:20:13,620 --> 00:20:18,090
+today is the modern deep
+learning method of doing that,
+
+374
+00:20:18,090 --> 00:20:24,550
+where we encode similarity in
+real value vector themselves.
+
+375
+00:20:24,550 --> 00:20:27,640
+So how do we go
+about doing that?
+
+376
+00:20:27,640 --> 00:20:31,740
+And the way we do that is
+by exploiting this idea
+
+377
+00:20:31,740 --> 00:20:34,860
+called distributional semantics.
+
+378
+00:20:34,860 --> 00:20:39,720
+So the idea of distributional
+semantics is again something
+
+379
+00:20:39,720 --> 00:20:43,260
+that when you first see it,
+maybe feels a little bit
+
+380
+00:20:43,260 --> 00:20:46,350
+crazy because rather
+than having something
+
+381
+00:20:46,350 --> 00:20:49,950
+like denotational semantics,
+what we're now going to do
+
+382
+00:20:49,950 --> 00:20:53,280
+is say that a word's
+meaning is going
+
+383
+00:20:53,280 --> 00:20:59,010
+to be given by the words that
+frequently appear close to it.
+
+384
+00:20:59,010 --> 00:21:02,490
+J. R Firth was a
+British linguist
+
+385
+00:21:02,490 --> 00:21:06,630
+from the middle of last century,
+and one of his pithy slogans
+
+386
+00:21:06,630 --> 00:21:08,490
+that everyone quotes
+at this moment
+
+387
+00:21:08,490 --> 00:21:13,050
+is, you shall know a word
+by the company it keeps.
+
+388
+00:21:13,050 --> 00:21:17,970
+And so this idea that you can
+represent a sense for words,
+
+389
+00:21:17,970 --> 00:21:22,950
+meaning as a notion of what
+context that appears in
+
+390
+00:21:22,950 --> 00:21:26,520
+has been a very successful idea.
+
+391
+00:21:26,520 --> 00:21:29,220
+One of the most
+successful ideas that's
+
+392
+00:21:29,220 --> 00:21:33,030
+used throughout statistical
+and deep learning NLP.
+
+393
+00:21:33,030 --> 00:21:37,800
+It's actually an interesting
+idea more philosophically,
+
+394
+00:21:37,800 --> 00:21:41,340
+so that there are kind of
+interesting connections.
+
+395
+00:21:41,340 --> 00:21:44,310
+For example in Wittgenstein's
+later writings,
+
+396
+00:21:44,310 --> 00:21:47,560
+he became enamored of a
+used theory of meaning.
+
+397
+00:21:47,560 --> 00:21:49,980
+And this is a sin in
+some sense, a used theory
+
+398
+00:21:49,980 --> 00:21:53,610
+of meaning but whether it's the
+ultimate theory of semantics,
+
+399
+00:21:53,610 --> 00:21:56,040
+it's actually still
+pretty controversial.
+
+400
+00:21:56,040 --> 00:21:58,920
+But it proves to be an
+extremely computational sense
+
+401
+00:21:58,920 --> 00:22:02,160
+of semantics, which
+has just led to it
+
+402
+00:22:02,160 --> 00:22:06,540
+being used everywhere very
+successfully in deep learning
+
+403
+00:22:06,540 --> 00:22:07,930
+systems.
+
+404
+00:22:07,930 --> 00:22:11,460
+So when a word
+appears in a text,
+
+405
+00:22:11,460 --> 00:22:13,860
+it has a context which
+are a set of words
+
+406
+00:22:13,860 --> 00:22:15,540
+that appear in the eye.
+
+407
+00:22:15,540 --> 00:22:20,310
+And so for a particular word,
+my example here is banking.
+
+408
+00:22:20,310 --> 00:22:25,890
+We'll find a bunch of places
+where banking occurs in text,
+
+409
+00:22:25,890 --> 00:22:28,170
+and will collect the
+sort of nearby words
+
+410
+00:22:28,170 --> 00:22:31,290
+that context words
+and we'll see and say
+
+411
+00:22:31,290 --> 00:22:32,980
+that those words
+that are appearing
+
+412
+00:22:32,980 --> 00:22:34,920
+in that kind of
+muddy brown color
+
+413
+00:22:34,920 --> 00:22:38,010
+around banking, that
+those contexts words
+
+414
+00:22:38,010 --> 00:22:43,740
+will in some sense represent
+the meaning of the word banking.
+
+415
+00:22:43,740 --> 00:22:46,020
+While I'm here let me just
+mention one distinction
+
+416
+00:22:46,020 --> 00:22:48,300
+that will come up regularly.
+
+417
+00:22:48,300 --> 00:22:52,260
+When we're talking about a
+word in our natural language
+
+418
+00:22:52,260 --> 00:22:57,270
+processing class, we sort
+of have two senses of word
+
+419
+00:22:57,270 --> 00:23:00,930
+which are referred to
+as types and tokens.
+
+420
+00:23:00,930 --> 00:23:03,910
+So there's a particular
+instance for words.
+
+421
+00:23:03,910 --> 00:23:06,990
+So there's in the first example,
+government debt problems
+
+422
+00:23:06,990 --> 00:23:09,330
+turning into banking crises.
+
+423
+00:23:09,330 --> 00:23:11,040
+There's banking
+there, and that's
+
+424
+00:23:11,040 --> 00:23:13,470
+a token of the word banking.
+
+425
+00:23:13,470 --> 00:23:17,760
+But then I've collected a
+bunch of instances of quote
+
+426
+00:23:17,760 --> 00:23:19,500
+unquote, the word banking.
+
+427
+00:23:19,500 --> 00:23:23,340
+And when I say the word banking
+and a bunch of examples of it,
+
+428
+00:23:23,340 --> 00:23:28,080
+I'm then treating banking as a
+type which refers to the uses
+
+429
+00:23:28,080 --> 00:23:33,380
+and meaning the word banking
+has across instances.
+
+430
+00:23:33,380 --> 00:23:41,300
+OK, so what are we going to do
+with this distributional models
+
+431
+00:23:41,300 --> 00:23:42,620
+of language?
+
+432
+00:23:42,620 --> 00:23:46,790
+Well, what we want
+to do is based
+
+433
+00:23:46,790 --> 00:23:51,170
+on looking at the words that
+occur in context as vectors
+
+434
+00:23:51,170 --> 00:23:56,360
+that we want to build
+up dense real valued
+
+435
+00:23:56,360 --> 00:24:01,010
+vector for each word,
+that in some sense
+
+436
+00:24:01,010 --> 00:24:03,590
+represents the
+meaning of that word.
+
+437
+00:24:03,590 --> 00:24:06,710
+And the way it will represent
+the meaning of that word
+
+438
+00:24:06,710 --> 00:24:12,050
+is that this vector will
+be useful for predicting
+
+439
+00:24:12,050 --> 00:24:14,670
+other words that
+occur in the context.
+
+440
+00:24:17,460 --> 00:24:22,190
+So in this example, to keep it
+manageable on the slide vectors
+
+441
+00:24:22,190 --> 00:24:24,450
+are only eight dimensional.
+
+442
+00:24:24,450 --> 00:24:28,220
+But in reality we use
+considerably bigger vectors,
+
+443
+00:24:28,220 --> 00:24:29,690
+so a very common
+size is actually
+
+444
+00:24:29,690 --> 00:24:32,460
+300 dimensional vectors.
+
+445
+00:24:32,460 --> 00:24:35,990
+OK, so for each word
+that's a word type,
+
+446
+00:24:35,990 --> 00:24:38,750
+we don't have a word vector.
+
+447
+00:24:38,750 --> 00:24:42,590
+These are also used
+with other names,
+
+448
+00:24:42,590 --> 00:24:45,380
+they refer to as neural
+word representations
+
+449
+00:24:45,380 --> 00:24:48,830
+or for a reason, they'll become
+clearer on the next slide,
+
+450
+00:24:48,830 --> 00:24:51,020
+they're referred to
+as word embeddings.
+
+451
+00:24:51,020 --> 00:24:54,890
+So these are now a distributed
+representation, not a localized
+
+452
+00:24:54,890 --> 00:24:59,240
+representation because the
+meaning of the word banking
+
+453
+00:24:59,240 --> 00:25:04,780
+is spread over all 300
+dimensions of the vector.
+
+454
+00:25:04,780 --> 00:25:08,410
+These are called word embeddings
+because effectively when
+
+455
+00:25:08,410 --> 00:25:13,390
+we have a whole bunch of words,
+these representations place
+
+456
+00:25:13,390 --> 00:25:17,150
+them all in a high
+dimensional vector space,
+
+457
+00:25:17,150 --> 00:25:19,690
+and so they're embedded
+into that space.
+
+458
+00:25:19,690 --> 00:25:22,270
+Now unfortunately
+human beings are
+
+459
+00:25:22,270 --> 00:25:26,800
+very bad at looking at
+300 dimensional vector
+
+460
+00:25:26,800 --> 00:25:29,890
+spaces or even eight
+dimensional vector spaces,
+
+461
+00:25:29,890 --> 00:25:32,710
+so the only thing that I
+can really display to you
+
+462
+00:25:32,710 --> 00:25:36,250
+here is a two dimensional
+projection of that space.
+
+463
+00:25:36,250 --> 00:25:39,538
+Now even that's
+useful, but it's also
+
+464
+00:25:39,538 --> 00:25:41,080
+important to realize
+that when you're
+
+465
+00:25:41,080 --> 00:25:43,930
+making it two dimensional
+projection of a three
+
+466
+00:25:43,930 --> 00:25:47,260
+dimensional space,
+you're losing almost all
+
+467
+00:25:47,260 --> 00:25:48,980
+the information in that space.
+
+468
+00:25:48,980 --> 00:25:51,460
+And a lot of things will
+be crushed together,
+
+469
+00:25:51,460 --> 00:25:54,080
+that don't actually
+deserve to be better.
+
+470
+00:25:54,080 --> 00:25:58,660
+So here's my word
+embeddings, of course you
+
+471
+00:25:58,660 --> 00:26:01,280
+can't see any of those at all.
+
+472
+00:26:01,280 --> 00:26:05,200
+But if I zoom in and
+then I zoom in further,
+
+473
+00:26:05,200 --> 00:26:08,860
+what you'll already see is
+that the representations
+
+474
+00:26:08,860 --> 00:26:13,510
+we've learnt distributionally
+to just a good job at grouping
+
+475
+00:26:13,510 --> 00:26:17,570
+together similar words.
+
+476
+00:26:17,570 --> 00:26:20,050
+So in this sort of
+overall picture,
+
+477
+00:26:20,050 --> 00:26:22,510
+I can zoom into one
+part of the space,
+
+478
+00:26:22,510 --> 00:26:26,650
+is actually the part that's
+up here and this view of it.
+
+479
+00:26:26,650 --> 00:26:28,990
+And it's got words
+for countries,
+
+480
+00:26:28,990 --> 00:26:33,760
+so not only are countries
+generally grouped together,
+
+481
+00:26:33,760 --> 00:26:38,380
+even the sort of particular
+sub groupings of countries
+
+482
+00:26:38,380 --> 00:26:40,060
+make a certain amount of sense.
+
+483
+00:26:40,060 --> 00:26:43,310
+And down here we then
+have nationality words,
+
+484
+00:26:43,310 --> 00:26:45,550
+if we go to another
+part of the space we can
+
+485
+00:26:45,550 --> 00:26:47,090
+see different kind of words.
+
+486
+00:26:47,090 --> 00:26:51,250
+So here are verbs and we
+have ones like come and go,
+
+487
+00:26:51,250 --> 00:26:55,600
+a very similar saying
+and thinking words,
+
+488
+00:26:55,600 --> 00:27:00,700
+say think expect, they
+kind of similar and nearby.
+
+489
+00:27:00,700 --> 00:27:04,210
+Over on the bottom right, we
+have sort of verbal exhilarates
+
+490
+00:27:04,210 --> 00:27:08,710
+and corpus, so have, had,
+has, forms of the verb to be.
+
+491
+00:27:08,710 --> 00:27:12,850
+And certain content for verbs
+are similar to corpus verbs,
+
+492
+00:27:12,850 --> 00:27:15,490
+because they describe states.
+
+493
+00:27:15,490 --> 00:27:18,460
+He remained angry,
+he became angry,
+
+494
+00:27:18,460 --> 00:27:21,130
+and so they're actually
+then grouped close together
+
+495
+00:27:21,130 --> 00:27:22,940
+to the word, the verb to be.
+
+496
+00:27:22,940 --> 00:27:26,320
+So there's a lot of
+interesting structure
+
+497
+00:27:26,320 --> 00:27:29,680
+in this space that
+then represents
+
+498
+00:27:29,680 --> 00:27:31,100
+the meaning of words.
+
+499
+00:27:31,100 --> 00:27:34,720
+So the algorithm I'm
+going to introduce now
+
+500
+00:27:34,720 --> 00:27:39,190
+is one that's called
+word2vec, which was introduced
+
+501
+00:27:39,190 --> 00:27:42,940
+by Tomas Mikolov and
+colleagues in 2013
+
+502
+00:27:42,940 --> 00:27:45,093
+as a framework for
+learning word vectors,
+
+503
+00:27:45,093 --> 00:27:46,510
+and it's sort of
+a simple and easy
+
+504
+00:27:46,510 --> 00:27:48,580
+to understand place to start.
+
+505
+00:27:48,580 --> 00:27:53,500
+So the idea is we
+have a lot of text
+
+506
+00:27:53,500 --> 00:27:56,500
+from somewhere, which we
+commonly refer to as a corpus.
+
+507
+00:27:56,500 --> 00:27:59,500
+Of text corpus as just
+the Latin word for body,
+
+508
+00:27:59,500 --> 00:28:02,300
+so it's a body of text.
+
+509
+00:28:02,300 --> 00:28:05,290
+And so then we choose
+a fixed vocabulary
+
+510
+00:28:05,290 --> 00:28:08,930
+which will typically be large
+but nevertheless truncated,
+
+511
+00:28:08,930 --> 00:28:11,290
+so we get rid of some of
+the really rare words,
+
+512
+00:28:11,290 --> 00:28:15,190
+so we might say
+vocabulary size of 400,000
+
+513
+00:28:15,190 --> 00:28:21,730
+and we then create for
+ourselves vector for each word.
+
+514
+00:28:21,730 --> 00:28:24,280
+OK, so then what
+we do is we want
+
+515
+00:28:24,280 --> 00:28:30,130
+to work out what's a good
+vector for each word,
+
+516
+00:28:30,130 --> 00:28:33,250
+and the really
+interesting thing is
+
+517
+00:28:33,250 --> 00:28:37,090
+that we can learn these word
+vectors from just a big pile
+
+518
+00:28:37,090 --> 00:28:41,290
+of text by doing this
+distributional similarity
+
+519
+00:28:41,290 --> 00:28:45,460
+task of being able to predict,
+well, what words occur
+
+520
+00:28:45,460 --> 00:28:47,950
+in the context of other words.
+
+521
+00:28:47,950 --> 00:28:51,130
+So in particular,
+we're going [AUDIO OUT]
+
+522
+00:28:51,130 --> 00:28:54,670
+through in the texts,
+and so at any moment
+
+523
+00:28:54,670 --> 00:28:59,930
+we have a center word C, and
+context words outside of it,
+
+524
+00:28:59,930 --> 00:29:04,810
+which we'll call O. And then
+based on the current word
+
+525
+00:29:04,810 --> 00:29:07,390
+vectors, we're
+going to calculate
+
+526
+00:29:07,390 --> 00:29:11,950
+the probability of a
+context word occurring,
+
+527
+00:29:11,950 --> 00:29:16,270
+given the center word
+according to our current model.
+
+528
+00:29:16,270 --> 00:29:19,450
+But then we know that
+certain words did actually
+
+529
+00:29:19,450 --> 00:29:22,360
+occur in the context
+of that center word,
+
+530
+00:29:22,360 --> 00:29:24,070
+and so what we
+want to do is then
+
+531
+00:29:24,070 --> 00:29:27,670
+keep adjusting the word
+vectors to maximize
+
+532
+00:29:27,670 --> 00:29:32,620
+the probability that's assigned
+to words that actually occur
+
+533
+00:29:32,620 --> 00:29:34,660
+in the context of
+the center word
+
+534
+00:29:34,660 --> 00:29:37,330
+as we proceed
+through these texts.
+
+535
+00:29:37,330 --> 00:29:39,700
+So to start to make that
+a bit more concrete,
+
+536
+00:29:39,700 --> 00:29:42,590
+this is what we're doing.
+
+537
+00:29:42,590 --> 00:29:46,900
+So we have a piece of text, we
+choose our center word which
+
+538
+00:29:46,900 --> 00:29:52,690
+is here in two and
+then we say, well,
+
+539
+00:29:52,690 --> 00:29:56,390
+if a model of predicting the
+probability of context words
+
+540
+00:29:56,390 --> 00:29:59,120
+given the center
+word and this model,
+
+541
+00:29:59,120 --> 00:30:01,220
+we'll come to in a
+minute, but it's defined
+
+542
+00:30:01,220 --> 00:30:03,450
+in terms of our word vectors.
+
+543
+00:30:03,450 --> 00:30:06,530
+So let's see what
+probability it gives
+
+544
+00:30:06,530 --> 00:30:08,660
+to the words that
+actually occurred
+
+545
+00:30:08,660 --> 00:30:12,470
+in the context of this word.
+
+546
+00:30:12,470 --> 00:30:15,110
+It gives them some
+probability, but maybe it'd
+
+547
+00:30:15,110 --> 00:30:18,150
+be nice if the probability
+it assigned was higher.
+
+548
+00:30:18,150 --> 00:30:21,200
+So then how can we
+change our word vectors
+
+549
+00:30:21,200 --> 00:30:23,420
+to raise those probabilities?
+
+550
+00:30:23,420 --> 00:30:25,970
+And so we'll do
+some calculations
+
+551
+00:30:25,970 --> 00:30:28,520
+with into being the
+center word, and then
+
+552
+00:30:28,520 --> 00:30:30,560
+we'll just go on
+to the next word
+
+553
+00:30:30,560 --> 00:30:33,590
+and then we'll do the
+same kind of calculations,
+
+554
+00:30:33,590 --> 00:30:35,510
+and keep on chunking.
+
+555
+00:30:35,510 --> 00:30:38,150
+So the big question
+then is, well
+
+556
+00:30:38,150 --> 00:30:40,220
+what are we doing
+for working out
+
+557
+00:30:40,220 --> 00:30:42,890
+the probability of
+a word occurring
+
+558
+00:30:42,890 --> 00:30:46,100
+in the context of
+the center word?
+
+559
+00:30:46,100 --> 00:30:48,470
+And so that's the
+central part of what we
+
+560
+00:30:48,470 --> 00:30:54,380
+develop as the word2vec object.
+
+561
+00:30:54,380 --> 00:30:57,350
+So this is the overall
+model that we want to use.
+
+562
+00:30:57,350 --> 00:31:02,560
+So for each position in our
+corpus, our body of text,
+
+563
+00:31:02,560 --> 00:31:06,580
+we want to predict context words
+within a window of fixed size
+
+564
+00:31:06,580 --> 00:31:10,030
+M, given the center word WJ.
+
+565
+00:31:10,030 --> 00:31:13,010
+And we want to become
+good at doing that,
+
+566
+00:31:13,010 --> 00:31:15,460
+so we want to give high
+probability to words
+
+567
+00:31:15,460 --> 00:31:17,750
+that occur in the context.
+
+568
+00:31:17,750 --> 00:31:19,840
+And so what we're
+going to do is we're
+
+569
+00:31:19,840 --> 00:31:21,490
+going to work out
+what's formerly
+
+570
+00:31:21,490 --> 00:31:25,000
+the data likelihood
+as to how good a job
+
+571
+00:31:25,000 --> 00:31:29,090
+we do at predicting words in
+the context of other words.
+
+572
+00:31:29,090 --> 00:31:32,110
+And so formally
+that likelihood is
+
+573
+00:31:32,110 --> 00:31:34,880
+going to be defined in
+terms of our word vectors.
+
+574
+00:31:34,880 --> 00:31:36,920
+So they're the
+parameters of our model,
+
+575
+00:31:36,920 --> 00:31:41,830
+and it's going to be calculated
+as taking the product of using
+
+576
+00:31:41,830 --> 00:31:44,260
+each word as the
+center word, and then
+
+577
+00:31:44,260 --> 00:31:46,210
+the product of each
+word and a window
+
+578
+00:31:46,210 --> 00:31:50,350
+around that of the probability
+of predicting that context
+
+579
+00:31:50,350 --> 00:31:54,220
+word in the center word.
+
+580
+00:31:54,220 --> 00:31:56,080
+And so to learn
+this model, we're
+
+581
+00:31:56,080 --> 00:31:58,510
+going to have an objective
+function, sometimes also
+
+582
+00:31:58,510 --> 00:32:02,110
+called a cost or a loss
+that we want to optimize.
+
+583
+00:32:02,110 --> 00:32:04,180
+And essentially
+what we want to do
+
+584
+00:32:04,180 --> 00:32:08,650
+is we want to maximize the
+likelihood of the context we
+
+585
+00:32:08,650 --> 00:32:10,790
+see around center words.
+
+586
+00:32:10,790 --> 00:32:13,870
+But following standard
+practice, we slightly
+
+587
+00:32:13,870 --> 00:32:18,520
+fiddle that because rather
+than dealing with products,
+
+588
+00:32:18,520 --> 00:32:21,220
+it's easier to deal
+with sums and so we
+
+589
+00:32:21,220 --> 00:32:23,050
+work with log likelihood.
+
+590
+00:32:23,050 --> 00:32:26,200
+And once we take log
+likelihood, all of our products
+
+591
+00:32:26,200 --> 00:32:27,700
+turn into sums.
+
+592
+00:32:27,700 --> 00:32:31,090
+We also work with the
+average log likelihood,
+
+593
+00:32:31,090 --> 00:32:34,930
+so we've got one on, t term
+here for the number of words
+
+594
+00:32:34,930 --> 00:32:39,190
+in the corpus, and finally
+for no particular reason
+
+595
+00:32:39,190 --> 00:32:42,040
+we like to minimize our
+objective function rather
+
+596
+00:32:42,040 --> 00:32:43,060
+than maximizing it.
+
+597
+00:32:43,060 --> 00:32:45,590
+So we stick a minus
+sign in there,
+
+598
+00:32:45,590 --> 00:32:50,470
+and so then by minimizing this
+objective function, J of theta,
+
+599
+00:32:50,470 --> 00:32:56,630
+that becomes maximizing
+our predictive accuracy.
+
+600
+00:32:56,630 --> 00:33:00,980
+OK, so that's the
+set up, but we still
+
+601
+00:33:00,980 --> 00:33:04,100
+haven't made any
+progress in how do we
+
+602
+00:33:04,100 --> 00:33:08,160
+calculate the probability of a
+word occurring in the context,
+
+603
+00:33:08,160 --> 00:33:09,650
+given the center word.
+
+604
+00:33:09,650 --> 00:33:11,900
+And so the way
+we're actually going
+
+605
+00:33:11,900 --> 00:33:18,470
+to do that is we have vector
+representations for each word,
+
+606
+00:33:18,470 --> 00:33:22,010
+and we're going to work
+out the probability simply
+
+607
+00:33:22,010 --> 00:33:24,470
+in terms of the word vectors.
+
+608
+00:33:24,470 --> 00:33:27,030
+Now at this point there's
+a little technical point,
+
+609
+00:33:27,030 --> 00:33:31,580
+we're actually going to give
+to each word, two word vectors.
+
+610
+00:33:31,580 --> 00:33:34,160
+One word vector for when
+it's used as the center
+
+611
+00:33:34,160 --> 00:33:37,250
+word, and a
+different word vector
+
+612
+00:33:37,250 --> 00:33:40,430
+when that's used
+as a context word.
+
+613
+00:33:40,430 --> 00:33:42,950
+This is done because
+it just simplifies
+
+614
+00:33:42,950 --> 00:33:46,670
+the math and the optimization,
+that seems a little bit ugly
+
+615
+00:33:46,670 --> 00:33:51,110
+that actually makes building
+word vectors a lot easier,
+
+616
+00:33:51,110 --> 00:33:55,730
+and really we can come back
+to that and discuss it later.
+
+617
+00:33:55,730 --> 00:33:56,930
+But that's what it is.
+
+618
+00:33:56,930 --> 00:34:00,980
+And so then once we
+have these word vectors,
+
+619
+00:34:00,980 --> 00:34:04,550
+the equation that
+we're going to use
+
+620
+00:34:04,550 --> 00:34:08,810
+for giving the probability of
+a context word appearing given
+
+621
+00:34:08,810 --> 00:34:10,730
+the center word is
+that we're going
+
+622
+00:34:10,730 --> 00:34:13,880
+to calculate it using the
+expression, the middle bottom
+
+623
+00:34:13,880 --> 00:34:15,870
+of my slide.
+
+624
+00:34:15,870 --> 00:34:23,850
+So let's sort of pull that
+apart just a little bit more.
+
+625
+00:34:23,850 --> 00:34:28,639
+So what we have here
+with this expression is
+
+626
+00:34:28,639 --> 00:34:33,699
+so for a particular center word
+and a particular context word
+
+627
+00:34:33,699 --> 00:34:36,440
+O, we're going to
+look up the vector
+
+628
+00:34:36,440 --> 00:34:38,360
+representation of each word.
+
+629
+00:34:38,360 --> 00:34:41,840
+So there U of O and V
+of C, and so then we're
+
+630
+00:34:41,840 --> 00:34:45,949
+simply going to take the dot
+product of those two vectors.
+
+631
+00:34:45,949 --> 00:34:48,468
+So dot product is
+a natural measure
+
+632
+00:34:48,469 --> 00:34:50,870
+for similarity
+between words because
+
+633
+00:34:50,870 --> 00:34:55,670
+in any particular
+mention of opposite,
+
+634
+00:34:55,670 --> 00:34:59,930
+you'll get a component that
+adds to that dot product sum.
+
+635
+00:34:59,930 --> 00:35:02,690
+If both are negative, it'll add
+a lot to the dot product sum.
+
+636
+00:35:02,690 --> 00:35:05,390
+If one's positive
+and one's negative,
+
+637
+00:35:05,390 --> 00:35:09,440
+it'll subtract from
+the similarity measure.
+
+638
+00:35:09,440 --> 00:35:12,140
+Both of them are zero,
+won't change the similarity.
+
+639
+00:35:12,140 --> 00:35:15,170
+So it sort of seems
+sort of plausible idea
+
+640
+00:35:15,170 --> 00:35:17,880
+to just take a dot product
+and thinking, well,
+
+641
+00:35:17,880 --> 00:35:21,080
+if two words have a
+larger dot product, that
+
+642
+00:35:21,080 --> 00:35:23,600
+means they're more similar.
+
+643
+00:35:23,600 --> 00:35:27,890
+And so then after that,
+we sort of really doing
+
+644
+00:35:27,890 --> 00:35:31,670
+nothing more than OK, we
+want to use dot products
+
+645
+00:35:31,670 --> 00:35:33,620
+to represent words similarity.
+
+646
+00:35:33,620 --> 00:35:36,620
+And now let's do the
+dumbest thing that we know,
+
+647
+00:35:36,620 --> 00:35:40,830
+how to turn this into a
+probability distribution.
+
+648
+00:35:40,830 --> 00:35:42,540
+Well, what do we do?
+
+649
+00:35:42,540 --> 00:35:45,680
+Well firstly, well
+taking a dot product
+
+650
+00:35:45,680 --> 00:35:47,750
+of two vectors
+that might come out
+
+651
+00:35:47,750 --> 00:35:50,780
+as positive or
+negative, but well we
+
+652
+00:35:50,780 --> 00:35:52,040
+want to have probabilities.
+
+653
+00:35:52,040 --> 00:35:54,330
+We can't have negative
+probabilities.
+
+654
+00:35:54,330 --> 00:35:56,810
+So a simple way to avoid
+negative probabilities
+
+655
+00:35:56,810 --> 00:35:59,660
+is to exponentiate
+them, because then we
+
+656
+00:35:59,660 --> 00:36:01,550
+know everything is positive.
+
+657
+00:36:01,550 --> 00:36:04,580
+And so then we are always
+getting a positive number
+
+658
+00:36:04,580 --> 00:36:08,420
+in the numerator, but
+for probabilities we
+
+659
+00:36:08,420 --> 00:36:11,340
+also want to have the
+numbers add up to 1.
+
+660
+00:36:11,340 --> 00:36:13,740
+So we have a probability
+distribution.
+
+661
+00:36:13,740 --> 00:36:16,280
+So we just normalizing
+the obvious way,
+
+662
+00:36:16,280 --> 00:36:21,350
+where we divide through by the
+sum of the numerator quantity
+
+663
+00:36:21,350 --> 00:36:23,600
+for each different
+word in the vocabulary,
+
+664
+00:36:23,600 --> 00:36:25,910
+and so then necessarily
+that gives us
+
+665
+00:36:25,910 --> 00:36:28,800
+a probability distribution.
+
+666
+00:36:28,800 --> 00:36:30,530
+So all the rest
+of that I was just
+
+667
+00:36:30,530 --> 00:36:33,200
+talking through what
+we're using there
+
+668
+00:36:33,200 --> 00:36:35,550
+is what's called the
+softmax function.
+
+669
+00:36:35,550 --> 00:36:40,580
+So the softmax function
+will take any R in vector
+
+670
+00:36:40,580 --> 00:36:46,080
+and turn it into
+things between 0 to 1.
+
+671
+00:36:46,080 --> 00:36:49,860
+And so we can take numbers and
+put them through the softmax,
+
+672
+00:36:49,860 --> 00:36:53,290
+and turn them into
+the redistribution.
+
+673
+00:36:53,290 --> 00:36:57,840
+So the name comes from the fact
+that it's sort of like a max.
+
+674
+00:36:57,840 --> 00:37:00,420
+So because of the fact
+that we exponentiate,
+
+675
+00:37:00,420 --> 00:37:03,600
+that really emphasizes
+the big contents
+
+676
+00:37:03,600 --> 00:37:09,360
+in the different dimensions
+of calculating similarity.
+
+677
+00:37:09,360 --> 00:37:14,670
+So most of the probability goes
+to the most similar things,
+
+678
+00:37:14,670 --> 00:37:17,010
+and it's called soft
+because well, it
+
+679
+00:37:17,010 --> 00:37:18,690
+doesn't do that absolutely.
+
+680
+00:37:18,690 --> 00:37:21,720
+It'll still give
+some probability
+
+681
+00:37:21,720 --> 00:37:26,130
+to everything that's in
+the slightest bit similar--
+
+682
+00:37:26,130 --> 00:37:29,850
+I mean, on the other hand it's a
+slightly weird name because max
+
+683
+00:37:29,850 --> 00:37:33,960
+normally takes a set of
+things and just returns
+
+684
+00:37:33,960 --> 00:37:37,470
+one the biggest of them,
+whereas the softmax is
+
+685
+00:37:37,470 --> 00:37:41,160
+taking a set of numbers
+and scaling them,
+
+686
+00:37:41,160 --> 00:37:45,610
+that is returning the whole
+probability distribution.
+
+687
+00:37:45,610 --> 00:37:49,370
+OK, so now we have all
+the pieces of our model.
+
+688
+00:37:49,370 --> 00:37:54,400
+And so how do we make
+our word vectors?
+
+689
+00:37:54,400 --> 00:37:58,150
+Well, the idea of what
+we want to do is we
+
+690
+00:37:58,150 --> 00:38:04,030
+want to fiddle our word vectors
+in such a way that we minimize
+
+691
+00:38:04,030 --> 00:38:08,070
+our loss, i.e. that we maximize
+the probability of the words
+
+692
+00:38:08,070 --> 00:38:12,040
+we actually saw in the
+context of the center word.
+
+693
+00:38:12,040 --> 00:38:18,700
+And so the theta represents all
+of our model parameters in one
+
+694
+00:38:18,700 --> 00:38:20,530
+very long vector.
+
+695
+00:38:20,530 --> 00:38:23,620
+So for our model here,
+the only parameters
+
+696
+00:38:23,620 --> 00:38:25,400
+are our word vectors.
+
+697
+00:38:25,400 --> 00:38:29,890
+So we have for each
+word two vectors,
+
+698
+00:38:29,890 --> 00:38:33,160
+its context vector
+and its center vector.
+
+699
+00:38:33,160 --> 00:38:35,610
+And each of those is a
+D dimensional vector,
+
+700
+00:38:35,610 --> 00:38:40,720
+where D might be 300 and
+we have V many words.
+
+701
+00:38:40,720 --> 00:38:46,660
+So we end up with this big
+huge vector which is 2DV long,
+
+702
+00:38:46,660 --> 00:38:51,700
+which if you have a 500,000
+vocab times the 300 dimensional
+
+703
+00:38:51,700 --> 00:38:55,720
+at the time, it's more math
+than I can do in my head,
+
+704
+00:38:55,720 --> 00:38:57,720
+but it's got millions of
+millions of parameters,
+
+705
+00:38:57,720 --> 00:38:59,740
+it's got millions and
+millions of parameters.
+
+706
+00:38:59,740 --> 00:39:03,550
+And we somehow want
+to fiddle them all
+
+707
+00:39:03,550 --> 00:39:08,410
+to maximize the prediction
+of context words.
+
+708
+00:39:08,410 --> 00:39:13,610
+And so the way we kind of do
+that then is we use calculus.
+
+709
+00:39:13,610 --> 00:39:16,210
+So if what we want to do is
+take that math that we've
+
+710
+00:39:16,210 --> 00:39:23,050
+seen previously and say, well
+with this objective function,
+
+711
+00:39:23,050 --> 00:39:27,190
+we can work out
+derivatives and so
+
+712
+00:39:27,190 --> 00:39:30,230
+we can work out where
+the gradient is.
+
+713
+00:39:30,230 --> 00:39:34,010
+So how we can walk
+downhill to minimize loss.
+
+714
+00:39:34,010 --> 00:39:36,970
+So we're at some point
+and we can figure out
+
+715
+00:39:36,970 --> 00:39:41,740
+what is downhill, and we
+can then progressively
+
+716
+00:39:41,740 --> 00:39:45,890
+walk downhill and
+improve our model.
+
+717
+00:39:45,890 --> 00:39:47,830
+And so what our
+job is going to be
+
+718
+00:39:47,830 --> 00:39:52,550
+is to compute all of
+those vector gradients.
+
+719
+00:39:52,550 --> 00:39:58,570
+OK, so at this point I
+then want to kind of show
+
+720
+00:39:58,570 --> 00:40:05,300
+a little bit more as to how
+we can actually do that.
+
+721
+00:40:05,300 --> 00:40:08,110
+And then a couple
+more slides here
+
+722
+00:40:08,110 --> 00:40:13,480
+but maybe I'll just try and
+jigger things again and move
+
+723
+00:40:13,480 --> 00:40:16,990
+to my interactive whiteboard.
+
+724
+00:40:16,990 --> 00:40:21,550
+What we wanted to do,
+so we had our overall--
+
+725
+00:40:24,100 --> 00:40:27,910
+we had our overall
+J theta that we
+
+726
+00:40:27,910 --> 00:40:31,900
+were wanting to minimize our
+average neg log likelihood,
+
+727
+00:40:31,900 --> 00:40:39,100
+so that was the minus 1 on T of
+the sum of T equals 1 to big T,
+
+728
+00:40:39,100 --> 00:40:41,110
+which was our text length.
+
+729
+00:40:41,110 --> 00:40:44,080
+And then we were going through
+the words in each context,
+
+730
+00:40:44,080 --> 00:40:48,160
+so we were doing
+J between M words
+
+731
+00:40:48,160 --> 00:40:52,300
+on each side except itself.
+
+732
+00:40:52,300 --> 00:40:56,080
+And then what we wanted to
+do was in the side there,
+
+733
+00:40:56,080 --> 00:41:02,260
+we were then working out the log
+probability of the context word
+
+734
+00:41:02,260 --> 00:41:08,485
+at that position given the word
+that's in the center position T
+
+735
+00:41:08,485 --> 00:41:09,100
+.
+
+736
+00:41:09,100 --> 00:41:17,060
+And so then we converted
+that into our word vectors
+
+737
+00:41:17,060 --> 00:41:22,550
+by saying that the
+probability of O given C
+
+738
+00:41:22,550 --> 00:41:27,870
+is going to be expressed as the
+noun, this softmax of the dot
+
+739
+00:41:27,870 --> 00:41:28,370
+product.
+
+740
+00:41:44,700 --> 00:41:51,240
+And so now what we
+want to do is work out
+
+741
+00:41:51,240 --> 00:41:58,990
+the gradient, the direction of
+downhill for this [INAUDIBLE]..
+
+742
+00:41:58,990 --> 00:42:01,050
+And so the way
+we're doing that is
+
+743
+00:42:01,050 --> 00:42:05,820
+we're working out the partial
+derivative of this expression
+
+744
+00:42:05,820 --> 00:42:11,750
+with respect to every
+parameter in the model,
+
+745
+00:42:11,750 --> 00:42:13,910
+and all the parameters
+in the model
+
+746
+00:42:13,910 --> 00:42:17,780
+are the components, the
+dimensions of the word
+
+747
+00:42:17,780 --> 00:42:20,010
+vectors of every word.
+
+748
+00:42:20,010 --> 00:42:25,040
+And so we have the center word
+vectors and the outside word
+
+749
+00:42:25,040 --> 00:42:26,340
+vectors.
+
+750
+00:42:26,340 --> 00:42:33,320
+So here I'm just going to
+do the center word vectors
+
+751
+00:42:33,320 --> 00:42:37,100
+but on homework-- on a future
+homework assignment two,
+
+752
+00:42:37,100 --> 00:42:39,620
+the outside word
+vectors will show up
+
+753
+00:42:39,620 --> 00:42:41,400
+and they're kind of similar.
+
+754
+00:42:41,400 --> 00:42:44,240
+So what we're doing
+is we're working out
+
+755
+00:42:44,240 --> 00:42:48,020
+the partial derivative
+with respect
+
+756
+00:42:48,020 --> 00:42:52,670
+to our center word vector, which
+is maybe a 300 dimensional word
+
+757
+00:42:52,670 --> 00:43:00,140
+vector of this
+probability of O give C.
+
+758
+00:43:00,140 --> 00:43:02,090
+And since we're using
+log probabilities
+
+759
+00:43:02,090 --> 00:43:06,290
+of the log of this probability
+of O given C of this exp
+
+760
+00:43:06,290 --> 00:43:10,910
+of your U of OTVC, over--
+
+761
+00:43:10,910 --> 00:43:14,115
+my writing will get
+worse and worse, sorry.
+
+762
+00:43:14,115 --> 00:43:15,740
+I've already made a
+mistake, haven't I?
+
+763
+00:43:15,740 --> 00:43:20,310
+Sum, the sum of W equals
+1 to the vocabulary
+
+764
+00:43:20,310 --> 00:43:22,190
+of the exp of UWTVC.
+
+765
+00:43:25,100 --> 00:43:31,170
+OK, well at this point
+things start off pretty easy.
+
+766
+00:43:31,170 --> 00:43:33,830
+So what we have
+here is something
+
+767
+00:43:33,830 --> 00:43:37,370
+that's log of A over
+B, so that's easy.
+
+768
+00:43:37,370 --> 00:43:41,210
+We can turn this into
+log A minus log B.
+
+769
+00:43:41,210 --> 00:43:42,860
+But before I go
+further I'll just
+
+770
+00:43:42,860 --> 00:43:46,360
+make a comment at this point.
+
+771
+00:43:46,360 --> 00:43:52,510
+So at this point my
+audience divides on in two,
+
+772
+00:43:52,510 --> 00:43:54,970
+there are some people
+in the audience
+
+773
+00:43:54,970 --> 00:43:59,350
+for which maybe a lot of
+people in the audience--
+
+774
+00:43:59,350 --> 00:44:03,010
+this really elementary math,
+I've seen this a million times
+
+775
+00:44:03,010 --> 00:44:06,650
+before and he isn't even
+explaining it very well.
+
+776
+00:44:06,650 --> 00:44:08,710
+And if you're in
+that group, well
+
+777
+00:44:08,710 --> 00:44:12,100
+feel free to look at your
+email or the newspaper
+
+778
+00:44:12,100 --> 00:44:14,920
+or whatever else is
+best suited to you,
+
+779
+00:44:14,920 --> 00:44:19,360
+but I think there are also
+other people in the class who
+
+780
+00:44:19,360 --> 00:44:21,430
+are, the last time
+I saw calculus
+
+781
+00:44:21,430 --> 00:44:25,430
+was when I was in high school,
+for which that's not the case.
+
+782
+00:44:25,430 --> 00:44:28,840
+And so I wanted to spend a
+few minutes going through this
+
+783
+00:44:28,840 --> 00:44:33,490
+a bit concretely so that to
+try and get over the idea
+
+784
+00:44:33,490 --> 00:44:39,410
+that even though most of deep
+learning and even word vector
+
+785
+00:44:39,410 --> 00:44:45,190
+learning seems like magic,
+that it's not really magic.
+
+786
+00:44:45,190 --> 00:44:48,380
+It's really just doing
+math and one of the things
+
+787
+00:44:48,380 --> 00:44:50,740
+we hope is that you
+do actually understand
+
+788
+00:44:50,740 --> 00:44:53,200
+this math that's being done.
+
+789
+00:44:53,200 --> 00:44:56,170
+So I'll keep along and
+do a bit more of it,
+
+790
+00:44:56,170 --> 00:45:03,170
+so then what we have it's use
+this way of writing the log.
+
+791
+00:45:03,170 --> 00:45:06,950
+And so then we can say
+that that expression above
+
+792
+00:45:06,950 --> 00:45:12,350
+equals the partial
+derivatives of VC
+
+793
+00:45:12,350 --> 00:45:20,960
+of the log of the
+numerator log XUOTVC
+
+794
+00:45:20,960 --> 00:45:34,100
+minus the partial derivative
+of the log of the denominator.
+
+795
+00:45:34,100 --> 00:45:38,860
+So that's then the
+sum of W equals 1 to V
+
+796
+00:45:38,860 --> 00:45:40,890
+of the X of UWTVC.
+
+797
+00:45:46,000 --> 00:45:53,140
+So at that point, I
+have my numerator here
+
+798
+00:45:53,140 --> 00:45:57,050
+and my former denominator there.
+
+799
+00:45:57,050 --> 00:46:02,950
+So at that point there is that's
+the first part is the numerator
+
+800
+00:46:02,950 --> 00:46:06,910
+part, so the numerator part
+is really, really easy,
+
+801
+00:46:06,910 --> 00:46:14,160
+so we have here that log on X
+just inverses of each other.
+
+802
+00:46:14,160 --> 00:46:16,380
+So they'd just go away.
+
+803
+00:46:16,380 --> 00:46:22,130
+So that becomes the
+derivative with respect
+
+804
+00:46:22,130 --> 00:46:28,890
+to VC of just
+what's left behind,
+
+805
+00:46:28,890 --> 00:46:33,780
+which is U0 dot product with VC.
+
+806
+00:46:33,780 --> 00:46:37,400
+OK, and so the
+thing to be aware of
+
+807
+00:46:37,400 --> 00:46:40,890
+is we're still doing this
+multivariate calculus.
+
+808
+00:46:40,890 --> 00:46:45,560
+So what we have here is calculus
+with respect to a vector,
+
+809
+00:46:45,560 --> 00:46:48,200
+like hopefully you saw
+some of the math 51
+
+810
+00:46:48,200 --> 00:46:52,130
+or some other place,
+not high school.
+
+811
+00:46:52,130 --> 00:46:54,500
+Single variable calculus.
+
+812
+00:46:54,500 --> 00:46:59,075
+On the other hand
+to the extent, you
+
+813
+00:46:59,075 --> 00:47:01,010
+can't remember
+some of this stuff.
+
+814
+00:47:01,010 --> 00:47:04,550
+Most of the time you can
+justify it perfectly well
+
+815
+00:47:04,550 --> 00:47:10,400
+by thinking about what happens
+with one dimension at a time,
+
+816
+00:47:10,400 --> 00:47:13,290
+and it generalizes to
+multivariable calculus.
+
+817
+00:47:13,290 --> 00:47:16,970
+So if about all that
+you remember of calculus
+
+818
+00:47:16,970 --> 00:47:23,300
+is that d dx of ax
+equals a, really it's
+
+819
+00:47:23,300 --> 00:47:26,000
+the same thing that we're
+going to be using here.
+
+820
+00:47:26,000 --> 00:47:38,550
+That here we have the outside
+word dot producted with the VC.
+
+821
+00:47:38,550 --> 00:47:40,620
+Well at the end
+of the day, that's
+
+822
+00:47:40,620 --> 00:47:47,370
+going to have terms of sort
+of U0 component 1 times
+
+823
+00:47:47,370 --> 00:47:54,900
+the center word component
+1 plus U0 component 2 plus.
+
+824
+00:47:58,420 --> 00:48:01,690
+There were component
+2, and so we're sort
+
+825
+00:48:01,690 --> 00:48:03,710
+of using this bit over here.
+
+826
+00:48:03,710 --> 00:48:05,470
+And so what we're
+going to be getting out
+
+827
+00:48:05,470 --> 00:48:12,070
+is the U0, and U01,
+and the U02, so this
+
+828
+00:48:12,070 --> 00:48:15,430
+will be all that is left
+with respect to VC1.
+
+829
+00:48:15,430 --> 00:48:18,340
+When we take its derivative
+with respect to VC1
+
+830
+00:48:18,340 --> 00:48:20,230
+and this term will
+be the only thing
+
+831
+00:48:20,230 --> 00:48:22,870
+left when we take the
+derivative with respect
+
+832
+00:48:22,870 --> 00:48:25,570
+to the variable VC2.
+
+833
+00:48:25,570 --> 00:48:31,760
+So the end result of taking
+the vector antiderivative
+
+834
+00:48:31,760 --> 00:48:40,670
+of U0 dot producted with VC
+is simply going to be U0.
+
+835
+00:48:40,670 --> 00:48:45,030
+OK great, so that's progress.
+
+836
+00:48:45,030 --> 00:48:51,680
+So then at that point we go on
+and we say oh damn, we still
+
+837
+00:48:51,680 --> 00:49:01,670
+have the denominator [AUDIO OUT]
+slightly more complex, but not
+
+838
+00:49:01,670 --> 00:49:02,540
+so bad.
+
+839
+00:49:02,540 --> 00:49:04,580
+So then we want to take
+the partial derivatives
+
+840
+00:49:04,580 --> 00:49:09,530
+with respect to VC of the
+log of the denominator.
+
+841
+00:49:18,590 --> 00:49:23,600
+OK and so then at this
+point, the one tool
+
+842
+00:49:23,600 --> 00:49:25,970
+that we need to
+know and remember
+
+843
+00:49:25,970 --> 00:49:28,650
+is how to use the chain rule.
+
+844
+00:49:28,650 --> 00:49:31,670
+So the chain rule is
+when you're wanting
+
+845
+00:49:31,670 --> 00:49:39,310
+to work out having derivatives
+of compositions of function.
+
+846
+00:49:39,310 --> 00:49:46,470
+So we have F of G of whatever
+X, but here it's going to be VC.
+
+847
+00:49:46,470 --> 00:49:51,030
+And so we want to say,
+OK what we have here is
+
+848
+00:49:51,030 --> 00:49:53,920
+we're working out a
+composition of functions.
+
+849
+00:49:53,920 --> 00:50:05,430
+So here's our F and here
+is our X, which is G of VC.
+
+850
+00:50:05,430 --> 00:50:13,630
+Maybe I shouldn't call it X,
+maybe it's probably better
+
+851
+00:50:13,630 --> 00:50:17,020
+to call it Z or something.
+
+852
+00:50:17,020 --> 00:50:23,680
+OK, so when we then want
+to work out the chain rule,
+
+853
+00:50:23,680 --> 00:50:26,000
+well what do we do?
+
+854
+00:50:26,000 --> 00:50:31,660
+We take the derivative
+of F at the point Z.
+
+855
+00:50:31,660 --> 00:50:34,900
+And so at that point we have
+to actually remember something,
+
+856
+00:50:34,900 --> 00:50:37,420
+we have to remember that
+the derivative of the log
+
+857
+00:50:37,420 --> 00:50:39,500
+is the 1 on X function.
+
+858
+00:50:39,500 --> 00:50:48,070
+So this is going to be
+equal to the 1 on X for Z.
+
+859
+00:50:48,070 --> 00:50:53,500
+So that's then going to be 1
+over the sum of W equals 1 to V
+
+860
+00:50:53,500 --> 00:51:03,760
+of exp of UTVC multiplied
+by the derivative
+
+861
+00:51:03,760 --> 00:51:07,570
+of the inner function.
+
+862
+00:51:07,570 --> 00:51:15,930
+So the derivative of the
+part that is remaining,
+
+863
+00:51:15,930 --> 00:51:19,820
+I'm getting this, the sum of--
+
+864
+00:51:19,820 --> 00:51:21,780
+and this one trick
+here at this point
+
+865
+00:51:21,780 --> 00:51:24,360
+we do want to have
+a change of index.
+
+866
+00:51:24,360 --> 00:51:27,560
+So we want to say the
+sum of X equals 1 to V
+
+867
+00:51:27,560 --> 00:51:32,940
+of exp of U of X VC.
+
+868
+00:51:32,940 --> 00:51:38,330
+Since we can get into trouble
+if we don't change that
+
+869
+00:51:38,330 --> 00:51:43,150
+variable to be using
+a different one.
+
+870
+00:51:43,150 --> 00:51:47,960
+OK, so at that point we're
+making some progress,
+
+871
+00:51:47,960 --> 00:51:50,900
+but we still want to work
+out the derivative of this.
+
+872
+00:51:50,900 --> 00:51:54,860
+And so what we want to do is
+apply the chain rule once more.
+
+873
+00:51:54,860 --> 00:52:01,120
+So now here is our F and in here
+is our new Z equals G of VC.
+
+874
+00:52:03,750 --> 00:52:08,910
+And so, we then
+sort of repeat over,
+
+875
+00:52:08,910 --> 00:52:15,870
+so we can move the derivative
+inside a sum always.
+
+876
+00:52:15,870 --> 00:52:26,470
+So we then taking the
+derivative of this,
+
+877
+00:52:26,470 --> 00:52:32,980
+and so then the derivative
+of exp is itself,
+
+878
+00:52:32,980 --> 00:52:40,388
+so we're going to just
+have exp of the UXTVC times
+
+879
+00:52:40,388 --> 00:52:44,890
+there's is a sum of
+X equals 1 to V times
+
+880
+00:52:44,890 --> 00:52:52,300
+the derivative of UX TVC.
+
+881
+00:52:52,300 --> 00:52:58,990
+OK, and so then this is what
+we've worked out before,
+
+882
+00:52:58,990 --> 00:53:02,130
+we can just rewrite as UX.
+
+883
+00:53:02,130 --> 00:53:06,220
+OK, so now we're
+making progress.
+
+884
+00:53:06,220 --> 00:53:11,000
+So if we start putting
+all of that together,
+
+885
+00:53:11,000 --> 00:53:17,690
+what we have is the derivative,
+well the partial derivatives
+
+886
+00:53:17,690 --> 00:53:22,820
+with VC of this log probability.
+
+887
+00:53:22,820 --> 00:53:24,730
+All right, we have
+the numerator,
+
+888
+00:53:24,730 --> 00:53:29,500
+which was just U0 minus--
+
+889
+00:53:29,500 --> 00:53:34,320
+we then had the sum of
+the numerator, sum over X
+
+890
+00:53:34,320 --> 00:53:43,650
+equals 1 to V of exp
+UXTVC times U of X, then
+
+891
+00:53:43,650 --> 00:53:47,640
+that was multiplied by our
+first term that came from the 1
+
+892
+00:53:47,640 --> 00:53:53,310
+on X, which gives you the
+sum of W equals 1 to V
+
+893
+00:53:53,310 --> 00:53:55,740
+of the exp of UWTVC.
+
+894
+00:54:00,131 --> 00:54:03,320
+And this, the fact that
+we changed the variables
+
+895
+00:54:03,320 --> 00:54:04,890
+became important.
+
+896
+00:54:04,890 --> 00:54:09,740
+And so by just sort of
+rewriting that a little,
+
+897
+00:54:09,740 --> 00:54:16,670
+we can get that equals U0
+minus the sum V equals sorry--
+
+898
+00:54:24,090 --> 00:54:34,810
+X equals 1 to V of this X,
+V of XTVC over the sum of W
+
+899
+00:54:34,810 --> 00:54:42,990
+equals to V of exp
+UWTVC times U of X.
+
+900
+00:54:42,990 --> 00:54:45,510
+And so at that point it's
+sort of interesting thing
+
+901
+00:54:45,510 --> 00:54:50,830
+has happened that we've ended
+up getting straight back exactly
+
+902
+00:54:50,830 --> 00:54:57,570
+the softmax formula probability
+that we saw when we started.
+
+903
+00:54:57,570 --> 00:55:00,960
+And we can just rewrite
+that more conveniently
+
+904
+00:55:00,960 --> 00:55:08,130
+as saying this equals U0 minus
+the sum over X equals 1 to V
+
+905
+00:55:08,130 --> 00:55:14,100
+of the probability of
+X given C times UX.
+
+906
+00:55:14,100 --> 00:55:16,890
+And so what we have
+at that moment is
+
+907
+00:55:16,890 --> 00:55:21,460
+this thing here
+is an expectation.
+
+908
+00:55:21,460 --> 00:55:25,980
+And so this isn't an
+average over all the context
+
+909
+00:55:25,980 --> 00:55:28,920
+vectors waited by
+their probability
+
+910
+00:55:28,920 --> 00:55:30,570
+according to the model.
+
+911
+00:55:30,570 --> 00:55:34,540
+And so it's always the case
+with these softmax style models,
+
+912
+00:55:34,540 --> 00:55:36,630
+that what you get out
+for the derivatives
+
+913
+00:55:36,630 --> 00:55:43,510
+is you get the observed
+minus the expected.
+
+914
+00:55:43,510 --> 00:55:47,970
+So our model is good
+if our model on average
+
+915
+00:55:47,970 --> 00:55:53,650
+predicts exactly the word
+vector that we actually see.
+
+916
+00:55:53,650 --> 00:55:55,440
+And so we're going
+to try and adjust
+
+917
+00:55:55,440 --> 00:56:01,950
+the parameters of our
+model, so [INAUDIBLE]..
+
+918
+00:56:01,950 --> 00:56:06,850
+Now we try and make it do
+it as much as possible,
+
+919
+00:56:06,850 --> 00:56:11,440
+I mean of course as you'll
+find you can never get close.
+
+920
+00:56:11,440 --> 00:56:15,700
+If I just say to you OK
+the word is croissant,
+
+921
+00:56:15,700 --> 00:56:19,970
+which words are going to occur
+in the context of croissant?
+
+922
+00:56:19,970 --> 00:56:21,850
+I mean, you can't answer
+that, there are all
+
+923
+00:56:21,850 --> 00:56:24,880
+sorts of sentences that you
+could say that involve the word
+
+924
+00:56:24,880 --> 00:56:25,480
+croissant.
+
+925
+00:56:25,480 --> 00:56:29,050
+So actually our particular
+probability estimates
+
+926
+00:56:29,050 --> 00:56:33,610
+are going to be kind of
+small, but nevertheless we
+
+927
+00:56:33,610 --> 00:56:38,020
+want to sort of fiddle our
+word vectors to try and make
+
+928
+00:56:38,020 --> 00:56:41,530
+those estimates as high
+as we possibly can.
+
+929
+00:56:41,530 --> 00:56:47,560
+So I've gone on about
+this stuff a bit,
+
+930
+00:56:47,560 --> 00:56:51,460
+but haven't actually sort
+of shown you any of what
+
+931
+00:56:51,460 --> 00:56:52,550
+actually happened.
+
+932
+00:56:52,550 --> 00:56:56,800
+So I just want to
+quickly show you
+
+933
+00:56:56,800 --> 00:56:59,770
+a bit of that as
+to what actually
+
+934
+00:56:59,770 --> 00:57:02,180
+happens with word vectors.
+
+935
+00:57:02,180 --> 00:57:05,620
+So here's a simple
+little IPython notebook
+
+936
+00:57:05,620 --> 00:57:09,410
+which is also what you'll be
+using for assignment one only.
+
+937
+00:57:09,410 --> 00:57:14,140
+So in the first cell I
+import a bunch of stuff.
+
+938
+00:57:14,140 --> 00:57:16,900
+So we've got NumPy
+for our vectors.
+
+939
+00:57:16,900 --> 00:57:23,380
+[AUDIO OUT] learns kind
+of your machine learning,
+
+940
+00:57:23,380 --> 00:57:26,020
+Swiss Army Knife
+GENESIM is a package
+
+941
+00:57:26,020 --> 00:57:28,070
+that you may well
+not have seen before.
+
+942
+00:57:28,070 --> 00:57:30,790
+It's a package that's often
+used for word vectors,
+
+943
+00:57:30,790 --> 00:57:33,990
+it's not really used
+for deep learning.
+
+944
+00:57:33,990 --> 00:57:36,172
+So this is the only time
+you'll see it in the class,
+
+945
+00:57:36,172 --> 00:57:37,630
+but if you just
+want a good package
+
+946
+00:57:37,630 --> 00:57:40,990
+for working with word vectors
+and some other application
+
+947
+00:57:40,990 --> 00:57:43,810
+it's a good one to know about.
+
+948
+00:57:43,810 --> 00:57:47,710
+OK so then in my
+second cell here
+
+949
+00:57:47,710 --> 00:57:51,590
+I'm loading a particular
+set of word vectors.
+
+950
+00:57:51,590 --> 00:57:55,600
+So these are glove word vectors
+that we made at Stanford
+
+951
+00:57:55,600 --> 00:57:59,770
+in 2014, and I'm loading
+a hundred dimensional word
+
+952
+00:57:59,770 --> 00:58:04,090
+vectors so that things are
+a little bit quicker for me
+
+953
+00:58:04,090 --> 00:58:06,490
+while I'm doing
+things here, sort
+
+954
+00:58:06,490 --> 00:58:11,860
+of do this model of bread
+and croissant, what I've just
+
+955
+00:58:11,860 --> 00:58:14,930
+got here is word vectors.
+
+956
+00:58:14,930 --> 00:58:17,890
+So I just wanted
+to sort of show you
+
+957
+00:58:17,890 --> 00:58:20,380
+that there are word vectors.
+
+958
+00:58:25,230 --> 00:58:30,033
+Well maybe I should have loaded
+those word vectors in advance.
+
+959
+00:58:32,950 --> 00:58:33,535
+Let's see.
+
+960
+00:58:42,480 --> 00:58:46,010
+Oh, OK, I'm in business.
+
+961
+00:58:46,010 --> 00:58:53,640
+OK, so here are my word vectors
+for bread and croissant,
+
+962
+00:58:53,640 --> 00:58:55,920
+and well you can see that
+maybe these two words are
+
+963
+00:58:55,920 --> 00:58:57,630
+a bit similar, so
+both of them are
+
+964
+00:58:57,630 --> 00:59:00,510
+negative in the first dimension,
+positive in the second,
+
+965
+00:59:00,510 --> 00:59:03,790
+negative in the third,
+positive in the fourth,
+
+966
+00:59:03,790 --> 00:59:04,890
+negative in the fifth.
+
+967
+00:59:04,890 --> 00:59:06,510
+So it sort of looks
+like they might
+
+968
+00:59:06,510 --> 00:59:08,100
+have a fair bit of
+dot product which
+
+969
+00:59:08,100 --> 00:59:10,590
+is kind of what we want
+because bread and croissant are
+
+970
+00:59:10,590 --> 00:59:12,360
+kind of similar.
+
+971
+00:59:12,360 --> 00:59:15,240
+But what we can do is
+actually ask the model
+
+972
+00:59:15,240 --> 00:59:17,490
+and these are Jensen
+functions, now
+
+973
+00:59:17,490 --> 00:59:20,610
+know what are the
+most similar words
+
+974
+00:59:20,610 --> 00:59:24,480
+so I can ask for
+croissant, what are
+
+975
+00:59:24,480 --> 00:59:26,520
+the most similar words to that.
+
+976
+00:59:26,520 --> 00:59:28,900
+And it will tell me it's
+things like brioche, baguette,
+
+977
+00:59:28,900 --> 00:59:29,400
+focaccia.
+
+978
+00:59:29,400 --> 00:59:31,860
+So that's pretty good.
+
+979
+00:59:31,860 --> 00:59:34,870
+Pudding is perhaps a little
+bit more questionable.
+
+980
+00:59:34,870 --> 00:59:39,030
+We can say most
+similar to the USA
+
+981
+00:59:39,030 --> 00:59:43,320
+and it says Canada, America,
+USA with periods, United States
+
+982
+00:59:43,320 --> 00:59:44,400
+that's pretty good.
+
+983
+00:59:44,400 --> 00:59:47,550
+And most similar to banana--
+
+984
+00:59:47,550 --> 00:59:51,960
+take it out-- coconut, mangoes,
+bananas, sort of fairly
+
+985
+00:59:51,960 --> 00:59:55,650
+tropical fruit grade.
+
+986
+00:59:55,650 --> 00:59:59,130
+Before finishing though, I want
+to show you something slightly
+
+987
+00:59:59,130 --> 01:00:02,880
+more than just similarity, which
+is one of the amazing things
+
+988
+01:00:02,880 --> 01:00:06,090
+that people observed
+with these word vectors,
+
+989
+01:00:06,090 --> 01:00:09,000
+and that was to say you
+can actually sort of do
+
+990
+01:00:09,000 --> 01:00:13,180
+arithmetic in this vector
+space, that makes sense.
+
+991
+01:00:13,180 --> 01:00:16,960
+And so in particular, people
+suggested this analogy task.
+
+992
+01:00:16,960 --> 01:00:19,410
+And so the idea of
+the analogy task
+
+993
+01:00:19,410 --> 01:00:22,650
+is you should be able to
+start with a word like king,
+
+994
+01:00:22,650 --> 01:00:25,650
+and you should be able to
+subtract out a male component
+
+995
+01:00:25,650 --> 01:00:29,280
+from that, add back
+in a woman component,
+
+996
+01:00:29,280 --> 01:00:31,570
+and then you should
+be able to ask, well,
+
+997
+01:00:31,570 --> 01:00:33,540
+what word is over here?
+
+998
+01:00:33,540 --> 01:00:38,505
+And what should like is that
+the word over there is queen.
+
+999
+01:00:41,040 --> 01:00:45,810
+And so this sort
+of little bit of--
+
+1000
+01:00:45,810 --> 01:00:51,240
+so we're going to do that,
+with this sort of same most
+
+1001
+01:00:51,240 --> 01:00:54,360
+similar function which
+is actually more--
+
+1002
+01:00:54,360 --> 01:00:56,790
+so as well as having
+positive words,
+
+1003
+01:00:56,790 --> 01:01:00,660
+you can ask for most similar
+negative words and you might
+
+1004
+01:01:00,660 --> 01:01:03,930
+wonder what's most negatively
+similar to a banana,
+
+1005
+01:01:03,930 --> 01:01:06,330
+and you might be
+thinking, oh it's--
+
+1006
+01:01:06,330 --> 01:01:10,230
+I don't know, some kind
+of meat or something.
+
+1007
+01:01:10,230 --> 01:01:12,750
+Actually that by itself
+isn't very useful
+
+1008
+01:01:12,750 --> 01:01:16,440
+because when you just ask
+for most negatively similar
+
+1009
+01:01:16,440 --> 01:01:19,170
+to things, you tend to
+get crazy strings that
+
+1010
+01:01:19,170 --> 01:01:21,630
+were found in the data
+set that you don't know
+
+1011
+01:01:21,630 --> 01:01:23,950
+what they mean if anything.
+
+1012
+01:01:23,950 --> 01:01:26,310
+But if we put the
+two together, we
+
+1013
+01:01:26,310 --> 01:01:28,860
+can use the most similar
+function with positives
+
+1014
+01:01:28,860 --> 01:01:31,020
+and negatives to do analogies.
+
+1015
+01:01:31,020 --> 01:01:35,250
+So we're going to say
+we want a positive king,
+
+1016
+01:01:35,250 --> 01:01:37,980
+we want to subtract
+out negatively man,
+
+1017
+01:01:37,980 --> 01:01:41,070
+we want to then add
+in positively woman
+
+1018
+01:01:41,070 --> 01:01:44,950
+and find out what's most similar
+to this point in the space.
+
+1019
+01:01:44,950 --> 01:01:48,660
+So my analogy function
+does that, precisely that
+
+1020
+01:01:48,660 --> 01:01:52,260
+by taking a couple
+of most similar ones
+
+1021
+01:01:52,260 --> 01:01:56,670
+and then subtracting
+out the negative one.
+
+1022
+01:01:56,670 --> 01:01:59,770
+And so we can try out
+this analogy function.
+
+1023
+01:01:59,770 --> 01:02:04,800
+So I can do the analogy, I
+show in the picture with man
+
+1024
+01:02:04,800 --> 01:02:08,730
+is the king as woman is--
+
+1025
+01:02:08,730 --> 01:02:10,620
+sorry I'm not
+saying that's right.
+
+1026
+01:02:10,620 --> 01:02:13,830
+Yeah, man is the
+king as woman is to--
+
+1027
+01:02:13,830 --> 01:02:16,140
+well, sorry I haven't
+done my cells.
+
+1028
+01:02:21,610 --> 01:02:24,460
+OK, man is to king
+as woman is to queen.
+
+1029
+01:02:24,460 --> 01:02:29,740
+So that's great,
+and that works well.
+
+1030
+01:02:29,740 --> 01:02:32,380
+I mean-- and you can do it
+the sort of other way around,
+
+1031
+01:02:32,380 --> 01:02:35,830
+king is to man as
+queen is to woman.
+
+1032
+01:02:35,830 --> 01:02:39,940
+If this only worked for
+that one freakish example,
+
+1033
+01:02:39,940 --> 01:02:43,250
+you maybe wouldn't
+be very impressed
+
+1034
+01:02:43,250 --> 01:02:45,970
+but you know it actually turns
+out like it's not perfect
+
+1035
+01:02:45,970 --> 01:02:48,970
+but you can do all sorts
+of fun analogies with this,
+
+1036
+01:02:48,970 --> 01:02:50,570
+and they actually work.
+
+1037
+01:02:50,570 --> 01:02:58,360
+So I could ask for something
+like analogy, here's
+
+1038
+01:02:58,360 --> 01:02:59,750
+a good one.
+
+1039
+01:02:59,750 --> 01:03:08,838
+Australia is to beer
+as France is to want?
+
+1040
+01:03:08,838 --> 01:03:11,380
+And you can think about what
+you think the answer to that one
+
+1041
+01:03:11,380 --> 01:03:15,550
+should be, and it
+comes out as champagne,
+
+1042
+01:03:15,550 --> 01:03:17,050
+which is pretty good.
+
+1043
+01:03:17,050 --> 01:03:22,270
+Or I could ask for something
+like analogy pencil
+
+1044
+01:03:22,270 --> 01:03:31,930
+is to sketching as
+camera is to what?
+
+1045
+01:03:31,930 --> 01:03:34,420
+And it says photographing.
+
+1046
+01:03:34,420 --> 01:03:38,390
+You can also do the analogies
+with people, at this point,
+
+1047
+01:03:38,390 --> 01:03:41,620
+I have to point out
+that this data was
+
+1048
+01:03:41,620 --> 01:03:46,210
+and the model was built in
+2014, so you can't ask anything
+
+1049
+01:03:46,210 --> 01:03:48,130
+about Donald Trump in there.
+
+1050
+01:03:48,130 --> 01:03:50,980
+Well you can, Trump is in
+there but not as president,
+
+1051
+01:03:50,980 --> 01:03:58,080
+but I could ask something like
+analogy a bomb is to Clinton
+
+1052
+01:03:58,080 --> 01:04:05,910
+as Reagan is to what?
+
+1053
+01:04:05,910 --> 01:04:08,430
+And you can think
+of what you think
+
+1054
+01:04:08,430 --> 01:04:14,400
+is the right analogy there, the
+analogy it returns with Nixon.
+
+1055
+01:04:14,400 --> 01:04:16,980
+So I guess that depends on
+what you think of Bill Clinton
+
+1056
+01:04:16,980 --> 01:04:19,730
+as to whether you think that
+was a good analogy or not.
+
+1057
+01:04:19,730 --> 01:04:24,180
+You can also do sort of
+linguistic analogies with it,
+
+1058
+01:04:24,180 --> 01:04:28,920
+so you can do something
+like analogy tall is
+
+1059
+01:04:28,920 --> 01:04:34,740
+to tallest as long is to what?
+
+1060
+01:04:34,740 --> 01:04:36,180
+And it does longest.
+
+1061
+01:04:36,180 --> 01:04:39,570
+So it really just sort of
+knows a lot about the meaning
+
+1062
+01:04:39,570 --> 01:04:45,750
+behavior of words, and I think
+when these methods were first
+
+1063
+01:04:45,750 --> 01:04:49,620
+developed and hopefully still
+for you, that people were just
+
+1064
+01:04:49,620 --> 01:04:53,010
+gobsmacked about how
+well this actually worked
+
+1065
+01:04:53,010 --> 01:04:56,400
+at capturing enough words.
+
+1066
+01:04:56,400 --> 01:04:58,920
+And so these word vectors
+then went everywhere
+
+1067
+01:04:58,920 --> 01:05:03,600
+as a new representation that
+was so powerful for working out
+
+1068
+01:05:03,600 --> 01:05:04,710
+word meaning.
+
+1069
+01:05:04,710 --> 01:05:07,500
+And so that's our starting
+point for this class,
+
+1070
+01:05:07,500 --> 01:05:10,140
+and we'll say a bit more
+about them next time.
+
+1071
+01:05:10,140 --> 01:05:12,720
+And they're also the basis
+of what you're looking
+
+1072
+01:05:12,720 --> 01:05:14,610
+at for the first assignment.
+
+1073
+01:05:14,610 --> 01:05:17,970
+Can I ask a quick question about
+the distinction between the two
+
+1074
+01:05:17,970 --> 01:05:19,840
+vectors per word?
+
+1075
+01:05:19,840 --> 01:05:21,120
+Yes.
+
+1076
+01:05:21,120 --> 01:05:24,720
+So my understanding is that
+there can be several context
+
+1077
+01:05:24,720 --> 01:05:29,940
+words per word in
+the vocabulary,
+
+1078
+01:05:29,940 --> 01:05:31,712
+but then there's
+only two vectors
+
+1079
+01:05:31,712 --> 01:05:33,420
+I thought the distinction
+between the two
+
+1080
+01:05:33,420 --> 01:05:35,295
+is that one it's like
+the actual word and one
+
+1081
+01:05:35,295 --> 01:05:36,330
+is the context word.
+
+1082
+01:05:36,330 --> 01:05:41,100
+But in multiple contexts words,
+how do you pick just two then?
+
+1083
+01:05:41,100 --> 01:05:44,790
+Well, so we're doing
+every one of them,
+
+1084
+01:05:44,790 --> 01:05:49,350
+so like maybe I won't turn
+back on the screen share
+
+1085
+01:05:49,350 --> 01:05:53,190
+but we are doing in the
+objective function there
+
+1086
+01:05:53,190 --> 01:05:56,230
+was a sum over--
+
+1087
+01:05:56,230 --> 01:05:58,660
+so you've got this big
+corpus of text right,
+
+1088
+01:05:58,660 --> 01:06:02,010
+so you're taking a sum
+over every word which
+
+1089
+01:06:02,010 --> 01:06:04,200
+is it appearing as
+the center word,
+
+1090
+01:06:04,200 --> 01:06:08,430
+and then inside that there's
+a second sum which is
+
+1091
+01:06:08,430 --> 01:06:10,230
+for each word in the context.
+
+1092
+01:06:10,230 --> 01:06:13,890
+So you are going to count
+each word as a context word,
+
+1093
+01:06:13,890 --> 01:06:18,130
+and so then for one particular
+term of that objective function
+
+1094
+01:06:18,130 --> 01:06:22,440
+you've got a particular context
+word and a particular center
+
+1095
+01:06:22,440 --> 01:06:27,090
+word that you're then sort of
+summing over different context
+
+1096
+01:06:27,090 --> 01:06:29,520
+words for each
+center word, and then
+
+1097
+01:06:29,520 --> 01:06:33,510
+you're summing over all of the
+decisions of different center
+
+1098
+01:06:33,510 --> 01:06:34,110
+words.
+
+1099
+01:06:34,110 --> 01:06:39,840
+And to say just a sentence
+more about having two vectors,
+
+1100
+01:06:39,840 --> 01:06:43,890
+I mean in some sense
+it's an ugly detail that
+
+1101
+01:06:43,890 --> 01:06:47,040
+was done to make things
+sort of simple and fast.
+
+1102
+01:06:47,040 --> 01:06:53,460
+So if you look at
+the math carefully,
+
+1103
+01:06:53,460 --> 01:06:58,550
+if you sort of treated the
+two vectors as the same,
+
+1104
+01:06:58,550 --> 01:07:02,370
+so if you use the same
+vectors for center and context
+
+1105
+01:07:02,370 --> 01:07:06,600
+and you say, OK, let's
+work out the derivatives,
+
+1106
+01:07:06,600 --> 01:07:08,310
+things get uglier.
+
+1107
+01:07:08,310 --> 01:07:12,750
+And the reason that
+they get uglier is it's
+
+1108
+01:07:12,750 --> 01:07:17,730
+when I'm iterating over all
+the choices of context word,
+
+1109
+01:07:17,730 --> 01:07:19,770
+oh my God sometimes
+the context word
+
+1110
+01:07:19,770 --> 01:07:22,020
+is going to be the same
+as the center word,
+
+1111
+01:07:22,020 --> 01:07:27,720
+and so that messes with
+working out my derivatives.
+
+1112
+01:07:27,720 --> 01:07:30,870
+Whereas by taking them
+as separate vectors that
+
+1113
+01:07:30,870 --> 01:07:33,750
+never happens, so it's easy.
+
+1114
+01:07:33,750 --> 01:07:35,430
+But the kind of
+interesting thing
+
+1115
+01:07:35,430 --> 01:07:40,140
+is saying that you have these
+two different representations
+
+1116
+01:07:40,140 --> 01:07:44,310
+sort of just ends up really
+sort of doing no harm,
+
+1117
+01:07:44,310 --> 01:07:47,340
+and my wave my hands
+argument for that
+
+1118
+01:07:47,340 --> 01:07:52,200
+is since we're kind of
+moving through each position,
+
+1119
+01:07:52,200 --> 01:07:55,620
+the corpus one by
+one something--
+
+1120
+01:07:55,620 --> 01:07:58,500
+a word that is the
+center word at one moment
+
+1121
+01:07:58,500 --> 01:08:01,620
+is going to be the context
+word at the next moment,
+
+1122
+01:08:01,620 --> 01:08:04,230
+and the word that
+was the context word
+
+1123
+01:08:04,230 --> 01:08:06,360
+is going to have
+become the center word.
+
+1124
+01:08:06,360 --> 01:08:10,260
+So you're sort of
+doing the computation
+
+1125
+01:08:10,260 --> 01:08:13,120
+both ways in each case.
+
+1126
+01:08:13,120 --> 01:08:15,510
+And so you should be
+able to convince yourself
+
+1127
+01:08:15,510 --> 01:08:18,420
+that the two
+representations for the word
+
+1128
+01:08:18,420 --> 01:08:22,270
+end up being very similar,
+and they are not identical
+
+1129
+01:08:22,270 --> 01:08:23,970
+both for technical
+reasons of the ends
+
+1130
+01:08:23,970 --> 01:08:29,080
+of documents and things like
+that, but very, very similar.
+
+1131
+01:08:29,080 --> 01:08:31,020
+And so effectively
+you tend to get
+
+1132
+01:08:31,020 --> 01:08:34,140
+two very similar
+representations for each word,
+
+1133
+01:08:34,140 --> 01:08:36,870
+and we just average them
+and collect the word vector.
+
+1134
+01:08:36,870 --> 01:08:39,120
+And when we use
+word vectors we just
+
+1135
+01:08:39,120 --> 01:08:41,850
+have one vector for each word.
+
+1136
+01:08:41,850 --> 01:08:44,649
+That makes sense thank you.
+
+1137
+01:08:44,649 --> 01:08:46,689
+I have a question
+purely out of curiosity.
+
+1138
+01:08:46,689 --> 01:08:50,050
+So we don't know when we
+projected the vectors,
+
+1139
+01:08:50,050 --> 01:08:51,939
+the word vectors onto
+to the 2D surface
+
+1140
+01:08:51,939 --> 01:08:53,992
+we saw like little
+clusters of squares
+
+1141
+01:08:53,992 --> 01:08:55,450
+are similar to each
+other, and then
+
+1142
+01:08:55,450 --> 01:08:58,600
+later on, we saw that
+with the analogies thing,
+
+1143
+01:08:58,600 --> 01:09:01,330
+we kind of see that there's
+these directional vectors that
+
+1144
+01:09:01,330 --> 01:09:04,600
+sort of get like the rule of
+or the C of O or something
+
+1145
+01:09:04,600 --> 01:09:05,390
+like that.
+
+1146
+01:09:05,390 --> 01:09:06,899
+And so I'm wondering, is there--
+
+1147
+01:09:06,899 --> 01:09:08,858
+are there relationships
+between those
+
+1148
+01:09:08,859 --> 01:09:10,779
+relational vectors
+themselves such as,
+
+1149
+01:09:10,779 --> 01:09:16,180
+like is the rule of vector
+sort of similar to the C of O
+
+1150
+01:09:16,180 --> 01:09:19,750
+of vector which is very
+different from like--
+
+1151
+01:09:19,750 --> 01:09:22,990
+makes a good
+sandwich with vector.
+
+1152
+01:09:22,990 --> 01:09:26,011
+Is there any research on that?
+
+1153
+01:09:26,011 --> 01:09:26,969
+That's a good question.
+
+1154
+01:09:29,850 --> 01:09:32,010
+You've stumped me already
+in the first lecture.
+
+1155
+01:09:38,710 --> 01:09:41,479
+Yeah, I can't actually think
+of a piece of research.
+
+1156
+01:09:41,479 --> 01:09:45,250
+And so I'm not sure I
+have a confident answer,
+
+1157
+01:09:45,250 --> 01:09:48,130
+I mean it seems like
+that's a really easy thing
+
+1158
+01:09:48,130 --> 01:09:54,250
+to check with once you have one
+of these sets of word vectors
+
+1159
+01:09:54,250 --> 01:09:59,440
+that it seems like for
+any relationship that
+
+1160
+01:09:59,440 --> 01:10:01,930
+is represented well
+enough by a word.
+
+1161
+01:10:01,930 --> 01:10:04,810
+You should be able to see if
+it comes out kind of similar.
+
+1162
+01:10:07,840 --> 01:10:11,850
+I mean, I'm not sure,
+we can look and see.
+
+1163
+01:10:11,850 --> 01:10:13,315
+That's totally OK, just curious.
+
+1164
+01:10:16,990 --> 01:10:19,850
+I'm sorry, I missed the last
+little bit to your answer
+
+1165
+01:10:19,850 --> 01:10:21,010
+to your first question.
+
+1166
+01:10:21,010 --> 01:10:23,630
+So when you want to collapse
+two vectors for the same work,
+
+1167
+01:10:23,630 --> 01:10:25,910
+did you usually
+take the average?
+
+1168
+01:10:25,910 --> 01:10:28,010
+Different people have
+done different things.
+
+1169
+01:10:28,010 --> 01:10:32,720
+But the most common
+practice is after you've--
+
+1170
+01:10:32,720 --> 01:10:36,643
+there's still a bit more I have
+to cover about running word2vec
+
+1171
+01:10:36,643 --> 01:10:38,310
+that we didn't really
+get through today.
+
+1172
+01:10:38,310 --> 01:10:40,820
+So I still got a bit more
+work to do on Thursday,
+
+1173
+01:10:40,820 --> 01:10:44,420
+but once you've run
+your word2vec algorithm
+
+1174
+01:10:44,420 --> 01:10:49,280
+and you sort of your output
+is two vectors for each word
+
+1175
+01:10:49,280 --> 01:10:54,230
+and kind of when it's center
+and when its context, and so
+
+1176
+01:10:54,230 --> 01:10:57,620
+typically people just average
+those two vectors and say OK,
+
+1177
+01:10:57,620 --> 01:11:01,730
+that's the representation
+of the word croissant,
+
+1178
+01:11:01,730 --> 01:11:05,720
+and that's what appears in
+the sort of word vectors file,
+
+1179
+01:11:05,720 --> 01:11:08,870
+like the one I loaded.
+
+1180
+01:11:08,870 --> 01:11:11,350
+Makes sense, thank you.
+
+1181
+01:11:11,350 --> 01:11:14,740
+I think-- so my question
+is, if a word to have
+
+1182
+01:11:14,740 --> 01:11:17,020
+two different meanings or
+multiple different meanings,
+
+1183
+01:11:17,020 --> 01:11:21,330
+can we still represent it
+as the same single vector?
+
+1184
+01:11:21,330 --> 01:11:24,490
+Yes, that's a very
+good question.
+
+1185
+01:11:24,490 --> 01:11:26,050
+And actually there
+is some content
+
+1186
+01:11:26,050 --> 01:11:31,010
+on that in Thursday's lecture,
+so I can say more about that.
+
+1187
+01:11:31,010 --> 01:11:34,180
+But yeah, the first reaction
+is you kind of should
+
+1188
+01:11:34,180 --> 01:11:39,310
+be scared because something
+I've said nothing about at all
+
+1189
+01:11:39,310 --> 01:11:43,930
+is most words, especially
+short common words
+
+1190
+01:11:43,930 --> 01:11:45,160
+have lots of meanings.
+
+1191
+01:11:45,160 --> 01:11:51,040
+So if you have a word like star,
+that can be astronomical object
+
+1192
+01:11:51,040 --> 01:11:54,310
+or it can be a film
+star, a Hollywood star,
+
+1193
+01:11:54,310 --> 01:11:56,530
+or it can be something
+like the gold stars
+
+1194
+01:11:56,530 --> 01:11:58,780
+that you got in
+elementary school.
+
+1195
+01:11:58,780 --> 01:12:04,210
+And just taking all those
+uses of the word star
+
+1196
+01:12:04,210 --> 01:12:09,610
+and collapsing them together
+into one word vector.
+
+1197
+01:12:09,610 --> 01:12:13,690
+And you might think that's
+really crazy and bad,
+
+1198
+01:12:13,690 --> 01:12:17,740
+but actually turns out
+to work rather well.
+
+1199
+01:12:17,740 --> 01:12:21,010
+Maybe I won't go
+through all of that
+
+1200
+01:12:21,010 --> 01:12:22,900
+right now because
+there is actually stuff
+
+1201
+01:12:22,900 --> 01:12:25,120
+on that on Thursday's lecture.
+
+1202
+01:12:25,120 --> 01:12:26,830
+Oh, I see, thanks.
+
+1203
+01:12:26,830 --> 01:12:32,260
+You can look ahead of the
+slides for next time, oh wait.
+
+1204
+01:12:32,260 --> 01:12:35,830
+I have a quick question, I know
+this might seem kind of strange
+
+1205
+01:12:35,830 --> 01:12:38,350
+to ask, but I guess
+a lot of us were also
+
+1206
+01:12:38,350 --> 01:12:43,350
+taking this course because of
+the hype between AI and speech
+
+1207
+01:12:43,350 --> 01:12:44,890
+recognition.
+
+1208
+01:12:44,890 --> 01:12:56,567
+And my basic question is, do we
+we look the stack of something
+
+1209
+01:12:56,567 --> 01:12:58,980
+like Alexa or something
+to provide speech
+
+1210
+01:12:58,980 --> 01:13:02,220
+to context or actions
+in this course,
+
+1211
+01:13:02,220 --> 01:13:06,910
+or is it just primarily
+understanding?
+
+1212
+01:13:06,910 --> 01:13:11,520
+So this is an unusual
+and unusual quarter,
+
+1213
+01:13:11,520 --> 01:13:15,840
+but for this quarter there's
+a very clear answer which
+
+1214
+01:13:15,840 --> 01:13:22,240
+is this quarter there's also
+a speech class being taught,
+
+1215
+01:13:22,240 --> 01:13:28,450
+which is CS224S, a speech class
+being taught by Andrew Maas,
+
+1216
+01:13:28,450 --> 01:13:30,090
+and you know this
+is a class that's
+
+1217
+01:13:30,090 --> 01:13:33,030
+been more regularly
+offered, sometimes it's
+
+1218
+01:13:33,030 --> 01:13:35,130
+only been offered
+every third year,
+
+1219
+01:13:35,130 --> 01:13:37,420
+but it's being
+offered right now.
+
+1220
+01:13:37,420 --> 01:13:41,520
+So if what you want to do is
+learn about speech recognition
+
+1221
+01:13:41,520 --> 01:13:47,400
+and learn about sort of methods
+for building dialogue systems,
+
+1222
+01:13:47,400 --> 01:13:50,970
+you should do CS224S.
+
+1223
+01:13:50,970 --> 01:13:57,510
+So for this class in general
+the vast bulk of this class
+
+1224
+01:13:57,510 --> 01:14:04,020
+is working with text and doing
+various kinds of text analysis
+
+1225
+01:14:04,020 --> 01:14:05,650
+and understanding.
+
+1226
+01:14:05,650 --> 01:14:08,230
+So we do tasks like some
+of the ones I've mentioned,
+
+1227
+01:14:08,230 --> 01:14:15,000
+we do machine translation,
+we do question answering,
+
+1228
+01:14:15,000 --> 01:14:18,000
+we look at how to parse
+the structure of sentences
+
+1229
+01:14:18,000 --> 01:14:19,665
+and things like that.
+
+1230
+01:14:19,665 --> 01:14:23,640
+In other years I sometimes
+say a little bit about speech,
+
+1231
+01:14:23,640 --> 01:14:26,730
+but since this quarter there's
+a whole different class
+
+1232
+01:14:26,730 --> 01:14:29,994
+that's focused on speech
+that seem a little bit silly.
+
+1233
+01:14:29,994 --> 01:14:32,760
+[INAUDIBLE]
+
+1234
+01:14:39,490 --> 01:14:42,540
+--focus more and more
+on speech [INAUDIBLE]..
+
+1235
+01:14:47,760 --> 01:14:49,410
+I'm now getting a
+bad echo, I'm not
+
+1236
+01:14:49,410 --> 01:14:55,560
+sure if that's my fault or
+your fault but anyway, answer,
+
+1237
+01:14:55,560 --> 01:14:59,730
+so the speech class
+does a mix of stuff.
+
+1238
+01:14:59,730 --> 01:15:02,760
+So I mean the sort of
+pure speech problems
+
+1239
+01:15:02,760 --> 01:15:07,360
+classically have been
+doing speech recognition.
+
+1240
+01:15:07,360 --> 01:15:12,210
+So going from a speech signal to
+text and doing text to speech,
+
+1241
+01:15:12,210 --> 01:15:17,310
+going from text to a speech
+signal and both of those
+
+1242
+01:15:17,310 --> 01:15:19,720
+are problems which
+are now normally done,
+
+1243
+01:15:19,720 --> 01:15:24,120
+including by the cell phone
+that sits in your pocket using
+
+1244
+01:15:24,120 --> 01:15:25,060
+neural networks.
+
+1245
+01:15:25,060 --> 01:15:30,120
+And so it covers both of
+those, but then between that,
+
+1246
+01:15:30,120 --> 01:15:33,060
+the class covers quite a
+bit and in particular it
+
+1247
+01:15:33,060 --> 01:15:37,580
+starts off with looking at
+building dialogue systems.
+
+1248
+01:15:37,580 --> 01:15:40,530
+So this is sort of
+something like Alexa,
+
+1249
+01:15:40,530 --> 01:15:44,820
+Google Assistant, Siri,
+as to well assuming you
+
+1250
+01:15:44,820 --> 01:15:49,480
+have a speech recognition,
+a text to speech system,
+
+1251
+01:15:49,480 --> 01:15:52,180
+then you do have
+text-in and text-out.
+
+1252
+01:15:52,180 --> 01:15:54,130
+What are the kind
+of ways that people
+
+1253
+01:15:54,130 --> 01:16:01,190
+go about building dialogue
+systems like the ones
+
+1254
+01:16:01,190 --> 01:16:04,550
+that I just mentioned.
+
+1255
+01:16:04,550 --> 01:16:06,280
+I actually had a question.
+
+1256
+01:16:06,280 --> 01:16:09,180
+So I think there is
+some people are noticing
+
+1257
+01:16:09,180 --> 01:16:12,450
+that the opposites were really
+near to each other, which
+
+1258
+01:16:12,450 --> 01:16:15,690
+was kind of odd but
+I was also wondering,
+
+1259
+01:16:15,690 --> 01:16:20,700
+what about positive and
+negative balance or lack of it?
+
+1260
+01:16:20,700 --> 01:16:23,430
+Is that captured well
+in this type of model
+
+1261
+01:16:23,430 --> 01:16:27,930
+or is it not captured well
+with the opposite sides where
+
+1262
+01:16:27,930 --> 01:16:29,010
+it really--
+
+1263
+01:16:29,010 --> 01:16:32,040
+So the short answer
+is both of those.
+
+1264
+01:16:32,040 --> 01:16:34,770
+So this is a good question,
+a good observation.
+
+1265
+01:16:34,770 --> 01:16:37,530
+And the short answer
+is no, both of those
+
+1266
+01:16:37,530 --> 01:16:39,960
+are captured really,
+really badly.
+
+1267
+01:16:39,960 --> 01:16:44,585
+I mean there's a definition of--
+
+1268
+01:16:44,585 --> 01:16:47,160
+when I say really,
+really badly I
+
+1269
+01:16:47,160 --> 01:16:53,850
+mean what I mean is, if that's
+what you want to focus on,
+
+1270
+01:16:53,850 --> 01:16:54,990
+you've got problems.
+
+1271
+01:16:54,990 --> 01:16:57,930
+I mean it's not that the
+algorithm doesn't work so
+
+1272
+01:16:57,930 --> 01:17:04,140
+precisely, what you find
+is that antonyms generally
+
+1273
+01:17:04,140 --> 01:17:09,580
+occur in very similar topics
+because whether it's saying
+
+1274
+01:17:09,580 --> 01:17:12,330
+John is really tall or
+John is really short,
+
+1275
+01:17:12,330 --> 01:17:17,400
+or that movie was fantastic,
+or that movie was terrible.
+
+1276
+01:17:17,400 --> 01:17:21,070
+You get antonyms occurring
+in the same context.
+
+1277
+01:17:21,070 --> 01:17:24,630
+So because of that, their
+vectors are very similar
+
+1278
+01:17:24,630 --> 01:17:28,140
+and similarly sort of effect
+and sentiment based words.
+
+1279
+01:17:28,140 --> 01:17:32,160
+Well, like Mike creating
+terrible example,
+
+1280
+01:17:32,160 --> 01:17:33,690
+the context is similar.
+
+1281
+01:17:36,780 --> 01:17:39,510
+That if you're just learning
+this kind of predict words
+
+1282
+01:17:39,510 --> 01:17:45,330
+and context models that no,
+that's not captured now.
+
+1283
+01:17:45,330 --> 01:17:47,490
+That's not the end
+of the story, I
+
+1284
+01:17:47,490 --> 01:17:51,690
+mean absolutely people
+wanted to use neural networks
+
+1285
+01:17:51,690 --> 01:17:56,290
+for sentiment and other kinds
+of sort of connotation effect.
+
+1286
+01:17:56,290 --> 01:17:59,550
+And there are very good ways
+of doing that, but somehow you
+
+1287
+01:17:59,550 --> 01:18:03,000
+have to do something more
+than simply predicting words
+
+1288
+01:18:03,000 --> 01:18:06,750
+and context because that's
+not sufficient to capture
+
+1289
+01:18:06,750 --> 01:18:11,360
+that dimension,
+more on that later.
+
+1290
+01:18:11,360 --> 01:18:13,640
+I just happen to
+like adjectives too,
+
+1291
+01:18:13,640 --> 01:18:16,977
+like very basic adjectives,
+like so and like not.
+
+1292
+01:18:16,977 --> 01:18:18,560
+Because they're sort
+of like appearing
+
+1293
+01:18:18,560 --> 01:18:21,190
+like some context here.
+
+1294
+01:18:21,190 --> 01:18:23,950
+What was your first
+example before not?
+
+1295
+01:18:23,950 --> 01:18:24,910
+Like so.
+
+1296
+01:18:24,910 --> 01:18:26,270
+This is so cool--
+
+1297
+01:18:26,270 --> 01:18:28,980
+So that's actually a
+good question as well.
+
+1298
+01:18:28,980 --> 01:18:32,710
+So yeah, so there are these very
+common words that are commonly
+
+1299
+01:18:32,710 --> 01:18:36,340
+referred to as function words
+by linguists, which now includes
+
+1300
+01:18:36,340 --> 01:18:40,990
+ones like so and not,
+but other ones like
+
+1301
+01:18:40,990 --> 01:18:47,350
+and prepositions, like
+to, on, you sort of
+
+1302
+01:18:47,350 --> 01:18:49,930
+might suspect that
+the word vectors
+
+1303
+01:18:49,930 --> 01:18:53,770
+for those don't work out
+very well because they
+
+1304
+01:18:53,770 --> 01:18:56,530
+occur in all kinds of
+different contexts.
+
+1305
+01:18:56,530 --> 01:19:00,520
+And they're not very distinct
+from each other in many cases,
+
+1306
+01:19:00,520 --> 01:19:03,670
+and to a first approximation
+I think that's true.
+
+1307
+01:19:03,670 --> 01:19:10,070
+And part of why I didn't use
+those as examples in my slides,
+
+1308
+01:19:10,070 --> 01:19:14,210
+but at the end of the day, we do
+build up vector representations
+
+1309
+01:19:14,210 --> 01:19:15,650
+of those words too.
+
+1310
+01:19:15,650 --> 01:19:18,770
+And you'll see in
+a few lectures time
+
+1311
+01:19:18,770 --> 01:19:22,280
+when we start building what
+we call language models.
+
+1312
+01:19:22,280 --> 01:19:25,940
+That actually they do a great
+job in those words as well,
+
+1313
+01:19:25,940 --> 01:19:27,950
+I mean to explain what
+I'm meaning there.
+
+1314
+01:19:27,950 --> 01:19:34,130
+I mean another feature
+of the word2vec model
+
+1315
+01:19:34,130 --> 01:19:37,910
+is that actually ignore
+the position of words,
+
+1316
+01:19:37,910 --> 01:19:40,370
+so it's said I'm
+going to predict
+
+1317
+01:19:40,370 --> 01:19:43,490
+every word around
+the center word
+
+1318
+01:19:43,490 --> 01:19:46,610
+but I'm predicting
+it in the same way.
+
+1319
+01:19:46,610 --> 01:19:49,490
+I'm not predicting
+differently the word before me
+
+1320
+01:19:49,490 --> 01:19:52,370
+versus the word after
+me, or the word two
+
+1321
+01:19:52,370 --> 01:19:54,950
+away in either
+direction, they all just
+
+1322
+01:19:54,950 --> 01:19:59,700
+predicted the same by that
+one probability function.
+
+1323
+01:19:59,700 --> 01:20:02,030
+And so if that's all
+you've got, that's
+
+1324
+01:20:02,030 --> 01:20:07,550
+sort of destroys your ability
+to do a good job at capturing
+
+1325
+01:20:07,550 --> 01:20:10,400
+these sort of common
+more grammatical words
+
+1326
+01:20:10,400 --> 01:20:12,350
+like so not an end.
+
+1327
+01:20:12,350 --> 01:20:14,750
+But we build slightly
+different models
+
+1328
+01:20:14,750 --> 01:20:17,850
+that are more sensitive to
+the structure of sentences,
+
+1329
+01:20:17,850 --> 01:20:21,200
+and then we start doing
+a good job on those two.
+
+1330
+01:20:21,200 --> 01:20:22,070
+OK, thank you.
+
+1331
+01:20:25,080 --> 01:20:29,540
+I had a question about the
+characterization of word2vec.
+
+1332
+01:20:29,540 --> 01:20:33,900
+Because I read [INAUDIBLE],,
+and it seems the character
+
+1333
+01:20:33,900 --> 01:20:36,373
+architecture [INAUDIBLE].
+
+1334
+01:20:36,373 --> 01:20:37,790
+It was slightly
+different from how
+
+1335
+01:20:37,790 --> 01:20:39,840
+it's presented in
+the lecture, so are
+
+1336
+01:20:39,840 --> 01:20:43,100
+like two complimentary
+ways together or--
+
+1337
+01:20:43,100 --> 01:20:48,200
+Yeah, so I've still
+got more to say,
+
+1338
+01:20:48,200 --> 01:20:54,920
+so stay tuned Thursday for
+more staff on word vectors.
+
+1339
+01:20:54,920 --> 01:20:59,480
+So word2vec is
+kind of a framework
+
+1340
+01:20:59,480 --> 01:21:01,940
+for building word
+vectors, and that there
+
+1341
+01:21:01,940 --> 01:21:05,510
+are sort of several
+variant precise algorithms
+
+1342
+01:21:05,510 --> 01:21:07,280
+within the framework.
+
+1343
+01:21:07,280 --> 01:21:13,640
+And one of them is whether
+you're predicting the context
+
+1344
+01:21:13,640 --> 01:21:16,910
+words or whether you're
+predicting the center word.
+
+1345
+01:21:16,910 --> 01:21:21,560
+So the model I showed was
+predicting the context words,
+
+1346
+01:21:21,560 --> 01:21:24,110
+so it was the skip grand model.
+
+1347
+01:21:24,110 --> 01:21:29,360
+But then there's sort of a
+detail of how in particular
+
+1348
+01:21:29,360 --> 01:21:33,650
+to do the optimization
+and what I presented
+
+1349
+01:21:33,650 --> 01:21:38,540
+was the sort of easiest way
+to do it, which is naive
+
+1350
+01:21:38,540 --> 01:21:43,790
+optimization with the equation,
+the softmax equation for word
+
+1351
+01:21:43,790 --> 01:21:45,230
+vectors.
+
+1352
+01:21:45,230 --> 01:21:48,500
+It turns out that that
+naive optimization
+
+1353
+01:21:48,500 --> 01:21:53,360
+is sort of needlessly expensive,
+and people have come up
+
+1354
+01:21:53,360 --> 01:21:59,180
+with faster ways of doing it,
+in particular the commerce thing
+
+1355
+01:21:59,180 --> 01:22:00,860
+you see is what's
+called skip grand
+
+1356
+01:22:00,860 --> 01:22:04,100
+with negative sound playing,
+and the negative sampling
+
+1357
+01:22:04,100 --> 01:22:07,430
+is then sort of a much more
+efficient way to estimate.
+
+1358
+01:22:07,430 --> 01:22:10,294
+Things and I'll mention
+that on Thursday.
+
+1359
+01:22:10,294 --> 01:22:13,040
+Right, OK, thank you.
+
+1360
+01:22:13,040 --> 01:22:15,710
+I was asking for
+more information
+
+1361
+01:22:15,710 --> 01:22:20,870
+about how word vectors are
+constructed beyond the summary
+
+1362
+01:22:20,870 --> 01:22:22,500
+of random initialization.
+
+1363
+01:22:22,500 --> 01:22:27,410
+And then gradient based
+additive [INAUDIBLE]..
+
+1364
+01:22:27,410 --> 01:22:32,930
+Yeah, so I sort of will do a bit
+more connecting this together
+
+1365
+01:22:32,930 --> 01:22:35,720
+in the Thursday lecture,
+I guess to sort of--
+
+1366
+01:22:35,720 --> 01:22:39,140
+I mean so much one can
+fit in the first class,
+
+1367
+01:22:39,140 --> 01:22:43,070
+but the picture is
+essentially the picture
+
+1368
+01:22:43,070 --> 01:22:44,750
+I showed the pieces of.
+
+1369
+01:22:44,750 --> 01:22:50,660
+So to learn word
+vectors you start off
+
+1370
+01:22:50,660 --> 01:22:55,370
+by having a vector
+for each word type
+
+1371
+01:22:55,370 --> 01:23:01,250
+both for context and outside
+and those vectors you initialize
+
+1372
+01:23:01,250 --> 01:23:08,000
+randomly, so that you just
+put small little numbers that
+
+1373
+01:23:08,000 --> 01:23:11,300
+are randomly generated
+in each vector component.
+
+1374
+01:23:11,300 --> 01:23:13,590
+And that's just
+your starting point,
+
+1375
+01:23:13,590 --> 01:23:18,110
+and so from there on you're
+using an iterative algorithm
+
+1376
+01:23:18,110 --> 01:23:22,110
+where you're progressively
+updating those word vectors,
+
+1377
+01:23:22,110 --> 01:23:26,270
+so they do a better job at
+predicting which words appear
+
+1378
+01:23:26,270 --> 01:23:28,250
+in the context of other words.
+
+1379
+01:23:28,250 --> 01:23:30,500
+And the way that
+we're going to do
+
+1380
+01:23:30,500 --> 01:23:37,280
+that is by using the gradients,
+that I was sort of starting
+
+1381
+01:23:37,280 --> 01:23:41,510
+to show how to calculate and
+then once you have a gradient,
+
+1382
+01:23:41,510 --> 01:23:44,540
+you can walk in the opposite
+direction of the gradient
+
+1383
+01:23:44,540 --> 01:23:47,720
+and you're then
+walking downhill, i.e.
+
+1384
+01:23:47,720 --> 01:23:50,330
+you're minimizing
+your loss and we're
+
+1385
+01:23:50,330 --> 01:23:54,350
+going to sort of do lots of
+that until our word vectors get
+
+1386
+01:23:54,350 --> 01:23:55,650
+as good as possible.
+
+1387
+01:23:55,650 --> 01:24:02,270
+So it's really all math,
+but in some sense word
+
+1388
+01:24:02,270 --> 01:24:05,120
+vector learning is
+sort of miraculous
+
+1389
+01:24:05,120 --> 01:24:08,150
+since you do literally
+just start off
+
+1390
+01:24:08,150 --> 01:24:11,360
+with completely
+random word vectors,
+
+1391
+01:24:11,360 --> 01:24:15,260
+and run this algorithm
+of predicting words
+
+1392
+01:24:15,260 --> 01:24:20,360
+for a long time, and out of
+nothing emergences word vectors
+
+1393
+01:24:20,360 --> 01:24:22,900
+that represent meaning well.
+

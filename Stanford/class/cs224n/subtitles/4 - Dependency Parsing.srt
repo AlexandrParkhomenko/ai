@@ -1,0 +1,6907 @@
+1
+00:00:05,560 --> 00:00:06,060
+OK.
+
+2
+00:00:06,060 --> 00:00:09,900
+So for today, we're
+actually going
+
+3
+00:00:09,900 --> 00:00:11,790
+to take a bit of
+a change of pace
+
+4
+00:00:11,790 --> 00:00:15,360
+from what the last couple
+of lectures have been about,
+
+5
+00:00:15,360 --> 00:00:19,410
+and we're going to focus
+much more on linguistics
+
+6
+00:00:19,410 --> 00:00:21,540
+and natural language processing.
+
+7
+00:00:21,540 --> 00:00:24,690
+And so in particular,
+we're going
+
+8
+00:00:24,690 --> 00:00:27,015
+to start looking at the
+topic of dependency parsing.
+
+9
+00:00:31,950 --> 00:00:34,750
+And so this is the plan of
+what to go through today.
+
+10
+00:00:34,750 --> 00:00:38,130
+So I'm going to start out by
+going through some ideas that
+
+11
+00:00:38,130 --> 00:00:40,980
+have been used for the syntactic
+structure of languages,
+
+12
+00:00:40,980 --> 00:00:44,610
+of constituency and dependency
+and introduce those.
+
+13
+00:00:44,610 --> 00:00:49,830
+And then focusing in more
+on the dependency structure,
+
+14
+00:00:49,830 --> 00:00:53,460
+and then going to look
+at dependency grammars
+
+15
+00:00:53,460 --> 00:00:55,458
+and dependency treebanks.
+
+16
+00:00:55,458 --> 00:00:57,000
+And then having done
+that, we're then
+
+17
+00:00:57,000 --> 00:00:59,820
+going to move back
+into thinking about how
+
+18
+00:00:59,820 --> 00:01:02,500
+to build natural language
+processing systems.
+
+19
+00:01:02,500 --> 00:01:04,530
+And so I'm going to
+introduce the idea
+
+20
+00:01:04,530 --> 00:01:07,140
+of transition-based
+dependency parsing.
+
+21
+00:01:07,140 --> 00:01:10,980
+And then in particular
+having developed that idea,
+
+22
+00:01:10,980 --> 00:01:13,110
+I'm going to talk
+about a way to build
+
+23
+00:01:13,110 --> 00:01:17,460
+a simple but highly effective
+neural dependency parser.
+
+24
+00:01:17,460 --> 00:01:19,230
+And so this simple
+and highly effective
+
+25
+00:01:19,230 --> 00:01:21,840
+neural dependency
+parser is essentially
+
+26
+00:01:21,840 --> 00:01:26,050
+what we'll be asking you to
+build in the third assignment.
+
+27
+00:01:26,050 --> 00:01:28,890
+So in some sense, we're getting
+a little bit ahead of ourselves
+
+28
+00:01:28,890 --> 00:01:31,680
+here because in
+week 2 of the class
+
+29
+00:01:31,680 --> 00:01:35,530
+we teach you how to do both
+assignments two and three.
+
+30
+00:01:35,530 --> 00:01:39,510
+But all of this material
+will come in really useful.
+
+31
+00:01:39,510 --> 00:01:44,680
+Before I get underway, just
+a couple of announcements.
+
+32
+00:01:44,680 --> 00:01:49,860
+So again for assignment
+2, you don't yet
+
+33
+00:01:49,860 --> 00:01:52,800
+need to use the
+PyTorch framework.
+
+34
+00:01:52,800 --> 00:01:57,570
+But now's a good time to work
+on getting PyTorch installed
+
+35
+00:01:57,570 --> 00:01:59,880
+for your Python programming.
+
+36
+00:01:59,880 --> 00:02:04,410
+Assignment 3 is in part also an
+introduction to using PyTorch.
+
+37
+00:02:04,410 --> 00:02:07,830
+It's got a lot of scaffolding
+included in the assignment.
+
+38
+00:02:07,830 --> 00:02:12,780
+But beyond that, this Friday
+we've got a PyTorch tutorial
+
+39
+00:02:12,780 --> 00:02:16,560
+and I thoroughly encourage you
+to come along to that as well.
+
+40
+00:02:16,560 --> 00:02:18,510
+Look for it under the Zoom tab.
+
+41
+00:02:18,510 --> 00:02:23,640
+And in the second half of
+the first day of week 4,
+
+42
+00:02:23,640 --> 00:02:26,550
+we have an explicit
+class that partly
+
+43
+00:02:26,550 --> 00:02:28,680
+focuses on the final
+projects and what
+
+44
+00:02:28,680 --> 00:02:30,540
+the choices are for those.
+
+45
+00:02:30,540 --> 00:02:32,820
+But it's never too
+late to start thinking
+
+46
+00:02:32,820 --> 00:02:34,980
+about the final project
+and what kind of things
+
+47
+00:02:34,980 --> 00:02:37,450
+you want to do for
+the final project.
+
+48
+00:02:37,450 --> 00:02:40,500
+So do come meet with people.
+
+49
+00:02:40,500 --> 00:02:42,810
+There are sort of resources
+on the course pages
+
+50
+00:02:42,810 --> 00:02:45,630
+about what different
+TAs know about.
+
+51
+00:02:45,630 --> 00:02:48,540
+I've also talked to a number
+of people about final projects,
+
+52
+00:02:48,540 --> 00:02:50,892
+but clearly I can't
+talk to everybody.
+
+53
+00:02:50,892 --> 00:02:53,100
+So I encourage you to also
+be thinking about what you
+
+54
+00:02:53,100 --> 00:02:56,210
+want to do for final projects.
+
+55
+00:02:56,210 --> 00:02:56,710
+OK.
+
+56
+00:02:56,710 --> 00:03:02,350
+So what I wanted to
+do today was introduce
+
+57
+00:03:02,350 --> 00:03:06,790
+how people think about the
+structure of sentences,
+
+58
+00:03:06,790 --> 00:03:10,810
+and put structure on top
+of them to explain how
+
+59
+00:03:10,810 --> 00:03:13,450
+human language conveys meaning.
+
+60
+00:03:13,450 --> 00:03:16,870
+And so our starting point
+for meaning and essentially
+
+61
+00:03:16,870 --> 00:03:19,840
+what we've dealt
+with word vectors up
+
+62
+00:03:19,840 --> 00:03:22,810
+until now is we have words.
+
+63
+00:03:22,810 --> 00:03:26,620
+And words are obviously
+an important part
+
+64
+00:03:26,620 --> 00:03:28,870
+of the meaning of
+human languages.
+
+65
+00:03:28,870 --> 00:03:33,250
+But for words in
+human languages,
+
+66
+00:03:33,250 --> 00:03:36,910
+there's more that we can do
+with them in thinking about how
+
+67
+00:03:36,910 --> 00:03:39,290
+to structure sentences.
+
+68
+00:03:39,290 --> 00:03:42,310
+So in particular, the
+first most basic way
+
+69
+00:03:42,310 --> 00:03:44,760
+that we think
+about words when we
+
+70
+00:03:44,760 --> 00:03:47,980
+are thinking about how
+sentences are structured
+
+71
+00:03:47,980 --> 00:03:50,980
+is we give to them what's
+called a part of speech.
+
+72
+00:03:50,980 --> 00:03:57,370
+We can say that cat is a
+noun, by is a preposition,
+
+73
+00:03:57,370 --> 00:04:02,440
+door is another noun,
+cuddly is an adjective.
+
+74
+00:04:02,440 --> 00:04:05,680
+And then for the
+words the, if it
+
+75
+00:04:05,680 --> 00:04:08,170
+was given a different
+part of speech,
+
+76
+00:04:08,170 --> 00:04:11,290
+if you saw any parts of speech
+in school, it was probably
+
+77
+00:04:11,290 --> 00:04:13,570
+you were told was an article.
+
+78
+00:04:13,570 --> 00:04:18,070
+Sometimes that is just put
+into the class of adjectives.
+
+79
+00:04:18,070 --> 00:04:21,730
+In modern linguistics and what
+you'll see in the resources
+
+80
+00:04:21,730 --> 00:04:25,720
+that we use, words like the
+are referred to as determiners.
+
+81
+00:04:25,720 --> 00:04:28,720
+And the idea is that there's
+a bunch of words includes
+
+82
+00:04:28,720 --> 00:04:29,740
+a and that.
+
+83
+00:04:29,740 --> 00:04:36,920
+But also other words like
+this and that, or even every,
+
+84
+00:04:36,920 --> 00:04:41,450
+which are words that occur
+at the beginning of something
+
+85
+00:04:41,450 --> 00:04:46,370
+like the cuddly cat, which
+have a determinative function
+
+86
+00:04:46,370 --> 00:04:49,770
+of sort of picking out which
+cats that they're referring to.
+
+87
+00:04:49,770 --> 00:04:53,360
+And so we refer to
+those as determiners.
+
+88
+00:04:53,360 --> 00:04:54,800
+But it's not the
+case that when we
+
+89
+00:04:54,800 --> 00:04:58,100
+want to communicate with
+language that we just
+
+90
+00:04:58,100 --> 00:05:02,420
+have this word salad, where
+we say a bunch of words.
+
+91
+00:05:02,420 --> 00:05:05,660
+We just say, whatever,
+leaking, kitchen,
+
+92
+00:05:05,660 --> 00:05:10,010
+tap and let the other
+person put it together.
+
+93
+00:05:10,010 --> 00:05:12,500
+We put words together
+in a particular way
+
+94
+00:05:12,500 --> 00:05:14,160
+to express meanings.
+
+95
+00:05:14,160 --> 00:05:17,720
+And so therefore,
+languages have larger units
+
+96
+00:05:17,720 --> 00:05:19,980
+of putting meaning together.
+
+97
+00:05:19,980 --> 00:05:22,970
+And the question is how
+we represent and think
+
+98
+00:05:22,970 --> 00:05:24,470
+about those.
+
+99
+00:05:24,470 --> 00:05:32,150
+Now in modern work, in
+particular in modern United
+
+100
+00:05:32,150 --> 00:05:36,860
+States linguistics or even what
+you see in computer science
+
+101
+00:05:36,860 --> 00:05:40,220
+classes when thinking about
+formal languages, the most
+
+102
+00:05:40,220 --> 00:05:43,460
+common way to approach
+this is with the idea
+
+103
+00:05:43,460 --> 00:05:47,030
+of context-free grammars, which
+you see at least a little bit
+
+104
+00:05:47,030 --> 00:05:50,060
+of in 103 if you've done 103.
+
+105
+00:05:50,060 --> 00:05:53,330
+What a linguist would often
+refer to as free structure
+
+106
+00:05:53,330 --> 00:05:54,230
+grammars.
+
+107
+00:05:54,230 --> 00:05:56,880
+And the idea there
+is to say, well,
+
+108
+00:05:56,880 --> 00:05:59,570
+there are bigger
+units in languages
+
+109
+00:05:59,570 --> 00:06:01,850
+that we refer to as phrases.
+
+110
+00:06:01,850 --> 00:06:04,580
+So something like
+the cuddly cat is
+
+111
+00:06:04,580 --> 00:06:08,030
+a cat with some other
+words modifying it.
+
+112
+00:06:08,030 --> 00:06:11,870
+And so we refer to
+that as a noun phrase.
+
+113
+00:06:11,870 --> 00:06:15,860
+But then we have
+ways in which phrases
+
+114
+00:06:15,860 --> 00:06:22,230
+can get larger by building
+things inside phrases.
+
+115
+00:06:22,230 --> 00:06:26,060
+So the door, here is
+also a noun phrase.
+
+116
+00:06:26,060 --> 00:06:28,910
+But then we can build
+something bigger around it
+
+117
+00:06:28,910 --> 00:06:31,610
+with a preposition,
+such as the preposition
+
+118
+00:06:31,610 --> 00:06:34,750
+and then we have a
+prepositional phrase.
+
+119
+00:06:34,750 --> 00:06:36,920
+And in general,
+we can keep going.
+
+120
+00:06:36,920 --> 00:06:40,930
+So we can then make something
+like the cuddly cat by the door
+
+121
+00:06:40,930 --> 00:06:43,960
+and then the door
+is a noun phrase.
+
+122
+00:06:43,960 --> 00:06:47,420
+The cuddly cat is a noun phrase.
+
+123
+00:06:47,420 --> 00:06:50,650
+By the door is a
+prepositional phrase.
+
+124
+00:06:50,650 --> 00:06:52,730
+But then when you
+put it all together,
+
+125
+00:06:52,730 --> 00:06:56,800
+the whole of this thing
+becomes a bigger noun phrase.
+
+126
+00:06:56,800 --> 00:07:02,480
+And so it's working with these
+ideas of nested phrases, what
+
+127
+00:07:02,480 --> 00:07:05,110
+in context free
+grammar terms you would
+
+128
+00:07:05,110 --> 00:07:08,230
+refer to as non-terminals.
+
+129
+00:07:08,230 --> 00:07:11,290
+So noun phrase and
+prepositional phrase
+
+130
+00:07:11,290 --> 00:07:14,020
+would be non-terminals in
+the context free grammar.
+
+131
+00:07:14,020 --> 00:07:18,230
+We can build up a bigger
+structure of human languages.
+
+132
+00:07:18,230 --> 00:07:20,830
+So let's just do
+that for a little bit
+
+133
+00:07:20,830 --> 00:07:22,730
+to review what happens here.
+
+134
+00:07:22,730 --> 00:07:28,000
+So we start off saying, OK you
+can say the cat and the dog.
+
+135
+00:07:28,000 --> 00:07:31,810
+And so those are noun
+phrases, and so we want
+
+136
+00:07:31,810 --> 00:07:33,560
+a rule that can explain those.
+
+137
+00:07:33,560 --> 00:07:38,110
+So we could say a noun phrase
+goes to determine a noun.
+
+138
+00:07:38,110 --> 00:07:42,130
+And then somewhere over the
+side, we have a lexicon.
+
+139
+00:07:42,130 --> 00:07:45,430
+And in our lexicon
+we would say that dog
+
+140
+00:07:45,430 --> 00:07:52,450
+is a noun and cat is a
+noun and a is a determiner,
+
+141
+00:07:52,450 --> 00:07:54,950
+and the is a determiner.
+
+142
+00:07:54,950 --> 00:07:55,450
+OK.
+
+143
+00:07:55,450 --> 00:07:59,650
+So then we notice you can
+do a bit more than that.
+
+144
+00:07:59,650 --> 00:08:06,150
+So you can say things like
+the large cat, a barking dog.
+
+145
+00:08:06,150 --> 00:08:08,570
+So that suggests
+we can have a noun
+
+146
+00:08:08,570 --> 00:08:11,750
+phrase after the determiner.
+
+147
+00:08:11,750 --> 00:08:14,600
+It can optionally
+be an adjective
+
+148
+00:08:14,600 --> 00:08:16,220
+and then there's the noun.
+
+149
+00:08:16,220 --> 00:08:18,770
+And that can explain
+some things we can say.
+
+150
+00:08:18,770 --> 00:08:23,870
+But we can also say the cat
+by the door or a barking
+
+151
+00:08:23,870 --> 00:08:25,340
+dog in a crate.
+
+152
+00:08:25,340 --> 00:08:29,480
+And so we can also put
+a prepositional phrase
+
+153
+00:08:29,480 --> 00:08:32,840
+at the end, and that's optional.
+
+154
+00:08:32,840 --> 00:08:35,190
+But you can combine it
+together with an adjective.
+
+155
+00:08:35,190 --> 00:08:39,510
+For the example I gave like
+a barking dog on the table.
+
+156
+00:08:39,510 --> 00:08:43,295
+And so this grammar
+can handle that.
+
+157
+00:08:46,057 --> 00:08:48,140
+So then we'll keep on, and
+say, well, actually you
+
+158
+00:08:48,140 --> 00:08:50,990
+can use multiple adjectives.
+
+159
+00:08:50,990 --> 00:08:57,440
+So you can say a large barking
+dog, or a large barking cuddly
+
+160
+00:08:57,440 --> 00:08:58,350
+cat.
+
+161
+00:08:58,350 --> 00:08:58,950
+Maybe not.
+
+162
+00:08:58,950 --> 00:09:00,450
+Well, sentences like that.
+
+163
+00:09:00,450 --> 00:09:02,360
+So we have any number
+of adjectives, which
+
+164
+00:09:02,360 --> 00:09:04,180
+we can represent with the star.
+
+165
+00:09:04,180 --> 00:09:06,800
+What's referred to
+as the clinging star.
+
+166
+00:09:06,800 --> 00:09:07,730
+So that's good.
+
+167
+00:09:10,670 --> 00:09:12,620
+But I forgot a bit actually.
+
+168
+00:09:12,620 --> 00:09:14,300
+For by the door, I
+have to have a rule
+
+169
+00:09:14,300 --> 00:09:16,070
+for producing by the door.
+
+170
+00:09:16,070 --> 00:09:19,340
+So I also need a rule that's
+a prepositional phrase,
+
+171
+00:09:19,340 --> 00:09:22,790
+goes to a preposition
+followed by a noun phrase.
+
+172
+00:09:22,790 --> 00:09:26,510
+And so then I also have to
+have prepositions and that
+
+173
+00:09:26,510 --> 00:09:31,370
+can be in, or on, or by.
+
+174
+00:09:31,370 --> 00:09:31,880
+OK.
+
+175
+00:09:31,880 --> 00:09:34,550
+And I can make other
+sentences of course with this
+
+176
+00:09:34,550 --> 00:09:39,230
+as well like, the large crate
+on the table or something
+
+177
+00:09:39,230 --> 00:09:40,010
+like that.
+
+178
+00:09:40,010 --> 00:09:44,100
+Or the large crate
+on the large table.
+
+179
+00:09:44,100 --> 00:09:44,600
+OK.
+
+180
+00:09:44,600 --> 00:09:48,920
+So I chug along and then well,
+I could have something like talk
+
+181
+00:09:48,920 --> 00:09:50,030
+to the cat.
+
+182
+00:09:50,030 --> 00:09:51,990
+And so now I need more stuff.
+
+183
+00:09:51,990 --> 00:09:58,070
+So talk is a verb and to is
+still looks like a preposition.
+
+184
+00:09:58,070 --> 00:10:02,285
+So I need to be able to make
+up something with that as well.
+
+185
+00:10:05,450 --> 00:10:05,950
+OK.
+
+186
+00:10:05,950 --> 00:10:08,980
+So what I can do
+is say I can also
+
+187
+00:10:08,980 --> 00:10:13,570
+have a rule for a verb
+phrase that goes to a verb.
+
+188
+00:10:13,570 --> 00:10:17,860
+And then after that, for
+something like talk to the cat
+
+189
+00:10:17,860 --> 00:10:21,250
+that it can take a
+prepositional phrase after it.
+
+190
+00:10:21,250 --> 00:10:27,780
+And then I can say that the
+verb goes to talk or walked.
+
+191
+00:10:31,280 --> 00:10:32,910
+OK.
+
+192
+00:10:32,910 --> 00:10:34,760
+then I can cover those
+sentences, whoops.
+
+193
+00:10:37,420 --> 00:10:37,920
+OK.
+
+194
+00:10:37,920 --> 00:10:41,260
+So that's the end
+of what I have here.
+
+195
+00:10:41,260 --> 00:10:46,890
+So in this sort of a way,
+I'm handwriting a grammar.
+
+196
+00:10:46,890 --> 00:10:52,490
+So here is now I have this
+grammar and a lexicon.
+
+197
+00:10:52,490 --> 00:10:57,860
+And for the examples that
+I've written down here,
+
+198
+00:10:57,860 --> 00:11:04,660
+this grammar and this lexicon
+is sufficient to parse
+
+199
+00:11:04,660 --> 00:11:08,080
+these sort of fragments
+of showing expansion
+
+200
+00:11:08,080 --> 00:11:09,580
+that I just wrote down.
+
+201
+00:11:09,580 --> 00:11:12,280
+I mean, of course, there's
+a lot more to English
+
+202
+00:11:12,280 --> 00:11:14,620
+than what you see here, right?
+
+203
+00:11:14,620 --> 00:11:26,440
+So if I have something like the
+cat walked behind the dog, then
+
+204
+00:11:26,440 --> 00:11:27,870
+I need some more grammar rules.
+
+205
+00:11:27,870 --> 00:11:29,440
+So it seems then
+I need a rule that
+
+206
+00:11:29,440 --> 00:11:33,520
+says I can have a sentence that
+goes to a noun phrase followed
+
+207
+00:11:33,520 --> 00:11:35,530
+by a verb phrase.
+
+208
+00:11:35,530 --> 00:11:42,010
+And I can keep on doing
+things of this sort.
+
+209
+00:11:42,010 --> 00:11:45,340
+That's the one
+question that Ruthanne
+
+210
+00:11:45,340 --> 00:11:50,140
+asked, was about what
+the brackets mean
+
+211
+00:11:50,140 --> 00:11:53,245
+and is the first NP
+different from the second?
+
+212
+00:11:55,810 --> 00:11:59,880
+So for this notation on
+the brackets here, I mean,
+
+213
+00:11:59,880 --> 00:12:02,910
+this is actually
+a common notation
+
+214
+00:12:02,910 --> 00:12:05,580
+that's used in linguistics.
+
+215
+00:12:05,580 --> 00:12:07,860
+It's sort of in some
+sense a little bit
+
+216
+00:12:07,860 --> 00:12:12,360
+different to traditional
+computer science notation
+
+217
+00:12:12,360 --> 00:12:17,890
+since the star is used in both
+to mean 0 or more of something.
+
+218
+00:12:17,890 --> 00:12:21,600
+So you could have 0, 1,
+2, 3, 4, or 5 adjectives.
+
+219
+00:12:21,600 --> 00:12:24,480
+Somehow it's usual
+in linguistics
+
+220
+00:12:24,480 --> 00:12:27,750
+that when you're using the
+star you also put parentheses
+
+221
+00:12:27,750 --> 00:12:30,460
+around that to
+mean it's optional.
+
+222
+00:12:30,460 --> 00:12:33,510
+So sort of parentheses
+and star are used together
+
+223
+00:12:33,510 --> 00:12:36,120
+to mean any number of something.
+
+224
+00:12:36,120 --> 00:12:38,850
+When it's parentheses
+just by themselves,
+
+225
+00:12:38,850 --> 00:12:41,970
+that's then meaning 0 or 1.
+
+226
+00:12:41,970 --> 00:12:48,630
+And then four, are these
+two noun phrases different?
+
+227
+00:12:48,630 --> 00:12:51,120
+No, they're both
+noun phrase rules.
+
+228
+00:12:51,120 --> 00:12:53,310
+And so in our
+grammar we can have
+
+229
+00:12:53,310 --> 00:12:58,530
+multiple rules that expand
+noun phrase in different ways.
+
+230
+00:12:58,530 --> 00:13:04,110
+But actually in my example
+here, my second rule
+
+231
+00:13:04,110 --> 00:13:06,150
+because I wrote it
+quite generally,
+
+232
+00:13:06,150 --> 00:13:09,040
+it actually covers the
+first rule as well.
+
+233
+00:13:09,040 --> 00:13:12,300
+So actually at that point, I
+can cross out this first rule
+
+234
+00:13:12,300 --> 00:13:14,940
+because I don't actually
+need it in my grammar.
+
+235
+00:13:14,940 --> 00:13:18,180
+But in general,
+you have a choice
+
+236
+00:13:18,180 --> 00:13:22,530
+between writing multiple
+rules for a noun phrase goes
+
+237
+00:13:22,530 --> 00:13:26,670
+to categories, which effectively
+gives you a disjunction
+
+238
+00:13:26,670 --> 00:13:30,360
+or working out by various
+syntactic conventions
+
+239
+00:13:30,360 --> 00:13:31,975
+how to compress them together.
+
+240
+00:13:34,920 --> 00:13:36,510
+OK.
+
+241
+00:13:36,510 --> 00:13:40,170
+So that was what gets referred
+to in natural language
+
+242
+00:13:40,170 --> 00:13:43,740
+processing as
+constituency grammars,
+
+243
+00:13:43,740 --> 00:13:47,010
+where the standard form
+of constituency grammar
+
+244
+00:13:47,010 --> 00:13:49,650
+is a context free
+grammar of the sort
+
+245
+00:13:49,650 --> 00:13:54,780
+that I trust you saw at least
+a teeny bit of either in CS103
+
+246
+00:13:54,780 --> 00:13:57,180
+or something like a
+programming languages,
+
+247
+00:13:57,180 --> 00:14:00,040
+compilers, formal
+languages class.
+
+248
+00:14:00,040 --> 00:14:02,670
+There are other forms of
+grammars that also pick out
+
+249
+00:14:02,670 --> 00:14:04,230
+constituency.
+
+250
+00:14:04,230 --> 00:14:06,240
+There are things like
+tree adjoining grammars,
+
+251
+00:14:06,240 --> 00:14:09,420
+but I'm not going to really
+talk about any of those now.
+
+252
+00:14:09,420 --> 00:14:11,160
+What I actually
+want them to present
+
+253
+00:14:11,160 --> 00:14:13,470
+is a somewhat different
+way of looking
+
+254
+00:14:13,470 --> 00:14:18,990
+at grammar, which is referred
+to as dependency grammar, which
+
+255
+00:14:18,990 --> 00:14:23,050
+puts the dependency
+structure over sentences.
+
+256
+00:14:23,050 --> 00:14:25,980
+Now actually, it's
+not these two ways
+
+257
+00:14:25,980 --> 00:14:29,850
+of looking at grammar have
+nothing to do with each other.
+
+258
+00:14:29,850 --> 00:14:33,390
+I mean, there's a
+whole formal theory
+
+259
+00:14:33,390 --> 00:14:36,600
+about the relationships between
+different kinds of grammars.
+
+260
+00:14:36,600 --> 00:14:42,360
+And you can very precisely state
+relationships and isomorphisms
+
+261
+00:14:42,360 --> 00:14:45,880
+between different grammars
+of different kinds.
+
+262
+00:14:45,880 --> 00:14:49,110
+But on the surface, these
+two kinds of grammars
+
+263
+00:14:49,110 --> 00:14:53,200
+look sort of different and
+emphasize different things.
+
+264
+00:14:53,200 --> 00:14:59,820
+And for reasons of this sort
+of closeness to picking out
+
+265
+00:14:59,820 --> 00:15:04,020
+relationships in sentences
+and their ease of use,
+
+266
+00:15:04,020 --> 00:15:09,000
+it turns out that in modern
+natural language processing,
+
+267
+00:15:09,000 --> 00:15:14,850
+starting I guess around 2000,
+so really in the last 20 years,
+
+268
+00:15:14,850 --> 00:15:19,210
+NLP people have really swung
+behind dependency grammar.
+
+269
+00:15:19,210 --> 00:15:21,720
+So if you look around
+now where people
+
+270
+00:15:21,720 --> 00:15:24,420
+are using grammars
+in NLP, by far
+
+271
+00:15:24,420 --> 00:15:26,400
+the most common thing
+that's being used
+
+272
+00:15:26,400 --> 00:15:28,480
+is dependency grammars.
+
+273
+00:15:28,480 --> 00:15:31,500
+So I'm going to teach us
+today a bit about those
+
+274
+00:15:31,500 --> 00:15:35,550
+and what we're going to
+build in assignment 3
+
+275
+00:15:35,550 --> 00:15:38,700
+is building using
+supervised learning
+
+276
+00:15:38,700 --> 00:15:41,560
+a neural dependency parser.
+
+277
+00:15:41,560 --> 00:15:43,680
+So the idea of
+dependency grammar
+
+278
+00:15:43,680 --> 00:15:48,630
+is that when we have a
+sentence, what we're going to do
+
+279
+00:15:48,630 --> 00:15:55,020
+is we're going to say for each
+word what other words modify
+
+280
+00:15:55,020 --> 00:15:55,680
+it.
+
+281
+00:15:55,680 --> 00:15:59,730
+So what we're going to do is
+when we say the large crate,
+
+282
+00:15:59,730 --> 00:16:03,810
+we're going to say OK, well,
+large is modifying crate
+
+283
+00:16:03,810 --> 00:16:06,660
+and that is modifying crate.
+
+284
+00:16:06,660 --> 00:16:09,660
+In the kitchen, that
+is modifying kitchen.
+
+285
+00:16:09,660 --> 00:16:12,690
+By the door, that
+is modifying door.
+
+286
+00:16:12,690 --> 00:16:18,000
+And so I'm showing a
+modification, the dependency
+
+287
+00:16:18,000 --> 00:16:23,790
+or an attachment relationship by
+drawing an arrow from the head
+
+288
+00:16:23,790 --> 00:16:26,580
+to what's referred to
+in dependency grammar
+
+289
+00:16:26,580 --> 00:16:28,230
+as the dependent.
+
+290
+00:16:28,230 --> 00:16:34,290
+The thing that modifies,
+further specifies or attaches
+
+291
+00:16:34,290 --> 00:16:37,110
+to the head.
+
+292
+00:16:37,110 --> 00:16:37,610
+OK.
+
+293
+00:16:37,610 --> 00:16:40,160
+So that's the start of this.
+
+294
+00:16:40,160 --> 00:16:48,680
+Well, another dependency
+is look in the large crate.
+
+295
+00:16:48,680 --> 00:16:51,800
+That where you're looking
+is in the large crate.
+
+296
+00:16:51,800 --> 00:16:55,400
+So you're going to want
+to have in the large crate
+
+297
+00:16:55,400 --> 00:16:57,870
+as being a dependent of look.
+
+298
+00:16:57,870 --> 00:17:03,410
+And so that's also going to be
+a dependency relationship here.
+
+299
+00:17:03,410 --> 00:17:06,800
+And then there's
+one final bit that
+
+300
+00:17:06,800 --> 00:17:10,460
+might seem a little bit
+confusing to people,
+
+301
+00:17:10,460 --> 00:17:14,030
+and that's actually when
+we have these prepositions.
+
+302
+00:17:14,030 --> 00:17:18,210
+There are two ways that you
+can think that this might work.
+
+303
+00:17:18,210 --> 00:17:22,999
+So if it was something
+like, look in the crate.
+
+304
+00:17:25,829 --> 00:17:29,670
+It seems like the is
+a dependent of crate.
+
+305
+00:17:29,670 --> 00:17:33,720
+But you could think that
+you want to say, look in
+
+306
+00:17:33,720 --> 00:17:38,160
+and it's in the crate and give
+this dependency relationship
+
+307
+00:17:38,160 --> 00:17:40,770
+with the sort of
+preposition as sort
+
+308
+00:17:40,770 --> 00:17:43,500
+of thinking of it
+as the head of what
+
+309
+00:17:43,500 --> 00:17:46,560
+was before our
+prepositional phrase.
+
+310
+00:17:46,560 --> 00:17:50,610
+And that's a possible strategy
+in the dependency grammar.
+
+311
+00:17:50,610 --> 00:17:55,080
+But what I'm going
+to show you today
+
+312
+00:17:55,080 --> 00:17:58,110
+and what you're going
+to use in the assignment
+
+313
+00:17:58,110 --> 00:18:01,950
+is dependency grammars that
+follow the representation
+
+314
+00:18:01,950 --> 00:18:04,050
+of universal dependencies.
+
+315
+00:18:04,050 --> 00:18:06,990
+And universal dependencies
+is a framework
+
+316
+00:18:06,990 --> 00:18:09,180
+which actually is
+involved in creating,
+
+317
+00:18:09,180 --> 00:18:13,680
+which was set up to try and
+give a common dependency grammar
+
+318
+00:18:13,680 --> 00:18:15,960
+over many different
+human languages.
+
+319
+00:18:15,960 --> 00:18:17,850
+And in the design
+decisions that were
+
+320
+00:18:17,850 --> 00:18:24,990
+made in the context of designing
+universal dependencies, what
+
+321
+00:18:24,990 --> 00:18:30,120
+we decided was that for
+what in some languages
+
+322
+00:18:30,120 --> 00:18:33,720
+you use prepositions,
+lots of other languages
+
+323
+00:18:33,720 --> 00:18:36,240
+make much more use
+of case markings.
+
+324
+00:18:36,240 --> 00:18:39,300
+So if you've seen
+something like German,
+
+325
+00:18:39,300 --> 00:18:44,400
+you've seen more case markings
+like genitive and dative cases.
+
+326
+00:18:44,400 --> 00:18:49,770
+And in other languages
+like Latin or Finnish.
+
+327
+00:18:49,770 --> 00:18:51,840
+Lots of Native
+American languages,
+
+328
+00:18:51,840 --> 00:18:54,330
+you have many more
+case markings again
+
+329
+00:18:54,330 --> 00:18:57,730
+which cover most of the
+role of prepositions.
+
+330
+00:18:57,730 --> 00:19:01,740
+So in universal dependencies,
+essentially in the crate
+
+331
+00:19:01,740 --> 00:19:05,510
+is treated like a
+case marked noun.
+
+332
+00:19:05,510 --> 00:19:10,110
+And so what we say is
+that the in is also
+
+333
+00:19:10,110 --> 00:19:14,790
+a dependent of crate, and then
+you're looking in the crate.
+
+334
+00:19:14,790 --> 00:19:20,700
+So in the structure we adopt
+in is a dependent of crate.
+
+335
+00:19:20,700 --> 00:19:23,370
+This in is a
+dependent of kitchen.
+
+336
+00:19:23,370 --> 00:19:27,120
+This by is a dependent of door.
+
+337
+00:19:27,120 --> 00:19:30,210
+And then we have these
+prepositional phrases
+
+338
+00:19:30,210 --> 00:19:33,960
+in the kitchen by the door
+and we want to work out well
+
+339
+00:19:33,960 --> 00:19:35,520
+what they modify.
+
+340
+00:19:35,520 --> 00:19:40,350
+Well, in the kitchen is
+modifying crate, right,
+
+341
+00:19:40,350 --> 00:19:42,270
+because it's a crate
+in the kitchen.
+
+342
+00:19:42,270 --> 00:19:48,660
+So we're going to say that this
+piece is a dependent of crate.
+
+343
+00:19:48,660 --> 00:19:51,810
+And then well, what
+about by the door?
+
+344
+00:19:51,810 --> 00:19:55,530
+Well, it's not really meaning
+that's the kitchen by the door.
+
+345
+00:19:55,530 --> 00:19:58,230
+And it's not meaning
+to look by the door.
+
+346
+00:19:58,230 --> 00:20:01,920
+Again, it's a crate by
+the door, and so what
+
+347
+00:20:01,920 --> 00:20:06,060
+we're going to have is the crate
+also has door as a dependent.
+
+348
+00:20:06,060 --> 00:20:09,120
+And so that gives us our
+full dependency structure
+
+349
+00:20:09,120 --> 00:20:09,855
+of this sentence.
+
+350
+00:20:15,820 --> 00:20:16,930
+OK.
+
+351
+00:20:16,930 --> 00:20:21,070
+And so that's a
+teeny introduction
+
+352
+00:20:21,070 --> 00:20:22,630
+to syntactic structure.
+
+353
+00:20:22,630 --> 00:20:24,490
+I'm going to say a
+bit more about it
+
+354
+00:20:24,490 --> 00:20:27,770
+and give a few more examples.
+
+355
+00:20:27,770 --> 00:20:30,730
+But let me just for
+a moment sort of say
+
+356
+00:20:30,730 --> 00:20:33,160
+a little bit about
+why are we interested
+
+357
+00:20:33,160 --> 00:20:34,310
+in syntactic structure?
+
+358
+00:20:34,310 --> 00:20:37,810
+Why do we need to know the
+structure of sentences?
+
+359
+00:20:37,810 --> 00:20:42,550
+And this gets into how
+does human languages work.
+
+360
+00:20:42,550 --> 00:20:49,330
+So human languages can
+communicate very complex ideas.
+
+361
+00:20:49,330 --> 00:20:51,820
+I mean in fact,
+anything that humans
+
+362
+00:20:51,820 --> 00:20:54,970
+know how to communicate
+to one another,
+
+363
+00:20:54,970 --> 00:20:58,940
+they communicate pretty
+much by using words.
+
+364
+00:20:58,940 --> 00:21:02,800
+So we can structure and
+communicate very complex ideas,
+
+365
+00:21:02,800 --> 00:21:07,990
+but we can't communicate
+a really complex idea
+
+366
+00:21:07,990 --> 00:21:09,400
+by one word.
+
+367
+00:21:09,400 --> 00:21:14,590
+We can't just choose
+a word like empathy
+
+368
+00:21:14,590 --> 00:21:16,210
+and say it with
+a lot of meaning.
+
+369
+00:21:16,210 --> 00:21:18,340
+Say empathy and
+the other person is
+
+370
+00:21:18,340 --> 00:21:21,520
+meant to understand everything
+about what that means, right?
+
+371
+00:21:21,520 --> 00:21:25,690
+We have to compose a complex
+meaning that explains things
+
+372
+00:21:25,690 --> 00:21:29,200
+by putting words together
+into bigger units.
+
+373
+00:21:29,200 --> 00:21:34,000
+And the syntax of a language
+allows us to put words together
+
+374
+00:21:34,000 --> 00:21:38,230
+into bigger units, where
+we can build up and convey
+
+375
+00:21:38,230 --> 00:21:41,200
+to other people a
+complex meaning.
+
+376
+00:21:41,200 --> 00:21:45,880
+And so then the listener doesn't
+get this syntactic structure,
+
+377
+00:21:45,880 --> 00:21:46,660
+right?
+
+378
+00:21:46,660 --> 00:21:49,510
+The syntactic structure
+of the sentence
+
+379
+00:21:49,510 --> 00:21:51,340
+is hidden from the listener.
+
+380
+00:21:51,340 --> 00:21:54,760
+All the listener gets
+is a sequence of words
+
+381
+00:21:54,760 --> 00:21:57,460
+one after another
+bang, bang, bang.
+
+382
+00:21:57,460 --> 00:22:01,810
+So the listener has to be
+able to do what I was just
+
+383
+00:22:01,810 --> 00:22:03,670
+trying to do in this example.
+
+384
+00:22:03,670 --> 00:22:07,540
+That as the sequence
+of words comes in,
+
+385
+00:22:07,540 --> 00:22:10,060
+that the listener
+works out which
+
+386
+00:22:10,060 --> 00:22:12,640
+words modify which other words.
+
+387
+00:22:12,640 --> 00:22:16,600
+And therefore, can construct
+the structure of the sentence
+
+388
+00:22:16,600 --> 00:22:20,560
+and hence the meaning
+of the sentence.
+
+389
+00:22:20,560 --> 00:22:23,830
+And so in the same
+way, if we want
+
+390
+00:22:23,830 --> 00:22:27,370
+to build clever neural net
+models that can understand
+
+391
+00:22:27,370 --> 00:22:31,240
+the meaning of sentences,
+those clever neural net models
+
+392
+00:22:31,240 --> 00:22:35,950
+also have to understand what is
+the structure of the sentence
+
+393
+00:22:35,950 --> 00:22:38,950
+so that they can interpret
+the language correctly.
+
+394
+00:22:38,950 --> 00:22:43,700
+And we'll go through some
+examples and see more of that.
+
+395
+00:22:43,700 --> 00:22:44,390
+OK.
+
+396
+00:22:44,390 --> 00:22:46,070
+So the fundamental
+point that we're
+
+397
+00:22:46,070 --> 00:22:49,310
+going to spend a
+bit more time on
+
+398
+00:22:49,310 --> 00:22:54,020
+is that these choices
+of how you build up
+
+399
+00:22:54,020 --> 00:22:58,160
+the structure of a language
+change the interpretation
+
+400
+00:22:58,160 --> 00:22:59,480
+of the language.
+
+401
+00:22:59,480 --> 00:23:04,580
+And a human listener or
+equally a natural language
+
+402
+00:23:04,580 --> 00:23:08,010
+understanding
+program has to make
+
+403
+00:23:08,010 --> 00:23:11,570
+in a sort of probabilistic
+fashion choices
+
+404
+00:23:11,570 --> 00:23:16,670
+as to which words modify i.e.,
+depend upon which other words,
+
+405
+00:23:16,670 --> 00:23:19,640
+so that they're coming up
+with the interpretation
+
+406
+00:23:19,640 --> 00:23:22,880
+of the sentence that
+they think was intended
+
+407
+00:23:22,880 --> 00:23:24,710
+by the person who said it.
+
+408
+00:23:24,710 --> 00:23:25,370
+OK.
+
+409
+00:23:25,370 --> 00:23:32,930
+So to get a sense of this
+and how sentence structure is
+
+410
+00:23:32,930 --> 00:23:36,320
+interesting and difficult. What
+I'm going to go through now
+
+411
+00:23:36,320 --> 00:23:40,190
+is a few examples of
+different ambiguities
+
+412
+00:23:40,190 --> 00:23:42,980
+that you find in
+natural language.
+
+413
+00:23:42,980 --> 00:23:46,520
+And I've got some funny examples
+from newspaper headlines.
+
+414
+00:23:46,520 --> 00:23:51,800
+But these are all real
+natural language ambiguities
+
+415
+00:23:51,800 --> 00:23:55,970
+that you find throughout
+natural language.
+
+416
+00:23:55,970 --> 00:23:58,110
+Well, at this
+point I should say,
+
+417
+00:23:58,110 --> 00:24:01,190
+this is where I'm being
+guilty of saying for language,
+
+418
+00:24:01,190 --> 00:24:04,490
+but I'm meaning in English.
+
+419
+00:24:04,490 --> 00:24:08,060
+Some of these ambiguities you
+find in lots of other languages
+
+420
+00:24:08,060 --> 00:24:13,910
+as well, but which ambiguities
+that syntactic structure partly
+
+421
+00:24:13,910 --> 00:24:17,150
+depend on the details
+of the language?
+
+422
+00:24:17,150 --> 00:24:19,250
+So different languages
+have different
+
+423
+00:24:19,250 --> 00:24:22,340
+syntactic constructions,
+different word orders
+
+424
+00:24:22,340 --> 00:24:26,540
+different amounts of words,
+having different forms
+
+425
+00:24:26,540 --> 00:24:29,030
+of words, like case markings.
+
+426
+00:24:29,030 --> 00:24:31,280
+And so depending
+on those details
+
+427
+00:24:31,280 --> 00:24:34,440
+there might be
+different ambiguities.
+
+428
+00:24:34,440 --> 00:24:37,250
+So here's one
+ambiguity, which is
+
+429
+00:24:37,250 --> 00:24:40,520
+one of the commonest
+ambiguities in English.
+
+430
+00:24:40,520 --> 00:24:44,100
+So San Jose cops
+kill man with knife.
+
+431
+00:24:44,100 --> 00:24:48,330
+So this sentence
+has two meanings.
+
+432
+00:24:48,330 --> 00:24:54,050
+Either it's the San Jose
+cops who are killing a man,
+
+433
+00:24:54,050 --> 00:24:57,230
+and they're killing
+a man with a knife.
+
+434
+00:24:57,230 --> 00:25:01,640
+And so that corresponds
+to a dependency structure,
+
+435
+00:25:01,640 --> 00:25:05,870
+where the San Jose cops
+are the subject of killing,
+
+436
+00:25:05,870 --> 00:25:10,580
+the man is the object
+of killing and then
+
+437
+00:25:10,580 --> 00:25:14,390
+the knife is then the
+instrument with which
+
+438
+00:25:14,390 --> 00:25:16,340
+they're doing the killing.
+
+439
+00:25:16,340 --> 00:25:20,210
+So that the knife is
+an oblique modifier
+
+440
+00:25:20,210 --> 00:25:22,080
+for the instrument of killing.
+
+441
+00:25:22,080 --> 00:25:26,450
+And so that's one possible
+structure for this sentence.
+
+442
+00:25:26,450 --> 00:25:29,520
+But it's probably
+not the right one.
+
+443
+00:25:29,520 --> 00:25:31,865
+So what it actually
+probably was,
+
+444
+00:25:31,865 --> 00:25:37,160
+was that it was a man with a
+knife and the San Jose cops
+
+445
+00:25:37,160 --> 00:25:38,480
+killed the man.
+
+446
+00:25:38,480 --> 00:25:43,670
+So that corresponds to
+the knife then being
+
+447
+00:25:43,670 --> 00:25:48,270
+a noun modifier of the man.
+
+448
+00:25:48,270 --> 00:25:51,960
+And then kill is
+still killing the man,
+
+449
+00:25:51,960 --> 00:25:53,700
+so the man is the
+object of killing
+
+450
+00:25:53,700 --> 00:25:57,200
+and the cops are
+still the subject.
+
+451
+00:25:57,200 --> 00:26:02,300
+And so whenever you have a
+prepositional phrase like this
+
+452
+00:26:02,300 --> 00:26:06,080
+that's coming further
+on in a sentence,
+
+453
+00:26:06,080 --> 00:26:08,780
+there's a choice of
+how to interpret it.
+
+454
+00:26:08,780 --> 00:26:13,940
+It could be either interpreted
+as modifying a noun phrase that
+
+455
+00:26:13,940 --> 00:26:18,590
+comes before it, or it can
+be interpreted as modifying
+
+456
+00:26:18,590 --> 00:26:20,240
+a verb that comes before it.
+
+457
+00:26:20,240 --> 00:26:24,740
+So systematically in English you
+get these prepositional phrase
+
+458
+00:26:24,740 --> 00:26:27,590
+attachment ambiguities
+throughout all
+
+459
+00:26:27,590 --> 00:26:29,310
+of our sentences.
+
+460
+00:26:29,310 --> 00:26:32,900
+But to give two
+further observations
+
+461
+00:26:32,900 --> 00:26:41,510
+on that, the first observation
+is you encounter sentences
+
+462
+00:26:41,510 --> 00:26:45,890
+with prepositional phrase
+attachment ambiguities
+
+463
+00:26:45,890 --> 00:26:48,440
+every time you read
+a newspaper article,
+
+464
+00:26:48,440 --> 00:26:50,540
+every time you talk to somebody.
+
+465
+00:26:50,540 --> 00:26:53,840
+But most of the time,
+you never notice them.
+
+466
+00:26:53,840 --> 00:26:56,270
+And that's because
+our human brains
+
+467
+00:26:56,270 --> 00:26:59,060
+are incredibly
+good at considering
+
+468
+00:26:59,060 --> 00:27:03,320
+the possible interpretations and
+going with the one that makes
+
+469
+00:27:03,320 --> 00:27:05,060
+sense according to context.
+
+470
+00:27:07,680 --> 00:27:11,450
+The second comment, as I said
+different human languages
+
+471
+00:27:11,450 --> 00:27:14,580
+expose different ambiguities.
+
+472
+00:27:14,580 --> 00:27:17,330
+So for example,
+this is an ambiguity
+
+473
+00:27:17,330 --> 00:27:19,400
+that you normally
+don't get in Chinese.
+
+474
+00:27:19,400 --> 00:27:23,270
+Because in Chinese,
+prepositional phrases
+
+475
+00:27:23,270 --> 00:27:27,170
+modifying a verb are normally
+placed before the verb.
+
+476
+00:27:27,170 --> 00:27:31,910
+And so therefore, you don't
+standardly get this ambiguity.
+
+477
+00:27:31,910 --> 00:27:35,000
+But there are different
+other ambiguities
+
+478
+00:27:35,000 --> 00:27:38,460
+that you find commonly
+in Chinese sentences.
+
+479
+00:27:38,460 --> 00:27:38,960
+OK.
+
+480
+00:27:38,960 --> 00:27:42,140
+So this ambiguity
+you find everywhere,
+
+481
+00:27:42,140 --> 00:27:43,880
+because prepositional
+phrases are
+
+482
+00:27:43,880 --> 00:27:46,950
+really common at the
+right ends of sentences.
+
+483
+00:27:46,950 --> 00:27:48,590
+So here's another one.
+
+484
+00:27:48,590 --> 00:27:51,200
+Scientist count
+whales from space.
+
+485
+00:27:51,200 --> 00:27:55,280
+So that gives us these two
+possible interpretations
+
+486
+00:27:55,280 --> 00:27:58,310
+that there are whales
+from space and scientists
+
+487
+00:27:58,310 --> 00:28:00,140
+are counting them.
+
+488
+00:28:00,140 --> 00:28:04,250
+And then the other one
+is how the scientists
+
+489
+00:28:04,250 --> 00:28:07,670
+are counting the whales is
+that they're counting them
+
+490
+00:28:07,670 --> 00:28:10,580
+from space and they're
+using satellites
+
+491
+00:28:10,580 --> 00:28:14,360
+to count the sails, which is
+the correct interpretation
+
+492
+00:28:14,360 --> 00:28:18,050
+that the newspaper hopes
+that you're getting.
+
+493
+00:28:21,170 --> 00:28:25,250
+And this problem gets
+much, much more complex.
+
+494
+00:28:25,250 --> 00:28:29,840
+Because many
+sentences in English
+
+495
+00:28:29,840 --> 00:28:33,530
+have prepositional phrases
+all over the place.
+
+496
+00:28:33,530 --> 00:28:36,260
+So here's the kind
+of boring sentence
+
+497
+00:28:36,260 --> 00:28:39,230
+that you find in
+the financial news.
+
+498
+00:28:39,230 --> 00:28:41,360
+The board approved
+its acquisition
+
+499
+00:28:41,360 --> 00:28:45,440
+by Royal Trustco Limited
+of Toronto for $27 a share
+
+500
+00:28:45,440 --> 00:28:47,240
+at its monthly meeting.
+
+501
+00:28:47,240 --> 00:28:50,480
+And well, if you look at the
+structure of this sentence what
+
+502
+00:28:50,480 --> 00:28:58,080
+we find is here is a verb then
+here is the object noun phrase.
+
+503
+00:28:58,080 --> 00:29:00,870
+So you've got the
+object noun phrase here.
+
+504
+00:29:00,870 --> 00:29:04,010
+And then after that,
+what do we find?
+
+505
+00:29:04,010 --> 00:29:06,470
+Well, we find a
+prepositional phrase,
+
+506
+00:29:06,470 --> 00:29:09,890
+another prepositional phrase,
+another prepositional phrase,
+
+507
+00:29:09,890 --> 00:29:11,840
+and another
+prepositional phrase.
+
+508
+00:29:11,840 --> 00:29:16,170
+And how to attach each of
+these is then ambiguous.
+
+509
+00:29:16,170 --> 00:29:19,370
+So the basic rule of how
+you can attach them is you
+
+510
+00:29:19,370 --> 00:29:24,800
+can attach them to things to
+the left providing you don't
+
+511
+00:29:24,800 --> 00:29:27,200
+create crossing attachments.
+
+512
+00:29:27,200 --> 00:29:31,280
+So in principle by
+Royal Trustco Limited
+
+513
+00:29:31,280 --> 00:29:34,700
+could be attached to either
+approved or acquisition.
+
+514
+00:29:34,700 --> 00:29:39,140
+But in this case, by
+Royal Trustco Limited
+
+515
+00:29:39,140 --> 00:29:40,430
+it's the acquirer.
+
+516
+00:29:40,430 --> 00:29:48,630
+So it's a modifier
+of the acquisition.
+
+517
+00:29:48,630 --> 00:29:49,130
+OK.
+
+518
+00:29:49,130 --> 00:29:51,170
+So then we have of Toronto.
+
+519
+00:29:51,170 --> 00:29:55,460
+So of Toronto could be
+modifying Royal Trustco Limited.
+
+520
+00:29:55,460 --> 00:29:58,190
+It could be modifying
+the acquisition,
+
+521
+00:29:58,190 --> 00:30:00,500
+or it can be modifying
+the approved.
+
+522
+00:30:00,500 --> 00:30:03,920
+And in this case, the of
+Toronto is telling you more
+
+523
+00:30:03,920 --> 00:30:07,790
+about the company,
+and so it's a modifier
+
+524
+00:30:07,790 --> 00:30:10,080
+of Royal Trustco Limited.
+
+525
+00:30:10,080 --> 00:30:10,580
+OK.
+
+526
+00:30:10,580 --> 00:30:14,420
+So then the next one
+is for $27 a share.
+
+527
+00:30:14,420 --> 00:30:18,110
+And that could be modifying
+Toronto Royal Trustco
+
+528
+00:30:18,110 --> 00:30:20,900
+Limited, the acquisition
+or the approving.
+
+529
+00:30:20,900 --> 00:30:26,660
+And well, in this case,
+that's talking about the price
+
+530
+00:30:26,660 --> 00:30:28,200
+of the acquisition.
+
+531
+00:30:28,200 --> 00:30:32,225
+So this one jumps
+back, and this is now
+
+532
+00:30:32,225 --> 00:30:37,870
+a prepositional phrase that's
+modifying the acquisition.
+
+533
+00:30:37,870 --> 00:30:42,520
+And then at the end, at
+its monthly meeting. ,
+
+534
+00:30:42,520 --> 00:30:47,740
+Well that's where the approval
+is happening by the board.
+
+535
+00:30:47,740 --> 00:30:52,420
+So rather than any of these
+preceding four noun phrases,
+
+536
+00:30:52,420 --> 00:30:57,820
+at its monthly meeting is
+modifying the approval.
+
+537
+00:30:57,820 --> 00:31:00,850
+And so it attaches
+right back there.
+
+538
+00:31:00,850 --> 00:31:03,350
+And this example
+is kind of too big
+
+539
+00:31:03,350 --> 00:31:05,890
+and so I couldn't
+fit it in one line.
+
+540
+00:31:05,890 --> 00:31:10,720
+But as I think maybe you can see
+that none of these dependencies
+
+541
+00:31:10,720 --> 00:31:14,620
+cross each other, and they
+connect at different places
+
+542
+00:31:14,620 --> 00:31:16,090
+ambiguously.
+
+543
+00:31:16,090 --> 00:31:19,360
+So because we can chain
+these prepositions like this
+
+544
+00:31:19,360 --> 00:31:23,050
+and attach them at
+different places like this,
+
+545
+00:31:23,050 --> 00:31:27,790
+human language sentences are
+actually extremely ambiguous.
+
+546
+00:31:30,850 --> 00:31:35,710
+If you have a sentence
+with k prepositional
+
+547
+00:31:35,710 --> 00:31:41,140
+phrases at the end of it,
+where here we have k equals 4.
+
+548
+00:31:41,140 --> 00:31:43,840
+The number of parses
+this sentence has,
+
+549
+00:31:43,840 --> 00:31:47,050
+the number of different ways
+you can make these attachments
+
+550
+00:31:47,050 --> 00:31:49,420
+is given by the Catalan numbers.
+
+551
+00:31:49,420 --> 00:31:54,160
+So the Catalan numbers are an
+exponentially growing series,
+
+552
+00:31:54,160 --> 00:31:56,760
+which arises in many
+treelike contexts.
+
+553
+00:31:56,760 --> 00:31:59,260
+So if you're doing something
+like triangulations
+
+554
+00:31:59,260 --> 00:32:01,720
+of a polygon, you
+get Catalan numbers.
+
+555
+00:32:01,720 --> 00:32:06,490
+If you're doing triangulation
+and graphical models in CS228,
+
+556
+00:32:06,490 --> 00:32:08,350
+you get Catalan numbers.
+
+557
+00:32:08,350 --> 00:32:10,720
+But we don't need to worry
+about the details here.
+
+558
+00:32:10,720 --> 00:32:13,750
+The central point is this
+is an exponential series.
+
+559
+00:32:13,750 --> 00:32:16,270
+And so you're getting
+an exponential number
+
+560
+00:32:16,270 --> 00:32:21,370
+of parses in terms of the
+number of prepositional phrases.
+
+561
+00:32:21,370 --> 00:32:25,390
+And so in general, the number
+of parses human languages
+
+562
+00:32:25,390 --> 00:32:28,210
+have is exponential
+in their length, which
+
+563
+00:32:28,210 --> 00:32:30,430
+is kind of bad news.
+
+564
+00:32:30,430 --> 00:32:34,390
+Because if you're then trying
+to enumerate all the parses,
+
+565
+00:32:34,390 --> 00:32:38,710
+you might fear that you really
+have to do a ton of work.
+
+566
+00:32:38,710 --> 00:32:42,160
+The thing to notice
+about structures
+
+567
+00:32:42,160 --> 00:32:45,880
+like these prepositional
+phrase attachment ambiguities
+
+568
+00:32:45,880 --> 00:32:49,270
+is that there's
+nothing that resolves
+
+569
+00:32:49,270 --> 00:32:53,470
+these ambiguities in terms of
+the structure of the sentence.
+
+570
+00:32:53,470 --> 00:32:57,760
+So if you've done
+something like looked
+
+571
+00:32:57,760 --> 00:33:01,180
+at the kind of grammars
+that are used in compilers,
+
+572
+00:33:01,180 --> 00:33:04,690
+that the grammars
+used in compilers
+
+573
+00:33:04,690 --> 00:33:10,000
+for programming languages are
+mainly made to be unambiguous.
+
+574
+00:33:10,000 --> 00:33:13,570
+And to the extent that
+there are any ambiguities,
+
+575
+00:33:13,570 --> 00:33:16,090
+there are default
+rules that are used
+
+576
+00:33:16,090 --> 00:33:20,020
+to say, choose this
+one particular parse
+
+577
+00:33:20,020 --> 00:33:23,980
+tree for your piece of
+a programming language.
+
+578
+00:33:23,980 --> 00:33:27,140
+And human languages
+just aren't like that.
+
+579
+00:33:27,140 --> 00:33:31,000
+They're globally ambiguous,
+and the listening human
+
+580
+00:33:31,000 --> 00:33:33,760
+is just meant to be smart
+enough to figure out
+
+581
+00:33:33,760 --> 00:33:35,210
+what was intended.
+
+582
+00:33:35,210 --> 00:33:43,420
+So the analogy would be that
+in programming languages
+
+583
+00:33:43,420 --> 00:33:48,850
+when you're working out what
+does an else clause modify,
+
+584
+00:33:48,850 --> 00:33:51,990
+well, you've got the answer.
+
+585
+00:33:51,990 --> 00:33:55,470
+That you can either
+look at the curly braces
+
+586
+00:33:55,470 --> 00:33:58,230
+to work out what the
+else clause modifies
+
+587
+00:33:58,230 --> 00:34:01,350
+or if you're using Python,
+you look at the indentation
+
+588
+00:34:01,350 --> 00:34:04,260
+and it tells you what
+the else clause modifies.
+
+589
+00:34:04,260 --> 00:34:11,280
+Where by contrast for human
+languages, it would be just
+
+590
+00:34:11,280 --> 00:34:13,500
+write down else something.
+
+591
+00:34:13,500 --> 00:34:15,310
+Doesn't matter how you do it.
+
+592
+00:34:15,310 --> 00:34:18,179
+You don't need parentheses,
+you don't need indentation.
+
+593
+00:34:18,179 --> 00:34:20,010
+The human being
+will just figure out
+
+594
+00:34:20,010 --> 00:34:24,150
+what the else clause is
+meant to pair up with.
+
+595
+00:34:24,150 --> 00:34:24,870
+OK.
+
+596
+00:34:24,870 --> 00:34:29,290
+Lots of other forms of
+ambiguities in human languages.
+
+597
+00:34:29,290 --> 00:34:31,770
+So let's look at a few others.
+
+598
+00:34:31,770 --> 00:34:35,580
+Another one that is very common
+over all sorts of languages
+
+599
+00:34:35,580 --> 00:34:39,190
+is coordination and
+scope ambiguities.
+
+600
+00:34:39,190 --> 00:34:42,510
+So here's a sentence,
+shuttle veteran and long time
+
+601
+00:34:42,510 --> 00:34:46,020
+NASA executive Fred
+Gregory appointed to board.
+
+602
+00:34:46,020 --> 00:34:49,260
+Well, this is an
+ambiguous sentence.
+
+603
+00:34:49,260 --> 00:34:52,679
+There are two possible
+readings of this.
+
+604
+00:34:52,679 --> 00:34:55,530
+One reading is that
+there are two people,
+
+605
+00:34:55,530 --> 00:34:58,260
+there's a shuttle
+veteran and there's
+
+606
+00:34:58,260 --> 00:35:00,810
+a long time NASA
+executive Fred Gregory
+
+607
+00:35:00,810 --> 00:35:03,930
+and they were both
+appointed to the board.
+
+608
+00:35:03,930 --> 00:35:05,910
+Two people.
+
+609
+00:35:05,910 --> 00:35:10,560
+And the other
+possibility is there's
+
+610
+00:35:10,560 --> 00:35:13,530
+someone named Fred
+Gregory, who's
+
+611
+00:35:13,530 --> 00:35:17,910
+a shuttle veteran and
+long time NASA executive
+
+612
+00:35:17,910 --> 00:35:19,800
+and they're appointed
+to the verb.
+
+613
+00:35:19,800 --> 00:35:21,630
+One person.
+
+614
+00:35:21,630 --> 00:35:24,690
+And these two
+interpretations again,
+
+615
+00:35:24,690 --> 00:35:28,750
+correspond to having
+different parse structures.
+
+616
+00:35:28,750 --> 00:35:35,160
+So in one structure, we've got
+a coordination of the shuttle
+
+617
+00:35:35,160 --> 00:35:40,230
+veteran and the long time
+NASA executive, Fred Gregory,
+
+618
+00:35:40,230 --> 00:35:42,450
+coordinated together.
+
+619
+00:35:42,450 --> 00:35:45,120
+In one case, these
+are coordinated
+
+620
+00:35:45,120 --> 00:35:52,110
+and then Fred Gregory specifies
+the name of the NASA executive.
+
+621
+00:35:52,110 --> 00:35:57,990
+So it's then specifying
+who that executive is.
+
+622
+00:35:57,990 --> 00:36:00,480
+Where the what in the other
+one, the shuttle veteran
+
+623
+00:36:00,480 --> 00:36:05,160
+and longtime NASA executive,
+altogether is then something
+
+624
+00:36:05,160 --> 00:36:09,645
+that is a modifier
+of Fred Gregory.
+
+625
+00:36:12,890 --> 00:36:13,390
+OK.
+
+626
+00:36:13,390 --> 00:36:17,470
+So one time, this is the unit
+that modifies Fred Gregory.
+
+627
+00:36:17,470 --> 00:36:21,640
+In the other one up here,
+just long time NASA executive
+
+628
+00:36:21,640 --> 00:36:23,470
+modifies Fred Gregory.
+
+629
+00:36:23,470 --> 00:36:26,020
+And then that's
+conjoined together
+
+630
+00:36:26,020 --> 00:36:27,880
+with the shuttle veteran.
+
+631
+00:36:27,880 --> 00:36:32,180
+And so that also gives
+different interpretations.
+
+632
+00:36:32,180 --> 00:36:34,255
+So this is a slightly
+reduced example.
+
+633
+00:36:38,260 --> 00:36:41,800
+Newspaper headlines tend
+to be more ambiguous
+
+634
+00:36:41,800 --> 00:36:44,290
+than many other pieces
+of text, because they're
+
+635
+00:36:44,290 --> 00:36:47,620
+written in this shortened
+form to get things to fit.
+
+636
+00:36:47,620 --> 00:36:51,520
+And this is an especially
+shortened form,
+
+637
+00:36:51,520 --> 00:36:55,000
+where it's actually left
+out an explicit conjunction.
+
+638
+00:36:55,000 --> 00:37:01,670
+But this headline says doctor:
+no heart, cognitive issues.
+
+639
+00:37:01,670 --> 00:37:06,220
+And this was I guess after
+Trump's first physical.
+
+640
+00:37:06,220 --> 00:37:08,860
+And well, this is an ambiguity,
+because there are two ways
+
+641
+00:37:08,860 --> 00:37:10,300
+that you can read this.
+
+642
+00:37:10,300 --> 00:37:13,240
+You can either read
+this as saying doctor:
+
+643
+00:37:13,240 --> 00:37:18,310
+no heart and cognitive
+issues, which
+
+644
+00:37:18,310 --> 00:37:20,350
+gives you one interpretation.
+
+645
+00:37:20,350 --> 00:37:23,920
+Instead of that, the
+way we should read it
+
+646
+00:37:23,920 --> 00:37:28,660
+is that it's heart or cognitive.
+
+647
+00:37:28,660 --> 00:37:33,910
+And so it's then saying no
+heart or cognitive issues.
+
+648
+00:37:33,910 --> 00:37:37,990
+And we have a different narrower
+scope of the coordination,
+
+649
+00:37:37,990 --> 00:37:39,490
+and then we get a
+different reading.
+
+650
+00:37:43,850 --> 00:37:45,680
+OK.
+
+651
+00:37:45,680 --> 00:37:48,590
+I want to give a couple more
+examples of different kinds
+
+652
+00:37:48,590 --> 00:37:50,420
+of ambiguities.
+
+653
+00:37:50,420 --> 00:37:52,550
+Another one you
+see quite a bit is
+
+654
+00:37:52,550 --> 00:37:56,802
+when you have modifiers that
+are adjectives and adverbs,
+
+655
+00:37:56,802 --> 00:37:58,760
+that there are different
+ways that you can have
+
+656
+00:37:58,760 --> 00:38:01,670
+things modifying other things.
+
+657
+00:38:01,670 --> 00:38:06,890
+This example is a little bit not
+safe for work, but here goes.
+
+658
+00:38:06,890 --> 00:38:11,670
+Students get first
+hand job experience.
+
+659
+00:38:11,670 --> 00:38:14,010
+So this is an
+ambiguous sentence.
+
+660
+00:38:14,010 --> 00:38:17,750
+And again, we can think of
+it as a syntactic ambiguity
+
+661
+00:38:17,750 --> 00:38:24,120
+in terms of which things
+modify which other things.
+
+662
+00:38:24,120 --> 00:38:30,110
+So the nice polite way
+to render this sentence
+
+663
+00:38:30,110 --> 00:38:33,730
+is that first is modifying hand.
+
+664
+00:38:33,730 --> 00:38:36,110
+So we've got first hand.
+
+665
+00:38:36,110 --> 00:38:40,100
+It's job experience, so job
+is a compound noun modifying
+
+666
+00:38:40,100 --> 00:38:41,300
+experience.
+
+667
+00:38:41,300 --> 00:38:46,160
+And it's first hand
+experience, so first hand
+
+668
+00:38:46,160 --> 00:38:48,020
+is then modifying experience.
+
+669
+00:38:51,669 --> 00:38:53,294
+And then get is the
+object of -- sorry,
+
+670
+00:38:53,294 --> 00:38:55,670
+first hand job experience
+is the object of get.
+
+671
+00:38:55,670 --> 00:39:01,510
+And the students are
+the subject of get.
+
+672
+00:39:01,510 --> 00:39:04,060
+But if you have a
+smuttier mind you
+
+673
+00:39:04,060 --> 00:39:06,620
+can interpret this
+a different way.
+
+674
+00:39:06,620 --> 00:39:10,870
+And in the alternative
+interpretation you
+
+675
+00:39:10,870 --> 00:39:14,695
+then have hand going
+together with job.
+
+676
+00:39:17,410 --> 00:39:24,190
+And the first is then a
+modifier of experience and job
+
+677
+00:39:24,190 --> 00:39:26,740
+is still a modifier
+of experience.
+
+678
+00:39:26,740 --> 00:39:29,380
+And so then you get this
+different parse structure
+
+679
+00:39:29,380 --> 00:39:33,130
+and different
+interpretation there.
+
+680
+00:39:33,130 --> 00:39:33,630
+OK.
+
+681
+00:39:33,630 --> 00:39:35,100
+One more example.
+
+682
+00:39:35,100 --> 00:39:38,790
+In a way this example's
+similar to the previous one.
+
+683
+00:39:38,790 --> 00:39:44,970
+It's having modifier pieces that
+can modify different things.
+
+684
+00:39:44,970 --> 00:39:47,850
+But rather than it just being
+with individual adjectives
+
+685
+00:39:47,850 --> 00:39:53,820
+or individual adverbs, it's
+then much larger units,
+
+686
+00:39:53,820 --> 00:39:58,090
+such as verb phrases can often
+have attachment ambiguities.
+
+687
+00:39:58,090 --> 00:40:02,400
+So this sentence headline
+is mutilated body washes up
+
+688
+00:40:02,400 --> 00:40:06,750
+on Rio beach to be used for
+Olympics beach volleyball.
+
+689
+00:40:06,750 --> 00:40:09,630
+So we have this big
+verb phrase here of,
+
+690
+00:40:09,630 --> 00:40:12,870
+to be used for Olympic
+beach volleyball.
+
+691
+00:40:12,870 --> 00:40:17,290
+And then again, we have
+this attachment decision
+
+692
+00:40:17,290 --> 00:40:21,910
+that we could either
+say that that big verb
+
+693
+00:40:21,910 --> 00:40:29,440
+phrase is modifying, i.e.,
+is attached to the Rio beach.
+
+694
+00:40:29,440 --> 00:40:33,250
+Or we could say
+no, no, the to be
+
+695
+00:40:33,250 --> 00:40:40,480
+used for Olympic beach
+volleyball, that is modifying
+
+696
+00:40:40,480 --> 00:40:42,010
+the mutilated body.
+
+697
+00:40:42,010 --> 00:40:45,670
+And it's a body that's to be
+used for the Olympics beach
+
+698
+00:40:45,670 --> 00:40:49,580
+volleyball, which gives
+the funny reading.
+
+699
+00:40:49,580 --> 00:40:52,220
+Yeah, so I hope that's given
+you at least a little bit
+
+700
+00:40:52,220 --> 00:40:58,790
+of a sense of how human language
+syntactic structure is complex,
+
+701
+00:40:58,790 --> 00:41:00,290
+ambiguous.
+
+702
+00:41:00,290 --> 00:41:03,450
+And to work out the
+intended interpretations,
+
+703
+00:41:03,450 --> 00:41:07,460
+you need to know something
+about that structure.
+
+704
+00:41:07,460 --> 00:41:11,990
+In terms of how much
+you need to understand,
+
+705
+00:41:11,990 --> 00:41:14,360
+I mean, this isn't
+a linguistics class.
+
+706
+00:41:14,360 --> 00:41:17,300
+If you'd like to learn more
+about human language structure,
+
+707
+00:41:17,300 --> 00:41:20,660
+you can go off and
+do a syntax class.
+
+708
+00:41:20,660 --> 00:41:24,680
+But we're not really going to
+spend a lot of time working
+
+709
+00:41:24,680 --> 00:41:26,240
+through language structure.
+
+710
+00:41:26,240 --> 00:41:29,600
+But there will be some questions
+on this in the assignment.
+
+711
+00:41:29,600 --> 00:41:32,900
+And so we're expecting that
+you can be at the level
+
+712
+00:41:32,900 --> 00:41:36,800
+that you can have sort of
+some intuitions as to which
+
+713
+00:41:36,800 --> 00:41:40,910
+words and phrases are modifying
+other words and phrases.
+
+714
+00:41:40,910 --> 00:41:44,150
+And therefore, you could choose
+between two dependency analyses
+
+715
+00:41:44,150 --> 00:41:47,090
+which one's correct.
+
+716
+00:41:47,090 --> 00:41:48,560
+OK.
+
+717
+00:41:48,560 --> 00:41:50,910
+I've spent quite a
+bit of time on that.
+
+718
+00:41:50,910 --> 00:41:52,920
+So better keep going.
+
+719
+00:41:52,920 --> 00:41:53,420
+OK.
+
+720
+00:41:53,420 --> 00:41:57,770
+So the general idea
+is that knowing
+
+721
+00:41:57,770 --> 00:42:00,560
+this sort of syntactic
+structure of a sentence
+
+722
+00:42:00,560 --> 00:42:04,280
+can help us with
+semantic interpretation.
+
+723
+00:42:04,280 --> 00:42:06,350
+I mean, as well as
+just generally saying,
+
+724
+00:42:06,350 --> 00:42:08,450
+we can understand
+language it's also
+
+725
+00:42:08,450 --> 00:42:11,780
+used in many cases for
+simple, practical forms
+
+726
+00:42:11,780 --> 00:42:13,170
+of semantic extraction.
+
+727
+00:42:13,170 --> 00:42:15,980
+So people such as in
+biomedical informatics
+
+728
+00:42:15,980 --> 00:42:18,350
+often want to get out
+particular relations,
+
+729
+00:42:18,350 --> 00:42:20,900
+such as protein-protein
+interactions.
+
+730
+00:42:20,900 --> 00:42:23,930
+And well, here's a sentence
+the results demonstrated
+
+731
+00:42:23,930 --> 00:42:31,220
+that KaiC interacts rhythmically
+with SasA, KaiA and KaiB.
+
+732
+00:42:31,220 --> 00:42:35,090
+And commonly that people can get
+out those kind of relationships
+
+733
+00:42:35,090 --> 00:42:39,290
+by looking at patterns
+of dependency relations
+
+734
+00:42:39,290 --> 00:42:40,710
+with particular verbs.
+
+735
+00:42:40,710 --> 00:42:42,770
+So for the interacts
+verb, if you
+
+736
+00:42:42,770 --> 00:42:46,580
+have a pattern of something
+being the subject and something
+
+737
+00:42:46,580 --> 00:42:49,610
+else being the noun
+modifier of interacts,
+
+738
+00:42:49,610 --> 00:42:51,950
+well that's an
+interaction relationship.
+
+739
+00:42:51,950 --> 00:42:53,420
+But it gets a bit
+more complicated
+
+740
+00:42:53,420 --> 00:42:56,210
+than that as in this
+example, because often there
+
+741
+00:42:56,210 --> 00:42:57,500
+are conjunctions.
+
+742
+00:42:57,500 --> 00:43:00,860
+So you also have another
+pattern where you have also
+
+743
+00:43:00,860 --> 00:43:06,260
+interactions between the
+subject and the noun modifiers
+
+744
+00:43:06,260 --> 00:43:10,965
+conjunct, which will allow us
+to also find the KaiA and KaiB
+
+745
+00:43:10,965 --> 00:43:11,465
+examples.
+
+746
+00:43:14,050 --> 00:43:15,460
+OK.
+
+747
+00:43:15,460 --> 00:43:19,480
+So I've given an informal
+tour of dependency grammar
+
+748
+00:43:19,480 --> 00:43:23,920
+to just try and quickly
+say a little bit more
+
+749
+00:43:23,920 --> 00:43:26,950
+about formally what a
+dependency grammar is.
+
+750
+00:43:26,950 --> 00:43:32,110
+So in dependency
+syntax, what we say
+
+751
+00:43:32,110 --> 00:43:35,260
+is that the syntactic
+structure of a sentence
+
+752
+00:43:35,260 --> 00:43:40,270
+consists of relations
+between pairs of words.
+
+753
+00:43:40,270 --> 00:43:43,090
+And it's a binary
+asymmetric relation i.e.
+
+754
+00:43:43,090 --> 00:43:46,060
+we draw arrows between
+pairs of words,
+
+755
+00:43:46,060 --> 00:43:48,790
+which we call dependencies.
+
+756
+00:43:48,790 --> 00:43:52,480
+Now normally dependency
+grammars then type
+
+757
+00:43:52,480 --> 00:43:54,790
+those grammatical
+relation, type those
+
+758
+00:43:54,790 --> 00:43:58,510
+arrows to express what kind
+of relation that there is.
+
+759
+00:43:58,510 --> 00:44:01,390
+And so that they have
+some kind of taxonomy
+
+760
+00:44:01,390 --> 00:44:02,590
+of grammatical relation.
+
+761
+00:44:02,590 --> 00:44:05,500
+So we might have a subject
+grammatical relation,
+
+762
+00:44:05,500 --> 00:44:09,460
+a verbal auxiliary grammatical
+relation, an oblique modifier
+
+763
+00:44:09,460 --> 00:44:10,970
+grammatical relation.
+
+764
+00:44:10,970 --> 00:44:16,610
+We have some kind of typology
+of grammatical relations.
+
+765
+00:44:16,610 --> 00:44:21,890
+And we refer to the arrow
+as going between the head,
+
+766
+00:44:21,890 --> 00:44:26,090
+is the head here, and something
+that is dependent of that.
+
+767
+00:44:26,090 --> 00:44:30,410
+So the subject of a verb is
+the dependent of the verb.
+
+768
+00:44:30,410 --> 00:44:33,500
+Or when you have
+a noun modifier,
+
+769
+00:44:33,500 --> 00:44:40,410
+like sort of cuddly
+cat, we say that cuddly
+
+770
+00:44:40,410 --> 00:44:43,020
+is a dependent of cat.
+
+771
+00:44:43,020 --> 00:44:46,320
+And cat is the
+head of cuddly cat.
+
+772
+00:44:46,320 --> 00:44:53,070
+And so normally dependencies,
+like in these examples form
+
+773
+00:44:53,070 --> 00:44:55,440
+a tree, which is formal.
+
+774
+00:44:55,440 --> 00:44:58,090
+So it's not just any
+graph with arrows.
+
+775
+00:44:58,090 --> 00:45:03,510
+We have a graph which is
+connected, acyclic, and has
+
+776
+00:45:03,510 --> 00:45:04,680
+a single root.
+
+777
+00:45:04,680 --> 00:45:07,470
+So here is the
+root of the graph.
+
+778
+00:45:07,470 --> 00:45:13,080
+And so that gives us the
+dependency tree analysis.
+
+779
+00:45:13,080 --> 00:45:17,400
+Dependency grammars have a
+really, really long history.
+
+780
+00:45:17,400 --> 00:45:22,560
+So the famous first
+linguist was Panini,
+
+781
+00:45:22,560 --> 00:45:26,880
+who wrote about the
+structure of Sanskrit.
+
+782
+00:45:26,880 --> 00:45:30,900
+And mainly he worked on the
+sound system of Sanskrit
+
+783
+00:45:30,900 --> 00:45:33,300
+and how sounds change in
+various contexts, which is
+
+784
+00:45:33,300 --> 00:45:35,070
+what linguists call phonology.
+
+785
+00:45:35,070 --> 00:45:37,990
+And the different forms
+of Sanskrit words.
+
+786
+00:45:37,990 --> 00:45:42,720
+Sanskrit has rich morphology
+of inflecting nouns and verbs
+
+787
+00:45:42,720 --> 00:45:44,950
+for different cases and forms.
+
+788
+00:45:44,950 --> 00:45:49,020
+But he also worked a little
+on the syntactic structure
+
+789
+00:45:49,020 --> 00:45:50,970
+of Sanskrit sentences.
+
+790
+00:45:50,970 --> 00:45:54,840
+And essentially what he
+proposed was dependency grammar
+
+791
+00:45:54,840 --> 00:45:57,150
+over Sanskrit sentences.
+
+792
+00:45:57,150 --> 00:46:02,010
+And it turns out that sort of
+for most of recorded history
+
+793
+00:46:02,010 --> 00:46:06,810
+when people have then gone on
+and tried to put structures
+
+794
+00:46:06,810 --> 00:46:10,530
+over human sentences,
+what they have used
+
+795
+00:46:10,530 --> 00:46:12,790
+is dependency grammars.
+
+796
+00:46:12,790 --> 00:46:15,600
+So there was a lot of work
+in the first millennium
+
+797
+00:46:15,600 --> 00:46:20,550
+by Arabic grammarians trying
+to work out the grammar
+
+798
+00:46:20,550 --> 00:46:22,050
+structure of sentences.
+
+799
+00:46:22,050 --> 00:46:25,920
+And effectively what they
+used was akin to I've
+
+800
+00:46:25,920 --> 00:46:28,920
+just presented as a
+dependency grammar.
+
+801
+00:46:28,920 --> 00:46:34,290
+So compared to 2,500
+years of history,
+
+802
+00:46:34,290 --> 00:46:37,050
+the ideas of having
+context-free grammars
+
+803
+00:46:37,050 --> 00:46:40,440
+and having constituency grammars
+is actually a really, really
+
+804
+00:46:40,440 --> 00:46:41,460
+recent invention.
+
+805
+00:46:41,460 --> 00:46:44,580
+So it was really sort of in
+the middle of the 20th century
+
+806
+00:46:44,580 --> 00:46:48,120
+that the ideas of
+constituency grammar
+
+807
+00:46:48,120 --> 00:46:50,340
+and context-free grammars
+were developed first
+
+808
+00:46:50,340 --> 00:46:53,850
+by Wells in the 40s,
+and then by Noam Chomsky
+
+809
+00:46:53,850 --> 00:46:56,670
+in the early 50s leading
+to things like the Chomsky
+
+810
+00:46:56,670 --> 00:47:01,740
+hierarchy that you might see
+in CS103, or a formal languages
+
+811
+00:47:01,740 --> 00:47:04,370
+class.
+
+812
+00:47:04,370 --> 00:47:07,340
+So for modern work
+on dependency grammar
+
+813
+00:47:07,340 --> 00:47:11,150
+using the terminology
+and notation
+
+814
+00:47:11,150 --> 00:47:13,010
+that I've just
+introduced, that's
+
+815
+00:47:13,010 --> 00:47:15,810
+normally attributed to
+Lucien Tesniere, who
+
+816
+00:47:15,810 --> 00:47:19,790
+was a French linguist in
+around the sort of the middle
+
+817
+00:47:19,790 --> 00:47:22,370
+of the 20th century as well.
+
+818
+00:47:22,370 --> 00:47:27,110
+Dependency grandma was widely
+used in the 20th century
+
+819
+00:47:27,110 --> 00:47:28,770
+in a number of places.
+
+820
+00:47:28,770 --> 00:47:32,120
+I mean, in particular
+it tends to be much more
+
+821
+00:47:32,120 --> 00:47:36,320
+natural and easier to
+think about for languages
+
+822
+00:47:36,320 --> 00:47:39,800
+that have a lot of different
+case markings on nouns.
+
+823
+00:47:39,800 --> 00:47:42,350
+Like nominative, accusative,
+genitive, dative, instrumental
+
+824
+00:47:42,350 --> 00:47:47,090
+kind of cases like you get in a
+language like Latin or Russian.
+
+825
+00:47:47,090 --> 00:47:50,090
+And a lot of those languages
+have much freer word
+
+826
+00:47:50,090 --> 00:47:51,380
+order than English.
+
+827
+00:47:54,260 --> 00:47:55,670
+In English, the
+subject has to be
+
+828
+00:47:55,670 --> 00:47:58,340
+before the verb and the object
+has to be after the verb.
+
+829
+00:47:58,340 --> 00:48:01,850
+But lots of other languages
+have much freer word order,
+
+830
+00:48:01,850 --> 00:48:06,080
+and instead use different
+forms of nouns to show you
+
+831
+00:48:06,080 --> 00:48:08,630
+what's the subject or the
+object of the sentence.
+
+832
+00:48:08,630 --> 00:48:12,620
+And dependency grammars can
+often seem much more natural
+
+833
+00:48:12,620 --> 00:48:14,930
+for those kinds of languages.
+
+834
+00:48:14,930 --> 00:48:16,750
+Dependency grammars
+were also prominent
+
+835
+00:48:16,750 --> 00:48:19,410
+in the very beginnings of
+computational linguistics.
+
+836
+00:48:19,410 --> 00:48:22,950
+So one of the first
+people working
+
+837
+00:48:22,950 --> 00:48:26,930
+in computational linguistics
+in the US was David Hayes.
+
+838
+00:48:26,930 --> 00:48:29,780
+So the professional society
+for computational linguistics
+
+839
+00:48:29,780 --> 00:48:32,570
+is called the Association for
+Computational Linguistics,
+
+840
+00:48:32,570 --> 00:48:35,450
+and he was actually one of the
+founders of the Association
+
+841
+00:48:35,450 --> 00:48:37,190
+for Computational Linguistics.
+
+842
+00:48:37,190 --> 00:48:41,240
+And he published in the
+early 1960s and early perhaps
+
+843
+00:48:41,240 --> 00:48:45,422
+the first dependency
+grammar --parser,
+
+844
+00:48:45,422 --> 00:48:47,770
+sorry, dependency parser.
+
+845
+00:48:47,770 --> 00:48:49,780
+OK.
+
+846
+00:48:49,780 --> 00:48:53,650
+Yeah, a little teeny note just
+in case you see other things.
+
+847
+00:48:53,650 --> 00:48:57,730
+When you have these
+arrows, you can draw them
+
+848
+00:48:57,730 --> 00:48:58,750
+in either direction.
+
+849
+00:48:58,750 --> 00:49:01,300
+You could either draw
+arrows from the head
+
+850
+00:49:01,300 --> 00:49:05,230
+or to the dependent, or from
+the dependent to the head.
+
+851
+00:49:05,230 --> 00:49:08,627
+And actually, different people
+have done one and the other,
+
+852
+00:49:08,627 --> 00:49:09,490
+right?
+
+853
+00:49:09,490 --> 00:49:12,160
+So the way Tesniere
+drew them was
+
+854
+00:49:12,160 --> 00:49:14,320
+to draw them from the
+head to the dependent
+
+855
+00:49:14,320 --> 00:49:16,270
+and we're following
+that convention.
+
+856
+00:49:16,270 --> 00:49:18,040
+But if you're
+looking at something
+
+857
+00:49:18,040 --> 00:49:21,670
+that somebody else has written
+with dependency arrows,
+
+858
+00:49:21,670 --> 00:49:23,320
+the first thing you
+have to work out
+
+859
+00:49:23,320 --> 00:49:25,660
+is are they using
+the arrow heads
+
+860
+00:49:25,660 --> 00:49:28,840
+at the heads or the dependence.
+
+861
+00:49:28,840 --> 00:49:34,540
+Now one other thing
+here is that a sentence
+
+862
+00:49:34,540 --> 00:49:36,940
+is seen as having
+the overall head
+
+863
+00:49:36,940 --> 00:49:39,670
+word of the sentence,
+which every other word
+
+864
+00:49:39,670 --> 00:49:41,800
+of the sentence hangs off.
+
+865
+00:49:41,800 --> 00:49:45,070
+It's a common convention to
+add this sort of fake root
+
+866
+00:49:45,070 --> 00:49:48,520
+to every sentence
+that then points
+
+867
+00:49:48,520 --> 00:49:53,170
+to the head word of the whole
+sentence here completed.
+
+868
+00:49:53,170 --> 00:49:56,560
+That just tends to make
+the algorithm stuff easier.
+
+869
+00:49:56,560 --> 00:50:00,130
+Because then you can say that
+every word of the sentence
+
+870
+00:50:00,130 --> 00:50:04,780
+is dependent on precisely
+one other node, where
+
+871
+00:50:04,780 --> 00:50:07,210
+what you can be
+dependent on is either
+
+872
+00:50:07,210 --> 00:50:10,910
+another word on the sentence or
+the fake root of the sentence.
+
+873
+00:50:10,910 --> 00:50:16,690
+And when we build our parses, we
+will introduce that fake root.
+
+874
+00:50:16,690 --> 00:50:18,510
+OK.
+
+875
+00:50:18,510 --> 00:50:25,930
+So that's dependency grammars
+and dependency structure.
+
+876
+00:50:25,930 --> 00:50:31,810
+I now want to get us
+back to natural language
+
+877
+00:50:31,810 --> 00:50:37,030
+processing and starting to build
+parses for dependency grammars.
+
+878
+00:50:37,030 --> 00:50:41,590
+But before doing that, I
+just want to say, where do we
+
+879
+00:50:41,590 --> 00:50:43,640
+get our data from?
+
+880
+00:50:43,640 --> 00:50:47,410
+And that's actually
+an interesting story
+
+881
+00:50:47,410 --> 00:50:49,210
+in some sense.
+
+882
+00:50:49,210 --> 00:50:54,910
+So the answer to that
+is, well, what we do
+
+883
+00:50:54,910 --> 00:51:01,030
+is get human beings, commonly
+linguists or other people
+
+884
+00:51:01,030 --> 00:51:03,280
+who are actually
+interested in the structure
+
+885
+00:51:03,280 --> 00:51:05,050
+of human sentences.
+
+886
+00:51:05,050 --> 00:51:10,330
+And we get them to sit around
+and hand parse sentences
+
+887
+00:51:10,330 --> 00:51:12,970
+and give them
+dependency structures.
+
+888
+00:51:12,970 --> 00:51:16,450
+And we collect a
+lot of those parses
+
+889
+00:51:16,450 --> 00:51:20,340
+and we call that a treebank.
+
+890
+00:51:20,340 --> 00:51:25,500
+And so this is something
+that really only started
+
+891
+00:51:25,500 --> 00:51:28,260
+happening in the late
+-80s and took off
+
+892
+00:51:28,260 --> 00:51:30,420
+in a bigger way in the -90s.
+
+893
+00:51:30,420 --> 00:51:34,020
+Until then, no one had
+attempted to build treebanks.
+
+894
+00:51:34,020 --> 00:51:36,840
+Lots of people had
+attempted to build parsers.
+
+895
+00:51:36,840 --> 00:51:39,090
+And it seemed like,
+well, if you want
+
+896
+00:51:39,090 --> 00:51:42,150
+to build a parser,
+the efficient way
+
+897
+00:51:42,150 --> 00:51:45,000
+to do it is to start
+writing a grammar.
+
+898
+00:51:45,000 --> 00:51:47,550
+So you start writing
+some grammar rules
+
+899
+00:51:47,550 --> 00:51:49,500
+and you start
+writing the lexicon
+
+900
+00:51:49,500 --> 00:51:52,110
+with words and parts
+of speech, and you sit
+
+901
+00:51:52,110 --> 00:51:54,810
+around working on your grammar.
+
+902
+00:51:54,810 --> 00:51:58,080
+When I was a PhD student,
+one of my first summer jobs
+
+903
+00:51:58,080 --> 00:52:01,740
+was spending the summer
+hand-writing a grammar.
+
+904
+00:52:01,740 --> 00:52:06,000
+And it seems like writing
+and grammar is more efficient
+
+905
+00:52:06,000 --> 00:52:08,590
+because you're writing this one
+general thing that tells you
+
+906
+00:52:08,590 --> 00:52:11,710
+the structure of
+a human language.
+
+907
+00:52:11,710 --> 00:52:14,850
+But there's just been this
+massive sea change partly
+
+908
+00:52:14,850 --> 00:52:17,970
+driven by the adoption of
+machine learning techniques,
+
+909
+00:52:17,970 --> 00:52:22,650
+where it's now seen as axiomatic
+that the way to make progress
+
+910
+00:52:22,650 --> 00:52:26,970
+is to have annotated
+data, namely here
+
+911
+00:52:26,970 --> 00:52:31,470
+a treebank that shows you
+the structure of sentences.
+
+912
+00:52:31,470 --> 00:52:33,750
+And so what I'm
+showing here is a teeny
+
+913
+00:52:33,750 --> 00:52:37,920
+extract from a universal
+dependencies treebank.
+
+914
+00:52:37,920 --> 00:52:39,990
+And so that's why
+I mentioned earlier
+
+915
+00:52:39,990 --> 00:52:42,780
+that this has been this
+effort to try and have
+
+916
+00:52:42,780 --> 00:52:46,470
+a common dependency grammar
+representation that you
+
+917
+00:52:46,470 --> 00:52:48,900
+can apply to lots of
+different human languages.
+
+918
+00:52:48,900 --> 00:52:50,880
+And so you can go
+over to this URL
+
+919
+00:52:50,880 --> 00:52:53,790
+and see that there's about
+60 different languages
+
+920
+00:52:53,790 --> 00:52:56,100
+at the moment, which have
+universal dependencies
+
+921
+00:52:56,100 --> 00:52:58,860
+treebanks.
+
+922
+00:52:58,860 --> 00:53:01,410
+So why are tree banks good?
+
+923
+00:53:01,410 --> 00:53:05,280
+I mean, it seems
+like it's bad news
+
+924
+00:53:05,280 --> 00:53:08,010
+if you have to have
+people sitting around
+
+925
+00:53:08,010 --> 00:53:10,890
+for weeks and months
+hand parsing sentences.
+
+926
+00:53:10,890 --> 00:53:15,900
+It seems a lot slower and
+actually a lot less useful
+
+927
+00:53:15,900 --> 00:53:19,860
+than having somebody
+writing a grammar, which
+
+928
+00:53:19,860 --> 00:53:24,630
+just has a much bigger
+multiplier factor
+
+929
+00:53:24,630 --> 00:53:27,780
+in the utility of their effort.
+
+930
+00:53:27,780 --> 00:53:32,640
+It turns out that although
+that initial feeling seems
+
+931
+00:53:32,640 --> 00:53:36,420
+sort of valid, that in practice
+there's just a lot more
+
+932
+00:53:36,420 --> 00:53:38,040
+you can do with the treebank.
+
+933
+00:53:38,040 --> 00:53:41,520
+So why are tree banks great?
+
+934
+00:53:41,520 --> 00:53:46,410
+One reason is that tree
+banks are highly reusable.
+
+935
+00:53:46,410 --> 00:53:49,770
+So typically, when people
+have written grammars,
+
+936
+00:53:49,770 --> 00:53:54,900
+they've written grammars
+for one particular parser
+
+937
+00:53:54,900 --> 00:53:57,060
+and the only thing
+that was ever used in
+
+938
+00:53:57,060 --> 00:53:59,340
+is that one particular parser.
+
+939
+00:53:59,340 --> 00:54:05,040
+But when you build a treebank,
+that's just a useful data
+
+940
+00:54:05,040 --> 00:54:09,190
+resource and people use that
+for all kinds of things.
+
+941
+00:54:09,190 --> 00:54:11,580
+So the well-known
+treebanks have been
+
+942
+00:54:11,580 --> 00:54:14,190
+used by hundreds and
+hundreds of people.
+
+943
+00:54:14,190 --> 00:54:17,400
+And although all
+treebanks were initially
+
+944
+00:54:17,400 --> 00:54:21,090
+built for the purposes of, hey
+let's help natural language
+
+945
+00:54:21,090 --> 00:54:22,800
+processing systems.
+
+946
+00:54:22,800 --> 00:54:24,630
+It turns out that
+people have actually
+
+947
+00:54:24,630 --> 00:54:28,020
+been able to do lots of
+other things with tree banks.
+
+948
+00:54:28,020 --> 00:54:31,530
+So for example these days
+psycholinguists commonly
+
+949
+00:54:31,530 --> 00:54:36,930
+use treebanks to get various
+kinds of statistics about data
+
+950
+00:54:36,930 --> 00:54:39,450
+for thinking about
+psycholinguistic models.
+
+951
+00:54:39,450 --> 00:54:41,970
+Linguists use tree
+banks for looking
+
+952
+00:54:41,970 --> 00:54:45,180
+at patterns of different
+syntactic constructions that
+
+953
+00:54:45,180 --> 00:54:46,500
+occur.
+
+954
+00:54:46,500 --> 00:54:49,980
+That there's just been a
+lot of reuse of this data
+
+955
+00:54:49,980 --> 00:54:52,170
+for all kinds of purposes.
+
+956
+00:54:52,170 --> 00:54:55,530
+But they have other advantages
+that I mentioned here.
+
+957
+00:54:55,530 --> 00:54:58,110
+When people are just
+sitting around saying,
+
+958
+00:54:58,110 --> 00:54:59,640
+what sentences are good.
+
+959
+00:54:59,640 --> 00:55:02,820
+They tend to only think
+of the core of language,
+
+960
+00:55:02,820 --> 00:55:05,620
+where lots of weird
+things happen in language.
+
+961
+00:55:05,620 --> 00:55:09,120
+And so if you actually
+just have some sentences
+
+962
+00:55:09,120 --> 00:55:11,190
+and you have to go
+off and parse them,
+
+963
+00:55:11,190 --> 00:55:15,300
+then you actually have to deal
+with the totality of language.
+
+964
+00:55:15,300 --> 00:55:19,440
+Since you're parsing actual
+sentences, you get statistics.
+
+965
+00:55:19,440 --> 00:55:22,470
+So you naturally get
+the kind of statistics
+
+966
+00:55:22,470 --> 00:55:25,350
+that are useful to
+machine learning systems
+
+967
+00:55:25,350 --> 00:55:28,500
+by constructing a treebank,
+where you don't get them
+
+968
+00:55:28,500 --> 00:55:30,840
+for free if you hand
+write a grammar.
+
+969
+00:55:30,840 --> 00:55:35,730
+But then a final way which
+is perhaps the most important
+
+970
+00:55:35,730 --> 00:55:40,560
+of all is if you
+actually want to be
+
+971
+00:55:40,560 --> 00:55:45,780
+able to do science
+of building systems,
+
+972
+00:55:45,780 --> 00:55:49,750
+you need a way to evaluate
+these NLP systems.
+
+973
+00:55:49,750 --> 00:55:52,050
+I mean, it seems
+hard to believe now
+
+974
+00:55:52,050 --> 00:56:00,770
+that back in the -90s and -80s
+when people built NLP parsers,
+
+975
+00:56:00,770 --> 00:56:04,790
+it was literally the case that
+the way they were evaluated
+
+976
+00:56:04,790 --> 00:56:09,140
+was you said to your friend,
+I've built this parser.
+
+977
+00:56:09,140 --> 00:56:10,940
+Type in a sentence
+on the terminal
+
+978
+00:56:10,940 --> 00:56:12,620
+and see what it gives you back.
+
+979
+00:56:12,620 --> 00:56:14,120
+It's pretty good, hey?
+
+980
+00:56:14,120 --> 00:56:17,180
+And that was just the
+way business was done.
+
+981
+00:56:17,180 --> 00:56:20,030
+Whereas what we'd
+like to know is well
+
+982
+00:56:20,030 --> 00:56:22,880
+as I showed you earlier,
+English sentences
+
+983
+00:56:22,880 --> 00:56:25,460
+can have lots of different
+parsers commonly.
+
+984
+00:56:25,460 --> 00:56:32,300
+Can this system choose the right
+parses for particular sentences
+
+985
+00:56:32,300 --> 00:56:35,600
+and therefore have the
+basis of interpreting them
+
+986
+00:56:35,600 --> 00:56:37,220
+as a human being would?
+
+987
+00:56:37,220 --> 00:56:39,470
+And well, we can only
+systematically do
+
+988
+00:56:39,470 --> 00:56:43,190
+that evaluation if we have a
+whole bunch of sentences that
+
+989
+00:56:43,190 --> 00:56:46,580
+have been hand parsed by
+humans with their correct
+
+990
+00:56:46,580 --> 00:56:48,150
+interpretations.
+
+991
+00:56:48,150 --> 00:56:51,650
+So the rise of treebanks
+turn parser building
+
+992
+00:56:51,650 --> 00:56:55,490
+into an empirical science,
+where people could then
+
+993
+00:56:55,490 --> 00:56:59,840
+compete rigorously on the
+basis of, look, my parser
+
+994
+00:56:59,840 --> 00:57:02,810
+has 2% higher accuracy
+than your parser
+
+995
+00:57:02,810 --> 00:57:07,120
+in choosing the correct
+parses for sentences.
+
+996
+00:57:07,120 --> 00:57:07,620
+OK.
+
+997
+00:57:07,620 --> 00:57:10,620
+So well, how do
+we build a parser
+
+998
+00:57:10,620 --> 00:57:12,840
+once we've got dependencies?
+
+999
+00:57:12,840 --> 00:57:16,350
+So there's sort of a bunch
+of sources of information
+
+1000
+00:57:16,350 --> 00:57:18,370
+that you could hope to use.
+
+1001
+00:57:18,370 --> 00:57:22,110
+So one source of
+information is looking
+
+1002
+00:57:22,110 --> 00:57:25,830
+at the words on either
+end of the dependency.
+
+1003
+00:57:25,830 --> 00:57:30,900
+So discussing issues that seems
+a reasonable thing to say,
+
+1004
+00:57:30,900 --> 00:57:35,040
+and so it's likely
+that issues could
+
+1005
+00:57:35,040 --> 00:57:37,890
+be the object of discussing.
+
+1006
+00:57:37,890 --> 00:57:42,180
+Whereas, if it was
+some other word, right,
+
+1007
+00:57:42,180 --> 00:57:46,560
+if you are thinking
+of making outstanding
+
+1008
+00:57:46,560 --> 00:57:50,040
+the object of discussion,
+discussing outstanding.
+
+1009
+00:57:50,040 --> 00:57:51,390
+That doesn't sound right.
+
+1010
+00:57:51,390 --> 00:57:53,310
+So that wouldn't be so good.
+
+1011
+00:57:53,310 --> 00:57:56,280
+A second source of
+information is distance.
+
+1012
+00:57:56,280 --> 00:58:00,930
+So most dependencies are
+relatively short distance.
+
+1013
+00:58:00,930 --> 00:58:01,720
+Some of them are.
+
+1014
+00:58:01,720 --> 00:58:04,710
+Some have long
+distance dependencies
+
+1015
+00:58:04,710 --> 00:58:06,610
+but they're relatively rare.
+
+1016
+00:58:06,610 --> 00:58:10,700
+The vast majority of
+dependencies are nearby.
+
+1017
+00:58:10,700 --> 00:58:14,700
+Another source of information
+is the intervening material.
+
+1018
+00:58:14,700 --> 00:58:21,800
+So there are certain things
+that dependencies rarely span.
+
+1019
+00:58:21,800 --> 00:58:26,030
+So clauses and
+sentences are normally
+
+1020
+00:58:26,030 --> 00:58:28,100
+organized around verbs.
+
+1021
+00:58:28,100 --> 00:58:33,830
+And so dependencies rarely
+span across intervening verbs.
+
+1022
+00:58:33,830 --> 00:58:36,950
+We can also use punctuation
+in written language, things
+
+1023
+00:58:36,950 --> 00:58:40,920
+like commas which can give some
+indication of the structure.
+
+1024
+00:58:40,920 --> 00:58:44,930
+And so punctuation may
+also indicate bad places
+
+1025
+00:58:44,930 --> 00:58:49,040
+to have long distance
+dependencies over.
+
+1026
+00:58:49,040 --> 00:58:52,530
+And there's one final
+source of information,
+
+1027
+00:58:52,530 --> 00:58:56,060
+which is what was referred
+to as valency, which
+
+1028
+00:58:56,060 --> 00:59:00,020
+is for a head what
+kind of information
+
+1029
+00:59:00,020 --> 00:59:01,980
+does it usually have around it?
+
+1030
+00:59:01,980 --> 00:59:06,050
+So if you have a
+noun, there are things
+
+1031
+00:59:06,050 --> 00:59:09,560
+that you just know about what
+kinds of dependence nouns
+
+1032
+00:59:09,560 --> 00:59:10,800
+normally have.
+
+1033
+00:59:10,800 --> 00:59:14,360
+So it's common that it
+will have a determiner
+
+1034
+00:59:14,360 --> 00:59:16,430
+to the left, the cat.
+
+1035
+00:59:16,430 --> 00:59:20,810
+On, the other hand,
+it's not going
+
+1036
+00:59:20,810 --> 00:59:24,620
+to be the case that there's a
+determiner to the right, cat
+
+1037
+00:59:24,620 --> 00:59:25,250
+the.
+
+1038
+00:59:25,250 --> 00:59:28,400
+That's just not what
+you get in English.
+
+1039
+00:59:28,400 --> 00:59:33,780
+On the left, you're also likely
+to have an adjectival modifier.
+
+1040
+00:59:33,780 --> 00:59:35,720
+That's why we had cuddly.
+
+1041
+00:59:35,720 --> 00:59:38,960
+But again, it's not
+so likely you're
+
+1042
+00:59:38,960 --> 00:59:41,990
+going to have the
+adjectival modifier
+
+1043
+00:59:41,990 --> 00:59:44,000
+over on the right for cuddly.
+
+1044
+00:59:44,000 --> 00:59:47,360
+So there are sort of
+facts about what things
+
+1045
+00:59:47,360 --> 00:59:50,550
+different kinds of words take
+on the left and the right.
+
+1046
+00:59:50,550 --> 00:59:52,820
+And so that's the
+valency of the heads,
+
+1047
+00:59:52,820 --> 00:59:56,840
+and that's also a useful
+source of information.
+
+1048
+00:59:56,840 --> 00:59:57,920
+OK.
+
+1049
+00:59:57,920 --> 01:00:01,910
+So what do we need to do
+using that information
+
+1050
+01:00:01,910 --> 01:00:03,530
+to build a parser?
+
+1051
+01:00:03,530 --> 01:00:06,740
+Well, effectively what
+we do is have a sentence,
+
+1052
+01:00:06,740 --> 01:00:09,320
+I'll give a talk tomorrow
+on neural networks.
+
+1053
+01:00:09,320 --> 01:00:12,410
+And what we have to do
+is say for every word
+
+1054
+01:00:12,410 --> 01:00:15,740
+in that sentence, we have
+to choose some other word
+
+1055
+01:00:15,740 --> 01:00:19,700
+that it's the dependent
+of, where one possibility
+
+1056
+01:00:19,700 --> 01:00:22,310
+it's a dependent of root.
+
+1057
+01:00:22,310 --> 01:00:26,330
+So we're giving it a structure,
+where we're saying OK,
+
+1058
+01:00:26,330 --> 01:00:31,310
+for this word, I've decided
+that it's dependent on networks.
+
+1059
+01:00:31,310 --> 01:00:37,040
+And then for this word, it's
+also dependent on networks.
+
+1060
+01:00:37,040 --> 01:00:43,850
+And for this word, it's
+a dependent on give.
+
+1061
+01:00:43,850 --> 01:00:47,390
+So we're choosing
+one for each word.
+
+1062
+01:00:47,390 --> 01:00:49,770
+And there are usually
+a few constraints.
+
+1063
+01:00:49,770 --> 01:00:53,270
+So only one word is
+a dependent of root.
+
+1064
+01:00:53,270 --> 01:00:55,160
+We have a tree.
+
+1065
+01:00:55,160 --> 01:00:56,600
+We don't want cycles.
+
+1066
+01:00:56,600 --> 01:01:00,230
+So we don't want to say that
+word A is dependent on word B,
+
+1067
+01:01:00,230 --> 01:01:02,960
+and word B is
+dependent on word A.
+
+1068
+01:01:02,960 --> 01:01:09,700
+And then there's one final
+issue, which is where
+
+1069
+01:01:09,700 --> 01:01:12,530
+the arrows can cross or not.
+
+1070
+01:01:12,530 --> 01:01:15,730
+So in this particular
+sentence, we actually
+
+1071
+01:01:15,730 --> 01:01:18,610
+have these crossing
+dependencies you can see there.
+
+1072
+01:01:18,610 --> 01:01:22,490
+I'll give a talk tomorrow
+on neural networks.
+
+1073
+01:01:22,490 --> 01:01:25,120
+And this is the correct
+dependency parse
+
+1074
+01:01:25,120 --> 01:01:26,530
+for this sentence.
+
+1075
+01:01:26,530 --> 01:01:29,890
+Because what we have
+here is that it's a talk
+
+1076
+01:01:29,890 --> 01:01:31,850
+and it's a talk
+on neural network.
+
+1077
+01:01:31,850 --> 01:01:35,200
+So the on neural networks
+modifies the talk,
+
+1078
+01:01:35,200 --> 01:01:38,860
+but which leads to these
+crossing dependencies.
+
+1079
+01:01:38,860 --> 01:01:40,780
+I didn't have to
+say it like that.
+
+1080
+01:01:40,780 --> 01:01:44,320
+I could have said, I'll give
+a talk on neural networks
+
+1081
+01:01:44,320 --> 01:01:45,190
+tomorrow.
+
+1082
+01:01:45,190 --> 01:01:48,370
+And then on neural networks
+would be next to the talk.
+
+1083
+01:01:48,370 --> 01:01:52,420
+So most of the
+time in languages,
+
+1084
+01:01:52,420 --> 01:01:55,690
+dependencies are
+projective, the things
+
+1085
+01:01:55,690 --> 01:01:58,630
+stay together so
+the dependencies
+
+1086
+01:01:58,630 --> 01:02:01,690
+have a kind of a nesting
+structure of the kind
+
+1087
+01:02:01,690 --> 01:02:04,360
+that you also see in
+context free grammars.
+
+1088
+01:02:04,360 --> 01:02:08,530
+But most languages have
+at least a few phenomena
+
+1089
+01:02:08,530 --> 01:02:11,980
+where you ended up with
+these ability for phrases
+
+1090
+01:02:11,980 --> 01:02:16,540
+to be split apart, which lead
+to non-projective dependencies.
+
+1091
+01:02:16,540 --> 01:02:19,750
+So in particular, one
+of them in English
+
+1092
+01:02:19,750 --> 01:02:23,980
+is that you can take modifying
+phrases and clauses like the
+
+1093
+01:02:23,980 --> 01:02:26,560
+on neural networks
+here, and shift them
+
+1094
+01:02:26,560 --> 01:02:28,450
+right towards the
+end of the sentence,
+
+1095
+01:02:28,450 --> 01:02:32,110
+and get I'll give a talk
+tomorrow on neural networks.
+
+1096
+01:02:32,110 --> 01:02:37,690
+And that then leads to
+non-projective sentences.
+
+1097
+01:02:37,690 --> 01:02:40,120
+So a parse is
+projective if there
+
+1098
+01:02:40,120 --> 01:02:43,510
+are no crossing dependency arcs
+when the words are laid out
+
+1099
+01:02:43,510 --> 01:02:47,840
+in their linear order with
+all arcs above the words.
+
+1100
+01:02:47,840 --> 01:02:50,110
+And if you have a
+dependency parse that
+
+1101
+01:02:50,110 --> 01:02:53,200
+corresponds to a context
+free grammar tree,
+
+1102
+01:02:53,200 --> 01:02:56,710
+it actually has to be projective
+because context-free grammars
+
+1103
+01:02:56,710 --> 01:03:01,000
+necessarily have this sort of
+nested tree structure following
+
+1104
+01:03:01,000 --> 01:03:02,920
+the linear order.
+
+1105
+01:03:02,920 --> 01:03:08,170
+But dependency grammars normally
+allow non-projective structures
+
+1106
+01:03:08,170 --> 01:03:11,320
+to account for
+displaced constituents.
+
+1107
+01:03:11,320 --> 01:03:13,450
+And you can't easily
+get the semantics
+
+1108
+01:03:13,450 --> 01:03:16,810
+of certain constructions right
+without these nonprojective
+
+1109
+01:03:16,810 --> 01:03:17,950
+dependencies.
+
+1110
+01:03:17,950 --> 01:03:21,040
+So here's another
+example in English
+
+1111
+01:03:21,040 --> 01:03:23,410
+with question
+formation with what's
+
+1112
+01:03:23,410 --> 01:03:25,990
+called preposition stranding.
+
+1113
+01:03:25,990 --> 01:03:31,300
+So the sentence is, who did Bill
+buy the coffee from yesterday?
+
+1114
+01:03:31,300 --> 01:03:34,030
+There's another way I
+could have said this.
+
+1115
+01:03:34,030 --> 01:03:35,890
+It's less natural
+in English, but I
+
+1116
+01:03:35,890 --> 01:03:44,050
+could have said, from who did
+Bill buy the coffee yesterday?
+
+1117
+01:03:44,050 --> 01:03:46,480
+In many languages
+of the world, that's
+
+1118
+01:03:46,480 --> 01:03:48,410
+the only way you
+could have said it.
+
+1119
+01:03:48,410 --> 01:03:53,380
+And when you do that,
+from who is kept together
+
+1120
+01:03:53,380 --> 01:03:56,710
+and you have a projective
+parse for the sentence.
+
+1121
+01:03:56,710 --> 01:04:00,550
+But English allows and
+indeed it much prefers
+
+1122
+01:04:00,550 --> 01:04:04,060
+you to do what is referred
+to as preposition stranding,
+
+1123
+01:04:04,060 --> 01:04:07,120
+where you move for
+who but you just
+
+1124
+01:04:07,120 --> 01:04:09,070
+leave the preposition behind.
+
+1125
+01:04:09,070 --> 01:04:13,480
+And so you get who did Bill
+buy the coffee from yesterday?
+
+1126
+01:04:13,480 --> 01:04:17,740
+And so then we're ending up with
+this non-projective dependency
+
+1127
+01:04:17,740 --> 01:04:21,970
+structure as I've shown there.
+
+1128
+01:04:21,970 --> 01:04:22,690
+OK.
+
+1129
+01:04:22,690 --> 01:04:26,570
+I'll come back to non
+projectivity in a little bit.
+
+1130
+01:04:26,570 --> 01:04:31,660
+How do we go about building
+dependency parsers?
+
+1131
+01:04:31,660 --> 01:04:34,090
+Well, there are a whole
+bunch of ways that you
+
+1132
+01:04:34,090 --> 01:04:36,850
+can build dependency parsers.
+
+1133
+01:04:36,850 --> 01:04:39,580
+Very quickly, ought to say a
+few names and I'll tell you
+
+1134
+01:04:39,580 --> 01:04:40,750
+about one of them.
+
+1135
+01:04:40,750 --> 01:04:43,390
+So you can use dynamic
+programming methods
+
+1136
+01:04:43,390 --> 01:04:44,800
+to build dependency parsers.
+
+1137
+01:04:44,800 --> 01:04:48,640
+So I showed earlier that you
+can have an exponential number
+
+1138
+01:04:48,640 --> 01:04:50,680
+of parsers for a
+sentence and that
+
+1139
+01:04:50,680 --> 01:04:53,530
+sounds like really bad
+news for building a system.
+
+1140
+01:04:53,530 --> 01:04:55,660
+Well, it turns out
+that you can be clever
+
+1141
+01:04:55,660 --> 01:04:59,140
+and you can work out a way
+to dynamic program finding
+
+1142
+01:04:59,140 --> 01:05:01,330
+that exponential
+number of parsers
+
+1143
+01:05:01,330 --> 01:05:04,780
+and then you can have
+an O(n) cubed algorithm.
+
+1144
+01:05:04,780 --> 01:05:07,300
+So you could do that.
+
+1145
+01:05:07,300 --> 01:05:11,290
+You can use graph algorithms and
+then I'll say a bit about that
+
+1146
+01:05:11,290 --> 01:05:11,880
+later.
+
+1147
+01:05:11,880 --> 01:05:14,410
+But that may spill
+into next time.
+
+1148
+01:05:14,410 --> 01:05:18,340
+So you can see, since we're
+wanting to kind of connect up
+
+1149
+01:05:18,340 --> 01:05:23,710
+all the words into a
+tree using graph edges,
+
+1150
+01:05:23,710 --> 01:05:26,140
+that you could think
+of doing that using
+
+1151
+01:05:26,140 --> 01:05:28,510
+a minimum spanning tree
+algorithm of the sort
+
+1152
+01:05:28,510 --> 01:05:31,840
+that you hopefully saw in CS161.
+
+1153
+01:05:31,840 --> 01:05:34,900
+And so that idea has
+been used for parsing.
+
+1154
+01:05:34,900 --> 01:05:37,510
+Constraint satisfaction
+ideas that you
+
+1155
+01:05:37,510 --> 01:05:40,000
+might have seen
+in CS221 have been
+
+1156
+01:05:40,000 --> 01:05:43,180
+used for dependency parsing.
+
+1157
+01:05:43,180 --> 01:05:44,860
+But the way I'm
+going to show now
+
+1158
+01:05:44,860 --> 01:05:47,650
+is transition based
+parsing, or sometimes
+
+1159
+01:05:47,650 --> 01:05:51,400
+referred to as deterministic
+dependency parsing.
+
+1160
+01:05:51,400 --> 01:05:54,610
+And the idea of
+this is one's going
+
+1161
+01:05:54,610 --> 01:05:58,660
+to use a transition
+system, so that's
+
+1162
+01:05:58,660 --> 01:06:00,490
+like shift reduce parsing.
+
+1163
+01:06:00,490 --> 01:06:04,330
+If you've seen a shift
+reduce parsing in something
+
+1164
+01:06:04,330 --> 01:06:07,330
+like a compilers class or
+a formal languages class,
+
+1165
+01:06:07,330 --> 01:06:10,630
+that's shift and reduce
+transition steps.
+
+1166
+01:06:10,630 --> 01:06:13,660
+And so you use a
+transition system
+
+1167
+01:06:13,660 --> 01:06:17,890
+to guide the
+construction of parses.
+
+1168
+01:06:17,890 --> 01:06:20,450
+And so let me just
+explain about that.
+
+1169
+01:06:24,780 --> 01:06:26,040
+So let's see.
+
+1170
+01:06:26,040 --> 01:06:31,400
+So this was an idea
+that was made prominent
+
+1171
+01:06:31,400 --> 01:06:37,430
+by Joakim Nivre, who's a Swedish
+computational linguist who
+
+1172
+01:06:37,430 --> 01:06:41,930
+introduced this idea of greedy
+transition based parsing.
+
+1173
+01:06:41,930 --> 01:06:44,990
+So his idea is well,
+what we're going
+
+1174
+01:06:44,990 --> 01:06:47,600
+to do for dependency
+parsing is we're
+
+1175
+01:06:47,600 --> 01:06:51,260
+going to be able
+to parse sentences
+
+1176
+01:06:51,260 --> 01:06:55,100
+by having a set of transitions,
+which are like shift
+
+1177
+01:06:55,100 --> 01:06:56,810
+reduce parse.
+
+1178
+01:06:56,810 --> 01:07:00,080
+And it's going to just
+work left or right,
+
+1179
+01:07:00,080 --> 01:07:03,020
+bottom up and
+parse the sentence.
+
+1180
+01:07:03,020 --> 01:07:08,210
+So we're going to say we
+have a stack sigma, a buffer
+
+1181
+01:07:08,210 --> 01:07:11,660
+beta of the words that
+we have to process.
+
+1182
+01:07:11,660 --> 01:07:14,600
+And we're going to build
+up a set of dependency arcs
+
+1183
+01:07:14,600 --> 01:07:18,380
+by using actions, which are
+shift and reduce actions.
+
+1184
+01:07:18,380 --> 01:07:21,170
+And putting those
+together, this will give us
+
+1185
+01:07:21,170 --> 01:07:25,850
+the ability to put parse
+structures over sentences.
+
+1186
+01:07:25,850 --> 01:07:29,210
+And let me go through
+the details of this.
+
+1187
+01:07:29,210 --> 01:07:32,570
+And this is a little bit
+hairy when you first see it.
+
+1188
+01:07:32,570 --> 01:07:36,080
+That's not so complex, really.
+
+1189
+01:07:36,080 --> 01:07:40,430
+And this kind of transition
+based dependency parser
+
+1190
+01:07:40,430 --> 01:07:44,300
+is what will use
+in assignment 3.
+
+1191
+01:07:44,300 --> 01:07:47,240
+So this is our
+transition system.
+
+1192
+01:07:47,240 --> 01:07:49,790
+We have a starting
+point, where we
+
+1193
+01:07:49,790 --> 01:07:53,880
+start with a stack that just
+has the root symbol on it,
+
+1194
+01:07:53,880 --> 01:07:56,030
+and a buffer that
+has the sentence
+
+1195
+01:07:56,030 --> 01:07:58,850
+that we're about to parse.
+
+1196
+01:07:58,850 --> 01:08:04,080
+And so far, we haven't
+built any dependency arcs.
+
+1197
+01:08:04,080 --> 01:08:06,620
+And so at each point
+in time, we can
+
+1198
+01:08:06,620 --> 01:08:08,960
+choose one of three actions.
+
+1199
+01:08:08,960 --> 01:08:14,225
+We can shift, which moves
+the next word onto the stack.
+
+1200
+01:08:16,910 --> 01:08:22,960
+We can then do actions that
+are the reduce actions.
+
+1201
+01:08:22,960 --> 01:08:26,710
+So we do two reduce actions to
+make it a dependency grammar.
+
+1202
+01:08:26,710 --> 01:08:31,720
+We can either do a left arc
+reduce or a right arc reduce.
+
+1203
+01:08:31,720 --> 01:08:36,250
+So when we do either of those,
+we take the top two items
+
+1204
+01:08:36,250 --> 01:08:40,540
+on the stack and
+we make one of them
+
+1205
+01:08:40,540 --> 01:08:42,220
+a dependent of the other one.
+
+1206
+01:08:42,220 --> 01:08:46,750
+So we can either say, OK, let's
+make w_i a dependent of w_j.
+
+1207
+01:08:46,750 --> 01:08:51,939
+Or else we can say OK, let's
+make w_j a dependent of w_i.
+
+1208
+01:08:51,939 --> 01:08:55,870
+And so the result of
+when we do that is
+
+1209
+01:08:55,870 --> 01:09:00,460
+the one that's the dependent
+disappears from the stack.
+
+1210
+01:09:00,460 --> 01:09:03,970
+And so in the stacks over
+here, there's one less item.
+
+1211
+01:09:03,970 --> 01:09:08,529
+But then we add a dependency
+arc to our arc set
+
+1212
+01:09:08,529 --> 01:09:13,029
+so that we say that we've got
+either a dependency from j to i
+
+1213
+01:09:13,029 --> 01:09:15,550
+or a dependency from i to j.
+
+1214
+01:09:15,550 --> 01:09:18,130
+And commonly when we
+do this, we actually
+
+1215
+01:09:18,130 --> 01:09:21,640
+also specify what
+grammatical relation
+
+1216
+01:09:21,640 --> 01:09:25,569
+connects the two, such as
+subject, object, noun modifier.
+
+1217
+01:09:25,569 --> 01:09:28,015
+And so we also have
+here a relation.
+
+1218
+01:09:30,580 --> 01:09:32,930
+That's probably
+still very abstract,
+
+1219
+01:09:32,930 --> 01:09:35,270
+so let's go through an example.
+
+1220
+01:09:35,270 --> 01:09:39,640
+So this is how a
+simple transition based
+
+1221
+01:09:39,640 --> 01:09:42,700
+dependency parser, what's
+referred to as an arc standard,
+
+1222
+01:09:42,700 --> 01:09:46,120
+transition-based dependency
+parser would parse up I
+
+1223
+01:09:46,120 --> 01:09:47,290
+ate the fish.
+
+1224
+01:09:47,290 --> 01:09:49,600
+So remember these are
+the different operations
+
+1225
+01:09:49,600 --> 01:09:50,960
+that we can apply.
+
+1226
+01:09:50,960 --> 01:09:53,260
+So to start off
+with, we have root
+
+1227
+01:09:53,260 --> 01:09:55,930
+on the stack and the
+sentence in the buffer,
+
+1228
+01:09:55,930 --> 01:09:59,300
+and we have no dependency
+arcs constructed.
+
+1229
+01:09:59,300 --> 01:10:02,500
+So we have to choose one
+of the three actions.
+
+1230
+01:10:02,500 --> 01:10:05,410
+And when there's only
+one thing on the stack,
+
+1231
+01:10:05,410 --> 01:10:08,170
+the only thing we
+can do is shift.
+
+1232
+01:10:08,170 --> 01:10:09,970
+So we shift.
+
+1233
+01:10:09,970 --> 01:10:12,140
+And now the stack
+looks like this.
+
+1234
+01:10:12,140 --> 01:10:14,830
+So now we have to
+take another action.
+
+1235
+01:10:14,830 --> 01:10:16,660
+And at this point
+we have a choice,
+
+1236
+01:10:16,660 --> 01:10:20,410
+because we could
+immediately reduce.
+
+1237
+01:10:20,410 --> 01:10:24,520
+So we could say, OK, let's
+just make I a dependent of root
+
+1238
+01:10:24,520 --> 01:10:28,300
+and we'd get a stack
+size of 1 again.
+
+1239
+01:10:28,300 --> 01:10:29,740
+But that would be
+the wrong thing
+
+1240
+01:10:29,740 --> 01:10:34,120
+to do because I isn't
+the head of the sentence.
+
+1241
+01:10:34,120 --> 01:10:37,450
+So what we should
+instead do is shift again
+
+1242
+01:10:37,450 --> 01:10:42,920
+and get I ate on the stack
+and fish still in the buffer.
+
+1243
+01:10:42,920 --> 01:10:46,040
+Well, at that point we keep
+on parsing a bit further.
+
+1244
+01:10:46,040 --> 01:10:50,260
+And so now what we can do
+is say, well, wait a minute.
+
+1245
+01:10:50,260 --> 01:10:58,270
+Now I is a dependent of ate and
+so we can do a left arc reduce
+
+1246
+01:10:58,270 --> 01:11:00,780
+and so I disappears
+from the stack.
+
+1247
+01:11:00,780 --> 01:11:02,380
+So here's our new stack.
+
+1248
+01:11:02,380 --> 01:11:05,950
+But we add to the set
+of arcs that we've added
+
+1249
+01:11:05,950 --> 01:11:08,860
+that I is the subject of ate.
+
+1250
+01:11:08,860 --> 01:11:09,400
+OK.
+
+1251
+01:11:09,400 --> 01:11:13,570
+Well after that, we
+could reduce again
+
+1252
+01:11:13,570 --> 01:11:15,760
+because there's still
+two things on the stack
+
+1253
+01:11:15,760 --> 01:11:17,860
+but that would be the
+wrong thing to do.
+
+1254
+01:11:17,860 --> 01:11:19,990
+The right thing to
+do next would be
+
+1255
+01:11:19,990 --> 01:11:23,920
+to shift fish onto the stack.
+
+1256
+01:11:23,920 --> 01:11:28,300
+And then at that point,
+we can do a right arc
+
+1257
+01:11:28,300 --> 01:11:33,250
+reduce saying that ate
+is the object of fish
+
+1258
+01:11:33,250 --> 01:11:37,480
+and add a new dependency
+to our dependency set.
+
+1259
+01:11:37,480 --> 01:11:41,950
+And then we can one
+more time do a right arc
+
+1260
+01:11:41,950 --> 01:11:46,810
+reduce to say that ate is the
+root of the whole sentence,
+
+1261
+01:11:46,810 --> 01:11:50,950
+and add in that extra root
+relation with our pseudo root.
+
+1262
+01:11:50,950 --> 01:11:54,290
+And at that point, we've
+reached the end condition.
+
+1263
+01:11:54,290 --> 01:11:57,040
+So the end condition
+was the buffer was empty
+
+1264
+01:11:57,040 --> 01:12:00,040
+and there's one thing,
+the root on the stack.
+
+1265
+01:12:00,040 --> 01:12:03,010
+And at that point,
+we can finish.
+
+1266
+01:12:03,010 --> 01:12:05,680
+So this little
+transition machine
+
+1267
+01:12:05,680 --> 01:12:10,010
+does the parsing
+up of the sentence.
+
+1268
+01:12:10,010 --> 01:12:14,670
+But there's one thing that's
+left to explain still here,
+
+1269
+01:12:14,670 --> 01:12:18,020
+which is how do you
+choose the next action?
+
+1270
+01:12:18,020 --> 01:12:21,890
+So as soon as you have two
+things or more on the stack,
+
+1271
+01:12:21,890 --> 01:12:23,820
+what do you do next?
+
+1272
+01:12:23,820 --> 01:12:25,140
+You've always got a choice.
+
+1273
+01:12:25,140 --> 01:12:27,307
+You could keep shifting,
+at least if there are still
+
+1274
+01:12:27,307 --> 01:12:29,900
+things on the buffer or
+you can do a left arc
+
+1275
+01:12:29,900 --> 01:12:32,390
+or you can do a right arc.
+
+1276
+01:12:32,390 --> 01:12:35,060
+And how do you know
+what choice is correct?
+
+1277
+01:12:35,060 --> 01:12:37,400
+And well, one answer
+to that is to say well,
+
+1278
+01:12:37,400 --> 01:12:39,290
+you don't know what
+choice is correct.
+
+1279
+01:12:39,290 --> 01:12:43,250
+And that's why parsing is hard
+and sentences are ambiguous.
+
+1280
+01:12:43,250 --> 01:12:45,830
+You can do any of those things.
+
+1281
+01:12:45,830 --> 01:12:48,590
+You have to explore all of them.
+
+1282
+01:12:48,590 --> 01:12:51,470
+And well, if you naively
+explore all of them,
+
+1283
+01:12:51,470 --> 01:12:54,470
+then you do an
+exponential amount of work
+
+1284
+01:12:54,470 --> 01:12:56,340
+to parse the sentence.
+
+1285
+01:12:56,340 --> 01:13:04,100
+So in the early 2000s,
+Joakim Nivre's--
+
+1286
+01:13:04,100 --> 01:13:07,010
+and that's essentially what
+people had done in the 80s
+
+1287
+01:13:07,010 --> 01:13:10,350
+and 90s is explore every path.
+
+1288
+01:13:10,350 --> 01:13:17,090
+But in the early 2000s, Joakim
+Nivre's essential observation
+
+1289
+01:13:17,090 --> 01:13:18,930
+was, but wait a minute.
+
+1290
+01:13:18,930 --> 01:13:21,020
+We know about
+machine learning now.
+
+1291
+01:13:21,020 --> 01:13:25,820
+So why don't I try
+and train a classifier
+
+1292
+01:13:25,820 --> 01:13:29,990
+which predicts what the
+next action I should take
+
+1293
+01:13:29,990 --> 01:13:33,530
+is given this stack and
+buffer configuration.
+
+1294
+01:13:33,530 --> 01:13:39,230
+Because if I can write a machine
+learning classifier, which
+
+1295
+01:13:39,230 --> 01:13:45,200
+can nearly always correctly
+predict the next action given
+
+1296
+01:13:45,200 --> 01:13:49,640
+a stack and buffer, then I'm
+in a really good position.
+
+1297
+01:13:49,640 --> 01:13:52,310
+Because then I can
+build what's referred
+
+1298
+01:13:52,310 --> 01:13:56,820
+to as a greedy dependency
+parser, which just goes bang,
+
+1299
+01:13:56,820 --> 01:13:59,000
+bang, bang, word at a time.
+
+1300
+01:13:59,000 --> 01:14:02,150
+OK, here's the next thing.
+
+1301
+01:14:02,150 --> 01:14:04,430
+Run classifier,
+choose next action.
+
+1302
+01:14:04,430 --> 01:14:06,500
+Run classifier,
+choose next action.
+
+1303
+01:14:06,500 --> 01:14:09,170
+Run classifier,
+choose next action.
+
+1304
+01:14:09,170 --> 01:14:11,930
+So that the amount of
+work that we're doing
+
+1305
+01:14:11,930 --> 01:14:15,740
+becomes linear in the
+length of the sentence
+
+1306
+01:14:15,740 --> 01:14:20,450
+rather than it being cubic
+in the length of the sentence
+
+1307
+01:14:20,450 --> 01:14:23,750
+using dynamic programming,
+or exponential in the length
+
+1308
+01:14:23,750 --> 01:14:27,120
+of the sentence if you don't
+use dynamic programming.
+
+1309
+01:14:27,120 --> 01:14:32,450
+So at each step, we predict
+the next action using
+
+1310
+01:14:32,450 --> 01:14:34,490
+some discriminative classifier.
+
+1311
+01:14:34,490 --> 01:14:37,850
+So starting off he was using
+things like support vector
+
+1312
+01:14:37,850 --> 01:14:41,330
+machines, but it can be
+anything at all like softmax
+
+1313
+01:14:41,330 --> 01:14:44,120
+classifier that's closer
+to our neural networks.
+
+1314
+01:14:44,120 --> 01:14:48,320
+And there are either for what
+I presented three classes
+
+1315
+01:14:48,320 --> 01:14:51,860
+if you're just thinking of
+the two reducers in the shift,
+
+1316
+01:14:51,860 --> 01:14:54,980
+or if you're thinking of you're
+also assigning a relation
+
+1317
+01:14:54,980 --> 01:14:59,390
+and you have a set of R
+relations, like 20 relations,
+
+1318
+01:14:59,390 --> 01:15:03,290
+then there'd be sort of 41
+moves that you could decide on
+
+1319
+01:15:03,290 --> 01:15:04,400
+at each point.
+
+1320
+01:15:04,400 --> 01:15:08,030
+And the features are
+effectively the configurations
+
+1321
+01:15:08,030 --> 01:15:09,560
+I was showing before.
+
+1322
+01:15:09,560 --> 01:15:11,810
+What's the top of
+the stack word?
+
+1323
+01:15:11,810 --> 01:15:13,250
+What part of speech is that?
+
+1324
+01:15:13,250 --> 01:15:14,750
+What's the first
+word in the buffer?
+
+1325
+01:15:14,750 --> 01:15:16,250
+What's that word's
+part of speech?
+
+1326
+01:15:16,250 --> 01:15:17,330
+Et cetera.
+
+1327
+01:15:17,330 --> 01:15:19,340
+And so on the simplest
+way of doing this,
+
+1328
+01:15:19,340 --> 01:15:21,830
+you're now doing
+no search at all.
+
+1329
+01:15:21,830 --> 01:15:24,350
+You are just sort of
+taking each configuration
+
+1330
+01:15:24,350 --> 01:15:28,820
+and turn, decide the most likely
+next move and you make it.
+
+1331
+01:15:28,820 --> 01:15:33,140
+And that's a greedy dependency
+parser, which is widely used.
+
+1332
+01:15:33,140 --> 01:15:36,510
+You can do better if you
+want to do a lot more work.
+
+1333
+01:15:36,510 --> 01:15:39,620
+So you can do what's
+called a beam search, where
+
+1334
+01:15:39,620 --> 01:15:43,970
+you maintain a number of
+fairly good parsed prefixes
+
+1335
+01:15:43,970 --> 01:15:45,620
+at each step.
+
+1336
+01:15:45,620 --> 01:15:48,440
+And you can extend
+them out further
+
+1337
+01:15:48,440 --> 01:15:50,810
+and then you can
+evaluate later on which
+
+1338
+01:15:50,810 --> 01:15:53,400
+of those seems to be the best.
+
+1339
+01:15:53,400 --> 01:15:55,280
+And so beam search
+is one technique
+
+1340
+01:15:55,280 --> 01:16:00,780
+to improve dependency parsing
+by doing a lot of work.
+
+1341
+01:16:00,780 --> 01:16:06,260
+And it turns out that although
+these greedy transition based
+
+1342
+01:16:06,260 --> 01:16:10,910
+parsars are a fraction worse
+than the best possible ways
+
+1343
+01:16:10,910 --> 01:16:13,910
+known to parse sentences
+that they actually
+
+1344
+01:16:13,910 --> 01:16:17,000
+work very accurately.
+
+1345
+01:16:17,000 --> 01:16:21,590
+Almost as well and they have
+this wonderful advantage
+
+1346
+01:16:21,590 --> 01:16:24,590
+that they give you
+linear time parsing
+
+1347
+01:16:24,590 --> 01:16:28,920
+in terms of the length of
+your sentences and text.
+
+1348
+01:16:28,920 --> 01:16:32,780
+And so if you want to do
+a huge amount of parsing,
+
+1349
+01:16:32,780 --> 01:16:35,720
+they're just a
+fantastic thing to use,
+
+1350
+01:16:35,720 --> 01:16:39,140
+because you've then
+got an algorithm that
+
+1351
+01:16:39,140 --> 01:16:41,600
+scales to the size of the web.
+
+1352
+01:16:41,600 --> 01:16:44,050
+OK.
+
+1353
+01:16:44,050 --> 01:16:47,260
+So I'm kind of a little
+bit behind so I guess
+
+1354
+01:16:47,260 --> 01:16:49,510
+I'm not going to get through
+all of these slides today
+
+1355
+01:16:49,510 --> 01:16:52,330
+and we'll have to finish out
+the final slides tomorrow.
+
+1356
+01:16:52,330 --> 01:16:55,960
+But just to push a
+teeny bit further,
+
+1357
+01:16:55,960 --> 01:16:59,020
+I'll just say a couple
+more on the sort
+
+1358
+01:16:59,020 --> 01:17:03,100
+of what Nivre did for
+the dependency parser
+
+1359
+01:17:03,100 --> 01:17:06,220
+and then I'll sort of introduce
+the neural form of that
+
+1360
+01:17:06,220 --> 01:17:07,510
+in the next class.
+
+1361
+01:17:07,510 --> 01:17:12,190
+So conventionally you had this
+stack and buffer configuration
+
+1362
+01:17:12,190 --> 01:17:16,070
+and you wanted to build a
+machine learning classifier.
+
+1363
+01:17:16,070 --> 01:17:21,640
+And so the way that was done
+was by using symbolic features
+
+1364
+01:17:21,640 --> 01:17:23,680
+of this configuration.
+
+1365
+01:17:23,680 --> 01:17:27,810
+And what kind of symbolic
+features did you use?
+
+1366
+01:17:27,810 --> 01:17:31,210
+You use these indicator
+features that picked out
+
+1367
+01:17:31,210 --> 01:17:34,390
+a small subset
+normally one to three
+
+1368
+01:17:34,390 --> 01:17:36,610
+elements of the configuration.
+
+1369
+01:17:36,610 --> 01:17:39,160
+So you'd have a feature
+that could be something
+
+1370
+01:17:39,160 --> 01:17:41,920
+like the thing on
+the top of the stack
+
+1371
+01:17:41,920 --> 01:17:44,470
+is the word good,
+which is an adjective.
+
+1372
+01:17:44,470 --> 01:17:46,330
+Or it could be the
+thing on the top
+
+1373
+01:17:46,330 --> 01:17:49,780
+of the stack is an adjective
+and the thing that's
+
+1374
+01:17:49,780 --> 01:17:51,790
+first in the buffer is a noun.
+
+1375
+01:17:51,790 --> 01:17:53,950
+Or it could just be
+looking at one thing
+
+1376
+01:17:53,950 --> 01:17:57,260
+and saying the first thing
+in the buffer is a verb.
+
+1377
+01:17:57,260 --> 01:17:59,600
+So you'd have all
+of these features.
+
+1378
+01:17:59,600 --> 01:18:03,580
+And because these features
+commonly involved words
+
+1379
+01:18:03,580 --> 01:18:06,250
+and commonly
+involve conjunctions
+
+1380
+01:18:06,250 --> 01:18:11,140
+of several conditions,
+you had a lot of features.
+
+1381
+01:18:11,140 --> 01:18:16,600
+And having mentions of words
+and conjunctions of conditions
+
+1382
+01:18:16,600 --> 01:18:20,290
+definitely helped to make
+these parsers work better.
+
+1383
+01:18:20,290 --> 01:18:24,640
+But nevertheless, because you
+had all of these sort of 1 0
+
+1384
+01:18:24,640 --> 01:18:28,660
+symbolic features that you
+had a ton of such features.
+
+1385
+01:18:28,660 --> 01:18:32,830
+So commonly these parsers
+were built using something
+
+1386
+01:18:32,830 --> 01:18:36,490
+like a million to 10
+million different features
+
+1387
+01:18:36,490 --> 01:18:38,470
+of sentences.
+
+1388
+01:18:38,470 --> 01:18:41,560
+And I mentioned already the
+importance of evaluation.
+
+1389
+01:18:41,560 --> 01:18:44,380
+Let me just sort
+of quickly say how
+
+1390
+01:18:44,380 --> 01:18:47,300
+these parsers were evaluated.
+
+1391
+01:18:47,300 --> 01:18:56,160
+So to evaluate a parser
+for a particular sentence,
+
+1392
+01:18:56,160 --> 01:18:58,840
+our test set was hand
+parsed in the treebank.
+
+1393
+01:18:58,840 --> 01:19:01,140
+So we have gold
+dependencies of what
+
+1394
+01:19:01,140 --> 01:19:02,850
+the human thought were right.
+
+1395
+01:19:02,850 --> 01:19:07,530
+And so we can write
+those dependencies down
+
+1396
+01:19:07,530 --> 01:19:11,640
+as statements of
+saying the first word
+
+1397
+01:19:11,640 --> 01:19:16,260
+is a dependent of the second
+word via subject dependency.
+
+1398
+01:19:16,260 --> 01:19:18,540
+And then the parser
+is also going
+
+1399
+01:19:18,540 --> 01:19:23,040
+to make similar claims as to
+what's a dependent on what.
+
+1400
+01:19:23,040 --> 01:19:26,710
+And so there are two common
+metrics that are used.
+
+1401
+01:19:26,710 --> 01:19:30,420
+One, is just are you getting
+these dependency facts right.
+
+1402
+01:19:30,420 --> 01:19:33,480
+So both of these
+dependency facts match.
+
+1403
+01:19:33,480 --> 01:19:38,700
+And so that's referred to as
+the unlabeled accuracy score,
+
+1404
+01:19:38,700 --> 01:19:41,190
+where we just sort of
+measuring accuracies,
+
+1405
+01:19:41,190 --> 01:19:44,490
+which are of all
+of the dependencies
+
+1406
+01:19:44,490 --> 01:19:45,950
+in the gold sentence.
+
+1407
+01:19:45,950 --> 01:19:49,730
+Remember, we have one dependency
+per word in the sentence.
+
+1408
+01:19:49,730 --> 01:19:51,750
+So here we have five.
+
+1409
+01:19:51,750 --> 01:19:55,380
+How many of them are correct and
+that's our unlabeled accuracy
+
+1410
+01:19:55,380 --> 01:19:57,120
+score of 80%.
+
+1411
+01:19:57,120 --> 01:20:02,170
+But a slightly more rigorous
+evaluation is to say,
+
+1412
+01:20:02,170 --> 01:20:04,620
+well, no, we're also
+going to label them
+
+1413
+01:20:04,620 --> 01:20:07,530
+and we're going to say
+that this is the subject.
+
+1414
+01:20:07,530 --> 01:20:09,420
+That's actually called the root.
+
+1415
+01:20:09,420 --> 01:20:11,530
+This one's the object.
+
+1416
+01:20:11,530 --> 01:20:17,150
+So these dependencies
+have labels
+
+1417
+01:20:17,150 --> 01:20:20,150
+and you also need to get
+the grammatical relation
+
+1418
+01:20:20,150 --> 01:20:23,970
+label right and so that's then
+referred to as labeled accuracy
+
+1419
+01:20:23,970 --> 01:20:24,810
+score.
+
+1420
+01:20:24,810 --> 01:20:27,800
+And although I got those
+two right for that--
+
+1421
+01:20:30,620 --> 01:20:32,840
+I guess according
+to this example,
+
+1422
+01:20:32,840 --> 01:20:36,110
+actually this is wrong,
+it looks like I got--
+
+1423
+01:20:36,110 --> 01:20:36,650
+Oh, no.
+
+1424
+01:20:36,650 --> 01:20:37,490
+This is wrong there.
+
+1425
+01:20:37,490 --> 01:20:38,740
+Sorry, that one's wrong there.
+
+1426
+01:20:38,740 --> 01:20:39,890
+OK.
+
+1427
+01:20:39,890 --> 01:20:43,460
+So I only got two
+of the dependencies
+
+1428
+01:20:43,460 --> 01:20:46,940
+correct in the sense that I
+both got what depends on what
+
+1429
+01:20:46,940 --> 01:20:48,410
+and the label correct.
+
+1430
+01:20:48,410 --> 01:20:52,740
+And so my labeled accuracy
+score is only 40%.
+
+1431
+01:20:52,740 --> 01:20:54,410
+OK.
+
+1432
+01:20:54,410 --> 01:20:56,360
+So I'll stop there now
+for the introduction
+
+1433
+01:20:56,360 --> 01:20:57,890
+for dependency parsing.
+
+1434
+01:20:57,890 --> 01:21:01,550
+And I still have
+an IOU, which is
+
+1435
+01:21:01,550 --> 01:21:05,090
+how we can then bring neural
+nets into this picture
+
+1436
+01:21:05,090 --> 01:21:09,140
+and how they can be used to
+improve dependency parsing.
+
+1437
+01:21:09,140 --> 01:21:11,510
+So I'll do that at
+the start of next time
+
+1438
+01:21:11,510 --> 01:21:17,140
+before then proceeding further
+into neural language models.
+

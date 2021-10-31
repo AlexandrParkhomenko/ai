@@ -1,0 +1,7119 @@
+1
+00:00:00,000 --> 00:00:05,510
+
+
+2
+00:00:05,510 --> 00:00:09,440
+OK, so now we'd better get
+going with the lecture.
+
+3
+00:00:09,440 --> 00:00:16,760
+OK so we're now at week
+8, second half of week 4.
+
+4
+00:00:16,760 --> 00:00:19,760
+So the agenda today is
+that I'm first of all going
+
+5
+00:00:19,760 --> 00:00:23,240
+to finish off the last
+pieces of the attention
+
+6
+00:00:23,240 --> 00:00:25,830
+that I didn't talk
+about last time.
+
+7
+00:00:25,830 --> 00:00:29,990
+But the main topic today is
+to talk about final projects.
+
+8
+00:00:29,990 --> 00:00:34,190
+And that will consist of sort of
+a grab bag of different things.
+
+9
+00:00:34,190 --> 00:00:36,120
+I'll talk about
+the final projects
+
+10
+00:00:36,120 --> 00:00:39,230
+and finding research
+topics, and finding data,
+
+11
+00:00:39,230 --> 00:00:40,860
+and doing research.
+
+12
+00:00:40,860 --> 00:00:42,950
+I'll give a very
+brief introduction
+
+13
+00:00:42,950 --> 00:00:45,740
+to the reading comprehension
+and question answering, which
+
+14
+00:00:45,740 --> 00:00:48,080
+is our default final project.
+
+15
+00:00:48,080 --> 00:00:50,000
+But we get a whole
+lecture on that
+
+16
+00:00:50,000 --> 00:00:51,620
+at the beginning of week 6.
+
+17
+00:00:51,620 --> 00:00:55,843
+So this is just to give you a
+little bit of what it's about,
+
+18
+00:00:55,843 --> 00:00:57,260
+and if you're
+thinking about doing
+
+19
+00:00:57,260 --> 00:00:59,390
+the default final project.
+
+20
+00:00:59,390 --> 00:01:02,810
+In some sense, this
+lecture is also
+
+21
+00:01:02,810 --> 00:01:07,010
+a rare chance in this
+course to pause for breath,
+
+22
+00:01:07,010 --> 00:01:10,470
+because we are really,
+we've had up until now
+
+23
+00:01:10,470 --> 00:01:15,830
+been having the fire hose going
+full stream ahead, spraying you
+
+24
+00:01:15,830 --> 00:01:19,520
+with new facts, and approaches,
+and algorithms, and models,
+
+25
+00:01:19,520 --> 00:01:22,020
+and linguistic things.
+
+26
+00:01:22,020 --> 00:01:24,730
+So this is a brief
+respite from that.
+
+27
+00:01:24,730 --> 00:01:27,110
+So if you have any
+questions that you've
+
+28
+00:01:27,110 --> 00:01:30,350
+been wondering about for
+weeks, today's lecture
+
+29
+00:01:30,350 --> 00:01:31,940
+could be a good
+time to ask them.
+
+30
+00:01:31,940 --> 00:01:35,540
+Because after today's
+lecture, in week 5,
+
+31
+00:01:35,540 --> 00:01:38,090
+we'll turn the fire
+hose right back on,
+
+32
+00:01:38,090 --> 00:01:42,110
+and we'll have a lot of new
+information about transformers
+
+33
+00:01:42,110 --> 00:01:44,750
+and large pre-trained
+language models
+
+34
+00:01:44,750 --> 00:01:48,080
+that have become a huge
+part of modern neural NLP,
+
+35
+00:01:48,080 --> 00:01:53,970
+as I already mentioned a little
+bit of, later into this class.
+
+36
+00:01:53,970 --> 00:01:58,170
+OK, so this is where we left
+things last time, basically.
+
+37
+00:01:58,170 --> 00:02:03,380
+So I'd sort of talked
+through the rough idea
+
+38
+00:02:03,380 --> 00:02:06,480
+that what we're going to do
+for this new attention model
+
+39
+00:02:06,480 --> 00:02:10,710
+is that we are going to use
+the encoder just as before.
+
+40
+00:02:10,710 --> 00:02:16,750
+And then once we're running
+the decoder, at each time step,
+
+41
+00:02:16,750 --> 00:02:19,890
+we're going to compute a new
+hidden representation using
+
+42
+00:02:19,890 --> 00:02:24,200
+the same kind of sequence
+model as we had before.
+
+43
+00:02:24,200 --> 00:02:28,620
+But now we're going to use
+that hidden representation
+
+44
+00:02:28,620 --> 00:02:33,210
+of the decoder to look
+back at the encoder.
+
+45
+00:02:33,210 --> 00:02:38,370
+And it's going to then work
+out respectively some kind
+
+46
+00:02:38,370 --> 00:02:42,840
+of function of similarity
+between encoder hidden states
+
+47
+00:02:42,840 --> 00:02:44,940
+and decoder hidden states.
+
+48
+00:02:44,940 --> 00:02:47,775
+And based on those, it's
+going to work out what
+
+49
+00:02:47,775 --> 00:02:49,770
+are called attention scores.
+
+50
+00:02:49,770 --> 00:02:53,640
+And attention scores are
+actually probability weights,
+
+51
+00:02:53,640 --> 00:02:56,880
+as to how much it likes
+different elements.
+
+52
+00:02:56,880 --> 00:02:59,280
+And based on those
+attention scores,
+
+53
+00:02:59,280 --> 00:03:04,630
+we're going to compute an
+attention distribution.
+
+54
+00:03:04,630 --> 00:03:07,120
+So this is our
+probability distribution.
+
+55
+00:03:07,120 --> 00:03:09,760
+And then based on
+that, what we do
+
+56
+00:03:09,760 --> 00:03:15,130
+is compute a weighted average
+of the encoder RNN hidden states
+
+57
+00:03:15,130 --> 00:03:17,810
+weighted by the
+attention distribution.
+
+58
+00:03:17,810 --> 00:03:20,360
+And so that's going to give
+us a new attention output
+
+59
+00:03:20,360 --> 00:03:22,840
+vector, which is
+like the hidden state
+
+60
+00:03:22,840 --> 00:03:27,820
+vector of the encoder that
+is an extra hidden vector.
+
+61
+00:03:27,820 --> 00:03:30,160
+And so we're gonna
+use both of them
+
+62
+00:03:30,160 --> 00:03:35,110
+to then generate our
+next output, which
+
+63
+00:03:35,110 --> 00:03:40,040
+is going to be here, the word
+pie at the end of the sequence.
+
+64
+00:03:40,040 --> 00:03:45,090
+So let's start off now by
+doing that with some equations.
+
+65
+00:03:45,090 --> 00:03:46,600
+So--
+
+66
+00:03:46,600 --> 00:03:49,755
+Chris, before we move on,
+there's a good question here,
+
+67
+00:03:49,755 --> 00:03:53,230
+sorry, which is why is the
+encoder and decoder both
+
+68
+00:03:53,230 --> 00:03:56,290
+required, as opposed to
+just the same RNN for both?
+
+69
+00:03:56,290 --> 00:03:57,130
+I think it-- yeah.
+
+70
+00:03:57,130 --> 00:03:59,740
+OK, I'll address that.
+
+71
+00:03:59,740 --> 00:04:01,660
+So, well, maybe
+there are a couple
+
+72
+00:04:01,660 --> 00:04:05,110
+of still possible
+interpretations for that.
+
+73
+00:04:05,110 --> 00:04:06,840
+But I'll say something about it.
+
+74
+00:04:06,840 --> 00:04:11,590
+So notice that the basic case
+that we've been doing here
+
+75
+00:04:11,590 --> 00:04:15,040
+is this case of machine
+translation, where we've
+
+76
+00:04:15,040 --> 00:04:21,040
+got a source encoder, which
+is in the source language,
+
+77
+00:04:21,040 --> 00:04:23,260
+and we've got a
+target decoder which
+
+78
+00:04:23,260 --> 00:04:25,240
+is in the target language.
+
+79
+00:04:25,240 --> 00:04:32,950
+So since these two [INAUDIBLE]
+different languages.
+
+80
+00:04:32,950 --> 00:04:36,640
+It makes sense to have
+separate sequence models
+
+81
+00:04:36,640 --> 00:04:39,550
+with different RNN
+parameters for each one.
+
+82
+00:04:39,550 --> 00:04:43,750
+And at that point,
+it's just a fact
+
+83
+00:04:43,750 --> 00:04:47,680
+about what we want to do with
+machine translation, which
+
+84
+00:04:47,680 --> 00:04:52,690
+is that, well, we actually
+want to look back at the source
+
+85
+00:04:52,690 --> 00:04:55,240
+to try and decide what
+extra words to put
+
+86
+00:04:55,240 --> 00:04:56,900
+into the translation.
+
+87
+00:04:56,900 --> 00:05:00,410
+So it makes sense to
+attend back from the source
+
+88
+00:05:00,410 --> 00:05:02,050
+to the translation.
+
+89
+00:05:02,050 --> 00:05:07,240
+But what you might be asking
+is, why do we only do that?
+
+90
+00:05:07,240 --> 00:05:11,350
+Why don't we also consider
+doing attention from here
+
+91
+00:05:11,350 --> 00:05:14,170
+back into the decoder RNN?
+
+92
+00:05:14,170 --> 00:05:18,460
+And if that's what you
+are thinking about,
+
+93
+00:05:18,460 --> 00:05:20,290
+that's a great suggestion.
+
+94
+00:05:20,290 --> 00:05:24,220
+And actually, very quickly
+after these attention models
+
+95
+00:05:24,220 --> 00:05:28,530
+were developed, that's exactly
+what people started doing.
+
+96
+00:05:28,530 --> 00:05:30,400
+They decided that,
+well, actually we
+
+97
+00:05:30,400 --> 00:05:32,920
+could start using more
+forms of attention.
+
+98
+00:05:32,920 --> 00:05:36,190
+And we could also use
+attention that looks back
+
+99
+00:05:36,190 --> 00:05:38,380
+in the decoder sequence.
+
+100
+00:05:38,380 --> 00:05:40,990
+And that often gets referred
+to as self attention.
+
+101
+00:05:40,990 --> 00:05:43,360
+And self attention
+has proven to be
+
+102
+00:05:43,360 --> 00:05:46,240
+an extremely powerful concept.
+
+103
+00:05:46,240 --> 00:05:51,460
+And, indeed, that then leads
+into the transformer models
+
+104
+00:05:51,460 --> 00:05:55,010
+that we're going
+to see next week.
+
+105
+00:05:55,010 --> 00:05:59,180
+Going in on things, I
+think self attention
+
+106
+00:05:59,180 --> 00:06:04,770
+wasn't quite as much an
+obviously needed idea.
+
+107
+00:06:04,770 --> 00:06:08,490
+From this initial
+translation motivation,
+
+108
+00:06:08,490 --> 00:06:11,470
+which was where
+attention was developed,
+
+109
+00:06:11,470 --> 00:06:17,310
+it seemed fairly clear that
+when you're running the decoder
+
+110
+00:06:17,310 --> 00:06:21,330
+RNN that as a conditional
+language model,
+
+111
+00:06:21,330 --> 00:06:23,790
+it will get some information
+about the source fed
+
+112
+00:06:23,790 --> 00:06:25,510
+into its initial state.
+
+113
+00:06:25,510 --> 00:06:27,900
+And it seemed pretty
+clear you were losing
+
+114
+00:06:27,900 --> 00:06:31,080
+a lot of information
+about the details of what
+
+115
+00:06:31,080 --> 00:06:33,420
+was in the source
+sentence, and therefore it
+
+116
+00:06:33,420 --> 00:06:37,030
+would be really, really useful
+have this idea of attention,
+
+117
+00:06:37,030 --> 00:06:39,630
+so you could directly
+look at it as you
+
+118
+00:06:39,630 --> 00:06:41,580
+perceive it to translate.
+
+119
+00:06:41,580 --> 00:06:44,070
+In a way, it's a
+little bit less obvious
+
+120
+00:06:44,070 --> 00:06:47,100
+that you need that
+for the decoder RNN.
+
+121
+00:06:47,100 --> 00:06:52,120
+Because after all, last week, we
+introduced those really clever
+
+122
+00:06:52,120 --> 00:06:53,070
+LSTMs.
+
+123
+00:06:53,070 --> 00:06:56,370
+And the whole argument
+of the LSTM was actually
+
+124
+00:06:56,370 --> 00:06:58,410
+they're pretty
+good at maintaining
+
+125
+00:06:58,410 --> 00:07:03,760
+history of a sequence through
+quite a bunch of time periods.
+
+126
+00:07:03,760 --> 00:07:08,220
+So to the extent that the
+LSTM is doing a perfect job,
+
+127
+00:07:08,220 --> 00:07:11,610
+maybe you shouldn't really need
+self attention in your decoder.
+
+128
+00:07:11,610 --> 00:07:14,310
+But actually, precisely
+what's being shown
+
+129
+00:07:14,310 --> 00:07:17,070
+is that this
+mechanism of attention
+
+130
+00:07:17,070 --> 00:07:20,010
+is a much more
+effective method, again,
+
+131
+00:07:20,010 --> 00:07:24,150
+of selectively addressing
+elements of your past state.
+
+132
+00:07:24,150 --> 00:07:25,620
+And it's sort of lighter weight.
+
+133
+00:07:25,620 --> 00:07:27,600
+Rather than having
+to kind of cook up
+
+134
+00:07:27,600 --> 00:07:30,150
+the parameters for
+your LSTM so it's
+
+135
+00:07:30,150 --> 00:07:32,970
+carrying just the right
+information forward
+
+136
+00:07:32,970 --> 00:07:37,740
+all the time, provided you
+carry only enough information
+
+137
+00:07:37,740 --> 00:07:40,830
+that the model knows
+where to look back to.
+
+138
+00:07:40,830 --> 00:07:44,760
+You can then kind of grab more
+information from past states
+
+139
+00:07:44,760 --> 00:07:45,690
+when you want to.
+
+140
+00:07:45,690 --> 00:07:47,580
+So that's actually
+a great approach.
+
+141
+00:07:47,580 --> 00:07:51,330
+But I won't talk
+about it more now,
+
+142
+00:07:51,330 --> 00:07:55,050
+and that will come
+out more next week.
+
+143
+00:07:55,050 --> 00:07:57,840
+
+
+144
+00:07:57,840 --> 00:08:02,310
+OK, the equations, hopefully
+these won't actually
+
+145
+00:08:02,310 --> 00:08:04,470
+seem difficult.
+So what we have is
+
+146
+00:08:04,470 --> 00:08:10,620
+we have our encoded hidden
+states which are vectors,
+
+147
+00:08:10,620 --> 00:08:13,900
+on time step t, we have
+the decoder hidden state,
+
+148
+00:08:13,900 --> 00:08:17,280
+which is also a vector of
+the hidden state dimension.
+
+149
+00:08:17,280 --> 00:08:22,020
+And then what we want to
+do is get attention scores
+
+150
+00:08:22,020 --> 00:08:29,730
+as to for st, how much attention
+it pays to each of the hidden
+
+151
+00:08:29,730 --> 00:08:31,560
+states of the encoder.
+
+152
+00:08:31,560 --> 00:08:35,700
+And the easiest way
+to do that is just
+
+153
+00:08:35,700 --> 00:08:40,530
+use dot products between
+the source and the-- sorry,
+
+154
+00:08:40,530 --> 00:08:42,240
+not the source--
+the dot products
+
+155
+00:08:42,240 --> 00:08:47,280
+between the decoder hidden state
+s and the encoder hidden state
+
+156
+00:08:47,280 --> 00:08:47,940
+h.
+
+157
+00:08:47,940 --> 00:08:49,830
+So these give us
+a bunch of numbers
+
+158
+00:08:49,830 --> 00:08:52,020
+that might be
+negative or positive,
+
+159
+00:08:52,020 --> 00:08:54,040
+but they're attention scores.
+
+160
+00:08:54,040 --> 00:08:57,410
+And so have, just like we did
+right from the first lecture
+
+161
+00:08:57,410 --> 00:09:00,000
+with word vectors,
+we then put those
+
+162
+00:09:00,000 --> 00:09:02,100
+through a softmax distribution.
+
+163
+00:09:02,100 --> 00:09:05,100
+And then we get a
+probability distribution
+
+164
+00:09:05,100 --> 00:09:09,720
+over the time steps
+of the encoder.
+
+165
+00:09:09,720 --> 00:09:12,820
+Okay, so and now we've got
+that probability distribution.
+
+166
+00:09:12,820 --> 00:09:17,500
+We can construct a
+new vector by creating
+
+167
+00:09:17,500 --> 00:09:21,760
+a weighted sum of the
+encoder hidden states
+
+168
+00:09:21,760 --> 00:09:27,130
+based on these attention
+distribution probabilities.
+
+169
+00:09:27,130 --> 00:09:31,510
+And that [INAUDIBLE]
+going to make
+
+170
+00:09:31,510 --> 00:09:34,210
+use of that in
+generating the output.
+
+171
+00:09:34,210 --> 00:09:37,870
+We're going to concatenate
+the attention output
+
+172
+00:09:37,870 --> 00:09:40,550
+with the decoder
+hidden state st.
+
+173
+00:09:40,550 --> 00:09:43,180
+So now that's
+something of size 2h.
+
+174
+00:09:43,180 --> 00:09:45,610
+And then we're
+going to proceed as
+
+175
+00:09:45,610 --> 00:09:47,380
+with the non-attention model.
+
+176
+00:09:47,380 --> 00:09:50,890
+We then put that
+through another softmax
+
+177
+00:09:50,890 --> 00:09:54,370
+to generate a probability
+distribution of output words,
+
+178
+00:09:54,370 --> 00:09:56,770
+and then we'd sample a word.
+
+179
+00:09:56,770 --> 00:10:01,930
+And hopefully that's a
+fairly obvious implementation
+
+180
+00:10:01,930 --> 00:10:03,380
+of what we have here.
+
+181
+00:10:03,380 --> 00:10:07,050
+So we've got our vectors
+with encoder and decoder.
+
+182
+00:10:07,050 --> 00:10:11,816
+We're getting dot products
+of st with each one.
+
+183
+00:10:11,816 --> 00:10:14,410
+Softmax turns that
+into a probability.
+
+184
+00:10:14,410 --> 00:10:17,537
+We take the weighted
+average of the ones in red
+
+185
+00:10:17,537 --> 00:10:19,000
+to get the attention output.
+
+186
+00:10:19,000 --> 00:10:26,680
+We combine that with the
+st decoder's hidden state.
+
+187
+00:10:26,680 --> 00:10:28,930
+And then we put it
+through another softmax,
+
+188
+00:10:28,930 --> 00:10:30,220
+and we can sample pie.
+
+189
+00:10:30,220 --> 00:10:37,260
+
+
+190
+00:10:37,260 --> 00:10:42,430
+Okay, so I sort almost
+can't stress enough
+
+191
+00:10:42,430 --> 00:10:45,460
+that attention is great.
+
+192
+00:10:45,460 --> 00:10:51,790
+So the very first modern neural
+machine translation program
+
+193
+00:10:51,790 --> 00:10:58,000
+was done in 2014 at
+Google by [INAUDIBLE]..
+
+194
+00:10:58,000 --> 00:11:03,550
+And they had a straightforward
+encoder, decoder to LSTMs.
+
+195
+00:11:03,550 --> 00:11:07,180
+And by a bunch of
+tricks of having
+
+196
+00:11:07,180 --> 00:11:10,030
+very deep LSTMs,
+huge amount of data,
+
+197
+00:11:10,030 --> 00:11:12,790
+huge amount of training,
+other tricks that I don't want
+
+198
+00:11:12,790 --> 00:11:15,100
+to go into now,
+they were actually
+
+199
+00:11:15,100 --> 00:11:19,355
+able to get good results
+by just putting together
+
+200
+00:11:19,355 --> 00:11:25,040
+a straight seq2seq neural
+machine translation system.
+
+201
+00:11:25,040 --> 00:11:29,415
+But very soon after that, in
+fact, later the same year,
+
+202
+00:11:29,415 --> 00:11:33,770
+a group from Montreal, Dzmitry
+Bahdanau, Kyunghyun Cho,
+
+203
+00:11:33,770 --> 00:11:38,720
+and Yoshua Bengio introduced
+sequence to sequence model
+
+204
+00:11:38,720 --> 00:11:39,830
+with attention.
+
+205
+00:11:39,830 --> 00:11:41,930
+And it was just
+obviously better.
+
+206
+00:11:41,930 --> 00:11:45,020
+So attention significantly
+improved neural machine
+
+207
+00:11:45,020 --> 00:11:47,120
+translation performance.
+
+208
+00:11:47,120 --> 00:11:49,940
+And that sort of makes sense.
+
+209
+00:11:49,940 --> 00:11:53,220
+It allows the decoder to
+focus on parts of the source
+
+210
+00:11:53,220 --> 00:11:54,390
+sentence.
+
+211
+00:11:54,390 --> 00:11:58,640
+So I think that is giving you
+a much more human-like model
+
+212
+00:11:58,640 --> 00:12:00,740
+of doing machine translation.
+
+213
+00:12:00,740 --> 00:12:03,740
+Because you know exactly
+what a human translator would
+
+214
+00:12:03,740 --> 00:12:06,050
+do is you read the
+source sentence,
+
+215
+00:12:06,050 --> 00:12:07,970
+you've got an idea
+of what it's about,
+
+216
+00:12:07,970 --> 00:12:11,120
+you start writing the first
+couple of words of translation.
+
+217
+00:12:11,120 --> 00:12:14,540
+And then what you
+do is you look back
+
+218
+00:12:14,540 --> 00:12:19,400
+to see what exactly it said,
+as that sort of modifiers
+
+219
+00:12:19,400 --> 00:12:22,490
+the noun to translate
+the next few words.
+
+220
+00:12:22,490 --> 00:12:25,700
+Technically people think of
+it as solving the bottleneck
+
+221
+00:12:25,700 --> 00:12:30,620
+problem, because attention
+now allows us full access
+
+222
+00:12:30,620 --> 00:12:32,810
+to the entire
+source hidden state,
+
+223
+00:12:32,810 --> 00:12:35,240
+and we can get any
+information that we need.
+
+224
+00:12:35,240 --> 00:12:37,100
+It's not the case
+that all information
+
+225
+00:12:37,100 --> 00:12:40,860
+has to be encoded in
+the final hidden state.
+
+226
+00:12:40,860 --> 00:12:44,130
+It also helps with the
+vanishing gradient problem.
+
+227
+00:12:44,130 --> 00:12:47,200
+So effectively, now,
+we have shortcuts back
+
+228
+00:12:47,200 --> 00:12:50,910
+to every hidden
+state of the encoder.
+
+229
+00:12:50,910 --> 00:12:53,360
+And so therefore there's
+always a short path
+
+230
+00:12:53,360 --> 00:12:56,990
+with gradient flow, and that
+greatly mitigates the vanishing
+
+231
+00:12:56,990 --> 00:12:58,776
+gradient problem.
+
+232
+00:12:58,776 --> 00:13:02,000
+A final neat thing
+is that attention
+
+233
+00:13:02,000 --> 00:13:06,290
+provides some effective
+interpretability to sequence
+
+234
+00:13:06,290 --> 00:13:08,000
+to sequence models.
+
+235
+00:13:08,000 --> 00:13:11,690
+Because by looking at the
+attention distribution,
+
+236
+00:13:11,690 --> 00:13:15,090
+we can see what the
+decoder was focusing on.
+
+237
+00:13:15,090 --> 00:13:18,020
+So in a stark
+probabilistic way, we
+
+238
+00:13:18,020 --> 00:13:21,380
+get the [INAUDIBLE]
+operation of the model
+
+239
+00:13:21,380 --> 00:13:25,490
+a soft alignment as to which
+words translate which words.
+
+240
+00:13:25,490 --> 00:13:29,980
+So in this example of the
+French sentence being translated
+
+241
+00:13:29,980 --> 00:13:33,800
+is he hit me with a pie, where
+there's sort of a single verb
+
+242
+00:13:33,800 --> 00:13:35,100
+here in the French.
+
+243
+00:13:35,100 --> 00:13:37,040
+Which is kind of like
+as in English sometimes
+
+244
+00:13:37,040 --> 00:13:40,100
+people imply they
+use pied as a verb.
+
+245
+00:13:40,100 --> 00:13:44,300
+So it's sort of like
+saying he, me, pied.
+
+246
+00:13:44,300 --> 00:13:48,890
+That the model is getting
+that "il" is translated as he,
+
+247
+00:13:48,890 --> 00:13:53,330
+the "m'" is being translated as
+me, and essentially "entarte"
+
+248
+00:13:53,330 --> 00:13:58,150
+is being translated
+as hit with a pie.
+
+249
+00:13:58,150 --> 00:14:02,920
+So the amazing thing is,
+the model was never told
+
+250
+00:14:02,920 --> 00:14:04,840
+about any of these alignments.
+
+251
+00:14:04,840 --> 00:14:07,120
+There was no explicit
+separate model
+
+252
+00:14:07,120 --> 00:14:09,640
+which was trying to
+learn these alignments,
+
+253
+00:14:09,640 --> 00:14:12,820
+as in the earlier statistical
+phrase based systems.
+
+254
+00:14:12,820 --> 00:14:17,290
+We just built a sequence to
+sequence model with attention,
+
+255
+00:14:17,290 --> 00:14:20,800
+and said, here are a lot
+of translated sentences.
+
+256
+00:14:20,800 --> 00:14:23,930
+Start running back and
+forth and try and get
+
+257
+00:14:23,930 --> 00:14:28,200
+[INAUDIBLE] sentences.
+
+258
+00:14:28,200 --> 00:14:31,320
+And it just learns by
+itself in deciding where
+
+259
+00:14:31,320 --> 00:14:33,780
+it's best to pay attention.
+
+260
+00:14:33,780 --> 00:14:37,800
+What is a good alignment between
+the source and the target
+
+261
+00:14:37,800 --> 00:14:38,460
+languages?
+
+262
+00:14:38,460 --> 00:14:43,800
+
+
+263
+00:14:43,800 --> 00:14:49,868
+Okay, so that's the
+basic idea of attention.
+
+264
+00:14:49,868 --> 00:14:55,250
+I want to go a bit more into
+the complexity of attention
+
+265
+00:14:55,250 --> 00:14:59,870
+since it's such an
+important idea that we'll
+
+266
+00:14:59,870 --> 00:15:03,210
+see a lot as we continue
+now with the course, right?
+
+267
+00:15:03,210 --> 00:15:06,120
+So there are several
+attention variants.
+
+268
+00:15:06,120 --> 00:15:10,160
+But first of all,
+what's the common part?
+
+269
+00:15:10,160 --> 00:15:14,270
+So we have some
+values, some vectors
+
+270
+00:15:14,270 --> 00:15:17,630
+that we're going to be sort
+of using as our memory,
+
+271
+00:15:17,630 --> 00:15:19,790
+and we have a query vector.
+
+272
+00:15:19,790 --> 00:15:24,530
+So attention always involves
+that we calculate the attention
+
+273
+00:15:24,530 --> 00:15:29,510
+scores and turn those
+into a probability
+
+274
+00:15:29,510 --> 00:15:32,180
+distribution of the softmax.
+
+275
+00:15:32,180 --> 00:15:36,380
+And we use the
+attention distribution
+
+276
+00:15:36,380 --> 00:15:41,000
+to calculate a weighted sum
+of the elements in our memory,
+
+277
+00:15:41,000 --> 00:15:44,560
+giving us an attention output.
+
+278
+00:15:44,560 --> 00:15:48,360
+So the main place where you'll
+immediately see variation
+
+279
+00:15:48,360 --> 00:15:54,440
+in the attention is, how do you
+compute these attention scores?
+
+280
+00:15:54,440 --> 00:15:57,500
+And so let's go through some
+of the ways that that's done.
+
+281
+00:15:57,500 --> 00:16:02,660
+So the simplest, most obvious
+way to do it is to say, let's
+
+282
+00:16:02,660 --> 00:16:07,010
+just take the dot product
+between the given--
+
+283
+00:16:07,010 --> 00:16:11,592
+the current hidden state of the
+decoder, and all of the vectors
+
+284
+00:16:11,592 --> 00:16:17,150
+here, the source encoder vectors
+that we are putting attention
+
+285
+00:16:17,150 --> 00:16:17,990
+over.
+
+286
+00:16:17,990 --> 00:16:20,450
+And that sort of
+makes sense, right?
+
+287
+00:16:20,450 --> 00:16:24,990
+This is a dot product, it's our
+most basic similarity score.
+
+288
+00:16:24,990 --> 00:16:29,240
+But it seems like there's
+something wrong with this.
+
+289
+00:16:29,240 --> 00:16:32,840
+And that is, it
+seems wrong for you
+
+290
+00:16:32,840 --> 00:16:35,270
+to want to think
+that the entirety
+
+291
+00:16:35,270 --> 00:16:39,300
+of the source hidden states,
+and the entirety of the target
+
+292
+00:16:39,300 --> 00:16:43,310
+hidden states is all
+having information
+
+293
+00:16:43,310 --> 00:16:45,500
+about where to attend to.
+
+294
+00:16:45,500 --> 00:16:49,690
+Because really, these LSTMs
+are doing multiple things.
+
+295
+00:16:49,690 --> 00:16:53,300
+So the LSTMs are carrying
+forward information
+
+296
+00:16:53,300 --> 00:16:57,320
+along their own sequence
+to help record information
+
+297
+00:16:57,320 --> 00:17:00,050
+about the past so it can
+be used in the future.
+
+298
+00:17:00,050 --> 00:17:03,770
+They have information in
+the hidden state to tell you
+
+299
+00:17:03,770 --> 00:17:06,980
+which output you
+should generate next.
+
+300
+00:17:06,980 --> 00:17:10,339
+And perhaps, they're
+encoding some information
+
+301
+00:17:10,339 --> 00:17:14,270
+that will serve as a kind of
+a query key for getting out
+
+302
+00:17:14,270 --> 00:17:18,670
+information by attention from
+the source hidden states.
+
+303
+00:17:18,670 --> 00:17:20,990
+So it seems like
+probably we only want
+
+304
+00:17:20,990 --> 00:17:23,390
+to use some of the
+information in them
+
+305
+00:17:23,390 --> 00:17:26,598
+to calculate our
+attention score.
+
+306
+00:17:26,598 --> 00:17:29,180
+And so that's the
+kind of approach
+
+307
+00:17:29,180 --> 00:17:34,320
+that was taken very
+quickly in subsequent work.
+
+308
+00:17:34,320 --> 00:17:39,770
+So the next year, Thang
+Luong, working with me,
+
+309
+00:17:39,770 --> 00:17:42,350
+explored this idea that
+is now normally called
+
+310
+00:17:42,350 --> 00:17:44,240
+multiplicative attention.
+
+311
+00:17:44,240 --> 00:17:46,520
+So in a multiplicative
+attention,
+
+312
+00:17:46,520 --> 00:17:51,580
+we put an extra matrix in the
+middle of our dot product.
+
+313
+00:17:51,580 --> 00:17:56,270
+So this gives us a matrix
+of learnable parameters.
+
+314
+00:17:56,270 --> 00:17:59,750
+And so effectively,
+inside this matrix,
+
+315
+00:17:59,750 --> 00:18:03,140
+we can learn what parts
+of s to pay attention to,
+
+316
+00:18:03,140 --> 00:18:05,540
+and what parts of
+h to pay attention
+
+317
+00:18:05,540 --> 00:18:08,840
+to when calculating
+the similarity,
+
+318
+00:18:08,840 --> 00:18:14,330
+and hence the attention score
+between the source hidden
+
+319
+00:18:14,330 --> 00:18:18,260
+states and the
+decoder's hidden state.
+
+320
+00:18:18,260 --> 00:18:23,840
+So that is a good thing, which
+in general works much better.
+
+321
+00:18:23,840 --> 00:18:26,750
+But there's perhaps
+a problem with that,
+
+322
+00:18:26,750 --> 00:18:31,970
+which is, maybe this W matrix
+has too many parameters.
+
+323
+00:18:31,970 --> 00:18:35,120
+Because we've got these two
+vectors, which in the simplest
+
+324
+00:18:35,120 --> 00:18:36,585
+case are both in
+the same dimension
+
+325
+00:18:36,585 --> 00:18:39,080
+d, but they don't
+have to be the same.
+
+326
+00:18:39,080 --> 00:18:41,710
+And we're now
+putting in d squared,
+
+327
+00:18:41,710 --> 00:18:45,290
+new parameters for the
+matrix W. And that's sort of
+
+328
+00:18:45,290 --> 00:18:46,760
+feels like it's too many.
+
+329
+00:18:46,760 --> 00:18:49,460
+Because arguably, it
+seems like we should only
+
+330
+00:18:49,460 --> 00:18:53,440
+have about two d parameters,
+one d saying how much attention
+
+331
+00:18:53,440 --> 00:18:56,420
+to pay to different parts of
+s, and the other one how much
+
+332
+00:18:56,420 --> 00:19:00,050
+attention to pay to parts of h.
+
+333
+00:19:00,050 --> 00:19:01,340
+There's a reason for more.
+
+334
+00:19:01,340 --> 00:19:04,880
+By having a whole matrix
+here, you're not only doing
+
+335
+00:19:04,880 --> 00:19:07,820
+the scoring
+element-wise, right, you
+
+336
+00:19:07,820 --> 00:19:12,080
+can have any element
+of s being combined
+
+337
+00:19:12,080 --> 00:19:14,390
+with any element
+of the h vector,
+
+338
+00:19:14,390 --> 00:19:19,100
+and see that as a useful part
+of your similarity score.
+
+339
+00:19:19,100 --> 00:19:21,750
+But there's still a
+lot of parameters.
+
+340
+00:19:21,750 --> 00:19:30,390
+So a bit after that,
+[INAUDIBLE] parameters.
+
+341
+00:19:30,390 --> 00:19:32,990
+So if you have a
+matrix W and you'd
+
+342
+00:19:32,990 --> 00:19:36,380
+like it to have less parameters,
+the obvious linear algebra
+
+343
+00:19:36,380 --> 00:19:40,760
+thing to do is to say,
+OK, we can model W
+
+344
+00:19:40,760 --> 00:19:47,910
+as U transpose V. Where U and
+V are low rank skinny matrices.
+
+345
+00:19:47,910 --> 00:19:52,430
+So we can choose some number k
+for how skinny these matrices
+
+346
+00:19:52,430 --> 00:19:53,570
+are going to be.
+
+347
+00:19:53,570 --> 00:19:56,960
+And they can be k
+times d matrices.
+
+348
+00:19:56,960 --> 00:20:00,690
+And then we're getting a
+reduced rank matrix here.
+
+349
+00:20:00,690 --> 00:20:05,450
+And so we have a lot less-- we
+end up with a d by d matrix,
+
+350
+00:20:05,450 --> 00:20:08,360
+but it has a lot less
+parameters in it.
+
+351
+00:20:08,360 --> 00:20:11,030
+And so people explored that.
+
+352
+00:20:11,030 --> 00:20:14,270
+And at that point,
+if you just do
+
+353
+00:20:14,270 --> 00:20:16,910
+a little bit of linear
+algebra, what we
+
+354
+00:20:16,910 --> 00:20:22,070
+have here is exactly the
+same, the source hidden vector
+
+355
+00:20:22,070 --> 00:20:28,370
+and the decoder hidden vector,
+and projecting each of them
+
+356
+00:20:28,370 --> 00:20:30,770
+with a low rank
+linear projection,
+
+357
+00:20:30,770 --> 00:20:35,030
+and then taking the dot
+product of the projections.
+
+358
+00:20:35,030 --> 00:20:36,550
+And if you remember
+this equation
+
+359
+00:20:36,550 --> 00:20:40,710
+here at all, next
+Tuesday's lecture,
+
+360
+00:20:40,710 --> 00:20:43,760
+you'll see that that's actually
+exactly what's happening
+
+361
+00:20:43,760 --> 00:20:45,140
+in transformer models.
+
+362
+00:20:45,140 --> 00:20:47,750
+
+
+363
+00:20:47,750 --> 00:20:52,370
+But none of these were actually
+the original form of attention
+
+364
+00:20:52,370 --> 00:20:55,190
+that was suggested
+by Bahdanau et al.
+
+365
+00:20:55,190 --> 00:20:58,030
+But Bahdanau et al.
+
+366
+00:20:58,030 --> 00:21:01,830
+suggested is the way we
+could calculate the attention
+
+367
+00:21:01,830 --> 00:21:05,450
+score is by taking
+the two vector,
+
+368
+00:21:05,450 --> 00:21:10,760
+multiply each by a matrix,
+adding them, putting them
+
+369
+00:21:10,760 --> 00:21:15,160
+through a tanh function, giving
+us another vector which we then
+
+370
+00:21:15,160 --> 00:21:17,360
+dot product with
+yet another vector,
+
+371
+00:21:17,360 --> 00:21:19,440
+and we get out a weight.
+
+372
+00:21:19,440 --> 00:21:24,530
+So in the literature that
+compares attention variance,
+
+373
+00:21:24,530 --> 00:21:27,950
+this one is normally referred
+to additive attention.
+
+374
+00:21:27,950 --> 00:21:32,390
+I've always thought that
+that's a really lousy name,
+
+375
+00:21:32,390 --> 00:21:34,580
+or at least it never
+made sense to me.
+
+376
+00:21:34,580 --> 00:21:36,500
+Because really what
+you're doing here
+
+377
+00:21:36,500 --> 00:21:40,560
+is that you're using a
+neural net layer to calculate
+
+378
+00:21:40,560 --> 00:21:42,000
+the attention score, right?
+
+379
+00:21:42,000 --> 00:21:45,080
+This looks just like the
+kind of neural net layers
+
+380
+00:21:45,080 --> 00:21:48,237
+that we use when we wanted
+to calculate scores,
+
+381
+00:21:48,237 --> 00:21:49,820
+such as when we were
+doing simple sort
+
+382
+00:21:49,820 --> 00:21:52,760
+of feed-forward networks
+at the beginning
+
+383
+00:21:52,760 --> 00:21:54,275
+when wanted to calculate scores.
+
+384
+00:21:54,275 --> 00:22:00,270
+
+
+385
+00:22:00,270 --> 00:22:04,560
+OK, in assignment 4, which
+you should look at really soon
+
+386
+00:22:04,560 --> 00:22:06,690
+if you haven't looked
+at it yet, actually one
+
+387
+00:22:06,690 --> 00:22:09,840
+of the things in the written
+problems of assignment 4
+
+388
+00:22:09,840 --> 00:22:13,350
+is thinking about these
+different attention variants.
+
+389
+00:22:13,350 --> 00:22:17,130
+
+
+390
+00:22:17,130 --> 00:22:21,360
+OK, yeah, so I've only
+presented this idea of attention
+
+391
+00:22:21,360 --> 00:22:24,930
+as something good for
+machine translation
+
+392
+00:22:24,930 --> 00:22:30,840
+to use between the source and
+the target sequence models,
+
+393
+00:22:30,840 --> 00:22:34,170
+except for that when I tried
+to answer the question.
+
+394
+00:22:34,170 --> 00:22:38,220
+But, really, this is a general
+deep learning technique, right?
+
+395
+00:22:38,220 --> 00:22:41,170
+So it's not only great
+for that application.
+
+396
+00:22:41,170 --> 00:22:44,610
+You can use it in many
+architectures, not just
+
+397
+00:22:44,610 --> 00:22:45,990
+sequence to sequence.
+
+398
+00:22:45,990 --> 00:22:47,950
+And you can use
+it for many tasks,
+
+399
+00:22:47,950 --> 00:22:50,230
+not just for
+machine translation.
+
+400
+00:22:50,230 --> 00:22:55,920
+So any time that you have
+a bunch of vector values
+
+401
+00:22:55,920 --> 00:23:00,180
+and you have sum of a vector
+that you can regard as a query,
+
+402
+00:23:00,180 --> 00:23:05,280
+attention is a technique to
+compute a value from them,
+
+403
+00:23:05,280 --> 00:23:08,220
+that you can have the
+query attend to the values.
+
+404
+00:23:08,220 --> 00:23:12,260
+
+
+405
+00:23:12,260 --> 00:23:15,830
+And so once you think
+about it like that,
+
+406
+00:23:15,830 --> 00:23:20,460
+you can think about attention
+as a kind of memory access
+
+407
+00:23:20,460 --> 00:23:25,460
+mechanism, that the weighted
+sum that attention calculates
+
+408
+00:23:25,460 --> 00:23:28,580
+gives you a kind of
+selective summary of some
+
+409
+00:23:28,580 --> 00:23:31,790
+of the information
+contained in the values.
+
+410
+00:23:31,790 --> 00:23:37,290
+And the query tells you which
+values to pay attention to.
+
+411
+00:23:37,290 --> 00:23:39,620
+So, on the one
+hand, you could say
+
+412
+00:23:39,620 --> 00:23:43,280
+this is a good general
+technique any time you
+
+413
+00:23:43,280 --> 00:23:47,060
+have a whole bunch of
+vectors and you want
+
+414
+00:23:47,060 --> 00:23:49,130
+to just get one vector out.
+
+415
+00:23:49,130 --> 00:23:52,610
+Well, the dumbest thing you can
+do is just average them all,
+
+416
+00:23:52,610 --> 00:23:56,570
+or do max pooling, take
+the element-wise max
+
+417
+00:23:56,570 --> 00:23:57,770
+of each element.
+
+418
+00:23:57,770 --> 00:24:00,380
+But this gives you a
+much more flexible way
+
+419
+00:24:00,380 --> 00:24:04,340
+to combine them together
+into a single vector.
+
+420
+00:24:04,340 --> 00:24:07,610
+And so you can think of
+that as actually giving us
+
+421
+00:24:07,610 --> 00:24:12,470
+an operation that's much more
+like a conventional computer
+
+422
+00:24:12,470 --> 00:24:14,550
+and its memory access.
+
+423
+00:24:14,550 --> 00:24:17,900
+So the values we can
+think of as like our RAM.
+
+424
+00:24:17,900 --> 00:24:20,560
+
+
+425
+00:24:20,560 --> 00:24:24,250
+And [INAUDIBLE] memory, right?
+
+426
+00:24:24,250 --> 00:24:26,620
+We have a query vector,
+and the query vector
+
+427
+00:24:26,620 --> 00:24:30,640
+acts as a sort of associative
+memory pointer that
+
+428
+00:24:30,640 --> 00:24:34,840
+says how much weight to put
+on different parts of RAM.
+
+429
+00:24:34,840 --> 00:24:36,370
+And then we sort
+of proportionately
+
+430
+00:24:36,370 --> 00:24:41,140
+retrieve those bits of
+RAM to get a new value.
+
+431
+00:24:41,140 --> 00:24:43,780
+Another cool thing
+about attention
+
+432
+00:24:43,780 --> 00:24:50,720
+that I'll just mention here
+is that attention is actually
+
+433
+00:24:50,720 --> 00:24:55,375
+a genuinely new deep learning
+idea from the last decade,
+
+434
+00:24:55,375 --> 00:24:57,140
+developed in the last decade.
+
+435
+00:24:57,140 --> 00:24:59,570
+It's sort of a slightly
+depressing fact
+
+436
+00:24:59,570 --> 00:25:02,420
+about deep learning
+that a lot of what's
+
+437
+00:25:02,420 --> 00:25:05,720
+being done in deep
+learning in recent years
+
+438
+00:25:05,720 --> 00:25:07,430
+wasn't actually new ideas.
+
+439
+00:25:07,430 --> 00:25:11,150
+They were ideas that were
+developed in the 80s and 90s,
+
+440
+00:25:11,150 --> 00:25:13,370
+it's just people aren't
+able to get much use of them
+
+441
+00:25:13,370 --> 00:25:16,370
+then, because their
+computers were too small,
+
+442
+00:25:16,370 --> 00:25:18,620
+and the amount of data
+they had was too small.
+
+443
+00:25:18,620 --> 00:25:21,470
+And they were sort
+of reinvented--
+
+444
+00:25:21,470 --> 00:25:24,590
+well, not reinvented, but
+they were given new life
+
+445
+00:25:24,590 --> 00:25:26,745
+in the 2010s.
+
+446
+00:25:26,745 --> 00:25:32,600
+But attention is a genuinely
+new idea from the 2010s.
+
+447
+00:25:32,600 --> 00:25:37,730
+And we'll see sort of next
+week how it sort of then
+
+448
+00:25:37,730 --> 00:25:40,700
+turns into this huge
+idea that transforms NLP.
+
+449
+00:25:40,700 --> 00:25:43,770
+
+
+450
+00:25:43,770 --> 00:25:46,830
+OK, so that's all I wanted
+to tell you about attention,
+
+451
+00:25:46,830 --> 00:25:49,830
+and now I'm going to
+get on and go and talk
+
+452
+00:25:49,830 --> 00:25:53,610
+about final projects and
+all this stuff about that.
+
+453
+00:25:53,610 --> 00:25:55,680
+So am I good to start
+doing other stuff?
+
+454
+00:25:55,680 --> 00:25:59,890
+
+
+455
+00:25:59,890 --> 00:26:01,310
+Yes.
+
+456
+00:26:01,310 --> 00:26:05,650
+Yeah, OK, so this is a quick
+reminder so you don't forget.
+
+457
+00:26:05,650 --> 00:26:08,380
+This is the coursework.
+
+458
+00:26:08,380 --> 00:26:12,490
+So you're right in the middle.
+
+459
+00:26:12,490 --> 00:26:17,140
+You're past half way almost of
+going through the assignments.
+
+460
+00:26:17,140 --> 00:26:19,120
+And they're worth
+about half the grade.
+
+461
+00:26:19,120 --> 00:26:21,400
+But the other half
+of the grade comes
+
+462
+00:26:21,400 --> 00:26:25,570
+from the final project, which
+I'm going to talk about today.
+
+463
+00:26:25,570 --> 00:26:27,820
+And that gets split up.
+
+464
+00:26:27,820 --> 00:26:30,790
+So there's a project proposal,
+which we've handed out
+
+465
+00:26:30,790 --> 00:26:32,140
+instructions for today.
+
+466
+00:26:32,140 --> 00:26:33,790
+It's worth 5%.
+
+467
+00:26:33,790 --> 00:26:37,690
+There's a milestone that's
+worth 5% in the middle.
+
+468
+00:26:37,690 --> 00:26:40,420
+And there's a report at the end,
+which is the big part, which
+
+469
+00:26:40,420 --> 00:26:42,110
+is worth 30%.
+
+470
+00:26:42,110 --> 00:26:45,610
+And then we also want to have a
+representation of your project
+
+471
+00:26:45,610 --> 00:26:47,470
+that people can easily browse.
+
+472
+00:26:47,470 --> 00:26:51,610
+So in normal years when
+there were people on campus,
+
+473
+00:26:51,610 --> 00:26:53,830
+we had a poster session
+for the class, which
+
+474
+00:26:53,830 --> 00:26:55,540
+just seems like we
+just can't usefully
+
+475
+00:26:55,540 --> 00:26:57,370
+do in the current world.
+
+476
+00:26:57,370 --> 00:27:00,280
+We want to put up a
+website where there's
+
+477
+00:27:00,280 --> 00:27:03,040
+some brief descriptions
+of each project,
+
+478
+00:27:03,040 --> 00:27:05,500
+so a nice picture
+of what you've done.
+
+479
+00:27:05,500 --> 00:27:08,530
+And then we can link to
+your project write up.
+
+480
+00:27:08,530 --> 00:27:11,603
+And so you will also
+then get 3% for that.
+
+481
+00:27:11,603 --> 00:27:14,020
+Just make sure you do it, when
+it comes down to it, right?
+
+482
+00:27:14,020 --> 00:27:16,910
+
+
+483
+00:27:16,910 --> 00:27:21,230
+And yeah, so I should just
+mention again, as we go along.
+
+484
+00:27:21,230 --> 00:27:27,720
+The honor code, that's important
+also for the final projects.
+
+485
+00:27:27,720 --> 00:27:31,530
+So just to be clear on that,
+so for the final projects,
+
+486
+00:27:31,530 --> 00:27:34,970
+in a lot of cases, you'll get to
+use a lot of stuff that already
+
+487
+00:27:34,970 --> 00:27:38,840
+exists, that you may well
+be using some model that you
+
+488
+00:27:38,840 --> 00:27:40,820
+can just download
+from the GitHub
+
+489
+00:27:40,820 --> 00:27:43,910
+repository or similar places.
+
+490
+00:27:43,910 --> 00:27:48,590
+You may well be
+taking various ideas.
+
+491
+00:27:48,590 --> 00:27:51,410
+It's fine for the
+final project to use
+
+492
+00:27:51,410 --> 00:27:53,840
+any amount of existing stuff.
+
+493
+00:27:53,840 --> 00:27:57,710
+But you have to make sure
+that you acknowledge what
+
+494
+00:27:57,710 --> 00:27:59,820
+you're using and document it.
+
+495
+00:27:59,820 --> 00:28:04,610
+And in terms of evaluating
+your projects, what we'll
+
+496
+00:28:04,610 --> 00:28:09,650
+be interested in is the value
+add in terms of what you did,
+
+497
+00:28:09,650 --> 00:28:13,890
+not what you're able to
+download from other people.
+
+498
+00:28:13,890 --> 00:28:19,100
+So for the final project,
+you can have teams of 1 to 3.
+
+499
+00:28:19,100 --> 00:28:22,070
+In almost every case,
+every member of the team
+
+500
+00:28:22,070 --> 00:28:23,480
+gets the same score.
+
+501
+00:28:23,480 --> 00:28:26,390
+But we do ask for a brief
+statement of the work done
+
+502
+00:28:26,390 --> 00:28:27,600
+by each teammate.
+
+503
+00:28:27,600 --> 00:28:29,385
+And if it's clear
+that there was sort
+
+504
+00:28:29,385 --> 00:28:34,970
+of some egregious imbalance,
+in sort of 1 in 100 cases,
+
+505
+00:28:34,970 --> 00:28:38,390
+we do do something about that.
+
+506
+00:28:38,390 --> 00:28:42,600
+So for the final project, you've
+essentially got two choices.
+
+507
+00:28:42,600 --> 00:28:47,510
+You can either do our default
+final project where we give you
+
+508
+00:28:47,510 --> 00:28:51,140
+the scaffolding and send you
+pointed in some direction,
+
+509
+00:28:51,140 --> 00:28:55,670
+or you can propose a custom
+final project, which we then
+
+510
+00:28:55,670 --> 00:28:59,150
+need to approve as a suitable
+final project for the course.
+
+511
+00:28:59,150 --> 00:29:00,920
+And I'm going to
+talk a bit about both
+
+512
+00:29:00,920 --> 00:29:03,690
+of those in this class.
+
+513
+00:29:03,690 --> 00:29:06,890
+So you can work in
+teams of 1 to 3.
+
+514
+00:29:06,890 --> 00:29:11,000
+If you have a bigger team
+we expect you to do more.
+
+515
+00:29:11,000 --> 00:29:15,260
+Sometimes people use the same
+project for multiple classes,
+
+516
+00:29:15,260 --> 00:29:23,360
+so that it might also use it
+as [INAUDIBLE] allow that.
+
+517
+00:29:23,360 --> 00:29:25,390
+But it's sort of the
+same general rule, right?
+
+518
+00:29:25,390 --> 00:29:27,110
+So that there are two
+of you, and you're
+
+519
+00:29:27,110 --> 00:29:29,280
+using the project
+for two classes each,
+
+520
+00:29:29,280 --> 00:29:33,110
+that's sort of like it should
+be four persons worth of work
+
+521
+00:29:33,110 --> 00:29:34,380
+that is being done.
+
+522
+00:29:34,380 --> 00:29:39,980
+And so we expect projects
+that are bigger, that--
+
+523
+00:29:39,980 --> 00:29:42,500
+if it's just one
+of you, we can be
+
+524
+00:29:42,500 --> 00:29:45,840
+totally satisfied with
+something compact and small.
+
+525
+00:29:45,840 --> 00:29:50,120
+It sort of has to be done, but
+it can be compact and small.
+
+526
+00:29:50,120 --> 00:29:53,600
+Whereas if there are three
+of you, we sort of feel like,
+
+527
+00:29:53,600 --> 00:29:55,580
+well, you really should
+have had enough time
+
+528
+00:29:55,580 --> 00:29:58,310
+to actually implement
+a variant model
+
+529
+00:29:58,310 --> 00:30:02,390
+and see if that works better.
+
+530
+00:30:02,390 --> 00:30:04,280
+You can use any
+framework or language
+
+531
+00:30:04,280 --> 00:30:08,510
+you want for the final project,
+but in practice, basically,
+
+532
+00:30:08,510 --> 00:30:11,150
+people go on using PyTorch.
+
+533
+00:30:11,150 --> 00:30:12,900
+And then, finally,
+I've got to mention
+
+534
+00:30:12,900 --> 00:30:15,080
+on the default final project.
+
+535
+00:30:15,080 --> 00:30:16,910
+I'll get back to
+this in a minute.
+
+536
+00:30:16,910 --> 00:30:19,070
+But actually this
+year, new thing, we've
+
+537
+00:30:19,070 --> 00:30:23,480
+got two sub-variants of
+the default final project,
+
+538
+00:30:23,480 --> 00:30:27,030
+and you can choose
+one or the other.
+
+539
+00:30:27,030 --> 00:30:29,360
+So for custom
+final projects, I'm
+
+540
+00:30:29,360 --> 00:30:32,780
+really happy to talk to
+people about final projects.
+
+541
+00:30:32,780 --> 00:30:34,490
+But there's this problem.
+
+542
+00:30:34,490 --> 00:30:38,840
+And you'll be encouraged to
+sign up for an office hour slot.
+
+543
+00:30:38,840 --> 00:30:42,080
+But there's this problem
+that there's only one of me.
+
+544
+00:30:42,080 --> 00:30:49,060
+So also encourage you to talk
+to the TAs about final projects.
+
+545
+00:30:49,060 --> 00:30:52,460
+Many of the TAs have experience
+for all sorts of things.
+
+546
+00:30:52,460 --> 00:30:54,080
+And we've tried to
+sort of summarize
+
+547
+00:30:54,080 --> 00:30:56,600
+some of what they
+have experience
+
+548
+00:30:56,600 --> 00:30:59,580
+with on the office hours page.
+
+549
+00:30:59,580 --> 00:31:02,510
+So look at that and try
+and get some ideas of who
+
+550
+00:31:02,510 --> 00:31:05,100
+might be good to talk about.
+
+551
+00:31:05,100 --> 00:31:10,580
+So for the final projects,
+we make sure everyone
+
+552
+00:31:10,580 --> 00:31:12,470
+has some kind of mentor.
+
+553
+00:31:12,470 --> 00:31:17,030
+And the mentor can either be a
+TA or instructor in this class,
+
+554
+00:31:17,030 --> 00:31:19,250
+or it could be somebody else.
+
+555
+00:31:19,250 --> 00:31:21,380
+And for the somebody
+else option,
+
+556
+00:31:21,380 --> 00:31:24,530
+well, if there's someone
+you know at Stanford,
+
+557
+00:31:24,530 --> 00:31:27,530
+and there's some cool
+project they have,
+
+558
+00:31:27,530 --> 00:31:30,230
+whatever it is,
+if it's something
+
+559
+00:31:30,230 --> 00:31:33,530
+on the political science
+of understanding documents,
+
+560
+00:31:33,530 --> 00:31:37,910
+or in the med school
+doing something,
+
+561
+00:31:37,910 --> 00:31:40,430
+you can have them
+as your mentor.
+
+562
+00:31:40,430 --> 00:31:44,060
+Or we then also collected
+some projects from people
+
+563
+00:31:44,060 --> 00:31:47,130
+in the Stanford NLP
+group and community,
+
+564
+00:31:47,130 --> 00:31:49,680
+and we're going to be
+distributing a list of those.
+
+565
+00:31:49,680 --> 00:31:51,950
+So you can try and
+sort of sign up
+
+566
+00:31:51,950 --> 00:31:53,600
+to be doing one
+of those projects,
+
+567
+00:31:53,600 --> 00:31:55,160
+and they can be a mentor.
+
+568
+00:31:55,160 --> 00:31:58,280
+So in that case,
+the other person
+
+569
+00:31:58,280 --> 00:31:59,960
+we expect to be
+the mentor that's
+
+570
+00:31:59,960 --> 00:32:02,210
+keeping an eye your project
+and telling you to do
+
+571
+00:32:02,210 --> 00:32:04,190
+something sort of sensible.
+
+572
+00:32:04,190 --> 00:32:07,385
+But it's one of the
+TAs in the class who
+
+573
+00:32:07,385 --> 00:32:12,190
+will be grading your various
+pieces of work for the class.
+
+574
+00:32:12,190 --> 00:32:16,780
+OK, so these are the details of
+the two default final projects,
+
+575
+00:32:16,780 --> 00:32:19,577
+and the handouts for them.
+
+576
+00:32:19,577 --> 00:32:21,220
+There are about 10
+or so page handouts
+
+577
+00:32:21,220 --> 00:32:24,200
+for each one are
+out on the web now.
+
+578
+00:32:24,200 --> 00:32:27,640
+So both of them involve
+question answering, which
+
+579
+00:32:27,640 --> 00:32:30,160
+I'll mention a bit at the end.
+
+580
+00:32:30,160 --> 00:32:33,250
+And there are sort
+of two variants.
+
+581
+00:32:33,250 --> 00:32:37,840
+One is for you to actually
+build the question answering
+
+582
+00:32:37,840 --> 00:32:41,320
+architecture by yourself.
+
+583
+00:32:41,320 --> 00:32:44,320
+And I've described
+this as from scratch,
+
+584
+00:32:44,320 --> 00:32:47,440
+but it's not really from
+scratch, because we give you
+
+585
+00:32:47,440 --> 00:32:50,600
+a baseline question answering
+system in the starter code.
+
+586
+00:32:50,600 --> 00:32:52,765
+But you're working,
+doing all the work
+
+587
+00:32:52,765 --> 00:32:54,850
+of what else could I
+add to the model, how
+
+588
+00:32:54,850 --> 00:32:58,330
+could I add extra layers for
+attention and other things
+
+589
+00:32:58,330 --> 00:33:04,280
+to make that better,
+using the SQuAD data set.
+
+590
+00:33:04,280 --> 00:33:08,800
+But one of the things
+that's happened in NLP,
+
+591
+00:33:08,800 --> 00:33:11,650
+which has really been the
+topic of next week's class,
+
+592
+00:33:11,650 --> 00:33:14,410
+is in the last few
+years in NLP, there's
+
+593
+00:33:14,410 --> 00:33:20,110
+been this revolution in using
+large, pre-trained language
+
+594
+00:33:20,110 --> 00:33:26,110
+models with names like
+BERT, roBERTa, others,
+
+595
+00:33:26,110 --> 00:33:29,200
+which have just been
+fantastically good for doing
+
+596
+00:33:29,200 --> 00:33:30,940
+natural language problems.
+
+597
+00:33:30,940 --> 00:33:36,730
+So the other choice is to
+make use of those models.
+
+598
+00:33:36,730 --> 00:33:39,070
+And so then,
+effectively, the model
+
+599
+00:33:39,070 --> 00:33:43,360
+and the model architecture as a
+starting point is given to you.
+
+600
+00:33:43,360 --> 00:33:46,570
+And so then what we're hoping
+to have people focus on
+
+601
+00:33:46,570 --> 00:33:48,940
+is how to build a robust
+question answering
+
+602
+00:33:48,940 --> 00:33:51,520
+system, which works
+across different data
+
+603
+00:33:51,520 --> 00:33:53,260
+sets and domains.
+
+604
+00:33:53,260 --> 00:33:56,290
+So a huge problem with
+a lot of NLP models
+
+605
+00:33:56,290 --> 00:34:00,640
+is if you train them on
+say, Wikipedia data, they
+
+606
+00:34:00,640 --> 00:34:03,040
+work great on Wikipedia data.
+
+607
+00:34:03,040 --> 00:34:07,040
+But then as soon as you try
+and use them on something else,
+
+608
+00:34:07,040 --> 00:34:10,449
+whether it's customer
+support questions or web
+
+609
+00:34:10,449 --> 00:34:14,739
+questions, that their
+performance degrades greatly.
+
+610
+00:34:14,739 --> 00:34:17,830
+Despite the fact that
+the human being it
+
+611
+00:34:17,830 --> 00:34:25,080
+seems like they're doing
+[INAUDIBLE] and so the building
+
+612
+00:34:25,080 --> 00:34:27,280
+a robust QA system
+track with them,
+
+613
+00:34:27,280 --> 00:34:30,100
+going to be sort
+of training or fine
+
+614
+00:34:30,100 --> 00:34:34,989
+tuning pre-trained language
+models on simple data sets.
+
+615
+00:34:34,989 --> 00:34:38,440
+And your goal is to produce
+something that then performs
+
+616
+00:34:38,440 --> 00:34:40,659
+well on different data sets.
+
+617
+00:34:40,659 --> 00:34:43,370
+
+
+618
+00:34:43,370 --> 00:34:46,400
+OK, so for this topic
+of question answering,
+
+619
+00:34:46,400 --> 00:34:48,830
+I'm going to set a few
+minutes on it at the end.
+
+620
+00:34:48,830 --> 00:34:53,210
+But on Tuesday of week
+6, the entire lecture
+
+621
+00:34:53,210 --> 00:34:54,530
+is on question answering.
+
+622
+00:34:54,530 --> 00:34:56,250
+So there'll be a
+lot of content there
+
+623
+00:34:56,250 --> 00:35:00,080
+on the different kinds of models
+for really getting up to speed.
+
+624
+00:35:00,080 --> 00:35:01,625
+Good stuff to know
+even if you're not
+
+625
+00:35:01,625 --> 00:35:03,500
+doing the default final
+project, because it's
+
+626
+00:35:03,500 --> 00:35:05,600
+a major application of NLP.
+
+627
+00:35:05,600 --> 00:35:07,280
+But even better
+stuff to know if you
+
+628
+00:35:07,280 --> 00:35:09,320
+are doing the final project.
+
+629
+00:35:09,320 --> 00:35:10,660
+So look out for that.
+
+630
+00:35:10,660 --> 00:35:12,205
+But just to give
+you one example,
+
+631
+00:35:12,205 --> 00:35:13,580
+this is the kind
+of thing we have
+
+632
+00:35:13,580 --> 00:35:15,710
+in question answering problems.
+
+633
+00:35:15,710 --> 00:35:20,660
+So question answering is
+taking a paragraph of text.
+
+634
+00:35:20,660 --> 00:35:24,500
+But I only put one sentence
+to keep my slide short.
+
+635
+00:35:24,500 --> 00:35:29,390
+Bill Aiken, adopted by Mexican
+movie actress Lupe Mayorga,
+
+636
+00:35:29,390 --> 00:35:31,980
+grew up in the
+neighboring town of Madera
+
+637
+00:35:31,980 --> 00:35:34,790
+and his song
+chronicled the what?
+
+638
+00:35:34,790 --> 00:35:37,910
+The question is, in what
+town did Bill Aiken grow up?
+
+639
+00:35:37,910 --> 00:35:40,400
+This stuff doesn't
+actually seen so hard.
+
+640
+00:35:40,400 --> 00:35:42,260
+I presume all of
+you could have done
+
+641
+00:35:42,260 --> 00:35:44,300
+this when you were in
+sixth grade in school,
+
+642
+00:35:44,300 --> 00:35:45,470
+or something like that.
+
+643
+00:35:45,470 --> 00:35:47,510
+The answer should be Madera.
+
+644
+00:35:47,510 --> 00:35:52,850
+But somehow, Google's BERT
+model fails to find that answer.
+
+645
+00:35:52,850 --> 00:35:54,680
+Perhaps it's partly
+because there's
+
+646
+00:35:54,680 --> 00:35:57,860
+the extra stuff in the middle
+there, adopted by Mexican movie
+
+647
+00:35:57,860 --> 00:35:59,810
+actress.
+
+648
+00:35:59,810 --> 00:36:02,090
+And so it says,
+no, this sentence
+
+649
+00:36:02,090 --> 00:36:04,150
+doesn't answer the question.
+
+650
+00:36:04,150 --> 00:36:05,990
+So you can hope to
+do better than that.
+
+651
+00:36:05,990 --> 00:36:08,910
+
+
+652
+00:36:08,910 --> 00:36:11,910
+OK, so there's this choice
+about doing either the default
+
+653
+00:36:11,910 --> 00:36:15,060
+or custom final project.
+
+654
+00:36:15,060 --> 00:36:20,610
+And the overall steps have
+been that about half the people
+
+655
+00:36:20,610 --> 00:36:22,300
+do each.
+
+656
+00:36:22,300 --> 00:36:25,920
+So there's no sort of
+clear winner of a choice.
+
+657
+00:36:25,920 --> 00:36:30,840
+In terms of thinking about
+what you should choose,
+
+658
+00:36:30,840 --> 00:36:34,650
+I mean, I think the default
+final project is great
+
+659
+00:36:34,650 --> 00:36:37,810
+if you have limited experience
+with doing research,
+
+660
+00:36:37,810 --> 00:36:40,020
+if you don't have any
+clear idea of what
+
+661
+00:36:40,020 --> 00:36:42,990
+you would want to do with
+a custom final project,
+
+662
+00:36:42,990 --> 00:36:46,890
+if you think it would be good to
+have guidance and a clear goal
+
+663
+00:36:46,890 --> 00:36:48,330
+to work towards--
+
+664
+00:36:48,330 --> 00:36:49,910
+indeed, we give
+you a leaderboard
+
+665
+00:36:49,910 --> 00:36:52,050
+so you can compete against
+the other people doing
+
+666
+00:36:52,050 --> 00:36:54,210
+the default final project--
+
+667
+00:36:54,210 --> 00:36:57,060
+then you should do the
+default final project.
+
+668
+00:36:57,060 --> 00:37:01,800
+It gives you guidance,
+scaffolding, clear goal posts.
+
+669
+00:37:01,800 --> 00:37:06,330
+I mean, and in particular,
+just to sort of try and give
+
+670
+00:37:06,330 --> 00:37:11,070
+a sharper edge to this, I
+mean, the fact of the matter
+
+671
+00:37:11,070 --> 00:37:14,580
+is every year there
+are few people who
+
+672
+00:37:14,580 --> 00:37:17,790
+do a custom final project.
+
+673
+00:37:17,790 --> 00:37:20,730
+And when we're grading
+them, we look at this custom
+
+674
+00:37:20,730 --> 00:37:25,590
+final project, and we
+say, huh, this just
+
+675
+00:37:25,590 --> 00:37:28,740
+looks pretty lame compared
+to what people are doing
+
+676
+00:37:28,740 --> 00:37:30,960
+in the default final project.
+
+677
+00:37:30,960 --> 00:37:33,630
+And that's a bad state to be in.
+
+678
+00:37:33,630 --> 00:37:36,270
+But if you're doing the
+custom final project,
+
+679
+00:37:36,270 --> 00:37:39,090
+you want to have a
+sort of a clear thing
+
+680
+00:37:39,090 --> 00:37:41,850
+that you thought out
+that is interesting,
+
+681
+00:37:41,850 --> 00:37:46,050
+so it'll seem as or more
+interesting than the default
+
+682
+00:37:46,050 --> 00:37:47,250
+final project.
+
+683
+00:37:47,250 --> 00:37:49,440
+And if you don't think
+you've got such a thing,
+
+684
+00:37:49,440 --> 00:37:51,990
+you're actually better off
+doing the default final project.
+
+685
+00:37:51,990 --> 00:37:54,820
+
+
+686
+00:37:54,820 --> 00:37:57,640
+Why should you do the
+custom final project?
+
+687
+00:37:57,640 --> 00:38:00,850
+Well, if you have some
+research projects, possibly
+
+688
+00:38:00,850 --> 00:38:02,560
+something you've
+already been working on,
+
+689
+00:38:02,560 --> 00:38:04,750
+or any rate, something
+that you think,
+
+690
+00:38:04,750 --> 00:38:07,540
+oh, this would be
+great to do, which
+
+691
+00:38:07,540 --> 00:38:09,730
+there are two requirements
+for our project.
+
+692
+00:38:09,730 --> 00:38:13,060
+It has to substantively
+involve human language,
+
+693
+00:38:13,060 --> 00:38:16,610
+and it has to substantively
+involve neural networks.
+
+694
+00:38:16,610 --> 00:38:18,880
+So that doesn't mean it has
+to be fully about those.
+
+695
+00:38:18,880 --> 00:38:23,240
+If you want to do a language
+and vision project, that's fine.
+
+696
+00:38:23,240 --> 00:38:27,100
+Or if you want to compare neural
+networks versus other machine
+
+697
+00:38:27,100 --> 00:38:30,400
+learning methods on some
+problem, that's fine.
+
+698
+00:38:30,400 --> 00:38:34,120
+But you do have to, in your
+project, substantively use
+
+699
+00:38:34,120 --> 00:38:36,628
+both of those things.
+
+700
+00:38:36,628 --> 00:38:38,920
+Yeah, so if you'd like to
+sort of design your own thing
+
+701
+00:38:38,920 --> 00:38:41,440
+and come up with something
+different on your own,
+
+702
+00:38:41,440 --> 00:38:44,790
+or just you don't like
+question answering,
+
+703
+00:38:44,790 --> 00:38:48,010
+or if you basically want
+more experience of going
+
+704
+00:38:48,010 --> 00:38:50,790
+through the whole process of
+trying to find a good research
+
+705
+00:38:50,790 --> 00:38:53,620
+goal, finding data and
+tools to explore it,
+
+706
+00:38:53,620 --> 00:38:56,260
+work it out on your own,
+then doing the custom
+
+707
+00:38:56,260 --> 00:38:58,870
+final project is a great choice.
+
+708
+00:38:58,870 --> 00:39:03,100
+
+
+709
+00:39:03,100 --> 00:39:07,600
+OK, either way, the
+steps that you go through
+
+710
+00:39:07,600 --> 00:39:09,390
+are the following.
+
+711
+00:39:09,390 --> 00:39:14,260
+So the first thing, which
+you've got until Feb 16 for,
+
+712
+00:39:14,260 --> 00:39:23,170
+is to write a project proposal,
+which is 3 to [INAUDIBLE]
+
+713
+00:39:23,170 --> 00:39:28,690
+So some of the details vary
+on the kind of project.
+
+714
+00:39:28,690 --> 00:39:32,470
+So you need to decide
+on the research topic
+
+715
+00:39:32,470 --> 00:39:36,250
+for your project, which is
+kind of easy if you're doing
+
+716
+00:39:36,250 --> 00:39:37,510
+the default final project.
+
+717
+00:39:37,510 --> 00:39:41,380
+It's either A or
+B. But we then want
+
+718
+00:39:41,380 --> 00:39:44,200
+you to choose one
+research paper that's
+
+719
+00:39:44,200 --> 00:39:49,900
+relevant to your final project,
+read it, and then learn
+
+720
+00:39:49,900 --> 00:39:52,510
+some stuff from it that
+you can write about.
+
+721
+00:39:52,510 --> 00:39:54,790
+And we want you to
+write about what
+
+722
+00:39:54,790 --> 00:39:56,380
+your plan is as to
+what you're going
+
+723
+00:39:56,380 --> 00:39:58,360
+to do about the final project.
+
+724
+00:39:58,360 --> 00:40:01,580
+And that will include
+describing things as needed,
+
+725
+00:40:01,580 --> 00:40:04,480
+such as the data
+and the evaluation.
+
+726
+00:40:04,480 --> 00:40:07,340
+And, again, this is especially
+important for custom
+
+727
+00:40:07,340 --> 00:40:08,980
+final projects.
+
+728
+00:40:08,980 --> 00:40:11,800
+Might be kind of
+obvious if you're
+
+729
+00:40:11,800 --> 00:40:15,430
+doing a default final project.
+
+730
+00:40:15,430 --> 00:40:19,510
+And so typically, if you're
+doing a default final project,
+
+731
+00:40:19,510 --> 00:40:21,220
+this should be three pages.
+
+732
+00:40:21,220 --> 00:40:23,120
+And if you're doing a
+custom final project,
+
+733
+00:40:23,120 --> 00:40:25,720
+this should be four pages.
+
+734
+00:40:25,720 --> 00:40:28,080
+So there are two parts of that.
+
+735
+00:40:28,080 --> 00:40:32,970
+The first part of it is writing
+about the paper you read.
+
+736
+00:40:32,970 --> 00:40:35,220
+And so that part is two pages.
+
+737
+00:40:35,220 --> 00:40:38,700
+And so there are longer
+form of the instructions.
+
+738
+00:40:38,700 --> 00:40:42,360
+But we want you to read
+and think about this paper.
+
+739
+00:40:42,360 --> 00:40:44,640
+What are its novel
+contributions?
+
+740
+00:40:44,640 --> 00:40:49,110
+Is that an idea that could
+be employed in other ways?
+
+741
+00:40:49,110 --> 00:40:52,620
+Are there things that
+didn't really do well?
+
+742
+00:40:52,620 --> 00:40:54,690
+How does it compare
+to other ways
+
+743
+00:40:54,690 --> 00:40:56,970
+that people have
+approached this problem?
+
+744
+00:40:56,970 --> 00:40:59,520
+Does it sort of--
+
+745
+00:40:59,520 --> 00:41:01,110
+even though it did
+things one way,
+
+746
+00:41:01,110 --> 00:41:03,030
+does it actually
+suggest ideas that
+
+747
+00:41:03,030 --> 00:41:05,790
+really could do things a
+different way that might even
+
+748
+00:41:05,790 --> 00:41:06,880
+be better?
+
+749
+00:41:06,880 --> 00:41:12,670
+And so we want you to write
+this 2 page paper summary,
+
+750
+00:41:12,670 --> 00:41:14,070
+which we will grade.
+
+751
+00:41:14,070 --> 00:41:18,180
+And, respectively, we're going
+to grade that on how good a job
+
+752
+00:41:18,180 --> 00:41:22,500
+you do at thinking about
+analyzing and having
+
+753
+00:41:22,500 --> 00:41:25,060
+critical comments on this paper.
+
+754
+00:41:25,060 --> 00:41:28,480
+So then the other half, which
+might be longer or shorter,
+
+755
+00:41:28,480 --> 00:41:31,410
+depending on whether
+it's custom or default,
+
+756
+00:41:31,410 --> 00:41:36,330
+is to propose what
+you're going to do.
+
+757
+00:41:36,330 --> 00:41:39,810
+And, really, this
+part is formative.
+
+758
+00:41:39,810 --> 00:41:42,960
+So formative means we're not
+going to grade it harshly.
+
+759
+00:41:42,960 --> 00:41:46,180
+We want you to write
+it so we can help you.
+
+760
+00:41:46,180 --> 00:41:49,230
+So we want you to sort of
+bullet through what you're
+
+761
+00:41:49,230 --> 00:41:52,170
+going to do, and us
+have an opportunity
+
+762
+00:41:52,170 --> 00:41:55,320
+to say, no, that's
+unrealistically large,
+
+763
+00:41:55,320 --> 00:41:57,720
+or that sounds
+insufficiently ambitious,
+
+764
+00:41:57,720 --> 00:41:59,880
+or this isn't going
+to work unless you
+
+765
+00:41:59,880 --> 00:42:01,980
+can get more data than
+you actually have,
+
+766
+00:42:01,980 --> 00:42:04,210
+and things like that.
+
+767
+00:42:04,210 --> 00:42:07,650
+So this is mainly
+just the feedback.
+
+768
+00:42:07,650 --> 00:42:11,850
+But on the things
+to think about,
+
+769
+00:42:11,850 --> 00:42:14,860
+project plans that
+are lacking, they're
+
+770
+00:42:14,860 --> 00:42:18,300
+generally just lacking
+concreteness in nuts and bolts
+
+771
+00:42:18,300 --> 00:42:21,030
+ways, which are
+essential to being
+
+772
+00:42:21,030 --> 00:42:25,120
+able to do a good final project
+in a short amount of time.
+
+773
+00:42:25,120 --> 00:42:28,890
+So you need to have
+found good data,
+
+774
+00:42:28,890 --> 00:42:31,480
+or have a realistic
+plan, so that
+
+775
+00:42:31,480 --> 00:42:33,750
+shouldn't be plant,
+a realistic plan
+
+776
+00:42:33,750 --> 00:42:36,030
+to be able to collect that.
+
+777
+00:42:36,030 --> 00:42:37,950
+You need to have a
+realistic way that you
+
+778
+00:42:37,950 --> 00:42:39,960
+can evaluate your work.
+
+779
+00:42:39,960 --> 00:42:43,320
+You need to have thought about
+what kinds of experiments
+
+780
+00:42:43,320 --> 00:42:46,890
+you could run so you could show
+whether your model is working
+
+781
+00:42:46,890 --> 00:42:48,077
+well or badly.
+
+782
+00:42:48,077 --> 00:42:50,160
+And we'll be sort of looking
+to see whether you've
+
+783
+00:42:50,160 --> 00:42:53,240
+done these things.
+
+784
+00:42:53,240 --> 00:42:56,720
+OK, so then a couple
+of weeks after that
+
+785
+00:42:56,720 --> 00:43:01,920
+is the project milestone,
+which is, again, from everyone.
+
+786
+00:43:01,920 --> 00:43:03,230
+This is a progress report.
+
+787
+00:43:03,230 --> 00:43:06,290
+And this, again, just meant
+to help keep you on track.
+
+788
+00:43:06,290 --> 00:43:09,230
+So you should be more
+than halfway done.
+
+789
+00:43:09,230 --> 00:43:12,230
+You should have been able--
+
+790
+00:43:12,230 --> 00:43:14,450
+in nearly all cases,
+I'll talk more
+
+791
+00:43:14,450 --> 00:43:17,070
+about this in a minute,
+nearly all cases,
+
+792
+00:43:17,070 --> 00:43:19,130
+you should already have
+been able to implement
+
+793
+00:43:19,130 --> 00:43:23,270
+some baseline system and have
+some initial experimental
+
+794
+00:43:23,270 --> 00:43:24,770
+results to show.
+
+795
+00:43:24,770 --> 00:43:27,200
+You might still be
+working on your main model
+
+796
+00:43:27,200 --> 00:43:29,900
+and have nothing to show
+for it, but hopefully you
+
+797
+00:43:29,900 --> 00:43:32,510
+have at least set an
+obvious simple baseline
+
+798
+00:43:32,510 --> 00:43:33,860
+to know how well it works.
+
+799
+00:43:33,860 --> 00:43:37,070
+It's this thing, and I built
+that, and I have some numbers.
+
+800
+00:43:37,070 --> 00:43:39,830
+And then we want an
+update on how you plan
+
+801
+00:43:39,830 --> 00:43:41,640
+to spend the rest of your time.
+
+802
+00:43:41,640 --> 00:43:44,000
+And, again, a lot of this
+is about us giving you
+
+803
+00:43:44,000 --> 00:43:46,250
+more feedback as to
+what are the best
+
+804
+00:43:46,250 --> 00:43:51,570
+things you can do for the
+final two weeks of the class.
+
+805
+00:43:51,570 --> 00:43:57,900
+And then at the end, there's
+writing a final project.
+
+806
+00:43:57,900 --> 00:44:04,810
+And for this, the
+quality of your writeup
+
+807
+00:44:04,810 --> 00:44:07,570
+is really, really important
+to your grade, right?
+
+808
+00:44:07,570 --> 00:44:10,960
+By and large, we're going to
+evaluate how good your project
+
+809
+00:44:10,960 --> 00:44:13,270
+is by reading the writeup.
+
+810
+00:44:13,270 --> 00:44:17,020
+So make sure you
+budget sufficient time
+
+811
+00:44:17,020 --> 00:44:24,040
+to actually do a good
+job of [INAUDIBLE]
+
+812
+00:44:24,040 --> 00:44:27,100
+You can look at good projects
+from past years that are
+
+813
+00:44:27,100 --> 00:44:30,250
+all up on the CS224N website.
+
+814
+00:44:30,250 --> 00:44:34,060
+2020 was kind of a mess because
+of the start of the pandemic.
+
+815
+00:44:34,060 --> 00:44:36,790
+So, of course, we
+should look at 2019.
+
+816
+00:44:36,790 --> 00:44:40,790
+So there's even better
+models of what you should do.
+
+817
+00:44:40,790 --> 00:44:44,830
+So the details vary, but
+this is sort of a picture
+
+818
+00:44:44,830 --> 00:44:49,570
+to have in mind, and normally
+what the writeup looks like.
+
+819
+00:44:49,570 --> 00:44:52,870
+So eight pages, you want to have
+an abstract and introduction
+
+820
+00:44:52,870 --> 00:44:56,860
+to the paper, you want to
+talk about related prior work,
+
+821
+00:44:56,860 --> 00:44:58,750
+you want to present
+the model you're
+
+822
+00:44:58,750 --> 00:45:02,140
+using, you want to talk
+about the data you're using,
+
+823
+00:45:02,140 --> 00:45:05,590
+talk about your experiments,
+what the results are,
+
+824
+00:45:05,590 --> 00:45:07,750
+what you learned about it.
+
+825
+00:45:07,750 --> 00:45:10,130
+The details may vary.
+
+826
+00:45:10,130 --> 00:45:12,595
+Some papers there's less
+to say about the model
+
+827
+00:45:12,595 --> 00:45:14,470
+and there's more to say
+about the experiment.
+
+828
+00:45:14,470 --> 00:45:16,810
+So you can sort of move
+things around a bit,
+
+829
+00:45:16,810 --> 00:45:18,550
+but roughly something like this.
+
+830
+00:45:18,550 --> 00:45:21,520
+
+
+831
+00:45:21,520 --> 00:45:25,030
+Okay, so I now want
+to go on and say
+
+832
+00:45:25,030 --> 00:45:28,300
+a bit about research
+and practical things
+
+833
+00:45:28,300 --> 00:45:30,230
+that we need to do.
+
+834
+00:45:30,230 --> 00:45:33,970
+A lot of these things are
+relevant to everybody.
+
+835
+00:45:33,970 --> 00:45:36,070
+At any rate, there
+are things that you
+
+836
+00:45:36,070 --> 00:45:38,110
+should know a little bit about.
+
+837
+00:45:38,110 --> 00:45:42,290
+So the very first one is
+finding research topics,
+
+838
+00:45:42,290 --> 00:45:48,170
+which is sort of especially
+vital to custom final projects.
+
+839
+00:45:48,170 --> 00:45:51,580
+Yeah, so really
+for all of science,
+
+840
+00:45:51,580 --> 00:45:53,740
+there's sort of only
+two ways that you
+
+841
+00:45:53,740 --> 00:45:55,660
+can have a research project.
+
+842
+00:45:55,660 --> 00:46:00,520
+That one way is doing
+domain science, where
+
+843
+00:46:00,520 --> 00:46:03,920
+you start with a problem
+of interest in the domain,
+
+844
+00:46:03,920 --> 00:46:07,240
+such as, how can I
+build a decent Cherokee
+
+845
+00:46:07,240 --> 00:46:09,760
+to English machine
+translation system?
+
+846
+00:46:09,760 --> 00:46:12,130
+And you work on
+finding ways to be
+
+847
+00:46:12,130 --> 00:46:14,680
+able to do it better
+than people currently
+
+848
+00:46:14,680 --> 00:46:19,450
+know how to do, or to understand
+the problem better than people
+
+849
+00:46:19,450 --> 00:46:21,010
+currently understand it.
+
+850
+00:46:21,010 --> 00:46:24,490
+And the other way is to take a
+methodological approach where
+
+851
+00:46:24,490 --> 00:46:28,750
+you start off with some method
+or approach of interest,
+
+852
+00:46:28,750 --> 00:46:31,810
+and then you work out good
+ways to extend or improve it,
+
+853
+00:46:31,810 --> 00:46:34,010
+or new ways to apply it.
+
+854
+00:46:34,010 --> 00:46:38,320
+And so basically you're
+doing one of those.
+
+855
+00:46:38,320 --> 00:46:41,350
+So there are effectively
+different kinds
+
+856
+00:46:41,350 --> 00:46:43,930
+of projects you can do.
+
+857
+00:46:43,930 --> 00:46:47,440
+This is not an exhaustive
+list, but most projects sort of
+
+858
+00:46:47,440 --> 00:46:52,570
+fall into one of these
+buckets, very non-uniformly.
+
+859
+00:46:52,570 --> 00:46:58,480
+So the most common type is you
+find some application or task
+
+860
+00:46:58,480 --> 00:47:02,610
+of interest, and you explore
+how to approach and solve
+
+861
+00:47:02,610 --> 00:47:04,660
+it as well as possible.
+
+862
+00:47:04,660 --> 00:47:06,820
+Often, that's using
+existing models
+
+863
+00:47:06,820 --> 00:47:10,420
+and trying out different
+options, and things like that.
+
+864
+00:47:10,420 --> 00:47:15,070
+A second kind is you can
+take some relatively complex
+
+865
+00:47:15,070 --> 00:47:18,190
+neural architecture, i.e.
+it has to be something more
+
+866
+00:47:18,190 --> 00:47:22,960
+complex than we've built
+for assignments 1 through 5.
+
+867
+00:47:22,960 --> 00:47:26,440
+You implement it,
+and get something
+
+868
+00:47:26,440 --> 00:47:29,740
+that works on some data.
+
+869
+00:47:29,740 --> 00:47:32,980
+And while you are doing
+something fairly complex,
+
+870
+00:47:32,980 --> 00:47:37,990
+it's fine just to implement
+it and get it to work.
+
+871
+00:47:37,990 --> 00:47:41,140
+But if there's some way that
+you can tweak it, and try and do
+
+872
+00:47:41,140 --> 00:47:43,360
+something different, and
+see if that makes that even
+
+873
+00:47:43,360 --> 00:47:45,620
+better, or maybe
+it makes it worse,
+
+874
+00:47:45,620 --> 00:47:47,950
+and you can do
+experiments either way,
+
+875
+00:47:47,950 --> 00:47:50,560
+that's sort of even better.
+
+876
+00:47:50,560 --> 00:47:54,100
+There are then other kinds
+of projects that you can do.
+
+877
+00:47:54,100 --> 00:47:57,580
+So another kind of project
+is an analysis project.
+
+878
+00:47:57,580 --> 00:47:59,720
+So you can take
+some model that's
+
+879
+00:47:59,720 --> 00:48:02,770
+an existing model and
+you can poke at it
+
+880
+00:48:02,770 --> 00:48:06,080
+and find out things
+about what it knows.
+
+881
+00:48:06,080 --> 00:48:09,910
+So you could take anything,
+even as simple as word vectors,
+
+882
+00:48:09,910 --> 00:48:11,130
+and poke at them.
+
+883
+00:48:11,130 --> 00:48:13,340
+And you can find out
+things like, well,
+
+884
+00:48:13,340 --> 00:48:16,670
+how much do word vectors
+know about word sensors?
+
+885
+00:48:16,670 --> 00:48:20,110
+Well, sometimes the same word
+is both a noun and a verb.
+
+886
+00:48:20,110 --> 00:48:22,540
+Can you tell-- can
+you sort of get
+
+887
+00:48:22,540 --> 00:48:26,400
+that difference similarities
+out of the word vectors?
+
+888
+00:48:26,400 --> 00:48:29,530
+So analysis projects
+are perfectly fine,
+
+889
+00:48:29,530 --> 00:48:31,360
+often interesting.
+
+890
+00:48:31,360 --> 00:48:34,930
+And then of these five kinds,
+the rarest kind of project,
+
+891
+00:48:34,930 --> 00:48:38,560
+we've had a couple, is
+a theoretical project.
+
+892
+00:48:38,560 --> 00:48:40,900
+So there's a lot of
+interesting deep learning
+
+893
+00:48:40,900 --> 00:48:44,840
+theory is to how do these
+things work and why,
+
+894
+00:48:44,840 --> 00:48:47,930
+and what would it take
+to make it work better?
+
+895
+00:48:47,930 --> 00:48:50,650
+And so you can work
+on sort of getting
+
+896
+00:48:50,650 --> 00:48:55,390
+any kind of non-trivial
+property or understanding
+
+897
+00:48:55,390 --> 00:48:59,320
+of a deep learning model.
+
+898
+00:48:59,320 --> 00:49:03,190
+Here are just quickly a couple
+of examples of some projects
+
+899
+00:49:03,190 --> 00:49:06,460
+from the past years of
+224N just to give you
+
+900
+00:49:06,460 --> 00:49:09,725
+a couple of examples
+of things like this.
+
+901
+00:49:09,725 --> 00:49:15,040
+So deep poetry, this
+was doing generation
+
+902
+00:49:15,040 --> 00:49:17,230
+of Shakespearean sonnets.
+
+903
+00:49:17,230 --> 00:49:18,850
+So the way it was
+being generated
+
+904
+00:49:18,850 --> 00:49:27,910
+was with [INAUDIBLE] word with
+now for machine translation.
+
+905
+00:49:27,910 --> 00:49:29,500
+But it had interesting
+differences,
+
+906
+00:49:29,500 --> 00:49:31,660
+because if you wanted
+to generate poetry,
+
+907
+00:49:31,660 --> 00:49:34,780
+you need to know about
+metrical structure, and rhyme,
+
+908
+00:49:34,780 --> 00:49:37,235
+and so they're working
+out how to add components
+
+909
+00:49:37,235 --> 00:49:40,310
+to the model that could do that.
+
+910
+00:49:40,310 --> 00:49:43,470
+Here is someone who
+was implementing
+
+911
+00:49:43,470 --> 00:49:45,010
+a complex neural model.
+
+912
+00:49:45,010 --> 00:49:48,840
+So there's been a line
+of work at DeepMind
+
+913
+00:49:48,840 --> 00:49:51,930
+on trying to build
+general purpose
+
+914
+00:49:51,930 --> 00:49:54,200
+computers with
+neural architectures,
+
+915
+00:49:54,200 --> 00:49:56,640
+so there's first of all
+neural Turing machines,
+
+916
+00:49:56,640 --> 00:49:59,490
+and then a subsequent
+model called
+
+917
+00:49:59,490 --> 00:50:02,340
+the differential
+[INAUDIBLE] neural computer.
+
+918
+00:50:02,340 --> 00:50:06,720
+And they haven't released the
+code of those open source.
+
+919
+00:50:06,720 --> 00:50:10,530
+And so Carol decided
+that she was going to--
+
+920
+00:50:10,530 --> 00:50:13,740
+she was going to implement
+differential neural computers
+
+921
+00:50:13,740 --> 00:50:15,270
+and get them to work.
+
+922
+00:50:15,270 --> 00:50:18,600
+This was a very dangerous
+idea, because we
+
+923
+00:50:18,600 --> 00:50:21,090
+were in week 10 of the
+class, and she still
+
+924
+00:50:21,090 --> 00:50:22,830
+hadn't gotten them
+to work at all.
+
+925
+00:50:22,830 --> 00:50:26,430
+But luckily, she got it
+together at the last moment
+
+926
+00:50:26,430 --> 00:50:28,650
+and actually got
+her model working,
+
+927
+00:50:28,650 --> 00:50:31,620
+and was able to run it and get
+results on some of the problems
+
+928
+00:50:31,620 --> 00:50:34,660
+that DeepMind was also
+showing results on.
+
+929
+00:50:34,660 --> 00:50:37,380
+And so she pulled the
+rabbit out of the hat,
+
+930
+00:50:37,380 --> 00:50:39,060
+and had an enormous success.
+
+931
+00:50:39,060 --> 00:50:43,880
+And we were very impressed
+that she managed to do that.
+
+932
+00:50:43,880 --> 00:50:48,020
+Here's-- so sometimes final
+projects can become papers.
+
+933
+00:50:48,020 --> 00:50:52,700
+Here is a final
+project that became
+
+934
+00:50:52,700 --> 00:50:55,850
+paper published at the top
+machine learning conference.
+
+935
+00:50:55,850 --> 00:50:59,150
+This is from a few years
+ago, this one from 2017.
+
+936
+00:50:59,150 --> 00:51:03,430
+It actually has a couple
+of fairly simple ideas.
+
+937
+00:51:03,430 --> 00:51:07,430
+There are ideas that, at that
+time, people weren't using,
+
+938
+00:51:07,430 --> 00:51:11,660
+and these two people proved
+worked and improved things.
+
+939
+00:51:11,660 --> 00:51:14,570
+And they got a conference
+paper out of it.
+
+940
+00:51:14,570 --> 00:51:16,820
+So I'll just mention
+one of them now.
+
+941
+00:51:16,820 --> 00:51:20,420
+So if you think about our
+current neural network language
+
+942
+00:51:20,420 --> 00:51:23,450
+models, they have both--
+
+943
+00:51:23,450 --> 00:51:27,755
+for words and encoding into
+distributed vectors, where
+
+944
+00:51:27,755 --> 00:51:32,630
+at the other end, the
+softmax matrix basically
+
+945
+00:51:32,630 --> 00:51:36,230
+hides inside it, just
+like for our word
+
+946
+00:51:36,230 --> 00:51:39,560
+vectors, our word
+vector for each word.
+
+947
+00:51:39,560 --> 00:51:42,440
+And then you are sort of
+deciding the probabilities
+
+948
+00:51:42,440 --> 00:51:44,210
+of generating
+different words based
+
+949
+00:51:44,210 --> 00:51:50,750
+on similarities between
+the query vector
+
+950
+00:51:50,750 --> 00:51:52,070
+and each of those words.
+
+951
+00:51:52,070 --> 00:51:54,890
+So their idea was, look,
+maybe we'd actually
+
+952
+00:51:54,890 --> 00:51:59,000
+be able to build better language
+models if we tied together
+
+953
+00:51:59,000 --> 00:52:02,750
+the word-embedding
+matrix and the matrix
+
+954
+00:52:02,750 --> 00:52:06,260
+used to project the RNN output.
+
+955
+00:52:06,260 --> 00:52:10,580
+And, actually, they showed that
+you can get significant gains
+
+956
+00:52:10,580 --> 00:52:11,760
+by doing that.
+
+957
+00:52:11,760 --> 00:52:17,150
+And so now, it's basically
+sort of now become standard,
+
+958
+00:52:17,150 --> 00:52:20,540
+if you're wanting to build
+strong neural language models,
+
+959
+00:52:20,540 --> 00:52:23,270
+that you want to tie those two
+sets of parameters together.
+
+960
+00:52:23,270 --> 00:52:26,210
+So that was pretty cool.
+
+961
+00:52:26,210 --> 00:52:29,150
+Here's some more
+systems of the project.
+
+962
+00:52:29,150 --> 00:52:31,580
+So I'll mention
+this again later,
+
+963
+00:52:31,580 --> 00:52:35,030
+but something people have been
+interested in is how can you
+
+964
+00:52:35,030 --> 00:52:38,330
+squish neural nets
+and make them small
+
+965
+00:52:38,330 --> 00:52:44,300
+so you can run them on a
+regular laptop, or a smaller
+
+966
+00:52:44,300 --> 00:52:46,280
+device like a mobile phone.
+
+967
+00:52:46,280 --> 00:52:51,590
+And so these people
+worked on, how
+
+968
+00:52:51,590 --> 00:52:55,460
+could you do quantization
+of neural networks
+
+969
+00:52:55,460 --> 00:52:58,190
+down to sort of one or
+two bits per parameter
+
+970
+00:52:58,190 --> 00:53:01,710
+and still get good results.
+
+971
+00:53:01,710 --> 00:53:04,340
+So this is sort
+of an example, has
+
+972
+00:53:04,340 --> 00:53:07,130
+to involve neural nets
+and human language,
+
+973
+00:53:07,130 --> 00:53:09,260
+it's sort of a way in
+which you could say,
+
+974
+00:53:09,260 --> 00:53:11,930
+this didn't involve
+human language at all,
+
+975
+00:53:11,930 --> 00:53:14,480
+because this was really
+about quantizing neural nets.
+
+976
+00:53:14,480 --> 00:53:17,780
+But effectively, where
+we draw the line is
+
+977
+00:53:17,780 --> 00:53:20,150
+we say you will be
+allowed to do this,
+
+978
+00:53:20,150 --> 00:53:24,050
+providing the task
+and the model you
+
+979
+00:53:24,050 --> 00:53:28,670
+use to demonstrate success or
+failure as a natural language
+
+980
+00:53:28,670 --> 00:53:29,420
+task.
+
+981
+00:53:29,420 --> 00:53:34,520
+And so they did both
+word similarity tasks,
+
+982
+00:53:34,520 --> 00:53:36,980
+and question answering
+tasks of seeing
+
+983
+00:53:36,980 --> 00:53:40,820
+how well the system performed
+after doing the compression
+
+984
+00:53:40,820 --> 00:53:41,960
+by quantization.
+
+985
+00:53:41,960 --> 00:53:44,750
+
+
+986
+00:53:44,750 --> 00:53:47,720
+How can you find a good
+place for a project
+
+987
+00:53:47,720 --> 00:53:50,240
+if you don't have a good idea?
+
+988
+00:53:50,240 --> 00:53:54,510
+One place is to sort of
+look at recent papers.
+
+989
+00:53:54,510 --> 00:53:58,160
+So for most NLP papers, they
+appear in the ACL anthology.
+
+990
+00:53:58,160 --> 00:54:01,760
+Also look at major machine
+learning conferences.
+
+991
+00:54:01,760 --> 00:54:05,930
+Most past 224N projects are
+up on the class website.
+
+992
+00:54:05,930 --> 00:54:07,290
+You can look through them.
+
+993
+00:54:07,290 --> 00:54:12,230
+It's just general
+arXiv.org preprint servers.
+
+994
+00:54:12,230 --> 00:54:14,330
+But perhaps even
+better is looking
+
+995
+00:54:14,330 --> 00:54:16,715
+for an interesting
+problem in the world.
+
+996
+00:54:16,715 --> 00:54:19,640
+So Hal Varian is
+an an economist.
+
+997
+00:54:19,640 --> 00:54:26,180
+Was it [INAUDIBLE] And he wrote
+this cool paper that I often
+
+998
+00:54:26,180 --> 00:54:30,980
+recommend to students,
+How to Build an Economic
+
+999
+00:54:30,980 --> 00:54:32,720
+Model in Your Spare Time.
+
+1000
+00:54:32,720 --> 00:54:35,420
+And the paper isn't really
+about economic models.
+
+1001
+00:54:35,420 --> 00:54:39,230
+It's about how to do research.
+
+1002
+00:54:39,230 --> 00:54:43,010
+And what he says right
+at the beginning,
+
+1003
+00:54:43,010 --> 00:54:46,370
+section 1 of the paper
+is called Getting Ideas.
+
+1004
+00:54:46,370 --> 00:54:51,230
+And he writes, "The way to get
+ideas, that's the question.
+
+1005
+00:54:51,230 --> 00:54:53,030
+Most graduate
+students are convinced
+
+1006
+00:54:53,030 --> 00:54:56,830
+that the way you get ideas
+is to read journal papers.
+
+1007
+00:54:56,830 --> 00:54:58,700
+In my experience,
+journals really
+
+1008
+00:54:58,700 --> 00:55:01,520
+have a very good source
+of original ideas.
+
+1009
+00:55:01,520 --> 00:55:05,030
+You can get lots of things
+from journal papers, technique,
+
+1010
+00:55:05,030 --> 00:55:06,860
+insight, even truth.
+
+1011
+00:55:06,860 --> 00:55:08,750
+But most of the
+time, you will only
+
+1012
+00:55:08,750 --> 00:55:11,420
+get somebody else's ideas."
+
+1013
+00:55:11,420 --> 00:55:15,380
+And so he talks further
+about better ways
+
+1014
+00:55:15,380 --> 00:55:18,455
+of getting ideas by thinking
+about problems in the world.
+
+1015
+00:55:18,455 --> 00:55:21,230
+
+
+1016
+00:55:21,230 --> 00:55:24,770
+So Arxiv is this huge
+repository of papers.
+
+1017
+00:55:24,770 --> 00:55:27,110
+It's hard to navigate.
+
+1018
+00:55:27,110 --> 00:55:30,110
+There are various tools that
+can make it easier to navigate.
+
+1019
+00:55:30,110 --> 00:55:33,350
+One of them is Arxiv
+Sanity Preserver,
+
+1020
+00:55:33,350 --> 00:55:37,380
+which is a website that was
+written by Andrej Karpahty, who
+
+1021
+00:55:37,380 --> 00:55:40,610
+was the original person
+who constructed and taught
+
+1022
+00:55:40,610 --> 00:55:46,880
+the CS231N course, still
+a good thing to use.
+
+1023
+00:55:46,880 --> 00:55:51,110
+There are lots of leaderboards
+for different tasks in NLP.
+
+1024
+00:55:51,110 --> 00:55:55,670
+So a place you can find
+tasks and work on tasks
+
+1025
+00:55:55,670 --> 00:55:58,190
+is looking at leaderboards.
+
+1026
+00:55:58,190 --> 00:56:00,830
+So Papers With Code
+and NLPProgress
+
+1027
+00:56:00,830 --> 00:56:03,890
+are two good general
+sources of leaderboards.
+
+1028
+00:56:03,890 --> 00:56:07,370
+There are also then lots
+of more specialized ones
+
+1029
+00:56:07,370 --> 00:56:09,470
+for particular tasks.
+
+1030
+00:56:09,470 --> 00:56:13,460
+I wanted to then,
+for research topics--
+
+1031
+00:56:13,460 --> 00:56:16,010
+this material, these
+next four slides,
+
+1032
+00:56:16,010 --> 00:56:18,650
+are brand new for this year.
+
+1033
+00:56:18,650 --> 00:56:21,950
+I wanted to sort of
+just say a few words
+
+1034
+00:56:21,950 --> 00:56:27,440
+about the funny,
+somewhat different time
+
+1035
+00:56:27,440 --> 00:56:32,540
+that we're in, where there's
+sort of old Deep Learning NLP,
+
+1036
+00:56:32,540 --> 00:56:35,570
+and new Deep Learning NLP.
+
+1037
+00:56:35,570 --> 00:56:38,960
+So in the early days of
+the Deep Learning revival--
+
+1038
+00:56:38,960 --> 00:56:43,370
+which I'll call 2010 to 2018,
+because 2010 is the year
+
+1039
+00:56:43,370 --> 00:56:47,090
+I started doing Deep
+Learning for NLP.
+
+1040
+00:56:47,090 --> 00:56:51,530
+Most of the work was in
+defining and exploring better
+
+1041
+00:56:51,530 --> 00:56:54,300
+Deep Learning architectures.
+
+1042
+00:56:54,300 --> 00:57:00,170
+So the typical paper was, I can
+improve a summarization system
+
+1043
+00:57:00,170 --> 00:57:02,390
+by not only using
+the kind of attention
+
+1044
+00:57:02,390 --> 00:57:04,070
+I just explained,
+but I could add
+
+1045
+00:57:04,070 --> 00:57:06,230
+an extra kind of
+attention, which I'll
+
+1046
+00:57:06,230 --> 00:57:08,060
+use as a copying mechanism.
+
+1047
+00:57:08,060 --> 00:57:11,000
+So I'll do additional
+attention calculations
+
+1048
+00:57:11,000 --> 00:57:16,820
+to work out source words
+which I could copy verbatim
+
+1049
+00:57:16,820 --> 00:57:19,730
+to the output, rather than
+having to regenerate them
+
+1050
+00:57:19,730 --> 00:57:21,720
+through the standard
+kind of softmax.
+
+1051
+00:57:21,720 --> 00:57:23,680
+That's just one
+example of millions.
+
+1052
+00:57:23,680 --> 00:57:26,510
+But you were changing the
+architecture of the model,
+
+1053
+00:57:26,510 --> 00:57:30,090
+and make things better.
+
+1054
+00:57:30,090 --> 00:57:35,360
+That's what a lot of good
+CS224N projects did too.
+
+1055
+00:57:35,360 --> 00:57:39,170
+And, in particular,
+for one branch
+
+1056
+00:57:39,170 --> 00:57:41,330
+of the default final
+project, the one where
+
+1057
+00:57:41,330 --> 00:57:45,410
+you start with the baseline
+SQuAD question answering system
+
+1058
+00:57:45,410 --> 00:57:48,110
+and work out ways
+to make it better
+
+1059
+00:57:48,110 --> 00:57:50,810
+by adding more
+neural architecture,
+
+1060
+00:57:50,810 --> 00:57:54,860
+it's essentially doing this.
+
+1061
+00:57:54,860 --> 00:58:00,110
+But, actually, if you
+look out in the research
+
+1062
+00:58:00,110 --> 00:58:02,930
+world of the last
+couple of years,
+
+1063
+00:58:02,930 --> 00:58:06,680
+the sad truth is that
+approach is dead.
+
+1064
+00:58:06,680 --> 00:58:08,870
+It's not actually dead.
+
+1065
+00:58:08,870 --> 00:58:12,290
+I mean, that's too strong.
+
+1066
+00:58:12,290 --> 00:58:18,620
+But that's now much more
+difficult and rarer to do.
+
+1067
+00:58:18,620 --> 00:58:23,420
+If you look at the sort of
+last three years of NLP--
+
+1068
+00:58:23,420 --> 00:58:28,910
+and this is true both for people
+who are implementing production
+
+1069
+00:58:28,910 --> 00:58:33,170
+NLP systems at
+companies and for people
+
+1070
+00:58:33,170 --> 00:58:36,530
+who are doing research in NLP--
+
+1071
+00:58:36,530 --> 00:58:40,100
+that most work is
+more like this.
+
+1072
+00:58:40,100 --> 00:58:45,890
+There are these enormously
+good big pre-trained language
+
+1073
+00:58:45,890 --> 00:58:50,540
+models, BERT, GPT-2,
+roBERTa, XLNet,
+
+1074
+00:58:50,540 --> 00:58:57,710
+T5, they exist on the web,
+and you can download them
+
+1075
+00:58:57,710 --> 00:59:02,630
+with one Python command, and
+they give you a great basis
+
+1076
+00:59:02,630 --> 00:59:04,760
+for doing most NLP tasks.
+
+1077
+00:59:04,760 --> 00:59:07,350
+We'll learn all
+about them next week.
+
+1078
+00:59:07,350 --> 00:59:10,310
+So you're not actually
+starting from scratch
+
+1079
+00:59:10,310 --> 00:59:12,260
+defining your own
+model architecture
+
+1080
+00:59:12,260 --> 00:59:14,150
+and playing with variants.
+
+1081
+00:59:14,150 --> 00:59:16,300
+You're saying, I'm going
+to be using RoBERTa
+
+1082
+00:59:16,300 --> 00:59:24,290
+[INAUDIBLE] further fine
+tuning it for your task,
+
+1083
+00:59:24,290 --> 00:59:30,160
+doing domain adaptation,
+and things like that.
+
+1084
+00:59:30,160 --> 00:59:35,025
+So this is still very
+quickly of our 2021
+
+1085
+00:59:35,025 --> 00:59:40,110
+NLP for all of your practical
+projects and industry needs,
+
+1086
+00:59:40,110 --> 00:59:43,590
+this is basically the formula
+that which you should probably
+
+1087
+00:59:43,590 --> 00:59:45,090
+use.
+
+1088
+00:59:45,090 --> 00:59:47,400
+There's this enormously
+great library
+
+1089
+00:59:47,400 --> 00:59:50,100
+by the company Huggingface.
+
+1090
+00:59:50,100 --> 00:59:53,370
+You install it, pip
+install transformers.
+
+1091
+00:59:53,370 --> 00:59:55,860
+And then that gives you
+a great implementation
+
+1092
+00:59:55,860 --> 00:59:58,380
+of the transformers we
+learn about next week.
+
+1093
+00:59:58,380 --> 01:00:00,300
+And then, effectively,
+what you're doing
+
+1094
+01:00:00,300 --> 01:00:02,460
+is something like my code below.
+
+1095
+01:00:02,460 --> 01:00:04,170
+This code doesn't quite run.
+
+1096
+01:00:04,170 --> 01:00:06,480
+It's missing some
+pieces if you try it.
+
+1097
+01:00:06,480 --> 01:00:12,150
+But the sort of pieces are, you
+load a big pre-trained language
+
+1098
+01:00:12,150 --> 01:00:12,700
+model.
+
+1099
+01:00:12,700 --> 01:00:16,960
+So here I'm loading the
+bert-base-uncased model.
+
+1100
+01:00:16,960 --> 01:00:20,610
+It turns out these models all
+have very special tokenizers.
+
+1101
+01:00:20,610 --> 01:00:22,520
+You'll hear about those
+next week, as well.
+
+1102
+01:00:22,520 --> 01:00:25,470
+So we grab the tokenizer for it.
+
+1103
+01:00:25,470 --> 01:00:28,920
+Then we are going to fine
+tune it for our task.
+
+1104
+01:00:28,920 --> 01:00:31,650
+Like maybe I'm going to be
+working with legal data,
+
+1105
+01:00:31,650 --> 01:00:33,870
+so I want to take
+the general model
+
+1106
+01:00:33,870 --> 01:00:37,410
+and fine tune it to
+understand legal data better.
+
+1107
+01:00:37,410 --> 01:00:40,260
+And then I've got
+something I want to do,
+
+1108
+01:00:40,260 --> 01:00:43,740
+like question answering,
+or perhaps here I'm
+
+1109
+01:00:43,740 --> 01:00:46,140
+using
+BertForSequenceClassification.
+
+1110
+01:00:46,140 --> 01:00:50,790
+Maybe the task I want
+to do is label mentions
+
+1111
+01:00:50,790 --> 01:00:53,380
+of sections of legal code.
+
+1112
+01:00:53,380 --> 01:00:57,000
+So at that point, I'm
+then going to sort
+
+1113
+01:00:57,000 --> 01:01:01,230
+of fine tune for
+that particular task,
+
+1114
+01:01:01,230 --> 01:01:04,450
+and then run on that task.
+
+1115
+01:01:04,450 --> 01:01:07,050
+And so this is kind
+of what we're doing,
+
+1116
+01:01:07,050 --> 01:01:09,540
+and we're just
+sort of doing stuff
+
+1117
+01:01:09,540 --> 01:01:12,490
+on top of a pre-existing model.
+
+1118
+01:01:12,490 --> 01:01:15,510
+So a lot of what
+is exciting now is
+
+1119
+01:01:15,510 --> 01:01:21,980
+problems that work within
+or around that world.
+
+1120
+01:01:21,980 --> 01:01:26,020
+So and you might
+think about that,
+
+1121
+01:01:26,020 --> 01:01:28,690
+and look at recent
+papers and things that
+
+1122
+01:01:28,690 --> 01:01:30,500
+could be done about that world.
+
+1123
+01:01:30,500 --> 01:01:33,580
+Well, one of them-- and this is
+the other half of the default
+
+1124
+01:01:33,580 --> 01:01:34,900
+final project--
+
+1125
+01:01:34,900 --> 01:01:39,550
+is we still have this problem
+of robustness to domain shift,
+
+1126
+01:01:39,550 --> 01:01:43,790
+that these models are trained
+on normally one kind of text,
+
+1127
+01:01:43,790 --> 01:01:47,330
+but we often want to use it
+for different kinds of text,
+
+1128
+01:01:47,330 --> 01:01:49,990
+including often when you're
+talking about problem
+
+1129
+01:01:49,990 --> 01:01:53,440
+or application
+specific questions,
+
+1130
+01:01:53,440 --> 01:01:55,780
+there are domains for which
+you don't have much data.
+
+1131
+01:01:55,780 --> 01:01:59,570
+How can you do that well?
+
+1132
+01:01:59,570 --> 01:02:02,420
+If you've got one of these big
+models, well, in some sense
+
+1133
+01:02:02,420 --> 01:02:03,510
+they're good.
+
+1134
+01:02:03,510 --> 01:02:07,430
+But are they actually
+robust that they
+
+1135
+01:02:07,430 --> 01:02:11,000
+work for all of the different
+things in the space you'd
+
+1136
+01:02:11,000 --> 01:02:12,380
+like them to work on?
+
+1137
+01:02:12,380 --> 01:02:15,980
+So you're not only interested in
+basic accuracy, but robustness.
+
+1138
+01:02:15,980 --> 01:02:21,190
+So this RobustnessGym was a
+very recently announced project
+
+1139
+01:02:21,190 --> 01:02:24,470
+by a PhD student at
+Stanford, Karan Goel.
+
+1140
+01:02:24,470 --> 01:02:27,710
+It's actually testing the
+robustness of NLP models.
+
+1141
+01:02:27,710 --> 01:02:29,780
+And they've got some
+stuff built into it,
+
+1142
+01:02:29,780 --> 01:02:32,270
+but there's lots of stuff
+that isn't built into it.
+
+1143
+01:02:32,270 --> 01:02:36,110
+If someone would like to sort
+of choose some NLP problem,
+
+1144
+01:02:36,110 --> 01:02:38,990
+whether it's dependency
+parsing or something else
+
+1145
+01:02:38,990 --> 01:02:43,040
+like summarization, and build
+out robustness tests for it,
+
+1146
+01:02:43,040 --> 01:02:45,900
+that could be kind
+of interesting to do.
+
+1147
+01:02:45,900 --> 01:02:50,960
+A bunch of other things,
+you can look at issues
+
+1148
+01:02:50,960 --> 01:02:54,120
+whether there's bias
+embedded in these models.
+
+1149
+01:02:54,120 --> 01:02:56,960
+How can you explain
+what they're doing?
+
+1150
+01:02:56,960 --> 01:02:58,605
+How can you use
+data augmentation?
+
+1151
+01:02:58,605 --> 01:03:00,230
+There's been an
+enormous amount of work
+
+1152
+01:03:00,230 --> 01:03:05,780
+on using data augmentation to
+improve model resources, lots
+
+1153
+01:03:05,780 --> 01:03:08,720
+of different areas.
+
+1154
+01:03:08,720 --> 01:03:13,850
+I'll just mention two other
+things and then I'll go on.
+
+1155
+01:03:13,850 --> 01:03:19,100
+So there's been a ton of work
+on scaling models up and down.
+
+1156
+01:03:19,100 --> 01:03:22,880
+So these big, pre-trained
+language models
+
+1157
+01:03:22,880 --> 01:03:25,580
+are already big.
+
+1158
+01:03:25,580 --> 01:03:29,030
+So the fact of the
+matter is, it's just not
+
+1159
+01:03:29,030 --> 01:03:31,430
+possible for the
+time and resources
+
+1160
+01:03:31,430 --> 01:03:34,160
+that you have in
+224N to be thinking,
+
+1161
+01:03:34,160 --> 01:03:40,550
+I'm going to be building by
+myself big pre-trained models.
+
+1162
+01:03:40,550 --> 01:03:44,240
+All you can do is use
+ones that already exist.
+
+1163
+01:03:44,240 --> 01:03:49,370
+But on the other hand, people
+are actually interested in,
+
+1164
+01:03:49,370 --> 01:03:54,200
+can you build very small models
+that still work pretty well?
+
+1165
+01:03:54,200 --> 01:03:56,660
+And there are lots of examples.
+
+1166
+01:03:56,660 --> 01:04:00,650
+But actually one that was done
+recently for question answering
+
+1167
+01:04:00,650 --> 01:04:04,250
+was that there was a bake off
+competition at the last NeurIPS
+
+1168
+01:04:04,250 --> 01:04:06,230
+which was called Efficient QA.
+
+1169
+01:04:06,230 --> 01:04:09,320
+And one of the
+divisions of this bake
+
+1170
+01:04:09,320 --> 01:04:14,990
+off was, can you build a
+performant question answering
+
+1171
+01:04:14,990 --> 01:04:18,450
+system that will
+run [INAUDIBLE]..
+
+1172
+01:04:18,450 --> 01:04:21,095
+
+
+1173
+01:04:21,095 --> 01:04:22,970
+And, well, that's actually
+a reasonable thing
+
+1174
+01:04:22,970 --> 01:04:26,900
+that you could attempt
+for a final project.
+
+1175
+01:04:26,900 --> 01:04:29,540
+Another thing people have
+been very interested in
+
+1176
+01:04:29,540 --> 01:04:35,900
+is wanting to explore more
+advanced learning capabilities
+
+1177
+01:04:35,900 --> 01:04:40,070
+in neural networks, ideas like
+compositionality, systematic
+
+1178
+01:04:40,070 --> 01:04:44,480
+generalization, fast learning,
+such as meta learning work.
+
+1179
+01:04:44,480 --> 01:04:47,330
+And a lot of the time,
+people have investigated
+
+1180
+01:04:47,330 --> 01:04:50,030
+these in small domains.
+
+1181
+01:04:50,030 --> 01:04:52,520
+So here's a couple of examples
+that you could go look at,
+
+1182
+01:04:52,520 --> 01:04:55,070
+BabyAI and gSCAN.
+
+1183
+01:04:55,070 --> 01:04:57,530
+So those could be
+interesting places you
+
+1184
+01:04:57,530 --> 01:04:59,810
+could look for a final project.
+
+1185
+01:04:59,810 --> 01:05:02,750
+
+
+1186
+01:05:02,750 --> 01:05:05,900
+OK, other stuff to know
+quickly, probably I
+
+1187
+01:05:05,900 --> 01:05:09,440
+can't quite go through all of
+these slides, and some of them
+
+1188
+01:05:09,440 --> 01:05:11,810
+you could just take
+home and look at.
+
+1189
+01:05:11,810 --> 01:05:15,040
+You need data.
+
+1190
+01:05:15,040 --> 01:05:17,600
+Now, we actually love it
+if people feel like they
+
+1191
+01:05:17,600 --> 01:05:19,640
+can collect their own data.
+
+1192
+01:05:19,640 --> 01:05:23,390
+And sometimes there are good
+ways to collect your own data.
+
+1193
+01:05:23,390 --> 01:05:28,400
+But the reality is a lot of
+the time, the easiest way
+
+1194
+01:05:28,400 --> 01:05:30,500
+to get a fast start
+on a final project
+
+1195
+01:05:30,500 --> 01:05:33,680
+when you only have a few weeks
+is to make use of an existing
+
+1196
+01:05:33,680 --> 01:05:34,620
+data set.
+
+1197
+01:05:34,620 --> 01:05:38,070
+And there are lots of
+pre-existing data sets.
+
+1198
+01:05:38,070 --> 01:05:41,780
+So this data from the
+Linguistic Data Consortium,
+
+1199
+01:05:41,780 --> 01:05:43,220
+which is a licensed data.
+
+1200
+01:05:43,220 --> 01:05:45,023
+We have licenses at Stanford.
+
+1201
+01:05:45,023 --> 01:05:46,440
+You can look through
+their catalog
+
+1202
+01:05:46,440 --> 01:05:48,470
+and find all the
+things they have.
+
+1203
+01:05:48,470 --> 01:05:50,670
+There are websites
+that have lots of data.
+
+1204
+01:05:50,670 --> 01:05:53,270
+So if you want to do
+machine translation tasks,
+
+1205
+01:05:53,270 --> 01:05:56,450
+you can find lots of
+machine translation data
+
+1206
+01:05:56,450 --> 01:05:58,070
+on this website.
+
+1207
+01:05:58,070 --> 01:06:02,360
+Dependency parsing, if you're
+keen on assignment 3, lots
+
+1208
+01:06:02,360 --> 01:06:05,630
+of data on the Universal
+Dependencies website.
+
+1209
+01:06:05,630 --> 01:06:09,110
+There are now several
+websites that are
+
+1210
+01:06:09,110 --> 01:06:10,820
+collecting a lot of data sets.
+
+1211
+01:06:10,820 --> 01:06:13,250
+So Huggingface has
+also just recently
+
+1212
+01:06:13,250 --> 01:06:15,240
+actually announced
+Huggingface Datasets,
+
+1213
+01:06:15,240 --> 01:06:17,900
+which is sort of an
+index of datasets.
+
+1214
+01:06:17,900 --> 01:06:20,000
+And the Paperswithcode
+people also
+
+1215
+01:06:20,000 --> 01:06:24,132
+have Paperswithcode Datasets,
+so you can look at those.
+
+1216
+01:06:24,132 --> 01:06:24,965
+There are many more.
+
+1217
+01:06:24,965 --> 01:06:29,080
+
+
+1218
+01:06:29,080 --> 01:06:34,360
+Yeah, here's just
+a quick summary
+
+1219
+01:06:34,360 --> 01:06:39,010
+of thinking about
+a research project.
+
+1220
+01:06:39,010 --> 01:06:41,890
+So this is just
+one example, right?
+
+1221
+01:06:41,890 --> 01:06:43,990
+That suppose you
+think summarization.
+
+1222
+01:06:43,990 --> 01:06:46,580
+So that's going from
+a longer piece of text
+
+1223
+01:06:46,580 --> 01:06:48,440
+to a short summary of it.
+
+1224
+01:06:48,440 --> 01:06:53,410
+So what you have to do, you
+need to find the data set.
+
+1225
+01:06:53,410 --> 01:06:55,630
+And, well, probably
+the easiest thing to do
+
+1226
+01:06:55,630 --> 01:06:59,350
+is to use an existing tech
+summarization data set.
+
+1227
+01:06:59,350 --> 01:07:01,390
+You can find several online.
+
+1228
+01:07:01,390 --> 01:07:03,970
+But this is why you can
+think of interesting ways
+
+1229
+01:07:03,970 --> 01:07:05,570
+to create your own data.
+
+1230
+01:07:05,570 --> 01:07:08,500
+So something that you might have
+noticed if you look at Twitter
+
+1231
+01:07:08,500 --> 01:07:12,310
+is that journalists often
+promote their own stories by,
+
+1232
+01:07:12,310 --> 01:07:18,220
+or their newspaper or TV station
+does by putting out a tweet.
+
+1233
+01:07:18,220 --> 01:07:20,680
+And so that's sort of
+like found data, which
+
+1234
+01:07:20,680 --> 01:07:22,120
+is sort of self summaries.
+
+1235
+01:07:22,120 --> 01:07:24,250
+Could you collect
+some of those and try
+
+1236
+01:07:24,250 --> 01:07:26,360
+and learn to generate
+tweets for a news story?
+
+1237
+01:07:26,360 --> 01:07:29,300
+
+
+1238
+01:07:29,300 --> 01:07:32,360
+So I'll say a bit
+about data set hygiene.
+
+1239
+01:07:32,360 --> 01:07:34,850
+You want to be careful
+about working things out
+
+1240
+01:07:34,850 --> 01:07:37,900
+so you have train
+sets and test sets.
+
+1241
+01:07:37,900 --> 01:07:39,230
+I'll say that in a minute.
+
+1242
+01:07:39,230 --> 01:07:41,540
+You want some way to
+evaluate whether you're
+
+1243
+01:07:41,540 --> 01:07:44,210
+doing well as you build models.
+
+1244
+01:07:44,210 --> 01:07:48,380
+And you pretty much need to have
+an automatic evaluation metric,
+
+1245
+01:07:48,380 --> 01:07:50,570
+even though human
+evaluation's great,
+
+1246
+01:07:50,570 --> 01:07:52,280
+since you want to
+train a bunch of models
+
+1247
+01:07:52,280 --> 01:07:54,050
+and see whether they're
+better or worse.
+
+1248
+01:07:54,050 --> 01:07:57,950
+You normally want an automatic
+metric that's semi-decent.
+
+1249
+01:07:57,950 --> 01:08:02,300
+You should make sure you
+have some kind of baseline
+
+1250
+01:08:02,300 --> 01:08:05,590
+that you want to have some sense
+of whether you're doing well.
+
+1251
+01:08:05,590 --> 01:08:07,760
+And so commonly,
+you, first off, want
+
+1252
+01:08:07,760 --> 01:08:11,240
+to implement some simple model
+like a logistic regression,
+
+1253
+01:08:11,240 --> 01:08:14,510
+or just averaging word
+vectors or something,
+
+1254
+01:08:14,510 --> 01:08:16,250
+and see how well that works.
+
+1255
+01:08:16,250 --> 01:08:18,770
+Because then if you're not
+doing better than that, that
+
+1256
+01:08:18,770 --> 01:08:22,069
+you're actually making
+no progress whatsoever.
+
+1257
+01:08:22,069 --> 01:08:25,069
+Then you should implement
+some neural net model
+
+1258
+01:08:25,069 --> 01:08:27,199
+that you think might
+be good, and see
+
+1259
+01:08:27,200 --> 01:08:32,180
+if you can get that to work,
+and have that work well.
+
+1260
+01:08:32,180 --> 01:08:34,760
+Make sure you keep
+looking at your data
+
+1261
+01:08:34,760 --> 01:08:36,649
+to see what kind of
+errors you're making,
+
+1262
+01:08:36,649 --> 01:08:40,520
+and think about how you could
+change the model to avoid them.
+
+1263
+01:08:40,520 --> 01:08:42,529
+And then, hopefully,
+you've got time
+
+1264
+01:08:42,529 --> 01:08:45,050
+to try out some model
+variants and see
+
+1265
+01:08:45,050 --> 01:08:47,160
+if they're better or worse.
+
+1266
+01:08:47,160 --> 01:08:49,595
+And then that will help
+in having a good project.
+
+1267
+01:08:49,595 --> 01:08:52,210
+
+
+1268
+01:08:52,210 --> 01:08:57,460
+Yeah, so quickly, for what
+I call here pots of data.
+
+1269
+01:08:57,460 --> 01:09:01,479
+So many public data sets
+come with a structure
+
+1270
+01:09:01,479 --> 01:09:04,960
+where they have
+train, dev, and test.
+
+1271
+01:09:04,960 --> 01:09:10,060
+And the idea is that you keep
+your test data until the end,
+
+1272
+01:09:10,060 --> 01:09:12,189
+and you only sort
+of do test runs
+
+1273
+01:09:12,189 --> 01:09:18,370
+when development is complete,
+or at least almost complete.
+
+1274
+01:09:18,370 --> 01:09:21,640
+[INAUDIBLE]
+
+1275
+01:09:21,640 --> 01:09:26,060
+Train on the train data, and
+you evaluate on the dev data.
+
+1276
+01:09:26,060 --> 01:09:28,090
+Sometimes you need
+even more data sets.
+
+1277
+01:09:28,090 --> 01:09:30,490
+Sometimes you want to do
+tuning of hyperparameters,
+
+1278
+01:09:30,490 --> 01:09:33,790
+and you might need a train
+set, a tune set, a dev set,
+
+1279
+01:09:33,790 --> 01:09:35,229
+and a test set.
+
+1280
+01:09:35,229 --> 01:09:38,740
+If the data set, if it
+doesn't come pre-split
+
+1281
+01:09:38,740 --> 01:09:40,689
+or it doesn't have
+enough pieces,
+
+1282
+01:09:40,689 --> 01:09:45,910
+it's sort of your job to work
+out how to cut it into pieces
+
+1283
+01:09:45,910 --> 01:09:48,109
+and to get things working.
+
+1284
+01:09:48,109 --> 01:09:52,910
+And the reason why
+you need to do this
+
+1285
+01:09:52,910 --> 01:10:00,580
+is that it's necessary to have
+these different sets to get
+
+1286
+01:10:00,580 --> 01:10:04,130
+realistic measures
+of performance.
+
+1287
+01:10:04,130 --> 01:10:08,410
+In fact, ideally, you're
+only actually testing
+
+1288
+01:10:08,410 --> 01:10:13,705
+on the test set once and,
+at any rate, very few times.
+
+1289
+01:10:13,705 --> 01:10:15,580
+So if you're doing the
+default final project,
+
+1290
+01:10:15,580 --> 01:10:18,550
+we limit you to three
+runs on the test set.
+
+1291
+01:10:18,550 --> 01:10:21,730
+So remember that, and
+save your three runs.
+
+1292
+01:10:21,730 --> 01:10:24,700
+And the reason
+that we do that is
+
+1293
+01:10:24,700 --> 01:10:28,720
+that if you mix up and
+overuse these data sets,
+
+1294
+01:10:28,720 --> 01:10:31,430
+the results just become invalid.
+
+1295
+01:10:31,430 --> 01:10:34,690
+So when you train on
+data, well, you'll
+
+1296
+01:10:34,690 --> 01:10:37,240
+always build a model that does
+well on the training data.
+
+1297
+01:10:37,240 --> 01:10:39,890
+So that's not exciting.
+
+1298
+01:10:39,890 --> 01:10:42,970
+And, well, if you want
+to tune hyperparameters,
+
+1299
+01:10:42,970 --> 01:10:45,460
+if you tune them on
+the training data set,
+
+1300
+01:10:45,460 --> 01:10:48,550
+you won't get good
+valid values for them,
+
+1301
+01:10:48,550 --> 01:10:51,760
+because they're not tuned to
+good values for something that
+
+1302
+01:10:51,760 --> 01:10:54,880
+would work on
+different test data.
+
+1303
+01:10:54,880 --> 01:10:58,660
+But the surplus part
+of it is I think
+
+1304
+01:10:58,660 --> 01:11:01,270
+a lot of people starting
+off think, oh, there's
+
+1305
+01:11:01,270 --> 01:11:04,630
+no harm in just keeping on
+testing on the test set.
+
+1306
+01:11:04,630 --> 01:11:08,950
+Every time I try
+out some variant,
+
+1307
+01:11:08,950 --> 01:11:11,180
+I'll just see how it's
+going on the test set.
+
+1308
+01:11:11,180 --> 01:11:13,975
+It's a really compelling thing
+that you want to do, right?
+
+1309
+01:11:13,975 --> 01:11:15,460
+You changed your
+model, and you'd
+
+1310
+01:11:15,460 --> 01:11:18,550
+like to know whether it made
+the score on the test set
+
+1311
+01:11:18,550 --> 01:11:19,810
+go up or down.
+
+1312
+01:11:19,810 --> 01:11:25,870
+But the truth is that if you
+do that, you're cheating.
+
+1313
+01:11:25,870 --> 01:11:29,290
+Because what you do is
+you're sort of slowly
+
+1314
+01:11:29,290 --> 01:11:31,180
+training on the test set.
+
+1315
+01:11:31,180 --> 01:11:33,920
+Because you keep every
+change that helps on the test
+
+1316
+01:11:33,920 --> 01:11:37,240
+set, and you throw
+away every change
+
+1317
+01:11:37,240 --> 01:11:40,280
+that doesn't help on the
+test set, or makes it worse.
+
+1318
+01:11:40,280 --> 01:11:42,580
+And so you're learning
+about the test set,
+
+1319
+01:11:42,580 --> 01:11:46,790
+and what things happen by chance
+to work on that particular test
+
+1320
+01:11:46,790 --> 01:11:47,290
+set.
+
+1321
+01:11:47,290 --> 01:11:50,260
+So you effectively slowly
+training on the test
+
+1322
+01:11:50,260 --> 01:11:55,000
+set, and you get biased,
+unrealistically high levels
+
+1323
+01:11:55,000 --> 01:12:00,780
+of performance
+
+1324
+01:12:00,780 --> 01:12:03,450
+OK, let's see.
+
+1325
+01:12:03,450 --> 01:12:05,760
+I think there are
+then sort of a bunch
+
+1326
+01:12:05,760 --> 01:12:08,910
+more slides on
+neural nets that I
+
+1327
+01:12:08,910 --> 01:12:14,190
+think I'm going to
+just skip for a moment.
+
+1328
+01:12:14,190 --> 01:12:19,170
+But I think in general
+they're useful to have seen.
+
+1329
+01:12:19,170 --> 01:12:25,580
+Maybe I'll just sort
+of mention this one.
+
+1330
+01:12:25,580 --> 01:12:29,930
+So for the final projects,
+you're much more on your own.
+
+1331
+01:12:29,930 --> 01:12:33,890
+And you have to work
+out for yourself
+
+1332
+01:12:33,890 --> 01:12:38,040
+how to get your neural
+network to work.
+
+1333
+01:12:38,040 --> 01:12:41,900
+So the first thing
+is you want to start
+
+1334
+01:12:41,900 --> 01:12:43,460
+with a positive attitude.
+
+1335
+01:12:43,460 --> 01:12:45,420
+These neural nets are amazing.
+
+1336
+01:12:45,420 --> 01:12:46,830
+They really want to learn.
+
+1337
+01:12:46,830 --> 01:12:50,640
+They want to find any pattern
+they can anywhere in data.
+
+1338
+01:12:50,640 --> 01:12:52,100
+They really just do that.
+
+1339
+01:12:52,100 --> 01:12:53,970
+It's in their DNA.
+
+1340
+01:12:53,970 --> 01:12:56,900
+So if your neural
+network isn't learning,
+
+1341
+01:12:56,900 --> 01:13:00,320
+it means you're doing something
+wrong that's preventing it
+
+1342
+01:13:00,320 --> 01:13:02,720
+from learning successfully.
+
+1343
+01:13:02,720 --> 01:13:06,770
+But at that point,
+there's a grim reality.
+
+1344
+01:13:06,770 --> 01:13:10,970
+There are all sorts of things
+that cause neural nets to not
+
+1345
+01:13:10,970 --> 01:13:14,330
+learn at all, or a more
+common case, actually,
+
+1346
+01:13:14,330 --> 01:13:16,280
+is they sort of learn
+a bit, that they
+
+1347
+01:13:16,280 --> 01:13:18,860
+don't learn very well.
+
+1348
+01:13:18,860 --> 01:13:21,080
+There are bugs in the code.
+
+1349
+01:13:21,080 --> 01:13:23,810
+You're dividing through
+by the wrong thing.
+
+1350
+01:13:23,810 --> 01:13:26,610
+You're missing some
+connections in your network,
+
+1351
+01:13:26,610 --> 01:13:29,540
+so no information is
+flowing from one place
+
+1352
+01:13:29,540 --> 01:13:31,280
+to another place.
+
+1353
+01:13:31,280 --> 01:13:34,130
+You're calculating the
+gradients wrong in some layer,
+
+1354
+01:13:34,130 --> 01:13:38,610
+there are all sorts of
+things that can go wrong.
+
+1355
+01:13:38,610 --> 01:13:42,270
+So you need to then work out
+how to find and fix them.
+
+1356
+01:13:42,270 --> 01:13:45,770
+And the truth is that this
+debugging and tuning can often
+
+1357
+01:13:45,770 --> 01:13:50,670
+take way more time than I'm
+going to implement the model.
+
+1358
+01:13:50,670 --> 01:13:53,720
+So in terms of thinking about
+how much you could get through,
+
+1359
+01:13:53,720 --> 01:13:56,840
+you should be thinking,
+OK, I've coded up my model.
+
+1360
+01:13:56,840 --> 01:13:59,810
+That doesn't mean
+that you're 75% done.
+
+1361
+01:13:59,810 --> 01:14:03,740
+It's pretty frequent, it means
+that you're only 20% done,
+
+1362
+01:14:03,740 --> 01:14:07,185
+and there's still a lot of work
+to go to get things working.
+
+1363
+01:14:07,185 --> 01:14:11,590
+
+
+1364
+01:14:11,590 --> 01:14:14,230
+OK, so for the last
+minutes I just want
+
+1365
+01:14:14,230 --> 01:14:21,220
+to say a few minutes about
+[INAUDIBLE] final projects,
+
+1366
+01:14:21,220 --> 01:14:23,440
+and I've got some
+idea about what this
+
+1367
+01:14:23,440 --> 01:14:25,085
+is about as an NLP problem.
+
+1368
+01:14:25,085 --> 01:14:29,210
+
+
+1369
+01:14:29,210 --> 01:14:32,390
+OK, so the problem
+is most commonly
+
+1370
+01:14:32,390 --> 01:14:35,450
+called question
+answering of a document.
+
+1371
+01:14:35,450 --> 01:14:37,940
+But really the part
+that we're doing
+
+1372
+01:14:37,940 --> 01:14:42,020
+is perhaps better called
+reading comprehension.
+
+1373
+01:14:42,020 --> 01:14:45,290
+And so the idea of
+this is that you
+
+1374
+01:14:45,290 --> 01:14:49,310
+want to actually be
+able to answer questions
+
+1375
+01:14:49,310 --> 01:14:52,140
+based on documents.
+
+1376
+01:14:52,140 --> 01:14:54,980
+So here's an example
+of a question,
+
+1377
+01:14:54,980 --> 01:14:58,100
+who was Australia's
+third prime minister?
+
+1378
+01:14:58,100 --> 01:15:03,440
+And once upon a time, if you
+type the question into Google,
+
+1379
+01:15:03,440 --> 01:15:05,450
+all you got was web search.
+
+1380
+01:15:05,450 --> 01:15:10,940
+And it returned to you a list of
+pages with the implied promise
+
+1381
+01:15:10,940 --> 01:15:12,950
+that some of the ones
+right near the top
+
+1382
+01:15:12,950 --> 01:15:15,590
+probably had the
+answer to the question.
+
+1383
+01:15:15,590 --> 01:15:20,330
+But if you do this now, it
+gives you back an answer.
+
+1384
+01:15:20,330 --> 01:15:23,690
+And so here is the answer,
+John Christian Watson.
+
+1385
+01:15:23,690 --> 01:15:26,360
+And the important
+thing to realize
+
+1386
+01:15:26,360 --> 01:15:29,825
+is that this kind of
+featured snippet, Google
+
+1387
+01:15:29,825 --> 01:15:34,250
+has 101, or maybe 1,001
+different pieces inside it.
+
+1388
+01:15:34,250 --> 01:15:37,550
+But this featured
+snippet isn't coming
+
+1389
+01:15:37,550 --> 01:15:41,300
+from the Google knowledge
+graph structured data.
+
+1390
+01:15:41,300 --> 01:15:45,650
+It's coming straight
+from a webpage where
+
+1391
+01:15:45,650 --> 01:15:48,860
+some part of the
+Google search system
+
+1392
+01:15:48,860 --> 01:15:54,570
+has actually read this web page
+and decided what the answer is.
+
+1393
+01:15:54,570 --> 01:15:58,220
+So for this kind of system,
+the most straightforward way
+
+1394
+01:15:58,220 --> 01:16:00,810
+to do it is you have two parts.
+
+1395
+01:16:00,810 --> 01:16:02,870
+First you have a
+web search system
+
+1396
+01:16:02,870 --> 01:16:06,200
+that finds the page that
+probably has the answer.
+
+1397
+01:16:06,200 --> 01:16:09,290
+And then you have a reading
+comprehension system
+
+1398
+01:16:09,290 --> 01:16:11,720
+that actually looks
+inside the text
+
+1399
+01:16:11,720 --> 01:16:14,970
+and works to extract the answer.
+
+1400
+01:16:14,970 --> 01:16:18,830
+And so if you look through
+this piece of text,
+
+1401
+01:16:18,830 --> 01:16:22,490
+and this sentence says, was
+an Australian politician
+
+1402
+01:16:22,490 --> 01:16:25,190
+who served as the third prime
+minister of Australia, that's
+
+1403
+01:16:25,190 --> 01:16:28,580
+what I'm asking for in slightly
+different wording, Australia's
+
+1404
+01:16:28,580 --> 01:16:30,680
+third prime minister.
+
+1405
+01:16:30,680 --> 01:16:32,450
+This answers the question.
+
+1406
+01:16:32,450 --> 01:16:35,690
+And so it correctly says that
+the answer is John Christian
+
+1407
+01:16:35,690 --> 01:16:36,440
+Watson.
+
+1408
+01:16:36,440 --> 01:16:41,300
+And so what we want to build
+in the default final project is
+
+1409
+01:16:41,300 --> 01:16:44,210
+systems that do that
+second part, that
+
+1410
+01:16:44,210 --> 01:16:48,380
+given a piece of
+text and a question,
+
+1411
+01:16:48,380 --> 01:16:50,430
+they can give the answer.
+
+1412
+01:16:50,430 --> 01:16:52,310
+And so the general
+motivation for why
+
+1413
+01:16:52,310 --> 01:16:54,800
+this is important
+is once we have
+
+1414
+01:16:54,800 --> 01:17:01,310
+massive, full-text document
+collections that simply we're
+
+1415
+01:17:01,310 --> 01:17:04,010
+saying, here's a list of
+maybe relevant documents,
+
+1416
+01:17:04,010 --> 01:17:05,840
+is of limited use.
+
+1417
+01:17:05,840 --> 01:17:09,890
+But we'd really much prefer to
+get answers to our questions.
+
+1418
+01:17:09,890 --> 01:17:12,410
+And you know, that's
+true in general.
+
+1419
+01:17:12,410 --> 01:17:15,440
+But it's especially true
+if you're using your phone
+
+1420
+01:17:15,440 --> 01:17:18,020
+to try and look for
+information, rather than sitting
+
+1421
+01:17:18,020 --> 01:17:20,180
+in front of a 27-inch monitor.
+
+1422
+01:17:20,180 --> 01:17:23,150
+It's especially
+true if you're using
+
+1423
+01:17:23,150 --> 01:17:28,340
+a virtual assistant device
+like Alexa or Google Assistant.
+
+1424
+01:17:28,340 --> 01:17:34,280
+So that's the problem
+that's being worked on,
+
+1425
+01:17:34,280 --> 01:17:36,830
+reading comprehension
+or question answering.
+
+1426
+01:17:36,830 --> 01:17:39,230
+And so the SQuAD
+data set, which was
+
+1427
+01:17:39,230 --> 01:17:43,250
+built by Pranav
+Rajpurkar and Percy Liang
+
+1428
+01:17:43,250 --> 01:17:47,000
+consists of passages
+taken from Wikipedia,
+
+1429
+01:17:47,000 --> 01:17:51,200
+and questions, which
+team won Super Bowl 50.
+
+1430
+01:17:51,200 --> 01:17:52,970
+And what you're meant
+to be able to do
+
+1431
+01:17:52,970 --> 01:17:57,050
+is read through this passage,
+blah, blah, blah, blah, blah,
+
+1432
+01:17:57,050 --> 01:18:00,575
+and say, aha, the answer
+is the Denver Broncos.
+
+1433
+01:18:00,575 --> 01:18:03,170
+
+
+1434
+01:18:03,170 --> 01:18:06,810
+And so there are
+100,000 such examples.
+
+1435
+01:18:06,810 --> 01:18:10,310
+And so the answer
+is always just taken
+
+1436
+01:18:10,310 --> 01:18:13,280
+to be a span of the passage.
+
+1437
+01:18:13,280 --> 01:18:16,390
+And that's referred to as
+extractive question answering.
+
+1438
+01:18:16,390 --> 01:18:19,970
+So to collect this
+data, what was done
+
+1439
+01:18:19,970 --> 01:18:23,720
+was that people
+were shown passages,
+
+1440
+01:18:23,720 --> 01:18:26,560
+asked several questions, just
+like reading comprehension
+
+1441
+01:18:26,560 --> 01:18:30,290
+in school, or perhaps
+slightly simpler questions.
+
+1442
+01:18:30,290 --> 01:18:33,380
+And they were asked to
+choose a standard answer.
+
+1443
+01:18:33,380 --> 01:18:38,510
+And as in these
+examples show, they
+
+1444
+01:18:38,510 --> 01:18:40,640
+showed it to three human beings.
+
+1445
+01:18:40,640 --> 01:18:43,850
+And they didn't always
+choose exactly the same span.
+
+1446
+01:18:43,850 --> 01:18:47,240
+Because there's some
+uncertainty as to how many words
+
+1447
+01:18:47,240 --> 01:18:48,260
+to include.
+
+1448
+01:18:48,260 --> 01:18:53,850
+But roughly they're answering
+the question in that way.
+
+1449
+01:18:53,850 --> 01:18:56,900
+And so then we have
+evaluation measures.
+
+1450
+01:18:56,900 --> 01:18:59,910
+And so there are two
+evaluation measures.
+
+1451
+01:18:59,910 --> 01:19:03,560
+One is exact match, whether
+you return exactly what
+
+1452
+01:19:03,560 --> 01:19:05,300
+one of the humans returned.
+
+1453
+01:19:05,300 --> 01:19:07,550
+And the other one
+is the F1 measure,
+
+1454
+01:19:07,550 --> 01:19:12,740
+which is the overlapping
+words of your span to one
+
+1455
+01:19:12,740 --> 01:19:15,680
+of the humans, roughly.
+
+1456
+01:19:15,680 --> 01:19:22,730
+So for SQuAD, the
+[INAUDIBLE] We're
+
+1457
+01:19:22,730 --> 01:19:28,370
+going to do SQuAD 2.0, which
+is just a little bit more
+
+1458
+01:19:28,370 --> 01:19:32,030
+complex, because they make it
+a little bit trickier that some
+
+1459
+01:19:32,030 --> 01:19:35,790
+of the questions have
+no answers in the text.
+
+1460
+01:19:35,790 --> 01:19:38,930
+So here's a piece of
+text about Genghis Khan.
+
+1461
+01:19:38,930 --> 01:19:44,360
+And the question is, when did
+Genghis Khan kill Great Khan?
+
+1462
+01:19:44,360 --> 01:19:50,510
+And, well, if we read
+through this text,
+
+1463
+01:19:50,510 --> 01:19:52,610
+there's Genghis Khan
+at the beginning.
+
+1464
+01:19:52,610 --> 01:19:56,690
+And there's talk
+about different Khans.
+
+1465
+01:19:56,690 --> 01:20:01,330
+And there's the person down here
+who became Great Khan in 1251.
+
+1466
+01:20:01,330 --> 01:20:03,830
+Genghis Khan didn't
+kill Great Khan.
+
+1467
+01:20:03,830 --> 01:20:06,260
+It doesn't say that at all.
+
+1468
+01:20:06,260 --> 01:20:09,770
+But actually, here's
+Microsoft nlnet,
+
+1469
+01:20:09,770 --> 01:20:12,980
+which is another strong
+question answering system.
+
+1470
+01:20:12,980 --> 01:20:18,620
+And if you ask it this
+question, it says 1234.
+
+1471
+01:20:18,620 --> 01:20:21,710
+So the reality is that
+a lot of these models
+
+1472
+01:20:21,710 --> 01:20:25,370
+have effectively, heuristically
+behaved like, OK, well this
+
+1473
+01:20:25,370 --> 01:20:27,320
+is asking for a year.
+
+1474
+01:20:27,320 --> 01:20:29,275
+Let me look for a
+year in this passage.
+
+1475
+01:20:29,275 --> 01:20:32,600
+So this is near discussion
+of Genghis Khan.
+
+1476
+01:20:32,600 --> 01:20:35,810
+And maybe weakening is
+somehow similar to killing.
+
+1477
+01:20:35,810 --> 01:20:37,610
+I'm going to guess 1234.
+
+1478
+01:20:37,610 --> 01:20:39,840
+And that's sort of the wrong
+thing to have done here.
+
+1479
+01:20:39,840 --> 01:20:41,840
+So this is a good
+reliability test
+
+1480
+01:20:41,840 --> 01:20:43,530
+for question answering models.
+
+1481
+01:20:43,530 --> 01:20:46,910
+So that's an interesting
+add-on problem to look at.
+
+1482
+01:20:46,910 --> 01:20:50,460
+OK, I'm going to
+stop there for today.
+
+1483
+01:20:50,460 --> 01:20:52,900
+Good luck with your projects.
+
+1484
+01:20:52,900 --> 01:20:58,000
+
+
