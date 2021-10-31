@@ -23,3 +23,8 @@
 ### Winter 2020
 19. [Low Resource Machine Translation](https://youtu.be//mp95Z5yM92c)
 20. [BERT and Other Pre-trained Language Models](https://youtu.be//knTc-NQSjKA)
+
+
+### Libraries
+- NLTK (Natural Language Toolkit)
+- [Dialogflow](https://github.com/dialogflow)
