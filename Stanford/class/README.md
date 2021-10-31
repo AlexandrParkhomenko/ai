@@ -14,7 +14,7 @@ stats202| | Introduction to statistical / machine learning         | Введе�
  cs205l |*| Continuous Mathematical Methods <br>with an Emphasis on Machine Learning | Непрерывные математические методы <br> с упором на машинное обучение
  cs221  |*| [Artificial Intelligence: Principles and Techniques](https://www.youtube.com/playlist?list=PLoROMvodv4rO1NB9TD4iUZ3qghGEGtqNX)     | Искусственный интеллект: принципы и методы
  cs223a |*| Introduction to Robotics                               | Введение в робототехнику
- cs224n |*| Natural Language Processing with Deep Learning         | Обработка естественного языка с глубоким обучением
+ [cs224n](https://web.stanford.edu/class/cs224n/) |*| [Natural Language Processing with Deep Learning](https://www.youtube.com/playlist?list=PLoROMvodv4rOSH4v6133s9LFPRHjEmbm)         | Обработка естественного языка с глубоким обучением
  cs224u |*| Natural Language Understanding                         | Понимание естественного языка
  cs224w |*| Machine Learning with Graphs. <br>Social and Information Network Analysis. | Машинное обучение с графами. <br>Анализ социальных и информационных сетей.
  cs225a |*| Experimental Robotics                                  | Экспериментальная робототехника
