@@ -1,0 +1,9596 @@
+1
+00:00:00,000 --> 00:00:05,360
+
+
+2
+00:00:05,360 --> 00:00:06,300
+Hello, everyone.
+
+3
+00:00:06,300 --> 00:00:08,960
+Welcome back to CS224N.
+
+4
+00:00:08,960 --> 00:00:12,560
+And today, I'm delighted to
+introduce our final guest
+
+5
+00:00:12,560 --> 00:00:14,900
+speaker, Yulia Tsvetkov.
+
+6
+00:00:14,900 --> 00:00:17,330
+So Yulia is
+currently a professor
+
+7
+00:00:17,330 --> 00:00:19,100
+at Carnegie Mellon University.
+
+8
+00:00:19,100 --> 00:00:21,440
+But actually, starting
+from next year
+
+9
+00:00:21,440 --> 00:00:24,440
+she's going to be a professor
+at the University of Washington,
+
+10
+00:00:24,440 --> 00:00:28,460
+that you can already see
+updated in her email address.
+
+11
+00:00:28,460 --> 00:00:31,610
+Yulia's research focuses on
+extending the capabilities
+
+12
+00:00:31,610 --> 00:00:35,300
+of human language technology
+beyond individual cultures
+
+13
+00:00:35,300 --> 00:00:37,220
+and across language
+boundaries, so
+
+14
+00:00:37,220 --> 00:00:39,620
+lots of work that
+considers the roles
+
+15
+00:00:39,620 --> 00:00:43,740
+of human beings in different
+multilingual situations.
+
+16
+00:00:43,740 --> 00:00:46,400
+And today, she's going
+to be giving a talk to us
+
+17
+00:00:46,400 --> 00:00:50,810
+on "Social & Ethical
+Considerations in NLP Systems."
+
+18
+00:00:50,810 --> 00:00:54,750
+Just one more note on the
+way things are going to run--
+
+19
+00:00:54,750 --> 00:00:57,300
+so Yulia has some
+interactive exercises.
+
+20
+00:00:57,300 --> 00:01:01,040
+So what we're going to do is
+for the interactive exercises,
+
+21
+00:01:01,040 --> 00:01:06,955
+you'll be asked to put something
+into the Zoom comments--
+
+22
+00:01:06,955 --> 00:01:08,190
+sorry, the Zoom chats.
+
+23
+00:01:08,190 --> 00:01:10,310
+That means really
+using the chat.
+
+24
+00:01:10,310 --> 00:01:13,880
+And you might want to set
+who to the chat is to,
+
+25
+00:01:13,880 --> 00:01:16,250
+I think it's by default
+panelists, which is OK,
+
+26
+00:01:16,250 --> 00:01:16,940
+or to Yulia.
+
+27
+00:01:16,940 --> 00:01:19,190
+So if it goes to the
+panelists, it's good.
+
+28
+00:01:19,190 --> 00:01:21,620
+But probably not all
+attendees, because that
+
+29
+00:01:21,620 --> 00:01:23,070
+would be a bit overwhelming.
+
+30
+00:01:23,070 --> 00:01:27,260
+And then if you have
+questions, put them in the Q&A
+
+31
+00:01:27,260 --> 00:01:30,800
+as usual, because that'll
+keep the two streams separate.
+
+32
+00:01:30,800 --> 00:01:34,880
+And as for our other
+invited lecturers,
+
+33
+00:01:34,880 --> 00:01:36,950
+if you've got some
+questions that you'd
+
+34
+00:01:36,950 --> 00:01:40,430
+like to ask Yulia at the
+end, stay on the line
+
+35
+00:01:40,430 --> 00:01:41,660
+and raise your hand.
+
+36
+00:01:41,660 --> 00:01:44,450
+And we can promote people
+to be panelists and have
+
+37
+00:01:44,450 --> 00:01:45,590
+a chat with Yulia.
+
+38
+00:01:45,590 --> 00:01:49,880
+OK, so without further ado, I'm
+delighted to have you, Yulia.
+
+39
+00:01:49,880 --> 00:01:51,140
+Thank you very much, Chris.
+
+40
+00:01:51,140 --> 00:01:55,160
+I'm very excited to speak
+to you all today despite--
+
+41
+00:01:55,160 --> 00:01:56,690
+unfortunately, I cannot see you.
+
+42
+00:01:56,690 --> 00:01:57,825
+But I'm excited.
+
+43
+00:01:57,825 --> 00:02:01,130
+
+
+44
+00:02:01,130 --> 00:02:04,680
+So this lecture is
+structured as follows.
+
+45
+00:02:04,680 --> 00:02:06,510
+We'll have three parts.
+
+46
+00:02:06,510 --> 00:02:09,889
+The first part will be
+primarily a discussion
+
+47
+00:02:09,889 --> 00:02:11,420
+in which I will ask questions.
+
+48
+00:02:11,420 --> 00:02:12,890
+It's supposed to be interactive.
+
+49
+00:02:12,890 --> 00:02:16,730
+But I realize we are
+very limited in ways
+
+50
+00:02:16,730 --> 00:02:18,170
+we can interact now.
+
+51
+00:02:18,170 --> 00:02:22,130
+So this is when please
+put the responses, if you
+
+52
+00:02:22,130 --> 00:02:24,170
+want, in the chat window.
+
+53
+00:02:24,170 --> 00:02:26,240
+And I will answer
+my own questions
+
+54
+00:02:26,240 --> 00:02:28,460
+following also your
+responses, and maybe
+
+55
+00:02:28,460 --> 00:02:30,480
+read some of your responses.
+
+56
+00:02:30,480 --> 00:02:31,820
+So this will be the first part.
+
+57
+00:02:31,820 --> 00:02:33,770
+And the goal of this
+part is to provide you
+
+58
+00:02:33,770 --> 00:02:35,420
+some practical tools.
+
+59
+00:02:35,420 --> 00:02:37,340
+When you have a new
+problem to work on
+
+60
+00:02:37,340 --> 00:02:41,720
+in the AI in your
+field, how would you
+
+61
+00:02:41,720 --> 00:02:45,890
+assess this problem in terms of
+how ethical it is to solve it?
+
+62
+00:02:45,890 --> 00:02:49,850
+What kind of biases does
+it incorporate, and so on?
+
+63
+00:02:49,850 --> 00:02:51,370
+So in the second
+part, I will try
+
+64
+00:02:51,370 --> 00:02:54,470
+to generalize, to
+give a review of what
+
+65
+00:02:54,470 --> 00:02:59,980
+are overall topics in the
+intersection of ethics and NLP,
+
+66
+00:02:59,980 --> 00:03:02,170
+because it's actually
+a very big field.
+
+67
+00:03:02,170 --> 00:03:06,190
+And what I will talk about today
+is just a motivational lecture.
+
+68
+00:03:06,190 --> 00:03:09,640
+But there is a lot of
+interesting technical content
+
+69
+00:03:09,640 --> 00:03:12,610
+and a lot of subfields
+of this field.
+
+70
+00:03:12,610 --> 00:03:17,260
+And I will dive a little deeper
+in one topic in this field,
+
+71
+00:03:17,260 --> 00:03:20,530
+specifically focusing
+on algorithmic bias.
+
+72
+00:03:20,530 --> 00:03:23,290
+And if time is left,
+which I am not sure about,
+
+73
+00:03:23,290 --> 00:03:26,560
+I will talk about
+one or two projects
+
+74
+00:03:26,560 --> 00:03:29,810
+in my lab, so specific
+research projects.
+
+75
+00:03:29,810 --> 00:03:31,900
+But if we don't have
+time to cover it,
+
+76
+00:03:31,900 --> 00:03:34,250
+then you can always
+read the paper.
+
+77
+00:03:34,250 --> 00:03:37,660
+So the first two parts are
+more important for the purpose
+
+78
+00:03:37,660 --> 00:03:39,640
+of this lecture.
+
+79
+00:03:39,640 --> 00:03:42,870
+So let's start.
+
+80
+00:03:42,870 --> 00:03:44,790
+As far as I understand,
+this is a course
+
+81
+00:03:44,790 --> 00:03:47,730
+on deep learning and
+natural language processing.
+
+82
+00:03:47,730 --> 00:03:50,640
+So you've probably covered
+various deep learning
+
+83
+00:03:50,640 --> 00:03:53,610
+architectures and their
+applications to various NLP
+
+84
+00:03:53,610 --> 00:03:56,340
+tasks, like machine
+translation, dialogue systems,
+
+85
+00:03:56,340 --> 00:03:57,720
+question answering.
+
+86
+00:03:57,720 --> 00:04:00,540
+And there is an
+obvious question.
+
+87
+00:04:00,540 --> 00:04:03,780
+What does it all has
+to do with ethics?
+
+88
+00:04:03,780 --> 00:04:06,600
+What does syntactic parsing
+or part of speech tagging
+
+89
+00:04:06,600 --> 00:04:08,890
+has to do with ethics?
+
+90
+00:04:08,890 --> 00:04:12,415
+And the answer which
+I want to suggest
+
+91
+00:04:12,415 --> 00:04:18,050
+is this quote, that--
+it's a simple answer,
+
+92
+00:04:18,050 --> 00:04:22,220
+that the common misconception
+is that language
+
+93
+00:04:22,220 --> 00:04:23,540
+has to do with words.
+
+94
+00:04:23,540 --> 00:04:24,500
+But it doesn't.
+
+95
+00:04:24,500 --> 00:04:26,370
+It has to do with people.
+
+96
+00:04:26,370 --> 00:04:31,170
+So every word, every
+sentence that we produce,
+
+97
+00:04:31,170 --> 00:04:33,000
+language is produced by people.
+
+98
+00:04:33,000 --> 00:04:35,370
+It is directed
+towards other people.
+
+99
+00:04:35,370 --> 00:04:37,890
+And everything that
+is related to language
+
+100
+00:04:37,890 --> 00:04:40,260
+necessarily involves people.
+
+101
+00:04:40,260 --> 00:04:44,610
+And it has social meaning and
+incorporates human biases.
+
+102
+00:04:44,610 --> 00:04:47,070
+And this is why,
+also, models that we
+
+103
+00:04:47,070 --> 00:04:51,660
+build which will be
+used by other people
+
+104
+00:04:51,660 --> 00:04:55,430
+may incorporate social biases.
+
+105
+00:04:55,430 --> 00:04:59,530
+So this is why decisions that
+we make about our data, what
+
+106
+00:04:59,530 --> 00:05:03,970
+kinds of considerations that
+we incorporate into our model,
+
+107
+00:05:03,970 --> 00:05:10,470
+may have direct impact on
+people and maybe societies.
+
+108
+00:05:10,470 --> 00:05:12,720
+And to start this
+lecture, we need
+
+109
+00:05:12,720 --> 00:05:17,790
+to start with understanding
+what is ethics.
+
+110
+00:05:17,790 --> 00:05:18,720
+So what is ethics?
+
+111
+00:05:18,720 --> 00:05:21,990
+Here is a definition from
+a textbook on ethics.
+
+112
+00:05:21,990 --> 00:05:24,210
+"Ethics is a study of
+what are good and bad
+
+113
+00:05:24,210 --> 00:05:28,830
+ends to pursue in life and
+what is right and wrong to do
+
+114
+00:05:28,830 --> 00:05:30,600
+in the conduct of life."
+
+115
+00:05:30,600 --> 00:05:33,180
+So it is a practical discipline.
+
+116
+00:05:33,180 --> 00:05:37,470
+And the primary goal is to
+determine how one ought to live
+
+117
+00:05:37,470 --> 00:05:42,920
+and what actions one ought to
+do in the conduct of one's life.
+
+118
+00:05:42,920 --> 00:05:45,700
+So to summarize, it
+is very practical.
+
+119
+00:05:45,700 --> 00:05:47,050
+And it's simple.
+
+120
+00:05:47,050 --> 00:05:52,620
+It's just doing the good things
+and doing the right things.
+
+121
+00:05:52,620 --> 00:05:55,500
+Then my question to
+you is, how simple
+
+122
+00:05:55,500 --> 00:06:00,300
+it is to define what is
+good and what is right?
+
+123
+00:06:00,300 --> 00:06:05,460
+So let's start discussion by
+diving into various problems.
+
+124
+00:06:05,460 --> 00:06:09,030
+And we start with a
+boring theoretical problem
+
+125
+00:06:09,030 --> 00:06:12,270
+which everybody knows about,
+which is the trolley dilemma.
+
+126
+00:06:12,270 --> 00:06:15,870
+And we won't spend
+too much time on it.
+
+127
+00:06:15,870 --> 00:06:18,420
+I am sure all of about it.
+
+128
+00:06:18,420 --> 00:06:24,270
+So it's a classical problem
+in ethics in which--
+
+129
+00:06:24,270 --> 00:06:27,420
+so this is you,
+standing near the lever.
+
+130
+00:06:27,420 --> 00:06:29,340
+And here is a trolley coming.
+
+131
+00:06:29,340 --> 00:06:31,090
+And there are several people.
+
+132
+00:06:31,090 --> 00:06:32,820
+So the trolley cannot
+see the people.
+
+133
+00:06:32,820 --> 00:06:34,410
+And the people cannot
+see the trolley.
+
+134
+00:06:34,410 --> 00:06:39,390
+And you are the only one
+in control, in charge.
+
+135
+00:06:39,390 --> 00:06:41,040
+You can save people.
+
+136
+00:06:41,040 --> 00:06:44,670
+And maybe you need to make
+decisions about people's life.
+
+137
+00:06:44,670 --> 00:06:47,640
+And you ask yourself, why me?
+
+138
+00:06:47,640 --> 00:06:52,230
+But the point here
+is that imagine
+
+139
+00:06:52,230 --> 00:06:56,400
+that there are five
+people on one side
+
+140
+00:06:56,400 --> 00:06:58,570
+and then no one
+on the other side.
+
+141
+00:06:58,570 --> 00:07:00,210
+And then I would
+ask you, would you
+
+142
+00:07:00,210 --> 00:07:03,210
+pull the lever to save five
+people if the trolley is
+
+143
+00:07:03,210 --> 00:07:05,919
+supposed to go straight?
+
+144
+00:07:05,919 --> 00:07:13,490
+And if I would ask
+you interactively,
+
+145
+00:07:13,490 --> 00:07:16,460
+everybody would say yes,
+I will pull the lever.
+
+146
+00:07:16,460 --> 00:07:19,470
+And then I will follow up
+with the next question.
+
+147
+00:07:19,470 --> 00:07:23,090
+OK, what about if five people
+on one side and only one person
+
+148
+00:07:23,090 --> 00:07:23,950
+on the other side?
+
+149
+00:07:23,950 --> 00:07:28,640
+So would you pull the lever to
+minimize the number of lives
+
+150
+00:07:28,640 --> 00:07:30,500
+that will be sacrificed?
+
+151
+00:07:30,500 --> 00:07:32,510
+And some people will not answer.
+
+152
+00:07:32,510 --> 00:07:34,610
+Some people will say yes.
+
+153
+00:07:34,610 --> 00:07:35,630
+Some people will say no.
+
+154
+00:07:35,630 --> 00:07:37,790
+And those who will say
+yes, I will ask them,
+
+155
+00:07:37,790 --> 00:07:42,110
+what if this one person is your
+brother and on the other side
+
+156
+00:07:42,110 --> 00:07:44,600
+just five random people?
+
+157
+00:07:44,600 --> 00:07:46,230
+What would be your answer?
+
+158
+00:07:46,230 --> 00:07:48,650
+And I can go on and
+on and on to make
+
+159
+00:07:48,650 --> 00:07:50,810
+this problem harder and harder.
+
+160
+00:07:50,810 --> 00:07:55,820
+And as you can
+imagine, there are--
+
+161
+00:07:55,820 --> 00:08:00,120
+the answers are
+difficult. And also, we
+
+162
+00:08:00,120 --> 00:08:03,850
+don't know what the answer will
+be in the actual situation.
+
+163
+00:08:03,850 --> 00:08:06,390
+And while this problem
+is theoretical,
+
+164
+00:08:06,390 --> 00:08:09,300
+it is in part
+becoming relevant now
+
+165
+00:08:09,300 --> 00:08:12,500
+when we talk about
+self-driving cars.
+
+166
+00:08:12,500 --> 00:08:16,850
+So I am now moving
+closer to the topics
+
+167
+00:08:16,850 --> 00:08:18,410
+that we will discuss today.
+
+168
+00:08:18,410 --> 00:08:21,740
+And I want to introduce
+a new problem which
+
+169
+00:08:21,740 --> 00:08:24,350
+I call the chicken dilemma.
+
+170
+00:08:24,350 --> 00:08:30,030
+So in this dilemma,
+let's train a classifier.
+
+171
+00:08:30,030 --> 00:08:34,740
+And this will be a
+simple CNN classifier.
+
+172
+00:08:34,740 --> 00:08:39,840
+And the input to the
+classifier is an egg.
+
+173
+00:08:39,840 --> 00:08:43,260
+And the classifier needs
+to define the gender
+
+174
+00:08:43,260 --> 00:08:45,990
+of the chicken, of the chick.
+
+175
+00:08:45,990 --> 00:08:51,750
+And that decides if it's a hen,
+it will go to egg laying farm.
+
+176
+00:08:51,750 --> 00:08:57,810
+And if it's a rooster, it
+will go to a meat farm.
+
+177
+00:08:57,810 --> 00:08:59,880
+So first of all,
+do you think you
+
+178
+00:08:59,880 --> 00:09:02,580
+can build such a classifier?
+
+179
+00:09:02,580 --> 00:09:05,310
+I'm sure every
+student in this course
+
+180
+00:09:05,310 --> 00:09:07,080
+will easily build
+this classifier.
+
+181
+00:09:07,080 --> 00:09:11,325
+And I'm sure it will have
+a quite good accuracy.
+
+182
+00:09:11,325 --> 00:09:13,825
+And then the question to you
+is, do you think it is ethical?
+
+183
+00:09:13,825 --> 00:09:16,410
+
+
+184
+00:09:16,410 --> 00:09:19,650
+And I invite you to type
+your responses in the chat.
+
+185
+00:09:19,650 --> 00:09:27,870
+
+
+186
+00:09:27,870 --> 00:09:28,800
+Yes, no.
+
+187
+00:09:28,800 --> 00:09:31,380
+I mean, you can
+justify a little bit.
+
+188
+00:09:31,380 --> 00:09:34,900
+
+
+189
+00:09:34,900 --> 00:09:35,690
+Thank you.
+
+190
+00:09:35,690 --> 00:09:38,370
+Thank you for participating.
+
+191
+00:09:38,370 --> 00:09:39,790
+So could you repeat
+the question?
+
+192
+00:09:39,790 --> 00:09:42,470
+So the question is,
+there is an egg.
+
+193
+00:09:42,470 --> 00:09:45,300
+You need to determine
+the gender of the chick.
+
+194
+00:09:45,300 --> 00:09:48,150
+And if it's a rooster, it
+will go to a meat farm.
+
+195
+00:09:48,150 --> 00:09:51,810
+And if it's a hen, it will
+go to an egg laying farm.
+
+196
+00:09:51,810 --> 00:09:56,970
+And the question
+is, is this ethical?
+
+197
+00:09:56,970 --> 00:09:58,620
+So there are all
+kinds of responses.
+
+198
+00:09:58,620 --> 00:10:00,150
+Let's see.
+
+199
+00:10:00,150 --> 00:10:01,920
+So yes and no--
+
+200
+00:10:01,920 --> 00:10:05,070
+but you can use the
+exact same thing
+
+201
+00:10:05,070 --> 00:10:09,050
+to target ethnic groups
+instead of chickens.
+
+202
+00:10:09,050 --> 00:10:09,850
+So, yes.
+
+203
+00:10:09,850 --> 00:10:10,350
+Thank you.
+
+204
+00:10:10,350 --> 00:10:14,700
+And I see there are many
+interesting responses here.
+
+205
+00:10:14,700 --> 00:10:19,200
+Just the amount of responses,
+I cannot even have time to read
+
+206
+00:10:19,200 --> 00:10:20,810
+them because--
+
+207
+00:10:20,810 --> 00:10:26,230
+so anyway, based
+on this question,
+
+208
+00:10:26,230 --> 00:10:28,330
+I can tell you what
+my thoughts are.
+
+209
+00:10:28,330 --> 00:10:33,490
+So as a vegetarian, I
+maybe think it's unethical.
+
+210
+00:10:33,490 --> 00:10:37,540
+But as a mother, I actually
+want my kids to eat meat.
+
+211
+00:10:37,540 --> 00:10:39,850
+And whether I think
+it's ethical or not,
+
+212
+00:10:39,850 --> 00:10:42,160
+we are doing this anyway today.
+
+213
+00:10:42,160 --> 00:10:46,570
+And there are all kinds of
+considerations, pro and cons.
+
+214
+00:10:46,570 --> 00:10:49,510
+For example, this is what
+already is done today.
+
+215
+00:10:49,510 --> 00:10:51,940
+And then maybe such
+classifier will minimize
+
+216
+00:10:51,940 --> 00:10:54,620
+the suffering of the animal.
+
+217
+00:10:54,620 --> 00:11:00,170
+But on the other hand, we hope
+that in the future society,
+
+218
+00:11:00,170 --> 00:11:03,080
+the life of a chicken
+will be as valuable
+
+219
+00:11:03,080 --> 00:11:04,730
+as the life of a person.
+
+220
+00:11:04,730 --> 00:11:06,740
+And I can continue on and on.
+
+221
+00:11:06,740 --> 00:11:08,540
+But from this example--
+
+222
+00:11:08,540 --> 00:11:11,300
+I also don't want to
+stay on it too long--
+
+223
+00:11:11,300 --> 00:11:14,150
+you can see that the
+questions of ethics
+
+224
+00:11:14,150 --> 00:11:17,450
+are difficult, that whether--
+
+225
+00:11:17,450 --> 00:11:22,160
+you don't know too
+much about this field.
+
+226
+00:11:22,160 --> 00:11:27,000
+But you can feel what
+is the right answer.
+
+227
+00:11:27,000 --> 00:11:28,700
+So ethics is inner-guiding.
+
+228
+00:11:28,700 --> 00:11:30,680
+It's moral principles.
+
+229
+00:11:30,680 --> 00:11:34,980
+And there are often
+no easy answers.
+
+230
+00:11:34,980 --> 00:11:37,430
+So there are many gray areas.
+
+231
+00:11:37,430 --> 00:11:41,060
+And importantly, ethics
+changes over time
+
+232
+00:11:41,060 --> 00:11:43,440
+with the values and
+beliefs of people.
+
+233
+00:11:43,440 --> 00:11:45,770
+So whatever we discuss
+today, we can think
+
+234
+00:11:45,770 --> 00:11:47,750
+it's ethical or not ethical.
+
+235
+00:11:47,750 --> 00:11:50,990
+But it may change
+in a hundred years.
+
+236
+00:11:50,990 --> 00:11:52,760
+And maybe hundred
+years ago, this
+
+237
+00:11:52,760 --> 00:11:57,380
+would not even be a question
+why this would be unethical.
+
+238
+00:11:57,380 --> 00:12:01,670
+And another important
+point is that this
+
+239
+00:12:01,670 --> 00:12:02,880
+is what we are doing today.
+
+240
+00:12:02,880 --> 00:12:05,540
+So what is ethical
+is what is legal,
+
+241
+00:12:05,540 --> 00:12:07,670
+is not necessarily aligned.
+
+242
+00:12:07,670 --> 00:12:11,270
+We can do legal things that
+will still be unethical.
+
+243
+00:12:11,270 --> 00:12:14,030
+And now having
+this pimer, I want
+
+244
+00:12:14,030 --> 00:12:17,090
+to move to the actual
+problems, the actual problems
+
+245
+00:12:17,090 --> 00:12:21,950
+that we can kind of be asked
+to build and decide whether we
+
+246
+00:12:21,950 --> 00:12:23,820
+want to build them or not.
+
+247
+00:12:23,820 --> 00:12:25,550
+And the way I will
+guide this discussion
+
+248
+00:12:25,550 --> 00:12:28,580
+is I will ask you
+specific questions.
+
+249
+00:12:28,580 --> 00:12:30,740
+And I will ask you
+for your answers.
+
+250
+00:12:30,740 --> 00:12:32,650
+And I realize it's
+very difficult to read
+
+251
+00:12:32,650 --> 00:12:34,400
+the chat, the specific answers.
+
+252
+00:12:34,400 --> 00:12:37,070
+But the point is that
+the types of questions
+
+253
+00:12:37,070 --> 00:12:39,800
+that I will ask you, these
+would be the questions
+
+254
+00:12:39,800 --> 00:12:42,200
+that you could ask
+yourself when you
+
+255
+00:12:42,200 --> 00:12:43,790
+need to build the technology.
+
+256
+00:12:43,790 --> 00:12:46,670
+And maybe the question whether
+something is ethical or not
+
+257
+00:12:46,670 --> 00:12:48,410
+is a difficult question.
+
+258
+00:12:48,410 --> 00:12:51,650
+But let's try to
+break down an analysis
+
+259
+00:12:51,650 --> 00:12:54,950
+of a specific application
+of a specific model
+
+260
+00:12:54,950 --> 00:12:59,330
+to kind of derive
+an answer which
+
+261
+00:12:59,330 --> 00:13:02,720
+will give us some tools to
+derive an answer in an easier
+
+262
+00:13:02,720 --> 00:13:03,220
+way.
+
+263
+00:13:03,220 --> 00:13:06,180
+
+
+264
+00:13:06,180 --> 00:13:10,740
+So here is the next classifier
+that we want to build.
+
+265
+00:13:10,740 --> 00:13:13,530
+We want to build
+an IQ classifier.
+
+266
+00:13:13,530 --> 00:13:17,400
+So we will be talking about
+predictive technology.
+
+267
+00:13:17,400 --> 00:13:20,430
+So based on people's
+personal data--
+
+268
+00:13:20,430 --> 00:13:22,590
+for example, facial images.
+
+269
+00:13:22,590 --> 00:13:25,860
+And maybe we can collect
+the texts of these people
+
+270
+00:13:25,860 --> 00:13:29,010
+on social media.
+
+271
+00:13:29,010 --> 00:13:33,310
+Let's predict the
+IQ of the person.
+
+272
+00:13:33,310 --> 00:13:37,530
+So if you don't
+know what IQ is, IQ
+
+273
+00:13:37,530 --> 00:13:43,630
+is a general capacity
+of an individual
+
+274
+00:13:43,630 --> 00:13:48,620
+to consciously adjust their
+thinking to new requirements.
+
+275
+00:13:48,620 --> 00:13:52,420
+So it's basically how
+intelligent a person is.
+
+276
+00:13:52,420 --> 00:13:55,960
+So this is already not
+a hypothetical problem.
+
+277
+00:13:55,960 --> 00:13:58,040
+You can collect
+individuals' data.
+
+278
+00:13:58,040 --> 00:14:01,000
+You can collect
+their texts online.
+
+279
+00:14:01,000 --> 00:14:02,050
+And you collect it.
+
+280
+00:14:02,050 --> 00:14:05,920
+And you can collect training
+data to predict people's IQ.
+
+281
+00:14:05,920 --> 00:14:09,070
+But when I will ask you, is this
+an ethical question or not, it
+
+282
+00:14:09,070 --> 00:14:13,311
+might be a difficult question
+to answer immediately.
+
+283
+00:14:13,311 --> 00:14:16,080
+
+
+284
+00:14:16,080 --> 00:14:17,830
+Thank you very much
+for participating.
+
+285
+00:14:17,830 --> 00:14:18,788
+I really appreciate it.
+
+286
+00:14:18,788 --> 00:14:22,140
+I hope I can save this chat
+later to read your answers.
+
+287
+00:14:22,140 --> 00:14:31,070
+
+
+288
+00:14:31,070 --> 00:14:33,740
+OK, so let's start with
+the first question.
+
+289
+00:14:33,740 --> 00:14:36,490
+
+
+290
+00:14:36,490 --> 00:14:41,320
+We need to predict people's
+IQ from their photos and text.
+
+291
+00:14:41,320 --> 00:14:43,210
+And then the first
+question that if I
+
+292
+00:14:43,210 --> 00:14:46,150
+ask you, is it ethical
+or not, I don't know.
+
+293
+00:14:46,150 --> 00:14:49,000
+And then you can
+ask yourself, first,
+
+294
+00:14:49,000 --> 00:14:51,610
+who would benefit from
+such a technology?
+
+295
+00:14:51,610 --> 00:14:55,720
+So can you think who would
+benefit from a technology that
+
+296
+00:14:55,720 --> 00:14:57,625
+predicts an IQ of a person?
+
+297
+00:14:57,625 --> 00:15:02,960
+
+
+298
+00:15:02,960 --> 00:15:03,460
+Hiring.
+
+299
+00:15:03,460 --> 00:15:06,300
+
+
+300
+00:15:06,300 --> 00:15:06,810
+Right.
+
+301
+00:15:06,810 --> 00:15:10,170
+Employers, schools,
+universities--
+
+302
+00:15:10,170 --> 00:15:11,280
+so it's your answers.
+
+303
+00:15:11,280 --> 00:15:12,270
+Right.
+
+304
+00:15:12,270 --> 00:15:17,520
+So overall, it can be a
+useful technology, right?
+
+305
+00:15:17,520 --> 00:15:20,310
+Immigration Services can
+benefit from it, right,
+
+306
+00:15:20,310 --> 00:15:27,450
+and invite only smart people to
+immigrate to a country, right?
+
+307
+00:15:27,450 --> 00:15:32,160
+Even individuals with high IQ
+can benefit from this, right,
+
+308
+00:15:32,160 --> 00:15:36,420
+because they would maybe
+not need to do GRE and SAT.
+
+309
+00:15:36,420 --> 00:15:38,280
+They would not need
+to write essays.
+
+310
+00:15:38,280 --> 00:15:42,800
+They would just need
+to show their IQ.
+
+311
+00:15:42,800 --> 00:15:46,530
+OK, so this technology
+can potentially be useful.
+
+312
+00:15:46,530 --> 00:15:52,100
+And then the next
+question is, let's assume
+
+313
+00:15:52,100 --> 00:15:54,020
+we can build such a technology.
+
+314
+00:15:54,020 --> 00:15:56,540
+I will show you later
+that we actually cannot.
+
+315
+00:15:56,540 --> 00:15:59,750
+But even if we can
+build such a technology,
+
+316
+00:15:59,750 --> 00:16:03,470
+let's think about corner
+cases and understand who can
+
+317
+00:16:03,470 --> 00:16:06,420
+be harmed by this technology.
+
+318
+00:16:06,420 --> 00:16:09,140
+So basically, what is the
+potential for dual use?
+
+319
+00:16:09,140 --> 00:16:12,680
+How this technology
+can be misused?
+
+320
+00:16:12,680 --> 00:16:17,530
+So assume that the classifier is
+100% accurate now for a second.
+
+321
+00:16:17,530 --> 00:16:19,540
+And please think about it.
+
+322
+00:16:19,540 --> 00:16:24,520
+And type who do you think can
+be harmed from such a classifier
+
+323
+00:16:24,520 --> 00:16:26,470
+and how this classifier
+can be misused.
+
+324
+00:16:26,470 --> 00:16:38,920
+
+
+325
+00:16:38,920 --> 00:16:39,420
+Right.
+
+326
+00:16:39,420 --> 00:16:42,660
+So I can see your answers.
+
+327
+00:16:42,660 --> 00:16:46,750
+And I wish we can
+have this interactive.
+
+328
+00:16:46,750 --> 00:16:50,980
+But I can try to summarize
+what I have read so far.
+
+329
+00:16:50,980 --> 00:16:58,170
+So first of all, one of
+you wrote that IQ is--
+
+330
+00:16:58,170 --> 00:17:00,980
+
+
+331
+00:17:00,980 --> 00:17:03,020
+let me just answer my
+question because it's
+
+332
+00:17:03,020 --> 00:17:05,170
+difficult to summarize the chat.
+
+333
+00:17:05,170 --> 00:17:08,670
+The interactive
+feature is difficult.
+
+334
+00:17:08,670 --> 00:17:14,270
+So I would think
+about it in this way.
+
+335
+00:17:14,270 --> 00:17:18,890
+First of all, why would we want
+to build such a classifier?
+
+336
+00:17:18,890 --> 00:17:24,210
+So to build a classifier to
+predict an IQ, companies,
+
+337
+00:17:24,210 --> 00:17:28,430
+universities, they don't
+really need to know your IQ.
+
+338
+00:17:28,430 --> 00:17:33,710
+What they're trying to predict
+is your future success,
+
+339
+00:17:33,710 --> 00:17:36,310
+the way you will succeed
+in a job or the way
+
+340
+00:17:36,310 --> 00:17:38,050
+you will study at school.
+
+341
+00:17:38,050 --> 00:17:43,180
+And then the question is,
+is IQ is the right proxy
+
+342
+00:17:43,180 --> 00:17:46,040
+for future success?
+
+343
+00:17:46,040 --> 00:17:48,400
+And the answer is, no.
+
+344
+00:17:48,400 --> 00:17:51,380
+IQ correlates with
+future success.
+
+345
+00:17:51,380 --> 00:17:55,190
+But it's not necessarily the
+right proxy for future success.
+
+346
+00:17:55,190 --> 00:17:58,630
+And then, who are people
+who could be harmed?
+
+347
+00:17:58,630 --> 00:18:02,770
+For example, people who have
+lower IQ but very hard-working
+
+348
+00:18:02,770 --> 00:18:09,850
+people, people who have lower
+IQ but have good soft skills--
+
+349
+00:18:09,850 --> 00:18:15,850
+so assuming that,
+first of all, the IQ
+
+350
+00:18:15,850 --> 00:18:21,220
+is a proxy of future success
+is a incorrect, biased proxy.
+
+351
+00:18:21,220 --> 00:18:25,780
+And this kind of problem of
+using a proxy to the actual
+
+352
+00:18:25,780 --> 00:18:28,690
+label-- because we cannot
+have the actual label,
+
+353
+00:18:28,690 --> 00:18:30,170
+the future success.
+
+354
+00:18:30,170 --> 00:18:31,510
+We cannot have this label.
+
+355
+00:18:31,510 --> 00:18:34,390
+It's actually very
+common in other types
+
+356
+00:18:34,390 --> 00:18:36,070
+of predictive technology.
+
+357
+00:18:36,070 --> 00:18:38,770
+If you think about
+parole decisions,
+
+358
+00:18:38,770 --> 00:18:42,400
+technology that decides
+on parole decisions, what
+
+359
+00:18:42,400 --> 00:18:44,480
+they want to predict is
+whether the individual
+
+360
+00:18:44,480 --> 00:18:46,490
+will recommit the crime.
+
+361
+00:18:46,490 --> 00:18:49,630
+But this is a label that
+is very hard to obtain.
+
+362
+00:18:49,630 --> 00:18:52,990
+And this is why they might
+resort to another label,
+
+363
+00:18:52,990 --> 00:19:01,040
+whether this individual will
+be convicted of a crime again,
+
+364
+00:19:01,040 --> 00:19:04,430
+and build this technology to
+predict future conviction.
+
+365
+00:19:04,430 --> 00:19:07,730
+But conviction of a
+crime is a biased proxy
+
+366
+00:19:07,730 --> 00:19:11,680
+of the actual objective
+that we want to have,
+
+367
+00:19:11,680 --> 00:19:14,930
+the likelihood to
+make the crime.
+
+368
+00:19:14,930 --> 00:19:18,110
+And this is one example for
+biased proxy, which does not
+
+369
+00:19:18,110 --> 00:19:22,730
+[INAUDIBLE] us to build the
+right application for the goals
+
+370
+00:19:22,730 --> 00:19:23,790
+that we have.
+
+371
+00:19:23,790 --> 00:19:26,010
+So this is one problem.
+
+372
+00:19:26,010 --> 00:19:29,980
+The second problem
+is IQ test itself.
+
+373
+00:19:29,980 --> 00:19:31,960
+It is a biased test.
+
+374
+00:19:31,960 --> 00:19:38,230
+So actually, we cannot
+build an accurate classifier
+
+375
+00:19:38,230 --> 00:19:44,190
+for the right IQ.
+
+376
+00:19:44,190 --> 00:19:50,250
+And also, if we look at the
+data that we use, this data--
+
+377
+00:19:50,250 --> 00:19:53,640
+picture, photos
+on social media--
+
+378
+00:19:53,640 --> 00:19:55,840
+this data is biased itself.
+
+379
+00:19:55,840 --> 00:19:58,020
+So there are all
+kinds of biases,
+
+380
+00:19:58,020 --> 00:20:01,210
+because of which we cannot
+actually build the right model.
+
+381
+00:20:01,210 --> 00:20:05,370
+And this is why this classifier
+will not be 100% accurate.
+
+382
+00:20:05,370 --> 00:20:09,110
+But there will be many
+individuals who can be harmed.
+
+383
+00:20:09,110 --> 00:20:10,910
+And then there
+will be questions.
+
+384
+00:20:10,910 --> 00:20:18,670
+For example, assume our
+classifier that we built
+
+385
+00:20:18,670 --> 00:20:20,470
+is not actually accurate.
+
+386
+00:20:20,470 --> 00:20:27,400
+But it has high accuracy--
+for example, 90% or 95%.
+
+387
+00:20:27,400 --> 00:20:33,860
+And then I would ask you, is
+95% a good accuracy, or 99%
+
+388
+00:20:33,860 --> 00:20:36,020
+a good accuracy?
+
+389
+00:20:36,020 --> 00:20:42,620
+And then the questions to
+think about is whether--
+
+390
+00:20:42,620 --> 00:20:45,650
+what would happen with
+misclassification?
+
+391
+00:20:45,650 --> 00:20:49,310
+What would be an impact
+on individual lives
+
+392
+00:20:49,310 --> 00:20:52,120
+if the classifier
+makes mistakes?
+
+393
+00:20:52,120 --> 00:20:53,930
+And in this case,
+the important point
+
+394
+00:20:53,930 --> 00:21:00,470
+is that the cost of
+misclassification is very high.
+
+395
+00:21:00,470 --> 00:21:02,760
+It has effect on people's lives.
+
+396
+00:21:02,760 --> 00:21:06,350
+So accuracy may be not
+the right evaluation
+
+397
+00:21:06,350 --> 00:21:09,440
+measure for this classifier.
+
+398
+00:21:09,440 --> 00:21:11,840
+And another question
+that I could ask
+
+399
+00:21:11,840 --> 00:21:16,370
+is, for example, this
+condition on this line,
+
+400
+00:21:16,370 --> 00:21:21,590
+that we find out that white
+females have 99% accuracy,
+
+401
+00:21:21,590 --> 00:21:27,780
+but people with blond hair under
+age 25 have only 60% accuracy.
+
+402
+00:21:27,780 --> 00:21:29,960
+So what does it tell you
+about this classifier?
+
+403
+00:21:29,960 --> 00:21:44,130
+
+
+404
+00:21:44,130 --> 00:21:45,210
+Right.
+
+405
+00:21:45,210 --> 00:21:48,210
+So the data set
+itself is biased.
+
+406
+00:21:48,210 --> 00:21:51,030
+This means,
+basically, that people
+
+407
+00:21:51,030 --> 00:21:54,090
+with blond hair
+under the age of 25
+
+408
+00:21:54,090 --> 00:21:57,610
+are underrepresented
+in your data set.
+
+409
+00:21:57,610 --> 00:21:59,320
+So there are all
+kinds of questions
+
+410
+00:21:59,320 --> 00:22:01,300
+and all kinds of
+probing questions
+
+411
+00:22:01,300 --> 00:22:04,180
+that you can ask about the
+classifier to understand,
+
+412
+00:22:04,180 --> 00:22:06,430
+is this the right
+problem to solve?
+
+413
+00:22:06,430 --> 00:22:08,140
+Who can be harmed?
+
+414
+00:22:08,140 --> 00:22:11,110
+Am I optimizing towards
+the right objective?
+
+415
+00:22:11,110 --> 00:22:12,910
+Is my data biased?
+
+416
+00:22:12,910 --> 00:22:16,510
+And what is the cost
+of misclassification?
+
+417
+00:22:16,510 --> 00:22:19,690
+How do I assess the
+potential for dual use
+
+418
+00:22:19,690 --> 00:22:21,580
+and how much harm
+this technology can
+
+419
+00:22:21,580 --> 00:22:26,620
+bring, in addition to
+how useful it can be?
+
+420
+00:22:26,620 --> 00:22:28,290
+And then one last
+question, which
+
+421
+00:22:28,290 --> 00:22:32,580
+is a hard one, I want to
+ask you who is responsible?
+
+422
+00:22:32,580 --> 00:22:34,980
+So I'm your manager in Google.
+
+423
+00:22:34,980 --> 00:22:36,480
+And you're working in a country.
+
+424
+00:22:36,480 --> 00:22:40,120
+And I ask you, please
+build an IQ classifier.
+
+425
+00:22:40,120 --> 00:22:41,650
+And you build an IQ classifier.
+
+426
+00:22:41,650 --> 00:22:44,830
+And you publish a paper
+about the IQ classifier.
+
+427
+00:22:44,830 --> 00:22:48,580
+And this paper is
+publicized on media.
+
+428
+00:22:48,580 --> 00:22:50,860
+So then the question
+is, who is responsible?
+
+429
+00:22:50,860 --> 00:22:53,260
+Is it the researcher
+or developer?
+
+430
+00:22:53,260 --> 00:22:54,490
+Is it the manager?
+
+431
+00:22:54,490 --> 00:22:56,830
+Is it the reviewer who
+didn't catch the problems
+
+432
+00:22:56,830 --> 00:22:58,450
+with IQ classifier?
+
+433
+00:22:58,450 --> 00:23:00,970
+Is it university or company?
+
+434
+00:23:00,970 --> 00:23:01,825
+Or is it society?
+
+435
+00:23:01,825 --> 00:23:07,030
+
+
+436
+00:23:07,030 --> 00:23:07,530
+Yeah.
+
+437
+00:23:07,530 --> 00:23:11,220
+So there is one nice
+answer that I want to read,
+
+438
+00:23:11,220 --> 00:23:13,770
+is that all of us
+should be responsible.
+
+439
+00:23:13,770 --> 00:23:16,380
+So in practice, there
+is very little awareness
+
+440
+00:23:16,380 --> 00:23:20,290
+about understanding what
+problems are ethical or not.
+
+441
+00:23:20,290 --> 00:23:23,430
+And there is no clear
+policies here, right?
+
+442
+00:23:23,430 --> 00:23:25,410
+This is a complicated issue.
+
+443
+00:23:25,410 --> 00:23:28,080
+And it's not clear
+who is responsible.
+
+444
+00:23:28,080 --> 00:23:30,870
+This is why assuming
+that whoever
+
+445
+00:23:30,870 --> 00:23:34,960
+is aware of such dangers
+should be responsible.
+
+446
+00:23:34,960 --> 00:23:37,585
+So I don't know what is the
+right answer to this question.
+
+447
+00:23:37,585 --> 00:23:40,188
+
+
+448
+00:23:40,188 --> 00:23:42,730
+So now, what is the difference
+between the chicken quantifier
+
+449
+00:23:42,730 --> 00:23:43,930
+and the IQ classifier?
+
+450
+00:23:43,930 --> 00:23:54,920
+
+
+451
+00:23:54,920 --> 00:23:55,420
+Right.
+
+452
+00:23:55,420 --> 00:24:00,930
+So one of your answers is that
+one affects people and one does
+
+453
+00:24:00,930 --> 00:24:02,160
+not, right?
+
+454
+00:24:02,160 --> 00:24:03,990
+While chicken classifier
+actually affects
+
+455
+00:24:03,990 --> 00:24:07,890
+chicken's lives and the IQ
+classifier will not kill
+
+456
+00:24:07,890 --> 00:24:10,950
+anyone-- it can harm,
+but will not kill--
+
+457
+00:24:10,950 --> 00:24:16,250
+we do feel that IQ
+classifier currently can
+
+458
+00:24:16,250 --> 00:24:19,220
+have potentially worse impacts.
+
+459
+00:24:19,220 --> 00:24:23,130
+So AI systems are
+pervasive in our world.
+
+460
+00:24:23,130 --> 00:24:26,630
+And the question about
+ethics are specifically
+
+461
+00:24:26,630 --> 00:24:30,800
+raised commonly about
+people-centered AI systems.
+
+462
+00:24:30,800 --> 00:24:33,410
+And these systems
+are really pervasive.
+
+463
+00:24:33,410 --> 00:24:37,160
+So they interact with people
+like conversational agents.
+
+464
+00:24:37,160 --> 00:24:42,320
+They reason about people,
+such as profiling applications
+
+465
+00:24:42,320 --> 00:24:44,360
+or recommendation systems.
+
+466
+00:24:44,360 --> 00:24:46,550
+They affect people
+in other lives,
+
+467
+00:24:46,550 --> 00:24:50,540
+like parole decision
+applications that I mentioned,
+
+468
+00:24:50,540 --> 00:24:53,450
+face recognition,
+voice recognition.
+
+469
+00:24:53,450 --> 00:24:56,000
+All of these, actually,
+have this component
+
+470
+00:24:56,000 --> 00:25:00,770
+of predictive technology and
+the human-centered technology.
+
+471
+00:25:00,770 --> 00:25:04,410
+And this is why ethics
+is critical here.
+
+472
+00:25:04,410 --> 00:25:07,370
+So I want to move
+to a next study.
+
+473
+00:25:07,370 --> 00:25:12,320
+The next study is a
+study of detecting--
+
+474
+00:25:12,320 --> 00:25:15,960
+
+
+475
+00:25:15,960 --> 00:25:18,600
+so we, again,
+build a classifier.
+
+476
+00:25:18,600 --> 00:25:22,350
+And we want to
+identify the ability
+
+477
+00:25:22,350 --> 00:25:25,830
+to accurately identify
+one's sexual orientation
+
+478
+00:25:25,830 --> 00:25:27,900
+from mere observation.
+
+479
+00:25:27,900 --> 00:25:31,980
+So this study is
+called "AI Gaydar."
+
+480
+00:25:31,980 --> 00:25:35,080
+And there are, as I mentioned,
+many similar studies,
+
+481
+00:25:35,080 --> 00:25:40,530
+studies that predict potential
+for terrorist attacks, studies
+
+482
+00:25:40,530 --> 00:25:44,010
+that predict
+predictive policing.
+
+483
+00:25:44,010 --> 00:25:46,770
+And also, if you heard
+about Cambridge Analytica,
+
+484
+00:25:46,770 --> 00:25:50,220
+all of them incorporate
+very similar technology.
+
+485
+00:25:50,220 --> 00:25:54,420
+So let's talk about
+this "AI Gaydar" study.
+
+486
+00:25:54,420 --> 00:25:59,310
+And the goal is to understand,
+again, what kind of questions
+
+487
+00:25:59,310 --> 00:26:05,070
+we could ask about this study
+and what kind of pitfalls
+
+488
+00:26:05,070 --> 00:26:08,980
+we could prevent if we
+would ask these questions.
+
+489
+00:26:08,980 --> 00:26:13,800
+So to summarize the study,
+the research question
+
+490
+00:26:13,800 --> 00:26:18,060
+is, we need to identify
+the sexual orientation
+
+491
+00:26:18,060 --> 00:26:20,880
+from people's images.
+
+492
+00:26:20,880 --> 00:26:23,670
+And the data
+collection process is
+
+493
+00:26:23,670 --> 00:26:27,510
+that we can download photos
+from a popular American dating
+
+494
+00:26:27,510 --> 00:26:28,920
+website.
+
+495
+00:26:28,920 --> 00:26:40,050
+And there are 35,000 pictures,
+all white, equal representation
+
+496
+00:26:40,050 --> 00:26:42,660
+for gay and straight,
+for male and female.
+
+497
+00:26:42,660 --> 00:26:45,090
+Everybody is represented evenly.
+
+498
+00:26:45,090 --> 00:26:47,770
+
+
+499
+00:26:47,770 --> 00:26:51,670
+The method that was used
+is a deep learning model
+
+500
+00:26:51,670 --> 00:26:54,970
+to extract facial features
+and grooming features,
+
+501
+00:26:54,970 --> 00:26:57,160
+and then a logistic
+regression classifier
+
+502
+00:26:57,160 --> 00:27:02,450
+applied to classify the
+final label, gay or straight.
+
+503
+00:27:02,450 --> 00:27:06,550
+And the accuracy of this
+classifier is 81% for men
+
+504
+00:27:06,550 --> 00:27:08,750
+and 74% for women.
+
+505
+00:27:08,750 --> 00:27:11,680
+So this is a summary
+of the study.
+
+506
+00:27:11,680 --> 00:27:15,130
+And I see rightfully, you
+ask questions, why would
+
+507
+00:27:15,130 --> 00:27:18,280
+we ever need such an AI system?
+
+508
+00:27:18,280 --> 00:27:19,910
+This is a good question.
+
+509
+00:27:19,910 --> 00:27:24,160
+But I don't want to
+publicize this study
+
+510
+00:27:24,160 --> 00:27:26,170
+or disparage a
+specific researcher.
+
+511
+00:27:26,170 --> 00:27:28,210
+But this is a good
+study to present
+
+512
+00:27:28,210 --> 00:27:30,760
+as an example of
+what could go wrong
+
+513
+00:27:30,760 --> 00:27:33,440
+at all levels of the study.
+
+514
+00:27:33,440 --> 00:27:36,220
+So this is why I'm
+discussing it now.
+
+515
+00:27:36,220 --> 00:27:39,410
+So what went wrong here?
+
+516
+00:27:39,410 --> 00:27:43,400
+So let's start with an ethics
+of the research question.
+
+517
+00:27:43,400 --> 00:27:49,030
+So is it ethical at all to
+predict sexual orientation
+
+518
+00:27:49,030 --> 00:27:50,560
+from facial--
+
+519
+00:27:50,560 --> 00:27:54,160
+from any kind of features?
+
+520
+00:27:54,160 --> 00:27:56,740
+And I see a lot of comments.
+
+521
+00:27:56,740 --> 00:27:59,830
+And thank you for the comments.
+
+522
+00:27:59,830 --> 00:28:02,830
+So first of all, this is
+not a new research question.
+
+523
+00:28:02,830 --> 00:28:05,530
+
+
+524
+00:28:05,530 --> 00:28:08,890
+From 19th century, there
+were multiple studies
+
+525
+00:28:08,890 --> 00:28:13,870
+to correlate sexual identity
+with some external features.
+
+526
+00:28:13,870 --> 00:28:15,460
+And then it was genetics.
+
+527
+00:28:15,460 --> 00:28:19,210
+People were looking for gay
+genes, gay brains, gay ring
+
+528
+00:28:19,210 --> 00:28:21,040
+fingers, and so on.
+
+529
+00:28:21,040 --> 00:28:29,530
+So maybe moving from 19th
+century to 21 century,
+
+530
+00:28:29,530 --> 00:28:34,990
+we can again ask, who can
+benefit from such a classifier?
+
+531
+00:28:34,990 --> 00:28:38,470
+And who can be harmed
+by such a classifier?
+
+532
+00:28:38,470 --> 00:28:39,400
+So what do you think?
+
+533
+00:28:39,400 --> 00:28:42,430
+Who could benefit from
+such a classifier?
+
+534
+00:28:42,430 --> 00:28:49,100
+
+
+535
+00:28:49,100 --> 00:28:53,145
+So autocratic
+governments, right.
+
+536
+00:28:53,145 --> 00:28:56,090
+
+
+537
+00:28:56,090 --> 00:28:59,480
+But also maybe dating
+apps, advertisers,
+
+538
+00:28:59,480 --> 00:29:02,910
+conservative religious
+groups, and so on.
+
+539
+00:29:02,910 --> 00:29:06,770
+So we could think, who would
+want to use such a classifier?
+
+540
+00:29:06,770 --> 00:29:09,830
+
+
+541
+00:29:09,830 --> 00:29:13,130
+Then, maybe who can be
+harmed by such a classifier?
+
+542
+00:29:13,130 --> 00:29:17,030
+
+
+543
+00:29:17,030 --> 00:29:20,150
+Now again, assuming-- we are
+not thinking if it's possible
+
+544
+00:29:20,150 --> 00:29:21,740
+at all build such a classifier.
+
+545
+00:29:21,740 --> 00:29:25,950
+And as you can guess, we will
+see that it's not possible.
+
+546
+00:29:25,950 --> 00:29:30,830
+But what would stop you from
+building such a classifier?
+
+547
+00:29:30,830 --> 00:29:34,220
+What do you think could be
+harmful in this classifier?
+
+548
+00:29:34,220 --> 00:29:42,760
+
+
+549
+00:29:42,760 --> 00:29:48,430
+So yeah, thank you
+for your answers.
+
+550
+00:29:48,430 --> 00:29:49,670
+I will summarize them.
+
+551
+00:29:49,670 --> 00:29:57,040
+So many people can be
+harmed by such classifier.
+
+552
+00:29:57,040 --> 00:29:59,650
+And I summarized, basically,
+many of your answers
+
+553
+00:29:59,650 --> 00:30:01,220
+here on this slide.
+
+554
+00:30:01,220 --> 00:30:05,060
+So this potentially can
+be a dangerous technology.
+
+555
+00:30:05,060 --> 00:30:10,360
+So in many countries, being gay
+person is prosecutable by law.
+
+556
+00:30:10,360 --> 00:30:13,330
+And it can lead even
+to death penalty.
+
+557
+00:30:13,330 --> 00:30:16,060
+It might affect people's
+employment, relationships,
+
+558
+00:30:16,060 --> 00:30:19,180
+health opportunities, right?
+
+559
+00:30:19,180 --> 00:30:25,330
+Importantly, this is not only
+about sexual orientation.
+
+560
+00:30:25,330 --> 00:30:30,510
+So there are many attributes,
+including sexual identity,
+
+561
+00:30:30,510 --> 00:30:36,060
+that are private for people,
+that are protected attributes.
+
+562
+00:30:36,060 --> 00:30:39,270
+And they can be non-binary.
+
+563
+00:30:39,270 --> 00:30:43,260
+They can be intimate and
+not visible publicly.
+
+564
+00:30:43,260 --> 00:30:47,670
+And most importantly is
+that these attributes
+
+565
+00:30:47,670 --> 00:30:50,820
+are specifically those
+attributes against which people
+
+566
+00:30:50,820 --> 00:30:52,980
+are discriminated against.
+
+567
+00:30:52,980 --> 00:30:55,530
+And this is why it is
+especially dangerous
+
+568
+00:30:55,530 --> 00:30:57,790
+to build such a technology.
+
+569
+00:30:57,790 --> 00:31:03,060
+So in the paper, in the
+published paper, the argument
+
+570
+00:31:03,060 --> 00:31:05,130
+for building this--
+
+571
+00:31:05,130 --> 00:31:12,450
+for presenting this
+study was that this study
+
+572
+00:31:12,450 --> 00:31:19,250
+is an alert how easy it is
+to build such a classifier,
+
+573
+00:31:19,250 --> 00:31:24,230
+and basically an
+alert for to expose
+
+574
+00:31:24,230 --> 00:31:27,830
+the threat to the privacy
+and safety of people.
+
+575
+00:31:27,830 --> 00:31:30,530
+And then I would be
+interested to hear
+
+576
+00:31:30,530 --> 00:31:33,620
+if you have counter
+arguments for this argument.
+
+577
+00:31:33,620 --> 00:31:48,420
+
+
+578
+00:31:48,420 --> 00:31:54,220
+OK, so basically, there can
+be many counterarguments.
+
+579
+00:31:54,220 --> 00:31:57,910
+One of them is that this is a
+classifier, this technology.
+
+580
+00:31:57,910 --> 00:32:00,460
+So like a knife is a technology.
+
+581
+00:32:00,460 --> 00:32:02,650
+And with a knife,
+you can kill people
+
+582
+00:32:02,650 --> 00:32:05,590
+and you can cook food, right?
+
+583
+00:32:05,590 --> 00:32:09,160
+And you don't necessarily
+need to kill people
+
+584
+00:32:09,160 --> 00:32:13,030
+with a knife to expose
+the dangers and harms
+
+585
+00:32:13,030 --> 00:32:15,460
+of this technology, right?
+
+586
+00:32:15,460 --> 00:32:20,940
+And another issue is
+that this is actually not
+
+587
+00:32:20,940 --> 00:32:24,240
+possible to build such a
+classifier with the data
+
+588
+00:32:24,240 --> 00:32:25,410
+that researchers had.
+
+589
+00:32:25,410 --> 00:32:27,660
+And this is what
+we will see when
+
+590
+00:32:27,660 --> 00:32:33,540
+we will discuss additional
+details about the data.
+
+591
+00:32:33,540 --> 00:32:35,910
+And another comment
+is, as I said,
+
+592
+00:32:35,910 --> 00:32:38,940
+this is only one instance
+of such a technology.
+
+593
+00:32:38,940 --> 00:32:43,080
+Here is another instance, which
+is a successful startup called
+
+594
+00:32:43,080 --> 00:32:49,410
+Faception, which has
+drawn a lot of funding.
+
+595
+00:32:49,410 --> 00:32:52,350
+And its goal is to
+identify terrorists
+
+596
+00:32:52,350 --> 00:32:54,450
+based on facial features.
+
+597
+00:32:54,450 --> 00:32:56,880
+And unlike in the
+previous study,
+
+598
+00:32:56,880 --> 00:33:01,390
+this startup doesn't show what
+technology they developed.
+
+599
+00:33:01,390 --> 00:33:06,300
+But you can guess that it
+can have similar dangers.
+
+600
+00:33:06,300 --> 00:33:09,540
+So in general, building
+predictive technology
+
+601
+00:33:09,540 --> 00:33:11,670
+is very pervasive.
+
+602
+00:33:11,670 --> 00:33:12,700
+It's ubiquitous.
+
+603
+00:33:12,700 --> 00:33:14,520
+But it is always--
+
+604
+00:33:14,520 --> 00:33:20,550
+and sometimes, it's not as
+kind of clear cut unethical.
+
+605
+00:33:20,550 --> 00:33:26,220
+For example, many people
+in NLP published papers
+
+606
+00:33:26,220 --> 00:33:29,760
+on predicting gender
+from comments.
+
+607
+00:33:29,760 --> 00:33:35,670
+And it is not clear, basically,
+when the technology is clearly
+
+608
+00:33:35,670 --> 00:33:40,560
+harmful and unethical and
+where it can be actually used
+
+609
+00:33:40,560 --> 00:33:41,770
+in good ways.
+
+610
+00:33:41,770 --> 00:33:47,520
+For example, we all want
+our research to work, right?
+
+611
+00:33:47,520 --> 00:33:50,720
+And to work well and
+to be personalized,
+
+612
+00:33:50,720 --> 00:33:54,450
+the algorithm actually needs
+to know something about us.
+
+613
+00:33:54,450 --> 00:33:57,160
+So again, this is
+not an easy question.
+
+614
+00:33:57,160 --> 00:34:00,500
+But in the case
+of the classifier,
+
+615
+00:34:00,500 --> 00:34:03,800
+maybe it's already
+on the extreme.
+
+616
+00:34:03,800 --> 00:34:10,580
+OK, let's move to
+the data, again,
+
+617
+00:34:10,580 --> 00:34:13,580
+to discuss basically
+what questions
+
+618
+00:34:13,580 --> 00:34:15,420
+could be asked about the data.
+
+619
+00:34:15,420 --> 00:34:17,400
+So here's how the
+data was collected.
+
+620
+00:34:17,400 --> 00:34:20,449
+So photos were downloaded
+from a popular American dating
+
+621
+00:34:20,449 --> 00:34:20,989
+website.
+
+622
+00:34:20,989 --> 00:34:22,639
+They were public.
+
+623
+00:34:22,639 --> 00:34:29,420
+And there were a few thousands
+of images, all white,
+
+624
+00:34:29,420 --> 00:34:32,530
+and a balanced data set.
+
+625
+00:34:32,530 --> 00:34:38,830
+And my first question is, what
+can you say about the data?
+
+626
+00:34:38,830 --> 00:34:42,520
+So is it OK to use this data
+if there is no robots to steal,
+
+627
+00:34:42,520 --> 00:34:44,770
+the photos are public.
+
+628
+00:34:44,770 --> 00:34:49,239
+What can be counter arguments
+to using people's photos
+
+629
+00:34:49,239 --> 00:34:50,320
+from a dating website?
+
+630
+00:34:50,320 --> 00:35:04,010
+
+
+631
+00:35:04,010 --> 00:35:07,420
+There is a hint on the slide.
+
+632
+00:35:07,420 --> 00:35:12,320
+
+
+633
+00:35:12,320 --> 00:35:14,360
+Lack of consent.
+
+634
+00:35:14,360 --> 00:35:17,450
+People did not intend
+for their photos
+
+635
+00:35:17,450 --> 00:35:20,110
+to be used to build
+a classifier--
+
+636
+00:35:20,110 --> 00:35:21,290
+private information.
+
+637
+00:35:21,290 --> 00:35:21,840
+Right.
+
+638
+00:35:21,840 --> 00:35:23,510
+So thank you for your answers.
+
+639
+00:35:23,510 --> 00:35:26,270
+So the points that I
+wanted to emphasize here
+
+640
+00:35:26,270 --> 00:35:30,260
+is that it was legal
+to collect this data.
+
+641
+00:35:30,260 --> 00:35:32,180
+But again, it's not
+clear whether it
+
+642
+00:35:32,180 --> 00:35:35,240
+was ethical to collect this
+data, because as you said,
+
+643
+00:35:35,240 --> 00:35:36,890
+people did not provide--
+
+644
+00:35:36,890 --> 00:35:38,100
+maybe did not provide--
+
+645
+00:35:38,100 --> 00:35:41,030
+35,000 people did not
+provide consent for using,
+
+646
+00:35:41,030 --> 00:35:43,070
+specifically, this data.
+
+647
+00:35:43,070 --> 00:35:46,550
+And there are more
+important global issue here
+
+648
+00:35:46,550 --> 00:35:50,120
+is that there is a difference
+between data that is public
+
+649
+00:35:50,120 --> 00:35:53,300
+and data which is publicized.
+
+650
+00:35:53,300 --> 00:35:55,880
+So public, it's fine,
+because these people
+
+651
+00:35:55,880 --> 00:35:59,540
+want to be found by
+the social circle
+
+652
+00:35:59,540 --> 00:36:02,120
+that they are targeting when
+they publish their photo
+
+653
+00:36:02,120 --> 00:36:04,010
+on the dating website.
+
+654
+00:36:04,010 --> 00:36:06,050
+But this does not
+mean necessarily
+
+655
+00:36:06,050 --> 00:36:09,950
+that they want to be found
+by a broader social circle,
+
+656
+00:36:09,950 --> 00:36:14,700
+by their families, by their
+colleagues, and so on.
+
+657
+00:36:14,700 --> 00:36:18,860
+So there is a big difference
+between the data that is public
+
+658
+00:36:18,860 --> 00:36:22,340
+and the data which
+is publicized.
+
+659
+00:36:22,340 --> 00:36:29,280
+So overall, even if they did
+not violate terms of service,
+
+660
+00:36:29,280 --> 00:36:30,360
+I don't know about it.
+
+661
+00:36:30,360 --> 00:36:33,390
+I didn't read in
+depth, actually.
+
+662
+00:36:33,390 --> 00:36:37,290
+But they did violate
+the social contract
+
+663
+00:36:37,290 --> 00:36:42,240
+because this was not the intent
+of the user for their data
+
+664
+00:36:42,240 --> 00:36:45,810
+to be used in this way.
+
+665
+00:36:45,810 --> 00:36:48,630
+Next question about data--
+
+666
+00:36:48,630 --> 00:36:51,500
+so what do we think
+about this data set?
+
+667
+00:36:51,500 --> 00:36:56,540
+It's 35,000 pictures,
+all white, balanced
+
+668
+00:36:56,540 --> 00:36:58,820
+in terms of sexual
+orientation and balanced
+
+669
+00:36:58,820 --> 00:36:59,630
+in terms of gender.
+
+670
+00:36:59,630 --> 00:37:06,570
+
+
+671
+00:37:06,570 --> 00:37:07,440
+It's white.
+
+672
+00:37:07,440 --> 00:37:10,470
+
+
+673
+00:37:10,470 --> 00:37:16,890
+OK, so does not
+represent the population.
+
+674
+00:37:16,890 --> 00:37:17,510
+So, right.
+
+675
+00:37:17,510 --> 00:37:20,600
+So basically, you can
+guess that this dataset.
+
+676
+00:37:20,600 --> 00:37:23,750
+has many, many
+biases incorporated.
+
+677
+00:37:23,750 --> 00:37:28,190
+It contains only white people,
+only people who self-disclose
+
+678
+00:37:28,190 --> 00:37:30,470
+their sexual identity.
+
+679
+00:37:30,470 --> 00:37:34,760
+It represents very certain
+social groups-- people
+
+680
+00:37:34,760 --> 00:37:38,420
+who put their photos on the
+dating website of specific age
+
+681
+00:37:38,420 --> 00:37:41,270
+of specific ethnicity.
+
+682
+00:37:41,270 --> 00:37:43,070
+And basically, these
+are photos that
+
+683
+00:37:43,070 --> 00:37:49,430
+were carefully selected to
+be attractive to their target
+
+684
+00:37:49,430 --> 00:37:50,670
+audience.
+
+685
+00:37:50,670 --> 00:37:54,860
+So this data set contains
+many types of biases.
+
+686
+00:37:54,860 --> 00:37:57,530
+And also, as one
+of you mentioned
+
+687
+00:37:57,530 --> 00:38:01,010
+and as is written on
+this slide, the data set
+
+688
+00:38:01,010 --> 00:38:05,730
+is balanced, which does not
+represent the true distribution
+
+689
+00:38:05,730 --> 00:38:07,080
+in the population.
+
+690
+00:38:07,080 --> 00:38:08,790
+So what does it mean?
+
+691
+00:38:08,790 --> 00:38:14,390
+This means that this model is
+built on a very biased data
+
+692
+00:38:14,390 --> 00:38:16,140
+set.
+
+693
+00:38:16,140 --> 00:38:25,230
+And you as students at Stanford,
+you understand that it cannot
+
+694
+00:38:25,230 --> 00:38:28,770
+be used, for example, on
+a non-white population.
+
+695
+00:38:28,770 --> 00:38:34,140
+It cannot be used on the photos
+of people not from that dating
+
+696
+00:38:34,140 --> 00:38:35,040
+website.
+
+697
+00:38:35,040 --> 00:38:38,730
+We don't actually know what
+this classifier learned.
+
+698
+00:38:38,730 --> 00:38:41,160
+Maybe the most
+important features
+
+699
+00:38:41,160 --> 00:38:44,320
+were the watermark of
+this specific website.
+
+700
+00:38:44,320 --> 00:38:44,940
+I don't know.
+
+701
+00:38:44,940 --> 00:38:49,860
+Or some other confounds,
+spurious confounds.
+
+702
+00:38:49,860 --> 00:38:54,120
+But the point is that once
+the classifier is out,
+
+703
+00:38:54,120 --> 00:38:56,550
+those who want to
+use it maliciously,
+
+704
+00:38:56,550 --> 00:38:59,850
+they don't know that this
+technology is actually not
+
+705
+00:38:59,850 --> 00:39:02,430
+applicable for
+any other data set
+
+706
+00:39:02,430 --> 00:39:05,160
+except for this
+specific data set.
+
+707
+00:39:05,160 --> 00:39:07,200
+So this technology is biased.
+
+708
+00:39:07,200 --> 00:39:11,040
+And it also shows
+that it's basically
+
+709
+00:39:11,040 --> 00:39:16,620
+not a credible result.
+
+710
+00:39:16,620 --> 00:39:19,620
+OK, so let's move on.
+
+711
+00:39:19,620 --> 00:39:22,410
+And final question is that--
+
+712
+00:39:22,410 --> 00:39:23,830
+this is a deep learning model.
+
+713
+00:39:23,830 --> 00:39:25,390
+It's a black box model.
+
+714
+00:39:25,390 --> 00:39:31,070
+And then there is the question
+of how to analyze errors
+
+715
+00:39:31,070 --> 00:39:34,370
+in the learning model,
+specifically when
+
+716
+00:39:34,370 --> 00:39:39,680
+we work on such a critical,
+such sensitive topics
+
+717
+00:39:39,680 --> 00:39:43,220
+like predictive technology,
+not necessarily predicting
+
+718
+00:39:43,220 --> 00:39:45,410
+sexual orientation,
+but for example,
+
+719
+00:39:45,410 --> 00:39:50,640
+predicting gender, which is,
+again used in many companies?
+
+720
+00:39:50,640 --> 00:39:55,120
+So it is very difficult
+to understand whether it
+
+721
+00:39:55,120 --> 00:39:57,310
+is OK to use this technology.
+
+722
+00:39:57,310 --> 00:39:59,440
+But the point is
+that we need to be
+
+723
+00:39:59,440 --> 00:40:05,160
+able to analyze it and
+evaluate it properly.
+
+724
+00:40:05,160 --> 00:40:10,200
+And the last point is
+about the accuracy again.
+
+725
+00:40:10,200 --> 00:40:13,830
+And I'm going back to the
+points that I mentioned also
+
+726
+00:40:13,830 --> 00:40:15,630
+in the IQ classifier.
+
+727
+00:40:15,630 --> 00:40:20,220
+So the accuracy of this
+classifier is 81% for men
+
+728
+00:40:20,220 --> 00:40:23,670
+and 74% for women.
+
+729
+00:40:23,670 --> 00:40:28,630
+Is it a good accuracy,
+or is it a bad accuracy?
+
+730
+00:40:28,630 --> 00:40:32,460
+So the numbers are OK for some
+tasks, but not for others.
+
+731
+00:40:32,460 --> 00:40:36,750
+But importantly, for
+this type of problem,
+
+732
+00:40:36,750 --> 00:40:39,270
+it's important to
+understand that the cost
+
+733
+00:40:39,270 --> 00:40:42,660
+of misclassification is
+not equal to the cost
+
+734
+00:40:42,660 --> 00:40:44,830
+of correct prediction.
+
+735
+00:40:44,830 --> 00:40:48,430
+And here is kind
+of visual examples.
+
+736
+00:40:48,430 --> 00:40:56,880
+So if my algorithm misclassifies
+my dog as a cookie,
+
+737
+00:40:56,880 --> 00:41:00,240
+is the cost of this
+misclassification
+
+738
+00:41:00,240 --> 00:41:03,400
+is high or low?
+
+739
+00:41:03,400 --> 00:41:05,220
+So I guess it's
+just funny, right?
+
+740
+00:41:05,220 --> 00:41:06,810
+It's funny.
+
+741
+00:41:06,810 --> 00:41:09,690
+There is nothing offensive here.
+
+742
+00:41:09,690 --> 00:41:11,340
+And then the next question--
+
+743
+00:41:11,340 --> 00:41:16,690
+if my algorithm
+misclassifies me with my dog,
+
+744
+00:41:16,690 --> 00:41:21,140
+is the cost of
+misclassification high or low?
+
+745
+00:41:21,140 --> 00:41:23,630
+It can be funny, but
+maybe not for everyone.
+
+746
+00:41:23,630 --> 00:41:25,500
+We already don't know.
+
+747
+00:41:25,500 --> 00:41:28,760
+And then the photo that I
+don't put here but the one
+
+748
+00:41:28,760 --> 00:41:31,220
+that maybe many
+of you have heard
+
+749
+00:41:31,220 --> 00:41:36,020
+is the gorilla incident that
+happened in Google in 2016.
+
+750
+00:41:36,020 --> 00:41:40,460
+So in this case, there
+was a misclassification
+
+751
+00:41:40,460 --> 00:41:43,820
+of an African-American
+woman as a gorilla.
+
+752
+00:41:43,820 --> 00:41:46,100
+And to understand
+how expensive is
+
+753
+00:41:46,100 --> 00:41:48,500
+the cost of this
+misclassification,
+
+754
+00:41:48,500 --> 00:41:52,580
+we need to understand the
+whole history of dehumanization
+
+755
+00:41:52,580 --> 00:41:56,120
+of Black people in
+the US, and so on.
+
+756
+00:41:56,120 --> 00:41:59,150
+So we can see the difference.
+
+757
+00:41:59,150 --> 00:42:03,050
+For the same algorithm
+and same types of errors,
+
+758
+00:42:03,050 --> 00:42:05,540
+there are different
+types of errors that
+
+759
+00:42:05,540 --> 00:42:07,980
+are more expensive than others.
+
+760
+00:42:07,980 --> 00:42:13,390
+So this is why it is
+important to assess
+
+761
+00:42:13,390 --> 00:42:15,910
+AI systems adversarially.
+
+762
+00:42:15,910 --> 00:42:19,360
+And now I just want to
+reiterate the types of questions
+
+763
+00:42:19,360 --> 00:42:22,030
+that I ask because these are
+the kinds of questions that you
+
+764
+00:42:22,030 --> 00:42:25,690
+might want to ask yourself next
+time when you need to build
+
+765
+00:42:25,690 --> 00:42:28,090
+another predictive technology.
+
+766
+00:42:28,090 --> 00:42:31,240
+And the first is to understand
+the ethics of the research
+
+767
+00:42:31,240 --> 00:42:32,380
+question.
+
+768
+00:42:32,380 --> 00:42:36,170
+And sometimes it's not
+very easy to understand.
+
+769
+00:42:36,170 --> 00:42:40,330
+But just ask yourself these
+more specific questions.
+
+770
+00:42:40,330 --> 00:42:42,550
+If I build this
+technology, who could
+
+771
+00:42:42,550 --> 00:42:46,430
+benefit from such a technology,
+and who can be harmed by it?
+
+772
+00:42:46,430 --> 00:42:49,000
+So try to see the corner cases.
+
+773
+00:42:49,000 --> 00:42:51,340
+And also, what about the data?
+
+774
+00:42:51,340 --> 00:42:55,780
+Could sharing this data have
+major effect on people's lives,
+
+775
+00:42:55,780 --> 00:43:01,330
+like in the case of
+AI data classifier?
+
+776
+00:43:01,330 --> 00:43:04,090
+The next question that we
+can ask is about privacy.
+
+777
+00:43:04,090 --> 00:43:05,500
+What did we discuss?
+
+778
+00:43:05,500 --> 00:43:07,220
+Who owns the data?
+
+779
+00:43:07,220 --> 00:43:12,280
+And is this data not only
+public or legal to use, but also
+
+780
+00:43:12,280 --> 00:43:17,410
+are we violating the social
+circles to which the data is
+
+781
+00:43:17,410 --> 00:43:18,730
+publicized?
+
+782
+00:43:18,730 --> 00:43:21,670
+Are we violating a social
+contract in the way
+
+783
+00:43:21,670 --> 00:43:25,910
+that the public data
+is expected to be used?
+
+784
+00:43:25,910 --> 00:43:31,610
+And user consent is not
+always possible to obtain.
+
+785
+00:43:31,610 --> 00:43:36,080
+But we need to understand
+implicit assumptions of people
+
+786
+00:43:36,080 --> 00:43:39,290
+who put their data online.
+
+787
+00:43:39,290 --> 00:43:43,940
+Now the next question is, what
+are possible biases in data?
+
+788
+00:43:43,940 --> 00:43:46,220
+What are artifacts in data?
+
+789
+00:43:46,220 --> 00:43:50,060
+What are distributions
+for specific populations
+
+790
+00:43:50,060 --> 00:43:51,530
+and subpopulations?
+
+791
+00:43:51,530 --> 00:43:55,550
+How representative, or what
+kind of misrepresentations
+
+792
+00:43:55,550 --> 00:43:57,950
+are in my data?
+
+793
+00:43:57,950 --> 00:44:04,100
+And next is, what is basically a
+potential bias in these models?
+
+794
+00:44:04,100 --> 00:44:06,020
+When I build this
+model, do I control
+
+795
+00:44:06,020 --> 00:44:08,630
+for confounding variables?
+
+796
+00:44:08,630 --> 00:44:11,390
+And do I optimize for
+the right objective,
+
+797
+00:44:11,390 --> 00:44:14,480
+like in the case of
+the IQ classifier?
+
+798
+00:44:14,480 --> 00:44:19,040
+And also, if I have biases,
+does my system amplify biases?
+
+799
+00:44:19,040 --> 00:44:22,880
+And finally, it is not
+enough to measure accuracy
+
+800
+00:44:22,880 --> 00:44:28,790
+because the semantics of false
+positives and false negatives
+
+801
+00:44:28,790 --> 00:44:30,350
+can be different.
+
+802
+00:44:30,350 --> 00:44:32,840
+Sometimes the cost
+of misclassification
+
+803
+00:44:32,840 --> 00:44:36,270
+is much higher than the
+cost of correct prediction.
+
+804
+00:44:36,270 --> 00:44:40,070
+So I also need to
+understand how to evaluate
+
+805
+00:44:40,070 --> 00:44:43,350
+the models properly.
+
+806
+00:44:43,350 --> 00:44:45,060
+And why is it
+especially relevant
+
+807
+00:44:45,060 --> 00:44:49,320
+now is because, as
+you all know, there
+
+808
+00:44:49,320 --> 00:44:52,780
+is an exponential growth
+of user-generated data.
+
+809
+00:44:52,780 --> 00:44:55,230
+And it's really easy
+to build the tools.
+
+810
+00:44:55,230 --> 00:44:59,490
+Each of us can build the
+IQ classifier or gaydar.
+
+811
+00:44:59,490 --> 00:45:05,060
+But the question is, what kind
+of technology we will produce?
+
+812
+00:45:05,060 --> 00:45:09,320
+So in this, I finish the
+first part of the discussion.
+
+813
+00:45:09,320 --> 00:45:13,280
+And I put in this slide some
+recommended papers and talks
+
+814
+00:45:13,280 --> 00:45:18,590
+specifically on the introductory
+topics, on the impact of NLP.
+
+815
+00:45:18,590 --> 00:45:20,410
+And I think these are--
+
+816
+00:45:20,410 --> 00:45:23,060
+there are hundreds or
+thousands of similar talks.
+
+817
+00:45:23,060 --> 00:45:25,010
+But these are my favorites.
+
+818
+00:45:25,010 --> 00:45:28,030
+So if you want to read
+more, please take a look.
+
+819
+00:45:28,030 --> 00:45:31,060
+
+
+820
+00:45:31,060 --> 00:45:32,350
+Should I stop for questions?
+
+821
+00:45:32,350 --> 00:45:35,860
+Or should we move
+to the next part?
+
+822
+00:45:35,860 --> 00:45:38,735
+
+
+823
+00:45:38,735 --> 00:45:40,110
+Right at the
+moment, there aren't
+
+824
+00:45:40,110 --> 00:45:41,870
+any outstanding questions.
+
+825
+00:45:41,870 --> 00:45:44,340
+So maybe it's OK to
+move on, unless anyone's
+
+826
+00:45:44,340 --> 00:45:47,220
+desperately typing.
+
+827
+00:45:47,220 --> 00:45:48,180
+OK.
+
+828
+00:45:48,180 --> 00:45:51,450
+And the chat window
+is really nice.
+
+829
+00:45:51,450 --> 00:45:52,860
+There are so many responses.
+
+830
+00:45:52,860 --> 00:45:53,685
+Thank you all.
+
+831
+00:45:53,685 --> 00:45:57,590
+And I hope to get,
+later, this chat.
+
+832
+00:45:57,590 --> 00:45:58,890
+I will read it.
+
+833
+00:45:58,890 --> 00:46:01,050
+I think we can save it, yeah.
+
+834
+00:46:01,050 --> 00:46:02,160
+Thank you.
+
+835
+00:46:02,160 --> 00:46:04,260
+OK, then we can move
+on to the second part
+
+836
+00:46:04,260 --> 00:46:07,680
+about algorithmic bias.
+
+837
+00:46:07,680 --> 00:46:14,350
+So what are the topics in the
+intersection of ethics and NLP?
+
+838
+00:46:14,350 --> 00:46:16,900
+So the first one is
+algorithmic bias.
+
+839
+00:46:16,900 --> 00:46:19,998
+And this is about bias
+in data and NLP models.
+
+840
+00:46:19,998 --> 00:46:21,790
+And this is something
+that I will talk more
+
+841
+00:46:21,790 --> 00:46:23,050
+in the second part.
+
+842
+00:46:23,050 --> 00:46:26,420
+But the important to understand
+that the field is much broader.
+
+843
+00:46:26,420 --> 00:46:30,340
+So the next topic is
+incivility, so ability
+
+844
+00:46:30,340 --> 00:46:35,170
+to develop NLP tools to
+identify-- to actually, data
+
+845
+00:46:35,170 --> 00:46:39,400
+analytics to understand the hate
+speech, toxicity, incivility
+
+846
+00:46:39,400 --> 00:46:40,390
+online.
+
+847
+00:46:40,390 --> 00:46:43,030
+And this is a very
+complicated field
+
+848
+00:46:43,030 --> 00:46:46,180
+because it's not only about
+building the right classifiers.
+
+849
+00:46:46,180 --> 00:46:50,500
+There are many, many questions,
+such as if I post hateful
+
+850
+00:46:50,500 --> 00:46:53,710
+comment, who does this
+comment belong to?
+
+851
+00:46:53,710 --> 00:46:56,470
+Does it belong to a company?
+
+852
+00:46:56,470 --> 00:46:58,960
+Does it belong to me?
+
+853
+00:46:58,960 --> 00:47:00,310
+Should it be removed or not?
+
+854
+00:47:00,310 --> 00:47:02,530
+Because it is not clear
+where is the boundary
+
+855
+00:47:02,530 --> 00:47:08,620
+between the free speech
+and the moderated speech,
+
+856
+00:47:08,620 --> 00:47:12,430
+how to minimize the harms
+but defend the democracy,
+
+857
+00:47:12,430 --> 00:47:14,530
+these questions are
+very subjective.
+
+858
+00:47:14,530 --> 00:47:16,990
+And they're not regulated.
+
+859
+00:47:16,990 --> 00:47:21,910
+So this is a big,
+difficult field.
+
+860
+00:47:21,910 --> 00:47:24,770
+The next field is about privacy.
+
+861
+00:47:24,770 --> 00:47:26,860
+So again, who does
+this data belong
+
+862
+00:47:26,860 --> 00:47:29,200
+to, and how to protect privacy?
+
+863
+00:47:29,200 --> 00:47:32,800
+This field of privacy
+is actually very, very
+
+864
+00:47:32,800 --> 00:47:34,210
+under-explored in NLP.
+
+865
+00:47:34,210 --> 00:47:35,770
+Among other fields,
+I think there
+
+866
+00:47:35,770 --> 00:47:39,070
+is some research on incivility,
+on algorithmic bias,
+
+867
+00:47:39,070 --> 00:47:43,195
+on other fields, but very
+little research on privacy.
+
+868
+00:47:43,195 --> 00:47:46,850
+
+
+869
+00:47:46,850 --> 00:47:50,480
+Misinformation-- so
+information manipulation,
+
+870
+00:47:50,480 --> 00:47:53,300
+opinion manipulation, fake news.
+
+871
+00:47:53,300 --> 00:47:55,820
+So there is a
+whole range of ways
+
+872
+00:47:55,820 --> 00:47:58,580
+that data can be
+manipulated, from generated
+
+873
+00:47:58,580 --> 00:48:08,320
+texts and disinformation to just
+advertisement and more subtle,
+
+874
+00:48:08,320 --> 00:48:11,290
+propaganda and subtle
+opinion manipulation.
+
+875
+00:48:11,290 --> 00:48:15,100
+And there are many, many
+interesting research projects
+
+876
+00:48:15,100 --> 00:48:19,060
+that can be done, really with
+the focus on the language
+
+877
+00:48:19,060 --> 00:48:22,720
+of manipulation, which I think
+is just an interesting topic
+
+878
+00:48:22,720 --> 00:48:25,280
+to explore.
+
+879
+00:48:25,280 --> 00:48:28,200
+And finally, the
+technological divide--
+
+880
+00:48:28,200 --> 00:48:30,770
+so when we build our
+tools, even if it's
+
+881
+00:48:30,770 --> 00:48:33,710
+a part of speech
+tagger, what are
+
+882
+00:48:33,710 --> 00:48:38,010
+populations for which are
+served by these tools.
+
+883
+00:48:38,010 --> 00:48:40,820
+So there is a certain
+divide that technologies
+
+884
+00:48:40,820 --> 00:48:41,990
+are built unequally.
+
+885
+00:48:41,990 --> 00:48:45,530
+There is no one language,
+no two languages.
+
+886
+00:48:45,530 --> 00:48:48,150
+There are 6,000
+languages in the world.
+
+887
+00:48:48,150 --> 00:48:49,820
+And there are many populations.
+
+888
+00:48:49,820 --> 00:48:52,640
+And there are
+certain areas of NLP
+
+889
+00:48:52,640 --> 00:48:56,390
+which are completely
+under-explored.
+
+890
+00:48:56,390 --> 00:48:58,160
+For example,
+language varieties--
+
+891
+00:48:58,160 --> 00:49:01,610
+we think we can solve
+a problem for English,
+
+892
+00:49:01,610 --> 00:49:03,710
+for the problem of
+dependency parsing.
+
+893
+00:49:03,710 --> 00:49:06,710
+But we don't account for
+different varieties of English.
+
+894
+00:49:06,710 --> 00:49:08,360
+What about Nigerian English?
+
+895
+00:49:08,360 --> 00:49:10,790
+What about
+African-American English?
+
+896
+00:49:10,790 --> 00:49:13,550
+What about Indian English?
+
+897
+00:49:13,550 --> 00:49:17,240
+So there is a
+technological divide
+
+898
+00:49:17,240 --> 00:49:19,670
+that is currently present.
+
+899
+00:49:19,670 --> 00:49:23,930
+And as you see in the
+bottom, this picture
+
+900
+00:49:23,930 --> 00:49:28,370
+shows that the field is
+highly interdisciplinary.
+
+901
+00:49:28,370 --> 00:49:33,200
+So AI researchers cannot
+actually solve the problem
+
+902
+00:49:33,200 --> 00:49:36,080
+of misinformation alone.
+
+903
+00:49:36,080 --> 00:49:39,710
+To be able to address the
+problem of misinformation
+
+904
+00:49:39,710 --> 00:49:45,440
+or hate speech, we need to have
+not only engineers, but also
+
+905
+00:49:45,440 --> 00:49:54,900
+ethicists and social scientists
+and activists and politicians
+
+906
+00:49:54,900 --> 00:50:00,510
+who actually are responsible
+for policies and the linguists,
+
+907
+00:50:00,510 --> 00:50:04,890
+because many of these phenomena
+are interesting phenomena which
+
+908
+00:50:04,890 --> 00:50:08,080
+are not in words, but
+more in pragmatics.
+
+909
+00:50:08,080 --> 00:50:11,820
+So this is a very interesting
+field scientifically, but also
+
+910
+00:50:11,820 --> 00:50:15,380
+very challenging to work on.
+
+911
+00:50:15,380 --> 00:50:17,560
+And there are some
+recommended resources.
+
+912
+00:50:17,560 --> 00:50:20,250
+And in particular, the one that
+might be interesting to you
+
+913
+00:50:20,250 --> 00:50:25,900
+all is CS 384, is a
+seminar by Dan Jurafsky,
+
+914
+00:50:25,900 --> 00:50:28,180
+that is an amazing, also, list.
+
+915
+00:50:28,180 --> 00:50:33,990
+So if you want to take a
+look on specific subfields--
+
+916
+00:50:33,990 --> 00:50:36,060
+so this is a general overview.
+
+917
+00:50:36,060 --> 00:50:39,810
+And now I want to talk
+about one of these subfields
+
+918
+00:50:39,810 --> 00:50:42,750
+and give some
+explanation, why do
+
+919
+00:50:42,750 --> 00:50:45,790
+we have algorithmic
+bias in our models?
+
+920
+00:50:45,790 --> 00:50:51,555
+So let's start, again,
+with interaction.
+
+921
+00:50:51,555 --> 00:50:52,680
+I know you have the slides.
+
+922
+00:50:52,680 --> 00:50:54,390
+But don't look forward.
+
+923
+00:50:54,390 --> 00:50:55,920
+And I want to ask you questions.
+
+924
+00:50:55,920 --> 00:50:57,510
+And please type.
+
+925
+00:50:57,510 --> 00:51:00,050
+Which word is more likely to
+be used by a female, giggle
+
+926
+00:51:00,050 --> 00:51:00,605
+or laugh?
+
+927
+00:51:00,605 --> 00:51:04,440
+
+
+928
+00:51:04,440 --> 00:51:05,620
+Just type quickly.
+
+929
+00:51:05,620 --> 00:51:08,990
+Don't think too much.
+
+930
+00:51:08,990 --> 00:51:15,240
+So please look at the chat
+and see the majority response.
+
+931
+00:51:15,240 --> 00:51:20,380
+It is absolutely giggle.
+
+932
+00:51:20,380 --> 00:51:21,580
+You're right.
+
+933
+00:51:21,580 --> 00:51:23,770
+Next question--
+which word is more
+
+934
+00:51:23,770 --> 00:51:25,915
+likely to be used by a
+female, brutal or fierce?
+
+935
+00:51:25,915 --> 00:51:29,330
+
+
+936
+00:51:29,330 --> 00:51:32,306
+Oh, lovely.
+
+937
+00:51:32,306 --> 00:51:37,030
+It's like 99% fierce.
+
+938
+00:51:37,030 --> 00:51:38,020
+Thank you.
+
+939
+00:51:38,020 --> 00:51:40,850
+Next question--
+which word is more
+
+940
+00:51:40,850 --> 00:51:43,760
+likely to be used by an older
+person, impressive or amazing?
+
+941
+00:51:43,760 --> 00:51:47,360
+
+
+942
+00:51:47,360 --> 00:51:52,320
+So actually, from what I
+see, it's 100% impressive.
+
+943
+00:51:52,320 --> 00:51:53,380
+Very impressive.
+
+944
+00:51:53,380 --> 00:51:55,080
+Thank you for your answers.
+
+945
+00:51:55,080 --> 00:51:57,090
+Which word is more
+likely to be used
+
+946
+00:51:57,090 --> 00:52:00,990
+by a person of a higher
+occupational class, suggestions
+
+947
+00:52:00,990 --> 00:52:01,890
+or proposals?
+
+948
+00:52:01,890 --> 00:52:05,110
+
+
+949
+00:52:05,110 --> 00:52:07,900
+Do you see how correctly
+you answer my questions?
+
+950
+00:52:07,900 --> 00:52:10,640
+
+
+951
+00:52:10,640 --> 00:52:12,820
+So next question--
+why do we intuitively
+
+952
+00:52:12,820 --> 00:52:14,980
+recognize the default
+social-- why do you all
+
+953
+00:52:14,980 --> 00:52:15,955
+know the right answer?
+
+954
+00:52:15,955 --> 00:52:21,270
+
+
+955
+00:52:21,270 --> 00:52:21,840
+Right.
+
+956
+00:52:21,840 --> 00:52:24,250
+Our brains are biased.
+
+957
+00:52:24,250 --> 00:52:28,200
+So this is about implicit
+biases in our brains.
+
+958
+00:52:28,200 --> 00:52:29,860
+And this is a very good example.
+
+959
+00:52:29,860 --> 00:52:32,490
+And you can also see
+how language perpetuates
+
+960
+00:52:32,490 --> 00:52:34,050
+and propagates biases, right?
+
+961
+00:52:34,050 --> 00:52:35,490
+It's all in the language.
+
+962
+00:52:35,490 --> 00:52:37,830
+If you can could know
+from one word who
+
+963
+00:52:37,830 --> 00:52:41,520
+is the person who said it, you
+can imagine what kind of biases
+
+964
+00:52:41,520 --> 00:52:45,520
+we can extract
+from a longer text.
+
+965
+00:52:45,520 --> 00:52:48,220
+So to understand what's
+happening with biases,
+
+966
+00:52:48,220 --> 00:52:51,050
+we need to understand
+how cognition works.
+
+967
+00:52:51,050 --> 00:52:55,240
+So we have-- this was introduced
+by Kahneman and Tversky.
+
+968
+00:52:55,240 --> 00:52:57,550
+So conceptually,
+our brain is divided
+
+969
+00:52:57,550 --> 00:53:00,040
+into System 1 and System 2.
+
+970
+00:53:00,040 --> 00:53:02,830
+So System 1 is our autopilot.
+
+971
+00:53:02,830 --> 00:53:06,160
+It is used to make
+decisions without thinking.
+
+972
+00:53:06,160 --> 00:53:10,030
+It is very fast, parallel,
+effortless, and so on.
+
+973
+00:53:10,030 --> 00:53:12,520
+System 2 is our logical part.
+
+974
+00:53:12,520 --> 00:53:15,010
+It knows how to analyze
+and make decisions
+
+975
+00:53:15,010 --> 00:53:16,510
+that are unusual for us.
+
+976
+00:53:16,510 --> 00:53:17,710
+So it is not automatic.
+
+977
+00:53:17,710 --> 00:53:21,250
+And it's slow,
+serial, controlled.
+
+978
+00:53:21,250 --> 00:53:25,550
+It requires a lot
+of mental energy.
+
+979
+00:53:25,550 --> 00:53:29,960
+So our brain constantly
+receives signals
+
+980
+00:53:29,960 --> 00:53:32,960
+through all the sensors,
+through eyes, ears.
+
+981
+00:53:32,960 --> 00:53:34,820
+There is a lot of incoming data.
+
+982
+00:53:34,820 --> 00:53:37,430
+There is a lot of
+pixels here around me.
+
+983
+00:53:37,430 --> 00:53:41,270
+But the actual part of
+System 2 is only able
+
+984
+00:53:41,270 --> 00:53:43,730
+to produce a very small
+portion of the signals
+
+985
+00:53:43,730 --> 00:53:45,900
+that we received.
+
+986
+00:53:45,900 --> 00:53:47,940
+So System 1 is automatic.
+
+987
+00:53:47,940 --> 00:53:50,130
+System 2 is effortful.
+
+988
+00:53:50,130 --> 00:53:56,340
+But in practice, over
+95% of the signals
+
+989
+00:53:56,340 --> 00:54:01,290
+that we receive from the world
+is relegated to System 1.
+
+990
+00:54:01,290 --> 00:54:04,080
+And the funny thing
+is, as Kahneman wrote,
+
+991
+00:54:04,080 --> 00:54:08,130
+is that we identify
+ourselves with System 2.
+
+992
+00:54:08,130 --> 00:54:12,070
+We believe that we are
+conscious and reasonable beings.
+
+993
+00:54:12,070 --> 00:54:18,020
+But in practice, most of our
+decisions are made by System 1.
+
+994
+00:54:18,020 --> 00:54:24,920
+So since we are using
+autopilot most of our time,
+
+995
+00:54:24,920 --> 00:54:27,620
+our brain get--
+
+996
+00:54:27,620 --> 00:54:29,600
+all the information
+that we perceive
+
+997
+00:54:29,600 --> 00:54:35,160
+gets categorized, clusters,
+and labeled automatically.
+
+998
+00:54:35,160 --> 00:54:38,030
+And this is how cognitive
+stereotypes are created.
+
+999
+00:54:38,030 --> 00:54:40,600
+
+
+1000
+00:54:40,600 --> 00:54:44,440
+And there are multiple,
+multiple cognitive stereotypes
+
+1001
+00:54:44,440 --> 00:54:48,100
+that are aimed to fill
+the gaps if we don't
+
+1002
+00:54:48,100 --> 00:54:52,000
+have enough meaning, or reduce
+information-- generalize--
+
+1003
+00:54:52,000 --> 00:54:57,850
+if we have too much information,
+or to complete the facts if we
+
+1004
+00:54:57,850 --> 00:54:59,650
+are missing facts, and so on.
+
+1005
+00:54:59,650 --> 00:55:03,110
+And this leads to all
+kinds of cognitive biases.
+
+1006
+00:55:03,110 --> 00:55:07,160
+So examples of biases would
+be in-group favoritism.
+
+1007
+00:55:07,160 --> 00:55:12,460
+So we grew up seeing the
+majority of specific people.
+
+1008
+00:55:12,460 --> 00:55:17,011
+And we tend to like those
+people more than the minorities.
+
+1009
+00:55:17,011 --> 00:55:20,170
+Halo effect-- that
+we know very little
+
+1010
+00:55:20,170 --> 00:55:23,110
+about the person or a
+specific social group,
+
+1011
+00:55:23,110 --> 00:55:25,090
+but we tend to generalize.
+
+1012
+00:55:25,090 --> 00:55:27,460
+Based on one trait,
+we could generalize
+
+1013
+00:55:27,460 --> 00:55:33,970
+about the whole group and
+to other traits, and so on.
+
+1014
+00:55:33,970 --> 00:55:36,100
+There are many biases.
+
+1015
+00:55:36,100 --> 00:55:40,840
+And thanks to these
+stereotypes, if I
+
+1016
+00:55:40,840 --> 00:55:42,405
+asked you the
+questions, the words,
+
+1017
+00:55:42,405 --> 00:55:44,620
+or if I show you these
+pictures, you immediately
+
+1018
+00:55:44,620 --> 00:55:48,520
+know this is
+calming, cute, tasty.
+
+1019
+00:55:48,520 --> 00:55:50,590
+And if I show
+these pictures, you
+
+1020
+00:55:50,590 --> 00:55:53,770
+would know that maybe it's
+dangerous, unpleasant.
+
+1021
+00:55:53,770 --> 00:55:56,440
+And automatically,
+when we see a snake,
+
+1022
+00:55:56,440 --> 00:56:00,910
+we will automatically step
+down, right, step back.
+
+1023
+00:56:00,910 --> 00:56:07,940
+And we only need to invoke
+System 2, for example,
+
+1024
+00:56:07,940 --> 00:56:09,940
+if we decide to touch it.
+
+1025
+00:56:09,940 --> 00:56:12,760
+But most of our
+decisions are automatic.
+
+1026
+00:56:12,760 --> 00:56:15,250
+And this is the
+same exact mechanism
+
+1027
+00:56:15,250 --> 00:56:18,980
+that creates social
+stereotypes in our brains.
+
+1028
+00:56:18,980 --> 00:56:22,420
+So we exactly, in
+the same mechanism,
+
+1029
+00:56:22,420 --> 00:56:29,470
+internalize these associations
+and make generalizations
+
+1030
+00:56:29,470 --> 00:56:32,530
+about specific groups.
+
+1031
+00:56:32,530 --> 00:56:36,070
+And this is why, when I ask you
+which word is more likely to be
+
+1032
+00:56:36,070 --> 00:56:43,260
+used by an older person, 100%
+of you typed the word impressive
+
+1033
+00:56:43,260 --> 00:56:44,580
+would be used.
+
+1034
+00:56:44,580 --> 00:56:49,470
+And importantly, these implicit
+biases are very pervasive.
+
+1035
+00:56:49,470 --> 00:56:51,870
+And they operate unconsciously.
+
+1036
+00:56:51,870 --> 00:56:55,080
+And one important property
+that they are transitive.
+
+1037
+00:56:55,080 --> 00:56:57,990
+So specifically, we are
+seeing that the Black
+
+1038
+00:56:57,990 --> 00:56:59,790
+person is playing basketball.
+
+1039
+00:56:59,790 --> 00:57:02,850
+And in the movie, we see that
+a Black person uses drugs.
+
+1040
+00:57:02,850 --> 00:57:05,880
+And we immediately
+connect it and reinforce,
+
+1041
+00:57:05,880 --> 00:57:10,240
+for example, the associations
+with the specific groups.
+
+1042
+00:57:10,240 --> 00:57:17,140
+And the social stereotypes are
+not necessarily all negative.
+
+1043
+00:57:17,140 --> 00:57:21,710
+I can name some on-the-surface
+positive stereotypes.
+
+1044
+00:57:21,710 --> 00:57:24,340
+For example, Asians
+are good in math.
+
+1045
+00:57:24,340 --> 00:57:27,370
+Importantly, they all
+have negative effects,
+
+1046
+00:57:27,370 --> 00:57:30,340
+even seemingly
+positive stereotypes,
+
+1047
+00:57:30,340 --> 00:57:32,650
+because they
+pigeonhole individuals
+
+1048
+00:57:32,650 --> 00:57:35,500
+and put expectations of them.
+
+1049
+00:57:35,500 --> 00:57:38,910
+Or they can just be harmful.
+
+1050
+00:57:38,910 --> 00:57:41,830
+And then, how do
+these biases manifest?
+
+1051
+00:57:41,830 --> 00:57:43,770
+They manifest in language.
+
+1052
+00:57:43,770 --> 00:57:49,410
+And for example, they manifest
+in subtle microaggressions.
+
+1053
+00:57:49,410 --> 00:57:53,700
+And importantly,
+microaggressions
+
+1054
+00:57:53,700 --> 00:57:56,730
+should not correlate
+necessarily with sentiment.
+
+1055
+00:57:56,730 --> 00:58:00,750
+So sentiment analysis tools
+would not detect them.
+
+1056
+00:58:00,750 --> 00:58:03,660
+On the surface level,
+microaggression
+
+1057
+00:58:03,660 --> 00:58:06,330
+can be negative,
+neutral, or positive,
+
+1058
+00:58:06,330 --> 00:58:08,620
+like in these examples.
+
+1059
+00:58:08,620 --> 00:58:11,640
+But they actually
+bring prolonged harms,
+
+1060
+00:58:11,640 --> 00:58:15,480
+even if they're meant
+as a compliment.
+
+1061
+00:58:15,480 --> 00:58:18,060
+And there was a lot of
+research in social sciences
+
+1062
+00:58:18,060 --> 00:58:21,570
+that showed that
+they can even bring
+
+1063
+00:58:21,570 --> 00:58:24,210
+more harms than
+overt hate speech,
+
+1064
+00:58:24,210 --> 00:58:29,370
+because they kind of bring
+a significant emotional harm
+
+1065
+00:58:29,370 --> 00:58:32,820
+and reinforce
+problematic stereotypes.
+
+1066
+00:58:32,820 --> 00:58:36,360
+So if I will collect these
+conversations from Twitter,
+
+1067
+00:58:36,360 --> 00:58:37,290
+do I look OK?
+
+1068
+00:58:37,290 --> 00:58:38,640
+You are so pretty.
+
+1069
+00:58:38,640 --> 00:58:40,390
+Is this a positive or negative?
+
+1070
+00:58:40,390 --> 00:58:43,680
+It's probably a
+positive interaction.
+
+1071
+00:58:43,680 --> 00:58:45,900
+And then the next interaction--
+
+1072
+00:58:45,900 --> 00:58:48,150
+check out my new physics paper.
+
+1073
+00:58:48,150 --> 00:58:51,330
+Is it positive or
+negative interaction?
+
+1074
+00:58:51,330 --> 00:58:52,530
+Why physics?
+
+1075
+00:58:52,530 --> 00:58:53,940
+You're so pretty.
+
+1076
+00:58:53,940 --> 00:58:54,960
+So we don't know.
+
+1077
+00:58:54,960 --> 00:58:57,150
+We don't have the right context.
+
+1078
+00:58:57,150 --> 00:58:59,640
+And then for this
+question, do I look OK?
+
+1079
+00:58:59,640 --> 00:59:02,790
+And all kinds of
+responses-- for example, you
+
+1080
+00:59:02,790 --> 00:59:04,650
+are so pretty for your age.
+
+1081
+00:59:04,650 --> 00:59:06,460
+In this case,
+these are negative.
+
+1082
+00:59:06,460 --> 00:59:07,680
+These are microaggressions.
+
+1083
+00:59:07,680 --> 00:59:09,570
+They make us cringe, right?
+
+1084
+00:59:09,570 --> 00:59:13,830
+And then the problem is that all
+of this human-generated data,
+
+1085
+00:59:13,830 --> 00:59:18,450
+which necessarily incorporates
+a lot of microaggressions
+
+1086
+00:59:18,450 --> 00:59:20,520
+and just stereotypes
+that we all have--
+
+1087
+00:59:20,520 --> 00:59:23,010
+we are not aware of them--
+
+1088
+00:59:23,010 --> 00:59:27,560
+it is fed to our systems.
+
+1089
+00:59:27,560 --> 00:59:30,250
+So there is a lot
+of bias in language,
+
+1090
+00:59:30,250 --> 00:59:33,700
+like the stereotypes
+or historical biases
+
+1091
+00:59:33,700 --> 00:59:35,170
+that are perpetuated.
+
+1092
+00:59:35,170 --> 00:59:36,880
+For example, there
+are more photos
+
+1093
+00:59:36,880 --> 00:59:41,440
+of male doctors than
+female doctors on the web.
+
+1094
+00:59:41,440 --> 00:59:44,620
+Or human reporting biases--
+
+1095
+00:59:44,620 --> 00:59:48,520
+and later, there are biases
+also in our data sets.
+
+1096
+00:59:48,520 --> 00:59:50,330
+So for example,
+what kind of data
+
+1097
+00:59:50,330 --> 00:59:52,420
+was sampled for annotation?
+
+1098
+00:59:52,420 --> 00:59:54,160
+From which kind of populations?
+
+1099
+00:59:54,160 --> 00:59:56,200
+From which language varieties?
+
+1100
+00:59:56,200 --> 00:59:57,850
+From which locations?
+
+1101
+00:59:57,850 --> 01:00:00,290
+And then, who are we
+choosing as annotators?
+
+1102
+01:00:00,290 --> 01:00:03,280
+So there is a bias
+in who are annotators
+
+1103
+01:00:03,280 --> 01:00:05,410
+that annotate our data.
+
+1104
+01:00:05,410 --> 01:00:07,870
+And then there is
+cognitive biases
+
+1105
+01:00:07,870 --> 01:00:09,820
+of annotators
+themselves, how they
+
+1106
+01:00:09,820 --> 01:00:12,490
+treat what is a microaggression
+and what is not,
+
+1107
+01:00:12,490 --> 01:00:15,550
+or other questions.
+
+1108
+01:00:15,550 --> 01:00:18,670
+And all these types
+of biases later
+
+1109
+01:00:18,670 --> 01:00:22,030
+propagate into our
+computational systems.
+
+1110
+01:00:22,030 --> 01:00:24,790
+And this is how we get
+from cognitive bias,
+
+1111
+01:00:24,790 --> 01:00:28,360
+social cognitive biases,
+to algorithmic biases,
+
+1112
+01:00:28,360 --> 01:00:31,540
+because if you remember
+the System 1 and System 2,
+
+1113
+01:00:31,540 --> 01:00:37,460
+currently the way we develop
+systems, AI is only System 1.
+
+1114
+01:00:37,460 --> 01:00:38,780
+And why is that?
+
+1115
+01:00:38,780 --> 01:00:44,650
+Because currently, the
+way we develop our tools,
+
+1116
+01:00:44,650 --> 01:00:49,040
+the dominant paradigm is
+a data-centric approach.
+
+1117
+01:00:49,040 --> 01:00:52,270
+So we need a lot of data
+to train good models.
+
+1118
+01:00:52,270 --> 01:00:56,350
+And we do know well how
+to leverage a lot of data.
+
+1119
+01:00:56,350 --> 01:00:58,700
+But again, language
+is about people.
+
+1120
+01:00:58,700 --> 01:01:01,720
+It is produced by people.
+
+1121
+01:01:01,720 --> 01:01:08,240
+But our existing
+systems, they do not
+
+1122
+01:01:08,240 --> 01:01:11,280
+leverage social
+cultural context.
+
+1123
+01:01:11,280 --> 01:01:15,170
+We don't know how
+to incorporate--
+
+1124
+01:01:15,170 --> 01:01:16,970
+we don't do it, usually.
+
+1125
+01:01:16,970 --> 01:01:20,660
+We don't incorporate which
+social biases are positive
+
+1126
+01:01:20,660 --> 01:01:22,790
+and which inductive
+biases are good
+
+1127
+01:01:22,790 --> 01:01:25,970
+and which inductive
+biases are bad to have.
+
+1128
+01:01:25,970 --> 01:01:30,200
+So overall, our models
+are really powerful.
+
+1129
+01:01:30,200 --> 01:01:33,360
+And they're powerful at
+making generalizations.
+
+1130
+01:01:33,360 --> 01:01:37,070
+But we don't know how to control
+for the right inductive biases,
+
+1131
+01:01:37,070 --> 01:01:39,860
+which inductive biases
+are good and which
+
+1132
+01:01:39,860 --> 01:01:41,780
+inductive biases are not.
+
+1133
+01:01:41,780 --> 01:01:44,240
+And then to go into
+the next point,
+
+1134
+01:01:44,240 --> 01:01:46,640
+is that these models
+are opaque, right?
+
+1135
+01:01:46,640 --> 01:01:50,540
+We don't also know how to
+interpret well deep learning
+
+1136
+01:01:50,540 --> 01:01:54,980
+networks, which means it's not
+easy to analyze them and spot
+
+1137
+01:01:54,980 --> 01:01:57,710
+the problems.
+
+1138
+01:01:57,710 --> 01:02:00,770
+And as you can guess,
+this is not only related
+
+1139
+01:02:00,770 --> 01:02:02,780
+to the field of ethical NLP.
+
+1140
+01:02:02,780 --> 01:02:05,900
+These are just interesting
+research questions,
+
+1141
+01:02:05,900 --> 01:02:08,420
+how to incorporate social
+and cultural knowledge
+
+1142
+01:02:08,420 --> 01:02:13,850
+into deep learning models, or
+how to develop interpretation
+
+1143
+01:02:13,850 --> 01:02:14,570
+approaches.
+
+1144
+01:02:14,570 --> 01:02:17,100
+
+
+1145
+01:02:17,100 --> 01:02:22,670
+So what is missing?
+
+1146
+01:02:22,670 --> 01:02:24,800
+Today, what is
+missing, for example,
+
+1147
+01:02:24,800 --> 01:02:28,580
+is that existing
+classifiers for toxicity
+
+1148
+01:02:28,580 --> 01:02:33,260
+detection-- if we want to build
+data analytics to clean up
+
+1149
+01:02:33,260 --> 01:02:36,830
+our data before it propagates
+through the models,
+
+1150
+01:02:36,830 --> 01:02:41,060
+we know only how to detect overt
+toxic language, such as hate
+
+1151
+01:02:41,060 --> 01:02:44,630
+speech, because we are
+primarily sampling our data
+
+1152
+01:02:44,630 --> 01:02:47,930
+and training our data
+based on lexicons.
+
+1153
+01:02:47,930 --> 01:02:53,880
+And there is almost no focus
+on actual microaggressions
+
+1154
+01:02:53,880 --> 01:02:56,530
+and more subtle
+biases, which are often
+
+1155
+01:02:56,530 --> 01:03:00,940
+not in words but in pragmatics
+of the conversation,
+
+1156
+01:03:00,940 --> 01:03:03,580
+and understanding who
+are the people involved
+
+1157
+01:03:03,580 --> 01:03:06,210
+in the conversation.
+
+1158
+01:03:06,210 --> 01:03:09,630
+So today's tools,
+they could be applied
+
+1159
+01:03:09,630 --> 01:03:12,840
+to these kind of
+microaggressions or hate speech
+
+1160
+01:03:12,840 --> 01:03:19,170
+detection or sentiment analysis,
+but they will necessarily fail.
+
+1161
+01:03:19,170 --> 01:03:22,980
+The next point is that, again,
+our models do not incorporate
+
+1162
+01:03:22,980 --> 01:03:24,540
+social cultural knowledge.
+
+1163
+01:03:24,540 --> 01:03:31,200
+And basically, the same comment
+can be toxic or non-toxic
+
+1164
+01:03:31,200 --> 01:03:35,340
+depending on who are the people
+involved in the conversation.
+
+1165
+01:03:35,340 --> 01:03:41,160
+But our models are data-centric
+and not people-centric.
+
+1166
+01:03:41,160 --> 01:03:45,930
+And the more general problem
+is that the deep learning
+
+1167
+01:03:45,930 --> 01:03:50,850
+models are really good at
+picking spurious correlations.
+
+1168
+01:03:50,850 --> 01:03:55,410
+And this is why, for
+example, in this paper,
+
+1169
+01:03:55,410 --> 01:04:01,230
+the three comments which the
+only difference in these three
+
+1170
+01:04:01,230 --> 01:04:03,720
+sentences is a
+name, and probably
+
+1171
+01:04:03,720 --> 01:04:11,020
+the association of this name
+with race or ethnicity--
+
+1172
+01:04:11,020 --> 01:04:14,640
+so our models do pick up
+on spurious confounds.
+
+1173
+01:04:14,640 --> 01:04:16,770
+So we think we
+predict sentiment.
+
+1174
+01:04:16,770 --> 01:04:20,100
+But we also predict
+all kinds of labels
+
+1175
+01:04:20,100 --> 01:04:23,100
+that correlate with sentiment,
+but not necessarily are
+
+1176
+01:04:23,100 --> 01:04:25,150
+true predictors of sentiment--
+
+1177
+01:04:25,150 --> 01:04:27,390
+for example, gender or race.
+
+1178
+01:04:27,390 --> 01:04:31,760
+And this is something
+very pervasive.
+
+1179
+01:04:31,760 --> 01:04:34,840
+And finally, the models
+are not explainable.
+
+1180
+01:04:34,840 --> 01:04:37,660
+So we kind of have
+these deficiencies
+
+1181
+01:04:37,660 --> 01:04:40,960
+just in core approaches
+to deep learning.
+
+1182
+01:04:40,960 --> 01:04:42,790
+And we have all this data.
+
+1183
+01:04:42,790 --> 01:04:45,700
+And with this data, we
+train conversational agents,
+
+1184
+01:04:45,700 --> 01:04:48,490
+personal assistants,
+all kinds of systems.
+
+1185
+01:04:48,490 --> 01:04:50,770
+And why do we care now?
+
+1186
+01:04:50,770 --> 01:04:53,050
+Because it can bring harms.
+
+1187
+01:04:53,050 --> 01:04:58,330
+So what kind of unintended
+harms it can bring?
+
+1188
+01:04:58,330 --> 01:05:01,180
+Here is an example
+of an image search.
+
+1189
+01:05:01,180 --> 01:05:03,730
+If you search for three Black
+teenagers-- and this is,
+
+1190
+01:05:03,730 --> 01:05:05,890
+I searched for it when
+I prepared this talk
+
+1191
+01:05:05,890 --> 01:05:06,860
+for the first time.
+
+1192
+01:05:06,860 --> 01:05:08,650
+So it was fixed, I guess.
+
+1193
+01:05:08,650 --> 01:05:12,990
+But this is how it
+was in June 2017.
+
+1194
+01:05:12,990 --> 01:05:17,430
+And then when you
+search for a doctor,
+
+1195
+01:05:17,430 --> 01:05:20,400
+you'll get primarily
+male doctors, right,
+
+1196
+01:05:20,400 --> 01:05:22,170
+and primarily white.
+
+1197
+01:05:22,170 --> 01:05:24,690
+And if you search
+for a nurse, this
+
+1198
+01:05:24,690 --> 01:05:28,130
+is a stereotypical
+image of a nurse.
+
+1199
+01:05:28,130 --> 01:05:30,590
+And if you search
+for a homemaker,
+
+1200
+01:05:30,590 --> 01:05:35,760
+this is just top search
+results for these query words.
+
+1201
+01:05:35,760 --> 01:05:41,020
+And if you search for
+CEO, it's a very specific
+
+1202
+01:05:41,020 --> 01:05:44,400
+stereotypical image of CEO.
+
+1203
+01:05:44,400 --> 01:05:46,190
+And if you search
+for a professor,
+
+1204
+01:05:46,190 --> 01:05:48,620
+this one is my
+personal favorite.
+
+1205
+01:05:48,620 --> 01:05:51,650
+So you can see all male images.
+
+1206
+01:05:51,650 --> 01:05:54,170
+And there is only one woman.
+
+1207
+01:05:54,170 --> 01:05:55,595
+But if you look
+at her background,
+
+1208
+01:05:55,595 --> 01:05:58,170
+you can see these are
+simple math facts.
+
+1209
+01:05:58,170 --> 01:06:00,320
+So it's just an
+error in the search.
+
+1210
+01:06:00,320 --> 01:06:03,410
+She's not a professor.
+
+1211
+01:06:03,410 --> 01:06:08,580
+And this is the result of,
+for example, face recognition.
+
+1212
+01:06:08,580 --> 01:06:13,010
+So these are two examples.
+
+1213
+01:06:13,010 --> 01:06:15,950
+One camera does not
+recognize Asian faces
+
+1214
+01:06:15,950 --> 01:06:17,900
+and thinks they are blinked.
+
+1215
+01:06:17,900 --> 01:06:19,350
+On the right, the camera--
+
+1216
+01:06:19,350 --> 01:06:22,880
+this is a video of a
+face-tracking camera that
+
+1217
+01:06:22,880 --> 01:06:26,450
+is able to track white
+faces, but immediately shuts
+
+1218
+01:06:26,450 --> 01:06:28,740
+down when the Black face comes.
+
+1219
+01:06:28,740 --> 01:06:32,470
+So it is not able to
+track Black faces.
+
+1220
+01:06:32,470 --> 01:06:36,100
+So these are all consequences
+of the biased data that
+
+1221
+01:06:36,100 --> 01:06:41,260
+propagates into models that do
+not incorporate, intentionally,
+
+1222
+01:06:41,260 --> 01:06:45,500
+basically safeguards against
+very specific biases.
+
+1223
+01:06:45,500 --> 01:06:48,180
+Now what's going on with
+natural language processing?
+
+1224
+01:06:48,180 --> 01:06:50,560
+So this is the slide from
+the very beginning that
+
+1225
+01:06:50,560 --> 01:06:53,230
+just lists all possible
+applications that I
+
+1226
+01:06:53,230 --> 01:06:54,850
+could think about.
+
+1227
+01:06:54,850 --> 01:06:57,760
+As you can guess,
+since 2016, there
+
+1228
+01:06:57,760 --> 01:07:01,000
+are many, many
+papers that just--
+
+1229
+01:07:01,000 --> 01:07:03,670
+I don't think there is
+any application or core
+
+1230
+01:07:03,670 --> 01:07:08,110
+technologies of NLP left
+which did not expose biases
+
+1231
+01:07:08,110 --> 01:07:10,850
+in the NLP technologies.
+
+1232
+01:07:10,850 --> 01:07:14,510
+So here is an example of bias
+in the machine translation.
+
+1233
+01:07:14,510 --> 01:07:15,370
+So this is visual.
+
+1234
+01:07:15,370 --> 01:07:17,210
+This is why I'm showing it.
+
+1235
+01:07:17,210 --> 01:07:23,800
+So there are other languages
+that mark third person pronouns
+
+1236
+01:07:23,800 --> 01:07:27,760
+with gender, and other languages
+that do not mark third person
+
+1237
+01:07:27,760 --> 01:07:29,240
+pronoun with gender.
+
+1238
+01:07:29,240 --> 01:07:33,280
+So if you translate words from
+a language such as Hungarian
+
+1239
+01:07:33,280 --> 01:07:38,320
+or from Estonian, that
+don't mark third person
+
+1240
+01:07:38,320 --> 01:07:41,500
+pronoun with gender,
+into English, which
+
+1241
+01:07:41,500 --> 01:07:44,200
+does mark third person
+pronoun as a gender,
+
+1242
+01:07:44,200 --> 01:07:46,090
+you might see similar results.
+
+1243
+01:07:46,090 --> 01:07:47,320
+You will not see them now.
+
+1244
+01:07:47,320 --> 01:07:52,280
+This is what was exposed
+maybe a year or two ago.
+
+1245
+01:07:52,280 --> 01:07:57,030
+So basically, translation
+from they are a nurse,
+
+1246
+01:07:57,030 --> 01:07:58,760
+this would be, she's a nurse.
+
+1247
+01:07:58,760 --> 01:08:00,500
+But they are the scientists.
+
+1248
+01:08:00,500 --> 01:08:03,290
+The translations would
+be, he's a scientist.
+
+1249
+01:08:03,290 --> 01:08:06,260
+And same for engineer,
+baker, teacher--
+
+1250
+01:08:06,260 --> 01:08:09,710
+so all the stereotypes,
+just historical
+
+1251
+01:08:09,710 --> 01:08:13,340
+stereotypes that you
+could think about.
+
+1252
+01:08:13,340 --> 01:08:18,399
+So what are
+possibilities to fix it?
+
+1253
+01:08:18,399 --> 01:08:22,840
+One way to fix it
+is actually simple.
+
+1254
+01:08:22,840 --> 01:08:26,439
+You could treat
+the target gender
+
+1255
+01:08:26,439 --> 01:08:29,899
+just as a target language
+is multilingual NMT.
+
+1256
+01:08:29,899 --> 01:08:33,670
+So I don't know, but I suspect
+you did look at this paper
+
+1257
+01:08:33,670 --> 01:08:37,510
+on the multilingual neural
+machine translation.
+
+1258
+01:08:37,510 --> 01:08:41,560
+And basically, you can add in
+another token, for example.
+
+1259
+01:08:41,560 --> 01:08:43,630
+And you can
+controllability generate
+
+1260
+01:08:43,630 --> 01:08:46,790
+into female or male translation.
+
+1261
+01:08:46,790 --> 01:08:48,580
+So the fix is not
+difficult. But you
+
+1262
+01:08:48,580 --> 01:08:50,979
+need to be aware of
+potential dangers
+
+1263
+01:08:50,979 --> 01:08:54,399
+to be able to fix the model.
+
+1264
+01:08:54,399 --> 01:08:56,470
+And importantly,
+this is not only
+
+1265
+01:08:56,470 --> 01:09:00,160
+about fixing the model itself,
+but also about fixing the user
+
+1266
+01:09:00,160 --> 01:09:01,819
+interface, right?
+
+1267
+01:09:01,819 --> 01:09:03,850
+So the way Google
+fixed this interface
+
+1268
+01:09:03,850 --> 01:09:06,740
+is they provided
+different translations,
+
+1269
+01:09:06,740 --> 01:09:08,528
+so basically all
+possible translations
+
+1270
+01:09:08,528 --> 01:09:09,444
+for different genders.
+
+1271
+01:09:09,444 --> 01:09:13,089
+
+
+1272
+01:09:13,090 --> 01:09:17,520
+So the similar kind of
+harms were shown especially
+
+1273
+01:09:17,520 --> 01:09:19,350
+in dialogue systems.
+
+1274
+01:09:19,350 --> 01:09:23,160
+So occasionally, such models
+make big headings in news,
+
+1275
+01:09:23,160 --> 01:09:26,370
+like Microsoft's
+Tay chatbot that
+
+1276
+01:09:26,370 --> 01:09:30,569
+became very racist
+and sexist overnight,
+
+1277
+01:09:30,569 --> 01:09:36,630
+and the GPT-3 based models that
+was offering suicide advice.
+
+1278
+01:09:36,630 --> 01:09:39,960
+And about two weeks ago,
+there was a Korean chatbot
+
+1279
+01:09:39,960 --> 01:09:43,770
+that became extremely
+homophobic very quickly
+
+1280
+01:09:43,770 --> 01:09:45,340
+and had to be removed.
+
+1281
+01:09:45,340 --> 01:09:47,399
+So these titles come up again.
+
+1282
+01:09:47,399 --> 01:09:51,240
+These headlines coming
+again and again and again.
+
+1283
+01:09:51,240 --> 01:09:56,880
+And I guess the point here is
+that the way we do NLP today,
+
+1284
+01:09:56,880 --> 01:09:59,470
+I call it a reactive approach.
+
+1285
+01:09:59,470 --> 01:10:05,160
+So we expose a specific
+problem, a problem in search,
+
+1286
+01:10:05,160 --> 01:10:10,170
+a problem in chatbots,
+racist chatbots,
+
+1287
+01:10:10,170 --> 01:10:12,720
+or a problem in
+machine translation.
+
+1288
+01:10:12,720 --> 01:10:16,210
+And then it creates
+bad publicity.
+
+1289
+01:10:16,210 --> 01:10:18,750
+And then we start
+revising the models.
+
+1290
+01:10:18,750 --> 01:10:22,440
+But it's not necessarily
+that we need to develop
+
+1291
+01:10:22,440 --> 01:10:24,160
+the tools in this way, right?
+
+1292
+01:10:24,160 --> 01:10:27,660
+So I hope that in
+the future, we make
+
+1293
+01:10:27,660 --> 01:10:32,100
+a paradigm shift towards
+a more proactive approach.
+
+1294
+01:10:32,100 --> 01:10:41,060
+And the specific-- what would
+a proactive approach require
+
+1295
+01:10:41,060 --> 01:10:47,250
+is, for example, building
+new data analytics.
+
+1296
+01:10:47,250 --> 01:10:51,740
+So basically, rather than
+exposing biases, going further
+
+1297
+01:10:51,740 --> 01:10:54,950
+up the pipeline and starting
+actually with the data,
+
+1298
+01:10:54,950 --> 01:10:57,530
+and building automatic
+moderators and data
+
+1299
+01:10:57,530 --> 01:11:00,950
+analytics that can
+identify problematic text,
+
+1300
+01:11:00,950 --> 01:11:04,280
+problematic images, beyond
+the words of hate speech,
+
+1301
+01:11:04,280 --> 01:11:07,070
+and then incorporating
+the right inductive biases
+
+1302
+01:11:07,070 --> 01:11:13,410
+into the models
+and understanding
+
+1303
+01:11:13,410 --> 01:11:17,310
+moving from the
+data-centered approaches
+
+1304
+01:11:17,310 --> 01:11:20,880
+to people-centered approaches,
+incorporating social, cultural,
+
+1305
+01:11:20,880 --> 01:11:24,990
+and pragmatic knowledge, and
+in modeling the right research
+
+1306
+01:11:24,990 --> 01:11:29,010
+questions on how to the
+most spurious confounds,
+
+1307
+01:11:29,010 --> 01:11:35,130
+but predict only the target
+label, not necessarily picking
+
+1308
+01:11:35,130 --> 01:11:37,860
+up on spurious
+correlations, and finally,
+
+1309
+01:11:37,860 --> 01:11:40,290
+on building more
+interpretable models.
+
+1310
+01:11:40,290 --> 01:11:42,870
+And importantly, that these
+are not orthogonal research
+
+1311
+01:11:42,870 --> 01:11:44,080
+directions--
+
+1312
+01:11:44,080 --> 01:11:48,210
+so for example, to build
+good data analytics,
+
+1313
+01:11:48,210 --> 01:11:53,100
+you necessarily need to maybe
+have an interpretable model,
+
+1314
+01:11:53,100 --> 01:11:57,000
+and also be able to incorporate
+the right social cultural
+
+1315
+01:11:57,000 --> 01:12:00,730
+knowledge, because again,
+the microaggressions,
+
+1316
+01:12:00,730 --> 01:12:04,630
+the text is not
+necessarily in words.
+
+1317
+01:12:04,630 --> 01:12:10,030
+So what I was going
+to do, if I had time,
+
+1318
+01:12:10,030 --> 01:12:15,400
+is I was going to show two case
+studies from-- research studies
+
+1319
+01:12:15,400 --> 01:12:20,230
+from my group that specifically
+focus on these data analytics,
+
+1320
+01:12:20,230 --> 01:12:25,370
+identifying unsupervised bias
+or an interpretable model
+
+1321
+01:12:25,370 --> 01:12:28,930
+for making hate speech
+classifiers more robust.
+
+1322
+01:12:28,930 --> 01:12:32,290
+But I will skip it because
+we are out of time.
+
+1323
+01:12:32,290 --> 01:12:33,242
+You could show one.
+
+1324
+01:12:33,242 --> 01:12:34,450
+You still have a few minutes.
+
+1325
+01:12:34,450 --> 01:12:37,900
+You could show one
+quickly for five minutes.
+
+1326
+01:12:37,900 --> 01:12:41,470
+So basically, we have we
+are trying to build these--
+
+1327
+01:12:41,470 --> 01:12:45,150
+green boxes is what we
+have today, hate speech
+
+1328
+01:12:45,150 --> 01:12:47,110
+and sentiment analysis.
+
+1329
+01:12:47,110 --> 01:12:50,680
+But we are trying to build
+a new kind of class of model
+
+1330
+01:12:50,680 --> 01:12:53,470
+specifically for
+social bias analysis.
+
+1331
+01:12:53,470 --> 01:12:55,720
+And in these models,
+we would want
+
+1332
+01:12:55,720 --> 01:12:58,420
+to detect who are
+the people involved,
+
+1333
+01:12:58,420 --> 01:13:01,600
+so who the comment, for
+example, is directed to,
+
+1334
+01:13:01,600 --> 01:13:05,140
+if it's a conversational
+domain, and also
+
+1335
+01:13:05,140 --> 01:13:08,350
+to understand what kinds of
+microaggressions these are,
+
+1336
+01:13:08,350 --> 01:13:11,980
+and also to maybe
+generate explanations
+
+1337
+01:13:11,980 --> 01:13:15,460
+or interpretations through
+building more interpretable
+
+1338
+01:13:15,460 --> 01:13:16,540
+models.
+
+1339
+01:13:16,540 --> 01:13:22,580
+And these are the two papers
+that I was going to talk about.
+
+1340
+01:13:22,580 --> 01:13:27,890
+One is an unsupervised approach
+to detection gender bias.
+
+1341
+01:13:27,890 --> 01:13:31,630
+And one is on if we
+have just few examples
+
+1342
+01:13:31,630 --> 01:13:36,153
+of microaggressions in the
+classifier of hate speech,
+
+1343
+01:13:36,153 --> 01:13:37,570
+these examples of
+microaggressions
+
+1344
+01:13:37,570 --> 01:13:40,540
+are adversarial examples
+to the classifier.
+
+1345
+01:13:40,540 --> 01:13:43,960
+The classifier is not
+able to deal with them.
+
+1346
+01:13:43,960 --> 01:13:47,680
+But what we can do, we can
+focus on interpretability
+
+1347
+01:13:47,680 --> 01:13:50,740
+of the classifier
+and, specifically,
+
+1348
+01:13:50,740 --> 01:13:53,890
+making the classifier
+understanding for each probing
+
+1349
+01:13:53,890 --> 01:13:58,430
+example, which examples
+in the training data
+
+1350
+01:13:58,430 --> 01:14:01,110
+influenced the
+classifier's decision--
+
+1351
+01:14:01,110 --> 01:14:04,490
+so changing the approach
+through interpretability from
+
+1352
+01:14:04,490 --> 01:14:08,060
+interpreting specific
+salient words in the input
+
+1353
+01:14:08,060 --> 01:14:11,540
+of the classifier into
+looking at the training data,
+
+1354
+01:14:11,540 --> 01:14:14,630
+sorting the training
+data and identifying
+
+1355
+01:14:14,630 --> 01:14:19,040
+which examples where most
+influential for classifier
+
+1356
+01:14:19,040 --> 01:14:19,800
+predictions.
+
+1357
+01:14:19,800 --> 01:14:23,610
+So using inference
+functions, for example--
+
+1358
+01:14:23,610 --> 01:14:29,240
+this is a paper that
+Percy published in 2017.
+
+1359
+01:14:29,240 --> 01:14:32,000
+And through this
+classifier, we are
+
+1360
+01:14:32,000 --> 01:14:36,710
+able to surface microaggressions
+despite that the classifier
+
+1361
+01:14:36,710 --> 01:14:37,840
+makes the wrong prediction.
+
+1362
+01:14:37,840 --> 01:14:41,420
+So this is just the high-level,
+very high-level summary
+
+1363
+01:14:41,420 --> 01:14:44,920
+without talking about
+the actual studies.
+
+1364
+01:14:44,920 --> 01:14:46,690
+So I will skip--
+
+1365
+01:14:46,690 --> 01:14:52,480
+let me just skip
+the actual papers.
+
+1366
+01:14:52,480 --> 01:14:53,560
+And the slides are there.
+
+1367
+01:14:53,560 --> 01:14:55,500
+I'm happy to discuss later.
+
+1368
+01:14:55,500 --> 01:14:58,350
+I just don't want
+to go over time.
+
+1369
+01:14:58,350 --> 01:15:03,600
+So to summarize, the field
+of computational ethics
+
+1370
+01:15:03,600 --> 01:15:04,740
+is super interesting.
+
+1371
+01:15:04,740 --> 01:15:06,420
+And there are
+interesting problems that
+
+1372
+01:15:06,420 --> 01:15:08,165
+are technically interesting.
+
+1373
+01:15:08,165 --> 01:15:09,090
+They're challenging.
+
+1374
+01:15:09,090 --> 01:15:12,330
+So you don't need to
+have a separate kind
+
+1375
+01:15:12,330 --> 01:15:15,990
+of important problems and the
+technical interesting problems.
+
+1376
+01:15:15,990 --> 01:15:18,210
+We can work on important
+problems which are also
+
+1377
+01:15:18,210 --> 01:15:21,660
+technically interesting, and
+focus on important things
+
+1378
+01:15:21,660 --> 01:15:25,200
+like building better
+deep learning models.
+
+1379
+01:15:25,200 --> 01:15:27,570
+And these are
+interesting subfields.
+
+1380
+01:15:27,570 --> 01:15:29,400
+And if some of
+you are interested
+
+1381
+01:15:29,400 --> 01:15:32,880
+in specific projects, so
+it's just in our course,
+
+1382
+01:15:32,880 --> 01:15:37,990
+we just put together
+a presentation
+
+1383
+01:15:37,990 --> 01:15:43,190
+that just summarizes all
+kinds of possible projects
+
+1384
+01:15:43,190 --> 01:15:45,160
+you could do.
+
+1385
+01:15:45,160 --> 01:15:48,530
+Thank you very much.
+
+1386
+01:15:48,530 --> 01:15:49,960
+I wish I could see the audience.
+
+1387
+01:15:49,960 --> 01:15:52,240
+This is so weird, but that's OK.
+
+1388
+01:15:52,240 --> 01:15:55,360
+Thank you, Yulia,
+for that great talk.
+
+1389
+01:15:55,360 --> 01:16:02,710
+Yeah, so if people would like
+to ask some questions to Yulia,
+
+1390
+01:16:02,710 --> 01:16:07,270
+if you raise your hand, we can
+promote you to be panelists.
+
+1391
+01:16:07,270 --> 01:16:10,240
+And I think, then, we can even
+have you turn on your cameras
+
+1392
+01:16:10,240 --> 01:16:16,030
+if you want to show
+Yulia a real human being.
+
+1393
+01:16:16,030 --> 01:16:20,260
+But if we're waiting to
+see if there are people
+
+1394
+01:16:20,260 --> 01:16:22,060
+who would like to
+do that, I mean,
+
+1395
+01:16:22,060 --> 01:16:26,360
+there is one question that's
+outstanding at the moment,
+
+1396
+01:16:26,360 --> 01:16:29,550
+which is, "Do these
+bots become racist,
+
+1397
+01:16:29,550 --> 01:16:33,100
+sexist so quickly after exposure
+to the public due to the public
+
+1398
+01:16:33,100 --> 01:16:35,680
+intentionally trying
+to bias them, or is it
+
+1399
+01:16:35,680 --> 01:16:37,300
+that common talk
+among the public
+
+1400
+01:16:37,300 --> 01:16:42,350
+is racist, sexist enough to
+bias any model upon exposure?"
+
+1401
+01:16:42,350 --> 01:16:44,080
+So I think this is both.
+
+1402
+01:16:44,080 --> 01:16:47,260
+But in the case, for example,
+of Tay bot the way it was built
+
+1403
+01:16:47,260 --> 01:16:50,380
+is it's a continual
+learning system.
+
+1404
+01:16:50,380 --> 01:16:53,530
+So it collects
+inputs from people
+
+1405
+01:16:53,530 --> 01:16:57,970
+and then uses them as a
+kind of training examples
+
+1406
+01:16:57,970 --> 01:16:59,770
+to generate forward answers.
+
+1407
+01:16:59,770 --> 01:17:04,690
+And as usual, people pick up
+on such things very quickly.
+
+1408
+01:17:04,690 --> 01:17:10,030
+And then they intentionally
+became racist and sexist
+
+1409
+01:17:10,030 --> 01:17:11,230
+against the bot.
+
+1410
+01:17:11,230 --> 01:17:14,110
+And the bot very quickly
+learned to just mimic
+
+1411
+01:17:14,110 --> 01:17:16,100
+the people's behavior.
+
+1412
+01:17:16,100 --> 01:17:19,840
+So it was some malicious
+attempt to kind of turn this bot
+
+1413
+01:17:19,840 --> 01:17:21,355
+into racist and sexist.
+
+1414
+01:17:21,355 --> 01:17:24,440
+
+
+1415
+01:17:24,440 --> 01:17:26,960
+But this is how the
+model was designed,
+
+1416
+01:17:26,960 --> 01:17:32,660
+to collect input
+from people but not
+
+1417
+01:17:32,660 --> 01:17:36,620
+monitor the kind of sentences
+that are used or not used
+
+1418
+01:17:36,620 --> 01:17:37,830
+in the training data.
+
+1419
+01:17:37,830 --> 01:17:40,400
+So this is, again, going
+back to the discussion
+
+1420
+01:17:40,400 --> 01:17:43,130
+of that we actually don't
+have good analytics.
+
+1421
+01:17:43,130 --> 01:17:48,860
+Many of these analytics are
+just blacklists or whitelists.
+
+1422
+01:17:48,860 --> 01:17:50,340
+They're very, very primitive.
+
+1423
+01:17:50,340 --> 01:17:54,650
+It's not very easy to
+incorporate such constraints
+
+1424
+01:17:54,650 --> 01:17:58,090
+into generation, automatic
+filtering of data.
+
+1425
+01:17:58,090 --> 01:18:01,762
+
+
+1426
+01:18:01,762 --> 01:18:02,845
+There is another question.
+
+1427
+01:18:02,845 --> 01:18:06,360
+
+
+1428
+01:18:06,360 --> 01:18:07,550
+Can I ask my question?
+
+1429
+01:18:07,550 --> 01:18:08,050
+Yes.
+
+1430
+01:18:08,050 --> 01:18:08,840
+Yes.
+
+1431
+01:18:08,840 --> 01:18:12,200
+So I guess we are doing
+Q&A with live people.
+
+1432
+01:18:12,200 --> 01:18:15,335
+So you can ask the
+question and then--
+
+1433
+01:18:15,335 --> 01:18:15,835
+Yes.
+
+1434
+01:18:15,835 --> 01:18:19,560
+I'm curious, can you go
+into a little bit more
+
+1435
+01:18:19,560 --> 01:18:22,720
+about how you measure
+your model's performance?
+
+1436
+01:18:22,720 --> 01:18:26,260
+Are there actually public
+benchmark data sets you can--
+
+1437
+01:18:26,260 --> 01:18:29,350
+or any sort of
+well-defined metric--
+
+1438
+01:18:29,350 --> 01:18:33,140
+that you can sort of
+objectively measure
+
+1439
+01:18:33,140 --> 01:18:35,450
+your model's improvements?
+
+1440
+01:18:35,450 --> 01:18:37,630
+Are you talking about
+specifically our papers
+
+1441
+01:18:37,630 --> 01:18:38,940
+that I skipped?
+
+1442
+01:18:38,940 --> 01:18:40,350
+Or just in general.
+
+1443
+01:18:40,350 --> 01:18:42,970
+Are there-- I mean, I know
+it's a very new field.
+
+1444
+01:18:42,970 --> 01:18:45,990
+And maybe it's harder
+to define really
+
+1445
+01:18:45,990 --> 01:18:49,265
+objective measure of bias.
+
+1446
+01:18:49,265 --> 01:18:52,730
+So how do you measure
+progress in general?
+
+1447
+01:18:52,730 --> 01:18:54,300
+Or you could also just mention--
+
+1448
+01:18:54,300 --> 01:18:55,460
+This is a good question.
+
+1449
+01:18:55,460 --> 01:18:58,480
+It's very difficult.
+It's like there
+
+1450
+01:18:58,480 --> 01:19:00,980
+is growing body of data sets.
+
+1451
+01:19:00,980 --> 01:19:03,310
+For example, in U Dub,
+Yejin Choi's group
+
+1452
+01:19:03,310 --> 01:19:08,020
+created the Social
+Bias Inference Corpus.
+
+1453
+01:19:08,020 --> 01:19:09,470
+I don't remember what bias--
+
+1454
+01:19:09,470 --> 01:19:11,800
+SBIC.
+
+1455
+01:19:11,800 --> 01:19:15,750
+Overall, the problem of
+evaluation is actually
+
+1456
+01:19:15,750 --> 01:19:19,730
+very difficult. And there are
+some problems in which there
+
+1457
+01:19:19,730 --> 01:19:23,270
+are existing
+evaluation data sets.
+
+1458
+01:19:23,270 --> 01:19:26,090
+If you think about hate
+speech, for example, there
+
+1459
+01:19:26,090 --> 01:19:28,430
+are all kinds of data sets.
+
+1460
+01:19:28,430 --> 01:19:33,290
+There are many data sets
+for training and evaluating
+
+1461
+01:19:33,290 --> 01:19:36,560
+performance of hate
+speech classifiers.
+
+1462
+01:19:36,560 --> 01:19:41,540
+But when we think about
+biases, there are much less.
+
+1463
+01:19:41,540 --> 01:19:44,910
+And the big problem here-- it's
+not easy to collect such a data
+
+1464
+01:19:44,910 --> 01:19:45,410
+set.
+
+1465
+01:19:45,410 --> 01:19:47,620
+So if you think--
+
+1466
+01:19:47,620 --> 01:19:51,880
+let me actually show why it
+is difficult to collect a data
+
+1467
+01:19:51,880 --> 01:19:55,840
+set of, say, microaggressions.
+
+1468
+01:19:55,840 --> 01:19:57,880
+So a naive solution
+would be to--
+
+1469
+01:19:57,880 --> 01:20:02,150
+
+
+1470
+01:20:02,150 --> 01:20:04,610
+so if you think about
+the standard way
+
+1471
+01:20:04,610 --> 01:20:08,210
+of data collection, so
+we would sample some data
+
+1472
+01:20:08,210 --> 01:20:09,500
+from the internet.
+
+1473
+01:20:09,500 --> 01:20:13,100
+And we give it to
+Mechanical Turk annotators.
+
+1474
+01:20:13,100 --> 01:20:15,733
+And then they would analyze,
+is it biased or not?
+
+1475
+01:20:15,733 --> 01:20:17,400
+And we build this
+supervised classifier.
+
+1476
+01:20:17,400 --> 01:20:21,200
+So this is what we cannot do in
+the case of more subtle biases.
+
+1477
+01:20:21,200 --> 01:20:24,050
+First, because we don't
+have a strong lexical sieve
+
+1478
+01:20:24,050 --> 01:20:27,170
+to sample the
+right data because,
+
+1479
+01:20:27,170 --> 01:20:29,180
+again, these biases
+are not in words.
+
+1480
+01:20:29,180 --> 01:20:31,940
+Like you would just sample
+from the whole Reddit corpus?
+
+1481
+01:20:31,940 --> 01:20:34,580
+It's not clear how to
+annotate to make it feasible,
+
+1482
+01:20:34,580 --> 01:20:36,080
+not too expensive.
+
+1483
+01:20:36,080 --> 01:20:40,020
+But more importantly,
+that every annotator
+
+1484
+01:20:40,020 --> 01:20:42,090
+will incorporate
+their own biases.
+
+1485
+01:20:42,090 --> 01:20:44,630
+So you actually need very
+well-trained annotators
+
+1486
+01:20:44,630 --> 01:20:47,360
+and multiple
+annotations per sample.
+
+1487
+01:20:47,360 --> 01:20:50,000
+So the question of how
+to create such a dataset
+
+1488
+01:20:50,000 --> 01:20:52,040
+is very, very difficult.
+
+1489
+01:20:52,040 --> 01:20:54,950
+In our study, we collected the--
+
+1490
+01:20:54,950 --> 01:20:59,990
+so there is a website
+called microaggressions.com
+
+1491
+01:20:59,990 --> 01:21:03,500
+that has self-reported
+microaggressions, when people
+
+1492
+01:21:03,500 --> 01:21:10,920
+actually recall experiences of
+microaggressions against them,
+
+1493
+01:21:10,920 --> 01:21:12,690
+and they quote them.
+
+1494
+01:21:12,690 --> 01:21:17,110
+And this is what we used
+to evaluate our data.
+
+1495
+01:21:17,110 --> 01:21:20,940
+But data collection
+is as a big problem
+
+1496
+01:21:20,940 --> 01:21:23,430
+currently as just modeling.
+
+1497
+01:21:23,430 --> 01:21:27,800
+
+
+1498
+01:21:27,800 --> 01:21:29,080
+Do you want to ask a question?
+
+1499
+01:21:29,080 --> 01:21:39,890
+
+
+1500
+01:21:39,890 --> 01:21:40,700
+Right now?
+
+1501
+01:21:40,700 --> 01:21:41,200
+Yeah.
+
+1502
+01:21:41,200 --> 01:21:44,620
+
+
+1503
+01:21:44,620 --> 01:21:46,720
+I don't have any other
+questions to ask.
+
+1504
+01:21:46,720 --> 01:21:48,130
+Oh, sorry.
+
+1505
+01:21:48,130 --> 01:21:49,510
+OK, so I should go on.
+
+1506
+01:21:49,510 --> 01:21:55,390
+
+
+1507
+01:21:55,390 --> 01:21:57,750
+OK, can you hear me?
+
+1508
+01:21:57,750 --> 01:21:59,670
+Yes.
+
+1509
+01:21:59,670 --> 01:22:01,680
+Thanks for the great lecture.
+
+1510
+01:22:01,680 --> 01:22:05,070
+It's a very appropriate
+topic for the guest lecture.
+
+1511
+01:22:05,070 --> 01:22:07,690
+
+
+1512
+01:22:07,690 --> 01:22:11,400
+So I took the
+course CS 182, which
+
+1513
+01:22:11,400 --> 01:22:14,400
+introduced many
+notions of fairness
+
+1514
+01:22:14,400 --> 01:22:17,640
+through case studies
+and assignments.
+
+1515
+01:22:17,640 --> 01:22:20,830
+And I've been thinking a lot
+about some of these functions.
+
+1516
+01:22:20,830 --> 01:22:22,590
+And in the course,
+there was mentioned
+
+1517
+01:22:22,590 --> 01:22:26,730
+for research done
+by Kleinberg who
+
+1518
+01:22:26,730 --> 01:22:30,300
+showed three different
+notions of fairness
+
+1519
+01:22:30,300 --> 01:22:32,940
+can be simultaneously satisfied.
+
+1520
+01:22:32,940 --> 01:22:37,080
+The calibration, which was
+like the probability of outcome
+
+1521
+01:22:37,080 --> 01:22:39,840
+given risk scores, the
+false positive rate,
+
+1522
+01:22:39,840 --> 01:22:44,700
+the false negative rate cannot
+all be completely independent
+
+1523
+01:22:44,700 --> 01:22:47,310
+across protective traits.
+
+1524
+01:22:47,310 --> 01:22:51,240
+So if past a certain
+point, these metrics just
+
+1525
+01:22:51,240 --> 01:22:55,950
+become direct trade-offs,
+is it the case that fairness
+
+1526
+01:22:55,950 --> 01:22:58,500
+becomes subjective after that?
+
+1527
+01:22:58,500 --> 01:23:02,520
+And I guess more generally,
+in ethics research,
+
+1528
+01:23:02,520 --> 01:23:07,110
+has there been frameworks of
+creating sort of upper bounds
+
+1529
+01:23:07,110 --> 01:23:10,810
+or constraints among
+these different metrics
+
+1530
+01:23:10,810 --> 01:23:15,630
+so we sort of measure how
+close we get to the ideal?
+
+1531
+01:23:15,630 --> 01:23:17,580
+This is a very
+difficult question.
+
+1532
+01:23:17,580 --> 01:23:21,150
+So right, the fairness research,
+there are actually proofs that
+
+1533
+01:23:21,150 --> 01:23:28,730
+you cannot satisfy both
+the measures of performance
+
+1534
+01:23:28,730 --> 01:23:30,620
+and inclusivity.
+
+1535
+01:23:30,620 --> 01:23:35,670
+And this is why they
+are measured separately,
+
+1536
+01:23:35,670 --> 01:23:37,610
+the false positives,
+false negatives.
+
+1537
+01:23:37,610 --> 01:23:42,640
+And the question is whether--
+
+1538
+01:23:42,640 --> 01:23:45,910
+because of this issue,
+whether it becomes subjective?
+
+1539
+01:23:45,910 --> 01:23:49,570
+
+
+1540
+01:23:49,570 --> 01:23:51,130
+It's even bigger, I guess.
+
+1541
+01:23:51,130 --> 01:23:57,320
+The question here is even
+bigger because the question
+
+1542
+01:23:57,320 --> 01:23:58,850
+of inclusivity--
+
+1543
+01:23:58,850 --> 01:24:03,350
+so it competes with the
+question of monetization.
+
+1544
+01:24:03,350 --> 01:24:06,260
+If you think who are
+the main owners of data
+
+1545
+01:24:06,260 --> 01:24:08,600
+and how they train
+algorithms, the goal
+
+1546
+01:24:08,600 --> 01:24:11,360
+is to basically have
+better monetization.
+
+1547
+01:24:11,360 --> 01:24:14,000
+Like, who will see
+this advertisement?
+
+1548
+01:24:14,000 --> 01:24:19,700
+But there is a competing
+objective of inclusivity.
+
+1549
+01:24:19,700 --> 01:24:22,100
+Will this
+advertisement reach out
+
+1550
+01:24:22,100 --> 01:24:25,790
+to all kinds of populations?
+
+1551
+01:24:25,790 --> 01:24:27,320
+And it's not only--
+
+1552
+01:24:27,320 --> 01:24:28,560
+it's not subjective.
+
+1553
+01:24:28,560 --> 01:24:32,180
+There is kind of
+a clear incentive,
+
+1554
+01:24:32,180 --> 01:24:36,110
+for example, in companies
+to maximize monetization
+
+1555
+01:24:36,110 --> 01:24:38,570
+rather than inclusivity, right,
+because it's also internal.
+
+1556
+01:24:38,570 --> 01:24:41,330
+
+
+1557
+01:24:41,330 --> 01:24:43,590
+I don't have an
+easy answer to this.
+
+1558
+01:24:43,590 --> 01:24:44,190
+I agree.
+
+1559
+01:24:44,190 --> 01:24:45,390
+It can be subjective.
+
+1560
+01:24:45,390 --> 01:24:48,840
+Or it can be worse
+than subjective
+
+1561
+01:24:48,840 --> 01:24:53,240
+because these
+objectives compete.
+
+1562
+01:24:53,240 --> 01:24:56,660
+So would you say
+it's sort of more--
+
+1563
+01:24:56,660 --> 01:24:58,670
+the field of ethics
+research overall
+
+1564
+01:24:58,670 --> 01:25:01,580
+is more interdisciplinary
+and a lot
+
+1565
+01:25:01,580 --> 01:25:04,040
+of these answers
+to these questions
+
+1566
+01:25:04,040 --> 01:25:05,630
+are more context-dependent?
+
+1567
+01:25:05,630 --> 01:25:08,810
+It's very
+context-dependent, right.
+
+1568
+01:25:08,810 --> 01:25:10,400
+It is very context-dependent.
+
+1569
+01:25:10,400 --> 01:25:15,060
+As I mentioned, for example,
+the same application,
+
+1570
+01:25:15,060 --> 01:25:20,130
+in different
+contexts, can be used
+
+1571
+01:25:20,130 --> 01:25:21,720
+for good and for bad, right?
+
+1572
+01:25:21,720 --> 01:25:24,990
+And different thresholds
+on performance
+
+1573
+01:25:24,990 --> 01:25:30,250
+can be applied for
+different types of settings.
+
+1574
+01:25:30,250 --> 01:25:33,880
+And also, I really think
+I'm not qualified even
+
+1575
+01:25:33,880 --> 01:25:35,560
+to answer this question, right?
+
+1576
+01:25:35,560 --> 01:25:41,450
+We should ask maybe philosopher
+or experts in policy, right,
+
+1577
+01:25:41,450 --> 01:25:45,200
+because eventually, I'm--
+
+1578
+01:25:45,200 --> 01:25:49,160
+I know how to build the tools.
+
+1579
+01:25:49,160 --> 01:25:55,490
+And I'm trying to make
+technologies more ethical.
+
+1580
+01:25:55,490 --> 01:25:58,070
+But the question of
+how they are deployed
+
+1581
+01:25:58,070 --> 01:26:00,710
+and what are the
+specific decisions,
+
+1582
+01:26:00,710 --> 01:26:02,600
+it's very difficult
+to control for
+
+1583
+01:26:02,600 --> 01:26:06,860
+and to kind of give
+definite answers about this.
+
+1584
+01:26:06,860 --> 01:26:09,800
+OK, so here's another
+difficult question for you
+
+1585
+01:26:09,800 --> 01:26:11,000
+from [AUDIO OUT].
+
+1586
+01:26:11,000 --> 01:26:14,580
+And you can't use
+that cop-out answer.
+
+1587
+01:26:14,580 --> 01:26:17,060
+So you said,
+"Earlier, you showed
+
+1588
+01:26:17,060 --> 01:26:19,940
+the example of "AI
+Gaydar" with the question
+
+1589
+01:26:19,940 --> 01:26:22,190
+of why would we
+want to study this?
+
+1590
+01:26:22,190 --> 01:26:24,380
+The author is
+justified by claiming
+
+1591
+01:26:24,380 --> 01:26:27,560
+that, given the widespread
+use of facial recognition,
+
+1592
+01:26:27,560 --> 01:26:31,220
+our findings have critical
+implications for the protection
+
+1593
+01:26:31,220 --> 01:26:32,720
+of civil liberties.
+
+1594
+01:26:32,720 --> 01:26:35,270
+Given that some unscrupulous
+governments may indeed
+
+1595
+01:26:35,270 --> 01:26:38,210
+implement such technology
+to oppress minorities
+
+1596
+01:26:38,210 --> 01:26:40,550
+based on such things
+as orientation,
+
+1597
+01:26:40,550 --> 01:26:43,310
+do social scientists
+have an obligation
+
+1598
+01:26:43,310 --> 01:26:45,980
+to get ahead of this
+threat by understanding
+
+1599
+01:26:45,980 --> 01:26:47,980
+the properties of such models?
+
+1600
+01:26:47,980 --> 01:26:50,540
+How do we weigh the
+ethical trade-offs?"
+
+1601
+01:26:50,540 --> 01:26:52,220
+Oh, gosh.
+
+1602
+01:26:52,220 --> 01:26:54,690
+Now I need to respond
+from the point of view
+
+1603
+01:26:54,690 --> 01:26:57,110
+of all social scientists.
+
+1604
+01:26:57,110 --> 01:26:58,780
+I can't.
+
+1605
+01:26:58,780 --> 01:27:02,360
+I don't want to answer
+philosophical questions.
+
+1606
+01:27:02,360 --> 01:27:09,440
+But I kind of have
+the answer about--
+
+1607
+01:27:09,440 --> 01:27:12,710
+maybe a simple
+answer to why I don't
+
+1608
+01:27:12,710 --> 01:27:15,800
+agree with the
+claim of researchers
+
+1609
+01:27:15,800 --> 01:27:17,690
+that we need to expose
+this technology,
+
+1610
+01:27:17,690 --> 01:27:20,330
+to publish, actually,
+this paper to expose
+
+1611
+01:27:20,330 --> 01:27:24,090
+the dangers of this technology.
+
+1612
+01:27:24,090 --> 01:27:27,230
+One of them, like the
+knife analogy that I gave,
+
+1613
+01:27:27,230 --> 01:27:28,800
+is one of the answers.
+
+1614
+01:27:28,800 --> 01:27:33,380
+So if you think about
+a similar field--
+
+1615
+01:27:33,380 --> 01:27:35,570
+not a similar field,
+but a similar type
+
+1616
+01:27:35,570 --> 01:27:40,100
+of interaction in
+security, right,
+
+1617
+01:27:40,100 --> 01:27:43,190
+in cybersecurity,
+so it's very common
+
+1618
+01:27:43,190 --> 01:27:48,780
+to kind of break the algorithm
+to show its vulnerabilities,
+
+1619
+01:27:48,780 --> 01:27:51,020
+and then to iteratively fix it.
+
+1620
+01:27:51,020 --> 01:27:53,450
+So this is the approach
+that researchers took.
+
+1621
+01:27:53,450 --> 01:27:56,840
+Let's show the
+vulnerabilities, that we
+
+1622
+01:27:56,840 --> 01:27:59,000
+are able to build
+this technology,
+
+1623
+01:27:59,000 --> 01:28:00,980
+to expose these threats.
+
+1624
+01:28:00,980 --> 01:28:07,310
+But unlike with
+the security field,
+
+1625
+01:28:07,310 --> 01:28:10,770
+here the kind of exposure
+of this technology,
+
+1626
+01:28:10,770 --> 01:28:16,290
+publication of this technology,
+can have real implications
+
+1627
+01:28:16,290 --> 01:28:18,040
+of human life.
+
+1628
+01:28:18,040 --> 01:28:21,000
+So again, the cost of
+misclassification--
+
+1629
+01:28:21,000 --> 01:28:26,970
+and if we think
+about other problems,
+
+1630
+01:28:26,970 --> 01:28:30,330
+like similar problems,
+like the problems of--
+
+1631
+01:28:30,330 --> 01:28:32,910
+I can give many other
+similar problems
+
+1632
+01:28:32,910 --> 01:28:36,300
+in which we can expose
+this technology which
+
+1633
+01:28:36,300 --> 01:28:37,290
+will harm people.
+
+1634
+01:28:37,290 --> 01:28:43,380
+Like let's create a deep
+fakes video, a porn video
+
+1635
+01:28:43,380 --> 01:28:45,660
+with the professors.
+
+1636
+01:28:45,660 --> 01:28:48,420
+We can do it, right, to expose
+the danger of technology
+
+1637
+01:28:48,420 --> 01:28:51,330
+of deep fakes.
+
+1638
+01:28:51,330 --> 01:28:54,720
+But what kind of harm it will
+bring to specific people who
+
+1639
+01:28:54,720 --> 01:28:57,270
+were involved in
+this kind of exposure
+
+1640
+01:28:57,270 --> 01:29:00,000
+of the harm of this technology?
+
+1641
+01:29:00,000 --> 01:29:02,630
+So I have the
+answer of why it was
+
+1642
+01:29:02,630 --> 01:29:06,140
+wrong to publish this
+study in the first place
+
+1643
+01:29:06,140 --> 01:29:09,320
+and why it's not
+productive, is not helpful.
+
+1644
+01:29:09,320 --> 01:29:11,930
+But it's very difficult to
+answer the question, what
+
+1645
+01:29:11,930 --> 01:29:13,790
+should social scientists do?
+
+1646
+01:29:13,790 --> 01:29:15,290
+I don't know.
+
+1647
+01:29:15,290 --> 01:29:16,400
+OK.
+
+1648
+01:29:16,400 --> 01:29:20,492
+Well, could I ask
+a question next?
+
+1649
+01:29:20,492 --> 01:29:22,540
+Or it's just disappeared.
+
+1650
+01:29:22,540 --> 01:29:23,560
+[INAUDIBLE]?
+
+1651
+01:29:23,560 --> 01:29:25,210
+I think-- can you hear me now?
+
+1652
+01:29:25,210 --> 01:29:26,210
+Yeah.
+
+1653
+01:29:26,210 --> 01:29:27,670
+OK.
+
+1654
+01:29:27,670 --> 01:29:29,560
+Thank you so much for the talk.
+
+1655
+01:29:29,560 --> 01:29:32,500
+It's really interesting,
+and as we've just seen,
+
+1656
+01:29:32,500 --> 01:29:34,750
+really challenging stuff.
+
+1657
+01:29:34,750 --> 01:29:36,950
+I guess my question is a
+little bit more practical.
+
+1658
+01:29:36,950 --> 01:29:39,250
+So maybe that's a
+reprieve for you.
+
+1659
+01:29:39,250 --> 01:29:46,910
+But unfortunately, it seems
+like in a lot of NLP and AI
+
+1660
+01:29:46,910 --> 01:29:49,840
+more broadly, some of
+this ethics and bias stuff
+
+1661
+01:29:49,840 --> 01:29:52,150
+is like kind of an afterthought.
+
+1662
+01:29:52,150 --> 01:29:54,580
+A lot of projects don't
+really necessarily take it
+
+1663
+01:29:54,580 --> 01:29:57,130
+into account from the outset.
+
+1664
+01:29:57,130 --> 01:29:59,890
+And it's more sort
+of incidental.
+
+1665
+01:29:59,890 --> 01:30:05,590
+So my question is, as we're
+working on NLP projects,
+
+1666
+01:30:05,590 --> 01:30:08,620
+maybe even for our final
+course project, what
+
+1667
+01:30:08,620 --> 01:30:11,380
+are some kind of concrete
+steps that we could take
+
+1668
+01:30:11,380 --> 01:30:13,330
+or a systematic
+approach that we can
+
+1669
+01:30:13,330 --> 01:30:18,430
+use to sort of incorporating
+some of this ethics knowledge
+
+1670
+01:30:18,430 --> 01:30:21,610
+in things that might not
+explicitly seem like they have
+
+1671
+01:30:21,610 --> 01:30:22,780
+a lot to do with ethics?
+
+1672
+01:30:22,780 --> 01:30:27,420
+
+
+1673
+01:30:27,420 --> 01:30:31,380
+So it depends on
+the project, right?
+
+1674
+01:30:31,380 --> 01:30:33,810
+I cannot answer generally.
+
+1675
+01:30:33,810 --> 01:30:38,100
+The first part of the lecture
+was exactly about this.
+
+1676
+01:30:38,100 --> 01:30:40,770
+If I build my project,
+what kind of questions
+
+1677
+01:30:40,770 --> 01:30:44,980
+I can ask to know if
+there are some pitfalls?
+
+1678
+01:30:44,980 --> 01:30:55,390
+If it's a different
+project, I think overall,
+
+1679
+01:30:55,390 --> 01:30:59,320
+these are important
+questions which
+
+1680
+01:30:59,320 --> 01:31:03,440
+are general for deep
+learning models, which
+
+1681
+01:31:03,440 --> 01:31:07,950
+could be later used to
+create a better technology.
+
+1682
+01:31:07,950 --> 01:31:11,780
+So how to incorporate
+understanding
+
+1683
+01:31:11,780 --> 01:31:15,330
+who are the people who
+produced the language,
+
+1684
+01:31:15,330 --> 01:31:17,280
+or who are the users?
+
+1685
+01:31:17,280 --> 01:31:19,590
+Incorporating the
+right inductive biases,
+
+1686
+01:31:19,590 --> 01:31:22,320
+or a technology for
+demoting confounds--
+
+1687
+01:31:22,320 --> 01:31:25,440
+it doesn't have
+to be specifically
+
+1688
+01:31:25,440 --> 01:31:29,160
+on ethics-related problems
+or interpretability
+
+1689
+01:31:29,160 --> 01:31:30,390
+of deep learning.
+
+1690
+01:31:30,390 --> 01:31:35,970
+It doesn't have to be
+ethics kind of project.
+
+1691
+01:31:35,970 --> 01:31:38,160
+But the kind of
+technology, if you
+
+1692
+01:31:38,160 --> 01:31:40,050
+can develop such a
+technology, eventually it
+
+1693
+01:31:40,050 --> 01:31:46,410
+can be useful for building such
+better models that proactively
+
+1694
+01:31:46,410 --> 01:31:49,050
+prevent unintended harms.
+
+1695
+01:31:49,050 --> 01:31:52,160
+
+
+1696
+01:31:52,160 --> 01:31:56,530
+So I guess the strategy would
+be sort of to just lay out
+
+1697
+01:31:56,530 --> 01:32:01,780
+these general topics, pose these
+questions to yourself-- maybe
+
+1698
+01:32:01,780 --> 01:32:03,940
+write them down or
+just think about them--
+
+1699
+01:32:03,940 --> 01:32:06,310
+and then proceed as such?
+
+1700
+01:32:06,310 --> 01:32:08,990
+Yeah, so this is how
+I think about it.
+
+1701
+01:32:08,990 --> 01:32:11,470
+I think about potential--
+
+1702
+01:32:11,470 --> 01:32:13,870
+if this technology
+would be deployed,
+
+1703
+01:32:13,870 --> 01:32:15,430
+what could be corner cases?
+
+1704
+01:32:15,430 --> 01:32:18,460
+What is potential for dual use?
+
+1705
+01:32:18,460 --> 01:32:23,530
+If it works, kind of,
+how can it be misused?
+
+1706
+01:32:23,530 --> 01:32:28,150
+And also, when it doesn't
+work, what kind of errors
+
+1707
+01:32:28,150 --> 01:32:29,420
+can be harmful?
+
+1708
+01:32:29,420 --> 01:32:33,250
+So this is-- if you go
+back to in the slides
+
+1709
+01:32:33,250 --> 01:32:36,190
+to the beginning of the
+lecture, these questions,
+
+1710
+01:32:36,190 --> 01:32:39,400
+they could be applied to
+many kinds of technology.
+
+1711
+01:32:39,400 --> 01:32:45,890
+And they give a more clear kind
+of guidelines to what things--
+
+1712
+01:32:45,890 --> 01:32:49,700
+how bad outcomes
+could be prevented.
+
+1713
+01:32:49,700 --> 01:32:53,690
+I'm sure maybe I'm missing
+something totally, right?
+
+1714
+01:32:53,690 --> 01:32:55,670
+All of this content--
+much of this content
+
+1715
+01:32:55,670 --> 01:32:59,810
+is just I came up
+with it by reading
+
+1716
+01:32:59,810 --> 01:33:01,910
+a lot of different papers.
+
+1717
+01:33:01,910 --> 01:33:03,830
+But there is no
+clear guidelines.
+
+1718
+01:33:03,830 --> 01:33:05,700
+It's such a new field.
+
+1719
+01:33:05,700 --> 01:33:10,460
+So maybe there are things
+that I'm also missing.
+
+1720
+01:33:10,460 --> 01:33:13,700
+Here's another question
+from [AUDIO OUT]..
+
+1721
+01:33:13,700 --> 01:33:16,490
+"Are models wrong
+for being biased?
+
+1722
+01:33:16,490 --> 01:33:19,940
+In the end, they just learn
+what they're designed to learn.
+
+1723
+01:33:19,940 --> 01:33:24,240
+And isn't our intervention to
+correct this behavior actually
+
+1724
+01:33:24,240 --> 01:33:27,510
+can cause a bias?"
+
+1725
+01:33:27,510 --> 01:33:29,010
+This is a good question.
+
+1726
+01:33:29,010 --> 01:33:33,290
+So it is kind of a
+question that I also
+
+1727
+01:33:33,290 --> 01:33:35,960
+have been thinking about.
+
+1728
+01:33:35,960 --> 01:33:39,950
+Are models wrong for, for
+example, reflecting accurately
+
+1729
+01:33:39,950 --> 01:33:41,270
+the real world, right?
+
+1730
+01:33:41,270 --> 01:33:44,060
+Do we need to devise
+actively models
+
+1731
+01:33:44,060 --> 01:33:48,490
+to make them fair when
+the world is not fair,
+
+1732
+01:33:48,490 --> 01:33:51,970
+when our data is not fair?
+
+1733
+01:33:51,970 --> 01:33:55,690
+So first of all, the way
+we train models today,
+
+1734
+01:33:55,690 --> 01:33:59,080
+they don't only
+perpetuate biases.
+
+1735
+01:33:59,080 --> 01:34:01,160
+They amplify biases.
+
+1736
+01:34:01,160 --> 01:34:08,500
+So this is a natural behavior
+of a machine learning model
+
+1737
+01:34:08,500 --> 01:34:14,320
+that basically, when you have
+an input example for which
+
+1738
+01:34:14,320 --> 01:34:19,090
+the confidence is lower, it will
+default to a majority class.
+
+1739
+01:34:19,090 --> 01:34:24,100
+This is why if your
+data contains biases,
+
+1740
+01:34:24,100 --> 01:34:27,340
+these biases will be amplified
+in a machine learning
+
+1741
+01:34:27,340 --> 01:34:29,950
+model trained on this data.
+
+1742
+01:34:29,950 --> 01:34:33,130
+And this is clearly wrong.
+
+1743
+01:34:33,130 --> 01:34:38,570
+Whether it is wrong to
+build models that do not
+
+1744
+01:34:38,570 --> 01:34:42,260
+reflect the actual true
+distribution in the data,
+
+1745
+01:34:42,260 --> 01:34:44,300
+it's much more
+difficult questions.
+
+1746
+01:34:44,300 --> 01:34:51,550
+But there are
+clear kind of cases
+
+1747
+01:34:51,550 --> 01:34:59,930
+in which I would say it is
+wrong to build a model that,
+
+1748
+01:34:59,930 --> 01:35:07,210
+in the search for CEO, shows
+only male CEOs, while kind of--
+
+1749
+01:35:07,210 --> 01:35:12,070
+because it amplifies
+biases, but yeah.
+
+1750
+01:35:12,070 --> 01:35:14,170
+This is already a
+subjective kind of answer.
+
+1751
+01:35:14,170 --> 01:35:17,500
+It's just my personal
+opinion, because not
+
+1752
+01:35:17,500 --> 01:35:22,760
+much to do with the research
+that we are doing, right?
+
+1753
+01:35:22,760 --> 01:35:25,270
+Well, would you like
+to ask your question?
+
+1754
+01:35:25,270 --> 01:35:28,270
+
+
+1755
+01:35:28,270 --> 01:35:29,210
+Yeah, one sec.
+
+1756
+01:35:29,210 --> 01:35:31,830
+Let me, okay, I was
+trying to set my video.
+
+1757
+01:35:31,830 --> 01:35:32,830
+But it's saying I can't.
+
+1758
+01:35:32,830 --> 01:35:34,210
+So I guess I'm
+just going to ask.
+
+1759
+01:35:34,210 --> 01:35:37,020
+By the way, I don't
+see people, anyway.
+
+1760
+01:35:37,020 --> 01:35:39,040
+Well, you could at the
+start of the video.
+
+1761
+01:35:39,040 --> 01:35:41,060
+But anyway, let's just go.
+
+1762
+01:35:41,060 --> 01:35:42,460
+Yeah, I'll just ask.
+
+1763
+01:35:42,460 --> 01:35:44,780
+So thank you so
+much for your talk.
+
+1764
+01:35:44,780 --> 01:35:46,870
+I have a question
+on microaggressions?
+
+1765
+01:35:46,870 --> 01:35:51,040
+So who is to decide what is
+considered a microaggression?
+
+1766
+01:35:51,040 --> 01:35:53,410
+Is it the people who
+microaggressions are
+
+1767
+01:35:53,410 --> 01:35:55,030
+potentially targeted against?
+
+1768
+01:35:55,030 --> 01:35:57,550
+Is it philosophers
+or social scientists
+
+1769
+01:35:57,550 --> 01:35:59,650
+or just people in education?
+
+1770
+01:35:59,650 --> 01:36:04,000
+And in case opinions differ, do
+we just listen to the majority?
+
+1771
+01:36:04,000 --> 01:36:07,020
+It all seems crucially important
+to me, but very, very difficult
+
+1772
+01:36:07,020 --> 01:36:10,210
+to standardize and kind of
+reach a consensus, especially
+
+1773
+01:36:10,210 --> 01:36:14,033
+because different cultures
+perceive things differently.
+
+1774
+01:36:14,033 --> 01:36:15,700
+Thank you very much
+for these questions.
+
+1775
+01:36:15,700 --> 01:36:19,140
+These are amazing questions.
+
+1776
+01:36:19,140 --> 01:36:21,870
+These are difficult questions.
+
+1777
+01:36:21,870 --> 01:36:25,400
+This is why we did not
+create our own corpus
+
+1778
+01:36:25,400 --> 01:36:27,590
+of microaggressions,
+right, because it's
+
+1779
+01:36:27,590 --> 01:36:28,558
+culturally dependent.
+
+1780
+01:36:28,558 --> 01:36:29,600
+It's very, very personal.
+
+1781
+01:36:29,600 --> 01:36:31,050
+It's subjective.
+
+1782
+01:36:31,050 --> 01:36:36,050
+This is why we first focused
+on a corpus of perceived
+
+1783
+01:36:36,050 --> 01:36:43,160
+microaggressions, people
+that actually felt
+
+1784
+01:36:43,160 --> 01:36:48,710
+that the interactions
+were negative,
+
+1785
+01:36:48,710 --> 01:36:52,100
+because they knew that
+these were microaggressions.
+
+1786
+01:36:52,100 --> 01:36:57,880
+
+
+1787
+01:36:57,880 --> 01:37:02,580
+Who is to decide whether
+something is microaggression?
+
+1788
+01:37:02,580 --> 01:37:03,080
+Mm.
+
+1789
+01:37:03,080 --> 01:37:07,900
+
+
+1790
+01:37:07,900 --> 01:37:11,470
+Yeah, I don't know.
+
+1791
+01:37:11,470 --> 01:37:14,560
+This is very
+difficult. What I can
+
+1792
+01:37:14,560 --> 01:37:19,030
+think about practical
+solutions about it--
+
+1793
+01:37:19,030 --> 01:37:24,130
+I would say have very
+well-trained annotators
+
+1794
+01:37:24,130 --> 01:37:27,190
+who understand what
+microaggression is.
+
+1795
+01:37:27,190 --> 01:37:30,820
+So kind of, we explain
+what is microaggression,
+
+1796
+01:37:30,820 --> 01:37:37,960
+they see many examples, they
+understand that for example,
+
+1797
+01:37:37,960 --> 01:37:43,750
+a sentence that targets
+a minority group,
+
+1798
+01:37:43,750 --> 01:37:45,290
+and other things.
+
+1799
+01:37:45,290 --> 01:37:48,790
+And then have many
+annotators per one sentence.
+
+1800
+01:37:48,790 --> 01:37:53,200
+So like in the, say, the study--
+
+1801
+01:37:53,200 --> 01:37:59,120
+this is about other social
+concepts that are abstract.
+
+1802
+01:37:59,120 --> 01:38:02,200
+For example, in Dan
+Jurafsky's study
+
+1803
+01:38:02,200 --> 01:38:05,170
+on respect in
+police interactions,
+
+1804
+01:38:05,170 --> 01:38:09,310
+respect is also a
+subjective thing, right?
+
+1805
+01:38:09,310 --> 01:38:12,340
+So what they did, they
+took every utterance,
+
+1806
+01:38:12,340 --> 01:38:15,280
+and they had multiple
+annotators, multiple trained
+
+1807
+01:38:15,280 --> 01:38:19,450
+annotators, for each
+utterance, and just increased
+
+1808
+01:38:19,450 --> 01:38:24,430
+the number of voters of
+whether an utterance is
+
+1809
+01:38:24,430 --> 01:38:26,110
+respectful or not.
+
+1810
+01:38:26,110 --> 01:38:30,010
+So practically, I
+think this should
+
+1811
+01:38:30,010 --> 01:38:35,380
+be the procedure for creating
+corpus of microaggressions.
+
+1812
+01:38:35,380 --> 01:38:39,620
+But a more philosophical
+question is, who is to decide?
+
+1813
+01:38:39,620 --> 01:38:44,370
+And it's a more difficult one.
+
+1814
+01:38:44,370 --> 01:38:45,150
+Yeah, got it.
+
+1815
+01:38:45,150 --> 01:38:46,030
+Thank you.
+
+1816
+01:38:46,030 --> 01:38:47,430
+So there's still more questions.
+
+1817
+01:38:47,430 --> 01:38:48,972
+But you're allowed
+to say that you're
+
+1818
+01:38:48,972 --> 01:38:50,400
+worn out at any point, Yulia.
+
+1819
+01:38:50,400 --> 01:38:52,110
+And if you're not,
+the next question--
+
+1820
+01:38:52,110 --> 01:38:55,650
+I feel bad about not being
+able to answer big questions
+
+1821
+01:38:55,650 --> 01:38:59,125
+about society and--
+
+1822
+01:38:59,125 --> 01:39:01,350
+but yeah, I'm happy to answer.
+
+1823
+01:39:01,350 --> 01:39:05,190
+The next question is,
+"Can you talk a bit more
+
+1824
+01:39:05,190 --> 01:39:11,150
+about the unsupervised approach
+to identifying implicit bias?"
+
+1825
+01:39:11,150 --> 01:39:11,810
+I can.
+
+1826
+01:39:11,810 --> 01:39:18,240
+
+
+1827
+01:39:18,240 --> 01:39:20,790
+I just need to think how to
+talk about it in a few words.
+
+1828
+01:39:20,790 --> 01:39:26,410
+
+
+1829
+01:39:26,410 --> 01:39:38,090
+So intuitively, we cannot create
+a corpus which has an utterance
+
+1830
+01:39:38,090 --> 01:39:39,080
+and then a label.
+
+1831
+01:39:39,080 --> 01:39:41,420
+Is that sentence biased or not?
+
+1832
+01:39:41,420 --> 01:39:47,210
+So we create a causal
+framework in which our target
+
+1833
+01:39:47,210 --> 01:39:48,860
+label is more objective.
+
+1834
+01:39:48,860 --> 01:39:52,220
+Who is this sentence
+directed to?
+
+1835
+01:39:52,220 --> 01:39:53,540
+To a man or to a woman?
+
+1836
+01:39:53,540 --> 01:39:57,680
+So our labels are gender labels.
+
+1837
+01:39:57,680 --> 01:40:03,170
+And in a naive way, if given
+a sentence towards a person,
+
+1838
+01:40:03,170 --> 01:40:06,800
+without looking at the actual
+person and their comment,
+
+1839
+01:40:06,800 --> 01:40:08,750
+just by this comment
+towards the person,
+
+1840
+01:40:08,750 --> 01:40:12,920
+we can predict if it's
+directed to a woman.
+
+1841
+01:40:12,920 --> 01:40:16,870
+We can say that there is
+some bias in the model--
+
+1842
+01:40:16,870 --> 01:40:19,850
+that there is some
+bias in the sentence.
+
+1843
+01:40:19,850 --> 01:40:22,940
+But it's a naive
+approach because there
+
+1844
+01:40:22,940 --> 01:40:28,340
+are other kinds of ways in
+which we can predict the target
+
+1845
+01:40:28,340 --> 01:40:33,880
+gender, but which will not
+be associated with bias.
+
+1846
+01:40:33,880 --> 01:40:36,730
+For example, it's the context
+of the current station,
+
+1847
+01:40:36,730 --> 01:40:40,220
+the traits of the person that
+we are writing to, and so on.
+
+1848
+01:40:40,220 --> 01:40:43,540
+So the crux of our technology
+is that we predict gender,
+
+1849
+01:40:43,540 --> 01:40:46,930
+but demote all
+kinds of confounds
+
+1850
+01:40:46,930 --> 01:40:48,680
+in the task of detecting bias.
+
+1851
+01:40:48,680 --> 01:40:55,480
+So we demote the signals
+of the source sentence.
+
+1852
+01:40:55,480 --> 01:41:00,230
+We demote the latent traits
+of the target person.
+
+1853
+01:41:00,230 --> 01:41:02,620
+And so we make this
+task very difficult
+
+1854
+01:41:02,620 --> 01:41:06,230
+to detect what is
+the target gender.
+
+1855
+01:41:06,230 --> 01:41:10,030
+And if, after all these
+demotions of the confounds,
+
+1856
+01:41:10,030 --> 01:41:13,840
+given an utterance that is
+directed to a specific person,
+
+1857
+01:41:13,840 --> 01:41:16,120
+we can still classify
+this utterance that
+
+1858
+01:41:16,120 --> 01:41:19,180
+is clearly directed to a woman.
+
+1859
+01:41:19,180 --> 01:41:22,400
+It is likely that this
+utterance contains bias.
+
+1860
+01:41:22,400 --> 01:41:24,820
+So what I was going to talk
+is all kinds of demotion
+
+1861
+01:41:24,820 --> 01:41:27,100
+approaches that we develop.
+
+1862
+01:41:27,100 --> 01:41:29,860
+But once we demote
+these approaches
+
+1863
+01:41:29,860 --> 01:41:36,190
+and we can still predict
+the utterances, what
+
+1864
+01:41:36,190 --> 01:41:38,860
+is the gender of the
+target that would receive,
+
+1865
+01:41:38,860 --> 01:41:42,100
+we actually can surface
+some biased sentences.
+
+1866
+01:41:42,100 --> 01:41:44,330
+So these are the main findings.
+
+1867
+01:41:44,330 --> 01:41:47,470
+For example, if we look
+at comments directed
+
+1868
+01:41:47,470 --> 01:41:50,650
+to politicians, after
+all these demotions,
+
+1869
+01:41:50,650 --> 01:41:54,640
+and we see comments
+that kind of clearly
+
+1870
+01:41:54,640 --> 01:41:57,160
+predict the target
+gender, we can
+
+1871
+01:41:57,160 --> 01:42:01,330
+see that common for politicians
+talk about their spouses,
+
+1872
+01:42:01,330 --> 01:42:06,430
+about their family life, and
+also about their competence
+
+1873
+01:42:06,430 --> 01:42:08,870
+Maybe question their competence.
+
+1874
+01:42:08,870 --> 01:42:13,420
+And if we look at common for
+public figures, like actresses,
+
+1875
+01:42:13,420 --> 01:42:16,060
+we can see a lot of words
+that are just related
+
+1876
+01:42:16,060 --> 01:42:18,910
+to objectification,
+sexualization, regardless
+
+1877
+01:42:18,910 --> 01:42:19,990
+of their source content.
+
+1878
+01:42:19,990 --> 01:42:22,060
+So they can talk
+about their movie.
+
+1879
+01:42:22,060 --> 01:42:28,040
+But the comments will always
+be about that she's sexy.
+
+1880
+01:42:28,040 --> 01:42:31,280
+And this is what our
+model is able to surface.
+
+1881
+01:42:31,280 --> 01:42:34,110
+But again, it's
+just initial study.
+
+1882
+01:42:34,110 --> 01:42:36,720
+Needs a lot of work.
+
+1883
+01:42:36,720 --> 01:42:41,840
+OK, so around here also
+asks, "If microaggressions
+
+1884
+01:42:41,840 --> 01:42:44,480
+are pulled from a site where
+people can list what they have
+
+1885
+01:42:44,480 --> 01:42:47,330
+experienced, isn't that
+data very vulnerable
+
+1886
+01:42:47,330 --> 01:42:49,085
+to social engineering?"
+
+1887
+01:42:49,085 --> 01:42:57,020
+
+
+1888
+01:42:57,020 --> 01:42:58,230
+Yes.
+
+1889
+01:42:58,230 --> 01:43:00,170
+This data is vulnerable.
+
+1890
+01:43:00,170 --> 01:43:04,760
+So in our case, we
+anonymize this data.
+
+1891
+01:43:04,760 --> 01:43:07,340
+We extract only
+quotes from the data.
+
+1892
+01:43:07,340 --> 01:43:12,590
+We remove the actual
+users who published it,
+
+1893
+01:43:12,590 --> 01:43:16,280
+remove all the text
+around these quotes.
+
+1894
+01:43:16,280 --> 01:43:20,470
+And this is a good question.
+
+1895
+01:43:20,470 --> 01:43:23,800
+Maybe we should also not make
+this data public even yet.
+
+1896
+01:43:23,800 --> 01:43:27,330
+
+
+1897
+01:43:27,330 --> 01:43:27,840
+Hey.
+
+1898
+01:43:27,840 --> 01:43:29,015
+And there are more questions.
+
+1899
+01:43:29,015 --> 01:43:29,640
+Good questions.
+
+1900
+01:43:29,640 --> 01:43:30,240
+Thank you.
+
+1901
+01:43:30,240 --> 01:43:32,770
+More questions.
+
+1902
+01:43:32,770 --> 01:43:33,570
+So--
+
+1903
+01:43:33,570 --> 01:43:34,710
+By the way, like if--
+
+1904
+01:43:34,710 --> 01:43:36,558
+Chris, John.
+
+1905
+01:43:36,558 --> 01:43:38,850
+I'm saying Chris, John because
+these are the two faces,
+
+1906
+01:43:38,850 --> 01:43:42,888
+the only faces that
+I see on my screen.
+
+1907
+01:43:42,888 --> 01:43:44,867
+So please let me know
+when we need to finish.
+
+1908
+01:43:44,867 --> 01:43:46,200
+I'm happy to continue answering.
+
+1909
+01:43:46,200 --> 01:43:48,060
+We've often gone on
+for a few more minutes.
+
+1910
+01:43:48,060 --> 01:43:49,695
+So I can ask a couple
+more questions.
+
+1911
+01:43:49,695 --> 01:43:51,050
+OK.
+
+1912
+01:43:51,050 --> 01:43:55,170
+So here's one that's
+very prominent in AI
+
+1913
+01:43:55,170 --> 01:43:57,510
+right at the moment.
+
+1914
+01:43:57,510 --> 01:44:00,270
+"Do you think it is fair
+for AI scientists in tech
+
+1915
+01:44:00,270 --> 01:44:03,030
+and academia, who
+are definitely not
+
+1916
+01:44:03,030 --> 01:44:05,580
+representative of the
+general population,
+
+1917
+01:44:05,580 --> 01:44:08,610
+to decide what is
+biased and what is not,
+
+1918
+01:44:08,610 --> 01:44:13,470
+i.e., the act of de-biasing
+itself might be biased?"
+
+1919
+01:44:13,470 --> 01:44:17,820
+Yeah, this is one
+problem also that--
+
+1920
+01:44:17,820 --> 01:44:20,940
+this is like more general
+problem, that researchers--
+
+1921
+01:44:20,940 --> 01:44:22,870
+even those who work
+on the bias, can
+
+1922
+01:44:22,870 --> 01:44:24,300
+incorporate their own biases.
+
+1923
+01:44:24,300 --> 01:44:30,560
+
+
+1924
+01:44:30,560 --> 01:44:33,040
+We currently don't have any
+other alternative, right?
+
+1925
+01:44:33,040 --> 01:44:35,680
+We don't have a
+training how to do it.
+
+1926
+01:44:35,680 --> 01:44:37,660
+We don't have--
+
+1927
+01:44:37,660 --> 01:44:40,630
+I think it's a good thing
+to work on these topics,
+
+1928
+01:44:40,630 --> 01:44:44,740
+to try to promote these
+topics as much as possible,
+
+1929
+01:44:44,740 --> 01:44:48,670
+with an awareness that we as
+researchers can incorporate
+
+1930
+01:44:48,670 --> 01:44:49,790
+our own biases.
+
+1931
+01:44:49,790 --> 01:44:55,780
+So this is what we also, right,
+in the ethical implications
+
+1932
+01:44:55,780 --> 01:45:00,280
+sections in the paper, that
+we try to identify bias.
+
+1933
+01:45:00,280 --> 01:45:01,390
+We try to de-bias.
+
+1934
+01:45:01,390 --> 01:45:04,720
+But there are
+limitations to this study
+
+1935
+01:45:04,720 --> 01:45:08,785
+because we could incorporate our
+own biases into our analysis,
+
+1936
+01:45:08,785 --> 01:45:09,590
+right?
+
+1937
+01:45:09,590 --> 01:45:12,340
+This is how we
+interpreted these results.
+
+1938
+01:45:12,340 --> 01:45:14,260
+Maybe this is what
+we were looking for
+
+1939
+01:45:14,260 --> 01:45:15,745
+and this is a confirmation bias.
+
+1940
+01:45:15,745 --> 01:45:19,950
+
+
+1941
+01:45:19,950 --> 01:45:21,070
+Yeah.
+
+1942
+01:45:21,070 --> 01:45:25,990
+OK, maybe should
+just have one more--
+
+1943
+01:45:25,990 --> 01:45:26,490
+oh, no.
+
+1944
+01:45:26,490 --> 01:45:28,260
+A new question just turned up.
+
+1945
+01:45:28,260 --> 01:45:30,110
+Maybe it'll have to
+be two questions more.
+
+1946
+01:45:30,110 --> 01:45:30,896
+[INAUDIBLE]
+
+1947
+01:45:30,896 --> 01:45:32,190
+They're still coming in.
+
+1948
+01:45:32,190 --> 01:45:35,010
+
+
+1949
+01:45:35,010 --> 01:45:38,340
+Now it's-- I mean, maybe I
+should do that one immediately,
+
+1950
+01:45:38,340 --> 01:45:44,710
+because it directly relates
+to that answer, which was,
+
+1951
+01:45:44,710 --> 01:45:48,220
+"How are the perspectives of
+community stakeholders-- i.e.,
+
+1952
+01:45:48,220 --> 01:45:51,460
+people from minoritized groups--
+included when these systems are
+
+1953
+01:45:51,460 --> 01:45:53,800
+being built?
+
+1954
+01:45:53,800 --> 01:45:57,760
+This is a wonderful
+question too, yeah.
+
+1955
+01:45:57,760 --> 01:45:59,230
+Currently, not very good.
+
+1956
+01:45:59,230 --> 01:46:01,840
+Actually, we currently
+have a paper also
+
+1957
+01:46:01,840 --> 01:46:06,700
+in submission about analysis
+of how race have been treated
+
+1958
+01:46:06,700 --> 01:46:10,120
+in NLP systems, starting
+from data sets to models
+
+1959
+01:46:10,120 --> 01:46:13,100
+to potential users.
+
+1960
+01:46:13,100 --> 01:46:15,190
+And one of the
+things that we found
+
+1961
+01:46:15,190 --> 01:46:20,990
+is that even people who
+work on identifying racism,
+
+1962
+01:46:20,990 --> 01:46:24,955
+they don't involve
+actually in-group members.
+
+1963
+01:46:24,955 --> 01:46:28,060
+
+
+1964
+01:46:28,060 --> 01:46:31,600
+Yeah, you identified yet another
+problem in the community.
+
+1965
+01:46:31,600 --> 01:46:37,070
+The perspectives of community
+are not often incorporated.
+
+1966
+01:46:37,070 --> 01:46:40,760
+In our acquisition paper, we try
+to advocate for its importance.
+
+1967
+01:46:40,760 --> 01:46:45,160
+But all these questions
+are very good.
+
+1968
+01:46:45,160 --> 01:46:51,520
+But maybe somebody like Chris,
+who has a lot of influence,
+
+1969
+01:46:51,520 --> 01:46:54,250
+could make changes
+in the community.
+
+1970
+01:46:54,250 --> 01:46:56,650
+It's very difficult
+to make such changes.
+
+1971
+01:46:56,650 --> 01:46:59,230
+
+
+1972
+01:46:59,230 --> 01:47:01,390
+I guess I'm hopeful
+that there's actually
+
+1973
+01:47:01,390 --> 01:47:04,420
+starting to be a bit
+of change right now.
+
+1974
+01:47:04,420 --> 01:47:10,210
+I mean, one can be
+pessimistic given the history,
+
+1975
+01:47:10,210 --> 01:47:16,690
+and one can be pessimistic
+given the current statistics.
+
+1976
+01:47:16,690 --> 01:47:20,470
+But you know, I
+actually believe that
+
+1977
+01:47:20,470 --> 01:47:24,940
+through recent events of Black
+Lives Matter and other things,
+
+1978
+01:47:24,940 --> 01:47:30,580
+that there's actually
+just more genuine attempts
+
+1979
+01:47:30,580 --> 01:47:34,180
+to create change around--
+
+1980
+01:47:34,180 --> 01:47:37,550
+well, certainly the Stanford
+computer science department,
+
+1981
+01:47:37,550 --> 01:47:41,980
+but I think more generally
+around the field of AI,
+
+1982
+01:47:41,980 --> 01:47:45,310
+than there's been at any
+time in the past 30 years
+
+1983
+01:47:45,310 --> 01:47:47,300
+when I've been watching it.
+
+1984
+01:47:47,300 --> 01:47:47,950
+Right.
+
+1985
+01:47:47,950 --> 01:47:52,930
+Even when I did my postdoc
+at Stanford in 2016,
+
+1986
+01:47:52,930 --> 01:47:55,480
+we started working on the
+problem of gender bias.
+
+1987
+01:47:55,480 --> 01:47:57,820
+And it was a total outlier.
+
+1988
+01:47:57,820 --> 01:48:02,140
+I didn't know if what I'm doing
+will be relevant to anyone.
+
+1989
+01:48:02,140 --> 01:48:03,430
+And then now look.
+
+1990
+01:48:03,430 --> 01:48:06,730
+We discuss this as a kind
+of relevant question.
+
+1991
+01:48:06,730 --> 01:48:09,830
+This is already an amazing
+change in the community.
+
+1992
+01:48:09,830 --> 01:48:11,590
+And if there will
+be more focus also
+
+1993
+01:48:11,590 --> 01:48:14,260
+on the right hiring
+which clearly now
+
+1994
+01:48:14,260 --> 01:48:17,400
+has more awareness than ever.
+
+1995
+01:48:17,400 --> 01:48:17,900
+Right.
+
+1996
+01:48:17,900 --> 01:48:23,160
+I'm also more optimistic now
+than, say, three years ago.
+
+1997
+01:48:23,160 --> 01:48:24,558
+OK, well maybe I'll do this--
+
+1998
+01:48:24,558 --> 01:48:26,600
+But these are wonderful
+questions for which there
+
+1999
+01:48:26,600 --> 01:48:30,170
+are no good answers yet, yeah.
+
+2000
+01:48:30,170 --> 01:48:34,520
+Maybe you can do this
+as the last question,
+
+2001
+01:48:34,520 --> 01:48:39,680
+unless you say something that
+really elicits a lot more.
+
+2002
+01:48:39,680 --> 01:48:41,540
+"What do you think
+the social and ethics
+
+2003
+01:48:41,540 --> 01:48:45,410
+space might look like, say,
+5 to 10 years down the line?
+
+2004
+01:48:45,410 --> 01:48:47,690
+Do you think the
+industry might come down
+
+2005
+01:48:47,690 --> 01:48:51,350
+to a unified standard of
+ethics for AI systems,
+
+2006
+01:48:51,350 --> 01:48:53,630
+given that a lot of the
+challenges come from the fact
+
+2007
+01:48:53,630 --> 01:48:55,700
+that social and
+ethics discussions are
+
+2008
+01:48:55,700 --> 01:48:56,880
+often subjective?"
+
+2009
+01:48:56,880 --> 01:49:00,920
+
+
+2010
+01:49:00,920 --> 01:49:03,230
+Yeah, I'm also optimistic
+about the field
+
+2011
+01:49:03,230 --> 01:49:05,390
+of ethics in five years.
+
+2012
+01:49:05,390 --> 01:49:06,860
+These are difficult problems.
+
+2013
+01:49:06,860 --> 01:49:08,840
+The field of ethics,
+by the way, itself
+
+2014
+01:49:08,840 --> 01:49:11,420
+is 2000 years old, right?
+
+2015
+01:49:11,420 --> 01:49:14,330
+Aristotle already
+asked these questions.
+
+2016
+01:49:14,330 --> 01:49:16,370
+And now we're asking
+these questions about AI.
+
+2017
+01:49:16,370 --> 01:49:28,060
+But given the current awareness
+and the bad publicity,
+
+2018
+01:49:28,060 --> 01:49:32,230
+is that currently, companies
+are the main players, right?
+
+2019
+01:49:32,230 --> 01:49:35,200
+It's more even than governments.
+
+2020
+01:49:35,200 --> 01:49:38,740
+And there is a big
+incentive at companies
+
+2021
+01:49:38,740 --> 01:49:43,180
+to fix things because
+of the bad publicity.
+
+2022
+01:49:43,180 --> 01:49:48,250
+And for example, today
+I read an article
+
+2023
+01:49:48,250 --> 01:49:57,150
+about that Google will
+stop advertisement
+
+2024
+01:49:57,150 --> 01:50:03,290
+that track the profile
+users, like these plug-ins.
+
+2025
+01:50:03,290 --> 01:50:06,500
+So overall, I do see a
+very positive trajectory.
+
+2026
+01:50:06,500 --> 01:50:08,690
+It's very difficult to
+predict what exactly
+
+2027
+01:50:08,690 --> 01:50:10,970
+will be like in five years.
+
+2028
+01:50:10,970 --> 01:50:13,100
+I don't think all the
+problems will be resolved.
+
+2029
+01:50:13,100 --> 01:50:21,980
+But overall, I'm optimistic also
+about that new policies will
+
+2030
+01:50:21,980 --> 01:50:27,170
+be already not entirely
+in the hands of decisions
+
+2031
+01:50:27,170 --> 01:50:30,530
+of companies.
+
+2032
+01:50:30,530 --> 01:50:34,170
+And definitely about research,
+because I see how many students
+
+2033
+01:50:34,170 --> 01:50:36,780
+now are interested in
+these topics, which
+
+2034
+01:50:36,780 --> 01:50:37,950
+is totally amazing.
+
+2035
+01:50:37,950 --> 01:50:41,480
+
+
+2036
+01:50:41,480 --> 01:50:42,140
+OK.
+
+2037
+01:50:42,140 --> 01:50:44,473
+Oh, and another comment that
+I want to make is actually,
+
+2038
+01:50:44,473 --> 01:50:49,510
+NLP is important in all this,
+which was much less said.
+
+2039
+01:50:49,510 --> 01:50:51,640
+The field of fairness
+very much focused
+
+2040
+01:50:51,640 --> 01:50:53,240
+on the image recognition.
+
+2041
+01:50:53,240 --> 01:50:56,260
+But I think more and more,
+we'll see more and more research
+
+2042
+01:50:56,260 --> 01:50:58,465
+on NLP and language,
+which is also exciting.
+
+2043
+01:50:58,465 --> 01:51:02,610
+
+
+2044
+01:51:02,610 --> 01:51:07,030
+OK, well maybe we should
+call it quits at that point.
+
+2045
+01:51:07,030 --> 01:51:08,490
+Thank you so much, Yulia.
+
+2046
+01:51:08,490 --> 01:51:10,640
+Thank you very much.
+
+2047
+01:51:10,640 --> 01:51:15,000
+
+

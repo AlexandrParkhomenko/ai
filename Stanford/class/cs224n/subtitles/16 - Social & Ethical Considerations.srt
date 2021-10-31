@@ -1,0 +1,9278 @@
+1
+00:00:00,000 --> 00:00:05,190
+
+
+2
+00:00:05,190 --> 00:00:07,770
+Welcome to CS224N lecture 15.
+
+3
+00:00:07,770 --> 00:00:08,347
+So I'm Megan.
+
+4
+00:00:08,347 --> 00:00:09,930
+And I'm one of the
+CAs in this course.
+
+5
+00:00:09,930 --> 00:00:12,510
+And I'm also a PhD student
+working at [INAUDIBLE]..
+
+6
+00:00:12,510 --> 00:00:14,250
+And today I'll be talking
+about integrating knowledge
+
+7
+00:00:14,250 --> 00:00:15,042
+in language models.
+
+8
+00:00:15,042 --> 00:00:18,750
+
+
+9
+00:00:18,750 --> 00:00:19,750
+So some quick reminders.
+
+10
+00:00:19,750 --> 00:00:21,400
+Your project milestones
+were due today.
+
+11
+00:00:21,400 --> 00:00:22,870
+So hopefully, you
+turned those in already
+
+12
+00:00:22,870 --> 00:00:25,180
+or will be turning them in
+the next couple of days.
+
+13
+00:00:25,180 --> 00:00:26,597
+And we'll try to
+give you feedback
+
+14
+00:00:26,597 --> 00:00:28,862
+on those as fast as possible.
+
+15
+00:00:28,862 --> 00:00:31,320
+So something to be aware of is
+the change in grading basis.
+
+16
+00:00:31,320 --> 00:00:34,500
+And of course, withdrawal
+deadline is this Friday.
+
+17
+00:00:34,500 --> 00:00:36,500
+So if you want to make
+any change in your grade,
+
+18
+00:00:36,500 --> 00:00:37,590
+make sure you do that by then.
+
+19
+00:00:37,590 --> 00:00:40,020
+And we'll be getting you the
+grades back on assignment 5
+
+20
+00:00:40,020 --> 00:00:42,062
+by then as well, in case
+that's helpful in making
+
+21
+00:00:42,062 --> 00:00:44,170
+your decision.
+
+22
+00:00:44,170 --> 00:00:46,650
+And finally, your final
+projects are due in two weeks so
+
+23
+00:00:46,650 --> 00:00:49,167
+hopefully, those
+are going smoothly.
+
+24
+00:00:49,167 --> 00:00:50,750
+So the topic of the
+day is integrating
+
+25
+00:00:50,750 --> 00:00:52,280
+knowledge in language models.
+
+26
+00:00:52,280 --> 00:00:54,620
+You've seen a bit about
+this idea in a assignment 5
+
+27
+00:00:54,620 --> 00:00:57,300
+and also on Colin [INAUDIBLE]
+lecture last class.
+
+28
+00:00:57,300 --> 00:00:58,850
+So in assignment
+five, the task was
+
+29
+00:00:58,850 --> 00:01:02,000
+to train a model to predict the
+birthplace of a person, given
+
+30
+00:01:02,000 --> 00:01:02,960
+their name.
+
+31
+00:01:02,960 --> 00:01:05,513
+And you saw that by pretraining
+on a larger data set,
+
+32
+00:01:05,513 --> 00:01:07,430
+you're actually able to
+do better on this task
+
+33
+00:01:07,430 --> 00:01:10,160
+since you could encode some
+real knowledge into the language
+
+34
+00:01:10,160 --> 00:01:11,440
+model.
+
+35
+00:01:11,440 --> 00:01:13,360
+And then last lecture,
+Colin [INAUDIBLE]
+
+36
+00:01:13,360 --> 00:01:17,170
+presented how T5 could actually
+fine-tune for a closed domain
+
+37
+00:01:17,170 --> 00:01:20,750
+question answering task
+such that you can give T5
+
+38
+00:01:20,750 --> 00:01:23,688
+a natural language question,
+and it will return an answer.
+
+39
+00:01:23,688 --> 00:01:25,480
+So today we'll be
+building on these threads
+
+40
+00:01:25,480 --> 00:01:27,580
+and looking at techniques
+that researchers have recently
+
+41
+00:01:27,580 --> 00:01:29,860
+been developing to increase
+the amount of knowledge
+
+42
+00:01:29,860 --> 00:01:32,068
+in language models.
+
+43
+00:01:32,068 --> 00:01:34,610
+So we're going to start with a
+quick recap of language models
+
+44
+00:01:34,610 --> 00:01:36,570
+just to make sure we're
+all on the same page.
+
+45
+00:01:36,570 --> 00:01:38,820
+Then we're going to talk
+about what types of knowledge
+
+46
+00:01:38,820 --> 00:01:40,278
+language models
+can already encode,
+
+47
+00:01:40,278 --> 00:01:42,260
+and what they might struggle on.
+
+48
+00:01:42,260 --> 00:01:43,753
+We'll also motivate
+why researchers
+
+49
+00:01:43,753 --> 00:01:45,920
+are interested in increasing
+the amount of knowledge
+
+50
+00:01:45,920 --> 00:01:48,170
+in language models and
+what this could enable
+
+51
+00:01:48,170 --> 00:01:50,690
+for a future systems if we
+have language models that
+
+52
+00:01:50,690 --> 00:01:54,587
+can actually reliably
+recall knowledge.
+
+53
+00:01:54,587 --> 00:01:56,670
+We'll talk about three
+broad classes of techniques
+
+54
+00:01:56,670 --> 00:01:58,712
+that researchers have been
+using to add knowledge
+
+55
+00:01:58,712 --> 00:01:59,590
+to language models.
+
+56
+00:01:59,590 --> 00:02:02,040
+These include adding
+pretrained entity embeddings,
+
+57
+00:02:02,040 --> 00:02:04,680
+using external memory
+or key-value store,
+
+58
+00:02:04,680 --> 00:02:06,905
+or even just modifying
+the training data.
+
+59
+00:02:06,905 --> 00:02:08,280
+And for each of
+these techniques,
+
+60
+00:02:08,280 --> 00:02:10,238
+we'll talk about at
+least one recent work
+
+61
+00:02:10,238 --> 00:02:11,280
+that used that technique.
+
+62
+00:02:11,280 --> 00:02:13,655
+So hopefully, it's clear to
+see how to actually employ it
+
+63
+00:02:13,655 --> 00:02:15,500
+in practice.
+
+64
+00:02:15,500 --> 00:02:17,250
+And then finally, we'll
+wrap up by talking
+
+65
+00:02:17,250 --> 00:02:19,710
+about how to evaluate the
+knowledge in language models
+
+66
+00:02:19,710 --> 00:02:22,002
+and the challenges that come
+up when trying to do this.
+
+67
+00:02:22,002 --> 00:02:24,920
+
+
+68
+00:02:24,920 --> 00:02:26,015
+So let's dive right in.
+
+69
+00:02:26,015 --> 00:02:28,640
+We're going to start by talking
+about standard language models.
+
+70
+00:02:28,640 --> 00:02:30,932
+You learned about these at
+the beginning of the course.
+
+71
+00:02:30,932 --> 00:02:33,820
+And the task is to predict the
+next word in a sequence a text
+
+72
+00:02:33,820 --> 00:02:36,160
+and to compute the
+probability of a sequence.
+
+73
+00:02:36,160 --> 00:02:38,230
+So you may remember the
+example, the students
+
+74
+00:02:38,230 --> 00:02:39,530
+opened their blank.
+
+75
+00:02:39,530 --> 00:02:41,350
+And we talked about
+could be minds,
+
+76
+00:02:41,350 --> 00:02:43,625
+exams, bring those books here.
+
+77
+00:02:43,625 --> 00:02:45,250
+And the task of
+standard language model
+
+78
+00:02:45,250 --> 00:02:48,940
+is to predict the most likely
+next word in the sequence.
+
+79
+00:02:48,940 --> 00:02:50,860
+A couple of lectures
+ago, John also
+
+80
+00:02:50,860 --> 00:02:52,960
+introduced the notion of
+masked language models.
+
+81
+00:02:52,960 --> 00:02:55,450
+And so in predicting the next
+word in a sequence of text,
+
+82
+00:02:55,450 --> 00:02:57,880
+the task is to predict
+the masked token.
+
+83
+00:02:57,880 --> 00:03:00,970
+And this is done using
+bidirectional context.
+
+84
+00:03:00,970 --> 00:03:03,670
+So you may remember the
+example, I masked the mask.
+
+85
+00:03:03,670 --> 00:03:05,380
+And the goal of the
+masked language model
+
+86
+00:03:05,380 --> 00:03:07,675
+is to make the most likely
+token for each of the masked
+
+87
+00:03:07,675 --> 00:03:09,450
+out words.
+
+88
+00:03:09,450 --> 00:03:11,310
+So maybe I went to the store.
+
+89
+00:03:11,310 --> 00:03:13,310
+So while there are some
+differences in these two
+
+90
+00:03:13,310 --> 00:03:16,310
+types of language models whether
+you're predicting the next word
+
+91
+00:03:16,310 --> 00:03:18,620
+or whether you're predicting
+the masked out token,
+
+92
+00:03:18,620 --> 00:03:19,995
+they're similar
+and that they can
+
+93
+00:03:19,995 --> 00:03:23,143
+both be trained over large
+amounts of unlabeled text.
+
+94
+00:03:23,143 --> 00:03:24,560
+And this is one
+of the reasons why
+
+95
+00:03:24,560 --> 00:03:26,040
+they've been so widely adopted.
+
+96
+00:03:26,040 --> 00:03:30,132
+They don't require any
+human annotated data.
+
+97
+00:03:30,132 --> 00:03:31,590
+So you've seen that
+language models
+
+98
+00:03:31,590 --> 00:03:34,830
+can be used for a variety
+of tasks from summarization
+
+99
+00:03:34,830 --> 00:03:38,210
+to dialogue to fluency
+evaluation Tests involved would
+
+100
+00:03:38,210 --> 00:03:40,230
+be the generating
+text or evaluating
+
+101
+00:03:40,230 --> 00:03:42,732
+the probability of text.
+
+102
+00:03:42,732 --> 00:03:45,190
+And more recently, we've seen
+that language models can also
+
+103
+00:03:45,190 --> 00:03:48,630
+be used to generate pretrained
+representations of text that
+
+104
+00:03:48,630 --> 00:03:50,855
+encode some notion of
+language understanding
+
+105
+00:03:50,855 --> 00:03:53,480
+and has been shown to be widely
+useful for different downstream
+
+106
+00:03:53,480 --> 00:03:56,090
+NLP tasks.
+
+107
+00:03:56,090 --> 00:03:58,610
+And then finally, today, we're
+going to touch on this idea
+
+108
+00:03:58,610 --> 00:04:00,530
+that if language
+models are trained
+
+109
+00:04:00,530 --> 00:04:03,020
+over massive amounts
+of text, can they even
+
+110
+00:04:03,020 --> 00:04:04,400
+be used as a knowledge base?
+
+111
+00:04:04,400 --> 00:04:06,673
+
+
+112
+00:04:06,673 --> 00:04:08,090
+So we're going to
+start by looking
+
+113
+00:04:08,090 --> 00:04:09,800
+at what types of
+factual knowledge
+
+114
+00:04:09,800 --> 00:04:11,720
+a language model
+might already know.
+
+115
+00:04:11,720 --> 00:04:13,430
+And these examples
+are taken from a paper
+
+116
+00:04:13,430 --> 00:04:16,970
+by Petroni, et al in EMNLP
+a couple of years ago.
+
+117
+00:04:16,970 --> 00:04:19,430
+And the goal is to test
+the factual or commonsense
+
+118
+00:04:19,430 --> 00:04:24,210
+knowledge in existing language
+models such as BERT-Large.
+
+119
+00:04:24,210 --> 00:04:26,450
+So let's check out what
+BERT-Large predicts.
+
+120
+00:04:26,450 --> 00:04:29,090
+iPod touch is produced by Apple.
+
+121
+00:04:29,090 --> 00:04:32,480
+London Jazz Festival
+is located in London.
+
+122
+00:04:32,480 --> 00:04:35,000
+Dani Alves plays with Santos.
+
+123
+00:04:35,000 --> 00:04:37,730
+Carl III used to
+communicate in German.
+
+124
+00:04:37,730 --> 00:04:40,183
+And ravens can fly.
+
+125
+00:04:40,183 --> 00:04:41,850
+So here, we have the
+correct predictions
+
+126
+00:04:41,850 --> 00:04:44,255
+in green and incorrect
+predictions in red.
+
+127
+00:04:44,255 --> 00:04:46,170
+And if you know
+anything about sports,
+
+128
+00:04:46,170 --> 00:04:48,690
+you may know that Dani
+Alves is a soccer player.
+
+129
+00:04:48,690 --> 00:04:50,400
+Santos is a soccer team.
+
+130
+00:04:50,400 --> 00:04:52,920
+Here they were hoping that
+it would predict Barcelona.
+
+131
+00:04:52,920 --> 00:04:54,837
+Because at least at the
+time of this data set,
+
+132
+00:04:54,837 --> 00:04:56,340
+apparently he played
+for Barcelona.
+
+133
+00:04:56,340 --> 00:04:58,673
+And Carl III is actually used
+to communicate in Swedish,
+
+134
+00:04:58,673 --> 00:05:00,910
+not German.
+
+135
+00:05:00,910 --> 00:05:02,890
+So what's good
+about these examples
+
+136
+00:05:02,890 --> 00:05:04,990
+is the predictions are
+generally reasonable.
+
+137
+00:05:04,990 --> 00:05:08,047
+If you didn't know the ground
+truth, they all make sense.
+
+138
+00:05:08,047 --> 00:05:09,130
+When you want to produce--
+
+139
+00:05:09,130 --> 00:05:10,690
+when you want to
+predict a language,
+
+140
+00:05:10,690 --> 00:05:13,700
+you do, in fact,
+predict the language.
+
+141
+00:05:13,700 --> 00:05:17,310
+But of course, they're
+not all factually correct.
+
+142
+00:05:17,310 --> 00:05:19,180
+So what made this happen?
+
+143
+00:05:19,180 --> 00:05:21,865
+Well, for one, the fact might
+not have been seen in training.
+
+144
+00:05:21,865 --> 00:05:23,490
+And you can't expect
+the language model
+
+145
+00:05:23,490 --> 00:05:26,280
+to do more than recall facts
+that it has seen in training.
+
+146
+00:05:26,280 --> 00:05:29,430
+It can't make up facts about
+the world, for instance.
+
+147
+00:05:29,430 --> 00:05:31,800
+It's also possible that the
+fact is just really rare.
+
+148
+00:05:31,800 --> 00:05:34,500
+So maybe the language model has
+seen the fact during training,
+
+149
+00:05:34,500 --> 00:05:35,917
+but it hasn't seen
+it enough times
+
+150
+00:05:35,917 --> 00:05:38,760
+to actually memorize the fact.
+
+151
+00:05:38,760 --> 00:05:41,100
+And the last issue is
+a little more subtle,
+
+152
+00:05:41,100 --> 00:05:43,680
+which a model might just be
+very sensitive to the phrasing
+
+153
+00:05:43,680 --> 00:05:45,735
+of the fill in the
+blank statement.
+
+154
+00:05:45,735 --> 00:05:47,610
+And so for example, you
+might have statements
+
+155
+00:05:47,610 --> 00:05:50,370
+like x was created in
+blank, that the model can't
+
+156
+00:05:50,370 --> 00:05:51,510
+predict correctly.
+
+157
+00:05:51,510 --> 00:05:53,880
+But if you change it
+to x was made in blank,
+
+158
+00:05:53,880 --> 00:05:55,560
+suddenly, it can
+predict it correctly.
+
+159
+00:05:55,560 --> 00:05:57,060
+And I will come
+back to this and how
+
+160
+00:05:57,060 --> 00:05:59,700
+to actually evaluate the
+knowledge in these language
+
+161
+00:05:59,700 --> 00:06:02,420
+models.
+
+162
+00:06:02,420 --> 00:06:05,210
+So it's inability to
+reliably recall knowledge
+
+163
+00:06:05,210 --> 00:06:07,360
+is a key challenge facing
+language models today.
+
+164
+00:06:07,360 --> 00:06:09,597
+And they will be the
+focus of this talk.
+
+165
+00:06:09,597 --> 00:06:11,930
+Recent works have found that
+language models can recover
+
+166
+00:06:11,930 --> 00:06:15,140
+some knowledge, including
+the work that Colin presented
+
+167
+00:06:15,140 --> 00:06:16,010
+last class.
+
+168
+00:06:16,010 --> 00:06:18,450
+They've had very
+encouraging results.
+
+169
+00:06:18,450 --> 00:06:19,940
+But there's still
+a way to go as we
+
+170
+00:06:19,940 --> 00:06:21,648
+saw with the fill in
+the blank statements
+
+171
+00:06:21,648 --> 00:06:24,710
+and with these challenges
+that we just discussed above.
+
+172
+00:06:24,710 --> 00:06:26,540
+So as a result, the
+past couple of years
+
+173
+00:06:26,540 --> 00:06:29,300
+have had a ton of rapid progress
+in this area of research
+
+174
+00:06:29,300 --> 00:06:32,540
+in terms of trying to figure out
+how do you actually encode more
+
+175
+00:06:32,540 --> 00:06:34,160
+knowledge in language models.
+
+176
+00:06:34,160 --> 00:06:37,570
+
+
+177
+00:06:37,570 --> 00:06:39,430
+So I also want to
+motivate why researchers
+
+178
+00:06:39,430 --> 00:06:42,580
+are interested in building
+language models that can more
+
+179
+00:06:42,580 --> 00:06:44,850
+reliably recall knowledge.
+
+180
+00:06:44,850 --> 00:06:48,000
+And one of these reasons is that
+the pretrained representations
+
+181
+00:06:48,000 --> 00:06:50,040
+are used in a variety
+of downstream tasks.
+
+182
+00:06:50,040 --> 00:06:53,750
+And some of these downstream
+tasks are knowledge intensive.
+
+183
+00:06:53,750 --> 00:06:56,510
+So for instance, you might
+have a downstream task
+
+184
+00:06:56,510 --> 00:06:59,840
+to extract the relations between
+two entities in a sentence.
+
+185
+00:06:59,840 --> 00:07:02,250
+And this is commonly known
+as relation extraction.
+
+186
+00:07:02,250 --> 00:07:03,710
+And this is much
+easier if you have
+
+187
+00:07:03,710 --> 00:07:06,230
+some knowledge of
+the entities, which
+
+188
+00:07:06,230 --> 00:07:09,320
+could be potentially provided by
+this pretrained language model
+
+189
+00:07:09,320 --> 00:07:11,683
+representation.
+
+190
+00:07:11,683 --> 00:07:13,100
+And when we talk
+about evaluation,
+
+191
+00:07:13,100 --> 00:07:14,660
+we'll talk about
+what types of tests
+
+192
+00:07:14,660 --> 00:07:17,000
+are most likely to benefit
+from this knowledge
+
+193
+00:07:17,000 --> 00:07:20,640
+rich pretrained representations.
+
+194
+00:07:20,640 --> 00:07:22,830
+And then as a stretch
+goal, some researchers
+
+195
+00:07:22,830 --> 00:07:24,840
+are starting to
+propose the idea that,
+
+196
+00:07:24,840 --> 00:07:27,120
+can language models
+actually ultimately be
+
+197
+00:07:27,120 --> 00:07:30,307
+used to replace traditional
+knowledge bases?
+
+198
+00:07:30,307 --> 00:07:32,390
+So instead of querying a
+knowledge base for a fact
+
+199
+00:07:32,390 --> 00:07:34,040
+like you might
+right now with SQL,
+
+200
+00:07:34,040 --> 00:07:38,150
+you'd create a language model
+with a natural language prompt.
+
+201
+00:07:38,150 --> 00:07:40,640
+And of course, this does
+require the language model
+
+202
+00:07:40,640 --> 00:07:42,890
+to have high quality
+on recalling facts.
+
+203
+00:07:42,890 --> 00:07:44,870
+So we might not be
+there yet, but it's
+
+204
+00:07:44,870 --> 00:07:48,908
+an interesting direction
+for us to be moving towards.
+
+205
+00:07:48,908 --> 00:07:50,450
+So I want to make
+it super clear what
+
+206
+00:07:50,450 --> 00:07:52,160
+I mean by a knowledge base.
+
+207
+00:07:52,160 --> 00:07:54,200
+Here we're just talking
+about a knowledge graph
+
+208
+00:07:54,200 --> 00:07:57,170
+where the nodes in the
+graph would be entities,
+
+209
+00:07:57,170 --> 00:08:00,458
+and the edges are going to be
+relations between the entities.
+
+210
+00:08:00,458 --> 00:08:02,000
+So for example, here
+we have a subset
+
+211
+00:08:02,000 --> 00:08:04,670
+of a knowledge graph for
+Franklin D. Roosevelt.
+
+212
+00:08:04,670 --> 00:08:06,890
+And you see the information
+about his spouse,
+
+213
+00:08:06,890 --> 00:08:10,380
+his place of birth, his
+date of birth, and so on.
+
+214
+00:08:10,380 --> 00:08:11,890
+An important thing
+to note is this
+
+215
+00:08:11,890 --> 00:08:14,640
+is a structured way of storing
+the knowledge since it's just
+
+216
+00:08:14,640 --> 00:08:16,290
+in a graph form.
+
+217
+00:08:16,290 --> 00:08:18,240
+And you can actually
+describe these graphs
+
+218
+00:08:18,240 --> 00:08:19,770
+with knowledge
+graph triples, which
+
+219
+00:08:19,770 --> 00:08:22,680
+will be an important vocabulary
+word throughout this talk.
+
+220
+00:08:22,680 --> 00:08:25,020
+So knowledge graph
+triple would be
+
+221
+00:08:25,020 --> 00:08:29,070
+consisting of a subject entity,
+a relation, and an object
+
+222
+00:08:29,070 --> 00:08:30,100
+entity.
+
+223
+00:08:30,100 --> 00:08:33,150
+So for instance, here we might
+have Franklin D. Roosevelt,
+
+224
+00:08:33,150 --> 00:08:36,150
+date of birth, January
+30, 1882, and that would
+
+225
+00:08:36,150 --> 00:08:38,070
+form a knowledge graph triple.
+
+226
+00:08:38,070 --> 00:08:40,980
+We'll also refer to this as a
+apparent entity, a relation,
+
+227
+00:08:40,980 --> 00:08:43,669
+and a tail entity.
+
+228
+00:08:43,669 --> 00:08:45,453
+So Wikidata is one
+very popular knowledge
+
+229
+00:08:45,453 --> 00:08:47,870
+base you might come across if
+you're working in this area.
+
+230
+00:08:47,870 --> 00:08:49,245
+It's a free
+knowledge base that's
+
+231
+00:08:49,245 --> 00:08:50,730
+actually populated by humans.
+
+232
+00:08:50,730 --> 00:08:54,050
+So they're filling in these
+relations and entities.
+
+233
+00:08:54,050 --> 00:08:56,785
+And it's also multilingual.
+
+234
+00:08:56,785 --> 00:08:59,410
+So if you want information from
+this knowledge base, what you'd
+
+235
+00:08:59,410 --> 00:09:02,200
+do is you'd write a SQL query.
+
+236
+00:09:02,200 --> 00:09:03,400
+This is a simplified one.
+
+237
+00:09:03,400 --> 00:09:06,220
+But the idea is if
+you'd want to figure out
+
+238
+00:09:06,220 --> 00:09:08,270
+the date of birth of
+Franklin Roosevelt,
+
+239
+00:09:08,270 --> 00:09:12,057
+so you would write a
+query like follows.
+
+240
+00:09:12,057 --> 00:09:14,140
+Now if instead you want
+to create a language model
+
+241
+00:09:14,140 --> 00:09:15,557
+as the knowledge
+base, you'll have
+
+242
+00:09:15,557 --> 00:09:18,280
+something like this diagram that
+you've actually probably seen
+
+243
+00:09:18,280 --> 00:09:20,350
+in several lectures now.
+
+244
+00:09:20,350 --> 00:09:22,810
+And the idea is you're
+training a language model
+
+245
+00:09:22,810 --> 00:09:24,850
+over this unstructured text.
+
+246
+00:09:24,850 --> 00:09:26,530
+And then you'll use
+a language model
+
+247
+00:09:26,530 --> 00:09:29,900
+to just answer these natural
+language query statements.
+
+248
+00:09:29,900 --> 00:09:33,070
+So here, this is the
+work on T5, where they're
+
+249
+00:09:33,070 --> 00:09:36,910
+training T5 over natural
+language over unstructured text
+
+250
+00:09:36,910 --> 00:09:38,800
+with the span corruption task.
+
+251
+00:09:38,800 --> 00:09:42,700
+And then they're asking T5, when
+was Franklin D Roosevelt born?
+
+252
+00:09:42,700 --> 00:09:46,400
+And the idea is TD will
+produce a textual answer.
+
+253
+00:09:46,400 --> 00:09:47,983
+So you can see this
+contrast very much
+
+254
+00:09:47,983 --> 00:09:50,233
+with the old approach of
+using a traditional knowledge
+
+255
+00:09:50,233 --> 00:09:52,183
+base where the knowledge
+base is structured,
+
+256
+00:09:52,183 --> 00:09:54,100
+and you have these SQL
+statements to query it.
+
+257
+00:09:54,100 --> 00:09:57,945
+
+
+258
+00:09:57,945 --> 00:10:00,070
+So what are the advantages
+of using language models
+
+259
+00:10:00,070 --> 00:10:01,540
+over traditional
+knowledge bases?
+
+260
+00:10:01,540 --> 00:10:04,600
+And why might people think
+this could be a good idea?
+
+261
+00:10:04,600 --> 00:10:06,130
+Well, for one, the
+language models
+
+262
+00:10:06,130 --> 00:10:07,570
+are pretrained
+over large amounts
+
+263
+00:10:07,570 --> 00:10:10,248
+of unstructured
+and unlabeled text,
+
+264
+00:10:10,248 --> 00:10:12,040
+whereas traditional
+knowledge bases require
+
+265
+00:10:12,040 --> 00:10:14,140
+manual annotation,
+like with Wikidata,
+
+266
+00:10:14,140 --> 00:10:16,150
+people are actually
+populating it,
+
+267
+00:10:16,150 --> 00:10:20,020
+or complex NLP pipelines to
+extract from unstructured text
+
+268
+00:10:20,020 --> 00:10:24,355
+into a structured form that
+forms the knowledge base.
+
+269
+00:10:24,355 --> 00:10:26,980
+Language models can also support
+more flexible natural language
+
+270
+00:10:26,980 --> 00:10:28,710
+queries.
+
+271
+00:10:28,710 --> 00:10:32,720
+So if we take the example, what
+is the final F in the song UFOF
+
+272
+00:10:32,720 --> 00:10:35,420
+stand for, a knowledge
+base probably
+
+273
+00:10:35,420 --> 00:10:37,610
+won't have a feel for
+final F. So it won't
+
+274
+00:10:37,610 --> 00:10:39,440
+be able to answer your query.
+
+275
+00:10:39,440 --> 00:10:41,870
+But there's a chance that a
+language model could actually
+
+276
+00:10:41,870 --> 00:10:46,290
+learn and have a response for
+this natural language query.
+
+277
+00:10:46,290 --> 00:10:48,010
+They also had a less
+extreme example,
+
+278
+00:10:48,010 --> 00:10:49,950
+in this paper by
+Petroni and others,
+
+279
+00:10:49,950 --> 00:10:51,750
+where maybe your
+relation would be,
+
+280
+00:10:51,750 --> 00:10:54,900
+is works for in your knowledge
+base, and then you ask for,
+
+281
+00:10:54,900 --> 00:10:57,540
+is working for, and
+the knowledge base
+
+282
+00:10:57,540 --> 00:10:59,490
+doesn't have an exact
+match on the field,
+
+283
+00:10:59,490 --> 00:11:01,395
+and so it returns
+an empty response.
+
+284
+00:11:01,395 --> 00:11:04,440
+And as much-- it's reasonable
+to believe that your language
+
+285
+00:11:04,440 --> 00:11:07,530
+model could figure out that
+these relations are similar.
+
+286
+00:11:07,530 --> 00:11:09,390
+So if I know the
+answer to one of them,
+
+287
+00:11:09,390 --> 00:11:13,040
+I probably know the
+answer to the other.
+
+288
+00:11:13,040 --> 00:11:14,990
+Of course, it's
+not all advantages.
+
+289
+00:11:14,990 --> 00:11:17,330
+There's also many open
+challenges using language
+
+290
+00:11:17,330 --> 00:11:19,410
+models as knowledge bases.
+
+291
+00:11:19,410 --> 00:11:21,290
+So for one, it's
+harder to interpret.
+
+292
+00:11:21,290 --> 00:11:23,630
+When a traditional knowledge
+base produces an answer,
+
+293
+00:11:23,630 --> 00:11:25,963
+there's actually provenance
+information associated with,
+
+294
+00:11:25,963 --> 00:11:29,140
+why did it return
+that particular query?
+
+295
+00:11:29,140 --> 00:11:32,290
+But with a language model,
+it's really not clear
+
+296
+00:11:32,290 --> 00:11:34,210
+why it might produce
+a prediction.
+
+297
+00:11:34,210 --> 00:11:38,260
+The knowledge is just encoded
+in the parameters of the model.
+
+298
+00:11:38,260 --> 00:11:39,810
+It's also harder to trust.
+
+299
+00:11:39,810 --> 00:11:41,550
+So you saw this
+in assignment five
+
+300
+00:11:41,550 --> 00:11:44,970
+where the language model could
+produce realistic predictions,
+
+301
+00:11:44,970 --> 00:11:46,420
+but they are incorrect.
+
+302
+00:11:46,420 --> 00:11:48,870
+So it's not easy to know when
+the language model actually
+
+303
+00:11:48,870 --> 00:11:53,627
+knows a fact versus it's using
+biases to make its prediction.
+
+304
+00:11:53,627 --> 00:11:55,710
+And in the case of the
+traditional knowledge base,
+
+305
+00:11:55,710 --> 00:11:57,210
+if it doesn't know
+a fact, it's just
+
+306
+00:11:57,210 --> 00:12:00,010
+going to have an empty response.
+
+307
+00:12:00,010 --> 00:12:03,340
+And then finally, knowledge
+bases-- or language models
+
+308
+00:12:03,340 --> 00:12:05,170
+are harder to modify.
+
+309
+00:12:05,170 --> 00:12:07,750
+So in a knowledge base, if
+you want to update a fact,
+
+310
+00:12:07,750 --> 00:12:09,430
+you just change
+the fact directly
+
+311
+00:12:09,430 --> 00:12:11,665
+in the structured data.
+
+312
+00:12:11,665 --> 00:12:13,540
+But in a language model,
+it's not quite clear
+
+313
+00:12:13,540 --> 00:12:14,860
+how you would do this.
+
+314
+00:12:14,860 --> 00:12:17,950
+You could fine-tune the model
+longer on the updated data,
+
+315
+00:12:17,950 --> 00:12:23,288
+but how do if it still has some
+memorization of the old fact?
+
+316
+00:12:23,288 --> 00:12:24,830
+So there are a lot
+of open challenges
+
+317
+00:12:24,830 --> 00:12:27,440
+to this goal of actually
+using language models
+
+318
+00:12:27,440 --> 00:12:29,232
+as traditional knowledge bases.
+
+319
+00:12:29,232 --> 00:12:31,190
+But hopefully, you'll
+see why some people think
+
+320
+00:12:31,190 --> 00:12:32,960
+this could actually
+be a good idea
+
+321
+00:12:32,960 --> 00:12:36,650
+and why researchers are
+interested in training language
+
+322
+00:12:36,650 --> 00:12:41,510
+models that can actually
+integrate more knowledge.
+
+323
+00:12:41,510 --> 00:12:43,570
+So that brings us to
+section two of the talk.
+
+324
+00:12:43,570 --> 00:12:53,480
+So I want to pause here just in
+case there's any questions OK?
+
+325
+00:12:53,480 --> 00:12:54,260
+I think that's OK.
+
+326
+00:12:54,260 --> 00:12:55,260
+Yeah.
+
+327
+00:12:55,260 --> 00:12:55,760
+OK.
+
+328
+00:12:55,760 --> 00:12:56,330
+Awesome.
+
+329
+00:12:56,330 --> 00:12:58,580
+So now we're going to be
+talking about what techniques
+
+330
+00:12:58,580 --> 00:13:00,620
+researchers are using
+to actually add more
+
+331
+00:13:00,620 --> 00:13:03,450
+knowledge to language models.
+
+332
+00:13:03,450 --> 00:13:05,450
+So we're going to talk
+about three broad classes
+
+333
+00:13:05,450 --> 00:13:06,440
+of techniques.
+
+334
+00:13:06,440 --> 00:13:08,160
+This is by no means exhaustive.
+
+335
+00:13:08,160 --> 00:13:10,040
+But hopefully, it gives
+you a good overview
+
+336
+00:13:10,040 --> 00:13:13,560
+so that if you want to
+dive deeper, you can.
+
+337
+00:13:13,560 --> 00:13:16,180
+So we'll start by talking
+about adding pretrained entity
+
+338
+00:13:16,180 --> 00:13:16,830
+embeddings.
+
+339
+00:13:16,830 --> 00:13:19,773
+And for each section, we'll
+focus on the first work
+
+340
+00:13:19,773 --> 00:13:20,940
+that you see in the bullets.
+
+341
+00:13:20,940 --> 00:13:23,950
+But we'll also talk about,
+briefly, some of the variants.
+
+342
+00:13:23,950 --> 00:13:27,363
+So you see how the works
+within each class can differ
+
+343
+00:13:27,363 --> 00:13:28,530
+and what knobs you can turn.
+
+344
+00:13:28,530 --> 00:13:31,500
+
+
+345
+00:13:31,500 --> 00:13:33,150
+So for adding
+pretrained embeddings,
+
+346
+00:13:33,150 --> 00:13:36,120
+we first need to figure out
+what pretrained embeddings would
+
+347
+00:13:36,120 --> 00:13:37,710
+actually be the
+most useful to add
+
+348
+00:13:37,710 --> 00:13:39,630
+knowledge to language models.
+
+349
+00:13:39,630 --> 00:13:41,520
+And this can start
+with the observation
+
+350
+00:13:41,520 --> 00:13:45,250
+that facts about the world are
+usually in terms of entities.
+
+351
+00:13:45,250 --> 00:13:46,800
+So if we have a
+fact like Washington
+
+352
+00:13:46,800 --> 00:13:49,140
+was the first president
+of the United States,
+
+353
+00:13:49,140 --> 00:13:52,930
+we have the entities
+Washington and United States.
+
+354
+00:13:52,930 --> 00:13:54,460
+But pretrained word
+embeddings don't
+
+355
+00:13:54,460 --> 00:13:57,050
+have this notion of entities.
+
+356
+00:13:57,050 --> 00:13:59,230
+So we'd have different
+word embeddings for USA,
+
+357
+00:13:59,230 --> 00:14:02,590
+United States of America, and
+America even though these all
+
+358
+00:14:02,590 --> 00:14:04,930
+refer to the same entity.
+
+359
+00:14:04,930 --> 00:14:07,240
+And this makes it challenging
+for the language model
+
+360
+00:14:07,240 --> 00:14:08,800
+to actually learn
+any representations
+
+361
+00:14:08,800 --> 00:14:11,530
+over these entities since
+they may be referred
+
+362
+00:14:11,530 --> 00:14:13,000
+to many ways in the text.
+
+363
+00:14:13,000 --> 00:14:15,620
+
+
+364
+00:14:15,620 --> 00:14:18,910
+So what if instead, we have a
+single embedding per entity?
+
+365
+00:14:18,910 --> 00:14:22,460
+And we'll refer to these
+as entity embeddings.
+
+366
+00:14:22,460 --> 00:14:25,520
+So now you'd have a single
+entity embedding for USA,
+
+367
+00:14:25,520 --> 00:14:28,670
+United States of
+America, and America.
+
+368
+00:14:28,670 --> 00:14:32,330
+And whenever you see a phrase in
+text referring to this entity,
+
+369
+00:14:32,330 --> 00:14:35,443
+you would use the
+same entity embedding.
+
+370
+00:14:35,443 --> 00:14:37,110
+And these entity
+embeddings can actually
+
+371
+00:14:37,110 --> 00:14:39,870
+be pretrained to encode
+this factual knowledge
+
+372
+00:14:39,870 --> 00:14:41,123
+about the world.
+
+373
+00:14:41,123 --> 00:14:43,290
+And these first class
+techniques we'll be looking at
+
+374
+00:14:43,290 --> 00:14:45,790
+will be how do you actually
+best use these pretrained entity
+
+375
+00:14:45,790 --> 00:14:47,460
+embeddings in a language model.
+
+376
+00:14:47,460 --> 00:14:50,280
+
+
+377
+00:14:50,280 --> 00:14:52,710
+So I need to make a quick
+note that these entity
+
+378
+00:14:52,710 --> 00:14:54,930
+embeddings are only useful
+to a language model.
+
+379
+00:14:54,930 --> 00:14:57,510
+So if you can do
+another NLP task
+
+380
+00:14:57,510 --> 00:15:00,470
+called entity linking well.
+
+381
+00:15:00,470 --> 00:15:02,780
+So I'm going to take a
+quick aside and explain
+
+382
+00:15:02,780 --> 00:15:05,160
+what is entity linking.
+
+383
+00:15:05,160 --> 00:15:06,840
+So a definition
+of entity linking
+
+384
+00:15:06,840 --> 00:15:10,932
+is the link mentions in text
+to entities in a knowledge
+
+385
+00:15:10,932 --> 00:15:12,390
+I like to think
+about this in terms
+
+386
+00:15:12,390 --> 00:15:13,957
+of how we use word embeddings.
+
+387
+00:15:13,957 --> 00:15:15,540
+So if you want to
+use word embeddings,
+
+388
+00:15:15,540 --> 00:15:17,832
+and you have a sentence,
+you're going to first tokenize
+
+389
+00:15:17,832 --> 00:15:19,110
+that sentence into words.
+
+390
+00:15:19,110 --> 00:15:20,610
+And then for each
+word, you're going
+
+391
+00:15:20,610 --> 00:15:22,980
+to look up their corresponding
+ID in some word embedding
+
+392
+00:15:22,980 --> 00:15:23,670
+matrix.
+
+393
+00:15:23,670 --> 00:15:26,107
+And now, you have
+your word embedding.
+
+394
+00:15:26,107 --> 00:15:28,190
+Well, for entity embeddings,
+the dictionary lookup
+
+395
+00:15:28,190 --> 00:15:29,930
+isn't so easy.
+
+396
+00:15:29,930 --> 00:15:31,780
+You might have sentences
+like Washington
+
+397
+00:15:31,780 --> 00:15:34,220
+is the first president
+of United States.
+
+398
+00:15:34,220 --> 00:15:36,440
+Well, Washington has two
+different candidates.
+
+399
+00:15:36,440 --> 00:15:38,450
+Are we talking about
+George Washington?
+
+400
+00:15:38,450 --> 00:15:40,370
+Or are we talking
+about Washington State?
+
+401
+00:15:40,370 --> 00:15:42,828
+And these are different entities
+that have different entity
+
+402
+00:15:42,828 --> 00:15:44,040
+embeddings.
+
+403
+00:15:44,040 --> 00:15:49,250
+And the QIDs here would just be
+their identifiers in Wikidata.
+
+404
+00:15:49,250 --> 00:15:52,490
+And then United States
+just has a single entity.
+
+405
+00:15:52,490 --> 00:15:55,420
+So the task of entity linking
+is to figure out correctly
+
+406
+00:15:55,420 --> 00:15:56,650
+these ambiguous mentions.
+
+407
+00:15:56,650 --> 00:16:00,200
+What entity do they actually
+link to in a knowledge base?
+
+408
+00:16:00,200 --> 00:16:03,163
+And there's many different ways
+you can do this entity linking.
+
+409
+00:16:03,163 --> 00:16:04,580
+So one way you
+might be able to do
+
+410
+00:16:04,580 --> 00:16:06,710
+this is to figure out
+that, oh, I see the context
+
+411
+00:16:06,710 --> 00:16:08,930
+word of president so
+Washington probably
+
+412
+00:16:08,930 --> 00:16:11,730
+links to George Washington.
+
+413
+00:16:11,730 --> 00:16:12,863
+Just some more definitions.
+
+414
+00:16:12,863 --> 00:16:14,280
+We're going to
+refer to Washington
+
+415
+00:16:14,280 --> 00:16:16,745
+as a mention, the United
+States as a mention,
+
+416
+00:16:16,745 --> 00:16:18,870
+and then the things that
+the mention could link to.
+
+417
+00:16:18,870 --> 00:16:21,210
+So the two options
+for Washington
+
+418
+00:16:21,210 --> 00:16:23,987
+are going to be candidates.
+
+419
+00:16:23,987 --> 00:16:25,820
+So this is a whole
+research area of its own.
+
+420
+00:16:25,820 --> 00:16:28,195
+And I encourage you check out
+the resources at the bottom
+
+421
+00:16:28,195 --> 00:16:30,003
+if you're interested
+in learning more.
+
+422
+00:16:30,003 --> 00:16:32,170
+But right now the most
+important thing to understand
+
+423
+00:16:32,170 --> 00:16:34,295
+is that entity thinking is
+what is going to tell us
+
+424
+00:16:34,295 --> 00:16:36,700
+which entity embeddings are
+actually relevant to the text
+
+425
+00:16:36,700 --> 00:16:38,530
+and which ones you
+want to use as you
+
+426
+00:16:38,530 --> 00:16:40,906
+iterate through a sequence.
+
+427
+00:16:40,906 --> 00:16:45,890
+Megan, there are a few
+questions around here.
+
+428
+00:16:45,890 --> 00:16:48,880
+One of them is, so
+that's entity linking,
+
+429
+00:16:48,880 --> 00:16:52,620
+but what about the relations?
+
+430
+00:16:52,620 --> 00:16:53,120
+Yeah.
+
+431
+00:16:53,120 --> 00:16:54,680
+So some of the works
+we'll talk about
+
+432
+00:16:54,680 --> 00:16:57,440
+will only use the
+entity embeddings.
+
+433
+00:16:57,440 --> 00:16:59,180
+Some of these have
+been pretrained
+
+434
+00:16:59,180 --> 00:17:00,450
+with relation information.
+
+435
+00:17:00,450 --> 00:17:02,570
+But in the end, you only
+have an entity embedding.
+
+436
+00:17:02,570 --> 00:17:05,960
+And so relation extraction
+is yet another NLP task
+
+437
+00:17:05,960 --> 00:17:06,920
+you could also do.
+
+438
+00:17:06,920 --> 00:17:09,470
+But here, we're just talking
+about entity linking.
+
+439
+00:17:09,470 --> 00:17:12,079
+Then if you have the knowledge
+graph you showed earlier,
+
+440
+00:17:12,079 --> 00:17:14,598
+it had relations in it, right?
+
+441
+00:17:14,598 --> 00:17:17,509
+Do you get any connection
+between that and the text?
+
+442
+00:17:17,510 --> 00:17:20,329
+
+
+443
+00:17:20,329 --> 00:17:24,047
+I mean, that's the goal of
+relation extraction, right?
+
+444
+00:17:24,047 --> 00:17:25,880
+It's to figure out,
+given the entities, what
+
+445
+00:17:25,880 --> 00:17:27,797
+is the relation between
+them, which would then
+
+446
+00:17:27,797 --> 00:17:30,980
+form the full triple of
+head entity, tail entity,
+
+447
+00:17:30,980 --> 00:17:31,535
+and relation.
+
+448
+00:17:31,535 --> 00:17:36,770
+
+
+449
+00:17:36,770 --> 00:17:37,932
+OK.
+
+450
+00:17:37,932 --> 00:17:39,890
+Then I think people want
+to know more about how
+
+451
+00:17:39,890 --> 00:17:40,932
+this is going to be used.
+
+452
+00:17:40,932 --> 00:17:43,550
+Maybe you should go on
+and show some examples
+
+453
+00:17:43,550 --> 00:17:44,060
+Yeah.
+
+454
+00:17:44,060 --> 00:17:44,630
+I will.
+
+455
+00:17:44,630 --> 00:17:45,150
+For sure.
+
+456
+00:17:45,150 --> 00:17:45,650
+OK.
+
+457
+00:17:45,650 --> 00:17:49,590
+
+
+458
+00:17:49,590 --> 00:17:51,602
+So entity embeddings,
+just to summarize,
+
+459
+00:17:51,602 --> 00:17:53,310
+they're like word
+embeddings, but they're
+
+460
+00:17:53,310 --> 00:17:54,600
+for entities in
+a knowledge base.
+
+461
+00:17:54,600 --> 00:17:56,142
+So you'll have some
+vector associated
+
+462
+00:17:56,142 --> 00:17:57,120
+to George Washington.
+
+463
+00:17:57,120 --> 00:18:00,445
+And it should be meaningful
+in embedding space such
+
+464
+00:18:00,445 --> 00:18:02,070
+that maybe the George
+Washington vector
+
+465
+00:18:02,070 --> 00:18:05,167
+is close to the vectors
+for other founding fathers.
+
+466
+00:18:05,167 --> 00:18:07,750
+So we're going to briefly talk
+about some methods for training
+
+467
+00:18:07,750 --> 00:18:09,198
+entity embeddings.
+
+468
+00:18:09,198 --> 00:18:10,990
+There is knowledge
+graph embedding methods.
+
+469
+00:18:10,990 --> 00:18:13,157
+You might have heard of the
+TransE embedding method.
+
+470
+00:18:13,157 --> 00:18:15,710
+So this starts from the idea
+of having these knowledge graph
+
+471
+00:18:15,710 --> 00:18:16,570
+triples.
+
+472
+00:18:16,570 --> 00:18:19,210
+And you want to learn pretrained
+entity and pretrained relation
+
+473
+00:18:19,210 --> 00:18:20,080
+embeddings.
+
+474
+00:18:20,080 --> 00:18:22,270
+And you want it to be
+the case that the subject
+
+475
+00:18:22,270 --> 00:18:23,830
+embedding and the
+relation embedding,
+
+476
+00:18:23,830 --> 00:18:26,290
+the sum of those two,
+is close to the object
+
+477
+00:18:26,290 --> 00:18:28,070
+embedding in vector space.
+
+478
+00:18:28,070 --> 00:18:31,322
+So it's an algorithm to
+learn that constraint.
+
+479
+00:18:31,322 --> 00:18:33,280
+There's also word entity
+co-occurrence methods.
+
+480
+00:18:33,280 --> 00:18:34,960
+So these build off of Word2Vec.
+
+481
+00:18:34,960 --> 00:18:37,240
+One of them's even
+called Wikipedia2Vec.
+
+482
+00:18:37,240 --> 00:18:39,077
+And the idea is
+given an entity, you
+
+483
+00:18:39,077 --> 00:18:40,660
+want to figure out
+what words are most
+
+484
+00:18:40,660 --> 00:18:44,130
+likely to co-occur around it.
+
+485
+00:18:44,130 --> 00:18:46,650
+And then the last method, or
+one of the other methods that
+
+486
+00:18:46,650 --> 00:18:49,980
+is common now is actually
+just using the transformer
+
+487
+00:18:49,980 --> 00:18:52,170
+to learn representations
+of an entity
+
+488
+00:18:52,170 --> 00:18:54,060
+by encoding the
+entity description.
+
+489
+00:18:54,060 --> 00:18:57,910
+And so BLINK from Facebook is
+an approach that does this.
+
+490
+00:18:57,910 --> 00:18:59,460
+So the methods we'll
+talk about today
+
+491
+00:18:59,460 --> 00:19:02,070
+are actually agnostic to how
+you train your pretrained entity
+
+492
+00:19:02,070 --> 00:19:02,587
+embedding.
+
+493
+00:19:02,587 --> 00:19:04,920
+But I think it's important
+to know that there's actually
+
+494
+00:19:04,920 --> 00:19:07,470
+a wide variety of methods to
+train these pretrained entity
+
+495
+00:19:07,470 --> 00:19:08,250
+embeddings.
+
+496
+00:19:08,250 --> 00:19:10,470
+And it's actually
+not clear which
+
+497
+00:19:10,470 --> 00:19:13,500
+method is best for using them
+downstream in language models.
+
+498
+00:19:13,500 --> 00:19:16,298
+
+
+499
+00:19:16,298 --> 00:19:18,590
+So one of the key challenges
+of using pretrained entity
+
+500
+00:19:18,590 --> 00:19:21,020
+embeddings in language
+models is figuring out
+
+501
+00:19:21,020 --> 00:19:22,580
+how to incorporate
+them when they're
+
+502
+00:19:22,580 --> 00:19:25,900
+from a different embeddings
+space in the language model.
+
+503
+00:19:25,900 --> 00:19:27,510
+And so what we'll
+do, or the approach
+
+504
+00:19:27,510 --> 00:19:30,040
+that we'll look at today
+will learn a fusion layer
+
+505
+00:19:30,040 --> 00:19:32,900
+to combine this context
+and entity information.
+
+506
+00:19:32,900 --> 00:19:34,540
+So we have entity
+embeddings, and we
+
+507
+00:19:34,540 --> 00:19:36,580
+have the contextualized
+word embeddings
+
+508
+00:19:36,580 --> 00:19:39,210
+from our language model.
+
+509
+00:19:39,210 --> 00:19:41,390
+So if we take a
+sequence of text,
+
+510
+00:19:41,390 --> 00:19:44,953
+and we imagine that j indicates
+the jth element in a sequence,
+
+511
+00:19:44,953 --> 00:19:46,370
+then the challenge
+here is we want
+
+512
+00:19:46,370 --> 00:19:48,680
+to figure out how do we
+combine some word embedding
+
+513
+00:19:48,680 --> 00:19:52,448
+wj with some aligned
+entity embedding ek.
+
+514
+00:19:52,448 --> 00:19:54,740
+So here an alignment could
+be like in the example where
+
+515
+00:19:54,740 --> 00:19:57,530
+we had, Washington was
+the first President.
+
+516
+00:19:57,530 --> 00:19:59,210
+Washington would be
+a word embedding,
+
+517
+00:19:59,210 --> 00:20:02,060
+and George Washington would be
+the aligned entity embedding
+
+518
+00:20:02,060 --> 00:20:03,350
+there.
+
+519
+00:20:03,350 --> 00:20:04,860
+So you could imagine,
+in this case,
+
+520
+00:20:04,860 --> 00:20:06,500
+let's say, your
+wj is Washington,
+
+521
+00:20:06,500 --> 00:20:08,720
+and your ek is your
+entity embedding
+
+522
+00:20:08,720 --> 00:20:11,730
+for George Washington, and you
+want to align them together.
+
+523
+00:20:11,730 --> 00:20:15,470
+So what you can do is learn a
+weight matrix, Wt for the text
+
+524
+00:20:15,470 --> 00:20:18,770
+and we for the entity to
+project this embeddings
+
+525
+00:20:18,770 --> 00:20:22,400
+to the same dimension before
+you sum them, and finally, take
+
+526
+00:20:22,400 --> 00:20:25,020
+an activation
+function over them.
+
+527
+00:20:25,020 --> 00:20:27,770
+So the idea is that by
+having some fusion layer
+
+528
+00:20:27,770 --> 00:20:30,260
+mechanism like this,
+you can actually
+
+529
+00:20:30,260 --> 00:20:32,990
+use these entity embeddings
+and these contextual word
+
+530
+00:20:32,990 --> 00:20:35,510
+embeddings that are in
+different embedding spaces
+
+531
+00:20:35,510 --> 00:20:38,390
+and fuse them together
+to have the single hidden
+
+532
+00:20:38,390 --> 00:20:41,165
+representation for the
+element in the sequence.
+
+533
+00:20:41,165 --> 00:20:43,533
+
+
+534
+00:20:43,533 --> 00:20:45,200
+So the approaches
+we'll talk about today
+
+535
+00:20:45,200 --> 00:20:47,750
+all have some
+mechanism either very
+
+536
+00:20:47,750 --> 00:20:49,640
+similar to this or
+some variation of this
+
+537
+00:20:49,640 --> 00:20:53,090
+to do this combination of the
+context and entity information.
+
+538
+00:20:53,090 --> 00:20:55,302
+
+
+539
+00:20:55,302 --> 00:20:57,010
+So the first approach
+we're talking about
+
+540
+00:20:57,010 --> 00:20:59,890
+is called ERNIE, Enhanced
+Language Representation
+
+541
+00:20:59,890 --> 00:21:01,217
+with Informative Entities.
+
+542
+00:21:01,217 --> 00:21:03,550
+And so this just builds on
+what we already talked about.
+
+543
+00:21:03,550 --> 00:21:05,590
+It uses pretrained
+entity embeddings.
+
+544
+00:21:05,590 --> 00:21:09,400
+And it also uses this
+notion of a fusion layer.
+
+545
+00:21:09,400 --> 00:21:12,250
+So the first block in
+ERNIE is a text encoder
+
+546
+00:21:12,250 --> 00:21:14,740
+which is a multi-layer
+bidirectional transformer
+
+547
+00:21:14,740 --> 00:21:15,730
+encoder.
+
+548
+00:21:15,730 --> 00:21:17,410
+For their experiments,
+they use BERT.
+
+549
+00:21:17,410 --> 00:21:20,180
+But it doesn't have to be BERT.
+
+550
+00:21:20,180 --> 00:21:22,370
+And this is followed by
+a knowledge encoder which
+
+551
+00:21:22,370 --> 00:21:26,060
+has stacked blocks composed of
+two multi-headed attentions,
+
+552
+00:21:26,060 --> 00:21:27,710
+one is over the
+entity embeddings
+
+553
+00:21:27,710 --> 00:21:31,700
+and one is over your token
+or subword embeddings.
+
+554
+00:21:31,700 --> 00:21:34,130
+And then the output of these
+contextualized entities
+
+555
+00:21:34,130 --> 00:21:37,010
+and token embeddings on
+multi-headed attentions
+
+556
+00:21:37,010 --> 00:21:40,340
+are passed a fusion layer,
+which looks very similar to what
+
+557
+00:21:40,340 --> 00:21:42,120
+we just looked at.
+
+558
+00:21:42,120 --> 00:21:44,840
+But now you also have new
+word and entity embeddings
+
+559
+00:21:44,840 --> 00:21:47,960
+that you're producing as
+output of your fusion layer.
+
+560
+00:21:47,960 --> 00:21:51,410
+So you see this wj
+and it's ek, which
+
+561
+00:21:51,410 --> 00:21:55,800
+are produced as the next layer
+of word and entity embeddings.
+
+562
+00:21:55,800 --> 00:21:58,740
+So the i here indicates
+that it's the ith
+
+563
+00:21:58,740 --> 00:22:00,073
+block in the knowledge encoder.
+
+564
+00:22:00,073 --> 00:22:02,490
+So you'll actually have multiple
+stacks of these knowledge
+
+565
+00:22:02,490 --> 00:22:05,970
+encoders, and you'll be doing
+a fusion of the word entity
+
+566
+00:22:05,970 --> 00:22:08,497
+embedding, producing new
+word and entity embeddings
+
+567
+00:22:08,497 --> 00:22:10,830
+and then passing this to the
+next block of the knowledge
+
+568
+00:22:10,830 --> 00:22:11,330
+encoder.
+
+569
+00:22:11,330 --> 00:22:14,820
+
+
+570
+00:22:14,820 --> 00:22:17,110
+So this is what the
+architecture diagram looks like.
+
+571
+00:22:17,110 --> 00:22:20,850
+On the left side, we have the
+T-encoder, or the text encoder,
+
+572
+00:22:20,850 --> 00:22:23,640
+followed by the K-encoder,
+or the knowledge encoder.
+
+573
+00:22:23,640 --> 00:22:25,140
+And then on the
+right side, you have
+
+574
+00:22:25,140 --> 00:22:27,337
+a zoomed in version of
+your knowledge encoder.
+
+575
+00:22:27,337 --> 00:22:28,920
+So you see the
+multi-headed attentions
+
+576
+00:22:28,920 --> 00:22:30,840
+over the tokens
+in orange and then
+
+577
+00:22:30,840 --> 00:22:32,218
+over the entities in yellow.
+
+578
+00:22:32,218 --> 00:22:34,260
+And then you have this
+alignment between the word
+
+579
+00:22:34,260 --> 00:22:37,540
+and entities with
+the dashed lines.
+
+580
+00:22:37,540 --> 00:22:40,470
+So they had this example as, Bob
+Dylan wrote Blowing in the Wind
+
+581
+00:22:40,470 --> 00:22:42,240
+in 1962.
+
+582
+00:22:42,240 --> 00:22:45,510
+The entities here are Bob
+Dylan and Blowing in the Wind.
+
+583
+00:22:45,510 --> 00:22:47,490
+And they have a
+simple alignment rule
+
+584
+00:22:47,490 --> 00:22:49,680
+where you want to align the
+entity to the first word
+
+585
+00:22:49,680 --> 00:22:51,340
+in the entity phrase.
+
+586
+00:22:51,340 --> 00:22:53,542
+So you want to align
+Bob Dylan to Bob.
+
+587
+00:22:53,542 --> 00:22:55,500
+That's what the dash
+line's trying to indicate.
+
+588
+00:22:55,500 --> 00:22:59,210
+And you want to align
+Blowing in the wind to blow.
+
+589
+00:22:59,210 --> 00:23:01,710
+Here this already assumes that
+entity linking has been done.
+
+590
+00:23:01,710 --> 00:23:03,305
+And you know your
+entities in advance.
+
+591
+00:23:03,305 --> 00:23:05,430
+So you can see that the
+entities are actually input
+
+592
+00:23:05,430 --> 00:23:08,250
+into the model.
+
+593
+00:23:08,250 --> 00:23:10,190
+So after you have your
+word entity alignment,
+
+594
+00:23:10,190 --> 00:23:11,660
+this goes to the
+information fusion
+
+595
+00:23:11,660 --> 00:23:14,342
+layer in this light
+purple gray color.
+
+596
+00:23:14,342 --> 00:23:16,550
+And then finally, it produces
+these new word entities
+
+597
+00:23:16,550 --> 00:23:18,605
+embedded things as output.
+
+598
+00:23:18,605 --> 00:23:20,980
+And then remember that you
+have multiple blocks of these,
+
+599
+00:23:20,980 --> 00:23:22,900
+so this will be passed onto the
+next block of your knowledge
+
+600
+00:23:22,900 --> 00:23:23,400
+encoder.
+
+601
+00:23:23,400 --> 00:23:26,670
+
+
+602
+00:23:26,670 --> 00:23:28,260
+So how do you
+actually train this?
+
+603
+00:23:28,260 --> 00:23:29,460
+It's pretty similar to BERT.
+
+604
+00:23:29,460 --> 00:23:31,080
+You have a masked
+language model loss,
+
+605
+00:23:31,080 --> 00:23:33,473
+and you have a next
+sentence prediction loss.
+
+606
+00:23:33,473 --> 00:23:35,640
+And then they also introduce
+a knowledge pretraining
+
+607
+00:23:35,640 --> 00:23:39,060
+task, which they refer
+to as the DEA task.
+
+608
+00:23:39,060 --> 00:23:41,730
+It's named after a
+denoising entity autoencoder
+
+609
+00:23:41,730 --> 00:23:45,623
+from an ICML paper in 2008.
+
+610
+00:23:45,623 --> 00:23:47,540
+And the idea is they're
+going to randomly mask
+
+611
+00:23:47,540 --> 00:23:49,200
+these token entity alignments.
+
+612
+00:23:49,200 --> 00:23:51,560
+So the idea that Bob
+goes to Bob Dylan,
+
+613
+00:23:51,560 --> 00:23:54,085
+they're going to mask that out
+with some random percentage.
+
+614
+00:23:54,085 --> 00:23:55,460
+And then they're
+going to predict
+
+615
+00:23:55,460 --> 00:23:57,860
+the corresponding
+entity for a token are
+
+616
+00:23:57,860 --> 00:24:00,550
+the entities in the sequence.
+
+617
+00:24:00,550 --> 00:24:02,440
+So this looks like as follows.
+
+618
+00:24:02,440 --> 00:24:05,020
+The summation is over M
+entities in the sequence.
+
+619
+00:24:05,020 --> 00:24:07,420
+So this would be over
+Bob Dylan and Blowing
+
+620
+00:24:07,420 --> 00:24:09,580
+in the Wind in the
+previous example.
+
+621
+00:24:09,580 --> 00:24:11,170
+And given a
+particular word, they
+
+622
+00:24:11,170 --> 00:24:14,470
+want to figure out what entities
+are most likely to align to
+
+623
+00:24:14,470 --> 00:24:15,560
+in that sequence.
+
+624
+00:24:15,560 --> 00:24:17,800
+So does Bob align to Bob Dylan?
+
+625
+00:24:17,800 --> 00:24:21,050
+Or does Bob align to
+Blowing in the Wind?
+
+626
+00:24:21,050 --> 00:24:22,760
+And their motivation
+for doing this
+
+627
+00:24:22,760 --> 00:24:24,500
+is that if you don't
+have this task,
+
+628
+00:24:24,500 --> 00:24:26,083
+all you're ever going
+to be predicting
+
+629
+00:24:26,083 --> 00:24:28,607
+is the token with the
+masked language model loss.
+
+630
+00:24:28,607 --> 00:24:30,940
+And you really think that
+knowledge should also probably
+
+631
+00:24:30,940 --> 00:24:32,990
+be predicting over entities.
+
+632
+00:24:32,990 --> 00:24:35,420
+So by adding this task,
+they have some kind of task
+
+633
+00:24:35,420 --> 00:24:37,957
+that is actually
+predicting the entity.
+
+634
+00:24:37,957 --> 00:24:39,790
+And they also suggest
+that this might better
+
+635
+00:24:39,790 --> 00:24:44,380
+fuse the knowledge or the entity
+and the word representations
+
+636
+00:24:44,380 --> 00:24:48,040
+than just using
+the fusion layer.
+
+637
+00:24:48,040 --> 00:24:50,080
+Their final loss is
+then the summation
+
+638
+00:24:50,080 --> 00:24:52,420
+of the masked language model
+loss, the next sentence
+
+639
+00:24:52,420 --> 00:24:55,460
+prediction loss and this DEA
+knowledge pretraining task
+
+640
+00:24:55,460 --> 00:24:55,960
+loss.
+
+641
+00:24:55,960 --> 00:24:59,735
+
+
+642
+00:24:59,735 --> 00:25:01,360
+So they showed that
+ablation experiment
+
+643
+00:25:01,360 --> 00:25:02,735
+that it's actually
+very important
+
+644
+00:25:02,735 --> 00:25:04,690
+to have this knowledge
+pretraining task.
+
+645
+00:25:04,690 --> 00:25:08,260
+So this has BERT on
+the leftmost bar,
+
+646
+00:25:08,260 --> 00:25:10,405
+ERNIE has the second
+bar from the left.
+
+647
+00:25:10,405 --> 00:25:12,280
+And so that's with all
+the features of ERNIE.
+
+648
+00:25:12,280 --> 00:25:14,860
+And then they try removing the
+pretrained identity embeddings
+
+649
+00:25:14,860 --> 00:25:18,010
+and removing this
+knowledge pretraining task.
+
+650
+00:25:18,010 --> 00:25:19,720
+So you see that BERT
+performs the worst--
+
+651
+00:25:19,720 --> 00:25:22,678
+this isn't very surprising-- and
+that ERNIE performs the best.
+
+652
+00:25:22,678 --> 00:25:24,970
+But what's interesting is
+that if you remove the entity
+
+653
+00:25:24,970 --> 00:25:27,580
+embeddings, or you remove
+the pretraining task,
+
+654
+00:25:27,580 --> 00:25:30,760
+they only do a little
+better than BERT.
+
+655
+00:25:30,760 --> 00:25:33,520
+And so it's really
+necessary to actually use
+
+656
+00:25:33,520 --> 00:25:35,710
+this pretraining
+task to get the most
+
+657
+00:25:35,710 --> 00:25:37,802
+use of your pretrained
+entity embeddings.
+
+658
+00:25:37,802 --> 00:25:40,852
+
+
+659
+00:25:40,852 --> 00:25:42,310
+So some strengths
+of this work were
+
+660
+00:25:42,310 --> 00:25:44,770
+that they introduced some way
+to combine entity and context
+
+661
+00:25:44,770 --> 00:25:47,770
+information through this
+fusion layer and this knowledge
+
+662
+00:25:47,770 --> 00:25:49,000
+pretraining task.
+
+663
+00:25:49,000 --> 00:25:50,978
+And then they also showed
+improved performance
+
+664
+00:25:50,978 --> 00:25:53,020
+on downstream tasks which
+we'll come back to when
+
+665
+00:25:53,020 --> 00:25:55,550
+we talk about evaluation.
+
+666
+00:25:55,550 --> 00:25:58,270
+But of course, there's
+also some limitations.
+
+667
+00:25:58,270 --> 00:26:01,450
+So it needs text data with the
+entities annotated as input.
+
+668
+00:26:01,450 --> 00:26:03,472
+And this is even true
+for downstream tasks.
+
+669
+00:26:03,472 --> 00:26:05,430
+So if you remember on
+the architecture diagram,
+
+670
+00:26:05,430 --> 00:26:07,980
+we had the entity
+information actually
+
+671
+00:26:07,980 --> 00:26:09,905
+input into the architecture.
+
+672
+00:26:09,905 --> 00:26:12,030
+But it's not very realistic
+that you're necessarily
+
+673
+00:26:12,030 --> 00:26:14,820
+going to have a good entity
+linker for any downstream task
+
+674
+00:26:14,820 --> 00:26:17,737
+that you want to use ERNIE on.
+
+675
+00:26:17,737 --> 00:26:20,070
+And the next challenge is
+this requires more pretraining
+
+676
+00:26:20,070 --> 00:26:21,610
+of your language model.
+
+677
+00:26:21,610 --> 00:26:23,460
+So now you don't just
+need to pretrain BERT,
+
+678
+00:26:23,460 --> 00:26:26,730
+but you also need to pretrain
+your knowledge encoder on top.
+
+679
+00:26:26,730 --> 00:26:28,230
+For the first
+challenge, we're going
+
+680
+00:26:28,230 --> 00:26:30,480
+to actually talk about a
+work that presents a solution
+
+681
+00:26:30,480 --> 00:26:31,400
+to address this.
+
+682
+00:26:31,400 --> 00:26:33,650
+For the second challenge, I
+encourage you to check out
+
+683
+00:26:33,650 --> 00:26:35,300
+the footnote on the bottom.
+
+684
+00:26:35,300 --> 00:26:38,860
+This introduces a work that
+actually uses pretrained entity
+
+685
+00:26:38,860 --> 00:26:40,610
+embeddings, uses them
+in a language model,
+
+686
+00:26:40,610 --> 00:26:42,480
+and doesn't require
+any more pretraining.
+
+687
+00:26:42,480 --> 00:26:43,313
+So it's pretty cool.
+
+688
+00:26:43,313 --> 00:26:45,490
+
+
+689
+00:26:45,490 --> 00:26:46,990
+I guess that's all
+I have for ERNIE.
+
+690
+00:26:46,990 --> 00:26:48,532
+So I want a pause
+here for questions.
+
+691
+00:26:48,532 --> 00:26:53,480
+
+
+692
+00:26:53,480 --> 00:26:55,220
+Well, here's one that's up here.
+
+693
+00:26:55,220 --> 00:26:59,120
+So on the fusion
+layer, it observed
+
+694
+00:26:59,120 --> 00:27:01,550
+that passing the entity
+embedding into a fusion layer
+
+695
+00:27:01,550 --> 00:27:03,170
+to combine with
+the word embedding
+
+696
+00:27:03,170 --> 00:27:05,360
+is more powerful than
+just concatenating
+
+697
+00:27:05,360 --> 00:27:07,940
+the entity embedding onto
+the end of the word embedding
+
+698
+00:27:07,940 --> 00:27:09,320
+question mark.
+
+699
+00:27:09,320 --> 00:27:11,780
+So I guess people are
+still a little bit confused
+
+700
+00:27:11,780 --> 00:27:15,410
+as to the motivation
+for that fusion layer.
+
+701
+00:27:15,410 --> 00:27:19,490
+And so I guess here is this,
+the simplest strategy would be,
+
+702
+00:27:19,490 --> 00:27:21,560
+since you've got
+the entity linking,
+
+703
+00:27:21,560 --> 00:27:24,350
+you could just concatenate
+entity embeddings
+
+704
+00:27:24,350 --> 00:27:26,930
+onto the end of word
+embeddings and do regular BERT.
+
+705
+00:27:26,930 --> 00:27:28,150
+Would that work just as well?
+
+706
+00:27:28,150 --> 00:27:33,000
+
+
+707
+00:27:33,000 --> 00:27:35,010
+I think the idea is it wouldn't.
+
+708
+00:27:35,010 --> 00:27:37,080
+Because if you imagine
+that, let's say,
+
+709
+00:27:37,080 --> 00:27:39,570
+your magnitudes
+are very different,
+
+710
+00:27:39,570 --> 00:27:42,870
+you need some way to, I
+guess, align the spaces
+
+711
+00:27:42,870 --> 00:27:45,420
+so that anything meaningful
+in the entity embedding space
+
+712
+00:27:45,420 --> 00:27:47,430
+is still meaningful in
+the word embedding space.
+
+713
+00:27:47,430 --> 00:27:49,260
+So if you're close in
+the word embedding space,
+
+714
+00:27:49,260 --> 00:27:51,552
+you also would be-- you'd
+want to be close to an entity
+
+715
+00:27:51,552 --> 00:27:52,408
+embedding space.
+
+716
+00:27:52,408 --> 00:27:53,700
+So I guess that's one argument.
+
+717
+00:27:53,700 --> 00:27:58,800
+
+
+718
+00:27:58,800 --> 00:28:01,490
+Yeah.
+
+719
+00:28:01,490 --> 00:28:03,970
+I mean, I think the
+question isn't--
+
+720
+00:28:03,970 --> 00:28:05,650
+it's a good question
+as people say.
+
+721
+00:28:05,650 --> 00:28:08,200
+I mean, it's not
+completely obvious
+
+722
+00:28:08,200 --> 00:28:10,040
+that it wouldn't
+work to do that.
+
+723
+00:28:10,040 --> 00:28:13,750
+It seems like one, the potential
+problem is some words have
+
+724
+00:28:13,750 --> 00:28:17,960
+the entity links to them
+and some words don't.
+
+725
+00:28:17,960 --> 00:28:19,780
+And so you then, you
+have zero vectors
+
+726
+00:28:19,780 --> 00:28:21,617
+for the ones that
+don't have anything--
+
+727
+00:28:21,617 --> 00:28:22,450
+That's a good point.
+
+728
+00:28:22,450 --> 00:28:25,630
+Linked, and that might
+act a bit weirdly.
+
+729
+00:28:25,630 --> 00:28:27,020
+But--
+
+730
+00:28:27,020 --> 00:28:27,520
+Yeah.
+
+731
+00:28:27,520 --> 00:28:31,330
+In this case, when they
+don't have entities linked,
+
+732
+00:28:31,330 --> 00:28:34,300
+which is a great point,
+yeah, the first equation
+
+733
+00:28:34,300 --> 00:28:37,610
+just simplifies to the
+first term plus the bias.
+
+734
+00:28:37,610 --> 00:28:39,247
+So an obvious
+solution in that case
+
+735
+00:28:39,247 --> 00:28:41,080
+when you're not
+concatenating, that you just
+
+736
+00:28:41,080 --> 00:28:43,200
+don't add on the term.
+
+737
+00:28:43,200 --> 00:28:43,700
+Yeah.
+
+738
+00:28:43,700 --> 00:28:44,867
+That could be one reason to.
+
+739
+00:28:44,867 --> 00:28:56,250
+
+
+740
+00:28:56,250 --> 00:28:57,778
+Are there any other questions?
+
+741
+00:28:57,778 --> 00:29:01,450
+
+
+742
+00:29:01,450 --> 00:29:03,230
+I think you can go on.
+
+743
+00:29:03,230 --> 00:29:03,730
+OK.
+
+744
+00:29:03,730 --> 00:29:04,230
+Cool.
+
+745
+00:29:04,230 --> 00:29:07,490
+
+
+746
+00:29:07,490 --> 00:29:11,450
+So now we're talking
+about KnowBERT.
+
+747
+00:29:11,450 --> 00:29:14,930
+And this is from the same folks
+that introduced the ELMo BERT.
+
+748
+00:29:14,930 --> 00:29:16,610
+And the idea here
+is that they're
+
+749
+00:29:16,610 --> 00:29:19,200
+going to pretrain and
+integrate an entity
+
+750
+00:29:19,200 --> 00:29:20,630
+linker as an extension to BERT.
+
+751
+00:29:20,630 --> 00:29:23,380
+
+
+752
+00:29:23,380 --> 00:29:25,960
+And so their loss
+function will now
+
+753
+00:29:25,960 --> 00:29:28,090
+be the summation of the
+next sentence prediction,
+
+754
+00:29:28,090 --> 00:29:30,590
+the masked language model loss,
+and its entity linking loss.
+
+755
+00:29:30,590 --> 00:29:33,760
+So instead, the knowledge
+pretraining DEA task from ERNIE
+
+756
+00:29:33,760 --> 00:29:35,560
+will have an entity
+linking loss.
+
+757
+00:29:35,560 --> 00:29:37,630
+And the idea of
+the entity linker
+
+758
+00:29:37,630 --> 00:29:40,840
+is you'll now have just as
+normal sequence as input.
+
+759
+00:29:40,840 --> 00:29:43,300
+And the integrated entity
+linker will figure out
+
+760
+00:29:43,300 --> 00:29:45,890
+what are the entities
+in the sentence
+
+761
+00:29:45,890 --> 00:29:48,025
+or what are the mentions
+in the sentence, what
+
+762
+00:29:48,025 --> 00:29:49,750
+are the candidates
+of those mentions,
+
+763
+00:29:49,750 --> 00:29:51,167
+and then what
+should be the scores
+
+764
+00:29:51,167 --> 00:29:53,770
+of those entities
+for the candidates,
+
+765
+00:29:53,770 --> 00:29:55,600
+given the context
+of the sentence.
+
+766
+00:29:55,600 --> 00:29:57,640
+So this is all done now
+as part of the model
+
+767
+00:29:57,640 --> 00:30:00,670
+rather than requiring it as
+some external pipeline stage
+
+768
+00:30:00,670 --> 00:30:03,650
+before you could even
+use ERNIE, for instance.
+
+769
+00:30:03,650 --> 00:30:05,400
+So now for downstream
+tasks, you no longer
+
+770
+00:30:05,400 --> 00:30:06,840
+need this entity annotations.
+
+771
+00:30:06,840 --> 00:30:08,550
+Your integrated
+entity linker will
+
+772
+00:30:08,550 --> 00:30:10,740
+figure out what the
+correct entity is
+
+773
+00:30:10,740 --> 00:30:14,292
+and be able to use the
+correct entity embedding.
+
+774
+00:30:14,292 --> 00:30:16,750
+So there's also this idea that
+learning this entity linking
+
+775
+00:30:16,750 --> 00:30:18,250
+may actually better
+encode knowledge
+
+776
+00:30:18,250 --> 00:30:20,740
+than this DEA pretraining
+task because they
+
+777
+00:30:20,740 --> 00:30:22,450
+show that KnowBERT
+actually outperforms
+
+778
+00:30:22,450 --> 00:30:25,030
+ERNIE on downstream tasks.
+
+779
+00:30:25,030 --> 00:30:28,570
+So one reason this may occur is
+that if you think about the DEA
+
+780
+00:30:28,570 --> 00:30:30,460
+task, it's actually
+a bit simpler
+
+781
+00:30:30,460 --> 00:30:31,990
+than just entity linking.
+
+782
+00:30:31,990 --> 00:30:34,600
+So you're trying to
+predict, for instance,
+
+783
+00:30:34,600 --> 00:30:37,600
+what Bob linked to out of Bob
+Dylan and Blowing in the Wind.
+
+784
+00:30:37,600 --> 00:30:39,340
+And it's much easier
+even as a human
+
+785
+00:30:39,340 --> 00:30:42,070
+to see that Bob Dylan will
+more likely link to-- or Bob
+
+786
+00:30:42,070 --> 00:30:43,930
+will more likely
+link to Bob Dylan
+
+787
+00:30:43,930 --> 00:30:46,300
+than that Bob will link
+to Blowing in the Wind.
+
+788
+00:30:46,300 --> 00:30:48,142
+In the entity linking
+task, you actually
+
+789
+00:30:48,142 --> 00:30:50,350
+have a much harder set of
+candidates to predict over.
+
+790
+00:30:50,350 --> 00:30:52,433
+You're not just looking
+at the ones in a sentence.
+
+791
+00:30:52,433 --> 00:30:55,810
+So does Washington link to
+George Washington or Washington
+
+792
+00:30:55,810 --> 00:30:58,060
+State, actually requires
+you using more information
+
+793
+00:30:58,060 --> 00:30:59,770
+about the entity.
+
+794
+00:30:59,770 --> 00:31:02,500
+So given it's a harder task,
+it's not too surprising
+
+795
+00:31:02,500 --> 00:31:06,490
+that it might perform
+better than just this easier
+
+796
+00:31:06,490 --> 00:31:10,090
+knowledge pretraining task
+that ERNIE introduced.
+
+797
+00:31:10,090 --> 00:31:12,640
+So otherwise, KnowBERT has a
+lot of similarities to Ernie.
+
+798
+00:31:12,640 --> 00:31:15,100
+It uses a fusion layer
+that combines this context
+
+799
+00:31:15,100 --> 00:31:16,690
+and entity information.
+
+800
+00:31:16,690 --> 00:31:19,582
+And it introduces some
+knowledge pretraining task.
+
+801
+00:31:19,582 --> 00:31:21,040
+So I'd say the high
+level takeaways
+
+802
+00:31:21,040 --> 00:31:23,582
+if you want to use pretrained
+entity embeddings in a language
+
+803
+00:31:23,582 --> 00:31:25,090
+model, you probably
+at least want
+
+804
+00:31:25,090 --> 00:31:27,070
+to consider both
+of these components
+
+805
+00:31:27,070 --> 00:31:29,680
+in terms of actually going to
+integrate the pretrained entity
+
+806
+00:31:29,680 --> 00:31:32,582
+embeddings and take the most
+advantage of the knowledge
+
+807
+00:31:32,582 --> 00:31:33,415
+in them as possible.
+
+808
+00:31:33,415 --> 00:31:37,218
+
+
+809
+00:31:37,218 --> 00:31:39,510
+So that brings us to the next
+class of techniques which
+
+810
+00:31:39,510 --> 00:31:42,810
+is using an external memory.
+
+811
+00:31:42,810 --> 00:31:45,410
+And here, we'll mainly focus
+on this work called KGLM.
+
+812
+00:31:45,410 --> 00:31:49,622
+And then we'll also
+briefly talk about kNN-LM.
+
+813
+00:31:49,622 --> 00:31:51,330
+So the previous methods
+I've talked about
+
+814
+00:31:51,330 --> 00:31:53,520
+have relied on pretrained
+entity embeddings
+
+815
+00:31:53,520 --> 00:31:56,850
+to encode the factual
+knowledge from knowledge bases.
+
+816
+00:31:56,850 --> 00:31:58,620
+And the one problem
+with this, or one
+
+817
+00:31:58,620 --> 00:32:01,260
+of the problems with this,
+is if you want to, let's say,
+
+818
+00:32:01,260 --> 00:32:03,030
+modify your knowledge
+base, you now
+
+819
+00:32:03,030 --> 00:32:04,830
+need to retrain your
+entity embeddings
+
+820
+00:32:04,830 --> 00:32:07,288
+and then retrain your language
+model on top of these entity
+
+821
+00:32:07,288 --> 00:32:08,720
+embeddings.
+
+822
+00:32:08,720 --> 00:32:10,550
+So this begs the
+question, are there
+
+823
+00:32:10,550 --> 00:32:13,370
+more direct ways in
+pretrained entity embeddings
+
+824
+00:32:13,370 --> 00:32:16,598
+to provide the model
+factual knowledge?
+
+825
+00:32:16,598 --> 00:32:18,140
+And so what we're
+going to talk about
+
+826
+00:32:18,140 --> 00:32:20,090
+is how you can actually
+use an external memory
+
+827
+00:32:20,090 --> 00:32:22,220
+or a key-value store
+to give the model
+
+828
+00:32:22,220 --> 00:32:26,630
+access to either knowledge graph
+triples or context information.
+
+829
+00:32:26,630 --> 00:32:28,520
+And a key thing about
+this external memory
+
+830
+00:32:28,520 --> 00:32:33,020
+is that it's independent of
+the learned model parameters.
+
+831
+00:32:33,020 --> 00:32:36,010
+So this means you can actually
+support injecting and updating
+
+832
+00:32:36,010 --> 00:32:36,940
+factual knowledge.
+
+833
+00:32:36,940 --> 00:32:39,970
+You can do this directly to the
+symbolic external memory by,
+
+834
+00:32:39,970 --> 00:32:42,400
+let's say, changing the
+value for a particular key
+
+835
+00:32:42,400 --> 00:32:44,560
+or maybe adding another key.
+
+836
+00:32:44,560 --> 00:32:47,320
+And you don't have to
+retrain, or pretrain,
+
+837
+00:32:47,320 --> 00:32:50,690
+your entity embeddings
+when you make this change.
+
+838
+00:32:50,690 --> 00:32:52,370
+And the next part
+we'll talk about today
+
+839
+00:32:52,370 --> 00:32:55,190
+can actually even have these
+updates to the external memory
+
+840
+00:32:55,190 --> 00:32:58,860
+without more pretraining
+of the language model.
+
+841
+00:32:58,860 --> 00:33:00,840
+So that's pretty neat.
+
+842
+00:33:00,840 --> 00:33:03,390
+And another benefit of
+using external memory
+
+843
+00:33:03,390 --> 00:33:05,760
+over these pretrained
+entity embedding approaches
+
+844
+00:33:05,760 --> 00:33:07,900
+is it can also be
+more interpretable.
+
+845
+00:33:07,900 --> 00:33:11,730
+So if you have a bug, or not
+a bug, an air in your model,
+
+846
+00:33:11,730 --> 00:33:14,740
+where it's not
+predicting a fact fact,
+
+847
+00:33:14,740 --> 00:33:17,880
+it's very challenging to figure
+out with pretrained embeddings
+
+848
+00:33:17,880 --> 00:33:19,252
+what the problem might be.
+
+849
+00:33:19,252 --> 00:33:20,710
+Was it the original
+knowledge base?
+
+850
+00:33:20,710 --> 00:33:22,585
+Was it the encoding in
+the entity embeddings?
+
+851
+00:33:22,585 --> 00:33:25,200
+Is it how the language model
+is using the entity embeddings?
+
+852
+00:33:25,200 --> 00:33:27,300
+And here you have a
+little more information
+
+853
+00:33:27,300 --> 00:33:28,950
+with an external
+memory, and that you
+
+854
+00:33:28,950 --> 00:33:30,870
+can look in the external
+memory and see what's
+
+855
+00:33:30,870 --> 00:33:34,620
+a fact in the external memory
+with a not in external memory
+
+856
+00:33:34,620 --> 00:33:35,730
+and so on.
+
+857
+00:33:35,730 --> 00:33:38,310
+So it adds a little bit
+more interpretabilability
+
+858
+00:33:38,310 --> 00:33:40,050
+than just using these
+pretrained entity
+
+859
+00:33:40,050 --> 00:33:42,540
+embeddings as an indirect way
+to encode the knowledge base.
+
+860
+00:33:42,540 --> 00:33:45,780
+
+
+861
+00:33:45,780 --> 00:33:48,390
+So first, what we're going
+to talk about is called KGLM.
+
+862
+00:33:48,390 --> 00:33:51,450
+And unlike the other approaches
+we've talked about so far,
+
+863
+00:33:51,450 --> 00:33:55,700
+this actually uses LSTMs
+and not transformers.
+
+864
+00:33:55,700 --> 00:33:58,730
+So the key idea here is to
+condition the language model
+
+865
+00:33:58,730 --> 00:34:00,770
+on a knowledge graph.
+
+866
+00:34:00,770 --> 00:34:02,613
+So recall with the
+standard language model,
+
+867
+00:34:02,613 --> 00:34:05,030
+we want to predict the next
+word, given the previous words
+
+868
+00:34:05,030 --> 00:34:07,270
+in the sequence.
+
+869
+00:34:07,270 --> 00:34:09,730
+Well, now we also want to
+predict the next entity, given
+
+870
+00:34:09,730 --> 00:34:11,320
+the previous words
+in the sequence,
+
+871
+00:34:11,320 --> 00:34:14,427
+and given the previous
+entities in the sentence,
+
+872
+00:34:14,427 --> 00:34:16,510
+or the entities that are
+relevant to the sentence,
+
+873
+00:34:16,510 --> 00:34:19,290
+I should say.
+
+874
+00:34:19,290 --> 00:34:22,110
+So KGLM will be building
+a local knowledge graph
+
+875
+00:34:22,110 --> 00:34:24,300
+as it iterates
+over the sequence.
+
+876
+00:34:24,300 --> 00:34:25,770
+And a local knowledge
+graph is just
+
+877
+00:34:25,770 --> 00:34:27,475
+a subset of a full
+knowledge graph that
+
+878
+00:34:27,475 --> 00:34:29,100
+only has the entities
+that are actually
+
+879
+00:34:29,100 --> 00:34:32,199
+relevant to the sequence.
+
+880
+00:34:32,199 --> 00:34:35,130
+So if we have this example
+here, a simplified example
+
+881
+00:34:35,130 --> 00:34:37,469
+from the paper, that
+Super Mario Land
+
+882
+00:34:37,469 --> 00:34:39,570
+is a game developed by blank.
+
+883
+00:34:39,570 --> 00:34:42,873
+And Super Mario Land
+here is an entity.
+
+884
+00:34:42,873 --> 00:34:44,290
+You'd want a local
+knowledge graph
+
+885
+00:34:44,290 --> 00:34:46,989
+as follows, where you see
+that Super Mario Land is
+
+886
+00:34:46,989 --> 00:34:48,310
+in the local knowledge graph.
+
+887
+00:34:48,310 --> 00:34:50,860
+But we also have the
+relation to Super Mario Land
+
+888
+00:34:50,860 --> 00:34:53,350
+to other entities that are
+copied from the full knowledge
+
+889
+00:34:53,350 --> 00:34:55,797
+graph into this local
+knowledge graph.
+
+890
+00:34:55,797 --> 00:34:57,839
+And you would build up
+this local knowledge graph
+
+891
+00:34:57,840 --> 00:34:59,400
+as you iterate
+over the sentence.
+
+892
+00:34:59,400 --> 00:35:00,923
+So whenever you
+see an entity, you
+
+893
+00:35:00,923 --> 00:35:03,090
+would add it to the local
+knowledge graph as well as
+
+894
+00:35:03,090 --> 00:35:06,430
+its relations to other entities.
+
+895
+00:35:06,430 --> 00:35:08,730
+So obviously, this is
+a much smaller example
+
+896
+00:35:08,730 --> 00:35:11,130
+than when we would really
+have all the relations
+
+897
+00:35:11,130 --> 00:35:13,505
+to Super Mario Land, just for
+the purpose of the example.
+
+898
+00:35:13,505 --> 00:35:15,297
+But hopefully, it's
+clear that all of these
+
+899
+00:35:15,297 --> 00:35:16,515
+are relevant to the sequence.
+
+900
+00:35:16,515 --> 00:35:19,452
+
+
+901
+00:35:19,452 --> 00:35:20,910
+Something important
+to note here is
+
+902
+00:35:20,910 --> 00:35:23,040
+that this does assume that
+the entities are known
+
+903
+00:35:23,040 --> 00:35:26,280
+during training so that you do
+have this entity annotated data
+
+904
+00:35:26,280 --> 00:35:26,822
+for training.
+
+905
+00:35:26,822 --> 00:35:28,530
+And therefore, your
+local knowledge graph
+
+906
+00:35:28,530 --> 00:35:30,600
+is always the ground truth
+local knowledge graph
+
+907
+00:35:30,600 --> 00:35:33,690
+as you iterate
+over the sequence.
+
+908
+00:35:33,690 --> 00:35:36,360
+So why might this be a
+good idea to do this?
+
+909
+00:35:36,360 --> 00:35:39,327
+Well, here, the next word we
+want to predict is Nintendo.
+
+910
+00:35:39,327 --> 00:35:41,910
+And you may notice that Nintendo
+isn't in your local knowledge
+
+911
+00:35:41,910 --> 00:35:42,853
+graph.
+
+912
+00:35:42,853 --> 00:35:44,520
+So sometimes, this
+local knowledge graph
+
+913
+00:35:44,520 --> 00:35:47,430
+can actually serve as a very
+strong signal for what you want
+
+914
+00:35:47,430 --> 00:35:50,105
+to predict for your next word.
+
+915
+00:35:50,105 --> 00:35:52,230
+Now you may be thinking,
+well, this wouldn't always
+
+916
+00:35:52,230 --> 00:35:55,380
+be helpful, and
+that's true as well.
+
+917
+00:35:55,380 --> 00:35:57,630
+So if you look at just the
+third word in the sequence,
+
+918
+00:35:57,630 --> 00:35:59,340
+and you want to
+predict that word, so
+
+919
+00:35:59,340 --> 00:36:02,652
+is a game, for
+instance, well, if this
+
+920
+00:36:02,652 --> 00:36:04,110
+isn't in the local
+knowledge graph,
+
+921
+00:36:04,110 --> 00:36:06,820
+this wouldn't be
+necessarily that helpful.
+
+922
+00:36:06,820 --> 00:36:10,130
+You will just do a standard
+language model prediction.
+
+923
+00:36:10,130 --> 00:36:12,230
+Or if you at the
+beginning of a sequence,
+
+924
+00:36:12,230 --> 00:36:13,790
+your local knowledge
+graph is empty,
+
+925
+00:36:13,790 --> 00:36:16,850
+so of course, you're not going
+to get any signal from it.
+
+926
+00:36:16,850 --> 00:36:20,200
+So the first question they ask
+in KGLM is how can a language
+
+927
+00:36:20,200 --> 00:36:22,570
+model know when to use
+a local knowledge graph
+
+928
+00:36:22,570 --> 00:36:24,910
+and when it might actually
+be useful for predicting
+
+929
+00:36:24,910 --> 00:36:25,630
+the next word?
+
+930
+00:36:25,630 --> 00:36:29,208
+
+
+931
+00:36:29,208 --> 00:36:31,750
+So we're going to keep the same
+example as a running example.
+
+932
+00:36:31,750 --> 00:36:34,080
+And we have our local
+knowledge graph here.
+
+933
+00:36:34,080 --> 00:36:36,720
+We now have an LSTM that looks
+similar to the representations
+
+934
+00:36:36,720 --> 00:36:38,310
+you've seen
+throughout this class.
+
+935
+00:36:38,310 --> 00:36:42,150
+And normally, you've seen the
+LSTM predicts the next word.
+
+936
+00:36:42,150 --> 00:36:45,060
+Well, now we're also going
+to use the LSTM to predict
+
+937
+00:36:45,060 --> 00:36:46,770
+the next type of the word.
+
+938
+00:36:46,770 --> 00:36:49,320
+So is the next word going
+to be a related entity,
+
+939
+00:36:49,320 --> 00:36:51,870
+meaning it's in the local
+knowledge graph already?
+
+940
+00:36:51,870 --> 00:36:54,360
+Is it going to be a new
+entity, meaning it's not
+
+941
+00:36:54,360 --> 00:36:55,890
+in the local knowledge graph?
+
+942
+00:36:55,890 --> 00:36:58,540
+Or is it going to be not an
+entity, in which case, you just
+
+943
+00:36:58,540 --> 00:37:01,840
+revert to a normal
+LSTM prediction.
+
+944
+00:37:01,840 --> 00:37:04,160
+And they're going to use
+the LSTM hidden state to do
+
+945
+00:37:04,160 --> 00:37:06,935
+this prediction of the type of
+the next word over this three
+
+946
+00:37:06,935 --> 00:37:08,560
+way-- three different
+classes that they
+
+947
+00:37:08,560 --> 00:37:11,590
+might want to consider.
+
+948
+00:37:11,590 --> 00:37:13,200
+So in the case of
+Super Mario Land
+
+949
+00:37:13,200 --> 00:37:15,210
+is a game developed
+by Nintendo, we
+
+950
+00:37:15,210 --> 00:37:16,980
+saw that this would
+be a related entity
+
+951
+00:37:16,980 --> 00:37:19,260
+case because you saw
+that Nintendo was
+
+952
+00:37:19,260 --> 00:37:21,240
+in the local knowledge graph.
+
+953
+00:37:21,240 --> 00:37:23,400
+But in the other
+cases, Super Mario Land
+
+954
+00:37:23,400 --> 00:37:26,070
+would be a new entity case
+since the local knowledge
+
+955
+00:37:26,070 --> 00:37:27,750
+graph is empty at that point.
+
+956
+00:37:27,750 --> 00:37:30,100
+And then any of the
+words between Super Mario
+
+957
+00:37:30,100 --> 00:37:33,030
+Land and Nintendo
+would be non-entity
+
+958
+00:37:33,030 --> 00:37:36,750
+as they're just a standard LSTM
+language model prediction that
+
+959
+00:37:36,750 --> 00:37:40,210
+doesn't involve any entities.
+
+960
+00:37:40,210 --> 00:37:42,250
+So now we need to talk
+about what the language
+
+961
+00:37:42,250 --> 00:37:44,740
+model actually does in these
+three different scenarios
+
+962
+00:37:44,740 --> 00:37:47,530
+to predict the next
+entity and the next word.
+
+963
+00:37:47,530 --> 00:37:50,627
+
+
+964
+00:37:50,627 --> 00:37:52,960
+So we're going to keep the
+example up at the top in case
+
+965
+00:37:52,960 --> 00:37:55,630
+you want to go back to
+the three different cases.
+
+966
+00:37:55,630 --> 00:37:59,130
+And we're going to start
+with a related entity case.
+
+967
+00:37:59,130 --> 00:38:02,810
+So here we assume that the
+next word or entity is actually
+
+968
+00:38:02,810 --> 00:38:04,380
+in your local knowledge graph.
+
+969
+00:38:04,380 --> 00:38:06,505
+And remember that we can
+describe a knowledge graph
+
+970
+00:38:06,505 --> 00:38:08,960
+in terms of triples,
+so in terms of pairs
+
+971
+00:38:08,960 --> 00:38:12,320
+of parent entities,
+relations, and tail entities.
+
+972
+00:38:12,320 --> 00:38:15,890
+And in the case of predicting
+the next word as Nintendo,
+
+973
+00:38:15,890 --> 00:38:17,690
+there's only one
+possible parent entity
+
+974
+00:38:17,690 --> 00:38:21,130
+in the local knowledge graph,
+which is Super Mario Land.
+
+975
+00:38:21,130 --> 00:38:22,720
+And the goal is you
+want to figure out
+
+976
+00:38:22,720 --> 00:38:26,170
+what is the most relevant triple
+that will be useful in helping
+
+977
+00:38:26,170 --> 00:38:28,220
+to predict the next word.
+
+978
+00:38:28,220 --> 00:38:30,610
+So in this case, you could
+have the triple Super Mario
+
+979
+00:38:30,610 --> 00:38:32,260
+Land, publisher, Nintendo.
+
+980
+00:38:32,260 --> 00:38:34,390
+You might have the triple
+Super Mario Land, genre,
+
+981
+00:38:34,390 --> 00:38:36,400
+platform game, which
+of these is actually
+
+982
+00:38:36,400 --> 00:38:37,960
+helpful in predicting
+that Nintendo
+
+983
+00:38:37,960 --> 00:38:40,780
+should be the next word.
+
+984
+00:38:40,780 --> 00:38:43,080
+So here what you
+would want KGLM to do
+
+985
+00:38:43,080 --> 00:38:44,670
+is predict that the
+top scoring parent
+
+986
+00:38:44,670 --> 00:38:46,830
+entity is Super Mario Land.
+
+987
+00:38:46,830 --> 00:38:49,283
+And the top scoring
+relation is publisher.
+
+988
+00:38:49,283 --> 00:38:50,700
+And you can see
+there are actually
+
+989
+00:38:50,700 --> 00:38:52,410
+contextual cues
+in a sentence that
+
+990
+00:38:52,410 --> 00:38:56,460
+could help you figure out which
+triple you're talking about.
+
+991
+00:38:56,460 --> 00:38:58,050
+And then, given that
+your top scoring
+
+992
+00:38:58,050 --> 00:39:00,510
+parent entity is Super Mario
+Land, and your top scoring
+
+993
+00:39:00,510 --> 00:39:02,910
+relation is publisher,
+you can figure out
+
+994
+00:39:02,910 --> 00:39:05,790
+that using knowledge graph
+triples, the tail entity
+
+995
+00:39:05,790 --> 00:39:07,395
+he has to be Nintendo.
+
+996
+00:39:07,395 --> 00:39:09,270
+And therefore, this
+gives you a strong signal
+
+997
+00:39:09,270 --> 00:39:10,815
+that the next word
+will be Nintendo.
+
+998
+00:39:10,815 --> 00:39:14,555
+
+
+999
+00:39:14,555 --> 00:39:16,680
+So the goal is you're going
+to find the top scoring
+
+1000
+00:39:16,680 --> 00:39:18,960
+parent entity and the
+top scoring relation
+
+1001
+00:39:18,960 --> 00:39:21,180
+using the nodes in your
+local knowledge graph.
+
+1002
+00:39:21,180 --> 00:39:24,150
+And you can do this by using
+the LSTM hidden state combined
+
+1003
+00:39:24,150 --> 00:39:26,750
+with pretrained entity
+and relation embeddings.
+
+1004
+00:39:26,750 --> 00:39:28,500
+So I do admit I cheated
+here a little bit,
+
+1005
+00:39:28,500 --> 00:39:30,990
+and that this does use
+pretrained embeddings.
+
+1006
+00:39:30,990 --> 00:39:33,300
+But hopefully, you'll see by
+the end of this discussion
+
+1007
+00:39:33,300 --> 00:39:35,880
+why I think it fits a bit better
+in this external memory use
+
+1008
+00:39:35,880 --> 00:39:38,320
+case as well.
+
+1009
+00:39:38,320 --> 00:39:39,820
+So what I'm going
+to do here is take
+
+1010
+00:39:39,820 --> 00:39:43,390
+a softmax using LSTM hidden
+state and the entity embeddings
+
+1011
+00:39:43,390 --> 00:39:45,460
+for each of the potential
+parent entities.
+
+1012
+00:39:45,460 --> 00:39:48,460
+And they will take the top
+scoring one as a parent entity.
+
+1013
+00:39:48,460 --> 00:39:52,120
+And they'll do the same thing
+for the relation embeddings.
+
+1014
+00:39:52,120 --> 00:39:54,700
+The next entity is then
+just this tail entity
+
+1015
+00:39:54,700 --> 00:39:56,080
+from the knowledge graph triple.
+
+1016
+00:39:56,080 --> 00:39:57,747
+So it's relatively
+trivial to figure out
+
+1017
+00:39:57,747 --> 00:40:00,010
+what the next entity
+should be once you've
+
+1018
+00:40:00,010 --> 00:40:01,840
+figured out the top
+scoring parent entity
+
+1019
+00:40:01,840 --> 00:40:04,720
+and your top scoring relation.
+
+1020
+00:40:04,720 --> 00:40:07,450
+And then finally, to
+predict the next word,
+
+1021
+00:40:07,450 --> 00:40:09,130
+they take the
+vocabulary, and they
+
+1022
+00:40:09,130 --> 00:40:11,560
+expand it to include
+different aliases that
+
+1023
+00:40:11,560 --> 00:40:13,950
+could refer to that entity.
+
+1024
+00:40:13,950 --> 00:40:15,860
+So what I mean by
+aliases here are
+
+1025
+00:40:15,860 --> 00:40:18,770
+phrases that could refer
+to the entity and text.
+
+1026
+00:40:18,770 --> 00:40:20,690
+So you might not just
+call it Nintendo.
+
+1027
+00:40:20,690 --> 00:40:23,480
+You might also say
+Nintendo company or Koppai.
+
+1028
+00:40:23,480 --> 00:40:26,090
+And you want any of these
+to be possible words they
+
+1029
+00:40:26,090 --> 00:40:28,900
+could predict as the next word.
+
+1030
+00:40:28,900 --> 00:40:31,200
+So the goal of this
+vocabulary expansion
+
+1031
+00:40:31,200 --> 00:40:34,230
+is to increase the probability
+that the next where you predict
+
+1032
+00:40:34,230 --> 00:40:40,100
+will actually be related
+to this next entity
+
+1033
+00:40:40,100 --> 00:40:42,078
+So a new entity case
+is a bit simpler.
+
+1034
+00:40:42,078 --> 00:40:44,120
+This means that the entity
+that you're predicting
+
+1035
+00:40:44,120 --> 00:40:45,540
+is not in the local
+knowledge graph.
+
+1036
+00:40:45,540 --> 00:40:48,207
+So you're not getting any signal
+from this local knowledge graph
+
+1037
+00:40:48,207 --> 00:40:50,930
+that you've been building
+up, and all you want to do
+
+1038
+00:40:50,930 --> 00:40:53,960
+is find the top scoring entity
+in the full knowledge graph.
+
+1039
+00:40:53,960 --> 00:40:56,090
+And you can do this using
+the LSTM hidden state
+
+1040
+00:40:56,090 --> 00:40:57,620
+and pretrained
+entity embeddings,
+
+1041
+00:40:57,620 --> 00:40:59,787
+similar to how we found the
+score for the top parent
+
+1042
+00:40:59,787 --> 00:41:01,920
+entity.
+
+1043
+00:41:01,920 --> 00:41:04,290
+Your next entity will just
+be the top scoring entity out
+
+1044
+00:41:04,290 --> 00:41:06,150
+of the full knowledge graph.
+
+1045
+00:41:06,150 --> 00:41:07,950
+And then your next
+word is once again
+
+1046
+00:41:07,950 --> 00:41:13,180
+this vocabulary expanded to
+include aliases of that entity.
+
+1047
+00:41:13,180 --> 00:41:14,725
+The not an entity
+case is as simple
+
+1048
+00:41:14,725 --> 00:41:17,830
+as you just revert
+to normal LSTM.
+
+1049
+00:41:17,830 --> 00:41:19,970
+You don't have a next
+entity to predict.
+
+1050
+00:41:19,970 --> 00:41:22,630
+And your next word is just
+the most likely next token
+
+1051
+00:41:22,630 --> 00:41:24,400
+of your normal vocabulary.
+
+1052
+00:41:24,400 --> 00:41:26,980
+
+
+1053
+00:41:26,980 --> 00:41:28,870
+So here's a diagram
+from their paper
+
+1054
+00:41:28,870 --> 00:41:31,990
+that hopefully summarizes and
+makes even clear what I just
+
+1055
+00:41:31,990 --> 00:41:33,500
+went over.
+
+1056
+00:41:33,500 --> 00:41:35,562
+So they have a longer
+example than the one
+
+1057
+00:41:35,562 --> 00:41:37,270
+we are looking at but
+the same prediction
+
+1058
+00:41:37,270 --> 00:41:39,040
+as Nintendo is the next word.
+
+1059
+00:41:39,040 --> 00:41:40,670
+And they have their
+predictions in red.
+
+1060
+00:41:40,670 --> 00:41:43,090
+So this is what they
+want KGLM to predict.
+
+1061
+00:41:43,090 --> 00:41:46,240
+The three different cases
+are in the horizontals.
+
+1062
+00:41:46,240 --> 00:41:48,910
+And we see that here, you're
+in the related entity case
+
+1063
+00:41:48,910 --> 00:41:52,400
+since Nintendo is in your
+local knowledge graph.
+
+1064
+00:41:52,400 --> 00:41:55,130
+So they want KGLM to
+predict that Nintendo should
+
+1065
+00:41:55,130 --> 00:41:57,440
+be a related entity
+type of word,
+
+1066
+00:41:57,440 --> 00:41:59,660
+that Super Mario Land
+should be its parent
+
+1067
+00:41:59,660 --> 00:42:03,200
+entity, that publisher should
+be the relevant relation.
+
+1068
+00:42:03,200 --> 00:42:06,080
+And as a result, the
+next entity is Nintendo.
+
+1069
+00:42:06,080 --> 00:42:07,880
+And then they expand
+their vocabulary.
+
+1070
+00:42:07,880 --> 00:42:10,665
+You see the aliases of
+Nintendo at the bottom.
+
+1071
+00:42:10,665 --> 00:42:12,290
+And then finally,
+they actually predict
+
+1072
+00:42:12,290 --> 00:42:14,553
+Nintendo is the next word.
+
+1073
+00:42:14,553 --> 00:42:15,970
+And the other cases
+just summarize
+
+1074
+00:42:15,970 --> 00:42:17,410
+what we also already went over.
+
+1075
+00:42:17,410 --> 00:42:20,220
+
+
+1076
+00:42:20,220 --> 00:42:25,370
+So you find that KGLM actually
+outperforms GPT-2 and AWD-LSTM,
+
+1077
+00:42:25,370 --> 00:42:28,790
+which is a strong LSTM language
+model on a fast completion
+
+1078
+00:42:28,790 --> 00:42:31,280
+task similar to the fill
+in the blank examples
+
+1079
+00:42:31,280 --> 00:42:34,270
+that we looked at the
+beginning of the talk.
+
+1080
+00:42:34,270 --> 00:42:37,570
+They also find qualitatively
+that compared to GPT-2,
+
+1081
+00:42:37,570 --> 00:42:40,540
+KGLM tends to predict more
+specific tokens since it
+
+1082
+00:42:40,540 --> 00:42:43,210
+can predict these
+tokens from just copying
+
+1083
+00:42:43,210 --> 00:42:46,030
+from the local knowledge
+graph, whereas GPT-2 will tend
+
+1084
+00:42:46,030 --> 00:42:47,793
+to predict more generic tokens.
+
+1085
+00:42:47,793 --> 00:42:49,960
+So if you want to predict
+the birthplace of someone,
+
+1086
+00:42:49,960 --> 00:42:52,760
+GPT-2 is more likely to
+predict New York, for example,
+
+1087
+00:42:52,760 --> 00:42:56,523
+and KGLM might predict
+some obscure place.
+
+1088
+00:42:56,523 --> 00:42:58,190
+And then they have
+these really cool set
+
+1089
+00:42:58,190 --> 00:43:00,980
+of experiments where they showed
+that KGLM actually supports
+
+1090
+00:43:00,980 --> 00:43:03,703
+modifying or updating facts.
+
+1091
+00:43:03,703 --> 00:43:05,870
+So they made a direct change
+in the knowledge graph,
+
+1092
+00:43:05,870 --> 00:43:10,200
+and then they saw what is the
+change in KGLM's predictions.
+
+1093
+00:43:10,200 --> 00:43:13,130
+So they have this example
+where the sequence was,
+
+1094
+00:43:13,130 --> 00:43:15,508
+Barack Obama was born on blank.
+
+1095
+00:43:15,508 --> 00:43:17,800
+They had their knowledge
+graph triple as Barack Obama's
+
+1096
+00:43:17,800 --> 00:43:21,010
+original birth date, and then
+the most likely next tokens,
+
+1097
+00:43:21,010 --> 00:43:23,678
+whereas expected,
+August 4th 1961.
+
+1098
+00:43:23,678 --> 00:43:25,720
+And then they just changed
+their knowledge graph.
+
+1099
+00:43:25,720 --> 00:43:28,180
+So they changed the
+birthday of Obama.
+
+1100
+00:43:28,180 --> 00:43:30,610
+They said, OK,
+he's now born 2013.
+
+1101
+00:43:30,610 --> 00:43:34,250
+And they looked to see what the
+next predictions were for KGLM,
+
+1102
+00:43:34,250 --> 00:43:36,250
+and it changed its
+predictions to match what was
+
+1103
+00:43:36,250 --> 00:43:38,093
+in the local knowledge graph.
+
+1104
+00:43:38,093 --> 00:43:39,760
+So this is something
+that's pretty cool,
+
+1105
+00:43:39,760 --> 00:43:43,060
+and that really only external
+memory approaches can
+
+1106
+00:43:43,060 --> 00:43:45,910
+do compared to the original
+pretrained entity embedding
+
+1107
+00:43:45,910 --> 00:43:47,380
+approaches we talked about.
+
+1108
+00:43:47,380 --> 00:43:49,150
+And I think it's
+one of the reasons
+
+1109
+00:43:49,150 --> 00:43:51,112
+that KGLM, at least my
+opinion, fits better
+
+1110
+00:43:51,112 --> 00:43:52,570
+in these external
+memory use cases.
+
+1111
+00:43:52,570 --> 00:43:56,200
+
+
+1112
+00:43:56,200 --> 00:43:56,700
+Right.
+
+1113
+00:43:56,700 --> 00:43:58,800
+So the next slide
+is a different paper
+
+1114
+00:43:58,800 --> 00:44:02,340
+so I guess I'll take questions
+about KGLM, if there are any.
+
+1115
+00:44:02,340 --> 00:44:07,360
+
+
+1116
+00:44:07,360 --> 00:44:08,580
+It's a pretty complex method.
+
+1117
+00:44:08,580 --> 00:44:10,470
+So feel free to have questions.
+
+1118
+00:44:10,470 --> 00:44:11,170
+Yeah.
+
+1119
+00:44:11,170 --> 00:44:13,630
+Can you, one more
+time, explain what
+
+1120
+00:44:13,630 --> 00:44:15,520
+the definition of the
+local knowledge graph
+
+1121
+00:44:15,520 --> 00:44:18,310
+is in relationship to the
+global knowledge graph?
+
+1122
+00:44:18,310 --> 00:44:20,410
+Yep.
+
+1123
+00:44:20,410 --> 00:44:21,910
+So local knowledge
+graph is supposed
+
+1124
+00:44:21,910 --> 00:44:24,130
+to be a subset of the
+full knowledge graph.
+
+1125
+00:44:24,130 --> 00:44:26,170
+And it's only
+supposed to consist
+
+1126
+00:44:26,170 --> 00:44:28,180
+of entities that
+have actually been
+
+1127
+00:44:28,180 --> 00:44:35,320
+seen in the sequence as well
+as their relevant entities.
+
+1128
+00:44:35,320 --> 00:44:35,820
+OK.
+
+1129
+00:44:35,820 --> 00:44:38,610
+
+
+1130
+00:44:38,610 --> 00:44:39,110
+All right.
+
+1131
+00:44:39,110 --> 00:44:41,335
+So here, you see
+that Super Mario Land
+
+1132
+00:44:41,335 --> 00:44:43,460
+is in the local knowledge
+graph because Super Mario
+
+1133
+00:44:43,460 --> 00:44:45,810
+Land is an entity that
+is seen in the sequence.
+
+1134
+00:44:45,810 --> 00:44:48,740
+And then you also want to
+copy over all the edges
+
+1135
+00:44:48,740 --> 00:44:52,250
+from Super Mario Land that would
+be in the full knowledge graph.
+
+1136
+00:44:52,250 --> 00:44:55,110
+So this is just a subset of them
+for the purpose of the example.
+
+1137
+00:44:55,110 --> 00:44:56,485
+But you see that
+Super Mario Land
+
+1138
+00:44:56,485 --> 00:44:59,160
+has an edge to Nintendo to
+Game Boy to platform game.
+
+1139
+00:44:59,160 --> 00:45:01,160
+And so you would copy all
+edges that Super Mario
+
+1140
+00:45:01,160 --> 00:45:04,760
+Land has to another node in
+the full knowledge graph.
+
+1141
+00:45:04,760 --> 00:45:07,340
+And they know in advance like,
+they have the labels here
+
+1142
+00:45:07,340 --> 00:45:09,590
+for what the entities
+are during training.
+
+1143
+00:45:09,590 --> 00:45:12,290
+So that's how they can actually
+create this ground truth
+
+1144
+00:45:12,290 --> 00:45:14,240
+knowledge graph.
+
+1145
+00:45:14,240 --> 00:45:17,760
+Then briefly, a student
+asked why we can't just
+
+1146
+00:45:17,760 --> 00:45:19,470
+use the whole knowledge graph?
+
+1147
+00:45:19,470 --> 00:45:23,400
+And I gave an answer but
+maybe you know better.
+
+1148
+00:45:23,400 --> 00:45:25,140
+Yeah, I think the
+idea is the signal
+
+1149
+00:45:25,140 --> 00:45:28,300
+be much stronger if you just
+use local knowledge graph.
+
+1150
+00:45:28,300 --> 00:45:32,340
+So in the softmax for
+the related entity case,
+
+1151
+00:45:32,340 --> 00:45:35,835
+you would just be predicting
+over the potential parent
+
+1152
+00:45:35,835 --> 00:45:37,710
+entities in your local
+knowledge graph, which
+
+1153
+00:45:37,710 --> 00:45:40,043
+is a much smaller set than
+what's in your full knowledge
+
+1154
+00:45:40,043 --> 00:45:41,310
+graph.
+
+1155
+00:45:41,310 --> 00:45:43,043
+So I guess it's more
+likely that you're
+
+1156
+00:45:43,043 --> 00:45:44,460
+going to predict
+something that is
+
+1157
+00:45:44,460 --> 00:45:47,187
+correct in that case than
+when you have 5 million
+
+1158
+00:45:47,187 --> 00:45:49,020
+or so entities in your
+full knowledge graph.
+
+1159
+00:45:49,020 --> 00:45:51,047
+It's also much
+cheaper to compute.
+
+1160
+00:45:51,047 --> 00:45:53,130
+In this case, there's only
+a single parent entity,
+
+1161
+00:45:53,130 --> 00:45:54,810
+but you could have
+multiple parent entities
+
+1162
+00:45:54,810 --> 00:45:57,143
+that you're trying to compute
+which ones the most likely
+
+1163
+00:45:57,143 --> 00:45:58,540
+over.
+
+1164
+00:45:58,540 --> 00:46:01,880
+Is that what you were
+also thinking, John?
+
+1165
+00:46:01,880 --> 00:46:02,380
+Yeah.
+
+1166
+00:46:02,380 --> 00:46:05,230
+I mainly just said
+the efficiency.
+
+1167
+00:46:05,230 --> 00:46:07,900
+So the signal thing is cool too.
+
+1168
+00:46:07,900 --> 00:46:09,550
+Here's an exciting question.
+
+1169
+00:46:09,550 --> 00:46:13,930
+What about queries that
+require more than one step
+
+1170
+00:46:13,930 --> 00:46:18,580
+in the knowledge graph such as
+the location of the publisher
+
+1171
+00:46:18,580 --> 00:46:19,720
+of Super Mario Land?
+
+1172
+00:46:19,720 --> 00:46:22,660
+
+
+1173
+00:46:22,660 --> 00:46:23,160
+Yeah.
+
+1174
+00:46:23,160 --> 00:46:25,500
+That's a good question.
+
+1175
+00:46:25,500 --> 00:46:27,560
+So the idea is it can
+support those types?
+
+1176
+00:46:27,560 --> 00:46:30,740
+Like, does it support
+multi-hop, kind of,
+
+1177
+00:46:30,740 --> 00:46:32,880
+building of the knowledge graph?
+
+1178
+00:46:32,880 --> 00:46:33,770
+Yeah.
+
+1179
+00:46:33,770 --> 00:46:36,590
+How does KGLM perform
+in those cases?
+
+1180
+00:46:36,590 --> 00:46:37,090
+Yeah.
+
+1181
+00:46:37,090 --> 00:46:37,720
+I don't know.
+
+1182
+00:46:37,720 --> 00:46:38,950
+That's a very good question.
+
+1183
+00:46:38,950 --> 00:46:40,325
+They built up the
+knowledge graph
+
+1184
+00:46:40,325 --> 00:46:42,910
+so that is just a single
+hop as far as I know.
+
+1185
+00:46:42,910 --> 00:46:45,763
+But if you saw the
+other entities, if you
+
+1186
+00:46:45,763 --> 00:46:47,430
+were to see the
+entities along the hops,
+
+1187
+00:46:47,430 --> 00:46:50,572
+that it would have them in the
+local knowledge graph, yeah,
+
+1188
+00:46:50,572 --> 00:46:51,530
+that's a good question.
+
+1189
+00:46:51,530 --> 00:46:52,738
+I don't if they support that.
+
+1190
+00:46:52,738 --> 00:47:00,560
+
+
+1191
+00:47:00,560 --> 00:47:02,340
+Great.
+
+1192
+00:47:02,340 --> 00:47:04,100
+OK.
+
+1193
+00:47:04,100 --> 00:47:05,180
+Let's move along then.
+
+1194
+00:47:05,180 --> 00:47:10,307
+
+
+1195
+00:47:10,307 --> 00:47:12,265
+So the next piece of
+we're going to talk about,
+
+1196
+00:47:12,265 --> 00:47:16,090
+you guys, have actually briefly
+seen in the language generation
+
+1197
+00:47:16,090 --> 00:47:17,140
+lecture.
+
+1198
+00:47:17,140 --> 00:47:19,798
+But I'm going to go over
+it again quickly here.
+
+1199
+00:47:19,798 --> 00:47:22,090
+So unlike the other works
+that we talked about that use
+
+1200
+00:47:22,090 --> 00:47:23,860
+knowledge graph triples,
+this is actually
+
+1201
+00:47:23,860 --> 00:47:27,460
+going to take a looser notion of
+knowledge in that the knowledge
+
+1202
+00:47:27,460 --> 00:47:30,710
+will just be encoded in the
+text in the training data set.
+
+1203
+00:47:30,710 --> 00:47:32,800
+So this is called kNN-LM.
+
+1204
+00:47:32,800 --> 00:47:34,420
+And the idea is that--
+
+1205
+00:47:34,420 --> 00:47:36,550
+or it's brilliant idea
+is language models
+
+1206
+00:47:36,550 --> 00:47:38,740
+not only learn to predict
+the next word in text,
+
+1207
+00:47:38,740 --> 00:47:41,950
+but they also learn these
+representations of text.
+
+1208
+00:47:41,950 --> 00:47:44,650
+And the author suggests that
+it might actually be easier
+
+1209
+00:47:44,650 --> 00:47:47,200
+to learn similarities
+between text sequences
+
+1210
+00:47:47,200 --> 00:47:50,680
+than it is to predict the
+next word in the text.
+
+1211
+00:47:50,680 --> 00:47:53,590
+So you have this example that
+Dickens is the author of blank,
+
+1212
+00:47:53,590 --> 00:47:55,150
+and Dickens wrote blank.
+
+1213
+00:47:55,150 --> 00:47:57,820
+And they argue that it's
+easier to tell for a human
+
+1214
+00:47:57,820 --> 00:48:00,850
+but also for a model that
+these sequences are similar,
+
+1215
+00:48:00,850 --> 00:48:03,250
+and they should probably
+have the same next word
+
+1216
+00:48:03,250 --> 00:48:06,160
+even if you don't know
+what the next word is.
+
+1217
+00:48:06,160 --> 00:48:07,960
+So that's suggesting
+that it's easier
+
+1218
+00:48:07,960 --> 00:48:10,420
+to learn these similarities
+than it is to actually predict
+
+1219
+00:48:10,420 --> 00:48:12,117
+the next word.
+
+1220
+00:48:12,117 --> 00:48:14,450
+And they argue that this is
+even more true for long tail
+
+1221
+00:48:14,450 --> 00:48:16,580
+patterns, where it's very
+challenging for the model
+
+1222
+00:48:16,580 --> 00:48:19,490
+to predict that the next word
+is some rarely seen token
+
+1223
+00:48:19,490 --> 00:48:23,130
+or rare entity, than it is to
+find another similar sequence
+
+1224
+00:48:23,130 --> 00:48:25,910
+that it's already seen and
+just copy the next word
+
+1225
+00:48:25,910 --> 00:48:28,490
+from that sequence.
+
+1226
+00:48:28,490 --> 00:48:30,830
+So what they proposed to do
+is store all representations
+
+1227
+00:48:30,830 --> 00:48:33,800
+of text sequences in the
+nearest neighbor datastore.
+
+1228
+00:48:33,800 --> 00:48:36,290
+And then an inference,
+what you want to do
+
+1229
+00:48:36,290 --> 00:48:39,170
+is you find the k most
+similar sequences of text,
+
+1230
+00:48:39,170 --> 00:48:41,050
+you then retrieve their
+corresponding values,
+
+1231
+00:48:41,050 --> 00:48:42,425
+so you just peek
+at the sequences
+
+1232
+00:48:42,425 --> 00:48:44,990
+and see what were
+their next words.
+
+1233
+00:48:44,990 --> 00:48:47,000
+And then you combine
+the probability
+
+1234
+00:48:47,000 --> 00:48:49,790
+from this nearest neighbor
+datastore with just
+
+1235
+00:48:49,790 --> 00:48:51,898
+a typical language
+model prediction.
+
+1236
+00:48:51,898 --> 00:48:53,690
+And so they call this
+an interpolation step
+
+1237
+00:48:53,690 --> 00:48:56,180
+in that they're weighting
+how much to pay attention
+
+1238
+00:48:56,180 --> 00:48:58,730
+to the probability
+from this kNN approach
+
+1239
+00:48:58,730 --> 00:49:02,120
+and how much to pay attention
+to this language model approach.
+
+1240
+00:49:02,120 --> 00:49:05,120
+And the lambda here is just
+a hyperparameter they tune.
+
+1241
+00:49:05,120 --> 00:49:07,845
+
+
+1242
+00:49:07,845 --> 00:49:09,470
+So I have this diagram
+from their paper
+
+1243
+00:49:09,470 --> 00:49:12,020
+where they want to predict
+the next word in the sequence,
+
+1244
+00:49:12,020 --> 00:49:14,450
+Shakespeare's play blank.
+
+1245
+00:49:14,450 --> 00:49:17,000
+So what they do is they have
+all the training context already
+
+1246
+00:49:17,000 --> 00:49:18,710
+encoded in their datastore.
+
+1247
+00:49:18,710 --> 00:49:21,493
+So they have representations
+of all of the training context.
+
+1248
+00:49:21,493 --> 00:49:23,160
+And then they compute
+the representation
+
+1249
+00:49:23,160 --> 00:49:24,500
+of the text context.
+
+1250
+00:49:24,500 --> 00:49:27,180
+And they want to figure
+out which representations
+
+1251
+00:49:27,180 --> 00:49:30,320
+in the training context are most
+similar to this task context
+
+1252
+00:49:30,320 --> 00:49:32,750
+representation.
+
+1253
+00:49:32,750 --> 00:49:36,370
+And so here, an external
+memory view of things, the keys
+
+1254
+00:49:36,370 --> 00:49:39,130
+would be the representations
+of the training context,
+
+1255
+00:49:39,130 --> 00:49:42,640
+and the values would
+be the next words.
+
+1256
+00:49:42,640 --> 00:49:46,330
+So to get the k nearest
+training representations,
+
+1257
+00:49:46,330 --> 00:49:47,980
+they then copy
+over their values.
+
+1258
+00:49:47,980 --> 00:49:50,380
+That's what you see with
+this Macbeth, Hamlet, Macbeth
+
+1259
+00:49:50,380 --> 00:49:51,340
+example.
+
+1260
+00:49:51,340 --> 00:49:53,590
+They have a normalization
+step where they convert this
+
+1261
+00:49:53,590 --> 00:49:55,630
+to probability space.
+
+1262
+00:49:55,630 --> 00:49:57,970
+And then finally, they
+have an aggregation step.
+
+1263
+00:49:57,970 --> 00:50:01,300
+So if a word is seen as
+the next word in several
+
+1264
+00:50:01,300 --> 00:50:03,370
+of these k nearest
+neighbors, then they
+
+1265
+00:50:03,370 --> 00:50:04,610
+want to count more for that.
+
+1266
+00:50:04,610 --> 00:50:05,818
+So that's why they aggregate.
+
+1267
+00:50:05,818 --> 00:50:10,090
+So if they see Macbeth twice,
+it means Macbeth is more likely.
+
+1268
+00:50:10,090 --> 00:50:12,340
+And then finally, they have
+this interpolation step
+
+1269
+00:50:12,340 --> 00:50:15,100
+where they try to balance
+between the classification
+
+1270
+00:50:15,100 --> 00:50:16,870
+probabilities from
+the language model
+
+1271
+00:50:16,870 --> 00:50:20,920
+and from the kNN-LM approach.
+
+1272
+00:50:20,920 --> 00:50:23,520
+So some immediate observation
+you might have is this
+
+1273
+00:50:23,520 --> 00:50:25,500
+seems really expensive.
+
+1274
+00:50:25,500 --> 00:50:28,807
+They do propose ways
+to try to minimize
+
+1275
+00:50:28,807 --> 00:50:31,140
+the expense of actually having
+to store all the training
+
+1276
+00:50:31,140 --> 00:50:33,990
+contexts in this datastore
+because they actually store it
+
+1277
+00:50:33,990 --> 00:50:38,400
+for every single window of next
+word in the training context.
+
+1278
+00:50:38,400 --> 00:50:40,680
+And you can do quantization
+on some nearest neighbor
+
+1279
+00:50:40,680 --> 00:50:43,808
+approaches to try to
+make this less expensive.
+
+1280
+00:50:43,808 --> 00:50:46,350
+But I imagine this would still
+be pretty expensive for really
+
+1281
+00:50:46,350 --> 00:50:48,640
+large training data sets.
+
+1282
+00:50:48,640 --> 00:50:50,140
+They also have some
+cool experiments
+
+1283
+00:50:50,140 --> 00:50:52,970
+that show that this is very
+good for domain adaptation.
+
+1284
+00:50:52,970 --> 00:50:54,605
+So if you take your
+language model,
+
+1285
+00:50:54,605 --> 00:50:56,980
+and you have a new domain that
+you want a higher language
+
+1286
+00:50:56,980 --> 00:51:00,850
+model too, you could just create
+a nearest neighbor datastore
+
+1287
+00:51:00,850 --> 00:51:02,390
+of your new domain.
+
+1288
+00:51:02,390 --> 00:51:04,550
+So you encode all
+the representations
+
+1289
+00:51:04,550 --> 00:51:05,500
+of that new domain.
+
+1290
+00:51:05,500 --> 00:51:07,150
+You stick it in a datastore.
+
+1291
+00:51:07,150 --> 00:51:10,780
+And then, you can just
+use your language model
+
+1292
+00:51:10,780 --> 00:51:13,360
+with these kNN probabilities
+as well just immediately
+
+1293
+00:51:13,360 --> 00:51:15,490
+on this new domain
+without actually
+
+1294
+00:51:15,490 --> 00:51:18,100
+having to further train
+your language model.
+
+1295
+00:51:18,100 --> 00:51:20,710
+So I thought that
+was a pretty cool use
+
+1296
+00:51:20,710 --> 00:51:23,480
+case of this external
+memory approach.
+
+1297
+00:51:23,480 --> 00:51:26,230
+So while it doesn't leverage
+knowledge bases directly,
+
+1298
+00:51:26,230 --> 00:51:28,240
+it does have this
+loose knowledge of--
+
+1299
+00:51:28,240 --> 00:51:30,610
+or a loose idea of
+encoding knowledge
+
+1300
+00:51:30,610 --> 00:51:32,230
+that is in a textual
+representation
+
+1301
+00:51:32,230 --> 00:51:35,020
+form into some external
+memory that the model can then
+
+1302
+00:51:35,020 --> 00:51:35,950
+take advantage of.
+
+1303
+00:51:35,950 --> 00:51:39,740
+
+
+1304
+00:51:39,740 --> 00:51:41,442
+That's all I have
+for this approach.
+
+1305
+00:51:41,442 --> 00:51:43,150
+Are there any questions
+on this approach?
+
+1306
+00:51:43,150 --> 00:51:49,970
+
+
+1307
+00:51:49,970 --> 00:51:53,040
+Well, suddenly, one
+person is asking,
+
+1308
+00:51:53,040 --> 00:51:56,540
+how does the kNN make
+predictions for the next word?
+
+1309
+00:51:56,540 --> 00:51:58,370
+The k neighbors
+are for the context
+
+1310
+00:51:58,370 --> 00:52:00,710
+instead of the next word.
+
+1311
+00:52:00,710 --> 00:52:01,460
+Oh, OK.
+
+1312
+00:52:01,460 --> 00:52:02,490
+That wasn't clear.
+
+1313
+00:52:02,490 --> 00:52:05,720
+So the keys are the
+representations of the context.
+
+1314
+00:52:05,720 --> 00:52:08,900
+The values in your external
+memory are the next words.
+
+1315
+00:52:08,900 --> 00:52:11,060
+So when you figure out,
+you figure out your nearest
+
+1316
+00:52:11,060 --> 00:52:12,950
+neighbors using your
+keys, and then you
+
+1317
+00:52:12,950 --> 00:52:14,400
+copy over their values.
+
+1318
+00:52:14,400 --> 00:52:16,100
+So it does actually know what
+the next words are for each
+
+1319
+00:52:16,100 --> 00:52:17,300
+of those representations.
+
+1320
+00:52:17,300 --> 00:52:22,550
+
+
+1321
+00:52:22,550 --> 00:52:27,590
+Yeah OK so finally, we're going
+to talk about how you can just
+
+1322
+00:52:27,590 --> 00:52:29,720
+modify the training
+data to better encode
+
+1323
+00:52:29,720 --> 00:52:31,898
+knowledge in language models.
+
+1324
+00:52:31,898 --> 00:52:33,690
+So the approaches we've
+talked about so far
+
+1325
+00:52:33,690 --> 00:52:36,920
+are actually incorporating
+knowledge explicitly
+
+1326
+00:52:36,920 --> 00:52:38,450
+by using the
+pretrained embeddings
+
+1327
+00:52:38,450 --> 00:52:40,738
+or an external memory.
+
+1328
+00:52:40,738 --> 00:52:42,530
+We also want to talk
+about how can you just
+
+1329
+00:52:42,530 --> 00:52:47,855
+incorporate knowledge implicitly
+through the unstructured text?
+
+1330
+00:52:47,855 --> 00:52:49,980
+So what we're going to do
+is either mask or corrupt
+
+1331
+00:52:49,980 --> 00:52:52,650
+the data to introduce
+additional training tasks that
+
+1332
+00:52:52,650 --> 00:52:55,560
+require factual knowledge
+to figure out what
+
+1333
+00:52:55,560 --> 00:52:58,060
+data was masked, for instance.
+
+1334
+00:52:58,060 --> 00:52:59,483
+So this has some
+clear advantages.
+
+1335
+00:52:59,483 --> 00:53:01,650
+It doesn't have any additional
+memory or computation
+
+1336
+00:53:01,650 --> 00:53:03,420
+requirements, you
+don't have a datastore
+
+1337
+00:53:03,420 --> 00:53:05,850
+to deal with, you don't
+have extra knowledge encoded
+
+1338
+00:53:05,850 --> 00:53:06,810
+layers to train.
+
+1339
+00:53:06,810 --> 00:53:09,552
+All you do is modify
+the training data.
+
+1340
+00:53:09,552 --> 00:53:11,760
+And you don't have to modify
+your architecture either
+
+1341
+00:53:11,760 --> 00:53:14,340
+so you can continue using
+your favorite BERT model
+
+1342
+00:53:14,340 --> 00:53:17,893
+and just make these changes
+to the training data.
+
+1343
+00:53:17,893 --> 00:53:19,560
+So the first work
+we're going to look at
+
+1344
+00:53:19,560 --> 00:53:22,040
+is called WKLM,
+Weakly Supervised
+
+1345
+00:53:22,040 --> 00:53:24,540
+Knowledge-Pretraining Language
+Model, or Pretrained Language
+
+1346
+00:53:24,540 --> 00:53:25,480
+Model.
+
+1347
+00:53:25,480 --> 00:53:27,720
+And the key idea here
+is to train the model
+
+1348
+00:53:27,720 --> 00:53:31,130
+to distinguish between
+true and false knowledge.
+
+1349
+00:53:31,130 --> 00:53:33,650
+So they're going to corrupt
+the data by replacing mentions
+
+1350
+00:53:33,650 --> 00:53:35,150
+in the text with
+mentions that refer
+
+1351
+00:53:35,150 --> 00:53:37,820
+to different entities
+of the same type
+
+1352
+00:53:37,820 --> 00:53:41,770
+to create what they refer to as
+negative knowledge statements.
+
+1353
+00:53:41,770 --> 00:53:43,360
+And then the model
+will just predict
+
+1354
+00:53:43,360 --> 00:53:47,540
+has the entity been
+replaced or corrupted.
+
+1355
+00:53:47,540 --> 00:53:50,390
+This type constraint is
+necessary to make sure that--
+
+1356
+00:53:50,390 --> 00:53:53,090
+or to encourage the model to
+actually use factual knowledge
+
+1357
+00:53:53,090 --> 00:53:55,340
+to figure out that this
+corruption is taking place.
+
+1358
+00:53:55,340 --> 00:53:56,900
+So you can imagine
+if you replace it
+
+1359
+00:53:56,900 --> 00:53:58,692
+with something that's
+not realistic at all,
+
+1360
+00:53:58,692 --> 00:54:01,340
+the model could just be basing
+its prediction based on,
+
+1361
+00:54:01,340 --> 00:54:04,530
+is this sentence
+linguistically correct?
+
+1362
+00:54:04,530 --> 00:54:06,990
+So as an example, we have
+a true knowledge statement
+
+1363
+00:54:06,990 --> 00:54:11,770
+as JK Rowling is the
+author of Harry Potter.
+
+1364
+00:54:11,770 --> 00:54:13,660
+And then we want to
+modify this to replace it
+
+1365
+00:54:13,660 --> 00:54:14,930
+with another author.
+
+1366
+00:54:14,930 --> 00:54:17,320
+So let's say we change
+this to J.R.R. Tolkien
+
+1367
+00:54:17,320 --> 00:54:19,650
+is the author of Harry Potter.
+
+1368
+00:54:19,650 --> 00:54:21,210
+So you can see
+that this requires
+
+1369
+00:54:21,210 --> 00:54:23,545
+some amount of knowledge,
+background knowledge,
+
+1370
+00:54:23,545 --> 00:54:25,920
+to actually be able to figure
+out which statement is true
+
+1371
+00:54:25,920 --> 00:54:27,162
+and which statement is false.
+
+1372
+00:54:27,162 --> 00:54:28,620
+And the idea is
+that the model will
+
+1373
+00:54:28,620 --> 00:54:31,290
+be able to predict for
+each of these mentions
+
+1374
+00:54:31,290 --> 00:54:33,420
+whether it's a true
+or false mention.
+
+1375
+00:54:33,420 --> 00:54:36,720
+
+
+1376
+00:54:36,720 --> 00:54:38,355
+So this diagram here
+is from the paper.
+
+1377
+00:54:38,355 --> 00:54:40,230
+And hopefully, it explains
+this a bit better.
+
+1378
+00:54:40,230 --> 00:54:42,090
+They have the original
+article on the left.
+
+1379
+00:54:42,090 --> 00:54:43,590
+And then they have
+the replaced article
+
+1380
+00:54:43,590 --> 00:54:45,060
+with the corruptions
+on the right,
+
+1381
+00:54:45,060 --> 00:54:47,470
+and the entities are in blue.
+
+1382
+00:54:47,470 --> 00:54:49,560
+So what they do is
+for a given entity,
+
+1383
+00:54:49,560 --> 00:54:51,120
+they first look up its type.
+
+1384
+00:54:51,120 --> 00:54:53,610
+They find other
+entities of that type,
+
+1385
+00:54:53,610 --> 00:54:56,440
+and then they randomly
+sample the entity
+
+1386
+00:54:56,440 --> 00:54:59,015
+and get an alias of it
+to replace in the text.
+
+1387
+00:54:59,015 --> 00:55:01,140
+So they're going to replace
+Stan Lee, for instance,
+
+1388
+00:55:01,140 --> 00:55:04,710
+with Bryan Johnson, and
+Marvel Comics with DC Comics.
+
+1389
+00:55:04,710 --> 00:55:08,150
+And the replacements
+are in red on the right.
+
+1390
+00:55:08,150 --> 00:55:09,890
+And then the idea
+is that the model
+
+1391
+00:55:09,890 --> 00:55:12,350
+will be able to predict
+for each of these mentions,
+
+1392
+00:55:12,350 --> 00:55:13,808
+was it replaced or not.
+
+1393
+00:55:13,808 --> 00:55:15,350
+So in the case of
+Bryan Johnson, they
+
+1394
+00:55:15,350 --> 00:55:17,870
+have the red X for this
+is a false mention.
+
+1395
+00:55:17,870 --> 00:55:19,980
+And in the case of
+the true mention,
+
+1396
+00:55:19,980 --> 00:55:22,260
+they have the checkmark.
+
+1397
+00:55:22,260 --> 00:55:23,880
+So it's a pretty
+simple approach.
+
+1398
+00:55:23,880 --> 00:55:25,560
+But they actually
+show that it can
+
+1399
+00:55:25,560 --> 00:55:28,560
+help a model increase the
+amount of knowledge that's
+
+1400
+00:55:28,560 --> 00:55:30,110
+encoded as parameters.
+
+1401
+00:55:30,110 --> 00:55:36,230
+
+
+1402
+00:55:36,230 --> 00:55:39,325
+So WKLM uses an entity
+replacement loss
+
+1403
+00:55:39,325 --> 00:55:40,700
+to train the model
+to distinguish
+
+1404
+00:55:40,700 --> 00:55:42,510
+between these true
+and false mentions.
+
+1405
+00:55:42,510 --> 00:55:45,260
+And this just looks like a
+binary classification loss
+
+1406
+00:55:45,260 --> 00:55:47,120
+where your true mentions
+are on the left,
+
+1407
+00:55:47,120 --> 00:55:49,310
+and your false mentions
+are on the right.
+
+1408
+00:55:49,310 --> 00:55:51,200
+And you want to
+increase the probability
+
+1409
+00:55:51,200 --> 00:55:55,130
+that this P of e given C, so
+the probability of entity given
+
+1410
+00:55:55,130 --> 00:55:56,600
+the context, you
+want to increase
+
+1411
+00:55:56,600 --> 00:55:59,120
+that for the true mentions
+and decrease it for the false
+
+1412
+00:55:59,120 --> 00:56:01,450
+mentions.
+
+1413
+00:56:01,450 --> 00:56:03,370
+The total loss is then
+just a combination
+
+1414
+00:56:03,370 --> 00:56:05,500
+of the masked language
+model loss and this entity
+
+1415
+00:56:05,500 --> 00:56:08,050
+replacement loss.
+
+1416
+00:56:08,050 --> 00:56:09,490
+The masked language loss--
+
+1417
+00:56:09,490 --> 00:56:12,850
+the masked language model loss
+is defined at the token level.
+
+1418
+00:56:12,850 --> 00:56:16,690
+And the entity replacement loss
+is defined at the entity level,
+
+1419
+00:56:16,690 --> 00:56:18,670
+meaning it's not
+just over subwords,
+
+1420
+00:56:18,670 --> 00:56:20,360
+it's even potentially
+over words,
+
+1421
+00:56:20,360 --> 00:56:25,000
+if you have multi-word
+entities, phrases, for instance.
+
+1422
+00:56:25,000 --> 00:56:27,820
+And this is an important
+point, or an important theme,
+
+1423
+00:56:27,820 --> 00:56:30,130
+that we really see occurring
+throughout these works
+
+1424
+00:56:30,130 --> 00:56:32,500
+that we look at
+in that modifying
+
+1425
+00:56:32,500 --> 00:56:34,330
+the data at the
+entity level seems
+
+1426
+00:56:34,330 --> 00:56:36,755
+to be an important component
+of actually increasing
+
+1427
+00:56:36,755 --> 00:56:39,130
+the amount of knowledge that
+a language model can encode.
+
+1428
+00:56:39,130 --> 00:56:42,780
+
+
+1429
+00:56:42,780 --> 00:56:46,230
+So they find that WKLM
+improves over BERT and GPT-2,
+
+1430
+00:56:46,230 --> 00:56:47,910
+in fact, completion
+tasks like the fill
+
+1431
+00:56:47,910 --> 00:56:50,730
+in the blank statements that
+we looked at the beginning.
+
+1432
+00:56:50,730 --> 00:56:53,190
+They also find that it
+improves over the ERNIE paper
+
+1433
+00:56:53,190 --> 00:56:56,150
+that we talked about
+on a downstream task.
+
+1434
+00:56:56,150 --> 00:56:58,162
+And then they had a set
+of ablation experiments
+
+1435
+00:56:58,162 --> 00:56:59,870
+where they looked at,
+can you just remove
+
+1436
+00:56:59,870 --> 00:57:02,610
+this masked language
+model off now.
+
+1437
+00:57:02,610 --> 00:57:04,770
+And if you just train
+BERT for longer,
+
+1438
+00:57:04,770 --> 00:57:07,850
+do you really need this
+entity replacement loss?
+
+1439
+00:57:07,850 --> 00:57:09,688
+So that's what the table
+here is looking at.
+
+1440
+00:57:09,688 --> 00:57:12,230
+The second row is looking at if
+we remove the masked language
+
+1441
+00:57:12,230 --> 00:57:14,160
+model loss, what happens?
+
+1442
+00:57:14,160 --> 00:57:15,650
+We see that it
+performs much worse
+
+1443
+00:57:15,650 --> 00:57:17,275
+without the masked
+language model loss.
+
+1444
+00:57:17,275 --> 00:57:19,280
+So you really need both losses.
+
+1445
+00:57:19,280 --> 00:57:21,530
+The intuition there was
+the masked language model
+
+1446
+00:57:21,530 --> 00:57:26,710
+loss helps to encode just
+general language understanding.
+
+1447
+00:57:26,710 --> 00:57:28,870
+And then training
+BERT for longer
+
+1448
+00:57:28,870 --> 00:57:31,750
+performs much worse than using
+its entity replacement loss.
+
+1449
+00:57:31,750 --> 00:57:35,050
+So that motivates even further
+that you really do need--
+
+1450
+00:57:35,050 --> 00:57:37,090
+or the entity replacement
+loss is actually
+
+1451
+00:57:37,090 --> 00:57:39,530
+really helping encode more
+knowledge in these language
+
+1452
+00:57:39,530 --> 00:57:40,030
+models.
+
+1453
+00:57:40,030 --> 00:57:43,280
+
+
+1454
+00:57:43,280 --> 00:57:44,882
+So in addition to
+corrupting the data,
+
+1455
+00:57:44,882 --> 00:57:46,340
+we're also going
+to look at, can we
+
+1456
+00:57:46,340 --> 00:57:47,810
+just mask the data differently?
+
+1457
+00:57:47,810 --> 00:57:50,710
+Can we be more clever about
+how we do the masking?
+
+1458
+00:57:50,710 --> 00:57:53,340
+And this is a thread in
+several recent works.
+
+1459
+00:57:53,340 --> 00:57:55,427
+So there's actually
+another paper called ERNIE.
+
+1460
+00:57:55,427 --> 00:57:57,760
+So this is different than the
+one I talked about before.
+
+1461
+00:57:57,760 --> 00:57:59,400
+And this is an
+Enhanced Representation
+
+1462
+00:57:59,400 --> 00:58:01,200
+through Knowledge Integration.
+
+1463
+00:58:01,200 --> 00:58:03,000
+And what they do is
+show improvements
+
+1464
+00:58:03,000 --> 00:58:06,030
+on downstream Chinese
+NLP tasks by doing
+
+1465
+00:58:06,030 --> 00:58:08,400
+phrase-level and
+entity-level masking.
+
+1466
+00:58:08,400 --> 00:58:10,590
+So instead of just
+masking out subwords,
+
+1467
+00:58:10,590 --> 00:58:12,105
+they're going to
+mask out phrases
+
+1468
+00:58:12,105 --> 00:58:13,440
+that have multiple words.
+
+1469
+00:58:13,440 --> 00:58:16,680
+And entities-- the full phrase
+of an entity which corresponds
+
+1470
+00:58:16,680 --> 00:58:17,537
+to--
+
+1471
+00:58:17,537 --> 00:58:19,245
+entity and text that
+they might find that
+
+1472
+00:58:19,245 --> 00:58:23,500
+are like NER
+techniques, for example.
+
+1473
+00:58:23,500 --> 00:58:25,240
+And then the second
+work is actually
+
+1474
+00:58:25,240 --> 00:58:27,580
+something you heard about
+in the last lecture, which
+
+1475
+00:58:27,580 --> 00:58:30,400
+is the idea of using
+salient span masking
+
+1476
+00:58:30,400 --> 00:58:32,230
+to mask out salient spans.
+
+1477
+00:58:32,230 --> 00:58:35,390
+And a salient span is just
+a named entity or a date.
+
+1478
+00:58:35,390 --> 00:58:37,960
+So you can see this is pretty
+similar to what ERNIE is doing.
+
+1479
+00:58:37,960 --> 00:58:40,510
+And they found that using
+salient span masking actually
+
+1480
+00:58:40,510 --> 00:58:42,873
+significantly helped
+T5 performance
+
+1481
+00:58:42,873 --> 00:58:45,040
+on these closed domain
+question and answering tasks.
+
+1482
+00:58:45,040 --> 00:58:48,270
+
+
+1483
+00:58:48,270 --> 00:58:50,287
+So just to make sure
+we're all on the same page
+
+1484
+00:58:50,287 --> 00:58:51,870
+with the different
+masking techniques,
+
+1485
+00:58:51,870 --> 00:58:53,610
+this diagram from
+the ERNIE paper
+
+1486
+00:58:53,610 --> 00:58:56,490
+is comparing to what BERT
+does versus what ERNIE does.
+
+1487
+00:58:56,490 --> 00:58:59,850
+The top shows that ERNIE
+masked up the subword tokens,
+
+1488
+00:58:59,850 --> 00:59:02,610
+or that BERT masked up the
+subword tokens, whereas ERNIE
+
+1489
+00:59:02,610 --> 00:59:06,000
+masked up phrases like a
+series of, as well as entities
+
+1490
+00:59:06,000 --> 00:59:06,930
+like JK Rowling.
+
+1491
+00:59:06,930 --> 00:59:10,838
+
+
+1492
+00:59:10,838 --> 00:59:13,380
+There's some interesting results
+on showing that salient span
+
+1493
+00:59:13,380 --> 00:59:16,670
+masking is helping
+encode more knowledge
+
+1494
+00:59:16,670 --> 00:59:18,590
+in these representations.
+
+1495
+00:59:18,590 --> 00:59:20,540
+So on the left, we're
+looking at the results
+
+1496
+00:59:20,540 --> 00:59:24,710
+of the original paper that
+proposed salient span masking.
+
+1497
+00:59:24,710 --> 00:59:27,080
+So this is the REALM work.
+
+1498
+00:59:27,080 --> 00:59:29,870
+And the idea here was that
+they were training a knowledge
+
+1499
+00:59:29,870 --> 00:59:30,720
+retriever.
+
+1500
+00:59:30,720 --> 00:59:33,110
+So it's actually more
+of an external memory
+
+1501
+00:59:33,110 --> 00:59:34,820
+class of techniques,
+but they find
+
+1502
+00:59:34,820 --> 00:59:38,330
+that by using the salient
+span masking technique,
+
+1503
+00:59:38,330 --> 00:59:41,010
+they could actually train a
+much better knowledge retriever.
+
+1504
+00:59:41,010 --> 00:59:44,660
+So that's a good example
+of how these techniques are
+
+1505
+00:59:44,660 --> 00:59:45,810
+really complementary.
+
+1506
+00:59:45,810 --> 00:59:47,950
+So while I presented three
+classes of techniques,
+
+1507
+00:59:47,950 --> 00:59:50,450
+you can definitely get benefits
+by doing multiple techniques
+
+1508
+00:59:50,450 --> 00:59:52,080
+together.
+
+1509
+00:59:52,080 --> 00:59:54,420
+And they found that doing
+salient span masking compared
+
+1510
+00:59:54,420 --> 00:59:56,370
+to using masking
+from BERT, which
+
+1511
+00:59:56,370 --> 00:59:58,380
+would be the random
+uniform masks,
+
+1512
+00:59:58,380 --> 01:00:03,420
+or doing random masking spans
+from a paper called SpanBERT,
+
+1513
+01:00:03,420 --> 01:00:06,750
+it performs much better to
+do salient span masking.
+
+1514
+01:00:06,750 --> 01:00:11,280
+So you see a 38 exact match
+score versus a 32 exact match
+
+1515
+01:00:11,280 --> 01:00:13,560
+score, for instance.
+
+1516
+01:00:13,560 --> 01:00:15,990
+And on the right,
+we have results
+
+1517
+01:00:15,990 --> 01:00:19,410
+from fine-tuning T5
+with either salient span
+
+1518
+01:00:19,410 --> 01:00:21,300
+masking or the span
+corruption task
+
+1519
+01:00:21,300 --> 01:00:22,890
+that you saw on assignment 5.
+
+1520
+01:00:22,890 --> 01:00:25,720
+And you can see that on
+these different QA data sets,
+
+1521
+01:00:25,720 --> 01:00:28,110
+salient span masking does
+significantly better than just
+
+1522
+01:00:28,110 --> 01:00:31,880
+using the span
+corruption technique.
+
+1523
+01:00:31,880 --> 01:00:35,740
+So this really suggests that
+doing the salient span masking
+
+1524
+01:00:35,740 --> 01:00:38,290
+and masking out these salient
+spans of these entities
+
+1525
+01:00:38,290 --> 01:00:40,780
+is, in fact, helping to
+encode more knowledge
+
+1526
+01:00:40,780 --> 01:00:42,265
+in these language models.
+
+1527
+01:00:42,265 --> 01:00:46,193
+
+
+1528
+01:00:46,193 --> 01:00:48,360
+So to recap, we talked about
+three different classes
+
+1529
+01:00:48,360 --> 01:00:51,820
+of techniques to add
+knowledge of language models.
+
+1530
+01:00:51,820 --> 01:00:54,190
+We talked about using
+pretrained entity embeddings.
+
+1531
+01:00:54,190 --> 01:00:57,640
+These weren't too difficult to
+apply to existing architectures
+
+1532
+01:00:57,640 --> 01:01:00,833
+and is a way to leverage this
+knowledge graph pretraining.
+
+1533
+01:01:00,833 --> 01:01:03,250
+But it's a rather indirect way
+of incorporating knowledge,
+
+1534
+01:01:03,250 --> 01:01:06,230
+and it could be
+hard to interpret.
+
+1535
+01:01:06,230 --> 01:01:09,920
+We also talked about approaches
+to add an external memory.
+
+1536
+01:01:09,920 --> 01:01:12,800
+This could support modifying
+the knowledge base.
+
+1537
+01:01:12,800 --> 01:01:15,290
+It was also easier to interpret.
+
+1538
+01:01:15,290 --> 01:01:17,870
+But they tended to be more
+complex in implementation
+
+1539
+01:01:17,870 --> 01:01:19,430
+like we saw in KGLM.
+
+1540
+01:01:19,430 --> 01:01:21,170
+And they also
+required more memory
+
+1541
+01:01:21,170 --> 01:01:24,085
+like we saw at the
+kNN-LM approach.
+
+1542
+01:01:24,085 --> 01:01:26,460
+And then, finally, we talked
+about modifying the training
+
+1543
+01:01:26,460 --> 01:01:27,970
+data.
+
+1544
+01:01:27,970 --> 01:01:29,730
+So this requires
+no model changes
+
+1545
+01:01:29,730 --> 01:01:31,320
+or additional computation.
+
+1546
+01:01:31,320 --> 01:01:33,930
+It also might be the easiest
+to theoretically analyze.
+
+1547
+01:01:33,930 --> 01:01:37,490
+So this is actually an active
+area of research right now.
+
+1548
+01:01:37,490 --> 01:01:40,400
+But it's still an open question
+if modifying the training data
+
+1549
+01:01:40,400 --> 01:01:42,920
+is always as effective
+as model changes
+
+1550
+01:01:42,920 --> 01:01:45,980
+and what the trade-offs are in
+terms amount of data required
+
+1551
+01:01:45,980 --> 01:01:48,680
+versus doing one of these
+other knowledge enhancement
+
+1552
+01:01:48,680 --> 01:01:49,791
+approaches.
+
+1553
+01:01:49,791 --> 01:01:52,680
+
+
+1554
+01:01:52,680 --> 01:01:55,040
+So that leads us to section 3.
+
+1555
+01:01:55,040 --> 01:01:57,080
+So I guess I'll pause
+again for questions.
+
+1556
+01:01:57,080 --> 01:02:03,070
+
+
+1557
+01:02:03,070 --> 01:02:05,000
+[INAUDIBLE] may be good.
+
+1558
+01:02:05,000 --> 01:02:05,930
+Awesome.
+
+1559
+01:02:05,930 --> 01:02:07,030
+OK.
+
+1560
+01:02:07,030 --> 01:02:09,220
+So section 3 is about how
+researchers are actually
+
+1561
+01:02:09,220 --> 01:02:12,250
+going about evaluating the
+knowledge in language models
+
+1562
+01:02:12,250 --> 01:02:14,320
+and, I guess, how
+some of the techniques
+
+1563
+01:02:14,320 --> 01:02:17,900
+we actually just talked about
+stand up in this evaluation.
+
+1564
+01:02:17,900 --> 01:02:19,720
+So first, we're going
+to talk about probes
+
+1565
+01:02:19,720 --> 01:02:22,520
+which don't require any
+fine-tuning of the language
+
+1566
+01:02:22,520 --> 01:02:23,020
+model.
+
+1567
+01:02:23,020 --> 01:02:25,395
+And then we're going to talk
+about downstream tasks which
+
+1568
+01:02:25,395 --> 01:02:28,420
+look at how well do these
+pretrained representations
+
+1569
+01:02:28,420 --> 01:02:32,750
+actually transfer their
+knowledge to other tasks.
+
+1570
+01:02:32,750 --> 01:02:35,650
+So one of the initial works
+in this area was called LAMA.
+
+1571
+01:02:35,650 --> 01:02:38,260
+And this really started
+a series of works
+
+1572
+01:02:38,260 --> 01:02:41,320
+to look into how much
+knowledge is already encoded
+
+1573
+01:02:41,320 --> 01:02:43,510
+in these language models.
+
+1574
+01:02:43,510 --> 01:02:46,270
+So their question was how
+much relational common sense
+
+1575
+01:02:46,270 --> 01:02:49,190
+and factual knowledge is in
+off-the-shelf language models?
+
+1576
+01:02:49,190 --> 01:02:51,310
+So this is just taking
+pretrained language models
+
+1577
+01:02:51,310 --> 01:02:53,868
+and evaluating the
+knowledge in them.
+
+1578
+01:02:53,868 --> 01:02:55,660
+And this is without
+any additional training
+
+1579
+01:02:55,660 --> 01:02:57,465
+or fine-tuning.
+
+1580
+01:02:57,465 --> 01:02:59,340
+So they mainly constructed
+a set of what they
+
+1581
+01:02:59,340 --> 01:03:00,840
+refer to as closed statements.
+
+1582
+01:03:00,840 --> 01:03:02,965
+And these are just the fill
+in the blank statements
+
+1583
+01:03:02,965 --> 01:03:05,298
+that we actually drew from
+at the beginning of the talk.
+
+1584
+01:03:05,298 --> 01:03:06,870
+And we have some
+more examples here.
+
+1585
+01:03:06,870 --> 01:03:10,700
+
+
+1586
+01:03:10,700 --> 01:03:12,500
+And they manually
+created these templates
+
+1587
+01:03:12,500 --> 01:03:14,810
+of closed statements using
+knowledge graph triples
+
+1588
+01:03:14,810 --> 01:03:19,120
+and question-answer pairs
+from existing data sets.
+
+1589
+01:03:19,120 --> 01:03:21,700
+They wanted to compare
+pretrained language models
+
+1590
+01:03:21,700 --> 01:03:24,010
+to supervised relation
+extraction and question
+
+1591
+01:03:24,010 --> 01:03:27,400
+and answering systems to see how
+do these language models that
+
+1592
+01:03:27,400 --> 01:03:29,560
+were trained in an
+unsupervised fashion
+
+1593
+01:03:29,560 --> 01:03:32,410
+compare to these baseline
+systems that are not
+
+1594
+01:03:32,410 --> 01:03:33,970
+only supervised
+but really targeted
+
+1595
+01:03:33,970 --> 01:03:37,410
+for this task of
+knowledge extraction
+
+1596
+01:03:37,410 --> 01:03:40,140
+And their goal was to evaluate
+the knowledge in existing
+
+1597
+01:03:40,140 --> 01:03:41,550
+pretrained language models.
+
+1598
+01:03:41,550 --> 01:03:44,430
+And a key point about
+this is they're just
+
+1599
+01:03:44,430 --> 01:03:45,810
+using the language
+models as they
+
+1600
+01:03:45,810 --> 01:03:47,252
+are available to researchers.
+
+1601
+01:03:47,252 --> 01:03:49,710
+So this means there could be
+differences in the pretraining
+
+1602
+01:03:49,710 --> 01:03:50,953
+corpora, for example.
+
+1603
+01:03:50,953 --> 01:03:52,620
+So when you look at
+the following table,
+
+1604
+01:03:52,620 --> 01:03:54,162
+and you're comparing
+language models,
+
+1605
+01:03:54,162 --> 01:03:56,610
+also keep in mind
+that these don't
+
+1606
+01:03:56,610 --> 01:04:00,505
+account for the differences
+in the pretrained corpora.
+
+1607
+01:04:00,505 --> 01:04:01,880
+So a lot of these
+language models
+
+1608
+01:04:01,880 --> 01:04:05,210
+probably look familiar to you
+either from previous lectures
+
+1609
+01:04:05,210 --> 01:04:07,250
+or maybe your final projects.
+
+1610
+01:04:07,250 --> 01:04:10,295
+And what we see is
+that overall, BERT-base
+
+1611
+01:04:10,295 --> 01:04:12,620
+and BERT-Large pretrained
+models are performing
+
+1612
+01:04:12,620 --> 01:04:16,220
+much better than the previous
+language or the other language
+
+1613
+01:04:16,220 --> 01:04:17,300
+models here.
+
+1614
+01:04:17,300 --> 01:04:20,330
+I guess I forgot to mention
+what mean precision at one is.
+
+1615
+01:04:20,330 --> 01:04:21,830
+This a pretty simple metric.
+
+1616
+01:04:21,830 --> 01:04:23,740
+The idea is if you
+look at the blank,
+
+1617
+01:04:23,740 --> 01:04:25,240
+and you look at the
+top predictions,
+
+1618
+01:04:25,240 --> 01:04:28,300
+or the top prediction, for the
+blank, is it correct or not.
+
+1619
+01:04:28,300 --> 01:04:29,780
+That's what precision
+at one means.
+
+1620
+01:04:29,780 --> 01:04:33,033
+Precision at 10 would be, let's
+look at the top 10 predictions,
+
+1621
+01:04:33,033 --> 01:04:34,700
+is the correct
+prediction in the top 10?
+
+1622
+01:04:34,700 --> 01:04:37,550
+
+
+1623
+01:04:37,550 --> 01:04:39,730
+So in addition to
+BERT-Large and BERT-base
+
+1624
+01:04:39,730 --> 01:04:44,000
+performing well overall, we do
+see that in the T-REx data set,
+
+1625
+01:04:44,000 --> 01:04:46,000
+their relation extraction
+baseline is performing
+
+1626
+01:04:46,000 --> 01:04:48,580
+a bit better than BERT.
+
+1627
+01:04:48,580 --> 01:04:50,860
+One thing they notice here
+that's pretty interesting
+
+1628
+01:04:50,860 --> 01:04:53,260
+is that this data set has
+a lot of different types
+
+1629
+01:04:53,260 --> 01:04:54,220
+of relations.
+
+1630
+01:04:54,220 --> 01:04:56,260
+And relations can be
+classified in terms of,
+
+1631
+01:04:56,260 --> 01:04:59,860
+are they one-to-one relation,
+are they n-to-one relation,
+
+1632
+01:04:59,860 --> 01:05:01,930
+are they n-to-n relation?
+
+1633
+01:05:01,930 --> 01:05:04,180
+An example of a
+one-to-one relation
+
+1634
+01:05:04,180 --> 01:05:06,160
+would be your
+student ID relation.
+
+1635
+01:05:06,160 --> 01:05:08,440
+So you have a unique student ID.
+
+1636
+01:05:08,440 --> 01:05:13,030
+An example of an n-to-n would
+be the enrolled in relation.
+
+1637
+01:05:13,030 --> 01:05:15,460
+So there's lots of students
+enrolled in lots of classes.
+
+1638
+01:05:15,460 --> 01:05:17,333
+So this would be
+an n-to-n relation.
+
+1639
+01:05:17,333 --> 01:05:19,000
+And they find that
+BERT really struggles
+
+1640
+01:05:19,000 --> 01:05:21,760
+on these n-to-n relations.
+
+1641
+01:05:21,760 --> 01:05:24,520
+So while it performs better than
+relation extraction baseline
+
+1642
+01:05:24,520 --> 01:05:26,740
+on some types of
+relations, overall, it
+
+1643
+01:05:26,740 --> 01:05:28,900
+does pretty terribly on
+these n-to-n relations.
+
+1644
+01:05:28,900 --> 01:05:31,240
+So overall, it does a bit
+worse than the baseline
+
+1645
+01:05:31,240 --> 01:05:33,720
+on this T-REx data set.
+
+1646
+01:05:33,720 --> 01:05:36,690
+They also compared
+to SQuAD on DrQA.
+
+1647
+01:05:36,690 --> 01:05:39,660
+And they find that it
+does a fair amount worse.
+
+1648
+01:05:39,660 --> 01:05:42,060
+They note that the language
+model is not fine-tuned here.
+
+1649
+01:05:42,060 --> 01:05:45,412
+And also, it has no access to
+an information retrieval system.
+
+1650
+01:05:45,412 --> 01:05:47,370
+And then when they look
+at the precision at 10,
+
+1651
+01:05:47,370 --> 01:05:50,820
+they find that this gap between
+DrQA's performance and BERT
+
+1652
+01:05:50,820 --> 01:05:52,980
+actually closes
+quite a bit, which
+
+1653
+01:05:52,980 --> 01:05:55,260
+suggests that these
+language models do have
+
+1654
+01:05:55,260 --> 01:05:57,270
+some amount of knowledge
+encoded in them
+
+1655
+01:05:57,270 --> 01:05:59,820
+and that they're
+even competitive
+
+1656
+01:05:59,820 --> 01:06:02,790
+with these knowledge extraction
+supervised baselines.
+
+1657
+01:06:02,790 --> 01:06:06,400
+
+
+1658
+01:06:06,400 --> 01:06:09,010
+So you can also try out
+examples on their GitHub repo
+
+1659
+01:06:09,010 --> 01:06:10,630
+for the LAMA probe.
+
+1660
+01:06:10,630 --> 01:06:13,270
+We have an example that was
+from their repo that was,
+
+1661
+01:06:13,270 --> 01:06:14,920
+the cat is on the mask.
+
+1662
+01:06:14,920 --> 01:06:18,040
+You can see what the top
+10 predictions are to fill
+
+1663
+01:06:18,040 --> 01:06:19,240
+in the closed statement.
+
+1664
+01:06:19,240 --> 01:06:22,360
+Here, they have the
+cat is on the phone.
+
+1665
+01:06:22,360 --> 01:06:24,520
+So this can be a fun
+way to figure out
+
+1666
+01:06:24,520 --> 01:06:26,560
+what factual and
+common sense knowledge
+
+1667
+01:06:26,560 --> 01:06:28,660
+is in existing language models.
+
+1668
+01:06:28,660 --> 01:06:33,470
+And it's pretty easy to use
+with this interactive prompt.
+
+1669
+01:06:33,470 --> 01:06:35,408
+So some limitations
+of the LAMA probe
+
+1670
+01:06:35,408 --> 01:06:36,950
+are that it can be
+hard to understand
+
+1671
+01:06:36,950 --> 01:06:40,310
+why the models performed
+well when they do.
+
+1672
+01:06:40,310 --> 01:06:43,520
+So for instance, BERT might
+just be the most popular token,
+
+1673
+01:06:43,520 --> 01:06:44,990
+and this happens to be right.
+
+1674
+01:06:44,990 --> 01:06:47,120
+Maybe it's just memorizing
+co-occurrence patterns
+
+1675
+01:06:47,120 --> 01:06:50,540
+and doesn't really understand
+the knowledge statement
+
+1676
+01:06:50,540 --> 01:06:54,480
+and doesn't understand
+what the fact is.
+
+1677
+01:06:54,480 --> 01:06:55,860
+It might also just
+be identifying
+
+1678
+01:06:55,860 --> 01:06:58,380
+similarities between
+surface forms of the subject
+
+1679
+01:06:58,380 --> 01:06:59,340
+and object.
+
+1680
+01:06:59,340 --> 01:07:00,750
+So for instance,
+in this example,
+
+1681
+01:07:00,750 --> 01:07:04,320
+Pope Clement VII has
+a position of blank.
+
+1682
+01:07:04,320 --> 01:07:06,902
+Even if you don't know anything
+about Pope Clement VII,
+
+1683
+01:07:06,902 --> 01:07:08,610
+you might be able to
+figure out that Pope
+
+1684
+01:07:08,610 --> 01:07:15,180
+is the likely next word for this
+triple, or for this template.
+
+1685
+01:07:15,180 --> 01:07:17,300
+So the problem with this
+is if the model is just
+
+1686
+01:07:17,300 --> 01:07:19,310
+making these predictions
+based on these surface
+
+1687
+01:07:19,310 --> 01:07:22,073
+forms or co-occurrence
+patterns, it's
+
+1688
+01:07:22,073 --> 01:07:23,990
+difficult to know if
+we're actually evaluating
+
+1689
+01:07:23,990 --> 01:07:25,115
+the knowledge in the model.
+
+1690
+01:07:25,115 --> 01:07:29,542
+Maybe it's just making correct
+predictions for other reasons.
+
+1691
+01:07:29,542 --> 01:07:31,500
+And the more subtle issue
+that we've brought up
+
+1692
+01:07:31,500 --> 01:07:33,042
+is that language
+models might be just
+
+1693
+01:07:33,042 --> 01:07:35,440
+be sensitive to the
+phrasing of the statement.
+
+1694
+01:07:35,440 --> 01:07:39,000
+So for each triple in their
+data set, or for each relation
+
+1695
+01:07:39,000 --> 01:07:41,872
+their data set, they just had
+one mainly defined template.
+
+1696
+01:07:41,872 --> 01:07:43,830
+And qualitatively, they
+found that if they just
+
+1697
+01:07:43,830 --> 01:07:45,690
+make small changes
+to this template,
+
+1698
+01:07:45,690 --> 01:07:48,480
+it could actually change whether
+or not the model could recall
+
+1699
+01:07:48,480 --> 01:07:51,023
+the correct prediction or not.
+
+1700
+01:07:51,023 --> 01:07:52,690
+And so this means
+that the probe results
+
+1701
+01:07:52,690 --> 01:07:55,060
+are really a lower bound
+on the knowledge that's
+
+1702
+01:07:55,060 --> 01:07:57,730
+encoded in the language model.
+
+1703
+01:07:57,730 --> 01:07:59,230
+So if you change
+your phrasing, it's
+
+1704
+01:07:59,230 --> 01:08:01,600
+possible that the model
+might show that actually, it
+
+1705
+01:08:01,600 --> 01:08:04,480
+does have the knowledge
+encoded in it.
+
+1706
+01:08:04,480 --> 01:08:07,060
+So the next lines of
+work we'll talk about
+
+1707
+01:08:07,060 --> 01:08:08,950
+are really building on
+these two limitations
+
+1708
+01:08:08,950 --> 01:08:12,480
+of this original LAMA probe.
+
+1709
+01:08:12,480 --> 01:08:15,300
+So the first one is called
+LAMA-UHN, or LAMA-Unhelpful
+
+1710
+01:08:15,300 --> 01:08:16,140
+Names.
+
+1711
+01:08:16,140 --> 01:08:18,520
+And the key idea is to
+remove these examples
+
+1712
+01:08:18,520 --> 01:08:20,728
+from LAMA that can be answered
+without the relational
+
+1713
+01:08:20,729 --> 01:08:21,390
+knowledge.
+
+1714
+01:08:21,390 --> 01:08:23,399
+So this is just addressing
+the first limitation
+
+1715
+01:08:23,399 --> 01:08:25,540
+on the left side.
+
+1716
+01:08:25,540 --> 01:08:27,910
+So they observed that BERT
+relies on the surface forms
+
+1717
+01:08:27,910 --> 01:08:29,890
+entities, might not
+be using knowledge
+
+1718
+01:08:29,890 --> 01:08:31,359
+to make these predictions.
+
+1719
+01:08:31,359 --> 01:08:33,100
+This includes a
+string match situation
+
+1720
+01:08:33,100 --> 01:08:35,470
+that we talked
+about with the pope.
+
+1721
+01:08:35,470 --> 01:08:38,649
+This also is dealing with the
+revealing person name issue
+
+1722
+01:08:38,649 --> 01:08:40,652
+that you saw on assignment 5.
+
+1723
+01:08:40,652 --> 01:08:42,069
+So this is where
+the name could be
+
+1724
+01:08:42,069 --> 01:08:44,020
+an incorrect prior
+for the native
+
+1725
+01:08:44,020 --> 01:08:47,687
+language of someone, their place
+of birth, their nationality.
+
+1726
+01:08:47,687 --> 01:08:49,270
+They have this example
+from the table,
+
+1727
+01:08:49,270 --> 01:08:51,970
+or from the paper, where they
+looked at different people
+
+1728
+01:08:51,970 --> 01:08:53,979
+names or person's
+names, and then they
+
+1729
+01:08:53,979 --> 01:08:56,390
+looked at BERT's prediction
+for their native language.
+
+1730
+01:08:56,390 --> 01:08:58,420
+And these are all
+French-speaking actors.
+
+1731
+01:08:58,420 --> 01:09:01,630
+And BERT just predicts very
+biased and stereotypical
+
+1732
+01:09:01,630 --> 01:09:04,670
+languages for these
+particular names.
+
+1733
+01:09:04,670 --> 01:09:06,292
+So this can really
+work both ways.
+
+1734
+01:09:06,292 --> 01:09:08,625
+It can lead BERT to make
+incorrect predictions sometimes
+
+1735
+01:09:08,625 --> 01:09:10,189
+or in some cases.
+
+1736
+01:09:10,189 --> 01:09:12,439
+But it could also work
+to make-- or to let
+
+1737
+01:09:12,439 --> 01:09:14,120
+BERT make correct
+predictions, even
+
+1738
+01:09:14,120 --> 01:09:16,187
+if it has no factual
+knowledge of those people.
+
+1739
+01:09:16,187 --> 01:09:18,229
+So that's the issue they're
+trying to get at here
+
+1740
+01:09:18,229 --> 01:09:20,479
+is do we know that BERT
+actually knows this fact,
+
+1741
+01:09:20,479 --> 01:09:24,154
+or is it just using some
+bias to make its prediction?
+
+1742
+01:09:24,154 --> 01:09:25,529
+So what they do
+is they introduce
+
+1743
+01:09:25,529 --> 01:09:27,720
+a couple of heuristics to
+basically just filter out
+
+1744
+01:09:27,720 --> 01:09:30,960
+these examples from the
+LAMA probe that can either
+
+1745
+01:09:30,960 --> 01:09:32,640
+be solved by the
+string match setting
+
+1746
+01:09:32,640 --> 01:09:35,250
+or this revealing
+person name setting.
+
+1747
+01:09:35,250 --> 01:09:39,520
+So they make a harder subset
+of the data set, essentially.
+
+1748
+01:09:39,520 --> 01:09:42,279
+They find that when they test
+BERT on this harder subset,
+
+1749
+01:09:42,279 --> 01:09:44,603
+that its performance
+drops about 8%.
+
+1750
+01:09:44,603 --> 01:09:46,020
+But when they test
+their knowledge
+
+1751
+01:09:46,020 --> 01:09:47,937
+on the enhanced model,
+which they call E-BERT,
+
+1752
+01:09:47,937 --> 01:09:50,390
+the score only drops about 1%.
+
+1753
+01:09:50,390 --> 01:09:53,188
+So it's possible that as you
+make harder knowledge probes,
+
+1754
+01:09:53,188 --> 01:09:55,730
+we'll actually see even bigger
+differences in the performance
+
+1755
+01:09:55,730 --> 01:09:58,970
+of knowledge-enhanced models to
+models without these knowledge
+
+1756
+01:09:58,970 --> 01:09:59,750
+enhancements.
+
+1757
+01:09:59,750 --> 01:10:02,605
+
+
+1758
+01:10:02,605 --> 01:10:04,730
+The next piece of work
+we'll talk about is actually
+
+1759
+01:10:04,730 --> 01:10:10,490
+getting at this issue of
+the phrasing of the prompt
+
+1760
+01:10:10,490 --> 01:10:12,650
+might actually trigger
+different responses
+
+1761
+01:10:12,650 --> 01:10:13,750
+from the language model.
+
+1762
+01:10:13,750 --> 01:10:15,500
+So the language model
+might know the fact,
+
+1763
+01:10:15,500 --> 01:10:18,942
+but it might fail on the
+task due to the phrasing.
+
+1764
+01:10:18,942 --> 01:10:20,900
+One reason this might
+happen is the pretraining
+
+1765
+01:10:20,900 --> 01:10:22,970
+is on different
+contexts and sentence
+
+1766
+01:10:22,970 --> 01:10:24,630
+structures in the query.
+
+1767
+01:10:24,630 --> 01:10:27,350
+So for example, you might have
+in your pretraining corpus,
+
+1768
+01:10:27,350 --> 01:10:29,795
+the birthplace of Barack
+Obama is Honolulu, Hawaii.
+
+1769
+01:10:29,795 --> 01:10:32,420
+And this might be something you
+see in Wikipedia, for instance.
+
+1770
+01:10:32,420 --> 01:10:34,770
+That's a common
+training data set.
+
+1771
+01:10:34,770 --> 01:10:36,330
+And then as a
+researcher, you write,
+
+1772
+01:10:36,330 --> 01:10:37,635
+Barack Obama was born in blank.
+
+1773
+01:10:37,635 --> 01:10:39,510
+And you can see that
+this sentence structures
+
+1774
+01:10:39,510 --> 01:10:40,870
+are pretty different.
+
+1775
+01:10:40,870 --> 01:10:42,768
+So the model might have
+seen the first fact.
+
+1776
+01:10:42,768 --> 01:10:44,310
+But the sentence
+structure difference
+
+1777
+01:10:44,310 --> 01:10:49,198
+is actually enough to confuse it
+so it can't answer this query.
+
+1778
+01:10:49,198 --> 01:10:50,990
+So what they do is they
+generate a lot more
+
+1779
+01:10:50,990 --> 01:10:53,732
+of these prompts by mining
+templates from Wikipedia.
+
+1780
+01:10:53,732 --> 01:10:55,190
+One of the techniques
+actually uses
+
+1781
+01:10:55,190 --> 01:10:58,850
+dependency parsing and also
+generating paraphrase prompts
+
+1782
+01:10:58,850 --> 01:11:03,200
+by taking inspiration from the
+machine translation literature
+
+1783
+01:11:03,200 --> 01:11:05,100
+and using back translation.
+
+1784
+01:11:05,100 --> 01:11:06,773
+So you generate a
+lot more prompts
+
+1785
+01:11:06,773 --> 01:11:08,690
+to try to query the
+language models and figure
+
+1786
+01:11:08,690 --> 01:11:11,390
+out do small variations
+in the prompt trigger
+
+1787
+01:11:11,390 --> 01:11:14,740
+the correct prediction
+from the language model.
+
+1788
+01:11:14,740 --> 01:11:16,690
+They also experimented
+ensembling prompts.
+
+1789
+01:11:16,690 --> 01:11:18,880
+So if we give the model
+multiple prompts and then
+
+1790
+01:11:18,880 --> 01:11:23,410
+take some probability averaged
+over these different prompts,
+
+1791
+01:11:23,410 --> 01:11:25,630
+can we improve the performance
+on the model returning
+
+1792
+01:11:25,630 --> 01:11:26,690
+the correct prediction?
+
+1793
+01:11:26,690 --> 01:11:28,780
+So we give it a higher
+chance of seeing a context
+
+1794
+01:11:28,780 --> 01:11:32,620
+that it might have actually
+seen during pretraining.
+
+1795
+01:11:32,620 --> 01:11:34,450
+They find that the
+performance on LAMA
+
+1796
+01:11:34,450 --> 01:11:37,600
+increases when they either
+use a top performing prompt
+
+1797
+01:11:37,600 --> 01:11:39,613
+or when they use this
+ensembling approach.
+
+1798
+01:11:39,613 --> 01:11:41,530
+So this suggests that
+the original LAMA really
+
+1799
+01:11:41,530 --> 01:11:44,050
+was a lower bound on the
+amount of knowledge encoded
+
+1800
+01:11:44,050 --> 01:11:45,460
+in these language models.
+
+1801
+01:11:45,460 --> 01:11:48,160
+And changing the
+phrasing can actually
+
+1802
+01:11:48,160 --> 01:11:52,678
+help the model recall
+the correct answer.
+
+1803
+01:11:52,678 --> 01:11:53,970
+This table's a bit frightening.
+
+1804
+01:11:53,970 --> 01:11:56,160
+But they find that small
+changes in the query
+
+1805
+01:11:56,160 --> 01:11:58,870
+can lead to really large
+gains on performance.
+
+1806
+01:11:58,870 --> 01:12:02,430
+So if you just have a query
+like x plays in y position,
+
+1807
+01:12:02,430 --> 01:12:05,250
+and then you change that
+to x plays that y position,
+
+1808
+01:12:05,250 --> 01:12:07,770
+this can actually lead
+to a 23% accuracy gain
+
+1809
+01:12:07,770 --> 01:12:10,500
+on this particular relation
+in terms of the model
+
+1810
+01:12:10,500 --> 01:12:13,440
+actually being able to
+call the correct answer.
+
+1811
+01:12:13,440 --> 01:12:19,660
+Or even just x was created in y
+to x is created in y, 10% gain.
+
+1812
+01:12:19,660 --> 01:12:22,710
+So I think this motivates a need
+to not only develop better ways
+
+1813
+01:12:22,710 --> 01:12:24,787
+to query these models
+but probably also build
+
+1814
+01:12:24,787 --> 01:12:26,370
+language models that
+are actually more
+
+1815
+01:12:26,370 --> 01:12:27,715
+robust to the query itself.
+
+1816
+01:12:27,715 --> 01:12:31,580
+
+
+1817
+01:12:31,580 --> 01:12:33,610
+So in addition to
+probes, another way
+
+1818
+01:12:33,610 --> 01:12:35,020
+to evaluate these
+language models
+
+1819
+01:12:35,020 --> 01:12:37,720
+is by looking at how
+well they transfer
+
+1820
+01:12:37,720 --> 01:12:39,430
+from the pretrained
+representation
+
+1821
+01:12:39,430 --> 01:12:41,865
+to downstream tasks.
+
+1822
+01:12:41,865 --> 01:12:43,490
+And so the idea here
+is you're actually
+
+1823
+01:12:43,490 --> 01:12:45,500
+going to fine-tune the
+pretrained representation
+
+1824
+01:12:45,500 --> 01:12:47,900
+on different downstream tasks
+similar to how you would
+
+1825
+01:12:47,900 --> 01:12:51,530
+evaluate BERT on GLUE tasks.
+
+1826
+01:12:51,530 --> 01:12:53,330
+So common tasks that
+are used for this
+
+1827
+01:12:53,330 --> 01:12:56,330
+are relation extraction,
+entity typing,
+
+1828
+01:12:56,330 --> 01:12:57,578
+and question and answering.
+
+1829
+01:12:57,578 --> 01:12:59,120
+Relation extraction
+is where you want
+
+1830
+01:12:59,120 --> 01:13:01,448
+to predict the relation
+between two entities.
+
+1831
+01:13:01,448 --> 01:13:03,740
+So this is getting back at
+one of the questions earlier
+
+1832
+01:13:03,740 --> 01:13:05,157
+in the talk in
+terms of, well, how
+
+1833
+01:13:05,157 --> 01:13:07,740
+do you get the relation that's
+in the edges in these knowledge
+
+1834
+01:13:07,740 --> 01:13:08,280
+bases.
+
+1835
+01:13:08,280 --> 01:13:08,780
+So
+
+1836
+01:13:08,780 --> 01:13:10,430
+Given two entities,
+you learn a model
+
+1837
+01:13:10,430 --> 01:13:13,040
+to predict what is the
+relation between then.
+
+1838
+01:13:13,040 --> 01:13:14,660
+Entity typing is
+the task of given
+
+1839
+01:13:14,660 --> 01:13:16,638
+an entity, what is the
+type of the entity.
+
+1840
+01:13:16,638 --> 01:13:17,930
+So here, Alice robbed the bank.
+
+1841
+01:13:17,930 --> 01:13:19,910
+You want to predict
+here as a criminal.
+
+1842
+01:13:19,910 --> 01:13:22,035
+And then, you guys, are
+very familiar with question
+
+1843
+01:13:22,035 --> 01:13:23,370
+and answering.
+
+1844
+01:13:23,370 --> 01:13:25,863
+So the idea of these
+common-- of these tasks,
+
+1845
+01:13:25,863 --> 01:13:27,780
+is that they're knowledge
+intensive so they're
+
+1846
+01:13:27,780 --> 01:13:29,440
+good candidates
+to see how do all
+
+1847
+01:13:29,440 --> 01:13:30,990
+of these pretrained
+representations
+
+1848
+01:13:30,990 --> 01:13:33,407
+actually transfer the knowledge
+to these downstream tasks.
+
+1849
+01:13:33,407 --> 01:13:36,380
+
+
+1850
+01:13:36,380 --> 01:13:38,810
+Here we look at the performance
+on a relation extraction
+
+1851
+01:13:38,810 --> 01:13:40,430
+benchmark called TACRED.
+
+1852
+01:13:40,430 --> 01:13:43,430
+And all the models that we
+show here were at one point,
+
+1853
+01:13:43,430 --> 01:13:45,270
+state-of-the-art on TACRED.
+
+1854
+01:13:45,270 --> 01:13:49,190
+So this C-GCN is a graph
+convolutional neural network
+
+1855
+01:13:49,190 --> 01:13:50,600
+over dependency trees.
+
+1856
+01:13:50,600 --> 01:13:54,385
+The BERT-LSTM-base is ONE of
+the first works that showed that
+
+1857
+01:13:54,385 --> 01:13:56,510
+you could actually get
+state-of-the-art performance
+
+1858
+01:13:56,510 --> 01:13:58,490
+with BERT on
+relation extraction.
+
+1859
+01:13:58,490 --> 01:14:01,557
+And this is just putting LSTM
+layer over BERT's output.
+
+1860
+01:14:01,557 --> 01:14:03,140
+ERNIE is the work
+that we talked about
+
+1861
+01:14:03,140 --> 01:14:05,277
+with the pretrained
+entity embeddings.
+
+1862
+01:14:05,277 --> 01:14:07,110
+Matching the Blanks,
+we didn't get to today.
+
+1863
+01:14:07,110 --> 01:14:08,527
+But it's a really
+interesting work
+
+1864
+01:14:08,527 --> 01:14:11,210
+about learning meaningful
+relational representations.
+
+1865
+01:14:11,210 --> 01:14:14,600
+And it falls more into the
+training data modification
+
+1866
+01:14:14,600 --> 01:14:16,370
+approaches and that
+they are actually
+
+1867
+01:14:16,370 --> 01:14:18,940
+masking out entities again.
+
+1868
+01:14:18,940 --> 01:14:21,745
+And then KnowBERT is
+what we talked about.
+
+1869
+01:14:21,745 --> 01:14:24,910
+The W and W here means they
+actually encode two knowledge
+
+1870
+01:14:24,910 --> 01:14:25,763
+bases in KnowBERT.
+
+1871
+01:14:25,763 --> 01:14:27,680
+So they're encoding BERT
+Net, and they're also
+
+1872
+01:14:27,680 --> 01:14:30,040
+encoding Wikipedia.
+
+1873
+01:14:30,040 --> 01:14:32,800
+And the high level takeaway from
+this table is that you can see
+
+1874
+01:14:32,800 --> 01:14:35,680
+that the recent knowledge
+enhanced models have achieved
+
+1875
+01:14:35,680 --> 01:14:38,830
+state-of-the-art over the
+original models that once
+
+1876
+01:14:38,830 --> 01:14:40,190
+performed very well on TACRED.
+
+1877
+01:14:40,190 --> 01:14:43,627
+And we have about
+five F1 gains here.
+
+1878
+01:14:43,627 --> 01:14:45,460
+Another interesting
+takeaway from this table
+
+1879
+01:14:45,460 --> 01:14:47,960
+is there seems to be a trade-off
+in the size of the language
+
+1880
+01:14:47,960 --> 01:14:50,930
+model that's necessary to
+get a certain performance.
+
+1881
+01:14:50,930 --> 01:14:53,290
+So if you just consider the
+size of the language model,
+
+1882
+01:14:53,290 --> 01:14:55,100
+then KnowBERT performs the best.
+
+1883
+01:14:55,100 --> 01:14:57,700
+But if you don't
+consider that, then it
+
+1884
+01:14:57,700 --> 01:15:00,730
+ties with Matching the Blanks.
+
+1885
+01:15:00,730 --> 01:15:02,650
+So overall, this is
+pretty good evidence
+
+1886
+01:15:02,650 --> 01:15:05,410
+that these knowledge-enhanced
+methods are, in fact,
+
+1887
+01:15:05,410 --> 01:15:07,660
+transferring to these
+knowledge-intensive downstream
+
+1888
+01:15:07,660 --> 01:15:10,090
+tasks that can
+really take advantage
+
+1889
+01:15:10,090 --> 01:15:14,140
+of these pretrained
+representations.
+
+1890
+01:15:14,140 --> 01:15:15,770
+We also have results
+on entity typing.
+
+1891
+01:15:15,770 --> 01:15:17,770
+So here we're comparing
+a slightly different set
+
+1892
+01:15:17,770 --> 01:15:18,790
+of models.
+
+1893
+01:15:18,790 --> 01:15:20,830
+Some of the baselines
+are LSTM models
+
+1894
+01:15:20,830 --> 01:15:22,690
+that were designed
+for entity typing.
+
+1895
+01:15:22,690 --> 01:15:27,080
+And we have ERNIE and
+KnowBERT leading the, I guess,
+
+1896
+01:15:27,080 --> 01:15:30,640
+leaderboard here on the entity
+typing task of open entity.
+
+1897
+01:15:30,640 --> 01:15:34,510
+And we see gains of about 15 F1
+points with ERNIE and KnowBERT.
+
+1898
+01:15:34,510 --> 01:15:37,060
+So once again, we
+really do see that
+
+1899
+01:15:37,060 --> 01:15:39,280
+these knowledge-rich
+pretrained representations are
+
+1900
+01:15:39,280 --> 01:15:41,572
+transferring and helping on
+these knowledge-intensive
+
+1901
+01:15:41,572 --> 01:15:42,280
+downstream tasks.
+
+1902
+01:15:42,280 --> 01:15:45,820
+
+
+1903
+01:15:45,820 --> 01:15:48,130
+So just to recap, we
+talked about probes
+
+1904
+01:15:48,130 --> 01:15:50,530
+which evaluate the knowledge
+already present in models.
+
+1905
+01:15:50,530 --> 01:15:52,718
+These don't require
+any more training.
+
+1906
+01:15:52,718 --> 01:15:54,760
+But it can be challenging
+to construct benchmarks
+
+1907
+01:15:54,760 --> 01:15:56,950
+to actually make
+sure you're testing
+
+1908
+01:15:56,950 --> 01:15:58,595
+the knowledge in
+these language models.
+
+1909
+01:15:58,595 --> 01:16:00,220
+It can also be
+challenging to construct
+
+1910
+01:16:00,220 --> 01:16:02,980
+the queries using the probe.
+
+1911
+01:16:02,980 --> 01:16:05,057
+We then talked about
+downstream tasks.
+
+1912
+01:16:05,057 --> 01:16:07,390
+These are a bit of an indirect
+way to evaluate knowledge
+
+1913
+01:16:07,390 --> 01:16:09,800
+and that they have this extra
+component of fine-tuning.
+
+1914
+01:16:09,800 --> 01:16:11,410
+But it's a good
+way to evaluate how
+
+1915
+01:16:11,410 --> 01:16:14,500
+useful is this knowledge-rich
+pretrained representation
+
+1916
+01:16:14,500 --> 01:16:15,790
+in actual applications.
+
+1917
+01:16:15,790 --> 01:16:18,820
+
+
+1918
+01:16:18,820 --> 01:16:22,090
+So I just touched on the
+exciting work in this area,
+
+1919
+01:16:22,090 --> 01:16:23,680
+but there's many
+other directions
+
+1920
+01:16:23,680 --> 01:16:25,630
+if you want to dive
+more into this.
+
+1921
+01:16:25,630 --> 01:16:27,580
+So there's retrieval-augmented
+language models
+
+1922
+01:16:27,580 --> 01:16:30,580
+which learn knowledge
+retrievers to figure out
+
+1923
+01:16:30,580 --> 01:16:33,790
+what documents might be relevant
+for predicting the next word.
+
+1924
+01:16:33,790 --> 01:16:36,765
+There's work in modifying the
+knowledge in language models.
+
+1925
+01:16:36,765 --> 01:16:38,140
+So I talked about
+how this is one
+
+1926
+01:16:38,140 --> 01:16:41,140
+of the obstacles and
+challenges to using language
+
+1927
+01:16:41,140 --> 01:16:42,910
+models as knowledge bases.
+
+1928
+01:16:42,910 --> 01:16:45,290
+So there's been recent
+work in this area.
+
+1929
+01:16:45,290 --> 01:16:48,675
+We also saw how important the
+knowledge pretraining task was.
+
+1930
+01:16:48,675 --> 01:16:50,050
+Although there's
+many papers that
+
+1931
+01:16:50,050 --> 01:16:53,285
+are proposing different tasks
+to do the knowledge pretraining,
+
+1932
+01:16:53,285 --> 01:16:54,910
+so it's still an open
+question in terms
+
+1933
+01:16:54,910 --> 01:16:59,320
+of what tasks are best to
+add to encode more knowledge.
+
+1934
+01:16:59,320 --> 01:17:02,140
+There's also been work on more
+efficient knowledge systems,
+
+1935
+01:17:02,140 --> 01:17:04,660
+so at NeuIPRS
+efficient QA challenge
+
+1936
+01:17:04,660 --> 01:17:07,642
+which aims at building
+the smallest QA system.
+
+1937
+01:17:07,642 --> 01:17:09,100
+And then finally,
+there's been work
+
+1938
+01:17:09,100 --> 01:17:10,990
+on building better
+knowledge benchmarks that
+
+1939
+01:17:10,990 --> 01:17:13,440
+build on the benchmarks
+that we saw today.
+
+1940
+01:17:13,440 --> 01:17:15,950
+
+
+1941
+01:17:15,950 --> 01:17:17,270
+So that's all I have for today.
+
+1942
+01:17:17,270 --> 01:17:20,530
+And I hope your final
+projects are going well.
+
+1943
+01:17:20,530 --> 01:17:25,000
+
+

@@ -1,0 +1,8082 @@
+1
+00:00:00,000 --> 00:00:05,510
+
+
+2
+00:00:05,510 --> 00:00:06,510
+Hi, everybody.
+
+3
+00:00:06,510 --> 00:00:13,100
+Welcome back to CS224N but first
+just a couple of announcements.
+
+4
+00:00:13,100 --> 00:00:15,920
+Originally this was going to be
+the day when assignment 5 was
+
+5
+00:00:15,920 --> 00:00:19,250
+due, but as you've seen
+we're giving you one
+
+6
+00:00:19,250 --> 00:00:22,790
+extra day so it's now
+due Friday at 4:30.
+
+7
+00:00:22,790 --> 00:00:25,400
+We do realize that
+assignment 5 has
+
+8
+00:00:25,400 --> 00:00:28,340
+been a bit of a tough
+challenge for many people,
+
+9
+00:00:28,340 --> 00:00:31,550
+that we've been trying to help
+people out of office hours
+
+10
+00:00:31,550 --> 00:00:32,299
+and otherwise.
+
+11
+00:00:32,299 --> 00:00:33,980
+So I hope at the
+end of the day it
+
+12
+00:00:33,980 --> 00:00:37,220
+will seem like it was a really
+good learning experience
+
+13
+00:00:37,220 --> 00:00:40,730
+to really get some much
+more kind of close hands
+
+14
+00:00:40,730 --> 00:00:42,920
+on look at how
+transformers work,
+
+15
+00:00:42,920 --> 00:00:46,220
+rather than simply being
+loading up a transformers
+
+16
+00:00:46,220 --> 00:00:49,760
+as a black mystery box.
+
+17
+00:00:49,760 --> 00:00:54,740
+After Friday, I guess there's
+no rest since we do really
+
+18
+00:00:54,740 --> 00:00:56,750
+hope that you can
+sort of basically
+
+19
+00:00:56,750 --> 00:01:00,200
+immediately transition to
+working on final projects
+
+20
+00:01:00,200 --> 00:01:03,470
+since there's basically four
+weeks to go on final projects.
+
+21
+00:01:03,470 --> 00:01:07,580
+And in particular, we're hoping
+to get feedback on your project
+
+22
+00:01:07,580 --> 00:01:12,050
+proposals back by next Tuesday
+to help that process along
+
+23
+00:01:12,050 --> 00:01:16,280
+with people, we have to
+get started on them soon.
+
+24
+00:01:16,280 --> 00:01:21,710
+And it's just
+maybe a good moment
+
+25
+00:01:21,710 --> 00:01:23,840
+to say that we do
+really appreciate
+
+26
+00:01:23,840 --> 00:01:27,050
+all the people putting tons of
+effort into these assignments.
+
+27
+00:01:27,050 --> 00:01:30,290
+And we like that
+several of the keenness
+
+28
+00:01:30,290 --> 00:01:32,000
+we're seeing from the students.
+
+29
+00:01:32,000 --> 00:01:32,540
+OK.
+
+30
+00:01:32,540 --> 00:01:36,080
+So with that out of
+the way, today I'm
+
+31
+00:01:36,080 --> 00:01:39,830
+delighted to have giving today's
+lecture on neural language
+
+32
+00:01:39,830 --> 00:01:42,290
+generation Antoine
+Bosselut who is
+
+33
+00:01:42,290 --> 00:01:44,720
+at present a
+postdoc at Stanford.
+
+34
+00:01:44,720 --> 00:01:46,520
+He's someone who's
+done a lot of work
+
+35
+00:01:46,520 --> 00:01:50,930
+on natural language generation
+in his previous life
+
+36
+00:01:50,930 --> 00:01:54,170
+as a University of
+Washington PhD student.
+
+37
+00:01:54,170 --> 00:01:57,380
+And next year he's
+going to be taking up
+
+38
+00:01:57,380 --> 00:02:00,690
+a position as a
+professor in Switzerland.
+
+39
+00:02:00,690 --> 00:02:01,190
+OK.
+
+40
+00:02:01,190 --> 00:02:03,860
+So welcome, Antoine.
+
+41
+00:02:03,860 --> 00:02:08,850
+Thanks Chris, that's a
+very kind introduction.
+
+42
+00:02:08,850 --> 00:02:15,050
+It's great to be here giving
+this lecture in CS224N.
+
+43
+00:02:15,050 --> 00:02:18,380
+Particularly on one
+of my favorite topics
+
+44
+00:02:18,380 --> 00:02:24,220
+in deep learning for NLP,
+natural language generation.
+
+45
+00:02:24,220 --> 00:02:26,690
+So hopefully by the end of
+this lecture most of you
+
+46
+00:02:26,690 --> 00:02:31,220
+will have at least learned a
+bit about NLG with deep learning
+
+47
+00:02:31,220 --> 00:02:34,100
+and hopefully be motivated to
+start doing some research on it
+
+48
+00:02:34,100 --> 00:02:38,480
+or launch a startup in
+NLG, or perhaps go work
+
+49
+00:02:38,480 --> 00:02:42,090
+on it at a larger organization.
+
+50
+00:02:42,090 --> 00:02:44,280
+OK.
+
+51
+00:02:44,280 --> 00:02:47,190
+So to start, I think it might
+be really helpful to define what
+
+52
+00:02:47,190 --> 00:02:50,250
+we mean at a high level when
+we talk about natural language
+
+53
+00:02:50,250 --> 00:02:53,640
+generation because over
+the last few years,
+
+54
+00:02:53,640 --> 00:02:56,040
+the definition has
+actually sort of changed
+
+55
+00:02:56,040 --> 00:02:58,320
+and has really
+grown as a sub-field
+
+56
+00:02:58,320 --> 00:03:02,520
+to really encapsulate
+any part of NLP that
+
+57
+00:03:02,520 --> 00:03:07,180
+involves the production of
+written or spoken language.
+
+58
+00:03:07,180 --> 00:03:09,180
+In other words, if
+you're given some inputs
+
+59
+00:03:09,180 --> 00:03:13,740
+and your goal is to generate
+text to describe, respond,
+
+60
+00:03:13,740 --> 00:03:18,000
+translate or summarize
+that piece of text,
+
+61
+00:03:18,000 --> 00:03:20,160
+NLG really focuses on
+how you can actually
+
+62
+00:03:20,160 --> 00:03:22,230
+build a system that
+can automatically
+
+63
+00:03:22,230 --> 00:03:27,040
+produce a coherent and
+useful written piece of text
+
+64
+00:03:27,040 --> 00:03:30,630
+for human consumption.
+
+65
+00:03:30,630 --> 00:03:32,910
+And it used to be a much
+more limited research
+
+66
+00:03:32,910 --> 00:03:35,070
+area since many
+tasks that we now
+
+67
+00:03:35,070 --> 00:03:37,050
+view as NLG problems
+didn't actually
+
+68
+00:03:37,050 --> 00:03:41,500
+involve much text production
+prior to neural networks.
+
+69
+00:03:41,500 --> 00:03:43,860
+But now that scope has
+expanded considerably
+
+70
+00:03:43,860 --> 00:03:49,500
+and we have this much larger
+area to sort of work in.
+
+71
+00:03:49,500 --> 00:03:51,390
+Unfortunately
+we're not quite yet
+
+72
+00:03:51,390 --> 00:03:54,540
+at the level of the
+types of AI NLG tools
+
+73
+00:03:54,540 --> 00:03:58,470
+that we've seen in pop culture
+and that we like to imagine,
+
+74
+00:03:58,470 --> 00:04:01,950
+but we are starting to see
+many areas where NLG tools are
+
+75
+00:04:01,950 --> 00:04:04,810
+having a massive impact.
+
+76
+00:04:04,810 --> 00:04:07,410
+To start with,
+machine translation
+
+77
+00:04:07,410 --> 00:04:13,950
+is kind of the classical
+example of an NLG task
+
+78
+00:04:13,950 --> 00:04:16,290
+thhese days, ever
+since the tasks
+
+79
+00:04:16,290 --> 00:04:21,060
+moved to neural networks and
+an NLG framework around 2014
+
+80
+00:04:21,060 --> 00:04:22,079
+or so.
+
+81
+00:04:22,079 --> 00:04:24,210
+And now we've seen
+a rapid improvement
+
+82
+00:04:24,210 --> 00:04:27,310
+in the quality and applicability
+of translation systems.
+
+83
+00:04:27,310 --> 00:04:29,940
+In fact, you can often
+use Google Translate
+
+84
+00:04:29,940 --> 00:04:36,090
+for most of your kind of
+retail translation needs
+
+85
+00:04:36,090 --> 00:04:37,870
+as a good starting point.
+
+86
+00:04:37,870 --> 00:04:40,470
+Similarly, NLG
+technologies really
+
+87
+00:04:40,470 --> 00:04:42,600
+underpin some of
+the dialogue systems
+
+88
+00:04:42,600 --> 00:04:45,600
+that you might interact
+with on a daily basis.
+
+89
+00:04:45,600 --> 00:04:49,110
+Any time you use, let's say
+Siri, Alexa, Cortana, Google
+
+90
+00:04:49,110 --> 00:04:53,658
+Home, Bixby, or pretty much any
+other major company's dialogue
+
+91
+00:04:53,658 --> 00:04:55,950
+system, there's a good chance
+that there's a neural NLG
+
+92
+00:04:55,950 --> 00:04:58,440
+component embedded
+in that system that's
+
+93
+00:04:58,440 --> 00:05:01,430
+involved with providing you
+an answer to your query.
+
+94
+00:05:01,430 --> 00:05:03,180
+And there's really
+still a ton of progress
+
+95
+00:05:03,180 --> 00:05:04,830
+to be made in this
+area, and it's
+
+96
+00:05:04,830 --> 00:05:08,340
+led to some major companies to
+actually crowd source chat bot
+
+97
+00:05:08,340 --> 00:05:12,060
+technologies from researchers
+and students such as yourself
+
+98
+00:05:12,060 --> 00:05:16,680
+to continue to try to make
+big advances in this area.
+
+99
+00:05:16,680 --> 00:05:21,690
+We're also seeing lots
+of NLG technologies used
+
+100
+00:05:21,690 --> 00:05:25,350
+in areas such as summarization
+where systems often
+
+101
+00:05:25,350 --> 00:05:29,280
+have to aggregate
+information from potentially
+
+102
+00:05:29,280 --> 00:05:34,470
+multiple sources and rephrase
+the most salient content
+
+103
+00:05:34,470 --> 00:05:38,820
+in a shortened but
+still very engaging way.
+
+104
+00:05:38,820 --> 00:05:41,430
+While our go to example
+for summarization
+
+105
+00:05:41,430 --> 00:05:44,850
+is generally related to, let's
+say generating news highlights,
+
+106
+00:05:44,850 --> 00:05:47,250
+summarization systems
+have actually achieved
+
+107
+00:05:47,250 --> 00:05:49,530
+broad applicability
+in many areas
+
+108
+00:05:49,530 --> 00:05:51,840
+where we address content,
+such as summarizing
+
+109
+00:05:51,840 --> 00:05:56,190
+emails or summarizing
+meeting transcripts.
+
+110
+00:05:56,190 --> 00:05:58,548
+And there's actually many
+more areas not listed here.
+
+111
+00:05:58,548 --> 00:06:00,090
+I don't actually
+put it on the slide,
+
+112
+00:06:00,090 --> 00:06:02,220
+but a few months
+back a tool called
+
+113
+00:06:02,220 --> 00:06:04,530
+Semantic Scholar actually
+developed a neural system
+
+114
+00:06:04,530 --> 00:06:07,530
+for generating summaries
+of scientific papers, which
+
+115
+00:06:07,530 --> 00:06:10,610
+is something that I personally
+end up using quite a bit
+
+116
+00:06:10,610 --> 00:06:13,410
+as an example of how
+humans can interact
+
+117
+00:06:13,410 --> 00:06:15,720
+with these technologies.
+
+118
+00:06:15,720 --> 00:06:18,810
+But these modalities aren't
+actually limited to text in
+
+119
+00:06:18,810 --> 00:06:20,130
+or text out.
+
+120
+00:06:20,130 --> 00:06:23,310
+So actually the classical NLG
+area that I mentioned earlier
+
+121
+00:06:23,310 --> 00:06:25,470
+is how the tasks
+used to be framed
+
+122
+00:06:25,470 --> 00:06:28,890
+was actually around what we now
+call data to text generation.
+
+123
+00:06:28,890 --> 00:06:31,290
+So can you learn to
+compile or let's say
+
+124
+00:06:31,290 --> 00:06:34,020
+summarize the most interesting
+facts from a table,
+
+125
+00:06:34,020 --> 00:06:38,220
+or a knowledge graph, or
+some type of data stream.
+
+126
+00:06:38,220 --> 00:06:41,280
+That way humans can get the most
+interesting and salient content
+
+127
+00:06:41,280 --> 00:06:45,360
+that's being presented
+in these data structures
+
+128
+00:06:45,360 --> 00:06:47,940
+rapidly, and in an
+easier to adjust format
+
+129
+00:06:47,940 --> 00:06:51,840
+than having to look through
+the structures themselves.
+
+130
+00:06:51,840 --> 00:06:54,090
+We've also seen a
+lot of recent work
+
+131
+00:06:54,090 --> 00:06:57,330
+in visual description
+that tries to use language
+
+132
+00:06:57,330 --> 00:07:00,090
+to describe the content
+in images or videos.
+
+133
+00:07:00,090 --> 00:07:03,690
+So around 2014 or so we start
+to see the first neural NLG
+
+134
+00:07:03,690 --> 00:07:07,170
+systems in the space,
+and they've really
+
+135
+00:07:07,170 --> 00:07:09,690
+continued to mature
+in the last six years.
+
+136
+00:07:09,690 --> 00:07:12,390
+And now we actually tackle much
+more challenging description
+
+137
+00:07:12,390 --> 00:07:15,990
+tasks such as generating
+full descriptive paragraphs
+
+138
+00:07:15,990 --> 00:07:20,490
+of scenes or generating
+streams of visual, generating
+
+139
+00:07:20,490 --> 00:07:22,830
+descriptions for streams
+of visual content
+
+140
+00:07:22,830 --> 00:07:24,990
+such as video captioning.
+
+141
+00:07:24,990 --> 00:07:28,800
+And these tools have
+really broad applicability
+
+142
+00:07:28,800 --> 00:07:31,940
+in different areas of AI.
+
+143
+00:07:31,940 --> 00:07:34,040
+And finally the last
+sort of application
+
+144
+00:07:34,040 --> 00:07:35,873
+I kind of want to mention
+is that we've also
+
+145
+00:07:35,873 --> 00:07:37,850
+started seeing NLG
+systems being developed
+
+146
+00:07:37,850 --> 00:07:42,050
+in more creative applications
+such as story generation
+
+147
+00:07:42,050 --> 00:07:44,180
+where AI systems can
+now help humans write
+
+148
+00:07:44,180 --> 00:07:48,470
+short stories, blog posts, or
+even full books in some case
+
+149
+00:07:48,470 --> 00:07:51,020
+as creative writing assistants.
+
+150
+00:07:51,020 --> 00:07:53,720
+In another area such
+as poetry generation,
+
+151
+00:07:53,720 --> 00:07:56,210
+we can actually have kind
+of full automated settings
+
+152
+00:07:56,210 --> 00:07:58,970
+where you can have AI agents
+that can generate something
+
+153
+00:07:58,970 --> 00:08:01,100
+like a sonnet, and
+in fact condition
+
+154
+00:08:01,100 --> 00:08:04,550
+that on a lot of demands
+that are given through a user
+
+155
+00:08:04,550 --> 00:08:06,560
+interface.
+
+156
+00:08:06,560 --> 00:08:08,600
+So I hope that by
+this point I've
+
+157
+00:08:08,600 --> 00:08:13,940
+really given you a look into
+the breadth of NLG applications
+
+158
+00:08:13,940 --> 00:08:17,570
+and how it sort of
+encompasses any task
+
+159
+00:08:17,570 --> 00:08:21,890
+that you might think of that
+involves production of text.
+
+160
+00:08:21,890 --> 00:08:25,172
+And each of these tasks really
+requires different algorithms
+
+161
+00:08:25,172 --> 00:08:27,380
+and different models and a
+different way of designing
+
+162
+00:08:27,380 --> 00:08:28,927
+the system to get right.
+
+163
+00:08:28,927 --> 00:08:31,010
+But what they have in
+common is that a lot of them
+
+164
+00:08:31,010 --> 00:08:34,940
+are powered by next
+generation advances
+
+165
+00:08:34,940 --> 00:08:39,450
+in deep learning for NLG.
+
+166
+00:08:39,450 --> 00:08:41,880
+And the goal of today
+is to really give you
+
+167
+00:08:41,880 --> 00:08:45,600
+the introduction to these
+topics that really allows
+
+168
+00:08:45,600 --> 00:08:48,360
+you to contribute to the next
+era of these technologies
+
+169
+00:08:48,360 --> 00:08:52,770
+and in designing deep
+learning systems for NLG.
+
+170
+00:08:52,770 --> 00:08:54,300
+And so I think to
+start what might
+
+171
+00:08:54,300 --> 00:08:58,350
+be interesting to do is
+to quickly recap topics
+
+172
+00:08:58,350 --> 00:09:00,570
+that you may have seen
+in previous lectures
+
+173
+00:09:00,570 --> 00:09:04,590
+but which are going to
+be very relevant today
+
+174
+00:09:04,590 --> 00:09:07,320
+when we're trying to
+design an NLG system.
+
+175
+00:09:07,320 --> 00:09:09,570
+And what we're effectively
+trying to do in the setting
+
+176
+00:09:09,570 --> 00:09:13,110
+is take a sequence
+of tokens as inputs
+
+177
+00:09:13,110 --> 00:09:16,080
+and produce new text that is
+conditioned on this inputs.
+
+178
+00:09:16,080 --> 00:09:19,150
+And then what we typically call
+the auto regressive setting,
+
+179
+00:09:19,150 --> 00:09:23,400
+which is the most common sort
+of text generation setting.
+
+180
+00:09:23,400 --> 00:09:25,200
+We take these produced
+tokens of text
+
+181
+00:09:25,200 --> 00:09:27,030
+and we feed them
+back into our model
+
+182
+00:09:27,030 --> 00:09:29,610
+to generate the next
+token in the sequence
+
+183
+00:09:29,610 --> 00:09:32,810
+that we want to generate.
+
+184
+00:09:32,810 --> 00:09:34,610
+But so to really
+understand what's
+
+185
+00:09:34,610 --> 00:09:37,340
+going on in an auto
+regressive NLG system,
+
+186
+00:09:37,340 --> 00:09:38,990
+what we really
+need to start to do
+
+187
+00:09:38,990 --> 00:09:40,760
+is look at what happens
+for the generation
+
+188
+00:09:40,760 --> 00:09:43,550
+of an individual token
+since further stages really
+
+189
+00:09:43,550 --> 00:09:45,530
+depend on taking
+that generated token
+
+190
+00:09:45,530 --> 00:09:48,870
+and passing it back in as
+input and doing the same thing.
+
+191
+00:09:48,870 --> 00:09:51,290
+So what happens at a low
+level is that your model takes
+
+192
+00:09:51,290 --> 00:09:54,140
+in the sequence of
+inputs, so these y's,
+
+193
+00:09:54,140 --> 00:09:59,120
+and it computes a vector of
+scores using the model itself.
+
+194
+00:09:59,120 --> 00:10:02,000
+And each index in that vector
+corresponds to the score
+
+195
+00:10:02,000 --> 00:10:04,013
+for a token in your vocabulary.
+
+196
+00:10:04,013 --> 00:10:05,930
+So the only tokens that
+your model is actually
+
+197
+00:10:05,930 --> 00:10:07,910
+allowed to generate.
+
+198
+00:10:07,910 --> 00:10:10,160
+And then what you do is that
+you compute a probability
+
+199
+00:10:10,160 --> 00:10:12,410
+distribution over
+these scores using
+
+200
+00:10:12,410 --> 00:10:15,830
+what we call a soft max function
+to compute a probability
+
+201
+00:10:15,830 --> 00:10:20,000
+estimate for each token
+in your vocabulary
+
+202
+00:10:20,000 --> 00:10:24,800
+given the context
+that precedes it.
+
+203
+00:10:24,800 --> 00:10:27,290
+And as a shorthand, I'll just
+mention that sometimes I'll
+
+204
+00:10:27,290 --> 00:10:30,182
+remove the W from this
+probability equation,
+
+205
+00:10:30,182 --> 00:10:31,640
+but just know that
+when I write out
+
+206
+00:10:31,640 --> 00:10:34,790
+the probability of a token
+y at time t, what I mean
+
+207
+00:10:34,790 --> 00:10:38,490
+is the probability that
+y(t) is a particular word.
+
+208
+00:10:38,490 --> 00:10:43,320
+So it's kind of a
+variable assignment.
+
+209
+00:10:43,320 --> 00:10:46,550
+But so what actually is the
+output of what we typically
+
+210
+00:10:46,550 --> 00:10:48,440
+call the text generation
+model at this point
+
+211
+00:10:48,440 --> 00:10:50,090
+is actually this
+vector of scores,
+
+212
+00:10:50,090 --> 00:10:52,550
+and then that vector gets
+passed to the softmax function
+
+213
+00:10:52,550 --> 00:10:55,430
+to give us a probability
+distribution over the set
+
+214
+00:10:55,430 --> 00:10:58,477
+of tokens in the vocabulary.
+
+215
+00:10:58,477 --> 00:11:00,060
+And then to actually
+generate a token,
+
+216
+00:11:00,060 --> 00:11:02,790
+we can define what we call
+a decoding algorithm, that
+
+217
+00:11:02,790 --> 00:11:06,840
+is a function that takes in
+this distribution peak over all
+
+218
+00:11:06,840 --> 00:11:08,370
+the tokens of the vocabulary.
+
+219
+00:11:08,370 --> 00:11:12,720
+And it defines a function
+for selecting a token
+
+220
+00:11:12,720 --> 00:11:15,300
+from this distribution
+as the next token that
+
+221
+00:11:15,300 --> 00:11:18,720
+is produced by our NLG system.
+
+222
+00:11:18,720 --> 00:11:21,600
+And for that distribution to
+be calibrated in such a way
+
+223
+00:11:21,600 --> 00:11:24,720
+that it means anything, we need
+to train the model to actually
+
+224
+00:11:24,720 --> 00:11:27,140
+be able to do the task.
+
+225
+00:11:27,140 --> 00:11:31,350
+And so the most common way of
+training text generation models
+
+226
+00:11:31,350 --> 00:11:34,470
+is to use maximum
+likelihood training.
+
+227
+00:11:34,470 --> 00:11:36,330
+And despite its name,
+we don't actually
+
+228
+00:11:36,330 --> 00:11:39,120
+maximize likelihoods, we
+actually minimize negative log
+
+229
+00:11:39,120 --> 00:11:40,350
+likelihoods.
+
+230
+00:11:40,350 --> 00:11:43,710
+And what that actually is just
+a multi class classification
+
+231
+00:11:43,710 --> 00:11:46,410
+task where each word
+in our vocabulary
+
+232
+00:11:46,410 --> 00:11:49,290
+is a class that can be
+predicted by the model.
+
+233
+00:11:49,290 --> 00:11:51,330
+And so at each step
+in the sequence
+
+234
+00:11:51,330 --> 00:11:53,880
+we're actually trying to predict
+the class that corresponds
+
+235
+00:11:53,880 --> 00:11:56,730
+to the word that comes next
+in the sequence of text
+
+236
+00:11:56,730 --> 00:11:58,570
+that we're trying to train on.
+
+237
+00:11:58,570 --> 00:12:02,210
+And this word is often called
+the gold or ground truth token.
+
+238
+00:12:02,210 --> 00:12:04,230
+That was just kind of
+interchangeable vocabulary
+
+239
+00:12:04,230 --> 00:12:05,700
+that we use.
+
+240
+00:12:05,700 --> 00:12:09,480
+And another term for this
+deep training algorithm
+
+241
+00:12:09,480 --> 00:12:10,945
+is teacher forcing.
+
+242
+00:12:10,945 --> 00:12:12,570
+So you might see
+these expressions kind
+
+243
+00:12:12,570 --> 00:12:16,973
+of used interchangeably if
+you read papers on this topic.
+
+244
+00:12:16,973 --> 00:12:18,390
+But so at each
+step, you're really
+
+245
+00:12:18,390 --> 00:12:20,880
+computing a loss term,
+that is the negative log
+
+246
+00:12:20,880 --> 00:12:25,000
+likelihood of predicting this
+gold token y1 at every step.
+
+247
+00:12:25,000 --> 00:12:27,450
+So in these slides whenever
+you see an asterisk
+
+248
+00:12:27,450 --> 00:12:30,510
+next to a y, that means that
+this is a gold token that
+
+249
+00:12:30,510 --> 00:12:32,203
+comes from a training sequence.
+
+250
+00:12:32,203 --> 00:12:33,870
+And you could do this
+for multiple steps
+
+251
+00:12:33,870 --> 00:12:38,070
+adding up the log
+likelihoods along the way.
+
+252
+00:12:38,070 --> 00:12:39,660
+Eventually, you're
+going to arrive
+
+253
+00:12:39,660 --> 00:12:41,753
+at the end of your
+gold sequence,
+
+254
+00:12:41,753 --> 00:12:43,920
+and you'll be able to compute
+gradients with respect
+
+255
+00:12:43,920 --> 00:12:47,760
+to this summed loss term for
+every parameter in your model,
+
+256
+00:12:47,760 --> 00:12:50,760
+which allows you to update it so
+that the next time around, when
+
+257
+00:12:50,760 --> 00:12:52,560
+you see the sequence,
+your model is more
+
+258
+00:12:52,560 --> 00:12:55,470
+confident in the probability
+that the sequence is
+
+259
+00:12:55,470 --> 00:12:58,020
+a correct sequence,
+given the same context it
+
+260
+00:12:58,020 --> 00:13:00,145
+has seen before.
+
+261
+00:13:00,145 --> 00:13:01,770
+But most of this
+should just be a recap
+
+262
+00:13:01,770 --> 00:13:04,620
+from previous lectures on
+language modeling and machine
+
+263
+00:13:04,620 --> 00:13:07,538
+translation.
+
+264
+00:13:07,538 --> 00:13:09,330
+But now that we've got
+that out of the way,
+
+265
+00:13:09,330 --> 00:13:13,982
+let's get to the fun part and
+talk about some new topics.
+
+266
+00:13:13,982 --> 00:13:16,190
+The first one of which is
+decoding, which is actually
+
+267
+00:13:16,190 --> 00:13:19,490
+one of my favorite topics in
+natural language generation
+
+268
+00:13:19,490 --> 00:13:21,150
+research.
+
+269
+00:13:21,150 --> 00:13:23,425
+So if you recall, your
+decoding algorithm
+
+270
+00:13:23,425 --> 00:13:24,800
+is really the
+function that takes
+
+271
+00:13:24,800 --> 00:13:27,830
+in this induced
+probability distribution
+
+272
+00:13:27,830 --> 00:13:30,500
+from your model over
+the next possible tokens
+
+273
+00:13:30,500 --> 00:13:32,480
+that can be
+generated and selects
+
+274
+00:13:32,480 --> 00:13:36,290
+which one of those tokens
+should be outputted.
+
+275
+00:13:36,290 --> 00:13:38,900
+So once your model was
+trained, this distribution
+
+276
+00:13:38,900 --> 00:13:41,000
+should be meaningful,
+and you want
+
+277
+00:13:41,000 --> 00:13:44,600
+to be able to generate
+a sensible next token.
+
+278
+00:13:44,600 --> 00:13:47,250
+And then you can use these
+generated next tokens--
+
+279
+00:13:47,250 --> 00:13:49,040
+so the blue y hats here--
+
+280
+00:13:49,040 --> 00:13:51,320
+as inputs in the next
+step of the model, which
+
+281
+00:13:51,320 --> 00:13:53,510
+allows you to recompute
+a new distribution,
+
+282
+00:13:53,510 --> 00:13:56,090
+decode a new token,
+repeat the process,
+
+283
+00:13:56,090 --> 00:13:57,980
+and eventually end up
+with a full sequence
+
+284
+00:13:57,980 --> 00:14:00,920
+that your model has now
+generated given a fixed
+
+285
+00:14:00,920 --> 00:14:04,020
+starting sequence of text.
+
+286
+00:14:04,020 --> 00:14:06,350
+And so let's talk a bit
+about the algorithms
+
+287
+00:14:06,350 --> 00:14:11,140
+that we can use to decode
+tokens from this distribution.
+
+288
+00:14:11,140 --> 00:14:12,840
+So you've actually
+already seen some
+
+289
+00:14:12,840 --> 00:14:16,200
+of these in a previous lecture
+on neural machine translation
+
+290
+00:14:16,200 --> 00:14:20,160
+I believe where you started
+off by seeing a relatively
+
+291
+00:14:20,160 --> 00:14:22,800
+simple decoding algorithm
+that nonetheless remains
+
+292
+00:14:22,800 --> 00:14:25,380
+very popular, argmax decoding.
+
+293
+00:14:25,380 --> 00:14:27,540
+And with argmax decoding
+you pretty much just take
+
+294
+00:14:27,540 --> 00:14:31,350
+the highest probability
+token from your distribution
+
+295
+00:14:31,350 --> 00:14:33,390
+as the decoded token
+and feed it back
+
+296
+00:14:33,390 --> 00:14:36,810
+into the model to get the
+distribution at the next step.
+
+297
+00:14:36,810 --> 00:14:39,570
+And you keep repeating this
+process, and it's very nice,
+
+298
+00:14:39,570 --> 00:14:41,848
+and it's very convenient.
+
+299
+00:14:41,848 --> 00:14:43,890
+And you've also I think
+learned about beam search
+
+300
+00:14:43,890 --> 00:14:48,090
+where you can scale up these
+greedy methods by doing a wider
+
+301
+00:14:48,090 --> 00:14:51,503
+search over the set
+of tokens that follow,
+
+302
+00:14:51,503 --> 00:14:52,920
+the set of most
+likely tokens that
+
+303
+00:14:52,920 --> 00:14:56,820
+follow to try to find a
+subsequence that is a lower
+
+304
+00:14:56,820 --> 00:15:00,300
+overall negative
+log likelihood even
+
+305
+00:15:00,300 --> 00:15:02,820
+if in the intermediate
+step it tends
+
+306
+00:15:02,820 --> 00:15:07,170
+to be higher than what would
+be the argmax decoded token.
+
+307
+00:15:07,170 --> 00:15:09,600
+And while these greedy
+methods work great
+
+308
+00:15:09,600 --> 00:15:13,290
+for machine translation
+and in other tasks
+
+309
+00:15:13,290 --> 00:15:15,720
+as well, such as
+summarization, they
+
+310
+00:15:15,720 --> 00:15:18,750
+do tend to be problematic in
+many other text generation
+
+311
+00:15:18,750 --> 00:15:23,018
+tasks, particularly ones that
+end up being more open ended.
+
+312
+00:15:23,018 --> 00:15:24,810
+So one of these big
+problems that they have
+
+313
+00:15:24,810 --> 00:15:27,790
+is that they often end
+up repeating themselves.
+
+314
+00:15:27,790 --> 00:15:31,170
+So here in this example
+from Holtzmann et al 2020,
+
+315
+00:15:31,170 --> 00:15:33,840
+we can see that after
+around 20 or sorry,
+
+316
+00:15:33,840 --> 00:15:37,230
+yeah, 60 tokens or
+so of generation,
+
+317
+00:15:37,230 --> 00:15:40,230
+the model really devolves into
+just repeating the same thing
+
+318
+00:15:40,230 --> 00:15:41,800
+over and over again.
+
+319
+00:15:41,800 --> 00:15:44,850
+And this actually tends to
+happen a lot in text generation
+
+320
+00:15:44,850 --> 00:15:45,725
+systems.
+
+321
+00:15:45,725 --> 00:15:47,850
+Repetition was actually
+one of the biggest problems
+
+322
+00:15:47,850 --> 00:15:51,390
+that we tried to tackle in
+text generation for many years
+
+323
+00:15:51,390 --> 00:15:54,480
+and still face to this day.
+
+324
+00:15:54,480 --> 00:15:59,160
+And I think it's worth taking a
+look at why repetition happens
+
+325
+00:15:59,160 --> 00:16:02,460
+a bit more analytically
+so that you can perhaps
+
+326
+00:16:02,460 --> 00:16:05,400
+better understand the
+interaction between your model
+
+327
+00:16:05,400 --> 00:16:07,530
+and your decoding algorithm.
+
+328
+00:16:07,530 --> 00:16:10,560
+So just as a quick little
+visual demonstration,
+
+329
+00:16:10,560 --> 00:16:13,740
+here I'm showing you the step
+by step negative log likelihoods
+
+330
+00:16:13,740 --> 00:16:15,690
+from two different
+language models,
+
+331
+00:16:15,690 --> 00:16:17,580
+one based on recurrent
+neural networks
+
+332
+00:16:17,580 --> 00:16:22,380
+and one based on a transformer
+language model called GPT.
+
+333
+00:16:22,380 --> 00:16:26,910
+And I'm showing this plot for a
+particular phrase I don't know,
+
+334
+00:16:26,910 --> 00:16:29,550
+which for anyone who's
+worked in chat bots
+
+335
+00:16:29,550 --> 00:16:34,790
+has probably seen many times,
+potentially in nightmares.
+
+336
+00:16:34,790 --> 00:16:37,673
+It's not a very interesting
+plot, though what we do see
+
+337
+00:16:37,673 --> 00:16:39,090
+is that the
+transformer model does
+
+338
+00:16:39,090 --> 00:16:42,900
+tend to be a bit less confident
+in the probability of each word
+
+339
+00:16:42,900 --> 00:16:44,825
+than the recurrent
+neural network does.
+
+340
+00:16:44,825 --> 00:16:46,200
+What's more
+interesting though is
+
+341
+00:16:46,200 --> 00:16:49,410
+what happens if I repeat the
+same phrase multiple times
+
+342
+00:16:49,410 --> 00:16:50,580
+in a row.
+
+343
+00:16:50,580 --> 00:16:52,470
+And one of the things
+that we notice here
+
+344
+00:16:52,470 --> 00:16:54,750
+is that the repetition
+of this phrase
+
+345
+00:16:54,750 --> 00:16:58,230
+actually causes the
+token level negative log
+
+346
+00:16:58,230 --> 00:17:00,840
+likelihoods to get
+lower and lower for each
+
+347
+00:17:00,840 --> 00:17:03,300
+of these tokens, which actually
+means that the model is
+
+348
+00:17:03,300 --> 00:17:06,450
+becoming more confident that
+these are the right tokens
+
+349
+00:17:06,450 --> 00:17:08,910
+and that they should
+probably follow the preceding
+
+350
+00:17:08,910 --> 00:17:11,579
+context as we generate
+it more times.
+
+351
+00:17:11,579 --> 00:17:13,680
+And this doesn't really
+subside as the sequence
+
+352
+00:17:13,680 --> 00:17:16,440
+gets longer and longer.
+
+353
+00:17:16,440 --> 00:17:20,230
+And as you keep repeating
+the same phrases again,
+
+354
+00:17:20,230 --> 00:17:23,220
+over and over again, the model
+becomes more and more confident
+
+355
+00:17:23,220 --> 00:17:27,358
+the next time around it
+should say the same thing.
+
+356
+00:17:27,358 --> 00:17:29,460
+And while this actually
+kind of makes sense
+
+357
+00:17:29,460 --> 00:17:33,990
+and that if you say the phrase
+let's say I'm tired 15 times,
+
+358
+00:17:33,990 --> 00:17:35,927
+it's a fair bet
+that on a 16th time
+
+359
+00:17:35,927 --> 00:17:37,510
+you're actually going
+to say it again,
+
+360
+00:17:37,510 --> 00:17:38,970
+it's not necessarily
+the behavior
+
+361
+00:17:38,970 --> 00:17:43,097
+that we want our generation
+systems to get stuck in.
+
+362
+00:17:43,097 --> 00:17:45,180
+Another interesting thing
+to note here as an aside
+
+363
+00:17:45,180 --> 00:17:47,280
+is that this
+behavior is actually
+
+364
+00:17:47,280 --> 00:17:49,980
+less problematic in
+recurrent neural networks
+
+365
+00:17:49,980 --> 00:17:51,970
+than in transformer
+language models.
+
+366
+00:17:51,970 --> 00:17:54,030
+So you can see
+that for the LSTM,
+
+367
+00:17:54,030 --> 00:17:57,220
+the curve flattens
+after a certain point.
+
+368
+00:17:57,220 --> 00:17:59,760
+And so if you remember in
+perhaps a previous lecture
+
+369
+00:17:59,760 --> 00:18:02,633
+on why we might transform
+our language models,
+
+370
+00:18:02,633 --> 00:18:04,050
+one of their
+benefits is that they
+
+371
+00:18:04,050 --> 00:18:05,760
+don't have the
+temporal bottleneck
+
+372
+00:18:05,760 --> 00:18:09,960
+of tracking a state, which a
+recurrent neural network tends
+
+373
+00:18:09,960 --> 00:18:10,720
+to have.
+
+374
+00:18:10,720 --> 00:18:12,330
+And so the removal
+of that bottleneck
+
+375
+00:18:12,330 --> 00:18:13,710
+actually ends up
+making them more
+
+376
+00:18:13,710 --> 00:18:15,900
+prone to repetitive
+behavior when you use
+
+377
+00:18:15,900 --> 00:18:19,005
+greedy algorithms to decode.
+
+378
+00:18:19,005 --> 00:18:21,130
+And so what can we actually
+do to reduce repetition
+
+379
+00:18:21,130 --> 00:18:23,900
+since it's a pretty big
+problem in these systems?
+
+380
+00:18:23,900 --> 00:18:26,470
+Well, there are actually quite
+a few proposed approaches
+
+381
+00:18:26,470 --> 00:18:29,750
+in the last few years, some
+of which I'll summarize here,
+
+382
+00:18:29,750 --> 00:18:32,530
+which range from
+the kind of hacky
+
+383
+00:18:32,530 --> 00:18:35,290
+but surprisingly effective,
+don't repeat any n-grams
+
+384
+00:18:35,290 --> 00:18:37,730
+at inference time.
+
+385
+00:18:37,730 --> 00:18:40,150
+But there's also been training
+time approaches to do it,
+
+386
+00:18:40,150 --> 00:18:41,830
+such as having a
+loss function that
+
+387
+00:18:41,830 --> 00:18:44,350
+minimizes the similarity
+between hidden
+
+388
+00:18:44,350 --> 00:18:46,930
+activations at
+different time steps,
+
+389
+00:18:46,930 --> 00:18:49,270
+or coverage loss that
+penalizes attending
+
+390
+00:18:49,270 --> 00:18:51,170
+to the same tokens over time.
+
+391
+00:18:51,170 --> 00:18:53,595
+So if you change the inputs
+that your model is allowed
+
+392
+00:18:53,595 --> 00:18:54,970
+to focus on, it's
+naturally going
+
+393
+00:18:54,970 --> 00:18:57,640
+to produce different
+text, or more recently
+
+394
+00:18:57,640 --> 00:18:59,860
+an unlikelihood objective
+that actually penalizes
+
+395
+00:18:59,860 --> 00:19:01,810
+outputting the same
+words, which we'll
+
+396
+00:19:01,810 --> 00:19:05,540
+talk a bit more about later.
+
+397
+00:19:05,540 --> 00:19:08,350
+But the truth is
+that the problem here
+
+398
+00:19:08,350 --> 00:19:12,910
+really lies in using greedy
+algorithms in the first place.
+
+399
+00:19:12,910 --> 00:19:16,480
+In many applications
+of human language,
+
+400
+00:19:16,480 --> 00:19:20,660
+humans don't actually speak in
+a probability maximizing way.
+
+401
+00:19:20,660 --> 00:19:23,770
+So if you look at this plot
+from Holtzmann et al 2020,
+
+402
+00:19:23,770 --> 00:19:27,100
+it shows the per time step
+probability of human written
+
+403
+00:19:27,100 --> 00:19:30,430
+text in orange and beam
+search decoded text in blue
+
+404
+00:19:30,430 --> 00:19:31,883
+on the same graph.
+
+405
+00:19:31,883 --> 00:19:33,550
+And what you can see
+is that beam search
+
+406
+00:19:33,550 --> 00:19:36,160
+decoded text tends to
+be very high probability
+
+407
+00:19:36,160 --> 00:19:38,020
+with little variance over time.
+
+408
+00:19:38,020 --> 00:19:40,630
+And this makes a lot of
+sense because it's literally
+
+409
+00:19:40,630 --> 00:19:43,120
+trying to maximize the
+probability of the sequences
+
+410
+00:19:43,120 --> 00:19:44,560
+that it produces.
+
+411
+00:19:44,560 --> 00:19:46,960
+And a big part of that
+is maximizing the step
+
+412
+00:19:46,960 --> 00:19:49,718
+by step probabilities of
+the tokens that it uses.
+
+413
+00:19:49,718 --> 00:19:51,760
+But meanwhile we can see
+that human error in text
+
+414
+00:19:51,760 --> 00:19:54,430
+is a lot more variable, often
+actually dipping into very
+
+415
+00:19:54,430 --> 00:19:56,223
+low probability territory.
+
+416
+00:19:56,223 --> 00:19:57,640
+That actually makes
+a lot of sense
+
+417
+00:19:57,640 --> 00:20:01,690
+if we could always predict human
+text with high probability,
+
+418
+00:20:01,690 --> 00:20:04,870
+there would really be no reason
+to listen to each other speak
+
+419
+00:20:04,870 --> 00:20:08,012
+since we know what
+we were going to say.
+
+420
+00:20:08,012 --> 00:20:09,970
+But so ultimately what
+we want to be able to do
+
+421
+00:20:09,970 --> 00:20:12,760
+is to match the uncertainty
+of human language patterns
+
+422
+00:20:12,760 --> 00:20:17,590
+in how we decode text, which
+is why, in many applications
+
+423
+00:20:17,590 --> 00:20:21,010
+that tend to have this
+higher variability sampling
+
+424
+00:20:21,010 --> 00:20:23,200
+from these distributions
+has kind of become
+
+425
+00:20:23,200 --> 00:20:26,680
+a go to decoding
+method particularly
+
+426
+00:20:26,680 --> 00:20:29,140
+in creative generation tasks.
+
+427
+00:20:29,140 --> 00:20:32,740
+And so with sampling,
+we take the distribution
+
+428
+00:20:32,740 --> 00:20:34,720
+over tokens that's
+produced by our model
+
+429
+00:20:34,720 --> 00:20:39,430
+and we generate a token
+randomly according
+
+430
+00:20:39,430 --> 00:20:41,200
+to the probability
+mass that is assigned
+
+431
+00:20:41,200 --> 00:20:42,930
+to each potential option.
+
+432
+00:20:42,930 --> 00:20:45,520
+So rather than doing
+any type of greedy step,
+
+433
+00:20:45,520 --> 00:20:47,770
+we use the probability
+on each token
+
+434
+00:20:47,770 --> 00:20:50,202
+to give us a chance that
+that token is generated.
+
+435
+00:20:50,202 --> 00:20:53,580
+
+
+436
+00:20:53,580 --> 00:20:57,790
+And so this does allow us
+to kind of get much more
+
+437
+00:20:57,790 --> 00:21:01,260
+stochasticity in the types
+of tokens that are generated.
+
+438
+00:21:01,260 --> 00:21:02,820
+But a challenge
+that pops up here
+
+439
+00:21:02,820 --> 00:21:05,400
+is that these
+distributions tend to be
+
+440
+00:21:05,400 --> 00:21:07,500
+over a very large vocabulary.
+
+441
+00:21:07,500 --> 00:21:10,230
+And so even if there
+is clearly tokens
+
+442
+00:21:10,230 --> 00:21:12,840
+that have a higher chance
+of being generated,
+
+443
+00:21:12,840 --> 00:21:14,880
+the tail of the
+distribution can often
+
+444
+00:21:14,880 --> 00:21:19,740
+be spread over a much larger
+number of possible tokens.
+
+445
+00:21:19,740 --> 00:21:21,480
+And so this becomes
+a bit of a problem
+
+446
+00:21:21,480 --> 00:21:24,330
+because these tokens
+in the long tail
+
+447
+00:21:24,330 --> 00:21:26,460
+are probably
+completely irrelevant
+
+448
+00:21:26,460 --> 00:21:27,880
+to the current context.
+
+449
+00:21:27,880 --> 00:21:29,340
+So they shouldn't
+have any chance
+
+450
+00:21:29,340 --> 00:21:31,860
+of being selected
+individually, but as
+
+451
+00:21:31,860 --> 00:21:34,290
+a group it ends up that there's
+a decent chance that you
+
+452
+00:21:34,290 --> 00:21:37,170
+could output a completely
+irrelevant token.
+
+453
+00:21:37,170 --> 00:21:40,680
+Even if 90% of your probability
+mass is on relevant tokens,
+
+454
+00:21:40,680 --> 00:21:43,050
+that means that you have a
+1 in 10 chance of outputting
+
+455
+00:21:43,050 --> 00:21:46,800
+something that completely throws
+off your entire text generation
+
+456
+00:21:46,800 --> 00:21:49,500
+pipeline and it's
+completely inane.
+
+457
+00:21:49,500 --> 00:21:50,970
+So to mitigate
+this, the field has
+
+458
+00:21:50,970 --> 00:21:54,480
+developed a new
+set of algorithms
+
+459
+00:21:54,480 --> 00:21:56,400
+that tries to prune
+these distributions
+
+460
+00:21:56,400 --> 00:21:58,150
+at inference time.
+
+461
+00:21:58,150 --> 00:22:01,170
+And so top-k sampling is
+kind of the most obvious way
+
+462
+00:22:01,170 --> 00:22:02,320
+to do this.
+
+463
+00:22:02,320 --> 00:22:06,300
+So here we recognize that most
+of the tokens in our vocabulary
+
+464
+00:22:06,300 --> 00:22:09,210
+should have no probability
+of being selected at all.
+
+465
+00:22:09,210 --> 00:22:11,280
+So we just truncate
+the set of tokens
+
+466
+00:22:11,280 --> 00:22:12,930
+that we're allowed
+to sample from
+
+467
+00:22:12,930 --> 00:22:17,790
+to be the k tokens with the
+highest amount of probability
+
+468
+00:22:17,790 --> 00:22:20,040
+mass of the distributions.
+
+469
+00:22:20,040 --> 00:22:25,325
+And common values of k are often
+5, 10, 20, sometimes up to 100.
+
+470
+00:22:25,325 --> 00:22:26,700
+But really it's
+a hyper parameter
+
+471
+00:22:26,700 --> 00:22:30,410
+that you end up setting as
+the designer of this system.
+
+472
+00:22:30,410 --> 00:22:32,160
+In general though
+what's important to note
+
+473
+00:22:32,160 --> 00:22:34,500
+is that the higher you
+make k, the more you'll
+
+474
+00:22:34,500 --> 00:22:36,772
+be able to generate
+diverse outputs,
+
+475
+00:22:36,772 --> 00:22:38,980
+which is good because that's
+what we're trying to do.
+
+476
+00:22:38,980 --> 00:22:41,370
+But you're also
+going to increase
+
+477
+00:22:41,370 --> 00:22:44,737
+the chance of letting that long
+tail seep in and generating
+
+478
+00:22:44,737 --> 00:22:46,320
+something that's
+completely irrelevant
+
+479
+00:22:46,320 --> 00:22:48,370
+to the current context.
+
+480
+00:22:48,370 --> 00:22:49,230
+Oops, sorry.
+
+481
+00:22:49,230 --> 00:22:51,240
+Meanwhile if you
+decrease k, your outputs
+
+482
+00:22:51,240 --> 00:22:53,490
+are going to be safer from
+these long tail effects,
+
+483
+00:22:53,490 --> 00:22:56,553
+but your text may end up
+being boring and generic
+
+484
+00:22:56,553 --> 00:22:58,470
+because your sampling
+algorithm starts to look
+
+485
+00:22:58,470 --> 00:23:02,123
+a lot more greedy in nature.
+
+486
+00:23:02,123 --> 00:23:03,540
+And this kind of
+shows the problem
+
+487
+00:23:03,540 --> 00:23:06,720
+of having a fixed k as
+the number of tokens
+
+488
+00:23:06,720 --> 00:23:09,330
+that you can generate
+from your distribution.
+
+489
+00:23:09,330 --> 00:23:11,310
+If your distribution
+at a certain point
+
+490
+00:23:11,310 --> 00:23:13,360
+is pretty flat such
+as in this example,
+
+491
+00:23:13,360 --> 00:23:15,960
+she said I never
+blank, you might not
+
+492
+00:23:15,960 --> 00:23:19,020
+want to truncate a lot of
+interesting options using
+
+493
+00:23:19,020 --> 00:23:20,520
+a small value of
+k when there's so
+
+494
+00:23:20,520 --> 00:23:26,220
+many good choices that could
+fit in this potential context.
+
+495
+00:23:26,220 --> 00:23:28,720
+Conversely in a
+different example,
+
+496
+00:23:28,720 --> 00:23:30,900
+you might want to cut off
+much more than let's say
+
+497
+00:23:30,900 --> 00:23:34,170
+your minimum k options
+because only a subset of them
+
+498
+00:23:34,170 --> 00:23:37,020
+end up being quite suitable,
+and higher k than is really
+
+499
+00:23:37,020 --> 00:23:40,500
+necessary lts that long tail
+seep in and potentially ruin
+
+500
+00:23:40,500 --> 00:23:42,630
+your generation.
+
+501
+00:23:42,630 --> 00:23:46,770
+And so in response to this,
+top-p or nucleus sampling
+
+502
+00:23:46,770 --> 00:23:48,820
+is a way around this issue.
+
+503
+00:23:48,820 --> 00:23:51,330
+So here instead of sampling
+from a fixed number of tokens
+
+504
+00:23:51,330 --> 00:23:53,610
+at each step, you
+sample from a fixed
+
+505
+00:23:53,610 --> 00:23:55,800
+amount of probability mass.
+
+506
+00:23:55,800 --> 00:23:59,790
+And so depending on the
+flatness of your distribution,
+
+507
+00:23:59,790 --> 00:24:04,620
+you end up including a
+variable number of tokens
+
+508
+00:24:04,620 --> 00:24:07,830
+that is kind of dynamically
+changing depending
+
+509
+00:24:07,830 --> 00:24:12,510
+on how that probability mass is
+spread across the distribution.
+
+510
+00:24:12,510 --> 00:24:15,090
+And so to kind of
+describe this visually,
+
+511
+00:24:15,090 --> 00:24:17,730
+if you have three
+different distributions
+
+512
+00:24:17,730 --> 00:24:21,270
+at a particular step to
+generate a particular token in,
+
+513
+00:24:21,270 --> 00:24:24,000
+they're each going to prune
+a different number of tokens
+
+514
+00:24:24,000 --> 00:24:27,930
+from the available set that
+you can sample from, depending
+
+515
+00:24:27,930 --> 00:24:30,370
+on what the value
+of P is and what
+
+516
+00:24:30,370 --> 00:24:32,552
+the peakiness of
+that distribution
+
+517
+00:24:32,552 --> 00:24:33,510
+actually ends up being.
+
+518
+00:24:33,510 --> 00:24:38,340
+
+
+519
+00:24:38,340 --> 00:24:41,730
+So I keep talking about
+this concept of flatness
+
+520
+00:24:41,730 --> 00:24:45,180
+of a distribution being kind
+of critical in understanding
+
+521
+00:24:45,180 --> 00:24:49,200
+how many tokens we can
+actually end up sampling from.
+
+522
+00:24:49,200 --> 00:24:51,900
+And in fact, as we try to
+use sampling algorithms,
+
+523
+00:24:51,900 --> 00:24:54,990
+we might find that the
+model that we've learned
+
+524
+00:24:54,990 --> 00:24:57,990
+may not actually be producing
+probability distributions that
+
+525
+00:24:57,990 --> 00:25:00,630
+lend themselves very nicely to
+using these types of sampling
+
+526
+00:25:00,630 --> 00:25:01,320
+algorithms.
+
+527
+00:25:01,320 --> 00:25:04,848
+The distributions might be too
+flat, they might be too peaky.
+
+528
+00:25:04,848 --> 00:25:06,390
+And in fact, what
+we might want to do
+
+529
+00:25:06,390 --> 00:25:08,580
+is re-scale those
+distributions to better fit
+
+530
+00:25:08,580 --> 00:25:12,430
+the decoding algorithm
+that we might want to use.
+
+531
+00:25:12,430 --> 00:25:15,600
+And we can do this
+with a method that
+
+532
+00:25:15,600 --> 00:25:17,100
+goes by a variety
+of different names
+
+533
+00:25:17,100 --> 00:25:18,900
+which I call
+temperature scaling.
+
+534
+00:25:18,900 --> 00:25:22,800
+And here what you do is that
+you apply a linear coefficient
+
+535
+00:25:22,800 --> 00:25:26,340
+to every score for each
+token before you pass it
+
+536
+00:25:26,340 --> 00:25:27,480
+through the softmax.
+
+537
+00:25:27,480 --> 00:25:29,920
+That temperature coefficient
+is the same for every token.
+
+538
+00:25:29,920 --> 00:25:33,600
+So it's not dynamically changing
+amongst your vocabulary,
+
+539
+00:25:33,600 --> 00:25:35,440
+it stays the same.
+
+540
+00:25:35,440 --> 00:25:38,760
+But what happens is
+that that change ends up
+
+541
+00:25:38,760 --> 00:25:41,160
+being amplified by
+the soft max function.
+
+542
+00:25:41,160 --> 00:25:43,410
+And what ends up happening
+is that if your temperature
+
+543
+00:25:43,410 --> 00:25:45,600
+coefficient is
+greater than 1, you're
+
+544
+00:25:45,600 --> 00:25:48,450
+actually going to make your
+probability distribution much
+
+545
+00:25:48,450 --> 00:25:50,540
+more uniform.
+
+546
+00:25:50,540 --> 00:25:53,340
+In other words, you're
+going to make it flatter.
+
+547
+00:25:53,340 --> 00:25:56,010
+Meanwhile if your temperature
+coefficient is less than 1,
+
+548
+00:25:56,010 --> 00:25:57,670
+these scores are
+going to increase,
+
+549
+00:25:57,670 --> 00:25:59,850
+which is going to make your
+distributions more spiky
+
+550
+00:25:59,850 --> 00:26:02,400
+and make the probability
+mass kind of be pushed
+
+551
+00:26:02,400 --> 00:26:06,690
+towards the most likely tokens.
+
+552
+00:26:06,690 --> 00:26:08,370
+One last thing to
+note about temperature
+
+553
+00:26:08,370 --> 00:26:10,500
+is that it's not actually
+a decoding algorithm,
+
+554
+00:26:10,500 --> 00:26:14,650
+it's just a way of re-balancing
+your probability distribution.
+
+555
+00:26:14,650 --> 00:26:17,640
+So in fact, it can be applied to
+all of the sampling algorithms
+
+556
+00:26:17,640 --> 00:26:20,370
+I described before, and
+some greedy decoding
+
+557
+00:26:20,370 --> 00:26:22,330
+algorithms as well.
+
+558
+00:26:22,330 --> 00:26:23,910
+The only one whose
+behavior is not
+
+559
+00:26:23,910 --> 00:26:26,670
+affected by softmax
+temperature scaling
+
+560
+00:26:26,670 --> 00:26:29,580
+is argmax decoding,
+because even though you
+
+561
+00:26:29,580 --> 00:26:33,120
+change the relative
+magnitudes of the probability
+
+562
+00:26:33,120 --> 00:26:35,130
+mass in your distribution,
+you don't actually
+
+563
+00:26:35,130 --> 00:26:38,100
+change the relative
+ranking amongst tokens
+
+564
+00:26:38,100 --> 00:26:39,190
+in that distribution.
+
+565
+00:26:39,190 --> 00:26:42,120
+So argmax decoding will give
+you the exact same output
+
+566
+00:26:42,120 --> 00:26:42,810
+as before.
+
+567
+00:26:42,810 --> 00:26:46,210
+
+
+568
+00:26:46,210 --> 00:26:47,790
+But now that we're
+thinking about how
+
+569
+00:26:47,790 --> 00:26:51,852
+we might change the distribution
+that's produced by our model,
+
+570
+00:26:51,852 --> 00:26:53,310
+we might realize
+that we might want
+
+571
+00:26:53,310 --> 00:26:57,030
+to change more than the
+relative magnitudes I mentioned,
+
+572
+00:26:57,030 --> 00:26:58,803
+and also instead change
+how they're ranked
+
+573
+00:26:58,803 --> 00:26:59,970
+with respect to one another.
+
+574
+00:26:59,970 --> 00:27:05,970
+Maybe in fact our model is
+not a perfect approximation
+
+575
+00:27:05,970 --> 00:27:09,150
+of what the distribution
+over tokens should be.
+
+576
+00:27:09,150 --> 00:27:10,890
+Perhaps the training
+wasn't done right
+
+577
+00:27:10,890 --> 00:27:13,182
+or we didn't have enough
+training data to actually make
+
+578
+00:27:13,182 --> 00:27:14,850
+it well calibrated.
+
+579
+00:27:14,850 --> 00:27:17,730
+And so if we decide that our
+model isn't well calibrated
+
+580
+00:27:17,730 --> 00:27:19,230
+for the task that
+we're doing, we
+
+581
+00:27:19,230 --> 00:27:23,830
+may want to bring in outside
+information at decoding time.
+
+582
+00:27:23,830 --> 00:27:27,450
+And so here I want to talk a
+bit about new classes of methods
+
+583
+00:27:27,450 --> 00:27:30,510
+that let us change
+our model prediction
+
+584
+00:27:30,510 --> 00:27:33,270
+distributions at
+inference time rather than
+
+585
+00:27:33,270 --> 00:27:38,790
+relying on a fixed static model
+that's only been trained once.
+
+586
+00:27:38,790 --> 00:27:41,700
+And a cool way of doing
+this that came out last year
+
+587
+00:27:41,700 --> 00:27:45,540
+is to actually use k nearest
+neighbor language models
+
+588
+00:27:45,540 --> 00:27:48,390
+which allow you to re-calibrate
+your output probability
+
+589
+00:27:48,390 --> 00:27:52,800
+distribution by using phrases
+statistics from let's say
+
+590
+00:27:52,800 --> 00:27:56,160
+a much larger corpus.
+
+591
+00:27:56,160 --> 00:27:58,020
+And so what you
+do in this method
+
+592
+00:27:58,020 --> 00:28:01,020
+is that you initialize
+a large database
+
+593
+00:28:01,020 --> 00:28:04,680
+of phrases along with
+vector representations
+
+594
+00:28:04,680 --> 00:28:07,120
+for those phrases.
+
+595
+00:28:07,120 --> 00:28:09,430
+And then at decoding
+time, you can
+
+596
+00:28:09,430 --> 00:28:12,690
+search for the most similar
+phrases in the database.
+
+597
+00:28:12,690 --> 00:28:16,330
+And so what you do is that
+you take the representation
+
+598
+00:28:16,330 --> 00:28:18,580
+of the context that you
+have from your model
+
+599
+00:28:18,580 --> 00:28:20,620
+and you compute a
+similarity function
+
+600
+00:28:20,620 --> 00:28:23,050
+with all the representations
+of the phrases
+
+601
+00:28:23,050 --> 00:28:24,130
+that you have stored.
+
+602
+00:28:24,130 --> 00:28:26,260
+And based off the
+relative differences
+
+603
+00:28:26,260 --> 00:28:29,230
+amongst these different phrases
+to your current context,
+
+604
+00:28:29,230 --> 00:28:33,130
+you can compute a distribution
+over these most similar
+
+605
+00:28:33,130 --> 00:28:36,670
+phrases, and then you can
+take the next tokens that
+
+606
+00:28:36,670 --> 00:28:41,170
+follow these phrases and add the
+statistics around those phrases
+
+607
+00:28:41,170 --> 00:28:44,110
+to the distribution
+from your model.
+
+608
+00:28:44,110 --> 00:28:46,690
+And so this allows you to really
+re-balance the probability
+
+609
+00:28:46,690 --> 00:28:49,720
+distribution that your
+model has given you
+
+610
+00:28:49,720 --> 00:28:53,500
+with this induced
+distribution over phrases
+
+611
+00:28:53,500 --> 00:28:56,770
+and interpolate them together to
+get a different estimate of how
+
+612
+00:28:56,770 --> 00:28:58,600
+likely certain words are.
+
+613
+00:28:58,600 --> 00:29:01,230
+
+
+614
+00:29:01,230 --> 00:29:07,760
+One question right now is,
+how do you know what to cache?
+
+615
+00:29:07,760 --> 00:29:09,680
+Yeah, so that's a
+really good question.
+
+616
+00:29:09,680 --> 00:29:12,700
+
+
+617
+00:29:12,700 --> 00:29:15,820
+I guess the answer there
+is that you could probably
+
+618
+00:29:15,820 --> 00:29:18,910
+decide on what might be
+a salient set of phrases
+
+619
+00:29:18,910 --> 00:29:20,680
+depending on let's
+say named entities
+
+620
+00:29:20,680 --> 00:29:23,440
+that you might be
+interested in or phrases
+
+621
+00:29:23,440 --> 00:29:25,990
+that you know your model's
+distribution doesn't handle
+
+622
+00:29:25,990 --> 00:29:27,340
+very well.
+
+623
+00:29:27,340 --> 00:29:30,040
+But I'm pretty sure
+in this work they
+
+624
+00:29:30,040 --> 00:29:33,700
+took every phrase in
+their training corpus,
+
+625
+00:29:33,700 --> 00:29:36,610
+cached it, and then relied
+on very efficient algorithms
+
+626
+00:29:36,610 --> 00:29:41,170
+for doing the search over
+representation similarity
+
+627
+00:29:41,170 --> 00:29:43,540
+to actually find the
+most likely ones.
+
+628
+00:29:43,540 --> 00:29:45,820
+Though they did prune
+the number of phrases
+
+629
+00:29:45,820 --> 00:29:49,060
+that they actually used
+to make this distribution,
+
+630
+00:29:49,060 --> 00:29:52,510
+the phrase distributions that it
+wasn't over the entire corpus.
+
+631
+00:29:52,510 --> 00:29:59,940
+
+
+632
+00:29:59,940 --> 00:30:02,640
+So it's fantastic
+that we can now
+
+633
+00:30:02,640 --> 00:30:04,560
+re-balance these
+distributions if we find
+
+634
+00:30:04,560 --> 00:30:07,910
+that our model is doing poorly.
+
+635
+00:30:07,910 --> 00:30:09,540
+Particularly this
+might be relevant
+
+636
+00:30:09,540 --> 00:30:12,250
+if let's say we're
+jumping into a new domain.
+
+637
+00:30:12,250 --> 00:30:14,850
+So we've trained a
+nice big generation
+
+638
+00:30:14,850 --> 00:30:18,450
+model on Wikipedia
+text and now we're
+
+639
+00:30:18,450 --> 00:30:23,130
+going into something that's
+more linked to the stories.
+
+640
+00:30:23,130 --> 00:30:24,810
+We might want to use
+this type of system
+
+641
+00:30:24,810 --> 00:30:28,020
+to get distributions
+from phrases from there.
+
+642
+00:30:28,020 --> 00:30:30,180
+But it's also possible
+that we may not always
+
+643
+00:30:30,180 --> 00:30:33,510
+have a good database of phrases
+to help us calibrate output
+
+644
+00:30:33,510 --> 00:30:35,970
+distributions for
+all the types of text
+
+645
+00:30:35,970 --> 00:30:37,890
+that we want to generate.
+
+646
+00:30:37,890 --> 00:30:39,900
+And so luckily
+last year, there's
+
+647
+00:30:39,900 --> 00:30:42,540
+also been new approaches
+that look at doing
+
+648
+00:30:42,540 --> 00:30:45,640
+this in a gradient based way.
+
+649
+00:30:45,640 --> 00:30:48,030
+And so the idea here is
+that you can actually
+
+650
+00:30:48,030 --> 00:30:51,510
+define some type of
+external objective using
+
+651
+00:30:51,510 --> 00:30:55,650
+a classifier that we typically
+call a discriminator.
+
+652
+00:30:55,650 --> 00:30:58,350
+But in this figure from
+the paper that proposed it,
+
+653
+00:30:58,350 --> 00:31:00,180
+they called an attribute model.
+
+654
+00:31:00,180 --> 00:31:03,300
+And what that classifier
+does is that it approximates
+
+655
+00:31:03,300 --> 00:31:06,150
+some property that you'd
+like to encourage your text
+
+656
+00:31:06,150 --> 00:31:08,190
+to exhibit as you decode.
+
+657
+00:31:08,190 --> 00:31:09,990
+So perhaps it's a
+sentiment classifier
+
+658
+00:31:09,990 --> 00:31:13,290
+because you are working
+on a dialogue model
+
+659
+00:31:13,290 --> 00:31:17,430
+and you want to encourage
+positive sounding comments.
+
+660
+00:31:17,430 --> 00:31:19,740
+So then what you do is
+that as you generate text,
+
+661
+00:31:19,740 --> 00:31:22,590
+you input the output of
+your text generation model
+
+662
+00:31:22,590 --> 00:31:24,630
+to this attribute
+model, and there's
+
+663
+00:31:24,630 --> 00:31:28,890
+some tricks on how you should
+do that in order to actually
+
+664
+00:31:28,890 --> 00:31:31,740
+not have it be a discrete token
+that you provide to the model
+
+665
+00:31:31,740 --> 00:31:35,230
+but instead a
+distribution over tokens.
+
+666
+00:31:35,230 --> 00:31:38,400
+But the important thing is that
+if you do this the right way
+
+667
+00:31:38,400 --> 00:31:40,800
+by using the soft distribution
+of tokens as inputs
+
+668
+00:31:40,800 --> 00:31:42,870
+to the attribute
+model, it's going
+
+669
+00:31:42,870 --> 00:31:45,180
+to be able to compute a
+score for the sequence
+
+670
+00:31:45,180 --> 00:31:46,780
+that it receives.
+
+671
+00:31:46,780 --> 00:31:48,660
+So that if it's a
+sentiment classifier,
+
+672
+00:31:48,660 --> 00:31:51,030
+it can evaluate how
+positive of the sequence
+
+673
+00:31:51,030 --> 00:31:53,400
+you provided to it.
+
+674
+00:31:53,400 --> 00:31:56,520
+And then what you can do is
+that you can compute gradients
+
+675
+00:31:56,520 --> 00:31:59,460
+with respect to this
+property and backpropagate
+
+676
+00:31:59,460 --> 00:32:02,325
+those gradients back to your
+text generation model directly.
+
+677
+00:32:02,325 --> 00:32:05,270
+
+
+678
+00:32:05,270 --> 00:32:07,250
+But instead of updating
+the parameters, which
+
+679
+00:32:07,250 --> 00:32:08,792
+is what you would
+do during training,
+
+680
+00:32:08,792 --> 00:32:11,840
+you instead update the
+intermediate activations
+
+681
+00:32:11,840 --> 00:32:14,210
+at each layer of your model,
+which you can then forward
+
+682
+00:32:14,210 --> 00:32:16,790
+propagate to compute
+a new distribution
+
+683
+00:32:16,790 --> 00:32:18,600
+over the sets of tokens.
+
+684
+00:32:18,600 --> 00:32:20,570
+And so it's a neat
+trick that allows
+
+685
+00:32:20,570 --> 00:32:22,970
+you to do real time
+distribution updating based
+
+686
+00:32:22,970 --> 00:32:26,660
+on some outside discriminator
+that's allowing you to update
+
+687
+00:32:26,660 --> 00:32:28,820
+your internal representations
+of the sequence
+
+688
+00:32:28,820 --> 00:32:30,680
+such that it hopefully
+generates something
+
+689
+00:32:30,680 --> 00:32:33,050
+more positive at the
+outputs in this case.
+
+690
+00:32:33,050 --> 00:32:37,360
+
+
+691
+00:32:37,360 --> 00:32:39,790
+So these distribution
+re-balancing methods
+
+692
+00:32:39,790 --> 00:32:42,430
+either based off
+nearest neighbor search
+
+693
+00:32:42,430 --> 00:32:45,790
+or on using some
+type of discriminator
+
+694
+00:32:45,790 --> 00:32:47,950
+are quite promising
+and interesting,
+
+695
+00:32:47,950 --> 00:32:51,148
+but they also end up being
+quite computationally intensive.
+
+696
+00:32:51,148 --> 00:32:52,690
+In the first case,
+you're essentially
+
+697
+00:32:52,690 --> 00:32:56,080
+doing a search over
+thousands of phrases
+
+698
+00:32:56,080 --> 00:32:57,880
+to re-balance your distribution.
+
+699
+00:32:57,880 --> 00:32:59,620
+In the second you're
+doing multiple
+
+700
+00:32:59,620 --> 00:33:01,450
+forwards and backwards
+passes at every step
+
+701
+00:33:01,450 --> 00:33:02,970
+to try and make
+the tokens exhibit
+
+702
+00:33:02,970 --> 00:33:05,403
+a particular behavior more.
+
+703
+00:33:05,403 --> 00:33:06,820
+And unfortunately,
+neither of them
+
+704
+00:33:06,820 --> 00:33:11,107
+actually stop you from
+decoding that sequences either.
+
+705
+00:33:11,107 --> 00:33:12,940
+It's possible that even
+after you re-balance
+
+706
+00:33:12,940 --> 00:33:14,690
+your distribution,
+you're still generating
+
+707
+00:33:14,690 --> 00:33:16,880
+something that looks terrible.
+
+708
+00:33:16,880 --> 00:33:19,630
+So in practice, something that
+we often use in text generation
+
+709
+00:33:19,630 --> 00:33:23,440
+to improve our sequence outputs
+are what are called re-rankers.
+
+710
+00:33:23,440 --> 00:33:25,660
+And so what we do here is
+that we actually decode
+
+711
+00:33:25,660 --> 00:33:30,100
+multiple sequences perhaps
+using sampling or a wider
+
+712
+00:33:30,100 --> 00:33:32,740
+greedy search, say maybe 10.
+
+713
+00:33:32,740 --> 00:33:35,650
+And then what we can do is
+that we can initialize a score
+
+714
+00:33:35,650 --> 00:33:38,320
+to evaluate the
+sequences we produce
+
+715
+00:33:38,320 --> 00:33:42,670
+and re-rank these sequences
+according to the score.
+
+716
+00:33:42,670 --> 00:33:46,240
+And the simplest thing we can do
+is to actually just score them
+
+717
+00:33:46,240 --> 00:33:50,822
+by the likelihood given
+by the model for example.
+
+718
+00:33:50,822 --> 00:33:52,780
+Especially if we're using
+a sampling algorithm,
+
+719
+00:33:52,780 --> 00:33:55,540
+we might want to make sure that
+we didn't generate something
+
+720
+00:33:55,540 --> 00:33:58,600
+that totally deviated from
+good text which would tend
+
+721
+00:33:58,600 --> 00:34:01,090
+to have a very high perplexity.
+
+722
+00:34:01,090 --> 00:34:05,052
+So this perplexity is perhaps
+a good re-ranking function.
+
+723
+00:34:05,052 --> 00:34:06,760
+It's just important
+to be careful as well
+
+724
+00:34:06,760 --> 00:34:10,929
+that repetitive sequences tend
+to have very low perplexity as
+
+725
+00:34:10,929 --> 00:34:11,449
+well.
+
+726
+00:34:11,449 --> 00:34:13,576
+And so if you rank
+by perplexity,
+
+727
+00:34:13,576 --> 00:34:15,909
+you're likely to just generate
+something you were trying
+
+728
+00:34:15,909 --> 00:34:19,780
+to avoid in the first case.
+
+729
+00:34:19,780 --> 00:34:23,230
+But we can also make
+our re-rankers evaluate
+
+730
+00:34:23,230 --> 00:34:24,677
+more complex behaviors.
+
+731
+00:34:24,677 --> 00:34:27,010
+In the same way that we could
+use gradient based methods
+
+732
+00:34:27,010 --> 00:34:30,340
+to update our distributions to
+exhibit more complex behaviors,
+
+733
+00:34:30,340 --> 00:34:33,340
+we can actually just take
+those same attribute models
+
+734
+00:34:33,340 --> 00:34:35,864
+and use them as re-rankers
+to re-rank a fixed
+
+735
+00:34:35,864 --> 00:34:37,239
+set of sequences
+rather than have
+
+736
+00:34:37,239 --> 00:34:41,090
+them back propagate
+gradients to the main model.
+
+737
+00:34:41,090 --> 00:34:42,730
+And so we can use
+them to rank things
+
+738
+00:34:42,730 --> 00:34:45,190
+such as style, discourse,
+factuality, logical
+
+739
+00:34:45,190 --> 00:34:47,530
+consistency.
+
+740
+00:34:47,530 --> 00:34:50,110
+But just be careful if
+your re-ranker ends up
+
+741
+00:34:50,110 --> 00:34:52,690
+being poorly calibrated.
+
+742
+00:34:52,690 --> 00:34:54,580
+Just because you've
+trained a classifier
+
+743
+00:34:54,580 --> 00:34:57,250
+to predict whether a sentence
+makes a factual statement
+
+744
+00:34:57,250 --> 00:34:58,780
+doesn't actually
+mean that it will
+
+745
+00:34:58,780 --> 00:35:01,810
+be good at ranking different
+factual statements with respect
+
+746
+00:35:01,810 --> 00:35:04,032
+to one another.
+
+747
+00:35:04,032 --> 00:35:05,740
+And finally a nice
+thing about re-rankers
+
+748
+00:35:05,740 --> 00:35:08,710
+as well is that you can use
+multiple re-rankers in parallel
+
+749
+00:35:08,710 --> 00:35:11,642
+if there's multiple
+properties you want to score
+
+750
+00:35:11,642 --> 00:35:13,600
+and come up with, let's
+say, a weighted average
+
+751
+00:35:13,600 --> 00:35:15,970
+of different ranking
+scores to decide
+
+752
+00:35:15,970 --> 00:35:18,130
+on what might be the
+best sequence according
+
+753
+00:35:18,130 --> 00:35:22,070
+to different properties.
+
+754
+00:35:22,070 --> 00:35:24,940
+But so to recap what we've
+talked about in terms
+
+755
+00:35:24,940 --> 00:35:28,360
+of decoding, I want to
+mention that decoding is still
+
+756
+00:35:28,360 --> 00:35:31,660
+a very challenging problem in
+natural language generation
+
+757
+00:35:31,660 --> 00:35:34,520
+that we haven't really
+figured out yet.
+
+758
+00:35:34,520 --> 00:35:36,370
+Our algorithms
+still don't really
+
+759
+00:35:36,370 --> 00:35:39,810
+reflect the way that humans
+choose words when they speak,
+
+760
+00:35:39,810 --> 00:35:41,680
+and our best approaches
+are currently
+
+761
+00:35:41,680 --> 00:35:44,140
+based on trying to calibrate
+probability distributions
+
+762
+00:35:44,140 --> 00:35:47,350
+produced by models to perhaps
+be more representative
+
+763
+00:35:47,350 --> 00:35:49,840
+of human likelihood.
+
+764
+00:35:49,840 --> 00:35:51,910
+But the truth is the human
+language distribution
+
+765
+00:35:51,910 --> 00:35:55,750
+is quite noisy and doesn't
+reflect the simple properties
+
+766
+00:35:55,750 --> 00:35:57,220
+that our decoding
+algorithms often
+
+767
+00:35:57,220 --> 00:36:02,320
+capture such as
+probability maximization.
+
+768
+00:36:02,320 --> 00:36:04,300
+But different
+decoding algorithms
+
+769
+00:36:04,300 --> 00:36:06,622
+do allow us to
+perhaps inject biases
+
+770
+00:36:06,622 --> 00:36:08,080
+that encourage
+different properties
+
+771
+00:36:08,080 --> 00:36:10,270
+of coherent natural
+language generation.
+
+772
+00:36:10,270 --> 00:36:12,490
+That's allowed us to make
+promising improvements
+
+773
+00:36:12,490 --> 00:36:14,150
+in this area as well.
+
+774
+00:36:14,150 --> 00:36:16,330
+And in fact, some of the
+most impactful advances
+
+775
+00:36:16,330 --> 00:36:18,580
+in NLG over the last
+few years have really
+
+776
+00:36:18,580 --> 00:36:21,310
+come from simple but very
+effective modifications
+
+777
+00:36:21,310 --> 00:36:23,830
+to decoding algorithms
+because you can often
+
+778
+00:36:23,830 --> 00:36:26,770
+have impact across a very
+large number of tasks
+
+779
+00:36:26,770 --> 00:36:30,053
+by making a good change
+to a decoding algorithm.
+
+780
+00:36:30,053 --> 00:36:31,720
+But really there's
+still a lot more work
+
+781
+00:36:31,720 --> 00:36:34,960
+to be done in the space,
+and hopefully many of you
+
+782
+00:36:34,960 --> 00:36:38,160
+will be the ones to make
+these next breakthroughs.
+
+783
+00:36:38,160 --> 00:36:39,940
+I'm happy to take
+questions at this point
+
+784
+00:36:39,940 --> 00:36:41,250
+if any have popped up.
+
+785
+00:36:41,250 --> 00:36:43,410
+Oh, here's one question.
+
+786
+00:36:43,410 --> 00:36:45,810
+How do you evaluate,
+how do you tell
+
+787
+00:36:45,810 --> 00:36:48,400
+whether re-balance
+distribution is better?
+
+788
+00:36:48,400 --> 00:36:50,500
+And if I editorialized
+from there,
+
+789
+00:36:50,500 --> 00:36:52,650
+I guess you're
+admitting on this slide
+
+790
+00:36:52,650 --> 00:36:56,280
+that you can't just
+look at the probability.
+
+791
+00:36:56,280 --> 00:36:57,240
+Yeah.
+
+792
+00:36:57,240 --> 00:37:00,690
+So yes, you can't just
+look at the probability.
+
+793
+00:37:00,690 --> 00:37:03,360
+I mean, there is a
+certain amount of trust
+
+794
+00:37:03,360 --> 00:37:06,270
+that happens that if you don't
+trust that your ranker is
+
+795
+00:37:06,270 --> 00:37:09,960
+giving you a better assessment
+of whether you've produced
+
+796
+00:37:09,960 --> 00:37:12,120
+a quality piece of text,
+perhaps you shouldn't
+
+797
+00:37:12,120 --> 00:37:14,070
+be using that re-ranker
+in the first place.
+
+798
+00:37:14,070 --> 00:37:17,130
+And hopefully you've actually
+means tested that re-ranker
+
+799
+00:37:17,130 --> 00:37:19,560
+to actually show
+that it has, that it
+
+800
+00:37:19,560 --> 00:37:20,828
+improves the quality of text.
+
+801
+00:37:20,828 --> 00:37:23,370
+But we're going to talk a lot
+more about how you can actually
+
+802
+00:37:23,370 --> 00:37:27,330
+evaluate the quality of text
+later on, though I should warn
+
+803
+00:37:27,330 --> 00:37:31,890
+you ahead of time that
+the answers are not
+
+804
+00:37:31,890 --> 00:37:34,860
+as direct and complete as
+you might want them to be.
+
+805
+00:37:34,860 --> 00:37:38,700
+And in fact, there's a lot of
+room for interpretation in how
+
+806
+00:37:38,700 --> 00:37:40,590
+you would actually do that.
+
+807
+00:37:40,590 --> 00:37:42,600
+Maybe you should go
+on about that later,
+
+808
+00:37:42,600 --> 00:37:45,390
+but I guess people are puzzled
+on that because there's
+
+809
+00:37:45,390 --> 00:37:47,070
+another question that's asking.
+
+810
+00:37:47,070 --> 00:37:50,230
+
+
+811
+00:37:50,230 --> 00:37:52,120
+It was saying that
+you said, you don't
+
+812
+00:37:52,120 --> 00:37:56,410
+know how to make a model
+choose words like a human,
+
+813
+00:37:56,410 --> 00:38:00,560
+how do we model different humans
+from different backgrounds,
+
+814
+00:38:00,560 --> 00:38:01,220
+et cetera?
+
+815
+00:38:01,220 --> 00:38:06,230
+
+
+816
+00:38:06,230 --> 00:38:09,690
+Yeah, that's a
+really good question.
+
+817
+00:38:09,690 --> 00:38:12,290
+The answer to that is
+that you could potentially
+
+818
+00:38:12,290 --> 00:38:19,110
+try to do kind of fine
+tuning on the language
+
+819
+00:38:19,110 --> 00:38:22,027
+distribution of a particular
+human starting from let's say
+
+820
+00:38:22,027 --> 00:38:24,360
+a pre-trained language model
+since you'll probably never
+
+821
+00:38:24,360 --> 00:38:28,285
+have enough data to only use
+a single human's outputs,
+
+822
+00:38:28,285 --> 00:38:30,660
+or you could try to do some
+of these re-balancing methods
+
+823
+00:38:30,660 --> 00:38:35,400
+that we've spoken about to
+perhaps use those to actually
+
+824
+00:38:35,400 --> 00:38:38,700
+make your distributions approach
+a particular human's language
+
+825
+00:38:38,700 --> 00:38:40,337
+distribution more closely.
+
+826
+00:38:40,337 --> 00:38:42,420
+So in the gradient based
+methods that I described,
+
+827
+00:38:42,420 --> 00:38:44,700
+I could perhaps train a
+single language model only
+
+828
+00:38:44,700 --> 00:38:48,600
+on my type of language, even if
+I have a much larger one that's
+
+829
+00:38:48,600 --> 00:38:50,680
+trained on a much larger
+corpus of language
+
+830
+00:38:50,680 --> 00:38:52,650
+from different
+speakers, but then
+
+831
+00:38:52,650 --> 00:38:55,770
+try to make it so
+that my model ranks
+
+832
+00:38:55,770 --> 00:38:59,100
+the outputs of the main model.
+
+833
+00:38:59,100 --> 00:39:00,780
+I've got a question.
+
+834
+00:39:00,780 --> 00:39:02,250
+Yep.
+
+835
+00:39:02,250 --> 00:39:05,130
+So nucleus sampling
+and top-k sampling
+
+836
+00:39:05,130 --> 00:39:06,900
+are really effective
+in practice,
+
+837
+00:39:06,900 --> 00:39:08,520
+and you made the
+argument that there
+
+838
+00:39:08,520 --> 00:39:11,062
+are all these little tiny things
+with very little probability
+
+839
+00:39:11,062 --> 00:39:13,890
+mass but it sums up to
+more probability mass.
+
+840
+00:39:13,890 --> 00:39:16,620
+But if it sums up to
+more probability mass
+
+841
+00:39:16,620 --> 00:39:20,490
+than they actually should have
+under the real distribution
+
+842
+00:39:20,490 --> 00:39:22,200
+of human language,
+shouldn't our models
+
+843
+00:39:22,200 --> 00:39:25,530
+have been trained to put less
+probability mass on them?
+
+844
+00:39:25,530 --> 00:39:29,700
+And so why aren't our language
+models better in that case?
+
+845
+00:39:29,700 --> 00:39:32,133
+Like why do we have this
+issue if they actually
+
+846
+00:39:32,133 --> 00:39:34,050
+are getting more probability
+than they should?
+
+847
+00:39:34,050 --> 00:39:39,110
+
+
+848
+00:39:39,110 --> 00:39:42,650
+Yeah, that's a
+really good question.
+
+849
+00:39:42,650 --> 00:39:45,290
+I think the answer to that is
+that the way we train them,
+
+850
+00:39:45,290 --> 00:39:50,390
+which I'll get to in a bit
+is really trying to do,
+
+851
+00:39:50,390 --> 00:39:53,330
+is really trying to model the
+distribution of human language
+
+852
+00:39:53,330 --> 00:39:54,980
+as it sees in its
+training corpus.
+
+853
+00:39:54,980 --> 00:39:59,870
+And it's actually surprisingly
+effective at doing that.
+
+854
+00:39:59,870 --> 00:40:02,997
+But at the same time,
+when we actually
+
+855
+00:40:02,997 --> 00:40:04,580
+start to use these
+language models out
+
+856
+00:40:04,580 --> 00:40:07,700
+of the box in the NLG task that
+we work with, first of all,
+
+857
+00:40:07,700 --> 00:40:10,678
+there's always slight deviations
+in the distribution of text
+
+858
+00:40:10,678 --> 00:40:13,220
+that we're actually trying to
+model for the task we're doing,
+
+859
+00:40:13,220 --> 00:40:14,870
+and what the large
+corpus we trained on
+
+860
+00:40:14,870 --> 00:40:18,110
+was in the first place,
+which can make these decoding
+
+861
+00:40:18,110 --> 00:40:20,155
+algorithms less effective.
+
+862
+00:40:20,155 --> 00:40:21,530
+And the second
+thing I would note
+
+863
+00:40:21,530 --> 00:40:24,770
+is that even though these
+decoding algorithms are quite
+
+864
+00:40:24,770 --> 00:40:28,370
+effective in practice,
+they aren't doing
+
+865
+00:40:28,370 --> 00:40:30,620
+what humans do when we speak.
+
+866
+00:40:30,620 --> 00:40:32,540
+At no point when
+a human speaks are
+
+867
+00:40:32,540 --> 00:40:34,310
+we potentially
+trying to maximize
+
+868
+00:40:34,310 --> 00:40:36,680
+the probability of a
+potential next token
+
+869
+00:40:36,680 --> 00:40:39,470
+or randomly select a word
+amongst a set of tokens.
+
+870
+00:40:39,470 --> 00:40:41,240
+We ultimately have
+world models that
+
+871
+00:40:41,240 --> 00:40:44,840
+drive how we select the tokens
+that we choose to say in order
+
+872
+00:40:44,840 --> 00:40:46,112
+to make our points.
+
+873
+00:40:46,112 --> 00:40:47,570
+And that's very
+different from what
+
+874
+00:40:47,570 --> 00:40:50,780
+we get in probabilistic
+language models.
+
+875
+00:40:50,780 --> 00:40:53,420
+Now should we throw away
+probabilistic language models?
+
+876
+00:40:53,420 --> 00:40:57,090
+No, because as you mentioned
+they end up working quite well.
+
+877
+00:40:57,090 --> 00:40:58,490
+But at some point
+we also do need
+
+878
+00:40:58,490 --> 00:41:00,920
+to mitigate these differences
+between how humans end up
+
+879
+00:41:00,920 --> 00:41:03,350
+speaking and how language
+models end up modeling language.
+
+880
+00:41:03,350 --> 00:41:05,770
+
+
+881
+00:41:05,770 --> 00:41:06,270
+Thanks.
+
+882
+00:41:06,270 --> 00:41:10,340
+
+
+883
+00:41:10,340 --> 00:41:15,440
+So now that John has primed us
+perfectly for what comes next,
+
+884
+00:41:15,440 --> 00:41:18,710
+let's jump back into the
+training these models
+
+885
+00:41:18,710 --> 00:41:22,850
+because the pipeline that
+I framed earlier being,
+
+886
+00:41:22,850 --> 00:41:26,090
+you train your model, then you
+choose your decoding algorithm
+
+887
+00:41:26,090 --> 00:41:30,140
+depending on properties you're
+interested in, is great.
+
+888
+00:41:30,140 --> 00:41:31,760
+But the truth is
+there's interactions
+
+889
+00:41:31,760 --> 00:41:34,790
+between your decoding model
+and your training algorithm
+
+890
+00:41:34,790 --> 00:41:37,620
+that you might want to be
+thinking about during training,
+
+891
+00:41:37,620 --> 00:41:41,218
+which is not really what
+we're doing right now.
+
+892
+00:41:41,218 --> 00:41:43,010
+And so if you recall
+the training algorithm
+
+893
+00:41:43,010 --> 00:41:44,840
+that we've proposed
+up to this point
+
+894
+00:41:44,840 --> 00:41:47,270
+is one where we just try to
+minimize the negative log
+
+895
+00:41:47,270 --> 00:41:50,570
+likelihood of the next
+token in a sequence
+
+896
+00:41:50,570 --> 00:41:54,450
+given the preceding
+ones at every step.
+
+897
+00:41:54,450 --> 00:41:57,410
+And as I mentioned this
+actually works pretty well
+
+898
+00:41:57,410 --> 00:42:01,490
+for training autoregressive
+models of human language.
+
+899
+00:42:01,490 --> 00:42:06,710
+But it actually causes a few
+issues, which John hinted at.
+
+900
+00:42:06,710 --> 00:42:08,210
+So in the next few
+slides, I'm going
+
+901
+00:42:08,210 --> 00:42:09,918
+to talk a bit about
+these issues and then
+
+902
+00:42:09,918 --> 00:42:12,710
+highlight some training
+solutions to these problems
+
+903
+00:42:12,710 --> 00:42:15,020
+that I found
+interesting, or that I
+
+904
+00:42:15,020 --> 00:42:18,943
+think are important
+from the last few years.
+
+905
+00:42:18,943 --> 00:42:20,360
+So the first issue
+is actually one
+
+906
+00:42:20,360 --> 00:42:22,460
+that I hinted at in
+the last section, which
+
+907
+00:42:22,460 --> 00:42:25,640
+is that training with
+maximum likelihood
+
+908
+00:42:25,640 --> 00:42:29,060
+tends to discourage
+textual diversity.
+
+909
+00:42:29,060 --> 00:42:31,880
+And I showed the sequence
+on a slide earlier
+
+910
+00:42:31,880 --> 00:42:33,710
+as an example of
+greedy algorithms
+
+911
+00:42:33,710 --> 00:42:37,280
+being prone to generating
+repetitive sequences, which
+
+912
+00:42:37,280 --> 00:42:42,470
+is just about the worst form of
+diversity that you could get.
+
+913
+00:42:42,470 --> 00:42:44,360
+But greedy algorithms
+are just trying
+
+914
+00:42:44,360 --> 00:42:46,700
+to maximize the probability
+of the sequences
+
+915
+00:42:46,700 --> 00:42:47,690
+that they produce.
+
+916
+00:42:47,690 --> 00:42:51,260
+So it can really only be prone
+to repetitive and un-diverse
+
+917
+00:42:51,260 --> 00:42:54,500
+phrases if those phrases
+are scored highly
+
+918
+00:42:54,500 --> 00:42:56,883
+by the model to begin with.
+
+919
+00:42:56,883 --> 00:42:58,550
+And that ends up being
+one of the issues
+
+920
+00:42:58,550 --> 00:43:00,620
+with maximum
+likelihood training is
+
+921
+00:43:00,620 --> 00:43:03,170
+that it tends to end up
+favoring generic expressions
+
+922
+00:43:03,170 --> 00:43:06,650
+because those are the ones
+that are often the most likely
+
+923
+00:43:06,650 --> 00:43:09,470
+in human language production.
+
+924
+00:43:09,470 --> 00:43:11,990
+But as we all know and
+as I mentioned earlier,
+
+925
+00:43:11,990 --> 00:43:15,170
+human language production isn't
+about maximizing the likelihood
+
+926
+00:43:15,170 --> 00:43:16,710
+of the words that we produce.
+
+927
+00:43:16,710 --> 00:43:19,228
+So even though we might produce
+generic phrases more often
+
+928
+00:43:19,228 --> 00:43:21,020
+than ungeneric phrases,
+that's not the goal
+
+929
+00:43:21,020 --> 00:43:23,372
+that we're setting out
+with when we speak.
+
+930
+00:43:23,372 --> 00:43:24,830
+There's a lot more
+to communication
+
+931
+00:43:24,830 --> 00:43:28,070
+that really isn't synthesized
+by a training objective that
+
+932
+00:43:28,070 --> 00:43:32,210
+tries to maximize probability
+over the human language that's
+
+933
+00:43:32,210 --> 00:43:33,025
+being read.
+
+934
+00:43:33,025 --> 00:43:34,900
+So how can we end up
+mitigating this problem?
+
+935
+00:43:34,900 --> 00:43:37,203
+
+
+936
+00:43:37,203 --> 00:43:38,870
+So an interesting
+approach that I really
+
+937
+00:43:38,870 --> 00:43:42,590
+like that came out
+last year was actually
+
+938
+00:43:42,590 --> 00:43:44,990
+proposed by Welleck
+et al, which was
+
+939
+00:43:44,990 --> 00:43:47,677
+called unlikelihood training.
+
+940
+00:43:47,677 --> 00:43:49,510
+And so here what you
+do is that you actually
+
+941
+00:43:49,510 --> 00:43:53,050
+discourage the production
+of particular tokens
+
+942
+00:43:53,050 --> 00:43:55,430
+by the model in
+certain contexts.
+
+943
+00:43:55,430 --> 00:43:57,340
+And so what happens
+that this loss term here
+
+944
+00:43:57,340 --> 00:44:01,658
+decreases as the probability
+of the y-neg tokens decreases.
+
+945
+00:44:01,658 --> 00:44:03,700
+So for any token that you
+don't want to generate,
+
+946
+00:44:03,700 --> 00:44:06,910
+as the probability of generating
+that token goes down, so
+
+947
+00:44:06,910 --> 00:44:09,250
+does the loss term, which
+means that you're not actually
+
+948
+00:44:09,250 --> 00:44:13,430
+updating the model as much
+for this particular behavior.
+
+949
+00:44:13,430 --> 00:44:15,430
+What's important, though,
+is that you still have
+
+950
+00:44:15,430 --> 00:44:17,178
+your teacher forcing objective.
+
+951
+00:44:17,178 --> 00:44:18,970
+So what's going to
+happen is that the model
+
+952
+00:44:18,970 --> 00:44:21,220
+is going to learn to capture
+both the distribution
+
+953
+00:44:21,220 --> 00:44:24,000
+of language from the training
+corpus which it needs to do
+
+954
+00:44:24,000 --> 00:44:26,800
+to learn how to generate text.
+
+955
+00:44:26,800 --> 00:44:30,130
+But also it's going to learn
+how to not say particular words
+
+956
+00:44:30,130 --> 00:44:33,930
+that you might not want it to.
+
+957
+00:44:33,930 --> 00:44:36,600
+And then what you can do is that
+you can set this list of words
+
+958
+00:44:36,600 --> 00:44:40,110
+that you don't want the model
+to generate to actually be words
+
+959
+00:44:40,110 --> 00:44:42,090
+that you've already
+generated before.
+
+960
+00:44:42,090 --> 00:44:45,060
+And so in essence you're
+teaching the model to not
+
+961
+00:44:45,060 --> 00:44:46,753
+say the same things again.
+
+962
+00:44:46,753 --> 00:44:48,420
+And that's just
+naturally going to limit
+
+963
+00:44:48,420 --> 00:44:50,550
+the amount of repetition
+that your model is going
+
+964
+00:44:50,550 --> 00:44:52,230
+to be able to spit
+out and you're
+
+965
+00:44:52,230 --> 00:44:54,420
+going to be able to
+generate more diverse texts
+
+966
+00:44:54,420 --> 00:44:56,060
+as the result as well.
+
+967
+00:44:56,060 --> 00:45:00,280
+
+
+968
+00:45:00,280 --> 00:45:02,830
+But a second and
+very important issue
+
+969
+00:45:02,830 --> 00:45:05,230
+that comes from training
+with maximum likelihood
+
+970
+00:45:05,230 --> 00:45:09,640
+is what we often call
+exposure bias, which
+
+971
+00:45:09,640 --> 00:45:12,280
+is that the context
+that we train on
+
+972
+00:45:12,280 --> 00:45:14,140
+to generate the
+next token are going
+
+973
+00:45:14,140 --> 00:45:17,720
+to look different from the ones
+that we see at generation time.
+
+974
+00:45:17,720 --> 00:45:20,330
+And so why might that be?
+
+975
+00:45:20,330 --> 00:45:22,210
+Well, so what happens
+during training
+
+976
+00:45:22,210 --> 00:45:25,540
+is that we always get a
+token from a gold document
+
+977
+00:45:25,540 --> 00:45:27,670
+or human text as input.
+
+978
+00:45:27,670 --> 00:45:30,400
+It's the gold sequence
+as we call it.
+
+979
+00:45:30,400 --> 00:45:32,230
+But then during
+generation, we're
+
+980
+00:45:32,230 --> 00:45:35,350
+feeding our previously
+generated tokens back
+
+981
+00:45:35,350 --> 00:45:38,380
+into the model as
+the input rather than
+
+982
+00:45:38,380 --> 00:45:43,300
+these teacher forced tokens that
+are from the gold documents.
+
+983
+00:45:43,300 --> 00:45:45,010
+And so that set of
+tokens is actually
+
+984
+00:45:45,010 --> 00:45:47,560
+quite affected by things like
+the distributions produced
+
+985
+00:45:47,560 --> 00:45:52,380
+by our model and the decoding
+algorithm we use to get tokens.
+
+986
+00:45:52,380 --> 00:45:54,790
+And so can this end
+up being a problem?
+
+987
+00:45:54,790 --> 00:45:57,370
+Well, yes because as
+we've seen before,
+
+988
+00:45:57,370 --> 00:46:00,400
+the types of text that
+our model generates
+
+989
+00:46:00,400 --> 00:46:04,390
+are often not a very close
+approximation of human language
+
+990
+00:46:04,390 --> 00:46:06,107
+patterns in the training set.
+
+991
+00:46:06,107 --> 00:46:08,440
+And so there's going to be
+an imbalance between the type
+
+992
+00:46:08,440 --> 00:46:09,857
+of text that our
+model has learned
+
+993
+00:46:09,857 --> 00:46:14,950
+to predict, and to expect
+to see, and the type of text
+
+994
+00:46:14,950 --> 00:46:18,640
+that it will see once we
+actually start decoding.
+
+995
+00:46:18,640 --> 00:46:22,180
+And so once your model starts
+receiving its own inputs which
+
+996
+00:46:22,180 --> 00:46:24,850
+are going to deviate from the
+distribution of text to expect,
+
+997
+00:46:24,850 --> 00:46:26,517
+It's going to be very
+challenging for it
+
+998
+00:46:26,517 --> 00:46:29,290
+to be able to generate coherent
+text going forward because it's
+
+999
+00:46:29,290 --> 00:46:31,873
+not going to really know how to
+synthesize its own information
+
+1000
+00:46:31,873 --> 00:46:34,055
+that it's generated.
+
+1001
+00:46:34,055 --> 00:46:35,680
+And so there's a
+variety of ways to try
+
+1002
+00:46:35,680 --> 00:46:38,560
+to counter this exposure
+bias issue and many more
+
+1003
+00:46:38,560 --> 00:46:41,120
+that that continue to come out.
+
+1004
+00:46:41,120 --> 00:46:43,120
+And unfortunately there's
+not really enough time
+
+1005
+00:46:43,120 --> 00:46:44,787
+to talk about all of
+them, so I've added
+
+1006
+00:46:44,787 --> 00:46:46,540
+slides to discuss
+two of them that
+
+1007
+00:46:46,540 --> 00:46:50,260
+are based on semi-supervised
+learning here.
+
+1008
+00:46:50,260 --> 00:46:53,950
+But I really want to focus
+more on two other approaches
+
+1009
+00:46:53,950 --> 00:46:57,050
+that I personally
+find very interesting.
+
+1010
+00:46:57,050 --> 00:46:59,800
+The first is called
+sequence rewriting.
+
+1011
+00:46:59,800 --> 00:47:01,990
+And so in this
+setting, your model
+
+1012
+00:47:01,990 --> 00:47:05,020
+first learns to
+retrieve a sequence
+
+1013
+00:47:05,020 --> 00:47:10,060
+from an existing database
+of human written prototypes.
+
+1014
+00:47:10,060 --> 00:47:12,730
+So it's kind of like our nearest
+neighbor decoders earlier will
+
+1015
+00:47:12,730 --> 00:47:14,200
+be cached a bunch of phrases.
+
+1016
+00:47:14,200 --> 00:47:15,973
+Here you cache a
+bunch of sequences
+
+1017
+00:47:15,973 --> 00:47:18,640
+that might be similar to the one
+that you're supposed to produce
+
+1018
+00:47:18,640 --> 00:47:21,370
+for this new situation.
+
+1019
+00:47:21,370 --> 00:47:23,650
+And then what we do is that
+once we take this sequence
+
+1020
+00:47:23,650 --> 00:47:25,780
+and retrieve it,
+we learn to edit it
+
+1021
+00:47:25,780 --> 00:47:30,280
+by doing things like adding,
+removing, or modifying tokens
+
+1022
+00:47:30,280 --> 00:47:32,950
+to more accurately reflect the
+context that we're actually
+
+1023
+00:47:32,950 --> 00:47:36,790
+given rather than the one that
+this original sequence was
+
+1024
+00:47:36,790 --> 00:47:38,922
+designed for in the first place.
+
+1025
+00:47:38,922 --> 00:47:40,630
+And so we can still
+use an algorithm here
+
+1026
+00:47:40,630 --> 00:47:42,970
+that tries to maximize
+likelihood for training.
+
+1027
+00:47:42,970 --> 00:47:45,580
+But because there's this sort
+of latent variable of retrieving
+
+1028
+00:47:45,580 --> 00:47:47,620
+the right prototype
+that's involved,
+
+1029
+00:47:47,620 --> 00:47:50,560
+it makes it less likely that
+our generated text ends up
+
+1030
+00:47:50,560 --> 00:47:53,008
+suffering from exposure
+bias because you're already
+
+1031
+00:47:53,008 --> 00:47:55,300
+starting from something that
+looks more like a training
+
+1032
+00:47:55,300 --> 00:47:58,820
+sequence that you
+might have seen.
+
+1033
+00:47:58,820 --> 00:48:02,270
+Another general class of
+possibilities we can do
+
+1034
+00:48:02,270 --> 00:48:05,930
+is to let our model learn
+to generate text by learning
+
+1035
+00:48:05,930 --> 00:48:07,970
+from its own samples.
+
+1036
+00:48:07,970 --> 00:48:10,040
+And this naturally
+maps itself nicely
+
+1037
+00:48:10,040 --> 00:48:12,080
+to reinforcement learning,
+which is actually
+
+1038
+00:48:12,080 --> 00:48:16,970
+one of my favorite ways to
+learn how to generate text.
+
+1039
+00:48:16,970 --> 00:48:19,670
+In the setting you're going
+to cast your text generation
+
+1040
+00:48:19,670 --> 00:48:23,990
+model as a Markov decision
+process where your state S is
+
+1041
+00:48:23,990 --> 00:48:26,720
+the model's representation
+of the preceding context
+
+1042
+00:48:26,720 --> 00:48:29,060
+that you see, your
+actions A are the words
+
+1043
+00:48:29,060 --> 00:48:32,960
+that can be generated,
+your policy is the decoder,
+
+1044
+00:48:32,960 --> 00:48:36,800
+and your rewards are provided
+by some type of external score.
+
+1045
+00:48:36,800 --> 00:48:39,560
+And here you can learn
+many different behaviors
+
+1046
+00:48:39,560 --> 00:48:42,890
+for your text generation
+model by rewarding it when
+
+1047
+00:48:42,890 --> 00:48:45,860
+it exhibits those behaviors.
+
+1048
+00:48:45,860 --> 00:48:48,157
+And so to kind of
+quickly join this framing
+
+1049
+00:48:48,157 --> 00:48:50,240
+with the perspective of
+the text generation models
+
+1050
+00:48:50,240 --> 00:48:52,070
+that we've seen so
+far, you're going
+
+1051
+00:48:52,070 --> 00:48:56,690
+to be taking actions
+by sampling words hat
+
+1052
+00:48:56,690 --> 00:48:59,270
+y from the distribution,
+and then you're
+
+1053
+00:48:59,270 --> 00:49:00,890
+going to feed them
+back into the input
+
+1054
+00:49:00,890 --> 00:49:03,560
+to get a new state,
+which is what we've
+
+1055
+00:49:03,560 --> 00:49:05,510
+been doing at every point.
+
+1056
+00:49:05,510 --> 00:49:08,000
+What's different though, is
+that as you generate text,
+
+1057
+00:49:08,000 --> 00:49:10,670
+you're using some
+external reward function
+
+1058
+00:49:10,670 --> 00:49:13,040
+to compute rewards for each
+token that you generate.
+
+1059
+00:49:13,040 --> 00:49:16,010
+So you're rewarding every
+action that you take.
+
+1060
+00:49:16,010 --> 00:49:20,450
+And then you scale the sample
+loss on this particular token
+
+1061
+00:49:20,450 --> 00:49:23,068
+that you generate by
+this reward, which
+
+1062
+00:49:23,068 --> 00:49:24,860
+is going to encourage
+the model to generate
+
+1063
+00:49:24,860 --> 00:49:28,880
+the sequence in similar
+contexts if the reward is high.
+
+1064
+00:49:28,880 --> 00:49:31,580
+So to put it very
+clearly, you're
+
+1065
+00:49:31,580 --> 00:49:33,380
+minimizing the
+negative log likelihood
+
+1066
+00:49:33,380 --> 00:49:34,430
+of your sample token.
+
+1067
+00:49:34,430 --> 00:49:35,990
+So here it's not a gold token.
+
+1068
+00:49:35,990 --> 00:49:38,300
+Notice the hat that
+is on the y expression
+
+1069
+00:49:38,300 --> 00:49:41,510
+in the reward function.
+
+1070
+00:49:41,510 --> 00:49:45,080
+And then you're going to
+compute a reward for that token
+
+1071
+00:49:45,080 --> 00:49:47,805
+and scale this negative log
+likelihood by that reward.
+
+1072
+00:49:47,805 --> 00:49:49,430
+And so if the reward
+is high, the model
+
+1073
+00:49:49,430 --> 00:49:51,050
+is going to be more
+likely to generate
+
+1074
+00:49:51,050 --> 00:49:53,780
+the same sequence in a
+similar context in the future.
+
+1075
+00:49:53,780 --> 00:49:56,240
+If the reward is low,
+it will be less likely.
+
+1076
+00:49:56,240 --> 00:49:58,723
+
+
+1077
+00:49:58,723 --> 00:50:00,640
+But this sort of brings
+up a natural question,
+
+1078
+00:50:00,640 --> 00:50:02,500
+what can we actually
+use as a reward
+
+1079
+00:50:02,500 --> 00:50:05,200
+to encourage the behaviors we
+want in this text generation
+
+1080
+00:50:05,200 --> 00:50:06,520
+system?
+
+1081
+00:50:06,520 --> 00:50:08,770
+That's really up to you as
+you design your generation
+
+1082
+00:50:08,770 --> 00:50:10,000
+pipeline.
+
+1083
+00:50:10,000 --> 00:50:12,640
+A common practice
+in the early days
+
+1084
+00:50:12,640 --> 00:50:15,430
+of using RL for
+text generation was
+
+1085
+00:50:15,430 --> 00:50:17,740
+to set the reward to
+be the final evaluation
+
+1086
+00:50:17,740 --> 00:50:20,360
+metric that you are
+going to evaluate on.
+
+1087
+00:50:20,360 --> 00:50:23,680
+And so here instead of having
+a unique reward for each
+
+1088
+00:50:23,680 --> 00:50:25,357
+generated token at
+every time step,
+
+1089
+00:50:25,357 --> 00:50:27,190
+you would just take the
+final sequence score
+
+1090
+00:50:27,190 --> 00:50:31,030
+that you get and reward every
+token in the generated sequence
+
+1091
+00:50:31,030 --> 00:50:32,560
+with that value.
+
+1092
+00:50:32,560 --> 00:50:36,220
+And this was absolutely magical.
+
+1093
+00:50:36,220 --> 00:50:38,742
+You would set your evaluation
+metric as the reward,
+
+1094
+00:50:38,742 --> 00:50:41,200
+and you'd end up learning to
+get more reward because that's
+
+1095
+00:50:41,200 --> 00:50:44,720
+what RL algorithms do, which
+in turn means that you were
+
+1096
+00:50:44,720 --> 00:50:46,630
+learning to generate
+sequences that do better
+
+1097
+00:50:46,630 --> 00:50:48,760
+on your evaluation metric.
+
+1098
+00:50:48,760 --> 00:50:51,800
+So NLG benchmark scores were
+shooting through the roof.
+
+1099
+00:50:51,800 --> 00:50:54,370
+We were making real progress.
+
+1100
+00:50:54,370 --> 00:50:56,810
+But it was actually all a lie.
+
+1101
+00:50:56,810 --> 00:50:59,470
+Turns out as I'll talk
+about later evaluation
+
+1102
+00:50:59,470 --> 00:51:01,570
+metrics particularly
+for text generation
+
+1103
+00:51:01,570 --> 00:51:04,690
+are just approximations,
+and it's not always clear
+
+1104
+00:51:04,690 --> 00:51:07,180
+that optimizing to
+those approximations
+
+1105
+00:51:07,180 --> 00:51:10,750
+is going to lead to more
+and better coherent text
+
+1106
+00:51:10,750 --> 00:51:11,920
+generation.
+
+1107
+00:51:11,920 --> 00:51:13,750
+Instead, oftentimes
+what ends up happening
+
+1108
+00:51:13,750 --> 00:51:16,120
+is that it just learns
+to exploit the noise
+
+1109
+00:51:16,120 --> 00:51:18,170
+in the evaluation metric.
+
+1110
+00:51:18,170 --> 00:51:21,357
+And in fact, in their
+large work where
+
+1111
+00:51:21,357 --> 00:51:23,440
+they introduce Google's
+neural machine translation
+
+1112
+00:51:23,440 --> 00:51:27,010
+system in 2016, Google
+researchers generally
+
+1113
+00:51:27,010 --> 00:51:30,610
+found that training machine
+translation models with RL
+
+1114
+00:51:30,610 --> 00:51:33,490
+and BLEU scores as
+rewards didn't actually
+
+1115
+00:51:33,490 --> 00:51:37,300
+improve the translation quality
+at all even if it did lead
+
+1116
+00:51:37,300 --> 00:51:38,290
+to higher BLEU scores.
+
+1117
+00:51:38,290 --> 00:51:41,340
+
+
+1118
+00:51:41,340 --> 00:51:43,530
+But so, designing
+your reward function
+
+1119
+00:51:43,530 --> 00:51:46,590
+is a very important
+problem in RL
+
+1120
+00:51:46,590 --> 00:51:50,820
+for actually learning the
+behavior that you want.
+
+1121
+00:51:50,820 --> 00:51:53,040
+And I've listed
+some cool work here
+
+1122
+00:51:53,040 --> 00:51:56,940
+on how you can actually learn
+to tie fairly complex behaviors
+
+1123
+00:51:56,940 --> 00:52:00,750
+to reward functions by actually
+initializing the scores they
+
+1124
+00:52:00,750 --> 00:52:03,330
+use as rewards as
+neural networks that
+
+1125
+00:52:03,330 --> 00:52:05,580
+get trained on an auxiliary
+task ahead of time,
+
+1126
+00:52:05,580 --> 00:52:09,120
+but can then be used to provide
+scores as rewards to the system
+
+1127
+00:52:09,120 --> 00:52:10,450
+that you produce.
+
+1128
+00:52:10,450 --> 00:52:12,000
+So to go back to
+our example earlier
+
+1129
+00:52:12,000 --> 00:52:15,750
+of trying to create a dialogue
+agent that is very positive
+
+1130
+00:52:15,750 --> 00:52:17,400
+and only says
+positive things, you
+
+1131
+00:52:17,400 --> 00:52:20,070
+could use a sentiment
+classifier to produce
+
+1132
+00:52:20,070 --> 00:52:24,505
+a reward for the sequences
+that you generate.
+
+1133
+00:52:24,505 --> 00:52:25,630
+And so that's a lot of fun.
+
+1134
+00:52:25,630 --> 00:52:27,923
+
+
+1135
+00:52:27,923 --> 00:52:29,340
+Unfortunately,
+despite all the fun
+
+1136
+00:52:29,340 --> 00:52:31,920
+that you can have using RL to
+train text generation engines,
+
+1137
+00:52:31,920 --> 00:52:34,350
+there's a bit of a
+dark side too, which
+
+1138
+00:52:34,350 --> 00:52:37,440
+is that reinforcement
+learning algorithms can
+
+1139
+00:52:37,440 --> 00:52:40,110
+be notoriously unstable.
+
+1140
+00:52:40,110 --> 00:52:42,510
+And so to get these text
+generation systems to learn
+
+1141
+00:52:42,510 --> 00:52:44,580
+with RL, you often
+have to be thorough
+
+1142
+00:52:44,580 --> 00:52:49,495
+in tuning different dials in
+your model setup accurately.
+
+1143
+00:52:49,495 --> 00:52:50,370
+There's many of them.
+
+1144
+00:52:50,370 --> 00:52:52,578
+Two of them that I think
+are worth mentioning are one
+
+1145
+00:52:52,578 --> 00:52:55,482
+that you always need to
+pre-train with teacher forcing.
+
+1146
+00:52:55,482 --> 00:52:57,690
+You generally can't train
+with reinforcement learning
+
+1147
+00:52:57,690 --> 00:53:00,150
+from scratch, and also
+you need to provide
+
+1148
+00:53:00,150 --> 00:53:03,180
+some type of baseline reward
+that your model should
+
+1149
+00:53:03,180 --> 00:53:04,350
+be achieving.
+
+1150
+00:53:04,350 --> 00:53:06,570
+So for example, BLEU score
+which I described earlier
+
+1151
+00:53:06,570 --> 00:53:09,672
+is always a positive
+value unless it's zero.
+
+1152
+00:53:09,672 --> 00:53:11,880
+What that means that if you
+use it alone as a reward,
+
+1153
+00:53:11,880 --> 00:53:14,040
+every single sequence
+that you sample
+
+1154
+00:53:14,040 --> 00:53:17,110
+ends up being encouraged
+in the future.
+
+1155
+00:53:17,110 --> 00:53:19,350
+So what you want to have
+is some type of baseline
+
+1156
+00:53:19,350 --> 00:53:21,990
+that is an expectation
+of how much reward
+
+1157
+00:53:21,990 --> 00:53:25,210
+you should be getting which can
+be subtracted from the reward
+
+1158
+00:53:25,210 --> 00:53:27,210
+that you actually get so
+that you can discourage
+
+1159
+00:53:27,210 --> 00:53:30,350
+certain behaviors as well.
+
+1160
+00:53:30,350 --> 00:53:33,010
+One last note about this
+is that neural networks
+
+1161
+00:53:33,010 --> 00:53:36,730
+are quite good at finding the
+easiest way to learn something.
+
+1162
+00:53:36,730 --> 00:53:40,250
+So if there's a way to
+exploit your reward function,
+
+1163
+00:53:40,250 --> 00:53:42,098
+it will find a way
+to do it particularly
+
+1164
+00:53:42,098 --> 00:53:44,140
+that's easier than learning
+the behavior that you
+
+1165
+00:53:44,140 --> 00:53:45,940
+want it to learn.
+
+1166
+00:53:45,940 --> 00:53:48,570
+So something to remember
+that's kind of important
+
+1167
+00:53:48,570 --> 00:53:51,070
+if you try to use reinforcement
+learning for text generation
+
+1168
+00:53:51,070 --> 00:53:54,700
+systems, particularly because
+they're such a large action
+
+1169
+00:53:54,700 --> 00:53:58,390
+space of words that
+it can generate to try
+
+1170
+00:53:58,390 --> 00:53:59,680
+to accomplish their behaviors.
+
+1171
+00:53:59,680 --> 00:54:02,810
+
+
+1172
+00:54:02,810 --> 00:54:04,592
+So to end the
+section, I just want
+
+1173
+00:54:04,592 --> 00:54:06,550
+to start off by saying
+that in general we still
+
+1174
+00:54:06,550 --> 00:54:09,580
+use teacher forcing as a
+primary means of learning
+
+1175
+00:54:09,580 --> 00:54:12,080
+to generate coherent text.
+
+1176
+00:54:12,080 --> 00:54:14,260
+It has diversity
+issues, but it still
+
+1177
+00:54:14,260 --> 00:54:18,580
+lets us learn a model with
+decent text generation
+
+1178
+00:54:18,580 --> 00:54:20,050
+abilities.
+
+1179
+00:54:20,050 --> 00:54:22,450
+One thing I haven't focused
+too much on in this lecture
+
+1180
+00:54:22,450 --> 00:54:25,930
+is the type of model that you
+can use to actually generate
+
+1181
+00:54:25,930 --> 00:54:28,900
+text because they tend to
+be less universal and much
+
+1182
+00:54:28,900 --> 00:54:32,500
+more designed to very
+specific end tasks.
+
+1183
+00:54:32,500 --> 00:54:34,210
+But in general a
+common approach in NLG
+
+1184
+00:54:34,210 --> 00:54:36,940
+is to try to design a
+neural architecture that
+
+1185
+00:54:36,940 --> 00:54:41,140
+allows your model
+to be perhaps less
+
+1186
+00:54:41,140 --> 00:54:43,060
+sensitive to the problems
+of teacher forcing
+
+1187
+00:54:43,060 --> 00:54:45,160
+or to address them with
+additional loss terms that
+
+1188
+00:54:45,160 --> 00:54:47,920
+are perhaps task specific.
+
+1189
+00:54:47,920 --> 00:54:50,530
+Exposure bias though is a
+problem everywhere, pretty
+
+1190
+00:54:50,530 --> 00:54:54,600
+much regardless of your
+neural architecture.
+
+1191
+00:54:54,600 --> 00:54:56,350
+And to kind of mitigate
+it you can either
+
+1192
+00:54:56,350 --> 00:54:58,480
+train your model to
+be more resistant
+
+1193
+00:54:58,480 --> 00:55:00,490
+to its own distribution
+changes through things
+
+1194
+00:55:00,490 --> 00:55:05,492
+like semi supervised learning,
+or you can change your pipeline
+
+1195
+00:55:05,492 --> 00:55:07,450
+such that you're learning
+to make modifications
+
+1196
+00:55:07,450 --> 00:55:09,992
+to an existing sequence that
+you retrieved from your training
+
+1197
+00:55:09,992 --> 00:55:12,880
+set rather than trying to
+learn how to generate sequences
+
+1198
+00:55:12,880 --> 00:55:14,747
+from scratch.
+
+1199
+00:55:14,747 --> 00:55:17,080
+The caveat there is that as
+the type of text that you're
+
+1200
+00:55:17,080 --> 00:55:19,060
+generating gets
+longer and longer,
+
+1201
+00:55:19,060 --> 00:55:21,640
+doing this kind of
+retrieval and editing
+
+1202
+00:55:21,640 --> 00:55:23,590
+becomes just as
+challenging as generating
+
+1203
+00:55:23,590 --> 00:55:26,687
+from scratch in many cases.
+
+1204
+00:55:26,687 --> 00:55:28,270
+And finally, you can
+use reinforcement
+
+1205
+00:55:28,270 --> 00:55:30,640
+learning as another
+means of learning
+
+1206
+00:55:30,640 --> 00:55:32,140
+from your own examples.
+
+1207
+00:55:32,140 --> 00:55:34,240
+And in effect, you
+can also use it
+
+1208
+00:55:34,240 --> 00:55:36,490
+to encourage different
+behaviors than just likelihood
+
+1209
+00:55:36,490 --> 00:55:38,110
+maximization.
+
+1210
+00:55:38,110 --> 00:55:40,990
+But this type of learning can
+end up being quite unstable
+
+1211
+00:55:40,990 --> 00:55:42,850
+and unless your
+reward is well shaped,
+
+1212
+00:55:42,850 --> 00:55:44,740
+the model can often
+learn to exploit it.
+
+1213
+00:55:44,740 --> 00:55:47,718
+
+
+1214
+00:55:47,718 --> 00:55:51,670
+Are there online
+language simulators
+
+1215
+00:55:51,670 --> 00:55:55,397
+where you can train
+with RL online
+
+1216
+00:55:55,397 --> 00:55:57,355
+or are you only talking
+about training offline?
+
+1217
+00:55:57,355 --> 00:56:02,872
+
+
+1218
+00:56:02,872 --> 00:56:04,330
+No, in this setting
+we're generally
+
+1219
+00:56:04,330 --> 00:56:05,680
+talking about training offline.
+
+1220
+00:56:05,680 --> 00:56:07,960
+So you train it all
+ahead of time and then
+
+1221
+00:56:07,960 --> 00:56:12,380
+you use your model as it's been
+trained the first time around.
+
+1222
+00:56:12,380 --> 00:56:12,950
+OK, Yeah.
+
+1223
+00:56:12,950 --> 00:56:16,400
+So now we've finally
+reached the section
+
+1224
+00:56:16,400 --> 00:56:20,210
+that I hinted at earlier
+on a very important topic,
+
+1225
+00:56:20,210 --> 00:56:24,620
+evaluation, which to be honest
+is something that we should be
+
+1226
+00:56:24,620 --> 00:56:26,750
+thinking about
+before we even start
+
+1227
+00:56:26,750 --> 00:56:30,190
+designing a model or a training
+algorithm or a decoding
+
+1228
+00:56:30,190 --> 00:56:30,690
+algorithm.
+
+1229
+00:56:30,690 --> 00:56:33,430
+It's how can we actually
+check that our method is--
+
+1230
+00:56:33,430 --> 00:56:35,180
+how can we act-- how
+are we actually going
+
+1231
+00:56:35,180 --> 00:56:37,670
+to evaluate that our
+method is even working?
+
+1232
+00:56:37,670 --> 00:56:40,550
+And today I want to talk a bit
+about three types of evaluation
+
+1233
+00:56:40,550 --> 00:56:41,600
+metrics.
+
+1234
+00:56:41,600 --> 00:56:44,960
+So first we'll talk about
+automatic eval metrics
+
+1235
+00:56:44,960 --> 00:56:46,970
+because generally you
+need to be able to rapidly
+
+1236
+00:56:46,970 --> 00:56:49,260
+prototype and diagnose
+failures in your model.
+
+1237
+00:56:49,260 --> 00:56:51,830
+So it's essential to be able to
+have this quick feedback even
+
+1238
+00:56:51,830 --> 00:56:54,140
+if it's very coarse.
+
+1239
+00:56:54,140 --> 00:56:57,470
+And in automatic
+evaluation metrics,
+
+1240
+00:56:57,470 --> 00:57:00,560
+we've traditionally used what
+I'm calling content overlap
+
+1241
+00:57:00,560 --> 00:57:04,730
+metrics which focus on how much
+a sequence explicitly resembles
+
+1242
+00:57:04,730 --> 00:57:07,520
+another sequence usually
+in terms of word or phrase
+
+1243
+00:57:07,520 --> 00:57:09,440
+matching.
+
+1244
+00:57:09,440 --> 00:57:12,560
+Lately there's also been new
+automatic evaluations that
+
+1245
+00:57:12,560 --> 00:57:15,560
+are model based where we try to
+use advances, and embeddings,
+
+1246
+00:57:15,560 --> 00:57:19,070
+and neural models to define
+more implicit similarity
+
+1247
+00:57:19,070 --> 00:57:20,752
+measures between sequences.
+
+1248
+00:57:20,752 --> 00:57:23,210
+And finally we'll talk a bit
+about human evaluations, which
+
+1249
+00:57:23,210 --> 00:57:28,820
+are kind of the gold standard
+of evaluating text generation.
+
+1250
+00:57:28,820 --> 00:57:32,898
+But they also do have downsides
+that we'll get to as well.
+
+1251
+00:57:32,898 --> 00:57:34,940
+And I just want to note
+that some of these slides
+
+1252
+00:57:34,940 --> 00:57:36,890
+here are actually
+repurposed from slides
+
+1253
+00:57:36,890 --> 00:57:39,170
+from Asli Celikyilmaz,
+who's a leading
+
+1254
+00:57:39,170 --> 00:57:43,260
+expert on NLG evaluation.
+
+1255
+00:57:43,260 --> 00:57:44,710
+But so let's jump in.
+
+1256
+00:57:44,710 --> 00:57:47,130
+So content overlap
+metrics generally
+
+1257
+00:57:47,130 --> 00:57:51,120
+compute an explicit similarity
+score between two sequences,
+
+1258
+00:57:51,120 --> 00:57:53,040
+the one that's been
+generated by your model
+
+1259
+00:57:53,040 --> 00:57:57,390
+and some gold standard reference
+sequence that was attached
+
+1260
+00:57:57,390 --> 00:57:59,228
+to the inputs that you had.
+
+1261
+00:57:59,228 --> 00:58:01,020
+So in other words, a
+sequence that you know
+
+1262
+00:58:01,020 --> 00:58:07,670
+was an appropriate generation
+for the inputs you had.
+
+1263
+00:58:07,670 --> 00:58:10,010
+And these metrics are often
+a popular starting point
+
+1264
+00:58:10,010 --> 00:58:12,743
+because they're fast
+and very efficient,
+
+1265
+00:58:12,743 --> 00:58:13,910
+which is their main benefit.
+
+1266
+00:58:13,910 --> 00:58:16,400
+As long as you have a reference
+sequence to compare to,
+
+1267
+00:58:16,400 --> 00:58:19,640
+you can compute z-scores
+rapidly to get feedback.
+
+1268
+00:58:19,640 --> 00:58:21,950
+And I'm going to categorize
+them into two zones here
+
+1269
+00:58:21,950 --> 00:58:23,750
+first, n-gram
+overlap metrics that
+
+1270
+00:58:23,750 --> 00:58:27,410
+compute different functions
+of word and word-like overlap
+
+1271
+00:58:27,410 --> 00:58:29,060
+and semantic overlap
+metrics which
+
+1272
+00:58:29,060 --> 00:58:31,640
+involve more complex
+overlap functions based
+
+1273
+00:58:31,640 --> 00:58:34,280
+off semantic structures.
+
+1274
+00:58:34,280 --> 00:58:36,980
+Unfortunately besides
+being fast and efficient,
+
+1275
+00:58:36,980 --> 00:58:40,220
+most N-gram overlap
+metrics don't actually
+
+1276
+00:58:40,220 --> 00:58:45,350
+give you a great approximation
+of sequence quality a lot
+
+1277
+00:58:45,350 --> 00:58:46,460
+of times.
+
+1278
+00:58:46,460 --> 00:58:48,590
+They're already not
+ideal for something
+
+1279
+00:58:48,590 --> 00:58:51,350
+like machine translation where
+there can be multiple ways
+
+1280
+00:58:51,350 --> 00:58:55,410
+to translate the same sequence
+with things like synonyms,
+
+1281
+00:58:55,410 --> 00:58:58,100
+and they get progressively
+much worse for tasks that
+
+1282
+00:58:58,100 --> 00:59:01,320
+are more open-ended than MT.
+
+1283
+00:59:01,320 --> 00:59:05,210
+So for example in summarization,
+the longer output texts
+
+1284
+00:59:05,210 --> 00:59:07,130
+make it naturally harder
+to measure something
+
+1285
+00:59:07,130 --> 00:59:10,910
+using word match, and it's
+something like dialogue,
+
+1286
+00:59:10,910 --> 00:59:13,270
+it's incredibly open-ended
+and in fact, you
+
+1287
+00:59:13,270 --> 00:59:18,770
+can have multiple responses
+to a particular utterance that
+
+1288
+00:59:18,770 --> 00:59:22,020
+mean the same thing but
+don't use any common words.
+
+1289
+00:59:22,020 --> 00:59:24,620
+And so we can illustrate this
+with a simple, fairly contrived
+
+1290
+00:59:24,620 --> 00:59:28,340
+example where you have a
+dialogue context utterance that
+
+1291
+00:59:28,340 --> 00:59:30,920
+asks a question such as,
+are you going to Antoine's
+
+1292
+00:59:30,920 --> 00:59:35,690
+incredible CS224N lecture, a
+completely unbiased reference
+
+1293
+00:59:35,690 --> 00:59:39,650
+text derived from a human,
+and then a dialogue agent that
+
+1294
+00:59:39,650 --> 00:59:43,430
+spits out different answers,
+such as yes which gets a pretty
+
+1295
+00:59:43,430 --> 00:59:47,330
+high score on our n-gram
+overlap metrics, or you know it
+
+1296
+00:59:47,330 --> 00:59:50,570
+which already scores a lot
+lower despite depicting
+
+1297
+00:59:50,570 --> 00:59:52,700
+the exact same
+idea, or yup which
+
+1298
+00:59:52,700 --> 00:59:54,810
+actually gets a score of 0.
+
+1299
+00:59:54,810 --> 00:59:59,030
+Meanwhile, a completely
+incorrect answer, heck no,
+
+1300
+00:59:59,030 --> 01:00:01,590
+gets the highest score
+out of all of them,
+
+1301
+01:00:01,590 --> 01:00:03,110
+which kind of
+points to the issue
+
+1302
+01:00:03,110 --> 01:00:05,810
+when you use n-gram
+overlap measures
+
+1303
+01:00:05,810 --> 01:00:07,780
+in a lot of applications,
+you're going
+
+1304
+01:00:07,780 --> 01:00:09,530
+to be missing the
+salient elements of what
+
+1305
+01:00:09,530 --> 01:00:11,270
+the generated sequence
+should capture,
+
+1306
+01:00:11,270 --> 01:00:16,250
+and instead be getting stylistic
+similarities between text
+
+1307
+01:00:16,250 --> 01:00:19,170
+even as you miss the
+most important context.
+
+1308
+01:00:19,170 --> 01:00:21,230
+And if you prefer
+empirical validations
+
+1309
+01:00:21,230 --> 01:00:23,330
+to contrived examples,
+it's actually
+
+1310
+01:00:23,330 --> 01:00:26,240
+been shown that many dialogue
+evaluation metrics don't really
+
+1311
+01:00:26,240 --> 01:00:29,330
+correlate well with
+human judgments at all.
+
+1312
+01:00:29,330 --> 01:00:33,810
+And this gets worse as your
+sequence length increases
+
+1313
+01:00:33,810 --> 01:00:34,310
+typically.
+
+1314
+01:00:34,310 --> 01:00:37,370
+So with an open-ended task
+like story generation,
+
+1315
+01:00:37,370 --> 01:00:40,018
+you can get improved
+scores by just matching
+
+1316
+01:00:40,018 --> 01:00:41,810
+a whole lot of stop
+words that have nothing
+
+1317
+01:00:41,810 --> 01:00:43,810
+to do with the content
+of the story itself.
+
+1318
+01:00:43,810 --> 01:00:46,890
+
+
+1319
+01:00:46,890 --> 01:00:49,010
+We also have another
+category of overlap metrics
+
+1320
+01:00:49,010 --> 01:00:51,320
+that I'll call semantic
+overlap metrics because they
+
+1321
+01:00:51,320 --> 01:00:54,620
+don't necessarily tie directly
+to the words you used,
+
+1322
+01:00:54,620 --> 01:00:57,560
+but instead try to create
+conceptual representations
+
+1323
+01:00:57,560 --> 01:01:00,440
+of the generated and
+reference outputs instead.
+
+1324
+01:01:00,440 --> 01:01:02,540
+So the center one
+here, spice for example
+
+1325
+01:01:02,540 --> 01:01:07,820
+creates a scene graph
+of your generated text
+
+1326
+01:01:07,820 --> 01:01:11,870
+and then compares that
+to your reference caption
+
+1327
+01:01:11,870 --> 01:01:15,000
+to see how similar this more
+semantic representation ends
+
+1328
+01:01:15,000 --> 01:01:15,500
+up being.
+
+1329
+01:01:15,500 --> 01:01:18,440
+
+
+1330
+01:01:18,440 --> 01:01:20,510
+But clearly, there's
+some limitations
+
+1331
+01:01:20,510 --> 01:01:22,460
+to how well explicit
+content overlap
+
+1332
+01:01:22,460 --> 01:01:24,830
+metrics can do, particularly
+as we start thinking
+
+1333
+01:01:24,830 --> 01:01:27,135
+about more open-ended tasks.
+
+1334
+01:01:27,135 --> 01:01:28,760
+So in response over
+the last few years,
+
+1335
+01:01:28,760 --> 01:01:31,790
+there's been a focus on
+using model-based metrics
+
+1336
+01:01:31,790 --> 01:01:36,680
+whose representations come
+from machine learning models,
+
+1337
+01:01:36,680 --> 01:01:38,840
+and where they can be
+used to actually evaluate
+
+1338
+01:01:38,840 --> 01:01:42,720
+the fidelity of generated text.
+
+1339
+01:01:42,720 --> 01:01:44,960
+And these are nice because
+there's no more needing
+
+1340
+01:01:44,960 --> 01:01:47,480
+explicit matches between
+words in your reference
+
+1341
+01:01:47,480 --> 01:01:48,380
+and generated text.
+
+1342
+01:01:48,380 --> 01:01:51,410
+Instead, you can rely on
+much more implicit notions
+
+1343
+01:01:51,410 --> 01:01:56,380
+of similarity that you
+get from word embeddings.
+
+1344
+01:01:56,380 --> 01:02:00,825
+And so there's been a lot of
+models developed in this area.
+
+1345
+01:02:00,825 --> 01:02:02,200
+Some of the original
+ones kind of
+
+1346
+01:02:02,200 --> 01:02:06,220
+focused on defining
+composition functions
+
+1347
+01:02:06,220 --> 01:02:09,970
+over the embedding of words
+in your generated in reference
+
+1348
+01:02:09,970 --> 01:02:13,240
+sequences, and then
+computing a distance
+
+1349
+01:02:13,240 --> 01:02:17,620
+between the compositions
+of the two sequences.
+
+1350
+01:02:17,620 --> 01:02:22,820
+Some more involved
+takes on this idea
+
+1351
+01:02:22,820 --> 01:02:24,860
+are things like word
+mover's distance
+
+1352
+01:02:24,860 --> 01:02:26,810
+where here you actually
+try to map word
+
+1353
+01:02:26,810 --> 01:02:30,470
+vectors in both your generated
+and reference sequences
+
+1354
+01:02:30,470 --> 01:02:32,610
+into pairs with one another.
+
+1355
+01:02:32,610 --> 01:02:35,420
+So each word vector is
+paired to another word vector
+
+1356
+01:02:35,420 --> 01:02:37,670
+in the opposite sequence and
+the distance between them
+
+1357
+01:02:37,670 --> 01:02:38,600
+is computed.
+
+1358
+01:02:38,600 --> 01:02:41,660
+And then you allow
+the evaluation
+
+1359
+01:02:41,660 --> 01:02:43,730
+metric to actually compute
+the optimal matching
+
+1360
+01:02:43,730 --> 01:02:46,730
+between these pairs of words,
+such as the total distances
+
+1361
+01:02:46,730 --> 01:02:48,260
+minimized.
+
+1362
+01:02:48,260 --> 01:02:50,960
+And BERTSCORE which
+has become quite
+
+1363
+01:02:50,960 --> 01:02:55,310
+popular over the last year or
+so as an evaluation metric is
+
+1364
+01:02:55,310 --> 01:02:57,170
+pretty much just
+word mover's distance
+
+1365
+01:02:57,170 --> 01:02:59,840
+but using contextualized
+BERT embeddings
+
+1366
+01:02:59,840 --> 01:03:03,630
+to compute these distances.
+
+1367
+01:03:03,630 --> 01:03:05,400
+Sentence mover's
+similarity is kind
+
+1368
+01:03:05,400 --> 01:03:08,580
+of another extension of
+word mover's similarity
+
+1369
+01:03:08,580 --> 01:03:11,760
+that adds sentence embeddings
+from recurrent neural networks
+
+1370
+01:03:11,760 --> 01:03:13,740
+to this distance
+optimization and that
+
+1371
+01:03:13,740 --> 01:03:16,440
+allows it to be more effective
+for evaluating let's say
+
+1372
+01:03:16,440 --> 01:03:19,380
+long multi-sentence
+text as opposed
+
+1373
+01:03:19,380 --> 01:03:22,650
+to just single sentences.
+
+1374
+01:03:22,650 --> 01:03:26,610
+And finally last year
+there was a new model named
+
+1375
+01:03:26,610 --> 01:03:29,700
+BLEURT, which is actually
+a regression model that's
+
+1376
+01:03:29,700 --> 01:03:30,750
+based on BERT.
+
+1377
+01:03:30,750 --> 01:03:33,413
+And here it takes a
+pair of sentences,
+
+1378
+01:03:33,413 --> 01:03:34,830
+the reference on
+the generated one
+
+1379
+01:03:34,830 --> 01:03:37,050
+and returns a score that
+indicates to what extent
+
+1380
+01:03:37,050 --> 01:03:39,960
+the candidate is grammatical
+and conveys the meaning
+
+1381
+01:03:39,960 --> 01:03:42,360
+of the reference text.
+
+1382
+01:03:42,360 --> 01:03:46,050
+
+
+1383
+01:03:46,050 --> 01:03:49,890
+So we can talk about a lot
+more evaluation metrics that
+
+1384
+01:03:49,890 --> 01:03:52,728
+are computed automatically,
+and there's far more of them
+
+1385
+01:03:52,728 --> 01:03:54,270
+than I actually
+mentioned though they
+
+1386
+01:03:54,270 --> 01:03:57,503
+do tend to fit in those two
+categories that I described.
+
+1387
+01:03:57,503 --> 01:03:59,920
+But it's important to remember
+that at the end of the day,
+
+1388
+01:03:59,920 --> 01:04:02,190
+the true mark of an NLG
+system's performance
+
+1389
+01:04:02,190 --> 01:04:04,170
+is whether it's valuable
+to the human user that
+
+1390
+01:04:04,170 --> 01:04:06,480
+has to interact with it
+or read the text that's
+
+1391
+01:04:06,480 --> 01:04:07,830
+produced from it.
+
+1392
+01:04:07,830 --> 01:04:09,480
+And unfortunately,
+automatic metrics
+
+1393
+01:04:09,480 --> 01:04:11,970
+tend to fall short
+of replicating
+
+1394
+01:04:11,970 --> 01:04:15,730
+human opinions of the
+quality of generated text.
+
+1395
+01:04:15,730 --> 01:04:19,980
+And that's why for this
+reason human evaluations
+
+1396
+01:04:19,980 --> 01:04:23,160
+are viewed as the most
+important form of evaluation
+
+1397
+01:04:23,160 --> 01:04:25,920
+for text generation systems.
+
+1398
+01:04:25,920 --> 01:04:29,400
+Almost all work in NLG
+generally include some form
+
+1399
+01:04:29,400 --> 01:04:31,110
+of human evaluation,
+particularly
+
+1400
+01:04:31,110 --> 01:04:33,420
+if the task is more open-ended.
+
+1401
+01:04:33,420 --> 01:04:36,660
+And if it doesn't
+well, let me be frank,
+
+1402
+01:04:36,660 --> 01:04:39,450
+you should probably be
+skeptical of any claim that's
+
+1403
+01:04:39,450 --> 01:04:42,620
+being made by that work.
+
+1404
+01:04:42,620 --> 01:04:46,130
+And, finally, another
+use of human evaluations
+
+1405
+01:04:46,130 --> 01:04:49,830
+is that in addition to
+evaluating model performance,
+
+1406
+01:04:49,830 --> 01:04:51,770
+you can also use them
+to actually train
+
+1407
+01:04:51,770 --> 01:04:55,820
+new machine learning models
+that are meant to be evaluated,
+
+1408
+01:04:55,820 --> 01:04:58,490
+that are meant to serve as
+evaluation scoring functions
+
+1409
+01:04:58,490 --> 01:05:01,720
+themselves.
+
+1410
+01:05:01,720 --> 01:05:05,685
+So I guess the main thing to
+mention about human evaluations
+
+1411
+01:05:05,685 --> 01:05:08,460
+since we could talk
+about them for a while is
+
+1412
+01:05:08,460 --> 01:05:12,480
+that they're both very simple
+but also very difficult to run.
+
+1413
+01:05:12,480 --> 01:05:14,820
+They're simple because
+you generally just need
+
+1414
+01:05:14,820 --> 01:05:16,470
+to find judges and
+ask them to rate
+
+1415
+01:05:16,470 --> 01:05:20,400
+an intrinsic dimension of the
+quality of your generated text.
+
+1416
+01:05:20,400 --> 01:05:22,350
+So you have to define
+a set of criteria
+
+1417
+01:05:22,350 --> 01:05:24,390
+that you decide is
+important for the task
+
+1418
+01:05:24,390 --> 01:05:26,040
+that you're designing
+a system for,
+
+1419
+01:05:26,040 --> 01:05:28,050
+and that can be
+things like fluency
+
+1420
+01:05:28,050 --> 01:05:31,140
+where you just measure things
+like grammar, spelling, word
+
+1421
+01:05:31,140 --> 01:05:31,830
+choice.
+
+1422
+01:05:31,830 --> 01:05:34,260
+Does this actually look
+like human language?
+
+1423
+01:05:34,260 --> 01:05:36,420
+Factuality, does
+the text accurately
+
+1424
+01:05:36,420 --> 01:05:40,320
+reflect facts that are
+described in the context?
+
+1425
+01:05:40,320 --> 01:05:41,970
+Common sense, does
+it sort of follow
+
+1426
+01:05:41,970 --> 01:05:46,770
+the logical rules of the
+world that we might expect?
+
+1427
+01:05:46,770 --> 01:05:48,670
+But once you've
+defined these criteria,
+
+1428
+01:05:48,670 --> 01:05:52,050
+you can have humans evaluate the
+generated text for how well it
+
+1429
+01:05:52,050 --> 01:05:56,490
+actually produces
+text that caters
+
+1430
+01:05:56,490 --> 01:05:59,340
+to these particular criteria.
+
+1431
+01:05:59,340 --> 01:06:02,430
+One thing to note here is that
+while these dimensions are
+
+1432
+01:06:02,430 --> 01:06:05,700
+common and repeated across
+different evaluations,
+
+1433
+01:06:05,700 --> 01:06:08,100
+they can often be
+referred to by other names
+
+1434
+01:06:08,100 --> 01:06:12,930
+and explained to evaluators
+in different terms,
+
+1435
+01:06:12,930 --> 01:06:14,470
+and be measured
+in different ways.
+
+1436
+01:06:14,470 --> 01:06:16,762
+And in fact, one of the
+problems with human evaluations
+
+1437
+01:06:16,762 --> 01:06:20,220
+is that across works they tend
+to be very unstandardized which
+
+1438
+01:06:20,220 --> 01:06:23,430
+can make the replication of
+human results quite difficult.
+
+1439
+01:06:23,430 --> 01:06:25,890
+And that's why when you
+read text generation papers,
+
+1440
+01:06:25,890 --> 01:06:28,200
+you rarely see a comparison
+of human evaluation
+
+1441
+01:06:28,200 --> 01:06:30,420
+scores between two
+different studies
+
+1442
+01:06:30,420 --> 01:06:32,490
+even if they evaluated
+the same dimensions.
+
+1443
+01:06:32,490 --> 01:06:35,430
+
+
+1444
+01:06:35,430 --> 01:06:39,660
+But another set of issues
+with human evaluations
+
+1445
+01:06:39,660 --> 01:06:41,550
+beyond the fact that
+they're slow, expensive,
+
+1446
+01:06:41,550 --> 01:06:44,520
+and unstandardized is
+that humans themselves
+
+1447
+01:06:44,520 --> 01:06:48,990
+aren't actually perfect.
+
+1448
+01:06:48,990 --> 01:06:52,390
+I guess there's a few negatives
+that I can say about humans,
+
+1449
+01:06:52,390 --> 01:06:54,900
+even though we're all humans
+is that we tend to not
+
+1450
+01:06:54,900 --> 01:06:58,960
+be very consistent folks, often
+changing our minds about how we
+
+1451
+01:06:58,960 --> 01:07:00,990
+view something
+depending on something
+
+1452
+01:07:00,990 --> 01:07:04,800
+as trivial as the time of day.
+
+1453
+01:07:04,800 --> 01:07:06,870
+We don't always
+reason in the way
+
+1454
+01:07:06,870 --> 01:07:09,410
+that we're expected
+to when presented
+
+1455
+01:07:09,410 --> 01:07:11,340
+with a task such as
+evaluating something.
+
+1456
+01:07:11,340 --> 01:07:14,670
+We can lose concentration
+and not really be
+
+1457
+01:07:14,670 --> 01:07:16,380
+focused on what we were doing.
+
+1458
+01:07:16,380 --> 01:07:19,050
+And we can often
+misinterpret what
+
+1459
+01:07:19,050 --> 01:07:20,880
+let's say a human
+evaluation is asking
+
+1460
+01:07:20,880 --> 01:07:25,140
+us to do such that we inject
+our own biases into the task.
+
+1461
+01:07:25,140 --> 01:07:26,970
+And on top of all
+of these things,
+
+1462
+01:07:26,970 --> 01:07:28,470
+when we run human
+evaluations, we're
+
+1463
+01:07:28,470 --> 01:07:30,387
+also dealing with the
+fact that one of the big
+
+1464
+01:07:30,387 --> 01:07:31,950
+motivators that our
+human judges have
+
+1465
+01:07:31,950 --> 01:07:35,040
+is to do the task as
+quickly as possible, which
+
+1466
+01:07:35,040 --> 01:07:37,980
+isn't a great mix, particularly
+if we want them to really give
+
+1467
+01:07:37,980 --> 01:07:41,830
+us high quality ratings.
+
+1468
+01:07:41,830 --> 01:07:43,690
+But humans are kind
+of the best thing
+
+1469
+01:07:43,690 --> 01:07:47,230
+that we have to actually give
+us the most accurate assessments
+
+1470
+01:07:47,230 --> 01:07:50,680
+of whether text generation
+systems are doing well
+
+1471
+01:07:50,680 --> 01:07:53,967
+so we do the best that we can.
+
+1472
+01:07:53,967 --> 01:07:55,550
+I'm actually going
+to skip this slide,
+
+1473
+01:07:55,550 --> 01:07:58,175
+but I mentioned earlier that one
+of the things that we can also
+
+1474
+01:07:58,175 --> 01:08:02,300
+do is use human ratings to
+train models to actually predict
+
+1475
+01:08:02,300 --> 01:08:05,820
+scores for text itself.
+
+1476
+01:08:05,820 --> 01:08:09,900
+And so two systems that do
+something along these lines I
+
+1477
+01:08:09,900 --> 01:08:11,600
+provided citations
+to here so that you
+
+1478
+01:08:11,600 --> 01:08:13,725
+can take a look at them if
+you're curious later on.
+
+1479
+01:08:13,725 --> 01:08:16,890
+
+
+1480
+01:08:16,890 --> 01:08:19,064
+But so the takeaways
+I kind of want
+
+1481
+01:08:19,064 --> 01:08:23,759
+you to get from the section are
+that evaluation is quite hard,
+
+1482
+01:08:23,760 --> 01:08:26,580
+and particularly
+in text generation.
+
+1483
+01:08:26,580 --> 01:08:29,740
+So content overlap metrics do
+provide a good starting point
+
+1484
+01:08:29,740 --> 01:08:33,450
+for evaluating the
+quality of generated text.
+
+1485
+01:08:33,450 --> 01:08:35,700
+If you run these
+n-gram overlap metrics
+
+1486
+01:08:35,700 --> 01:08:38,310
+and they show scores that are
+worse than they should be,
+
+1487
+01:08:38,310 --> 01:08:41,229
+that's the first sign
+that you have a problem.
+
+1488
+01:08:41,229 --> 01:08:45,060
+But they're generally not
+good enough on their own.
+
+1489
+01:08:45,060 --> 01:08:47,550
+Model based metrics
+tend to be more
+
+1490
+01:08:47,550 --> 01:08:50,220
+correlated with human judgments
+than content overlap ones
+
+1491
+01:08:50,220 --> 01:08:52,770
+particularly as the
+tasks become more
+
+1492
+01:08:52,770 --> 01:08:56,010
+open-ended such as
+dialogue and storytelling.
+
+1493
+01:08:56,010 --> 01:08:57,870
+But the downside there
+is that they're not
+
+1494
+01:08:57,870 --> 01:09:00,810
+very interpretable
+unlike with the content
+
+1495
+01:09:00,810 --> 01:09:03,660
+overlap metric where you
+can say exactly, oh, this
+
+1496
+01:09:03,660 --> 01:09:06,180
+is why this score is this way
+it's because these words match
+
+1497
+01:09:06,180 --> 01:09:08,910
+up with these words, with a
+model based metric you get
+
+1498
+01:09:08,910 --> 01:09:12,899
+a much more implicit
+definition of similarity which
+
+1499
+01:09:12,899 --> 01:09:17,160
+while useful is also
+less interpretable.
+
+1500
+01:09:17,160 --> 01:09:21,840
+Human judgments are absolutely
+critical because even
+
+1501
+01:09:21,840 --> 01:09:24,180
+if they're inconsistent
+and sometimes don't
+
+1502
+01:09:24,180 --> 01:09:25,800
+do the task that
+you want them to,
+
+1503
+01:09:25,800 --> 01:09:28,590
+humans are actually able
+to intrinsically evaluate
+
+1504
+01:09:28,590 --> 01:09:32,160
+dimensions that we don't even
+know how to formulate using
+
+1505
+01:09:32,160 --> 01:09:35,550
+any type of automatic metric.
+
+1506
+01:09:35,550 --> 01:09:37,200
+But lastly slightly
+unrelated to what
+
+1507
+01:09:37,200 --> 01:09:39,075
+I've spoken about this
+section, I just I just
+
+1508
+01:09:39,075 --> 01:09:41,670
+want to say that the number
+one evaluator of any NLG
+
+1509
+01:09:41,670 --> 01:09:45,170
+system that you create
+should really be you.
+
+1510
+01:09:45,170 --> 01:09:48,540
+Look at your model's
+outputs as perhaps you
+
+1511
+01:09:48,540 --> 01:09:51,569
+do a project that
+involves NLG can really
+
+1512
+01:09:51,569 --> 01:09:53,430
+be worth days,
+weeks, and sometimes
+
+1513
+01:09:53,430 --> 01:09:56,100
+months of staring at evaluation
+metrics that are perhaps
+
+1514
+01:09:56,100 --> 01:09:57,450
+a bit uninformative.
+
+1515
+01:09:57,450 --> 01:09:59,280
+So if you design
+NLG systems, make
+
+1516
+01:09:59,280 --> 01:10:02,730
+sure to evaluate your own
+generations very consistently.
+
+1517
+01:10:02,730 --> 01:10:07,830
+
+
+1518
+01:10:07,830 --> 01:10:11,550
+So in this last section, I
+think it's quite important
+
+1519
+01:10:11,550 --> 01:10:15,870
+to talk about ethical topics
+in natural language generation
+
+1520
+01:10:15,870 --> 01:10:19,920
+as well because ultimately
+while NLG really
+
+1521
+01:10:19,920 --> 01:10:23,730
+allows us to tackle new and
+interesting applications,
+
+1522
+01:10:23,730 --> 01:10:26,010
+if we're not capable we
+can end up deploying fairly
+
+1523
+01:10:26,010 --> 01:10:28,290
+dangerous and harmful systems.
+
+1524
+01:10:28,290 --> 01:10:29,790
+And as a warning,
+I just want to say
+
+1525
+01:10:29,790 --> 01:10:33,180
+that some of the content
+on the next few slides
+
+1526
+01:10:33,180 --> 01:10:36,148
+is going to potentially
+be quite uncomfortable.
+
+1527
+01:10:36,148 --> 01:10:38,190
+But I think it's important
+to make very clear how
+
+1528
+01:10:38,190 --> 01:10:41,430
+these systems can
+go very, very wrong.
+
+1529
+01:10:41,430 --> 01:10:44,040
+And without picking on
+a particular example,
+
+1530
+01:10:44,040 --> 01:10:48,810
+I do perhaps think that one
+of the most famous examples
+
+1531
+01:10:48,810 --> 01:10:51,180
+of this was the Tay
+dialogue chatbot which was
+
+1532
+01:10:51,180 --> 01:10:54,870
+released onto Twitter in 2016.
+
+1533
+01:10:54,870 --> 01:10:57,330
+And within 24 hours
+it had started
+
+1534
+01:10:57,330 --> 01:11:00,030
+making some very
+nasty comments that
+
+1535
+01:11:00,030 --> 01:11:04,740
+exhibited racist, sexist,
+anti-Semitic, white supremacist
+
+1536
+01:11:04,740 --> 01:11:07,320
+meanings, which is
+ultimately probably not what
+
+1537
+01:11:07,320 --> 01:11:09,660
+the designers of
+Tay had in mind.
+
+1538
+01:11:09,660 --> 01:11:13,170
+So what actually ended up
+going wrong with Tay, well,
+
+1539
+01:11:13,170 --> 01:11:17,040
+here's the thing,
+Tay behaved exactly
+
+1540
+01:11:17,040 --> 01:11:19,380
+as we should have
+expected it would.
+
+1541
+01:11:19,380 --> 01:11:21,150
+It was designed to
+learn to exhibit
+
+1542
+01:11:21,150 --> 01:11:23,070
+the conversational
+patterns of the users
+
+1543
+01:11:23,070 --> 01:11:26,070
+that it interacted
+with and it did that.
+
+1544
+01:11:26,070 --> 01:11:28,002
+NLG models are very
+good at capturing
+
+1545
+01:11:28,002 --> 01:11:30,210
+the language distribution
+of their training examples.
+
+1546
+01:11:30,210 --> 01:11:31,890
+That's been the one
+thing that we've
+
+1547
+01:11:31,890 --> 01:11:36,000
+been remarkably consistent
+on in the last few years.
+
+1548
+01:11:36,000 --> 01:11:38,460
+And it turns out if their
+training examples end up
+
+1549
+01:11:38,460 --> 01:11:42,920
+having toxic content, they will
+learn to repeat that content.
+
+1550
+01:11:42,920 --> 01:11:44,670
+And this is perhaps
+no clearer than if you
+
+1551
+01:11:44,670 --> 01:11:46,380
+look at what
+pre-trained language
+
+1552
+01:11:46,380 --> 01:11:51,070
+models have to say about let's
+say different demographics.
+
+1553
+01:11:51,070 --> 01:11:53,310
+So if you remember, large
+pre-trained language
+
+1554
+01:11:53,310 --> 01:11:57,660
+models that underlie
+many modern NLG systems,
+
+1555
+01:11:57,660 --> 01:11:59,640
+they're trained on
+massive corpora of text
+
+1556
+01:11:59,640 --> 01:12:03,240
+which are often opaque and
+crawled from online resources.
+
+1557
+01:12:03,240 --> 01:12:06,180
+If it turns out that those
+corpora have toxic content,
+
+1558
+01:12:06,180 --> 01:12:08,430
+the language models are going
+to learn it, and in fact
+
+1559
+01:12:08,430 --> 01:12:09,588
+make it even worse.
+
+1560
+01:12:09,588 --> 01:12:11,880
+And then it turns out that
+if you prompt these language
+
+1561
+01:12:11,880 --> 01:12:14,440
+models for certain
+pieces of information,
+
+1562
+01:12:14,440 --> 01:12:17,010
+it can spit out
+that toxic content
+
+1563
+01:12:17,010 --> 01:12:20,820
+showing very different
+opinions across gender,
+
+1564
+01:12:20,820 --> 01:12:23,527
+races, sexual orientations.
+
+1565
+01:12:23,527 --> 01:12:25,110
+Now you can see that
+it would actually
+
+1566
+01:12:25,110 --> 01:12:27,210
+be rare to ask a
+language model to weigh
+
+1567
+01:12:27,210 --> 01:12:29,310
+in with their opinions
+on this matter,
+
+1568
+01:12:29,310 --> 01:12:31,890
+but you do have to ask yourself
+if this type of information
+
+1569
+01:12:31,890 --> 01:12:34,800
+is encoded in the model in some
+way, in what other ways could
+
+1570
+01:12:34,800 --> 01:12:37,500
+these learned patterns end up
+being reflected by this model
+
+1571
+01:12:37,500 --> 01:12:40,850
+once it's actually
+deployed in practice?
+
+1572
+01:12:40,850 --> 01:12:43,250
+And that kind of leads
+us to the second problem
+
+1573
+01:12:43,250 --> 01:12:45,260
+with these language models.
+
+1574
+01:12:45,260 --> 01:12:47,468
+We actually don't really
+know how information ends up
+
+1575
+01:12:47,468 --> 01:12:49,968
+being learned and encoded by
+them, which means that we don't
+
+1576
+01:12:49,968 --> 01:12:52,190
+have a rigorous understanding
+of what types of inputs
+
+1577
+01:12:52,190 --> 01:12:55,100
+are going to trigger
+what types of outputs.
+
+1578
+01:12:55,100 --> 01:12:59,150
+And in fact, Wallace et al
+showed in their EMNLP 2019 work
+
+1579
+01:12:59,150 --> 01:13:01,370
+that this was a big problem
+because if you prime
+
+1580
+01:13:01,370 --> 01:13:03,860
+these models with particularly
+adversarial inputs,
+
+1581
+01:13:03,860 --> 01:13:06,470
+they would generally devolve
+immediately into producing
+
+1582
+01:13:06,470 --> 01:13:08,390
+very toxic content.
+
+1583
+01:13:08,390 --> 01:13:11,450
+In other words, what it took
+Tay 24 hours to learn how to do,
+
+1584
+01:13:11,450 --> 01:13:13,340
+these systems can kind
+of do out of the box
+
+1585
+01:13:13,340 --> 01:13:17,050
+if primed with the
+wrong examples.
+
+1586
+01:13:17,050 --> 01:13:20,920
+And unfortunately,
+the wrong examples
+
+1587
+01:13:20,920 --> 01:13:23,920
+end up being a lot less nasty
+than we might have expected,
+
+1588
+01:13:23,920 --> 01:13:26,410
+a lot less nasty than the
+ones on the previous slide
+
+1589
+01:13:26,410 --> 01:13:28,510
+at the very least.
+
+1590
+01:13:28,510 --> 01:13:34,900
+But in a work at EMNLP Findings
+last year, a research group
+
+1591
+01:13:34,900 --> 01:13:37,193
+showed that much more
+innocuous looking inputs
+
+1592
+01:13:37,193 --> 01:13:39,610
+could actually prime these
+language models to go on pretty
+
+1593
+01:13:39,610 --> 01:13:42,700
+toxic diatribes as before.
+
+1594
+01:13:42,700 --> 01:13:45,430
+It wasn't as consistent
+as in the previous work,
+
+1595
+01:13:45,430 --> 01:13:49,820
+but it was still often enough.
+
+1596
+01:13:49,820 --> 01:13:51,320
+And these examples
+really go to show
+
+1597
+01:13:51,320 --> 01:13:54,800
+that we need to be careful with
+how these systems are deployed.
+
+1598
+01:13:54,800 --> 01:13:57,650
+If you have an NLG system,
+you need safeguards to stop it
+
+1599
+01:13:57,650 --> 01:13:59,605
+from outputing harmful content.
+
+1600
+01:13:59,605 --> 01:14:00,980
+And this goes
+beyond the examples
+
+1601
+01:14:00,980 --> 01:14:04,700
+of the toxic and toxicity
+bias that I've shown today,
+
+1602
+01:14:04,700 --> 01:14:06,560
+a model that can be
+primed to generate
+
+1603
+01:14:06,560 --> 01:14:08,540
+incorrect or
+unfactual information
+
+1604
+01:14:08,540 --> 01:14:11,730
+can be quite dangerous too.
+
+1605
+01:14:11,730 --> 01:14:13,980
+And also NLG models
+shouldn't be deployed
+
+1606
+01:14:13,980 --> 01:14:16,920
+without an understanding
+of who its users will be.
+
+1607
+01:14:16,920 --> 01:14:20,460
+And there's always going to be
+adversarial users for any model
+
+1608
+01:14:20,460 --> 01:14:22,893
+that you create
+even if you can't
+
+1609
+01:14:22,893 --> 01:14:24,060
+think of them in the moment.
+
+1610
+01:14:24,060 --> 01:14:27,460
+
+
+1611
+01:14:27,460 --> 01:14:29,380
+And that leads us
+to the final point,
+
+1612
+01:14:29,380 --> 01:14:31,560
+which is that the
+advances in NLG
+
+1613
+01:14:31,560 --> 01:14:36,330
+have really allowed us to
+build text production systems
+
+1614
+01:14:36,330 --> 01:14:38,850
+for many new applications.
+
+1615
+01:14:38,850 --> 01:14:41,880
+As we do this though,
+it's important to ask
+
+1616
+01:14:41,880 --> 01:14:44,190
+does the content that
+we're building a system
+
+1617
+01:14:44,190 --> 01:14:49,170
+to automatically generate
+for easy human ingestion,
+
+1618
+01:14:49,170 --> 01:14:52,500
+does it really need to be
+generated automatically?
+
+1619
+01:14:52,500 --> 01:14:54,960
+And I think a good
+example of this
+
+1620
+01:14:54,960 --> 01:14:57,630
+is the work of Zeller's
+et al at NeurIPS 2019,
+
+1621
+01:14:57,630 --> 01:15:01,500
+which showed off the potential
+dangers of fake news generators
+
+1622
+01:15:01,500 --> 01:15:03,720
+from pre-trained
+language models.
+
+1623
+01:15:03,720 --> 01:15:05,460
+I actually thought
+this was a great work
+
+1624
+01:15:05,460 --> 01:15:08,190
+and it highlighted many
+of the defenses that
+
+1625
+01:15:08,190 --> 01:15:14,050
+could be developed against a
+fake news generations system.
+
+1626
+01:15:14,050 --> 01:15:16,440
+But the point is more so
+that you should always
+
+1627
+01:15:16,440 --> 01:15:19,110
+imagine that any
+tool that you create
+
+1628
+01:15:19,110 --> 01:15:21,280
+could be used in a negative way.
+
+1629
+01:15:21,280 --> 01:15:24,840
+So a storytelling NLG
+system can also potentially
+
+1630
+01:15:24,840 --> 01:15:30,512
+be repurposed to do
+fake news generation.
+
+1631
+01:15:30,512 --> 01:15:32,220
+And you should really
+always ask yourself
+
+1632
+01:15:32,220 --> 01:15:34,290
+whether the positive
+applications
+
+1633
+01:15:34,290 --> 01:15:36,540
+of a particular
+technology outweigh
+
+1634
+01:15:36,540 --> 01:15:38,310
+the potential negative ones.
+
+1635
+01:15:38,310 --> 01:15:40,730
+And that turns out to often
+not be an easy question.
+
+1636
+01:15:40,730 --> 01:15:44,260
+
+
+1637
+01:15:44,260 --> 01:15:49,400
+So I guess as concluding
+thoughts for today, I just
+
+1638
+01:15:49,400 --> 01:15:54,260
+want to mention that if you
+start interacting with NLG
+
+1639
+01:15:54,260 --> 01:15:56,780
+systems in practice,
+you're quickly
+
+1640
+01:15:56,780 --> 01:16:01,100
+going to see the fairly
+large limitations that they
+
+1641
+01:16:01,100 --> 01:16:02,300
+tend to have.
+
+1642
+01:16:02,300 --> 01:16:05,120
+Even in tasks where
+we've achieved a larger
+
+1643
+01:16:05,120 --> 01:16:09,080
+amount of progress at
+building systems that
+
+1644
+01:16:09,080 --> 01:16:10,970
+can do the task
+fairly well, there's
+
+1645
+01:16:10,970 --> 01:16:13,100
+still a lot of
+improvements that can be
+
+1646
+01:16:13,100 --> 01:16:16,580
+made to make them even better.
+
+1647
+01:16:16,580 --> 01:16:19,880
+In pretty much any NLG task at
+the same time, evaluating it
+
+1648
+01:16:19,880 --> 01:16:22,760
+effectively remains
+a huge challenge.
+
+1649
+01:16:22,760 --> 01:16:24,920
+We often have to rely
+on humans to give us
+
+1650
+01:16:24,920 --> 01:16:28,680
+the best estimates of how
+well our system is doing.
+
+1651
+01:16:28,680 --> 01:16:33,800
+And so, an area where a large
+improvement would really
+
+1652
+01:16:33,800 --> 01:16:35,600
+kind of bootstrap
+larger improvements
+
+1653
+01:16:35,600 --> 01:16:37,100
+in many other areas
+of NLG would be
+
+1654
+01:16:37,100 --> 01:16:43,170
+to find better automatic
+evaluation for NLP systems.
+
+1655
+01:16:43,170 --> 01:16:45,058
+On the other hand, on
+a very optimistic note,
+
+1656
+01:16:45,058 --> 01:16:47,600
+I do want to say that with the
+advent of large-scale language
+
+1657
+01:16:47,600 --> 01:16:51,800
+models, deep NLG research
+hasn't been reset,
+
+1658
+01:16:51,800 --> 01:16:53,870
+but it's never been easier
+to jump in the space
+
+1659
+01:16:53,870 --> 01:16:56,120
+and start playing
+around with the systems,
+
+1660
+01:16:56,120 --> 01:17:02,030
+and designing cool new tools
+that can help humans ingest
+
+1661
+01:17:02,030 --> 01:17:06,463
+content and information more
+rapidly and more efficiently.
+
+1662
+01:17:06,463 --> 01:17:07,880
+And as a result,
+I think that it's
+
+1663
+01:17:07,880 --> 01:17:11,730
+one of the most exciting
+areas of NLP to work in.
+
+1664
+01:17:11,730 --> 01:17:14,540
+And I think that if you
+start working on it as well
+
+1665
+01:17:14,540 --> 01:17:15,630
+you'll feel the same way.
+
+1666
+01:17:15,630 --> 01:17:17,970
+And I would encourage
+you to do so.
+
+1667
+01:17:17,970 --> 01:17:19,750
+So thanks a lot for
+having me today.
+
+1668
+01:17:19,750 --> 01:17:21,880
+It was really exciting.
+
+1669
+01:17:21,880 --> 01:17:26,000
+
+

@@ -1,0 +1,4928 @@
+1
+00:00:04,340 --> 00:00:06,915
+Okay. So I'm gonna talk about, um,
+
+2
+00:00:06,915 --> 00:00:09,330
+BERT and also some, uh,
+
+3
+00:00:09,330 --> 00:00:11,265
+kind of precursor work and then some
+
+4
+00:00:11,265 --> 00:00:13,890
+follow-up work that's happened in- in the last year and- well,
+
+5
+00:00:13,890 --> 00:00:15,180
+not follow up, but, uh,
+
+6
+00:00:15,180 --> 00:00:16,785
+more- more recent advancements, uh,
+
+7
+00:00:16,785 --> 00:00:19,290
+that's happened, uh, since then.
+
+8
+00:00:19,290 --> 00:00:22,425
+So, uh, first, we're gonna talk about history and background.
+
+9
+00:00:22,425 --> 00:00:27,150
+So, um, everyone knows and loves word embeddings in NLP, right?
+
+10
+00:00:27,150 --> 00:00:28,785
+They're kind of the basis for, uh,
+
+11
+00:00:28,785 --> 00:00:32,700
+why neural networks, um, work for NLP.
+
+12
+00:00:32,700 --> 00:00:37,550
+Uh, because neural networks work in a continuous space, uh, vectors,
+
+13
+00:00:37,550 --> 00:00:40,455
+and- and matrices, and obviously,
+
+14
+00:00:40,455 --> 00:00:44,450
+text is a discrete space and so there needs to be something to bridge the gap.
+
+15
+00:00:44,450 --> 00:00:49,130
+And, uh, it turns out that the thing to bridge the gap, it's actually pretty simple.
+
+16
+00:00:49,130 --> 00:00:52,545
+It's just a lookup table from, um, each,
+
+17
+00:00:52,545 --> 00:00:54,920
+from a set of discrete vocabulary to, uh,
+
+18
+00:00:54,920 --> 00:00:57,470
+a vector that's learned discriminatively end to end, right?
+
+19
+00:00:57,470 --> 00:00:58,730
+So originally these were just learned,
+
+20
+00:00:58,730 --> 00:01:00,140
+uh, like in- in, uh,
+
+21
+00:01:00,140 --> 00:01:03,290
+the original Bengio 2003 neural language model paper,
+
+22
+00:01:03,290 --> 00:01:05,865
+these were just trained discriminatively end to end, um,
+
+23
+00:01:05,865 --> 00:01:07,915
+and these were actually, and- and so then,
+
+24
+00:01:07,915 --> 00:01:10,025
+people would train language models and then use
+
+25
+00:01:10,025 --> 00:01:14,450
+these pre-trained usi- using the embedding layer as pre-trained representations,
+
+26
+00:01:14,450 --> 00:01:16,585
+um, for- for other tasks.
+
+27
+00:01:16,585 --> 00:01:18,020
+But they wouldn't use the rest of the language model,
+
+28
+00:01:18,020 --> 00:01:19,240
+they would just use the embedding layer.
+
+29
+00:01:19,240 --> 00:01:21,670
+And then, uh, word2vec and GloVe and stuff came
+
+30
+00:01:21,670 --> 00:01:24,820
+along where then people found a much cheaper,
+
+31
+00:01:24,820 --> 00:01:26,200
+much more scalable way to train it.
+
+32
+00:01:26,200 --> 00:01:29,130
+Where you can just use the, uh,
+
+33
+00:01:29,130 --> 00:01:32,400
+statistics of a- a corpus where it's just a linear model so you
+
+34
+00:01:32,400 --> 00:01:34,600
+don't have to- to compute these expensive feedforward layers
+
+35
+00:01:34,600 --> 00:01:36,055
+that you're gonna throw out anyways,
+
+36
+00:01:36,055 --> 00:01:40,580
+uh, and so you can scale up to billions of tokens on a single, uh, CPU, right?
+
+37
+00:01:40,580 --> 00:01:45,920
+So the problem though is that these word embeddings are,
+
+38
+00:01:45,920 --> 00:01:47,890
+uh, applied in the context free manner, right?
+
+39
+00:01:47,890 --> 00:01:51,550
+So- so for like a kind of a simple toy example, the word bank,
+
+40
+00:01:51,550 --> 00:01:54,295
+if you say, open a bank account and on a river bank,
+
+41
+00:01:54,295 --> 00:01:55,555
+it's gonna be the same embedding.
+
+42
+00:01:55,555 --> 00:01:58,230
+So people have tried to do stuff like, uh,
+
+43
+00:01:58,230 --> 00:02:00,670
+word sense embeddings where it's not just a single word,
+
+44
+00:02:00,670 --> 00:02:01,990
+it's a- it's a full word sentence.
+
+45
+00:02:01,990 --> 00:02:04,330
+But this kind of bank example,
+
+46
+00:02:04,330 --> 00:02:05,770
+it's a little bit of a toy example, right?
+
+47
+00:02:05,770 --> 00:02:10,039
+Most- almost any word has a different meaning depending on the context.
+
+48
+00:02:10,039 --> 00:02:14,360
+Um, it's very- so- so even- even like open the bank account and I went to the bank.
+
+49
+00:02:14,360 --> 00:02:19,210
+Tho- those are still semi-different senses of the word bank,
+
+50
+00:02:19,210 --> 00:02:21,280
+one of them is a- I mean they have different part
+
+51
+00:02:21,280 --> 00:02:23,940
+of speech tags kind of, uh, well, I guess, not really.
+
+52
+00:02:23,940 --> 00:02:25,710
+But like they're kind of- they're kind of using different senses.
+
+53
+00:02:25,710 --> 00:02:27,990
+Right? And so, um, yes.
+
+54
+00:02:27,990 --> 00:02:29,770
+So- so- so we really need a contextual representation.
+
+55
+00:02:29,770 --> 00:02:33,340
+Right? So we want something where it's a representation of a word
+
+56
+00:02:33,340 --> 00:02:37,705
+after it's been put into the- the context of the sentence that we've seen it in,
+
+57
+00:02:37,705 --> 00:02:39,100
+right? Which would be like at the bottom here.
+
+58
+00:02:39,100 --> 00:02:42,545
+So kind of for a history of contextual representations,
+
+59
+00:02:42,545 --> 00:02:46,955
+the first big paper for this type of contextual representations was a paper, uh,
+
+60
+00:02:46,955 --> 00:02:49,100
+from Google, uh, in 2015
+
+61
+00:02:49,100 --> 00:02:52,130
+called Semi-supervised Sequence Learning from Andrew Dai and Quoc V. Le.
+
+62
+00:02:52,130 --> 00:02:54,830
+And so in this one,
+
+63
+00:02:54,830 --> 00:02:57,950
+uh, it was actually very similar to- to- to papers that came after it.
+
+64
+00:02:57,950 --> 00:02:59,645
+It didn't get as much attention for- for various reasons.
+
+65
+00:02:59,645 --> 00:03:03,510
+So, but basically, they- they had some classification task like,
+
+66
+00:03:03,510 --> 00:03:05,750
+uh, sentiment classification on movie reviews.
+
+67
+00:03:05,750 --> 00:03:07,460
+And they had a big corpus of movie reviews.
+
+68
+00:03:07,460 --> 00:03:10,780
+And so then they said, what happens if we just take our existing LSTM model,
+
+69
+00:03:10,780 --> 00:03:12,650
+and instead of just using pre-trained embeddings,
+
+70
+00:03:12,650 --> 00:03:14,705
+which everyone has already been doing since, like at least, uh,
+
+71
+00:03:14,705 --> 00:03:17,629
+for the like- actually probably since 2003,
+
+72
+00:03:17,629 --> 00:03:19,310
+um, people had been using pre-trained embeddings.
+
+73
+00:03:19,310 --> 00:03:23,240
+But they- they said, let's actually pretrain the entire model as a language model,
+
+74
+00:03:23,240 --> 00:03:25,970
+and then let's fine tune it for our classification test.
+
+75
+00:03:25,970 --> 00:03:29,450
+And they got pretty good results,:
+
+76
+00:03:29,450 --> 00:03:31,235
+but not like stellar results.
+
+77
+00:03:31,235 --> 00:03:33,020
+And so now we know that the reason why they didn't
+
+78
+00:03:33,020 --> 00:03:34,700
+get stellar results is they didn't train it on enough data.
+
+79
+00:03:34,700 --> 00:03:37,080
+And they- because they basically train on the same corpus that they were training on
+
+80
+00:03:37,080 --> 00:03:39,845
+and they trained the same size model that they were training on,
+
+81
+00:03:39,845 --> 00:03:41,505
+which we now know it needs to be bigger.
+
+82
+00:03:41,505 --> 00:03:42,720
+But that's kind of- uh,
+
+83
+00:03:42,720 --> 00:03:45,845
+this was- this was already kind of a little bit ahead of its time,
+
+84
+00:03:45,845 --> 00:03:47,570
+um, partially because like, you know,
+
+85
+00:03:47,570 --> 00:03:49,810
+stuff wasn't, like, we didn't have as much compute back then,
+
+86
+00:03:49,810 --> 00:03:51,445
+even though it was like five years ago,
+
+87
+00:03:51,445 --> 00:03:53,865
+uh, and it would have been, you know, more expensive.
+
+88
+00:03:53,865 --> 00:03:57,690
+So, uh, and then in, uh, 2017,
+
+89
+00:03:57,690 --> 00:03:59,805
+ELMo came out which was,
+
+90
+00:03:59,805 --> 00:04:02,480
+uh, from the University of Washington and AI2.
+
+91
+00:04:02,480 --> 00:04:04,345
+And so this one,
+
+92
+00:04:04,345 --> 00:04:07,190
+they- they did something pretty clever where they took,
+
+93
+00:04:07,190 --> 00:04:09,920
+um, you train a language on a big corpus,
+
+94
+00:04:09,920 --> 00:04:11,494
+so they trained it on a billion word corpus.
+
+95
+00:04:11,494 --> 00:04:13,115
+And they trained a- a big model,
+
+96
+00:04:13,115 --> 00:04:15,800
+an LSTM with 4,000 hidden dimensions,
+
+97
+00:04:15,800 --> 00:04:17,000
+which is quite expensive.
+
+98
+00:04:17,000 --> 00:04:19,160
+And they trained a bidirectional model.
+
+99
+00:04:19,160 --> 00:04:20,959
+So, but- but it was
+
+100
+00:04:20,959 --> 00:04:24,230
+kind of weakly bidirectional where they trained a left-right model and then,
+
+101
+00:04:24,230 --> 00:04:26,180
+a left to right model.
+
+102
+00:04:26,180 --> 00:04:27,920
+And then they concatenated the two.
+
+103
+00:04:27,920 --> 00:04:30,425
+And they called these contextual pretrained embeddings.
+
+104
+00:04:30,425 --> 00:04:33,140
+And so the idea behind ELMo is that this
+
+105
+00:04:33,140 --> 00:04:35,915
+doesn't actually change your existing model architecture.
+
+106
+00:04:35,915 --> 00:04:40,160
+You kind of take whatever task-specific model architecture that you have,
+
+107
+00:04:40,160 --> 00:04:41,540
+which could be, you know,
+
+108
+00:04:41,540 --> 00:04:42,830
+for, uh, question answering.
+
+109
+00:04:42,830 --> 00:04:45,350
+It might be some sort of fancy model where you do a LSTM over
+
+110
+00:04:45,350 --> 00:04:48,290
+the source and over- over the question and over the answer.
+
+111
+00:04:48,290 --> 00:04:51,950
+Then you- then you attend to one another and in whatever kind of architecture you have.
+
+112
+00:04:51,950 --> 00:04:54,720
+And just wherever you would have put in GloVe embeddings before,
+
+113
+00:04:54,720 --> 00:04:56,895
+now you put in ELMo embeddings.
+
+114
+00:04:56,895 --> 00:05:00,455
+Um, and so this got state of the art on,
+
+115
+00:05:00,455 --> 00:05:02,120
+you know, everything at the time,
+
+116
+00:05:02,120 --> 00:05:05,120
+question-answering, semantic parsing, syntactic parsing
+
+117
+00:05:05,120 --> 00:05:08,845
+because it was- and- and so if you just took any existing kinda state-of-the-art model.
+
+118
+00:05:08,845 --> 00:05:11,910
+You could fit in- put in ELMo and banks and get state of the art, right.
+
+119
+00:05:11,910 --> 00:05:13,200
+Uh, but- but they weren't,
+
+120
+00:05:13,200 --> 00:05:16,415
+uh- but these were kinda- the models were kinda fixed.
+
+121
+00:05:16,415 --> 00:05:20,690
+Um, and so then after that, uh,
+
+122
+00:05:20,690 --> 00:05:25,115
+OpenAI published Improving Language Understanding With Generative Pre-training,
+
+123
+00:05:25,115 --> 00:05:27,155
+which is, uh, simply called GPT1.
+
+124
+00:05:27,155 --> 00:05:28,415
+And so in this,
+
+125
+00:05:28,415 --> 00:05:34,345
+they took a- just- just- just like a similarly large corpus,
+
+126
+00:05:34,345 --> 00:05:38,300
+about a billion words and they trained a very large language model.
+
+127
+00:05:38,300 --> 00:05:39,470
+So a 12 layer language model,
+
+128
+00:05:39,470 --> 00:05:41,590
+which at the time was maybe I-
+
+129
+00:05:41,590 --> 00:05:43,700
+I don't know whether it was actually a large language model they'd been training at the time.
+
+130
+00:05:43,700 --> 00:05:45,950
+It certainly was the largest thing they all had been training on that much data
+
+131
+00:05:45,950 --> 00:05:49,040
+for a- a kind of open-source, um, model.
+
+132
+00:05:49,040 --> 00:05:50,690
+And when I first read it,
+
+133
+00:05:50,690 --> 00:05:52,380
+I actually thought that it was like too big.
+
+134
+00:05:52,380 --> 00:05:53,870
+Like not- not that it was worse,
+
+135
+00:05:53,870 --> 00:05:56,570
+but that they were kinda just showing up and showing how big of a model they could train.
+
+136
+00:05:56,570 --> 00:05:59,120
+But now we know that actually this- this- this depth that
+
+137
+00:05:59,120 --> 00:06:01,700
+they had was actually kinda the crucial- the crucial element.
+
+138
+00:06:01,700 --> 00:06:03,920
+So they- they did something that was like fairly simple, right?
+
+139
+00:06:03,920 --> 00:06:05,920
+They just trained a language model, a very large one,
+
+140
+00:06:05,920 --> 00:06:08,435
+and then they just fine tuned it by taking the last token
+
+141
+00:06:08,435 --> 00:06:11,120
+and then fine tuning it for a classification task, right?
+
+142
+00:06:11,120 --> 00:06:13,205
+So is this positive or negative?
+
+143
+00:06:13,205 --> 00:06:17,630
+And they got basically state-of-the-art on lots of different classification tasks.
+
+144
+00:06:17,630 --> 00:06:21,490
+Um, but [NOISE] I'm going to- I'm going to actually take a,
+
+145
+00:06:21,490 --> 00:06:24,680
+uh, kind of an aside here before I go into BERT, um,
+
+146
+00:06:24,680 --> 00:06:27,200
+which is about Transformer, because that was the other, uh,
+
+147
+00:06:27,200 --> 00:06:30,210
+kind of big thing like the- the big precursor that,
+
+148
+00:06:30,210 --> 00:06:33,150
+uh, allowed BERT and GPT to work well, right?
+
+149
+00:06:33,150 --> 00:06:37,280
+So, um, [BACKGROUND] BERT and GPT both use a transformer,
+
+150
+00:06:37,280 --> 00:06:38,345
+which I'm sure you guys have learned about.
+
+151
+00:06:38,345 --> 00:06:42,125
+And so, uh, I- I don't need to really go into all the details about it.
+
+152
+00:06:42,125 --> 00:06:46,550
+But, um, so it has, you know,
+
+153
+00:06:46,550 --> 00:06:48,680
+multi-headed attention feedforward layers layering
+
+154
+00:06:48,680 --> 00:06:50,060
+on- I- I won't go into all the details
+
+155
+00:06:50,060 --> 00:06:51,455
+because- because I think you've already learned about it.
+
+156
+00:06:51,455 --> 00:06:56,180
+But- so the- the big thing about why this kinda took over is,
+
+157
+00:06:56,180 --> 00:06:58,520
+uh, there is really two advantages versus the LSTM.
+
+158
+00:06:58,520 --> 00:07:00,545
+One is that there's no locality bias.
+
+159
+00:07:00,545 --> 00:07:04,610
+And so, um, long distance context has
+
+160
+00:07:04,610 --> 00:07:08,795
+a equal opportunity to short distance context, which is important.
+
+161
+00:07:08,795 --> 00:07:10,865
+So for like normal language understanding,
+
+162
+00:07:10,865 --> 00:07:16,185
+that the- the locality bias of LSTM is generally considered to be a good thing,
+
+163
+00:07:16,185 --> 00:07:22,235
+um, because local context is more relevant than long-distance contexts.
+
+164
+00:07:22,235 --> 00:07:25,250
+But the way that GPT and BERT and other models work is that they
+
+165
+00:07:25,250 --> 00:07:28,305
+actually concatenate, uh, context.
+
+166
+00:07:28,305 --> 00:07:30,055
+And so if you have a, uh,
+
+167
+00:07:30,055 --> 00:07:31,685
+like a model that says,
+
+168
+00:07:31,685 --> 00:07:34,315
+does this sentence- does sentence one entail sentence two?
+
+169
+00:07:34,315 --> 00:07:36,245
+The way that it was done historically,
+
+170
+00:07:36,245 --> 00:07:39,620
+meaning like before GPT was that you would like encode them both,
+
+171
+00:07:39,620 --> 00:07:42,815
+let's say with an LSTM, then you would do attention from one to the other.
+
+172
+00:07:42,815 --> 00:07:48,320
+With a transformer, you can just put them into the same sequence and,
+
+173
+00:07:48,320 --> 00:07:51,200
+uh, give them separate sequence embeddings or add a separator token.
+
+174
+00:07:51,200 --> 00:07:53,855
+And it will learn how to, uh,
+
+175
+00:07:53,855 --> 00:07:56,600
+and then it can, it can attend to the- to its own sentence locally.
+
+176
+00:07:56,600 --> 00:07:59,550
+But it can also attend all the way to the other sentence, uh,
+
+177
+00:07:59,550 --> 00:08:01,424
+for almost- for- for
+
+178
+00:08:01,424 --> 00:08:04,615
+no- it's just as easy for it to attend all the way to the other sentence.
+
+179
+00:08:04,615 --> 00:08:06,590
+And so when you do this, kind of you can just pack
+
+180
+00:08:06,590 --> 00:08:08,600
+everything to a single sequence and then, uh,
+
+181
+00:08:08,600 --> 00:08:10,310
+everything will be learned rather than- rather than
+
+182
+00:08:10,310 --> 00:08:12,500
+having to do with this part of the model- model architecture,
+
+183
+00:08:12,500 --> 00:08:14,360
+which is- ends up being a pretty important,
+
+184
+00:08:14,360 --> 00:08:17,045
+uh, thing about simplifying these models.
+
+185
+00:08:17,045 --> 00:08:19,590
+And so the other thing is, uh,
+
+186
+00:08:19,590 --> 00:08:25,065
+that having a, with transformers- with LSTMs,
+
+187
+00:08:25,065 --> 00:08:27,390
+let's say this- this is a batch and these are the- the words in the batch.
+
+188
+00:08:27,390 --> 00:08:29,655
+So we have- we have two sentences and four words per sentence.
+
+189
+00:08:29,655 --> 00:08:31,170
+Every step has to be computed,
+
+190
+00:08:31,170 --> 00:08:32,595
+um, one at a time.
+
+191
+00:08:32,595 --> 00:08:35,294
+So you only get a batch size of- of two effectively.
+
+192
+00:08:35,294 --> 00:08:39,334
+And so on modern hardware which is TPUs and GPUs,
+
+193
+00:08:39,335 --> 00:08:41,179
+the bigger the matrix multiplication, the better it is.
+
+194
+00:08:41,179 --> 00:08:43,234
+And you- you want all three dimensions to be big.
+
+195
+00:08:43,235 --> 00:08:45,490
+So even if you have big hidden layers, um,
+
+196
+00:08:45,490 --> 00:08:48,920
+your batch size dimension will still be small unless you have a huge batch,
+
+197
+00:08:48,920 --> 00:08:51,155
+but then that's too expensive for long sequences.
+
+198
+00:08:51,155 --> 00:08:53,050
+But with transformers, uh,
+
+199
+00:08:53,050 --> 00:08:55,945
+it's the tot- because it's- it's layer wise attention.
+
+200
+00:08:55,945 --> 00:08:57,635
+Um, the total number,
+
+201
+00:08:57,635 --> 00:08:58,910
+the batch size is the total number of words.
+
+202
+00:08:58,910 --> 00:09:02,614
+So if you have 500 words and then 32 sentences,
+
+203
+00:09:02,614 --> 00:09:05,060
+it's actually 32 times 512 is the total batch size.
+
+204
+00:09:05,060 --> 00:09:09,220
+So you get these huge matrix multiplications and you can take advantage of modern hardware.
+
+205
+00:09:09,220 --> 00:09:13,835
+Uh, and so that's kind of why the transformer has taken over because of these two things.
+
+206
+00:09:13,835 --> 00:09:15,980
+And that's why it was used in GPT and why it's used in BERT.
+
+207
+00:09:15,980 --> 00:09:19,340
+So, uh, now I'm gonna talk about BERT.
+
+208
+00:09:19,340 --> 00:09:25,380
+So the problem with the previous models,
+
+209
+00:09:25,380 --> 00:09:27,060
+being ELMo and GPT and,
+
+210
+00:09:27,060 --> 00:09:28,835
+um, those before it,
+
+211
+00:09:28,835 --> 00:09:33,175
+is that the language models only used left context or right context,
+
+212
+00:09:33,175 --> 00:09:34,980
+or- or a concatenation of both.
+
+213
+00:09:34,980 --> 00:09:39,150
+But really, um, the language understanding is bidirectional, right?
+
+214
+00:09:39,150 --> 00:09:41,445
+So there's this clear, uh,
+
+215
+00:09:41,445 --> 00:09:44,010
+kind of mismatch between why is- why did everyone
+
+216
+00:09:44,010 --> 00:09:46,520
+train on unidirectional models where you can only
+
+217
+00:09:46,520 --> 00:09:48,860
+see to the left or only see to the right when
+
+218
+00:09:48,860 --> 00:09:51,380
+really we care- when we know that in order to understand language,
+
+219
+00:09:51,380 --> 00:09:52,820
+you need to look in both directions, right?
+
+220
+00:09:52,820 --> 00:09:55,340
+So there's two reasons.
+
+221
+00:09:55,340 --> 00:09:59,000
+So one is that, language models historically had been used for,
+
+222
+00:09:59,000 --> 00:10:01,895
+uh, typically as features in other systems.
+
+223
+00:10:01,895 --> 00:10:03,380
+So like the most direct application of
+
+224
+00:10:03,380 --> 00:10:05,210
+language modeling would be like predictive text, right?
+
+225
+00:10:05,210 --> 00:10:07,145
+Which is directly just saying predict the next word.
+
+226
+00:10:07,145 --> 00:10:09,900
+The other- the other applications that are actually more common are
+
+227
+00:10:09,900 --> 00:10:12,695
+to use them in a machine translation system or a speech recognition system,
+
+228
+00:10:12,695 --> 00:10:17,180
+where you have these features like translation features or- or acoustic features.
+
+229
+00:10:17,180 --> 00:10:19,130
+And then you add a language model that says,
+
+230
+00:10:19,130 --> 00:10:20,510
+what's the probability of the sentence?
+
+231
+00:10:20,510 --> 00:10:22,745
+And so for this, you want it to be a well-formed distribution.
+
+232
+00:10:22,745 --> 00:10:24,140
+For these pre-trained models,
+
+233
+00:10:24,140 --> 00:10:25,340
+we actually don't care about this.
+
+234
+00:10:25,340 --> 00:10:27,425
+But this was kind of something that was, uh, kinda,
+
+235
+00:10:27,425 --> 00:10:30,215
+people had just been like, uh, kind of,
+
+236
+00:10:30,215 --> 00:10:32,960
+I guess, fixed on this idea that language models have to- have to
+
+237
+00:10:32,960 --> 00:10:34,180
+have a distribution or probability
+
+238
+00:10:34,180 --> 00:10:35,975
+distribution even though we actually don't care about that.
+
+239
+00:10:35,975 --> 00:10:38,300
+But the other kind of bigger reason is that
+
+240
+00:10:38,300 --> 00:10:40,955
+words can see themselves in a bidirectional encoder.
+
+241
+00:10:40,955 --> 00:10:48,185
+Um, and so what this means is when you build a representation incrementally. [NOISE]
+
+242
+00:10:48,185 --> 00:10:51,070
+So you have your input and then you have your output,
+
+243
+00:10:51,070 --> 00:10:52,599
+and it's always offset by 1.
+
+244
+00:10:52,599 --> 00:10:56,680
+So we can- we have the- the- the startup sentence token,
+
+245
+00:10:56,680 --> 00:10:57,775
+we predict the first word,
+
+246
+00:10:57,775 --> 00:11:00,730
+then we feed in the second word- we feed in the first word and predict the second word.
+
+247
+00:11:00,730 --> 00:11:03,010
+And so we can encode the sentence once
+
+248
+00:11:03,010 --> 00:11:05,590
+and predict all the words in the sentence with the unidirectional model.
+
+249
+00:11:05,590 --> 00:11:07,480
+And so this gives us good sample efficiency, right?
+
+250
+00:11:07,480 --> 00:11:09,355
+Because if we have a 512 dimension,
+
+251
+00:11:09,355 --> 00:11:12,700
+like- like a sequence of 500 words, we don't wanna have to, uh,
+
+252
+00:11:12,700 --> 00:11:15,685
+only predict one word because it's gonna be 500 times,
+
+253
+00:11:15,685 --> 00:11:17,185
+uh, as much, uh,
+
+254
+00:11:17,185 --> 00:11:19,915
+compute to get the same amount of predictions.
+
+255
+00:11:19,915 --> 00:11:23,830
+But if we were to just trivially do a bidirectional LSTM or transformer,
+
+256
+00:11:23,830 --> 00:11:26,665
+we would have a situation where you- you encode your sentence,
+
+257
+00:11:26,665 --> 00:11:28,630
+every- everything is bidirectional.
+
+258
+00:11:28,630 --> 00:11:30,385
+And so after the first layer,
+
+259
+00:11:30,385 --> 00:11:31,810
+everything can see itself.
+
+260
+00:11:31,810 --> 00:11:33,340
+So- so- so this word open,
+
+261
+00:11:33,340 --> 00:11:35,050
+there's a- there's a path back down to open.
+
+262
+00:11:35,050 --> 00:11:37,705
+And so it's trivial to predict a word that can- that can,
+
+263
+00:11:37,705 --> 00:11:39,145
+where it's in the input also, right?
+
+264
+00:11:39,145 --> 00:11:41,455
+There's no- there's no actual prediction going on there.
+
+265
+00:11:41,455 --> 00:11:44,560
+So the simple solution,
+
+266
+00:11:44,560 --> 00:11:47,185
+which is basically the whole crux of BERT is that let's,
+
+267
+00:11:47,185 --> 00:11:52,045
+instead of, um, training a normal language model,
+
+268
+00:11:52,045 --> 00:11:55,015
+let's just predict, mask out k percent of the words.
+
+269
+00:11:55,015 --> 00:11:59,425
+So, uh, the man went to the mask to buy a mask of milk.
+
+270
+00:11:59,425 --> 00:12:03,210
+And so- and so now you can run a bidirectional model on that,
+
+271
+00:12:03,210 --> 00:12:04,590
+and because the words aren't in the input,
+
+272
+00:12:04,590 --> 00:12:05,895
+you can't cheat, right?
+
+273
+00:12:05,895 --> 00:12:09,675
+The downs- the- the- the- the- and so th- the downside of this
+
+274
+00:12:09,675 --> 00:12:13,470
+is that you're not getting as many predictions per sentence, right?
+
+275
+00:12:13,470 --> 00:12:16,855
+You're only getting- predicting 15% of words instead of 100% of words.
+
+276
+00:12:16,855 --> 00:12:18,220
+But the upside is that you're- you're getting
+
+277
+00:12:18,220 --> 00:12:20,710
+a much more rich model because you're seeing in both directions, right?
+
+278
+00:12:20,710 --> 00:12:23,950
+So this value of k is a hyperparameter that we have to,
+
+279
+00:12:23,950 --> 00:12:26,140
+uh, just decide on empirically,
+
+280
+00:12:26,140 --> 00:12:27,550
+so we use 15%.
+
+281
+00:12:27,550 --> 00:12:29,875
+It turns out that that's actually kind of an optimal value people have,
+
+282
+00:12:29,875 --> 00:12:32,380
+so we and also people since then have done, um,
+
+283
+00:12:32,380 --> 00:12:33,940
+more thorough ablation experiments,
+
+284
+00:12:33,940 --> 00:12:36,400
+um, and found that this 15% is good.
+
+285
+00:12:36,400 --> 00:12:37,930
+So the reason- the reason for doing
+
+286
+00:12:37,930 --> 00:12:40,060
+a certain percent over another is that if yo- if you were to do,
+
+287
+00:12:40,060 --> 00:12:41,620
+let's say 50% masking,
+
+288
+00:12:41,620 --> 00:12:45,835
+you would get way more predictions but you would also mask out like all of your context.
+
+289
+00:12:45,835 --> 00:12:49,465
+And so, um, you can,
+
+290
+00:12:49,465 --> 00:12:51,070
+uh, if- if you mask out all of your context,
+
+291
+00:12:51,070 --> 00:12:53,035
+and you're not getting any- you can't learn contextual models.
+
+292
+00:12:53,035 --> 00:12:54,730
+And if you only do, like,
+
+293
+00:12:54,730 --> 00:12:57,595
+let's say you can mask out one word that would pro- that might be optimal,
+
+294
+00:12:57,595 --> 00:13:00,790
+maybe, um, but you would have to do way more data processing.
+
+295
+00:13:00,790 --> 00:13:02,050
+So it'd be way more expensive to train,
+
+296
+00:13:02,050 --> 00:13:04,825
+and we know that these models are basically just compute bounded.
+
+297
+00:13:04,825 --> 00:13:07,150
+Um, so if you just have enough data, you can just kinda train
+
+298
+00:13:07,150 --> 00:13:09,610
+them infinitely and it'll always do better.
+
+299
+00:13:09,610 --> 00:13:12,970
+So it's really just a trade-off between these two- these two things.
+
+300
+00:13:12,970 --> 00:13:15,670
+Um, so one other little detail in part,
+
+301
+00:13:15,670 --> 00:13:17,170
+which turned out to be super important,
+
+302
+00:13:17,170 --> 00:13:22,450
+[NOISE] is that because the mask token is never seen at fine-tuning time, uh,
+
+303
+00:13:22,450 --> 00:13:23,920
+instead of always, um,
+
+304
+00:13:23,920 --> 00:13:27,715
+replacing a word with the mask token as in this case,
+
+305
+00:13:27,715 --> 00:13:30,024
+uh, we would randomly sometimes
+
+306
+00:13:30,024 --> 00:13:32,500
+predict it with a random word and sometimes keep the same word.
+
+307
+00:13:32,500 --> 00:13:33,880
+So like, uh, so 10% of the time,
+
+308
+00:13:33,880 --> 00:13:36,100
+we'd say, we went to the store and went to the running, right?
+
+309
+00:13:36,100 --> 00:13:40,930
+And so we- we wouldn't tell the model which- which case was which.
+
+310
+00:13:40,930 --> 00:13:44,830
+Uh, we would- we would just have it- we would just
+
+311
+00:13:44,830 --> 00:13:48,760
+have to- we wo- we wo- we would just say what- what should this word be, right?
+
+312
+00:13:48,760 --> 00:13:49,885
+And didn't know whether it's right or not.
+
+313
+00:13:49,885 --> 00:13:51,220
+So it could be the same word.
+
+314
+00:13:51,220 --> 00:13:53,650
+So because 10% of time it's the same word and it could be a random word.
+
+315
+00:13:53,650 --> 00:13:54,925
+And so it has to, uh,
+
+316
+00:13:54,925 --> 00:13:57,775
+basically be able to maintain a good representation of
+
+317
+00:13:57,775 --> 00:14:00,730
+every word because it is- it doesn't know whether it's really the right word.
+
+318
+00:14:00,730 --> 00:14:03,070
+So it has to actually look at every word and figure out whether this is the right word.
+
+319
+00:14:03,070 --> 00:14:05,830
+So we could potentially even just get away with not using a  mask token at all and just
+
+320
+00:14:05,830 --> 00:14:08,665
+doing like this 50% of the time and this 50% of the time.
+
+321
+00:14:08,665 --> 00:14:11,395
+But the reason for not doing that is that, uh, you know,
+
+322
+00:14:11,395 --> 00:14:13,450
+then we'd be corrupting a lot of our data and we don't want it to
+
+323
+00:14:13,450 --> 00:14:17,005
+necessarily corrupt the data because the fact that this is the wrong word,
+
+324
+00:14:17,005 --> 00:14:19,300
+we might mess up our predictions for some other word over here, right?
+
+325
+00:14:19,300 --> 00:14:22,480
+So whereas the mask token at least it knows that it's not the right word,
+
+326
+00:14:22,480 --> 00:14:25,195
+so it doesn't- it doesn't use that as part of its context.
+
+327
+00:14:25,195 --> 00:14:30,670
+Um, so the other- the other kind of, uh, detail of BERT,
+
+328
+00:14:30,670 --> 00:14:34,525
+which also now in subsequently may not be- been that important,
+
+329
+00:14:34,525 --> 00:14:37,690
+is that a lot of these tasks that we're doing,
+
+330
+00:14:37,690 --> 00:14:39,265
+we're not just learning words,
+
+331
+00:14:39,265 --> 00:14:42,700
+we're lo- we- we're- want to predict the relationship between sentences.
+
+332
+00:14:42,700 --> 00:14:44,290
+So for question answering in particular,
+
+333
+00:14:44,290 --> 00:14:46,525
+we have a- a query which is a- yeah,
+
+334
+00:14:46,525 --> 00:14:48,745
+generally a sentence, and then we have a, uh,
+
+335
+00:14:48,745 --> 00:14:52,000
+answer which is a paragraph or- or a sentence or a document,
+
+336
+00:14:52,000 --> 00:14:53,920
+and we want to- um,
+
+337
+00:14:53,920 --> 00:14:56,440
+you know, say, does this answer the question?
+
+338
+00:14:56,440 --> 00:14:59,365
+So by doing that, we, um,
+
+339
+00:14:59,365 --> 00:15:04,570
+so we want to have some pertaining task that actually does a sentence level,
+
+340
+00:15:04,570 --> 00:15:06,310
+uh, prediction rather than just a word level prediction.
+
+341
+00:15:06,310 --> 00:15:07,345
+So- so the way that we did this,
+
+342
+00:15:07,345 --> 00:15:09,760
+which wa- and we needed this to have like an infinite amount of data, right?
+
+343
+00:15:09,760 --> 00:15:11,455
+Or we can just generate an infinite amount of data.
+
+344
+00:15:11,455 --> 00:15:13,825
+So we do- we don't want this to be an annotated task.
+
+345
+00:15:13,825 --> 00:15:17,910
+Um, so the way that we did this is we, uh,
+
+346
+00:15:17,910 --> 00:15:20,770
+just did a next sense prediction task where we
+
+347
+00:15:20,770 --> 00:15:24,175
+just took two sentences from the same corpus,
+
+348
+00:15:24,175 --> 00:15:27,190
+uh, from the same document, and- and 50% of the time they're from the same document,
+
+349
+00:15:27,190 --> 00:15:29,170
+50% of the time, they're from a random document.
+
+350
+00:15:29,170 --> 00:15:33,265
+And then we just said, was this the real next sentence, uh, or not?
+
+351
+00:15:33,265 --> 00:15:34,330
+And so if you just have,
+
+352
+00:15:34,330 --> 00:15:35,620
+like, "The man went to the store.
+
+353
+00:15:35,620 --> 00:15:37,450
+He bought a gallon of milk." That is the next sentence.
+
+354
+00:15:37,450 --> 00:15:38,800
+If you said, "The man went to the store.
+
+355
+00:15:38,800 --> 00:15:40,870
+Penguins are flightless." That's not the next sentence.
+
+356
+00:15:40,870 --> 00:15:45,070
+So basically, now we're forcing the model at pre-training time to actually make- to look
+
+357
+00:15:45,070 --> 00:15:46,965
+at the full sentences and then
+
+358
+00:15:46,965 --> 00:15:49,650
+make some sort of sentence level prediction and we hope that this,
+
+359
+00:15:49,650 --> 00:15:52,950
+uh, is kind of generalizedw.
+
+360
+00:15:52,950 --> 00:15:54,495
+So it's just something like question-answering,
+
+361
+00:15:54,495 --> 00:15:58,180
+where you have a question and answer as Sentence A, Sentence B.
+
+362
+00:15:58,280 --> 00:16:02,630
+Uh, so in terms of our input representation,
+
+363
+00:16:03,240 --> 00:16:06,700
+it looks pretty similar to a normal transformer.
+
+364
+00:16:06,700 --> 00:16:09,385
+But we have these additional embeddings,
+
+365
+00:16:09,385 --> 00:16:11,620
+which are called segment embeddings.
+
+366
+00:16:11,620 --> 00:16:13,209
+So a normal transformer,
+
+367
+00:16:13,209 --> 00:16:15,730
+you would have your input and
+
+368
+00:16:15,730 --> 00:16:18,280
+then you would do WordPiece segmentation, right? Where you split up.
+
+369
+00:16:18,280 --> 00:16:20,019
+Where you apply this unsupervised,
+
+370
+00:16:20,019 --> 00:16:23,170
+uh, splitting of words into,
+
+371
+00:16:23,170 --> 00:16:25,300
+um, kind of, um,
+
+372
+00:16:25,300 --> 00:16:29,215
+morphological splits but they're usually often not morphological, sort of unsupervised.
+
+373
+00:16:29,215 --> 00:16:31,780
+But you end up with something tha- that's roughly morphological, right?
+
+374
+00:16:31,780 --> 00:16:34,765
+And so now you have like no- no added vocabulary tokens.
+
+375
+00:16:34,765 --> 00:16:37,420
+Everything is represented, a- at least at the- at the very least,
+
+376
+00:16:37,420 --> 00:16:38,920
+you always split into characters, uh,
+
+377
+00:16:38,920 --> 00:16:41,530
+so we use a 30,000 word vocabulary.
+
+378
+00:16:41,530 --> 00:16:44,545
+And then we have our token embeddings.
+
+379
+00:16:44,545 --> 00:16:46,750
+Then we have our- our normal position embeddings,
+
+380
+00:16:46,750 --> 00:16:50,290
+which is the bottom and so these are part of the transformer where- because transformers,
+
+381
+00:16:50,290 --> 00:16:52,135
+unlike LSTMs, don't have any sort of,
+
+382
+00:16:52,135 --> 00:16:55,540
+um, locational, uh, awareness.
+
+383
+00:16:55,540 --> 00:16:57,940
+So the only- the way to encode that is that you
+
+384
+00:16:57,940 --> 00:17:00,910
+encode a actual embedding for every position.
+
+385
+00:17:00,910 --> 00:17:02,320
+So this is called absolute position embeddings.
+
+386
+00:17:02,320 --> 00:17:04,375
+There's other kind of techniques nowadays.
+
+387
+00:17:04,375 --> 00:17:08,079
+Uh, and so- and then- then you have the segment embedding,
+
+388
+00:17:08,079 --> 00:17:10,359
+which is, this is Sentence A or Sentence B.
+
+389
+00:17:10,359 --> 00:17:14,289
+And so this kind of generalizes in more, uh, general context.
+
+390
+00:17:14,290 --> 00:17:15,535
+So you can imagine if you're saying,
+
+391
+00:17:15,535 --> 00:17:17,500
+we're trying to say, like, you're trying to do like web search.
+
+392
+00:17:17,500 --> 00:17:19,240
+You might say, here's my query,
+
+393
+00:17:19,240 --> 00:17:20,530
+here's the- the title,
+
+394
+00:17:20,530 --> 00:17:23,305
+here's the URL, here's the document content.
+
+395
+00:17:23,305 --> 00:17:25,540
+Um, and so you can kind of just
+
+396
+00:17:25,540 --> 00:17:28,240
+pack these all into a single sequence and then just give them different,
+
+397
+00:17:28,240 --> 00:17:30,655
+uh, segment embeddings or type embeddings.
+
+398
+00:17:30,655 --> 00:17:33,190
+So that now you get, uh,
+
+399
+00:17:33,190 --> 00:17:34,810
+are able to have, um,
+
+400
+00:17:34,810 --> 00:17:36,985
+a much stronger- um,
+
+401
+00:17:36,985 --> 00:17:39,655
+you're- you're able to kind of just represent everything, er,
+
+402
+00:17:39,655 --> 00:17:41,755
+in this kind of same single sequence
+
+403
+00:17:41,755 --> 00:17:44,455
+where you kind of just differentiated by just this single embedding that's different.
+
+404
+00:17:44,455 --> 00:17:45,835
+And this is all of course learned.
+
+405
+00:17:45,835 --> 00:17:48,640
+Um, and so this is in contrast to kinda
+
+406
+00:17:48,640 --> 00:17:51,610
+the older style where you would typically have a different encoder for every part.
+
+407
+00:17:51,610 --> 00:17:53,140
+So like you would have a different coder for the query
+
+408
+00:17:53,140 --> 00:17:54,970
+and then maybe for the title and maybe for the URL,
+
+409
+00:17:54,970 --> 00:17:57,340
+um, but this case it's all just a single sequence.
+
+410
+00:17:57,340 --> 00:18:01,090
+So we trained on about a 3 billion word corpus,
+
+411
+00:18:01,090 --> 00:18:02,440
+which was at the time large.
+
+412
+00:18:02,440 --> 00:18:05,575
+Now it's not actually that big compared to what people are training on.
+
+413
+00:18:05,575 --> 00:18:09,190
+We used a- a batch size,
+
+414
+00:18:09,190 --> 00:18:11,365
+uh, which was also large.
+
+415
+00:18:11,365 --> 00:18:14,545
+Um, we trained for about 40 epochs of the data.
+
+416
+00:18:14,545 --> 00:18:17,245
+And we trained these two models, which are still relatively large.
+
+417
+00:18:17,245 --> 00:18:20,950
+Um, so one of them is a 12 layer 768,
+
+418
+00:18:20,950 --> 00:18:22,480
+and then the other one, 24 layer 1024.
+
+419
+00:18:22,480 --> 00:18:24,340
+So at the time this was basically like,
+
+420
+00:18:24,340 --> 00:18:26,305
+one of the largest models that had been trained.
+
+421
+00:18:26,305 --> 00:18:29,245
+Although now people are training models that I think are, uh,
+
+422
+00:18:29,245 --> 00:18:31,540
+30 times or more bigger than this,
+
+423
+00:18:31,540 --> 00:18:33,370
+um in- in the more recent papers.
+
+424
+00:18:33,370 --> 00:18:35,440
+So things have kind of exploded in terms of, uh,
+
+425
+00:18:35,440 --> 00:18:38,215
+compu- com- computing in the last, I don't know, three years.
+
+426
+00:18:38,215 --> 00:18:41,740
+Um, but, uh, yeah,
+
+427
+00:18:41,740 --> 00:18:44,920
+so the fine-tuning procedure is,
+
+428
+00:18:44,920 --> 00:18:47,710
+uh, it- it's pretty straightforward, right?
+
+429
+00:18:47,710 --> 00:18:50,710
+So we- we pre-trained this model for these two tasks.
+
+430
+00:18:50,710 --> 00:18:52,495
+And so now we have
+
+431
+00:18:52,495 --> 00:18:55,315
+an input sequence which has  multiple sentences with different type embeddings.
+
+432
+00:18:55,315 --> 00:18:59,740
+We feed them through the- uh, our transformer model.
+
+433
+00:18:59,740 --> 00:19:01,885
+And now we have the special embedding,
+
+434
+00:19:01,885 --> 00:19:03,580
+which I- I think I've been- didn't mention.
+
+435
+00:19:03,580 --> 00:19:04,885
+So this- this special embedding.
+
+436
+00:19:04,885 --> 00:19:07,030
+This is- this is basically,
+
+437
+00:19:07,030 --> 00:19:12,370
+it's learned to predict the- the next sentence prediction task and then this is used,
+
+438
+00:19:12,370 --> 00:19:14,110
+uh, also for a classification task.
+
+439
+00:19:14,110 --> 00:19:16,300
+But this- it's not just that we're using the embedding, right?
+
+440
+00:19:16,300 --> 00:19:18,970
+We are- we're fine tuning the entire model, right?
+
+441
+00:19:18,970 --> 00:19:21,220
+So- so this- so it's- it's really not that this embedding is
+
+442
+00:19:21,220 --> 00:19:23,605
+intrinsically useful or that the word embeddings are intrinsically useful.
+
+443
+00:19:23,605 --> 00:19:29,350
+It's that the- the- the- weights inside the entire 12 or 24 layer model are useful.
+
+444
+00:19:29,350 --> 00:19:31,675
+And so by fine-tuning the entire model,
+
+445
+00:19:31,675 --> 00:19:33,670
+you can kind of pick out the salient parts that
+
+446
+00:19:33,670 --> 00:19:36,325
+are- that are important for some downstream task.
+
+447
+00:19:36,325 --> 00:19:42,450
+Um, and so this is- this is the- kind of the- the- the class-specific fine-tuning, right?
+
+448
+00:19:42,450 --> 00:19:45,645
+So if we had a single classification task, uh,
+
+449
+00:19:45,645 --> 00:19:48,594
+like, let's say sentence analysis,
+
+450
+00:19:48,594 --> 00:19:51,445
+um, where he says say, is it a positive or negative review?
+
+451
+00:19:51,445 --> 00:19:54,925
+We- we- we encode our sentence with the- the BERT model.
+
+452
+00:19:54,925 --> 00:19:58,360
+Then the only parameters that we add are this final output matrix, right?
+
+453
+00:19:58,360 --> 00:20:00,850
+So maybe if we have 3, let's say, positive,
+
+454
+00:20:00,850 --> 00:20:04,000
+negative or neutral, this might be 1,000 times 3, right?
+
+455
+00:20:04,000 --> 00:20:07,150
+So it's just 3,000 parameters, and 300 million.
+
+456
+00:20:07,150 --> 00:20:10,870
+So a- a- 3,000 new parameters and 300 million old
+
+457
+00:20:10,870 --> 00:20:15,680
+parameters and we- and we jointly train all 300 million plus 3,000,
+
+458
+00:20:15,680 --> 00:20:17,805
+uh, fo- fo- for this downstream task.
+
+459
+00:20:17,805 --> 00:20:19,800
+But because the vast majority of them are pre-trained,
+
+460
+00:20:19,800 --> 00:20:24,150
+we can kind of adapt to it in only like a few thousand, labeled examples.
+
+461
+00:20:24,150 --> 00:20:26,430
+And similarly for a sentence pair class,
+
+462
+00:20:26,430 --> 00:20:30,025
+we do, um, we just concatenate the two sentences with different type embeddings.
+
+463
+00:20:30,025 --> 00:20:32,860
+So we have, if you want to say does this sentence entail this other sentence,
+
+464
+00:20:32,860 --> 00:20:34,705
+you say sentence A, uh,
+
+465
+00:20:34,705 --> 00:20:37,030
+you put it, concatenate sentence B,
+
+466
+00:20:37,030 --> 00:20:40,360
+and then also predict from- from this token and fine tune the entire thing.
+
+467
+00:20:40,360 --> 00:20:42,685
+So similarly, very few additional parameters.
+
+468
+00:20:42,685 --> 00:20:44,730
+Uh, for span prediction tasks,
+
+469
+00:20:44,730 --> 00:20:49,170
+you just have kinda a start of- a start of span, end of span,
+
+470
+00:20:49,170 --> 00:20:51,335
+so you're only adding a few thousand new parameters.
+
+471
+00:20:51,335 --> 00:20:55,675
+And then for tagging tasks like part-of-speech tagging, you just,
+
+472
+00:20:55,675 --> 00:21:00,400
+um, have a single, uh, sentence.
+
+473
+00:21:00,400 --> 00:21:02,740
+You- you have a- you have- you add ev- every single
+
+474
+00:21:02,740 --> 00:21:05,170
+token or maybe every token except for the- the- the WordPieces.
+
+475
+00:21:05,170 --> 00:21:07,779
+But like, [NOISE] you- you- the it's kind of preprocessing.
+
+476
+00:21:07,779 --> 00:21:09,340
+You- you predict, um,
+
+477
+00:21:09,340 --> 00:21:10,660
+what's the part of speech of this.
+
+478
+00:21:10,660 --> 00:21:15,070
+And so this is really why, uh.
+
+479
+00:21:15,070 --> 00:21:17,890
+So like BERT itself is really a- a kind of,
+
+480
+00:21:17,890 --> 00:21:20,590
+I would say an incremental improvement over what already just,
+
+481
+00:21:20,590 --> 00:21:25,285
+so it kind of took, uh, transformers, uh, ELMo,
+
+482
+00:21:25,285 --> 00:21:30,445
+GPT, really these three ideas and kinda made a- a pretty simple,
+
+483
+00:21:30,445 --> 00:21:32,395
+uh, change on top of them.
+
+484
+00:21:32,395 --> 00:21:34,990
+And but the reason why
+
+485
+00:21:34,990 --> 00:21:38,500
+it had such big impact is not just the numbers that I'll show in a few slides.
+
+486
+00:21:38,500 --> 00:21:40,345
+It's really this- this thing,
+
+487
+00:21:40,345 --> 00:21:45,595
+because, um, with Elmo,
+
+488
+00:21:45,595 --> 00:21:47,695
+there was really no fundamental difference between,
+
+489
+00:21:47,695 --> 00:21:49,660
+it was just contextual embedding, right? You still had,
+
+490
+00:21:49,660 --> 00:21:52,390
+because like a lot of deep learning historically
+
+491
+00:21:52,390 --> 00:21:55,330
+has been fun and building new models, right?
+
+492
+00:21:55,330 --> 00:21:58,250
+So you have all of these components that are kinda like Lego blocks, right?
+
+493
+00:21:58,250 --> 00:22:00,805
+You have attention layers, feed forward layers,
+
+494
+00:22:00,805 --> 00:22:04,750
+layered normalization, uh, LSTMs, uh, et cetera.
+
+495
+00:22:04,750 --> 00:22:08,035
+And you can just, kind of figure out to say okay,
+
+496
+00:22:08,035 --> 00:22:09,445
+for this new task,
+
+497
+00:22:09,445 --> 00:22:12,580
+how do I glue these together in a way that's best, right?
+
+498
+00:22:12,580 --> 00:22:16,030
+And so, um, and so with ELMo,
+
+499
+00:22:16,030 --> 00:22:19,225
+it wasn't really- it didn't really change anything fundamentally.
+
+500
+00:22:19,225 --> 00:22:21,220
+It was just- because this would have- if you
+
+501
+00:22:21,220 --> 00:22:23,200
+just fed it into your existing model and you got state of the art,
+
+502
+00:22:23,200 --> 00:22:29,770
+for GPT1, it wasn't most- like these things didn't really work, right?
+
+503
+00:22:29,770 --> 00:22:31,510
+Because it was a left to right language model.
+
+504
+00:22:31,510 --> 00:22:33,505
+And so you can just kind of take the last token,
+
+505
+00:22:33,505 --> 00:22:35,515
+and then predict classification task,
+
+506
+00:22:35,515 --> 00:22:38,350
+but it didn't really make any sense to predict like
+
+507
+00:22:38,350 --> 00:22:41,200
+part-of-speech tags because for the first word there's no context,
+
+508
+00:22:41,200 --> 00:22:44,065
+so it makes no sense to predict where there is no context.
+
+509
+00:22:44,065 --> 00:22:48,910
+Um, with BERT, the reason why it had such high impact,
+
+510
+00:22:48,910 --> 00:22:51,370
+was because it kind of simplified things.
+
+511
+00:22:51,370 --> 00:22:54,070
+And so that's not- I'm not saying that's necessarily a good thing
+
+512
+00:22:54,070 --> 00:22:57,310
+because as a researcher or a bad thing,
+
+513
+00:22:57,310 --> 00:23:00,355
+I'm- so as a researcher kind of ironically,
+
+514
+00:23:00,355 --> 00:23:02,920
+the ultimate goal of research is often like research yourself out of a job, right?
+
+515
+00:23:02,920 --> 00:23:04,150
+Like, it's like, you know,
+
+516
+00:23:04,150 --> 00:23:05,470
+if a- if a physicist,
+
+517
+00:23:05,470 --> 00:23:07,375
+I'm not saying BERT had anyone near this-
+
+518
+00:23:07,375 --> 00:23:10,255
+this impact, like a physicist that came up with a grand theory of physics.
+
+519
+00:23:10,255 --> 00:23:13,210
+That would kinda like- they would be like the- the greatest moment in physics,
+
+520
+00:23:13,210 --> 00:23:14,635
+but also that would kind of,
+
+521
+00:23:14,635 --> 00:23:16,210
+uh, eliminate a lot of research, right?
+
+522
+00:23:16,210 --> 00:23:17,995
+And so that's kind of like the- the end goal
+
+523
+00:23:17,995 --> 00:23:20,320
+of research is kind of solve the problem, right?
+
+524
+00:23:20,320 --> 00:23:22,840
+So- so BERT, um,
+
+525
+00:23:22,840 --> 00:23:28,315
+kind of has- is- is a step where now,
+
+526
+00:23:28,315 --> 00:23:30,235
+like all of these different concepts and problems,
+
+527
+00:23:30,235 --> 00:23:33,715
+there's really- it kind of killed like a lot of the need to do,
+
+528
+00:23:33,715 --> 00:23:36,010
+um, model architecture design,
+
+529
+00:23:36,010 --> 00:23:38,590
+which is kind of unfortunate because that's like really fun.
+
+530
+00:23:38,590 --> 00:23:42,220
+Um, and so that's kind of the- the impact.
+
+531
+00:23:42,220 --> 00:23:44,290
+I'm so- I'm not gonna say whether that's a good or bad impact.
+
+532
+00:23:44,290 --> 00:23:45,850
+It's kinda like the objective impact.
+
+533
+00:23:45,850 --> 00:23:49,360
+And that's why it's had so much impact is because it has kind of, uh,
+
+534
+00:23:49,360 --> 00:23:52,180
+had this effect on now,
+
+535
+00:23:52,180 --> 00:23:55,225
+so many things that used to be like designing fun, you know, models.
+
+536
+00:23:55,225 --> 00:23:58,420
+It's just fit it in and use one of these four recipes.
+
+537
+00:23:58,420 --> 00:24:00,835
+And it kinda just works for all of these different tasks.
+
+538
+00:24:00,835 --> 00:24:03,880
+Um so in terms of actual empirical results,
+
+539
+00:24:03,880 --> 00:24:05,440
+so these- these are at the time the paper was published.
+
+540
+00:24:05,440 --> 00:24:09,100
+Of course, things have gotten better since then.
+
+541
+00:24:09,100 --> 00:24:12,565
+So these- these- this GLUE task is a set of,
+
+542
+00:24:12,565 --> 00:24:14,320
+um, they're all kind of similar in that they're
+
+543
+00:24:14,320 --> 00:24:16,345
+all sentences pair or sentence classification tasks.
+
+544
+00:24:16,345 --> 00:24:18,955
+So like MultiNLI would be
+
+545
+00:24:18,955 --> 00:24:22,450
+something like hills and mountains are especially sanctified in Jainism.
+
+546
+00:24:22,450 --> 00:24:25,930
+And then hypothesis is Jainism hates nature. That's a contradiction, right?
+
+547
+00:24:25,930 --> 00:24:29,275
+So in order for an NLP model to be able to understand this,
+
+548
+00:24:29,275 --> 00:24:32,560
+or to be able to answer this correctly and give us the label of contradiction,
+
+549
+00:24:32,560 --> 00:24:39,910
+it needs to know that hills and mountains are part of nature, sanctified is a good thing.
+
+550
+00:24:39,910 --> 00:24:42,865
+And that hating something is a bad thing and be able to do all of this reasoning, right?
+
+551
+00:24:42,865 --> 00:24:44,560
+So it's pretty complicated reasoning.
+
+552
+00:24:44,560 --> 00:24:46,645
+Similarly for CoLa, you have to be able to say like
+
+553
+00:24:46,645 --> 00:24:50,530
+the wagon rumbled down the road versus the car honked down the road.
+
+554
+00:24:50,530 --> 00:24:54,505
+And so, um, these things are,
+
+555
+00:24:54,505 --> 00:24:56,410
+ah, you know, one of them to a- to
+
+556
+00:24:56,410 --> 00:24:59,005
+a native English speaker sounds totally fine, the other one sounds weird.
+
+557
+00:24:59,005 --> 00:25:02,110
+And so that, that similarly, and neither of these  have very much data,  right, so you have to be able to
+
+558
+00:25:02,110 --> 00:25:03,520
+generalize on- on only,
+
+559
+00:25:03,520 --> 00:25:05,755
+ah, like a few thousand examples.
+
+560
+00:25:05,755 --> 00:25:09,220
+Um, so BERT base,
+
+561
+00:25:09,220 --> 00:25:11,035
+which is the same size as Open AI, uh,
+
+562
+00:25:11,035 --> 00:25:13,060
+it- it significantly beat OpenAI,
+
+563
+00:25:13,060 --> 00:25:15,790
+uh, which was the previous state of the art.
+
+564
+00:25:15,790 --> 00:25:20,860
+And then, uh, the BERT large which was bigger,
+
+565
+00:25:20,860 --> 00:25:22,120
+of course got better results.
+
+566
+00:25:22,120 --> 00:25:25,240
+Which is only surprising that it got better results across the board,
+
+567
+00:25:25,240 --> 00:25:26,440
+including on the very,
+
+568
+00:25:26,440 --> 00:25:28,495
+very tiny datasets, it's only a few thousand examples.
+
+569
+00:25:28,495 --> 00:25:30,565
+That was kind of- that was kind of more interesting result rather than
+
+570
+00:25:30,565 --> 00:25:32,680
+just the fact that, uh, it got better results.
+
+571
+00:25:32,680 --> 00:25:35,350
+Because historically when, uh, there was, you know,
+
+572
+00:25:35,350 --> 00:25:39,475
+rules of thumb about if you have some number of examples,
+
+573
+00:25:39,475 --> 00:25:42,400
+how do you design the model size that's optimal for that?
+
+574
+00:25:42,400 --> 00:25:44,125
+And so if you don't do pre-training,
+
+575
+00:25:44,125 --> 00:25:46,720
+like if- if you keep making the model bigger without pre-training,
+
+576
+00:25:46,720 --> 00:25:50,800
+eventually you'll get worse results because your model will overfit your training data.
+
+577
+00:25:50,800 --> 00:25:54,205
+With pre-training you basically only ever do like one pass over the data anyways.
+
+578
+00:25:54,205 --> 00:25:57,160
+So there- there seems to be almost no limit to how big you can
+
+579
+00:25:57,160 --> 00:26:00,460
+make it and still get good results even with a tiny amount of fine tuning data.
+
+580
+00:26:00,460 --> 00:26:02,830
+And that's really like one of the- one of the big takeaways.
+
+581
+00:26:02,830 --> 00:26:08,860
+So I'm not going- yeah so, uh,
+
+582
+00:26:08,860 --> 00:26:10,930
+SQuAD 2.0- so the reason why these-
+
+583
+00:26:10,930 --> 00:26:14,590
+these numbers are- these ranges are lower because I took the screenshot,
+
+584
+00:26:14,590 --> 00:26:16,855
+uh, after, like, these- these,
+
+585
+00:26:16,855 --> 00:26:18,220
+you know, significantly after,
+
+586
+00:26:18,220 --> 00:26:21,580
+ah, when a bunch of other people had submitted systems.
+
+587
+00:26:21,580 --> 00:26:26,080
+But, um, so this is a question answering data set,
+
+588
+00:26:26,080 --> 00:26:28,720
+so it would be like, what action did the US take that started the second oil shock?
+
+589
+00:26:28,720 --> 00:26:30,940
+So in this case, there is no answer, right?
+
+590
+00:26:30,940 --> 00:26:33,610
+So something you have to be able to predict is that there's no answer in this phase.
+
+591
+00:26:33,610 --> 00:26:35,980
+So you have to be able to either predict the answer or say there's no answer.
+
+592
+00:26:35,980 --> 00:26:40,690
+So BERT beat the- BERT beat the previous state of the art,
+
+593
+00:26:40,690 --> 00:26:43,030
+but at the time that it was submitted by about six points,
+
+594
+00:26:43,030 --> 00:26:44,365
+which was, you know, a pretty big gain.
+
+595
+00:26:44,365 --> 00:26:47,080
+Now it's kind of gone past human level.
+
+596
+00:26:47,080 --> 00:26:49,960
+But at the time, yeah it was- it was large.
+
+597
+00:26:49,960 --> 00:26:54,040
+So I'll kind of do some ablation experiments or go through some ablation experiments.
+
+598
+00:26:54,040 --> 00:26:57,550
+So this one, there's four things that I'm comparing here.
+
+599
+00:26:57,550 --> 00:27:00,700
+So this is all- all BERT based sized models.
+
+600
+00:27:00,700 --> 00:27:04,585
+So those are- the blue line is kinda the- the BERT based model.
+
+601
+00:27:04,585 --> 00:27:09,040
+Um, the red line is if we take up the next sentence prediction.
+
+602
+00:27:09,040 --> 00:27:10,450
+So in our case, even though people have
+
+603
+00:27:10,450 --> 00:27:12,430
+subsequently said that they don't think it's important,
+
+604
+00:27:12,430 --> 00:27:13,810
+in our case, we actually did measure it,
+
+605
+00:27:13,810 --> 00:27:15,190
+and it turns out it seemed like it was
+
+606
+00:27:15,190 --> 00:27:18,415
+important to have this next sentence prediction task,
+
+607
+00:27:18,415 --> 00:27:25,000
+especially for, um, kind of question answering task, which is this one.
+
+608
+00:27:25,000 --> 00:27:28,660
+But it- it seems to help a little bit at least in all four of them to- to have it.
+
+609
+00:27:28,660 --> 00:27:31,810
+So this kinda doesn't- there's some thinking, learning some, uh,
+
+610
+00:27:31,810 --> 00:27:34,375
+model that learns, uh,
+
+611
+00:27:34,375 --> 00:27:37,165
+joint- that learns the relationships between sentences.
+
+612
+00:27:37,165 --> 00:27:44,410
+So then this one is the one that makes an apples to apples comparison between OpenAI,
+
+613
+00:27:44,410 --> 00:27:47,740
+and OpenAI is GPT 1, and Bert, right?
+
+614
+00:27:47,740 --> 00:27:50,890
+Because I also- I made the model bigger but not- not BERT based.
+
+615
+00:27:50,890 --> 00:27:53,200
+So BERT base was the exact same size, but it was trained on more data.
+
+616
+00:27:53,200 --> 00:27:54,775
+So to make it a fair comparison,
+
+617
+00:27:54,775 --> 00:28:01,195
+I basically retrained my implementation of OpenAI's GPT 1 and I,
+
+618
+00:28:01,195 --> 00:28:03,760
+ah, which is- which is this yellow line.
+
+619
+00:28:03,760 --> 00:28:07,270
+And we can see that on- on some of the tasks it's not that far,
+
+620
+00:28:07,270 --> 00:28:08,620
+although this is actually a pretty big gap,
+
+621
+00:28:08,620 --> 00:28:10,465
+like this- this drop is, you know,
+
+622
+00:28:10,465 --> 00:28:12,400
+like four points which is- which is a lot.
+
+623
+00:28:12,400 --> 00:28:13,765
+But on- on some tests like SQuAD,
+
+624
+00:28:13,765 --> 00:28:16,015
+and- and MRPC, it was- it was way worse.
+
+625
+00:28:16,015 --> 00:28:19,315
+Um, and so, uh,
+
+626
+00:28:19,315 --> 00:28:24,175
+for SQuAD to make sense because SQuAD is a labeling- is a span labeling task.
+
+627
+00:28:24,175 --> 00:28:26,290
+And so if you only have left
+
+628
+00:28:26,290 --> 00:28:29,200
+context then words at the beginning have basically no context.
+
+629
+00:28:29,200 --> 00:28:30,790
+And so you're- you're asking it to do span
+
+630
+00:28:30,790 --> 00:28:33,115
+labeling on words with- with almost no context.
+
+631
+00:28:33,115 --> 00:28:34,915
+So it really doesn't make any sense.
+
+632
+00:28:34,915 --> 00:28:36,505
+And so of course it's gonna do much worse.
+
+633
+00:28:36,505 --> 00:28:38,440
+So then we also added a- to make it fair,
+
+634
+00:28:38,440 --> 00:28:41,710
+we also added an LSTM on top of it which was trained from scratch.
+
+635
+00:28:41,710 --> 00:28:44,215
+And this does help a little bit on some of the tasks,
+
+636
+00:28:44,215 --> 00:28:45,730
+but on other ones, it doesn't help.
+
+637
+00:28:45,730 --> 00:28:48,565
+So like on SQuAD it helps because now you have bidirectional context,
+
+638
+00:28:48,565 --> 00:28:50,500
+but on MRPC, because it's a very small task,
+
+639
+00:28:50,500 --> 00:28:52,150
+it's only got 3,000 labeled examples.
+
+640
+00:28:52,150 --> 00:28:53,905
+It doesn't help at all.
+
+641
+00:28:53,905 --> 00:28:56,680
+So it- this just show that the kind of
+
+642
+00:28:56,680 --> 00:29:00,085
+the masked language model and the- and the next sentence prediction are both important,
+
+643
+00:29:00,085 --> 00:29:02,540
+especially the masked language model.
+
+644
+00:29:02,970 --> 00:29:05,545
+So the other thing, uh,
+
+645
+00:29:05,545 --> 00:29:10,195
+one of the other ablations is that when we- when we apply the, the,
+
+646
+00:29:10,195 --> 00:29:14,950
+the math language model, we're only predicting 15% of words in the sentence.
+
+647
+00:29:14,950 --> 00:29:16,495
+But when you do a left to right language model,
+
+648
+00:29:16,495 --> 00:29:19,480
+you're predicting every single word conditioning on all the words to the left.
+
+649
+00:29:19,480 --> 00:29:21,700
+So one question might be,
+
+650
+00:29:21,700 --> 00:29:23,995
+how much, does this make it take longer to converge,
+
+651
+00:29:23,995 --> 00:29:26,410
+even though eventually we know that it converges at a much better point.
+
+652
+00:29:26,410 --> 00:29:28,150
+If you have a limited training budget,
+
+653
+00:29:28,150 --> 00:29:29,935
+is it better to do a left to right model?
+
+654
+00:29:29,935 --> 00:29:32,200
+And so, uh, we see that
+
+655
+00:29:32,200 --> 00:29:34,360
+[NOISE] when you do this
+
+656
+00:29:34,360 --> 00:29:37,480
+masked language model, the bi-directionality starts to improve- like at the very,
+
+657
+00:29:37,480 --> 00:29:39,445
+very beginning because you're doing so many more predictions,
+
+658
+00:29:39,445 --> 00:29:41,095
+it's true that, uh,
+
+659
+00:29:41,095 --> 00:29:45,775
+the left-right model does do better at the very- at the- like for, at  epoch one.
+
+660
+00:29:45,775 --> 00:29:48,850
+But then very soon after because the bi-directionality is so important,
+
+661
+00:29:48,850 --> 00:29:50,230
+uh, it starts to take over.
+
+662
+00:29:50,230 --> 00:29:53,890
+And so it's- it's basically better from almost the start to do bi-directionality,
+
+663
+00:29:53,890 --> 00:29:55,870
+and then it- it takes longer to converge
+
+664
+00:29:55,870 --> 00:29:59,000
+but the- but the overall convergence is of course much higher.
+
+665
+00:29:59,550 --> 00:30:02,335
+Um, and then finally,
+
+666
+00:30:02,335 --> 00:30:06,880
+for- for, uh, this, uh, ablations, um,
+
+667
+00:30:06,880 --> 00:30:10,450
+we can see that going from a smaller model,
+
+668
+00:30:10,450 --> 00:30:14,290
+which was 100 million to 300 million parameters helps a lot, which isn't surprising.
+
+669
+00:30:14,290 --> 00:30:16,780
+But the more surprising thing is that one of these curves,
+
+670
+00:30:16,780 --> 00:30:20,830
+these aren't- these aren't comparable- uh, um.
+
+671
+00:30:20,830 --> 00:30:22,075
+You shouldn't compare the curves to each other.
+
+672
+00:30:22,075 --> 00:30:25,135
+The point is to look at the curves as a function of,
+
+673
+00:30:25,135 --> 00:30:27,220
+uh, the- the number of parameters.
+
+674
+00:30:27,220 --> 00:30:30,790
+And see that this one is- um,
+
+675
+00:30:30,790 --> 00:30:33,190
+this one only has 3,000 labeled examples,
+
+676
+00:30:33,190 --> 00:30:35,545
+and this one has, uh, 400,000 labeled examples.
+
+677
+00:30:35,545 --> 00:30:37,000
+So in both cases,
+
+678
+00:30:37,000 --> 00:30:38,500
+the curves look very similar,
+
+679
+00:30:38,500 --> 00:30:41,320
+which is surprising because, you know,
+
+680
+00:30:41,320 --> 00:30:43,330
+the rule of thumb that you're gonna overfit your data,
+
+681
+00:30:43,330 --> 00:30:46,510
+if you only have a few num- a few la- labeled examples
+
+682
+00:30:46,510 --> 00:30:48,055
+turns out not to really be true anymore.
+
+683
+00:30:48,055 --> 00:30:50,320
+And there's- um, you know,
+
+684
+00:30:50,320 --> 00:30:51,820
+and these- and these curves keep going up, right?
+
+685
+00:30:51,820 --> 00:30:54,040
+So now with subsequent papers which we'll talk about,
+
+686
+00:30:54,040 --> 00:30:56,710
+the- like, this- this big one was 300 million parameters.
+
+687
+00:30:56,710 --> 00:30:59,920
+People have gone up to 11 billion parameters and still seeing similar behaviors.
+
+688
+00:30:59,920 --> 00:31:02,500
+Still seeing the curves go way up and gotten state of the art results,
+
+689
+00:31:02,500 --> 00:31:04,765
+which is kind of crazy because now we know that,
+
+690
+00:31:04,765 --> 00:31:08,275
+um, you know, basically that- there's al- almost no limit.
+
+691
+00:31:08,275 --> 00:31:11,635
+So another thing I wanna talk about before I talk about, uh,
+
+692
+00:31:11,635 --> 00:31:13,795
+stuff that's happened since BERT,
+
+693
+00:31:13,795 --> 00:31:16,435
+um, is the kind of is-.
+
+694
+00:31:16,435 --> 00:31:18,415
+Even though BERT, um,
+
+695
+00:31:18,415 --> 00:31:21,670
+itself was in some ways very simple,
+
+696
+00:31:21,670 --> 00:31:23,635
+which is, you know, not a bad thing.
+
+697
+00:31:23,635 --> 00:31:25,840
+Um, it wa- it was very successful immediately.
+
+698
+00:31:25,840 --> 00:31:27,310
+And, you know, part- part of that is, like,
+
+699
+00:31:27,310 --> 00:31:28,405
+the Google brand, and like,
+
+700
+00:31:28,405 --> 00:31:29,635
+you know, got a cute name, and stuff like that.
+
+701
+00:31:29,635 --> 00:31:32,560
+But I think that I- I- I spent a lot of thought and time with the open source release, and in particular,
+
+702
+00:31:32,560 --> 00:31:34,465
+looking at other open source releases,
+
+703
+00:31:34,465 --> 00:31:38,035
+and figuring out what people didn't like about those, um.
+
+704
+00:31:38,035 --> 00:31:39,880
+And so I think this is important, like, when you're- uh,
+
+705
+00:31:39,880 --> 00:31:41,740
+[NOISE] whe- when your [inaudible] ,
+
+706
+00:31:41,740 --> 00:31:44,980
+even- even working industry as a- and trying to release something.
+
+707
+00:31:44,980 --> 00:31:48,955
+So, um, I kind of just listed the things here that I thought were, uh,
+
+708
+00:31:48,955 --> 00:31:51,985
+important for, like, why- why it was,
+
+709
+00:31:51,985 --> 00:31:54,265
+uh, successful compared to other things.
+
+710
+00:31:54,265 --> 00:31:57,250
+Um, so like, I'm not- I'm not trying to call them out just to be mean,
+
+711
+00:31:57,250 --> 00:32:01,180
+because the- the- but like the OpenAI GPT-1 release was really- uh, was not very good.
+
+712
+00:32:01,180 --> 00:32:02,800
+And- and the- then, like, they're aware of this,
+
+713
+00:32:02,800 --> 00:32:05,455
+because the- the OpenAI GPT-2 release was very good.
+
+714
+00:32:05,455 --> 00:32:08,140
+Um, and so, uh, yeah,
+
+715
+00:32:08,140 --> 00:32:10,990
+because it was- it was very hard to run in the- in the- it was not commented,
+
+716
+00:32:10,990 --> 00:32:12,445
+the TensorFlow code was very- um,
+
+717
+00:32:12,445 --> 00:32:14,275
+like, it worked fine, like, I replicated it.
+
+718
+00:32:14,275 --> 00:32:17,770
+But, like, the- the TensorFlow code was very non-idiomatic.
+
+719
+00:32:17,770 --> 00:32:18,940
+It used all sorts of weird stuff.
+
+720
+00:32:18,940 --> 00:32:20,440
+The Python code was weird, there was no comments,
+
+721
+00:32:20,440 --> 00:32:21,625
+there was basically no instructions.
+
+722
+00:32:21,625 --> 00:32:26,230
+So like- um, and then other codebases also are- uh, are kind of too big.
+
+723
+00:32:26,230 --> 00:32:27,850
+It's like people just want it- like, say like,
+
+724
+00:32:27,850 --> 00:32:30,385
+we wanna have one unified codebase for our entire,
+
+725
+00:32:30,385 --> 00:32:32,095
+you know, language team?
+
+726
+00:32:32,095 --> 00:32:34,405
+And so, they just put this stuff up as part of that, and people don't really like that either.
+
+727
+00:32:34,405 --> 00:32:37,240
+So I was very insistent that we do a minimal release.
+
+728
+00:32:37,240 --> 00:32:38,950
+So, like, this, we're just gonna release BERT,
+
+729
+00:32:38,950 --> 00:32:39,970
+it's not gonna be part of anything.
+
+730
+00:32:39,970 --> 00:32:41,770
+There's not going to be any external dependencies,
+
+731
+00:32:41,770 --> 00:32:44,035
+um, and it's gonna be, like, very well commented.
+
+732
+00:32:44,035 --> 00:32:47,020
+I think that people- and it was kind of also easy to drop in,
+
+733
+00:32:47,020 --> 00:32:50,020
+just the modeling part, and just the tokenization part, and- and just the- uh,
+
+734
+00:32:50,020 --> 00:32:52,600
+the front end which runs like the training loop,
+
+735
+00:32:52,600 --> 00:32:54,160
+and kind of separate all these out,
+
+736
+00:32:54,160 --> 00:32:55,945
+because, um, that way- and so-.
+
+737
+00:32:55,945 --> 00:32:57,655
+I think because of that, um,
+
+738
+00:32:57,655 --> 00:33:00,655
+people kind of started using it much quicker, um.
+
+739
+00:33:00,655 --> 00:33:02,155
+And of course, like, all the publicity helped.
+
+740
+00:33:02,155 --> 00:33:04,135
+But, uh, I- I think that, uh, you know,
+
+741
+00:33:04,135 --> 00:33:08,005
+it could have easily been not as successful if- if it had been,
+
+742
+00:33:08,005 --> 00:33:10,030
+you know, done in a different way, so, uh.
+
+743
+00:33:10,030 --> 00:33:12,100
+It's just kind of advice.
+
+744
+00:33:12,100 --> 00:33:14,695
+So, um, yeah.
+
+745
+00:33:14,695 --> 00:33:18,010
+So now I'm gonna talk about five models that
+
+746
+00:33:18,010 --> 00:33:21,925
+have come out since BERT that have all improved on top of BERT in various ways.
+
+747
+00:33:21,925 --> 00:33:24,580
+There's been more than five, but I'm going to highlight these five.
+
+748
+00:33:24,580 --> 00:33:26,050
+I think that they're, um, interesting.
+
+749
+00:33:26,050 --> 00:33:27,970
+Uh, a lot of them didn't come from Google,
+
+750
+00:33:27,970 --> 00:33:30,325
+but it's not because, necessa- well,
+
+751
+00:33:30,325 --> 00:33:32,260
+a lot of them involved Google.
+
+752
+00:33:32,260 --> 00:33:35,935
+I would say many of them actually were not- they- they were, uh,
+
+753
+00:33:35,935 --> 00:33:38,350
+interns at Google from various universities,
+
+754
+00:33:38,350 --> 00:33:41,785
+who were supervised by Google researchers and also used Google Compute.
+
+755
+00:33:41,785 --> 00:33:44,320
+I mean, the reason why a lot of them came from Google is because, like,
+
+756
+00:33:44,320 --> 00:33:47,035
+frankly, like, other than Facebook, Google, and Microsoft,
+
+757
+00:33:47,035 --> 00:33:49,420
+there's not really many, uh, like,
+
+758
+00:33:49,420 --> 00:33:51,730
+people that can- companies that have
+
+759
+00:33:51,730 --> 00:33:54,070
+the- the resources to train these huge state of the art models.
+
+760
+00:33:54,070 --> 00:33:57,040
+And so almost by
+
+761
+00:33:57,040 --> 00:34:00,985
+necessity it's gonna- it's gonna come from one of these- um, one of these labs.
+
+762
+00:34:00,985 --> 00:34:04,330
+So the first one was RoBERTa.
+
+763
+00:34:04,330 --> 00:34:07,000
+And so this is probably the one that- that had like the least, uh, uh,
+
+764
+00:34:07,000 --> 00:34:09,850
+kind of new stuff, it was- it's really just- and it's just-.
+
+765
+00:34:09,850 --> 00:34:11,784
+And so this was University of Washington and Facebook.
+
+766
+00:34:11,784 --> 00:34:13,659
+It came out not that long after BERT.
+
+767
+00:34:13,659 --> 00:34:17,274
+And so, what they showed was that BERT was really under trained.
+
+768
+00:34:17,275 --> 00:34:20,500
+And so, basically they took- even on
+
+769
+00:34:20,500 --> 00:34:24,280
+the same amount of data which- which was- even though I did 40 epochs on the data,
+
+770
+00:34:24,280 --> 00:34:26,080
+if you do it for, like, 200 epochs,
+
+771
+00:34:26,080 --> 00:34:28,344
+you get even better results, like, significantly.
+
+772
+00:34:28,344 --> 00:34:30,999
+Um, so they- uh, so basically,
+
+773
+00:34:31,000 --> 00:34:33,610
+they trained more- more epochs on the same da- data.
+
+774
+00:34:33,610 --> 00:34:34,690
+And they also showed that more data helps,
+
+775
+00:34:34,690 --> 00:34:35,889
+which is also not super surprising.
+
+776
+00:34:35,889 --> 00:34:38,019
+Uh, and they did improved masking and
+
+777
+00:34:38,020 --> 00:34:40,284
+pre-training using a couple of- a couple of tweaks to that,
+
+778
+00:34:40,284 --> 00:34:41,964
+and they- and they were able to get, uh,
+
+779
+00:34:41,965 --> 00:34:44,350
+state of the art results, which is cool.
+
+780
+00:34:44,350 --> 00:34:48,949
+And so, yeah, but that was- that was a pretty straightforward paper, um.
+
+781
+00:34:48,949 --> 00:34:51,149
+So the next one is XLNet,
+
+782
+00:34:51,150 --> 00:34:52,889
+which was done by, uh,
+
+783
+00:34:52,889 --> 00:34:55,589
+some interns at CMU when they were at Google Brain.
+
+784
+00:34:55,590 --> 00:34:59,025
+And so this actually had some- some really cool, uh, uh, changes.
+
+785
+00:34:59,025 --> 00:35:03,430
+So one of them was- they used this Transformer-XL,
+
+786
+00:35:03,430 --> 00:35:06,280
+which was actually the precursor done by the same people that,
+
+787
+00:35:06,280 --> 00:35:10,220
+uh, were- they were just doing language modeling tasks instead of whpre-training.
+
+788
+00:35:10,220 --> 00:35:12,750
+But the big- one of the big, uh,
+
+789
+00:35:12,750 --> 00:35:16,380
+innovations of Transformer-XL is this idea of relative position embeddings.
+
+790
+00:35:16,380 --> 00:35:19,445
+And so with absolute position embeddings,
+
+791
+00:35:19,445 --> 00:35:23,290
+the problem is that every word gets,
+
+792
+00:35:23,290 --> 00:35:24,550
+like, this is word four,
+
+793
+00:35:24,550 --> 00:35:26,005
+this is word five, this is word six.
+
+794
+00:35:26,005 --> 00:35:27,790
+And so they are embedding, so they do generalize,
+
+795
+00:35:27,790 --> 00:35:30,700
+but in- in practice there's a quadratic number of relationships,
+
+796
+00:35:30,700 --> 00:35:33,340
+like, how does word 83 relate to word 76, right?
+
+797
+00:35:33,340 --> 00:35:36,160
+That's- that's- that's like- and then once you get bigger,
+
+798
+00:35:36,160 --> 00:35:37,540
+like, 500 or 1,000,
+
+799
+00:35:37,540 --> 00:35:39,670
+now you have 1,000 squared total relationships, like,
+
+800
+00:35:39,670 --> 00:35:42,100
+you have to say, how does word 997 relate to whatever, right?
+
+801
+00:35:42,100 --> 00:35:45,325
+And so that's obviously not optimal once you get to a large size.
+
+802
+00:35:45,325 --> 00:35:49,555
+Um, and so with- with,
+
+803
+00:35:49,555 --> 00:35:50,890
+uh, relative position embeddings,
+
+804
+00:35:50,890 --> 00:35:53,635
+you basically can say,
+
+805
+00:35:53,635 --> 00:35:57,580
+uh, how much does dog attend to hot?
+
+806
+00:35:57,580 --> 00:36:00,505
+And how much shou- should the word dog attend to the previous word?
+
+807
+00:36:00,505 --> 00:36:02,500
+And then you get- and these are nonlinear at firs-.
+
+808
+00:36:02,500 --> 00:36:03,835
+So these are linear at first,
+
+809
+00:36:03,835 --> 00:36:07,750
+but then you combine them and then you get a nonlinear, uh, contextual representation.
+
+810
+00:36:07,750 --> 00:36:09,235
+Then you do this in many- many layers,
+
+811
+00:36:09,235 --> 00:36:10,810
+and this ends up being- so then you say,
+
+812
+00:36:10,810 --> 00:36:12,775
+how much does this contextual representation of dog?
+
+813
+00:36:12,775 --> 00:36:14,200
+How much should that attend to the previous word?
+
+814
+00:36:14,200 --> 00:36:16,150
+Uh, and then you kind of get- can build up.
+
+815
+00:36:16,150 --> 00:36:18,130
+And so this generalizes much better for long sequences.
+
+816
+00:36:18,130 --> 00:36:20,605
+So it's a cool, uh, innovation.
+
+817
+00:36:20,605 --> 00:36:22,780
+And then the other one, which is specific
+
+818
+00:36:22,780 --> 00:36:25,270
+to pre-training and not just the- the model itself,
+
+819
+00:36:25,270 --> 00:36:26,905
+is the idea of permutation language modeling.
+
+820
+00:36:26,905 --> 00:36:29,899
+So this is a little bit hard to explain.
+
+821
+00:36:30,060 --> 00:36:34,375
+I think the paper, uh, explained it very formally, I guess.
+
+822
+00:36:34,375 --> 00:36:37,315
+And so- um, but basically,
+
+823
+00:36:37,315 --> 00:36:40,360
+there's a trick where- so in the left to right language model,
+
+824
+00:36:40,360 --> 00:36:44,275
+every words done predicting is- is based on the word to the left, right?
+
+825
+00:36:44,275 --> 00:36:46,390
+But imagine that instead of- instead of predicting all-
+
+826
+00:36:46,390 --> 00:36:48,730
+every word of the- you can basically take any permutations.
+
+827
+00:36:48,730 --> 00:36:50,890
+So it's like I'm gonna predict the first word,
+
+828
+00:36:50,890 --> 00:36:52,525
+then I'm gonna pick the- the third word,
+
+829
+00:36:52,525 --> 00:36:54,640
+then the second word, then the fourth word.
+
+830
+00:36:54,640 --> 00:36:58,000
+And so, um, that's a totally valid way
+
+831
+00:36:58,000 --> 00:36:59,770
+and you still get a well-formed probability distribution
+
+832
+00:36:59,770 --> 00:37:01,405
+because it's still predicting one word at a time,
+
+833
+00:37:01,405 --> 00:37:03,625
+given some permutation of the input.
+
+834
+00:37:03,625 --> 00:37:05,410
+And with transformers and with attention,
+
+835
+00:37:05,410 --> 00:37:06,805
+you can actually do this very efficiently,
+
+836
+00:37:06,805 --> 00:37:09,115
+just by masking out your attention probabilities.
+
+837
+00:37:09,115 --> 00:37:11,650
+And so, every single sentence you have,
+
+838
+00:37:11,650 --> 00:37:15,730
+you can kind of sample a single permutation of this.
+
+839
+00:37:15,730 --> 00:37:17,770
+And you can- uh,
+
+840
+00:37:17,770 --> 00:37:20,335
+now- now you can effectively train a bidirectional model,
+
+841
+00:37:20,335 --> 00:37:21,730
+because of this word.
+
+842
+00:37:21,730 --> 00:37:23,830
+It won't be conditioned on every- still on average,
+
+843
+00:37:23,830 --> 00:37:25,615
+every word will only be conditioned on half the words.
+
+844
+00:37:25,615 --> 00:37:28,390
+But this word will be conditioned on- you know,
+
+845
+00:37:28,390 --> 00:37:30,250
+all these words to the left and all these words to the right,
+
+846
+00:37:30,250 --> 00:37:32,380
+and maybe it'll be missing these words, but that's fine.
+
+847
+00:37:32,380 --> 00:37:35,320
+And so you get much better sample efficiency.
+
+848
+00:37:35,320 --> 00:37:37,525
+So I thought this was- this was a really clever idea, uh.
+
+849
+00:37:37,525 --> 00:37:40,855
+And so- and this was kinda like the- the main innovation of XLNet.
+
+850
+00:37:40,855 --> 00:37:42,670
+And so, um, yeah,
+
+851
+00:37:42,670 --> 00:37:45,700
+they basically get better sample efficiency because they're able to- uh,
+
+852
+00:37:45,700 --> 00:37:50,020
+to do this random permutation and- and kind of take advantage of this.
+
+853
+00:37:50,020 --> 00:37:53,005
+So this won't work with LSTMs because- uh,
+
+854
+00:37:53,005 --> 00:37:54,520
+because of this ordering,
+
+855
+00:37:54,520 --> 00:37:56,950
+but because the way that masking is done in transformers,
+
+856
+00:37:56,950 --> 00:38:01,465
+it's just- um, it's just a- it's just a mask on the attention.
+
+857
+00:38:01,465 --> 00:38:03,460
+So it actually ends up working very well.
+
+858
+00:38:03,460 --> 00:38:07,675
+Uh, and so they also got- so yeah,
+
+859
+00:38:07,675 --> 00:38:09,295
+the- the numbers compared to RoBERTa,
+
+860
+00:38:09,295 --> 00:38:11,875
+they actually ended up being pretty similar, um,
+
+861
+00:38:11,875 --> 00:38:14,530
+but a lot of
+
+862
+00:38:14,530 --> 00:38:17,350
+these things are hard to compare because people change the dataset and change the- um,
+
+863
+00:38:17,350 --> 00:38:18,730
+change the size of the model.
+
+864
+00:38:18,730 --> 00:38:20,380
+So it's hard to compare apples to apples.
+
+865
+00:38:20,380 --> 00:38:22,870
+But these two techniques ended up being pretty similar, but I think, you know,
+
+866
+00:38:22,870 --> 00:38:26,785
+XLNet had more innovations in terms of, uh, technique.
+
+867
+00:38:26,785 --> 00:38:33,280
+Um, so ALBERT, it's called a Lite BERT for, uh, self-supervised learning.
+
+868
+00:38:33,280 --> 00:38:37,140
+And so this also had a couple of cool innovations.
+
+869
+00:38:37,140 --> 00:38:40,545
+And so the idea here is really massive parameter sharing,
+
+870
+00:38:40,545 --> 00:38:42,690
+with the idea being that, if you share parameters,
+
+871
+00:38:42,690 --> 00:38:44,025
+you're not gonna get a better language model,
+
+872
+00:38:44,025 --> 00:38:46,245
+but you're gonna get better sample efficiency.
+
+873
+00:38:46,245 --> 00:38:48,270
+You're gonna get less over-fitting when you fine tune, right?
+
+874
+00:38:48,270 --> 00:38:50,310
+Because if you have a billion parameters,
+
+875
+00:38:50,310 --> 00:38:54,045
+and you fine tune them on a 300- on a- dataset that was like 1,000 label examples,
+
+876
+00:38:54,045 --> 00:38:55,710
+you're still gonna over-fit very quickly, right?
+
+877
+00:38:55,710 --> 00:38:56,925
+But if you- if you have
+
+878
+00:38:56,925 --> 00:38:59,340
+a much smaller number of parameters, you're gonna get less over-fitting.
+
+879
+00:38:59,340 --> 00:39:01,365
+So if we get a similarly powerful model with fewer parameters,
+
+880
+00:39:01,365 --> 00:39:03,005
+you're gonna get less over-fitting.
+
+881
+00:39:03,005 --> 00:39:05,140
+And so they- uh,
+
+882
+00:39:05,140 --> 00:39:07,345
+so the- so the two major innovations where- so-
+
+883
+00:39:07,345 --> 00:39:09,640
+instead of using a word em- because the word embedding table is big, right?
+
+884
+00:39:09,640 --> 00:39:12,040
+Because it's the size of your- of your vocabulary,
+
+885
+00:39:12,040 --> 00:39:15,205
+the number of, uh, word pieces times the hidden size.
+
+886
+00:39:15,205 --> 00:39:18,310
+And so it's gonna be much bigger than hidden- the hidden layer.
+
+887
+00:39:18,310 --> 00:39:21,160
+So first thing is that they used a factorized embedding table.
+
+888
+00:39:21,160 --> 00:39:25,630
+So if they- if they had a hidden size of 1,000, they only, um,
+
+889
+00:39:25,630 --> 00:39:28,705
+[NOISE] used like 128 dimensional input embedding,
+
+890
+00:39:28,705 --> 00:39:30,370
+and then they projected that to 1,000,
+
+891
+00:39:30,370 --> 00:39:33,235
+using a- using a matrix.
+
+892
+00:39:33,235 --> 00:39:37,300
+And so, instead of having 1024 by 100,000,
+
+893
+00:39:37,300 --> 00:39:40,810
+they would have 128 by 100,00 plus 1024 times 128.
+
+894
+00:39:40,810 --> 00:39:43,660
+And you multiply these together- and multiply the two matrices together,
+
+895
+00:39:43,660 --> 00:39:48,105
+and then effectively you have a 1024 by 100,000 embedding matrix,
+
+896
+00:39:48,105 --> 00:39:50,085
+um, but you have much fewer parameters.
+
+897
+00:39:50,085 --> 00:39:51,690
+That's- you're doing parameter tying.
+
+898
+00:39:51,690 --> 00:39:53,100
+But not- well, this isn't parameter tying,
+
+899
+00:39:53,100 --> 00:39:55,910
+but you're doing parameter reduction in- in a clever way.
+
+900
+00:39:55,910 --> 00:39:58,540
+The other one is cross-layer parameter sharing.
+
+901
+00:39:58,540 --> 00:40:00,685
+So this is similar- uh, this is simple,
+
+902
+00:40:00,685 --> 00:40:03,460
+and it was also- it's- it's been done in previous papers,
+
+903
+00:40:03,460 --> 00:40:06,415
+es- uh, especially, um, universal transformer.
+
+904
+00:40:06,415 --> 00:40:09,610
+And the idea is that you- you have a bunch of transformer layers,
+
+905
+00:40:09,610 --> 00:40:11,350
+but all- let's say if you have 12 layers,
+
+906
+00:40:11,350 --> 00:40:13,210
+all 12 layers should share the same parameters, right?
+
+907
+00:40:13,210 --> 00:40:17,305
+And so, uh, that ends up- so- so now you can have, uh,
+
+908
+00:40:17,305 --> 00:40:22,330
+a mu- a much bigger model that has fewer parameters than- than BERT has,
+
+909
+00:40:22,330 --> 00:40:23,875
+and so you get less over-fitting.
+
+910
+00:40:23,875 --> 00:40:29,305
+And so, um, they got state of the art compared to XLNet and RoBERTa.
+
+911
+00:40:29,305 --> 00:40:32,470
+But one important thing to keep in mind is that ALBERT
+
+912
+00:40:32,470 --> 00:40:34,975
+is light in terms of parameters, not in terms of speed.
+
+913
+00:40:34,975 --> 00:40:38,185
+So for a- um,
+
+914
+00:40:38,185 --> 00:40:41,455
+for the mixed- for the model that's- uh,
+
+915
+00:40:41,455 --> 00:40:46,615
+that's actually comparable to- to BERT, um,
+
+916
+00:40:46,615 --> 00:40:50,035
+they- they actually did slightly,
+
+917
+00:40:50,035 --> 00:40:52,825
+like this- like this model and this model were,
+
+918
+00:40:52,825 --> 00:40:54,880
+uh, about the same, but this one was actually slower.
+
+919
+00:40:54,880 --> 00:40:58,000
+So it's only when they started making models
+
+920
+00:40:58,000 --> 00:41:01,855
+that were much bigger in terms of compute than BERT,
+
+921
+00:41:01,855 --> 00:41:03,700
+but doing more parameter tying,
+
+922
+00:41:03,700 --> 00:41:05,440
+then they started getting good results.
+
+923
+00:41:05,440 --> 00:41:08,860
+And so the- the implication of this is that,
+
+924
+00:41:08,860 --> 00:41:11,230
+like, uh, you can- you can reduce the number of parameters,
+
+925
+00:41:11,230 --> 00:41:14,170
+but still, um, [NOISE]
+
+926
+00:41:14,170 --> 00:41:15,370
+nobody has figured out how to reduce
+
+927
+00:41:15,370 --> 00:41:17,140
+the amount of pre-training compute that- which required,
+
+928
+00:41:17,140 --> 00:41:18,820
+which is, you know, kind of unfortunate.
+
+929
+00:41:18,820 --> 00:41:22,270
+So, uh, the next one is T5,
+
+930
+00:41:22,270 --> 00:41:24,190
+which is, uh, exploring
+
+931
+00:41:24,190 --> 00:41:26,710
+the limits of transfer learning with unified text-to-text transformer.
+
+932
+00:41:26,710 --> 00:41:31,720
+So this was a paper by Google Brain and- and other groups in Google,
+
+933
+00:41:31,720 --> 00:41:34,300
+uh, where they used just- they used a lot of compute.
+
+934
+00:41:34,300 --> 00:41:38,095
+And they- and they did tons of ablation on, uh, pre-training.
+
+935
+00:41:38,095 --> 00:41:40,300
+They didn't like- they didn't- their- their goal wasn't to come up some- with
+
+936
+00:41:40,300 --> 00:41:43,120
+some super clever new pre-training technique, right?
+
+937
+00:41:43,120 --> 00:41:45,655
+It's really just that they carefully ablate every aspect.
+
+938
+00:41:45,655 --> 00:41:46,780
+How much does model size matter?
+
+939
+00:41:46,780 --> 00:41:49,195
+How much does training data matter? How much does cleanness of data matter?
+
+940
+00:41:49,195 --> 00:41:51,760
+Like, how much does the exact way that you do the pre-training objective matter?
+
+941
+00:41:51,760 --> 00:41:52,945
+Like, how- doing the masking?
+
+942
+00:41:52,945 --> 00:41:54,445
+Like, how many spans do you mask?
+
+943
+00:41:54,445 --> 00:41:57,820
+And so they wanted to kinda very clearly, um.
+
+944
+00:41:57,820 --> 00:41:59,680
+Uh, do the- and they also wanted to like,
+
+945
+00:41:59,680 --> 00:42:00,880
+push the limits of size and say,
+
+946
+00:42:00,880 --> 00:42:02,590
+what happens if we have 300 million,
+
+947
+00:42:02,590 --> 00:42:05,605
+a billion, 10 billion parameters, right?
+
+948
+00:42:05,605 --> 00:42:08,920
+And- and then- so- so they did tons and tons of
+
+949
+00:42:08,920 --> 00:42:11,380
+ablation and they got
+
+950
+00:42:11,380 --> 00:42:13,645
+state of the art and everything and they're still state of the art in everything.
+
+951
+00:42:13,645 --> 00:42:18,010
+And the results, they were a little bit bleak, uh,
+
+952
+00:42:18,010 --> 00:42:21,399
+in the sense that [LAUGHTER] nothing really
+
+953
+00:42:21,399 --> 00:42:25,825
+mattered except making the data- like- like all of the ablations- it wasn't like,
+
+954
+00:42:25,825 --> 00:42:28,870
+oh, you know, BERT did everything perfectly.
+
+955
+00:42:28,870 --> 00:42:30,100
+It was that- it doesn't matter.
+
+956
+00:42:30,100 --> 00:42:32,305
+Like, you could do 20%, 25%.
+
+957
+00:42:32,305 --> 00:42:34,870
+You can do this fine tuning recipe, this fine tuning recipe.
+
+958
+00:42:34,870 --> 00:42:36,940
+It's like all that really matters is making
+
+959
+00:42:36,940 --> 00:42:38,965
+them the model bigger and training it more data and clean data.
+
+960
+00:42:38,965 --> 00:42:42,205
+Uh, and so, um,
+
+961
+00:42:42,205 --> 00:42:44,920
+yeah, it's a- it's a little bit of a- of a- of oblique paper.
+
+962
+00:42:44,920 --> 00:42:48,265
+If- if you ha- are hoping that there is-
+
+963
+00:42:48,265 --> 00:42:52,360
+exists some pre-training technique which is super computationally efficient and all,
+
+964
+00:42:52,360 --> 00:42:54,160
+so you can get, you know, very impressive results,
+
+965
+00:42:54,160 --> 00:42:55,420
+which I'm not saying there isn't,
+
+966
+00:42:55,420 --> 00:42:58,735
+but like most of this evidence points to not.
+
+967
+00:42:58,735 --> 00:43:00,220
+So the one kind of, um,
+
+968
+00:43:00,220 --> 00:43:02,680
+newest paper that is maybe the most positive
+
+969
+00:43:02,680 --> 00:43:05,410
+in this direction is this, uh, paper called ELECTRA.
+
+970
+00:43:05,410 --> 00:43:08,740
+Uh, and so, uh,
+
+971
+00:43:08,740 --> 00:43:11,650
+and so this was done by, uh, Kevin Clark,
+
+972
+00:43:11,650 --> 00:43:13,780
+from here, and, uh, and Google Brain.
+
+973
+00:43:13,780 --> 00:43:15,565
+And so, yeah.
+
+974
+00:43:15,565 --> 00:43:16,990
+And this one, it's- it's a pretty clever idea.
+
+975
+00:43:16,990 --> 00:43:18,820
+So basically their idea is,
+
+976
+00:43:18,820 --> 00:43:23,440
+instead of training- instead of training to generate the output,
+
+977
+00:43:23,440 --> 00:43:25,300
+you just train it as a- as a discriminator.
+
+978
+00:43:25,300 --> 00:43:28,855
+And so you have a local language model,
+
+979
+00:43:28,855 --> 00:43:29,980
+you have- you do some masking,
+
+980
+00:43:29,980 --> 00:43:31,435
+you have a local language model which replaces
+
+981
+00:43:31,435 --> 00:43:34,555
+it and then you train it to discriminate whether it's the original one or not.
+
+982
+00:43:34,555 --> 00:43:37,750
+And so the idea here is that you are, um,
+
+983
+00:43:37,750 --> 00:43:40,360
+doing a much- you- you're- you're doing- you're getting
+
+984
+00:43:40,360 --> 00:43:44,605
+a better sample efficiency for pre-training because you're predicting every,
+
+985
+00:43:44,605 --> 00:43:47,500
+uh, every word which is actually, I mean,
+
+986
+00:43:47,500 --> 00:43:49,360
+I- I don't know definitely why it would be that different
+
+987
+00:43:49,360 --> 00:43:51,925
+from- from- from- from- BERT still,
+
+988
+00:43:51,925 --> 00:43:55,300
+uh, in terms of- because you don't replace it with- with the mask with whatever,
+
+989
+00:43:55,300 --> 00:43:56,395
+you also randomly encrypt it.
+
+990
+00:43:56,395 --> 00:43:58,735
+But the- but the- the bigger- the biggest difference is that,
+
+991
+00:43:58,735 --> 00:44:02,140
+um, is that these are kind of contextually replaced.
+
+992
+00:44:02,140 --> 00:44:04,030
+So it's like, when BERT, when I did- done
+
+993
+00:44:04,030 --> 00:44:06,610
+the masking and replace with the random word, it was truly a random word.
+
+994
+00:44:06,610 --> 00:44:09,430
+So most of the time it was completely trivial to tell that this was not the right word.
+
+995
+00:44:09,430 --> 00:44:12,130
+You don't necessarily know which word should be replaced, but in this case,
+
+996
+00:44:12,130 --> 00:44:14,650
+they actually used a intentionally weak,
+
+997
+00:44:14,650 --> 00:44:17,080
+but still non-trivial language model to predict which word.
+
+998
+00:44:17,080 --> 00:44:19,510
+So like this locally makes sense, the chef ate the meal,
+
+999
+00:44:19,510 --> 00:44:20,800
+but it doesn't make any sense,
+
+1000
+00:44:20,800 --> 00:44:23,020
+like a very strong model will not predict this, right?
+
+1001
+00:44:23,020 --> 00:44:25,740
+So- so that's the idea that you use a weak model to- to- to-
+
+1002
+00:44:25,740 --> 00:44:29,550
+to do the substitution, then you train a strong model to- to, um, do this.
+
+1003
+00:44:29,550 --> 00:44:34,210
+So these results are, and this is a big table,
+
+1004
+00:44:34,210 --> 00:44:39,295
+but these results are- they are certainly positive with regard to, uh,
+
+1005
+00:44:39,295 --> 00:44:41,435
+previous results in terms of compute versus,
+
+1006
+00:44:41,435 --> 00:44:45,970
+um- so like for if we- if we compared this row,
+
+1007
+00:44:45,970 --> 00:44:51,880
+so uh, which is one-tenth the compute of BERT-Large to BERT-Base,
+
+1008
+00:44:51,880 --> 00:44:53,410
+which is also one-tenth the compute of BERT-Large.
+
+1009
+00:44:53,410 --> 00:44:56,000
+It really does a lot better than BERT-Base.
+
+1010
+00:44:56,220 --> 00:45:03,910
+But when they, uh- if you- but in terms of state of the art models,
+
+1011
+00:45:03,910 --> 00:45:06,310
+um, when they do, you know,
+
+1012
+00:45:06,310 --> 00:45:08,020
+the same amount of, uh,
+
+1013
+00:45:08,020 --> 00:45:11,005
+compute as their BERT-Large, which is this one.
+
+1014
+00:45:11,005 --> 00:45:12,595
+Or compared to other state of the art models,
+
+1015
+00:45:12,595 --> 00:45:14,260
+they're not- in order to get state of the art,
+
+1016
+00:45:14,260 --> 00:45:15,280
+or to get similar to state the art,
+
+1017
+00:45:15,280 --> 00:45:17,410
+they basically need to do as much compute as state of the art.
+
+1018
+00:45:17,410 --> 00:45:19,465
+So like 44x, 5.4x.
+
+1019
+00:45:19,465 --> 00:45:22,660
+So I mean, at scaled down values they were able to do better,
+
+1020
+00:45:22,660 --> 00:45:25,195
+but this is a- still a pretty big gap, like four points.
+
+1021
+00:45:25,195 --> 00:45:27,100
+Um, so it's- it's positive,
+
+1022
+00:45:27,100 --> 00:45:31,390
+but it's not- it's certainly not like the silver bullet in terms of, uh,
+
+1023
+00:45:31,390 --> 00:45:35,050
+showing that, uh, we can, you know,
+
+1024
+00:45:35,050 --> 00:45:39,430
+pre-trained models much better for cheaper.
+
+1025
+00:45:39,430 --> 00:45:41,740
+So- but- so the last thing I wanna talk about
+
+1026
+00:45:41,740 --> 00:45:44,425
+is how we actually serve these models, right?
+
+1027
+00:45:44,425 --> 00:45:46,465
+Because, you know, I've said that like,
+
+1028
+00:45:46,465 --> 00:45:48,400
+they're incredibly expensive to train,
+
+1029
+00:45:48,400 --> 00:45:52,240
+and nobody has been able to figure how to make that faster,
+
+1030
+00:45:52,240 --> 00:45:55,330
+but, you know, they're being used all over the place, right?
+
+1031
+00:45:55,330 --> 00:45:57,580
+So like, uh, you know, there's new stories.
+
+1032
+00:45:57,580 --> 00:46:01,029
+Google has improved 10% of searches by language understanding,
+
+1033
+00:46:01,029 --> 00:46:03,655
+''Say hello to BERT,'' and then Bing says it has been applying BERT since April.
+
+1034
+00:46:03,655 --> 00:46:06,370
+So- and so this is live in Google Search and Bing search,
+
+1035
+00:46:06,370 --> 00:46:08,410
+and so these are like really low latency services, right?
+
+1036
+00:46:08,410 --> 00:46:11,290
+That have like, a few milliseconds of- of latency,
+
+1037
+00:46:11,290 --> 00:46:13,045
+and they serve, you know,
+
+1038
+00:46:13,045 --> 00:46:15,295
+billions of- of queries a day.
+
+1039
+00:46:15,295 --> 00:46:17,950
+So how are- how are they doing this?
+
+1040
+00:46:17,950 --> 00:46:21,220
+Is it just like, uh, that you know,
+
+1041
+00:46:21,220 --> 00:46:23,530
+Google and Microsoft are sp- are spending billions of dollars on hardware,
+
+1042
+00:46:23,530 --> 00:46:25,240
+which they are, but not- not just for this, right?
+
+1043
+00:46:25,240 --> 00:46:27,995
+And so like, uh,
+
+1044
+00:46:27,995 --> 00:46:29,580
+like it would- it would cost
+
+1045
+00:46:29,580 --> 00:46:31,965
+billions of dollars just to serve this if youwould actually be serving BERT,
+
+1046
+00:46:31,965 --> 00:46:33,780
+but we- we're serving, uh, not.
+
+1047
+00:46:33,780 --> 00:46:36,120
+Instead of reusing- reusing model distillation, right?
+
+1048
+00:46:36,120 --> 00:46:37,650
+So this has been around for awhile.
+
+1049
+00:46:37,650 --> 00:46:42,220
+Um, so it's cal- you call it distillation or model compression.
+
+1050
+00:46:42,220 --> 00:46:45,460
+One of the first papers was this model compression paper,
+
+1051
+00:46:45,460 --> 00:46:49,950
+um, that was- that was done for, uh,
+
+1052
+00:46:49,950 --> 00:46:50,970
+I forgot exactly what task,
+
+1053
+00:46:50,970 --> 00:46:52,950
+but then- and then Hinton's paper Distilling Knowledge in
+
+1054
+00:46:52,950 --> 00:46:55,350
+a Neutral Network is a more more well-known version- not that version,
+
+1055
+00:46:55,350 --> 00:46:56,880
+but a more well-known,
+
+1056
+00:46:56,880 --> 00:46:59,165
+uh, paper on- on distillation.
+
+1057
+00:46:59,165 --> 00:47:02,470
+But in- in reality, the one- the version that- that we use at Google,
+
+1058
+00:47:02,470 --> 00:47:04,975
+and the version that most people use when they say model distillation for, uh,
+
+1059
+00:47:04,975 --> 00:47:08,515
+pre-trained language models, it's a, um,
+
+1060
+00:47:08,515 --> 00:47:09,760
+it's a very simple technique,
+
+1061
+00:47:09,760 --> 00:47:12,295
+but it's easy to misinterpret wh- wha- what we mean.
+
+1062
+00:47:12,295 --> 00:47:16,890
+So what we do is we pre-train- we train the state of art model,
+
+1063
+00:47:16,890 --> 00:47:19,740
+whichever the ones the mo- we can most afford to train, right?
+
+1064
+00:47:19,740 --> 00:47:20,910
+Because of course we can just make it bigger,
+
+1065
+00:47:20,910 --> 00:47:22,380
+but we- we set some budget of,
+
+1066
+00:47:22,380 --> 00:47:25,190
+you know we want to train it for a day on some number of GPUs.
+
+1067
+00:47:25,190 --> 00:47:27,250
+And then we fine tune it, right?
+
+1068
+00:47:27,250 --> 00:47:28,810
+So we get a model that's the maximum accuracy,
+
+1069
+00:47:28,810 --> 00:47:30,445
+and that's our teacher model, and this is expensive.
+
+1070
+00:47:30,445 --> 00:47:32,590
+Then we have a la- a large amount of unlabeled input,
+
+1071
+00:47:32,590 --> 00:47:35,230
+which is typically for- for most industry- industry applications,
+
+1072
+00:47:35,230 --> 00:47:37,930
+you have unlabeled input because you have you know, in search,
+
+1073
+00:47:37,930 --> 00:47:39,640
+you have, this is what they use the search for,
+
+1074
+00:47:39,640 --> 00:47:42,025
+this is what they clicked on, that's how search engines are trained.
+
+1075
+00:47:42,025 --> 00:47:45,595
+And so you can then just take these and you,
+
+1076
+00:47:45,595 --> 00:47:49,015
+um, and then you just label your examples with them.
+
+1077
+00:47:49,015 --> 00:47:50,800
+So you can get billions of these, uh,
+
+1078
+00:47:50,800 --> 00:47:52,360
+If you actually want a real service,
+
+1079
+00:47:52,360 --> 00:47:56,140
+and then you sort of- then you- then you run these, you know,
+
+1080
+00:47:56,140 --> 00:47:59,185
+query answer pairs through your teacher,
+
+1081
+00:47:59,185 --> 00:48:01,210
+and you get a pseudo label,
+
+1082
+00:48:01,210 --> 00:48:02,950
+and you just train a much smaller model,
+
+1083
+00:48:02,950 --> 00:48:06,295
+much meaning like 50 times, 100 times smaller to,
+
+1084
+00:48:06,295 --> 00:48:08,785
+uh, predict your student- your- your teacher outputs.
+
+1085
+00:48:08,785 --> 00:48:11,695
+And so- and you can generally do this for most techniques.
+
+1086
+00:48:11,695 --> 00:48:13,930
+I mean, for most tasks you can do this, uh,
+
+1087
+00:48:13,930 --> 00:48:16,960
+pretty easily and get a huge 50-100x, uh,
+
+1088
+00:48:16,960 --> 00:48:19,630
+compression with no degradation,
+
+1089
+00:48:19,630 --> 00:48:21,400
+but the important thing to realize is that we're not
+
+1090
+00:48:21,400 --> 00:48:23,290
+compressing the pre-trained model itself.
+
+1091
+00:48:23,290 --> 00:48:25,135
+We haven't really had any luck doing that.
+
+1092
+00:48:25,135 --> 00:48:27,040
+So like you can't actually just take BERT,
+
+1093
+00:48:27,040 --> 00:48:28,900
+and then compress it to a smaller model,
+
+1094
+00:48:28,900 --> 00:48:30,490
+which you can then fine tune for all these other tasks.
+
+1095
+00:48:30,490 --> 00:48:34,195
+It's only after you've chosen the task and after you fine tune it for this task,
+
+1096
+00:48:34,195 --> 00:48:36,385
+that you- we're able to do it.
+
+1097
+00:48:36,385 --> 00:48:41,215
+Um, so to show some specific results.
+
+1098
+00:48:41,215 --> 00:48:43,390
+So let's say we have- let's say we have a BERT-Large teacher.
+
+1099
+00:48:43,390 --> 00:48:44,800
+This is an Amazon book reviews score.
+
+1100
+00:48:44,800 --> 00:48:46,810
+So this is a paper that- that I forgot to cite it,
+
+1101
+00:48:46,810 --> 00:48:48,805
+but this was a paper that my group, uh,
+
+1102
+00:48:48,805 --> 00:48:51,400
+published [inaudible] wrote.
+
+1103
+00:48:51,400 --> 00:48:59,350
+And so, um, this has 50,000 labeled examples and 8 million, uh, unlabeled examples.
+
+1104
+00:48:59,350 --> 00:49:01,330
+So you- you- you fine tune on,
+
+1105
+00:49:01,330 --> 00:49:02,530
+you pre-train BERT-Large,
+
+1106
+00:49:02,530 --> 00:49:04,090
+normal, or you you take a pre-trained BERT-Large,
+
+1107
+00:49:04,090 --> 00:49:07,330
+you, uh, you fine tune it on these 50,000 examples,
+
+1108
+00:49:07,330 --> 00:49:09,265
+you get this 88% accuracy right?
+
+1109
+00:49:09,265 --> 00:49:13,060
+Then, uh, and so- and,
+
+1110
+00:49:13,060 --> 00:49:14,260
+but then now, let's- let's say instead of
+
+1111
+00:49:14,260 --> 00:49:15,820
+using BERT-Large, you used a much smaller version.
+
+1112
+00:49:15,820 --> 00:49:18,010
+So this one is a quarter of the size, this one is,
+
+1113
+00:49:18,010 --> 00:49:20,530
+you know, uh, 16th of the size,
+
+1114
+00:49:20,530 --> 00:49:22,630
+whatever, this one is 100th the size, right?
+
+1115
+00:49:22,630 --> 00:49:24,445
+So this, this row that's 100th the size.
+
+1116
+00:49:24,445 --> 00:49:25,780
+If you were to just train it,
+
+1117
+00:49:25,780 --> 00:49:30,100
+if you would have pre-trained this on the same Wikipedia book corpus just like BERT,
+
+1118
+00:49:30,100 --> 00:49:34,270
+and then fine tune it, you would get 82% accuracy,
+
+1119
+00:49:34,270 --> 00:49:36,520
+which is, you know, a lot worse, 6%, 6%,
+
+1120
+00:49:36,520 --> 00:49:39,055
+like 66 absolute worse, which is quite a big drop, right?
+
+1121
+00:49:39,055 --> 00:49:45,400
+But then if you were to take this 88% teacher, label it with eight million examples,
+
+1122
+00:49:45,400 --> 00:49:49,270
+which are of course held out,  this is test- this is testaccuracy, um,
+
+1123
+00:49:49,270 --> 00:49:52,705
+and then- uh, and then train
+
+1124
+00:49:52,705 --> 00:49:54,970
+this classification model which says this is a
+
+1125
+00:49:54,970 --> 00:49:57,355
+good or bad review on these 8 million examples,
+
+1126
+00:49:57,355 --> 00:49:59,020
+you can take this model, it's 100 times smaller,
+
+1127
+00:49:59,020 --> 00:50:00,520
+and get the same accuracy as the teacher, right?
+
+1128
+00:50:00,520 --> 00:50:02,005
+You get the same 88% accuracy.
+
+1129
+00:50:02,005 --> 00:50:03,970
+So that's really the,
+
+1130
+00:50:03,970 --> 00:50:05,515
+uh, the- the cool thing with distillation,
+
+1131
+00:50:05,515 --> 00:50:07,300
+is that you can get models that are much smaller,
+
+1132
+00:50:07,300 --> 00:50:09,130
+but you still need to train the big model in the first place.
+
+1133
+00:50:09,130 --> 00:50:10,180
+So it doesn't help the training costs.
+
+1134
+00:50:10,180 --> 00:50:12,430
+It just helped- it actually works because then you can use this big model
+
+1135
+00:50:12,430 --> 00:50:14,740
+to train- to label millions or billions of examples.
+
+1136
+00:50:14,740 --> 00:50:16,690
+So it ends up being more expensive than just training BERT,
+
+1137
+00:50:16,690 --> 00:50:21,340
+but- but you can actually serve this model at- at inference time for- for a tiny cost.
+
+1138
+00:50:21,340 --> 00:50:25,525
+So the question is like why does distillation work so well?
+
+1139
+00:50:25,525 --> 00:50:29,260
+Um, so the big hypothesis is that,
+
+1140
+00:50:29,260 --> 00:50:32,020
+language modeling is kind of the ultimate NLP task, right?
+
+1141
+00:50:32,020 --> 00:50:35,380
+A perfect language model is also a perfect question answering system,
+
+1142
+00:50:35,380 --> 00:50:37,315
+a perfect entailment system,
+
+1143
+00:50:37,315 --> 00:50:39,415
+sentiment analysis, co-reference, etc.
+
+1144
+00:50:39,415 --> 00:50:41,140
+Because in order to be able to- to do these things,
+
+1145
+00:50:41,140 --> 00:50:44,015
+you kind of have to be able- you could construct it as a language model.
+
+1146
+00:50:44,015 --> 00:50:47,220
+So when you're training a massive language model,
+
+1147
+00:50:47,220 --> 00:50:50,535
+you are learning many millions of latent features which can,
+
+1148
+00:50:50,535 --> 00:50:53,340
+which are effectively the same features that you need for any other task.
+
+1149
+00:50:53,340 --> 00:50:56,870
+And so when you're doing a simpler- a fine tuning of a more specific task,
+
+1150
+00:50:56,870 --> 00:50:58,780
+what's- the fine tuning is basically taking
+
+1151
+00:50:58,780 --> 00:51:00,910
+these- these latent features which your system happened to learn,
+
+1152
+00:51:00,910 --> 00:51:02,695
+and some- encode it somewhere in your weights.
+
+1153
+00:51:02,695 --> 00:51:04,840
+And you are- it is kind of just tweaking these,
+
+1154
+00:51:04,840 --> 00:51:07,660
+which is why I could do it with a single pass over the fine-tuning data.
+
+1155
+00:51:07,660 --> 00:51:11,380
+Um, and so- but once you've figured out which parts are important,
+
+1156
+00:51:11,380 --> 00:51:14,650
+then there exists a hypothetically much smaller model size
+
+1157
+00:51:14,650 --> 00:51:17,800
+which can still get the same representation and same generalization, right?
+
+1158
+00:51:17,800 --> 00:51:21,100
+So then you label a bunch of examples with this fine tuned model,
+
+1159
+00:51:21,100 --> 00:51:22,420
+and now you can learn a model that can really
+
+1160
+00:51:22,420 --> 00:51:23,800
+hone in on just these features that are important.
+
+1161
+00:51:23,800 --> 00:51:26,245
+And so it can- it can- you know,
+
+1162
+00:51:26,245 --> 00:51:29,260
+it can train a model that is 100th the size
+
+1163
+00:51:29,260 --> 00:51:35,020
+and just hone in on these features if you have a lot of- of pseudo labeled data,
+
+1164
+00:51:35,020 --> 00:51:37,270
+uh, and- and that's why it works.
+
+1165
+00:51:37,270 --> 00:51:41,620
+And so the evidence really is that it just doesn't work to do self distillation, right?
+
+1166
+00:51:41,620 --> 00:51:44,230
+And so it must be that it's really
+
+1167
+00:51:44,230 --> 00:51:47,350
+just learning a subset of the features for- for most of these tasks.
+
+1168
+00:51:47,350 --> 00:51:51,400
+Um, and so basically every task
+
+1169
+00:51:51,400 --> 00:51:53,755
+about language modeling we've been able to- to get distillation to work for.
+
+1170
+00:51:53,755 --> 00:51:55,480
+So this includes tasks that seem like really hard,
+
+1171
+00:51:55,480 --> 00:51:58,455
+like question answering and search, um,
+
+1172
+00:51:58,455 --> 00:52:02,190
+so that does imply that- that- that language modeling itself and predicting which
+
+1173
+00:52:02,190 --> 00:52:03,930
+is basically language generation
+
+1174
+00:52:03,930 --> 00:52:06,240
+also because that's just a form of language modeling, uh,
+
+1175
+00:52:06,240 --> 00:52:09,255
+is fundamentally harder than language understanding,
+
+1176
+00:52:09,255 --> 00:52:10,915
+which is not, uh,
+
+1177
+00:52:10,915 --> 00:52:12,790
+super hard to buy,
+
+1178
+00:52:12,790 --> 00:52:14,290
+or at least maybe it's not fundamentally harder,
+
+1179
+00:52:14,290 --> 00:52:15,595
+but given the state of the art,
+
+1180
+00:52:15,595 --> 00:52:18,220
+state of the art models for language understanding are
+
+1181
+00:52:18,220 --> 00:52:20,965
+fundamentally simpler in what they do, right?
+
+1182
+00:52:20,965 --> 00:52:23,335
+So presumably they're just doing this kind of pattern recognition
+
+1183
+00:52:23,335 --> 00:52:26,700
+than models that are generating language.
+
+1184
+00:52:26,700 --> 00:52:28,200
+Um, and so that's kind of why all of
+
+1185
+00:52:28,200 --> 00:52:31,600
+these classification models can- can kind of be distilled so well.
+
+1186
+00:52:31,600 --> 00:52:34,360
+Um, so basically in conclusion, uh,
+
+1187
+00:52:34,360 --> 00:52:38,965
+[NOISE] the pre-trained models work really well. They're very expensive.
+
+1188
+00:52:38,965 --> 00:52:41,335
+We know how to, um,
+
+1189
+00:52:41,335 --> 00:52:43,090
+kind of solve this for inference time,
+
+1190
+00:52:43,090 --> 00:52:44,320
+and we can do fast inference,
+
+1191
+00:52:44,320 --> 00:52:47,120
+but it- it is still unsolved.
+
+1192
+00:52:47,610 --> 00:52:49,870
+How to make these fast,
+
+1193
+00:52:49,870 --> 00:52:52,480
+ah, at training time.
+
+1194
+00:52:52,480 --> 00:52:55,750
+And moreover, uh, it seems
+
+1195
+00:52:55,750 --> 00:52:58,015
+like a lot of the details about
+
+1196
+00:52:58,015 --> 00:53:00,955
+algorithmic improvements for- for making the training more efficient,
+
+1197
+00:53:00,955 --> 00:53:02,620
+um, don't seem to have, er,
+
+1198
+00:53:02,620 --> 00:53:05,770
+a ton of, of benefit in terms of at least getting to see their results.
+
+1199
+00:53:05,770 --> 00:53:08,950
+Um, and seems like a lot of choices don't really matter that much.
+
+1200
+00:53:08,950 --> 00:53:11,245
+And it's really just about, you know,
+
+1201
+00:53:11,245 --> 00:53:12,970
+a- a- a couple of, like- like, uh,
+
+1202
+00:53:12,970 --> 00:53:15,010
+competitors to the kind of the simple, masked language baseline.
+
+1203
+00:53:15,010 --> 00:53:18,295
+It's- it's pretty hard to beat that in- in an apples to apples comparison.
+
+1204
+00:53:18,295 --> 00:53:21,490
+Um, so yeah, it's a little bit,
+
+1205
+00:53:21,490 --> 00:53:24,520
+uh, I mean, it's a little bit unfortunate for- for from a research perspective.
+
+1206
+00:53:24,520 --> 00:53:26,890
+It's definitely good from, uh, from people who- who
+
+1207
+00:53:26,890 --> 00:53:29,635
+want to build NLP systems and who want to,
+
+1208
+00:53:29,635 --> 00:53:31,510
+officially domain specific NLP systems,
+
+1209
+00:53:31,510 --> 00:53:32,605
+like people who wanna, you know,
+
+1210
+00:53:32,605 --> 00:53:34,105
+adapt to a medical domain,
+
+1211
+00:53:34,105 --> 00:53:36,100
+or people- where you only have a tiny amount of data,
+
+1212
+00:53:36,100 --> 00:53:37,990
+or people who wanna do startups so they wanna,
+
+1213
+00:53:37,990 --> 00:53:40,120
+you know, build an actual product and they only have a tiny amount of data.
+
+1214
+00:53:40,120 --> 00:53:41,980
+So it's definitely good from that perspective, but it's certainly,
+
+1215
+00:53:41,980 --> 00:53:44,350
+I think for- ah,
+
+1216
+00:53:44,350 --> 00:53:45,790
+from the perspective of sometimes, you know,
+
+1217
+00:53:45,790 --> 00:53:49,030
+uh, research, like- as I was saying,
+
+1218
+00:53:49,030 --> 00:53:51,145
+the goal of research is to kind of like research yourself out of a job,
+
+1219
+00:53:51,145 --> 00:53:52,780
+then it is kind of, uh,
+
+1220
+00:53:52,780 --> 00:53:55,930
+you know, it's- it's a little unfortunate from that perspective,
+
+1221
+00:53:55,930 --> 00:53:57,220
+um, but, you know,
+
+1222
+00:53:57,220 --> 00:53:58,690
+I still think that there's- there's- there's
+
+1223
+00:53:58,690 --> 00:54:00,190
+a possibility that there's gonna be a breakthrough
+
+1224
+00:54:00,190 --> 00:54:03,715
+that kind of shows how to do computational efficiency, um,
+
+1225
+00:54:03,715 --> 00:54:07,930
+without a kind of show compelling results that you don't need,
+
+1226
+00:54:07,930 --> 00:54:11,740
+you know, such an absurdly large model or actually, the size of model doesn't matter.
+
+1227
+00:54:11,740 --> 00:54:13,510
+You don't need such an absurdly expensive model,
+
+1228
+00:54:13,510 --> 00:54:15,475
+uh, to- to- to do well.
+
+1229
+00:54:15,475 --> 00:54:17,035
+Um, maybe it'll come from sparsity, right?
+
+1230
+00:54:17,035 --> 00:54:19,480
+Or something like that where you actually do have a really large model.
+
+1231
+00:54:19,480 --> 00:54:20,500
+It's just- [NOISE] it's just sparsely
+
+1232
+00:54:20,500 --> 00:54:23,275
+activated in some- using some efficiency tricks or whatever.
+

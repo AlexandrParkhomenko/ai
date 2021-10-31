@@ -1,0 +1,7817 @@
+1
+00:00:00,000 --> 00:00:05,310
+
+
+2
+00:00:05,310 --> 00:00:15,915
+Welcome to CS224N, lecture 17,
+Model Analysis and Explanation.
+
+3
+00:00:15,915 --> 00:00:16,540
+OK, look at us.
+
+4
+00:00:16,540 --> 00:00:18,606
+We're here.
+
+5
+00:00:18,606 --> 00:00:21,660
+Let's start with some
+course logistics.
+
+6
+00:00:21,660 --> 00:00:26,430
+We have updated the policy on
+the guest lecture reactions.
+
+7
+00:00:26,430 --> 00:00:30,540
+They're all due Friday,
+all at 11:59 PM.
+
+8
+00:00:30,540 --> 00:00:35,430
+You can't use late days for
+this, so please get them in.
+
+9
+00:00:35,430 --> 00:00:36,248
+Watch the lectures.
+
+10
+00:00:36,248 --> 00:00:37,290
+They're awesome lectures.
+
+11
+00:00:37,290 --> 00:00:40,782
+They're awesome guests,
+and you get something
+
+12
+00:00:40,782 --> 00:00:42,240
+like half a point
+for each of them.
+
+13
+00:00:42,240 --> 00:00:46,980
+And yeah, all three can be
+submitted up through Friday.
+
+14
+00:00:46,980 --> 00:00:51,660
+OK, so final projects, remember
+that the due date is Tuesday.
+
+15
+00:00:51,660 --> 00:00:55,020
+It's Tuesday at
+4:30 PM, March 16th.
+
+16
+00:00:55,020 --> 00:00:59,850
+And let me emphasize that
+there's a hard deadline
+
+17
+00:00:59,850 --> 00:01:03,210
+on the three days from then.
+
+18
+00:01:03,210 --> 00:01:07,470
+Friday, we won't be accepting
+for additional points
+
+19
+00:01:07,470 --> 00:01:09,660
+off assignments--
+
+20
+00:01:09,660 --> 00:01:13,410
+sorry, final projects that
+are submitted after the 4:30
+
+21
+00:01:13,410 --> 00:01:15,700
+deadline on Friday.
+
+22
+00:01:15,700 --> 00:01:17,820
+We need to get these
+graded and get grades in.
+
+23
+00:01:17,820 --> 00:01:21,840
+So whew, it's the
+end stretch, week 9.
+
+24
+00:01:21,840 --> 00:01:25,830
+Week 10 is really the
+lectures are us giving
+
+25
+00:01:25,830 --> 00:01:27,327
+you help on the final projects.
+
+26
+00:01:27,327 --> 00:01:29,160
+So this is really the
+last week of lectures.
+
+27
+00:01:29,160 --> 00:01:32,620
+Thanks for all your
+hard work and for asking
+
+28
+00:01:32,620 --> 00:01:35,610
+awesome questions in lecture,
+and in office hours and on Ed.
+
+29
+00:01:35,610 --> 00:01:37,600
+And let's get right into it.
+
+30
+00:01:37,600 --> 00:01:42,450
+So today, we get to talk about
+one of my favorite subjects
+
+31
+00:01:42,450 --> 00:01:43,890
+in natural language processing.
+
+32
+00:01:43,890 --> 00:01:46,980
+It's model analysis
+and explanation.
+
+33
+00:01:46,980 --> 00:01:49,350
+So first, we're going to
+do what I love doing, which
+
+34
+00:01:49,350 --> 00:01:54,340
+is motivating why we want to
+talk about the topic at all.
+
+35
+00:01:54,340 --> 00:01:58,200
+We'll talk about how we can look
+at a model at different levels
+
+36
+00:01:58,200 --> 00:02:00,600
+of abstraction to perform
+different kinds of analysis
+
+37
+00:02:00,600 --> 00:02:01,950
+on it.
+
+38
+00:02:01,950 --> 00:02:05,040
+We'll talk about out of
+domain evaluation sets.
+
+39
+00:02:05,040 --> 00:02:10,350
+So this will feel familiar
+to the RobustQA folks.
+
+40
+00:02:10,350 --> 00:02:13,650
+Then we'll talk about sort
+of trying to figure out,
+
+41
+00:02:13,650 --> 00:02:17,100
+for a given example, why did it
+make the decision that it made?
+
+42
+00:02:17,100 --> 00:02:19,363
+It had some input, it
+produced some output.
+
+43
+00:02:19,363 --> 00:02:21,780
+Can we come up with some sort
+of interpretable explanation
+
+44
+00:02:21,780 --> 00:02:23,250
+for it?
+
+45
+00:02:23,250 --> 00:02:28,380
+And then we'll look at,
+actually, the representations
+
+46
+00:02:28,380 --> 00:02:29,167
+of the models.
+
+47
+00:02:29,167 --> 00:02:31,500
+So these are the sort of
+hidden states, the vectors that
+
+48
+00:02:31,500 --> 00:02:34,890
+are being built throughout
+the processing of the model,
+
+49
+00:02:34,890 --> 00:02:37,380
+try to figure out if
+we can understand some
+
+50
+00:02:37,380 --> 00:02:39,450
+of the representations
+and mechanisms
+
+51
+00:02:39,450 --> 00:02:41,250
+that the model is performing.
+
+52
+00:02:41,250 --> 00:02:43,290
+And then we'll actually
+come back to sort
+
+53
+00:02:43,290 --> 00:02:45,498
+of one of the kind
+of default states
+
+54
+00:02:45,498 --> 00:02:47,040
+that we've been in
+this course, which
+
+55
+00:02:47,040 --> 00:02:50,220
+is trying to look at
+model improvements,
+
+56
+00:02:50,220 --> 00:02:52,680
+removing things from models,
+seeing how it performs,
+
+57
+00:02:52,680 --> 00:02:55,260
+and relate that to the
+analysis that we're
+
+58
+00:02:55,260 --> 00:03:01,170
+doing in this lecture, show how
+it's not all that different.
+
+59
+00:03:01,170 --> 00:03:06,300
+OK, so if you haven't seen
+this xkcd, now you have.
+
+60
+00:03:06,300 --> 00:03:07,740
+And it's one of my favorites.
+
+61
+00:03:07,740 --> 00:03:09,540
+I'm going to say all the words.
+
+62
+00:03:09,540 --> 00:03:14,250
+So person A says, this is
+your machine learning system?
+
+63
+00:03:14,250 --> 00:03:16,350
+Person B says, yep,
+you pour the data
+
+64
+00:03:16,350 --> 00:03:19,090
+into this big pile
+of linear algebra
+
+65
+00:03:19,090 --> 00:03:21,480
+and then collect the
+answers on the other side.
+
+66
+00:03:21,480 --> 00:03:24,240
+Person A, what if the
+answers are wrong?
+
+67
+00:03:24,240 --> 00:03:26,130
+Then person B,
+just stir the pile
+
+68
+00:03:26,130 --> 00:03:28,380
+until they start looking right.
+
+69
+00:03:28,380 --> 00:03:31,410
+And I feel like at its
+worst, deep learning can feel
+
+70
+00:03:31,410 --> 00:03:32,730
+like this from time to time.
+
+71
+00:03:32,730 --> 00:03:34,260
+You have a model.
+
+72
+00:03:34,260 --> 00:03:36,040
+Maybe it works for
+some things, maybe
+
+73
+00:03:36,040 --> 00:03:37,470
+it doesn't work
+for other things.
+
+74
+00:03:37,470 --> 00:03:39,540
+You're not sure why it
+works for some things
+
+75
+00:03:39,540 --> 00:03:40,830
+and doesn't work for others.
+
+76
+00:03:40,830 --> 00:03:45,060
+And the changes that
+we make to our models,
+
+77
+00:03:45,060 --> 00:03:48,210
+they're based on intuition, but
+frequently-- what are the TAs
+
+78
+00:03:48,210 --> 00:03:49,170
+told?
+
+79
+00:03:49,170 --> 00:03:51,030
+Everyone in office
+hours, sometimes you just
+
+80
+00:03:51,030 --> 00:03:53,030
+have to try it and see
+if it's going to work out
+
+81
+00:03:53,030 --> 00:03:54,930
+because it's very hard to tell.
+
+82
+00:03:54,930 --> 00:03:59,910
+It's very, very difficult
+to understand our models
+
+83
+00:03:59,910 --> 00:04:01,200
+on sort of any level.
+
+84
+00:04:01,200 --> 00:04:03,030
+And so today we'll
+go through a number
+
+85
+00:04:03,030 --> 00:04:05,040
+of ways we're trying
+to sort of carve out
+
+86
+00:04:05,040 --> 00:04:07,980
+little bits of understanding
+here and there.
+
+87
+00:04:07,980 --> 00:04:14,730
+So beyond it being important
+because it's an xkcd comic,
+
+88
+00:04:14,730 --> 00:04:18,329
+why should we care about
+understanding our models?
+
+89
+00:04:18,329 --> 00:04:23,710
+One, is that we want to know
+what our models are doing.
+
+90
+00:04:23,710 --> 00:04:27,210
+So here you have a black box.
+
+91
+00:04:27,210 --> 00:04:29,498
+Black box functions
+are sort of this idea
+
+92
+00:04:29,498 --> 00:04:31,290
+that you can't look
+into them and interpret
+
+93
+00:04:31,290 --> 00:04:33,300
+what they're doing.
+
+94
+00:04:33,300 --> 00:04:36,480
+You have an input sentence,
+say, and then some output
+
+95
+00:04:36,480 --> 00:04:37,590
+prediction.
+
+96
+00:04:37,590 --> 00:04:42,600
+Maybe this black box is actually
+your final project model,
+
+97
+00:04:42,600 --> 00:04:45,940
+and it gets some accuracy.
+
+98
+00:04:45,940 --> 00:04:48,740
+Now, we summarize our models.
+
+99
+00:04:48,740 --> 00:04:50,990
+And in your final projects
+you'll summarize your model
+
+100
+00:04:50,990 --> 00:04:55,640
+with sort of one or a handful
+of summary metrics of accuracy,
+
+101
+00:04:55,640 --> 00:04:58,800
+or F1 score, or BLEU
+score or something,
+
+102
+00:04:58,800 --> 00:05:01,430
+but it's a lot of model
+to explain with just
+
+103
+00:05:01,430 --> 00:05:03,540
+a small number of metrics.
+
+104
+00:05:03,540 --> 00:05:04,940
+So what do they learn?
+
+105
+00:05:04,940 --> 00:05:05,900
+Why do they succeed?
+
+106
+00:05:05,900 --> 00:05:08,297
+And why do they fail?
+
+107
+00:05:08,297 --> 00:05:09,380
+What's another motivation?
+
+108
+00:05:09,380 --> 00:05:13,040
+So we want to sort of know
+what our models are doing, OK,
+
+109
+00:05:13,040 --> 00:05:15,290
+but maybe that's
+because we want to be
+
+110
+00:05:15,290 --> 00:05:17,160
+able to make tomorrow's model.
+
+111
+00:05:17,160 --> 00:05:20,915
+So today, when you're
+building models in this class,
+
+112
+00:05:20,915 --> 00:05:24,440
+at a company, you start out
+with some kind of recipe
+
+113
+00:05:24,440 --> 00:05:27,380
+that is known to work
+either at the company
+
+114
+00:05:27,380 --> 00:05:30,113
+or because you have
+experience from this class,
+
+115
+00:05:30,113 --> 00:05:31,280
+and it's not perfect, right?
+
+116
+00:05:31,280 --> 00:05:32,150
+It makes mistakes.
+
+117
+00:05:32,150 --> 00:05:33,290
+You look at the errors.
+
+118
+00:05:33,290 --> 00:05:37,760
+And then over time, you
+take what works, maybe,
+
+119
+00:05:37,760 --> 00:05:39,470
+and then you find
+what needs changing.
+
+120
+00:05:39,470 --> 00:05:41,960
+So it seems like maybe
+adding another layer
+
+121
+00:05:41,960 --> 00:05:43,640
+to the model helped.
+
+122
+00:05:43,640 --> 00:05:46,640
+And maybe that's a nice tweak
+and the model performance
+
+123
+00:05:46,640 --> 00:05:48,740
+gets better, et cetera.
+
+124
+00:05:48,740 --> 00:05:53,870
+And incremental progress
+doesn't always feel exciting,
+
+125
+00:05:53,870 --> 00:05:55,940
+but I want to pitch to
+you that it's actually
+
+126
+00:05:55,940 --> 00:05:58,250
+very important for
+us to understand
+
+127
+00:05:58,250 --> 00:06:01,910
+how much incremental progress
+can kind of get us towards some
+
+128
+00:06:01,910 --> 00:06:06,890
+of our goals so that we can have
+a better job of evaluating when
+
+129
+00:06:06,890 --> 00:06:10,550
+we need when we need big leaps,
+when we need major changes,
+
+130
+00:06:10,550 --> 00:06:12,530
+because there are problems
+that we're attacking
+
+131
+00:06:12,530 --> 00:06:14,330
+with our incremental
+sort of progress
+
+132
+00:06:14,330 --> 00:06:16,890
+and we're not getting very far.
+
+133
+00:06:16,890 --> 00:06:20,160
+OK, so we want to
+make tomorrow's model.
+
+134
+00:06:20,160 --> 00:06:23,520
+Another thing that's, I think,
+very related to and sort
+
+135
+00:06:23,520 --> 00:06:27,660
+of both a part of and bigger
+than this field of analysis
+
+136
+00:06:27,660 --> 00:06:29,560
+is model biases.
+
+137
+00:06:29,560 --> 00:06:34,020
+So let's say you take your
+Word2vec analogies solver
+
+138
+00:06:34,020 --> 00:06:39,660
+from GloVe or Word2vec
+that is from assignment 1,
+
+139
+00:06:39,660 --> 00:06:42,975
+and you give it the analogy,
+man is to computer programmer
+
+140
+00:06:42,975 --> 00:06:47,010
+as woman is to, and it gives
+you the output, homemaker--
+
+141
+00:06:47,010 --> 00:06:50,760
+this is a real example
+from the paper below--
+
+142
+00:06:50,760 --> 00:06:52,260
+you should be like, wow.
+
+143
+00:06:52,260 --> 00:06:55,140
+Well, I'm glad I know that now.
+
+144
+00:06:55,140 --> 00:06:59,940
+And of course, you saw the
+lecture from Yulia Tsvetkov
+
+145
+00:06:59,940 --> 00:07:00,630
+last week.
+
+146
+00:07:00,630 --> 00:07:02,910
+You say, wow, I'm
+glad I know that now,
+
+147
+00:07:02,910 --> 00:07:04,810
+and that's a huge problem.
+
+148
+00:07:04,810 --> 00:07:06,540
+What did the model
+use in its decision?
+
+149
+00:07:06,540 --> 00:07:08,220
+What biases is it
+learning from data
+
+150
+00:07:08,220 --> 00:07:10,420
+and possibly making even worse?
+
+151
+00:07:10,420 --> 00:07:12,570
+So that's the kind of
+thing that you can also
+
+152
+00:07:12,570 --> 00:07:15,270
+do with model analysis, beyond
+just making models better
+
+153
+00:07:15,270 --> 00:07:19,480
+according to some sort of
+summary metric as well.
+
+154
+00:07:19,480 --> 00:07:21,420
+And then another
+thing, we don't just
+
+155
+00:07:21,420 --> 00:07:22,840
+want to make tomorrow's model.
+
+156
+00:07:22,840 --> 00:07:25,090
+And this is something that
+I think is super important.
+
+157
+00:07:25,090 --> 00:07:28,020
+
+
+158
+00:07:28,020 --> 00:07:30,180
+We don't just want to
+look at that time scale.
+
+159
+00:07:30,180 --> 00:07:33,930
+We want to say, what about
+10, 15, 25 years from now?
+
+160
+00:07:33,930 --> 00:07:36,340
+What kinds of things
+will we be doing?
+
+161
+00:07:36,340 --> 00:07:37,590
+What are the limits?
+
+162
+00:07:37,590 --> 00:07:41,400
+What can be learned by
+language model pretraining?
+
+163
+00:07:41,400 --> 00:07:43,890
+What's the model that will
+replace the transformer?
+
+164
+00:07:43,890 --> 00:07:46,315
+What's the model that
+will replace that model?
+
+165
+00:07:46,315 --> 00:07:47,940
+What does deep learning
+struggle to do?
+
+166
+00:07:47,940 --> 00:07:51,030
+What are we sort of attacking
+over and over again and failing
+
+167
+00:07:51,030 --> 00:07:52,800
+to make significant progress on?
+
+168
+00:07:52,800 --> 00:07:55,278
+What do neural models tell us
+about language, potentially?
+
+169
+00:07:55,278 --> 00:07:56,820
+There's some people
+who are primarily
+
+170
+00:07:56,820 --> 00:08:00,030
+interested in understanding
+language better using
+
+171
+00:08:00,030 --> 00:08:00,870
+neural networks.
+
+172
+00:08:00,870 --> 00:08:01,370
+Cool.
+
+173
+00:08:01,370 --> 00:08:04,050
+
+
+174
+00:08:04,050 --> 00:08:06,300
+How are our models
+affecting people,
+
+175
+00:08:06,300 --> 00:08:08,910
+transferring power
+between groups of people,
+
+176
+00:08:08,910 --> 00:08:10,620
+governments, et cetera?
+
+177
+00:08:10,620 --> 00:08:12,730
+That's an excellent
+type of analysis.
+
+178
+00:08:12,730 --> 00:08:15,120
+What can't be learned via
+language model pretraining?
+
+179
+00:08:15,120 --> 00:08:17,520
+So that's sort of the
+complementary question there.
+
+180
+00:08:17,520 --> 00:08:19,650
+If you sort of come
+to the edge of what
+
+181
+00:08:19,650 --> 00:08:22,080
+you can learn via language
+model pretraining,
+
+182
+00:08:22,080 --> 00:08:24,510
+is there stuff that we need
+total paradigm shifts in order
+
+183
+00:08:24,510 --> 00:08:28,090
+to do well?
+
+184
+00:08:28,090 --> 00:08:32,130
+So all of this falls
+under some category
+
+185
+00:08:32,130 --> 00:08:33,720
+of trying to really
+deeply understand
+
+186
+00:08:33,720 --> 00:08:36,390
+our models and
+their capabilities.
+
+187
+00:08:36,390 --> 00:08:38,640
+And there's a lot
+of different methods
+
+188
+00:08:38,640 --> 00:08:40,289
+here that we'll go over today.
+
+189
+00:08:40,289 --> 00:08:42,510
+And one thing that I want
+you to take away from it
+
+190
+00:08:42,510 --> 00:08:47,460
+is that they're all
+going to tell us
+
+191
+00:08:47,460 --> 00:08:49,830
+some aspect of the model,
+elucidate some kind
+
+192
+00:08:49,830 --> 00:08:51,360
+of intuition or something.
+
+193
+00:08:51,360 --> 00:08:54,100
+But none of them are
+we going to say, aha,
+
+194
+00:08:54,100 --> 00:08:57,602
+I really understand 100% about
+what this model is doing now.
+
+195
+00:08:57,602 --> 00:08:59,310
+So they're going to
+provide some clarity,
+
+196
+00:08:59,310 --> 00:09:00,970
+but never total clarity.
+
+197
+00:09:00,970 --> 00:09:04,050
+And one way, if you're
+trying to decide
+
+198
+00:09:04,050 --> 00:09:06,367
+how you want to understand
+your model more,
+
+199
+00:09:06,367 --> 00:09:08,700
+the thing you should sort of
+start out by thinking about
+
+200
+00:09:08,700 --> 00:09:11,160
+is, at what level
+of abstraction do I
+
+201
+00:09:11,160 --> 00:09:12,940
+want to be looking at my model?
+
+202
+00:09:12,940 --> 00:09:17,280
+So the sort of very
+high level abstraction--
+
+203
+00:09:17,280 --> 00:09:21,540
+let's say you've trained
+a QA model to estimate
+
+204
+00:09:21,540 --> 00:09:24,450
+the probabilities of
+start and end indices
+
+205
+00:09:24,450 --> 00:09:25,920
+in a reading
+comprehension problem,
+
+206
+00:09:25,920 --> 00:09:27,720
+or you've trained
+a language model
+
+207
+00:09:27,720 --> 00:09:30,390
+that assigns probabilities
+to words in context.
+
+208
+00:09:30,390 --> 00:09:33,550
+You can just look at the
+model as that object.
+
+209
+00:09:33,550 --> 00:09:35,730
+So it's just a
+probability distribution
+
+210
+00:09:35,730 --> 00:09:37,410
+defined by your model.
+
+211
+00:09:37,410 --> 00:09:39,420
+You are not looking
+into it any further
+
+212
+00:09:39,420 --> 00:09:42,060
+than the fact that you can
+sort of give it inputs and see
+
+213
+00:09:42,060 --> 00:09:44,970
+what outputs it provides.
+
+214
+00:09:44,970 --> 00:09:47,360
+So that's not even--
+
+215
+00:09:47,360 --> 00:09:49,490
+who even cares if
+it's a neural network.
+
+216
+00:09:49,490 --> 00:09:53,147
+It could be anything, but it's a
+way to understand its behavior.
+
+217
+00:09:53,147 --> 00:09:55,230
+Another level of abstraction
+that you can look at,
+
+218
+00:09:55,230 --> 00:09:57,010
+you can dig a little
+deeper, you can say,
+
+219
+00:09:57,010 --> 00:09:59,677
+well, I know that my
+network is a bunch
+
+220
+00:09:59,677 --> 00:10:02,010
+of layers that are kind of
+stacked on top of each other.
+
+221
+00:10:02,010 --> 00:10:05,280
+You've got sort of maybe
+your transformer encoder
+
+222
+00:10:05,280 --> 00:10:07,440
+with one layer, two
+layer, three layer.
+
+223
+00:10:07,440 --> 00:10:09,690
+You can try to see what
+it's doing as it goes deeper
+
+224
+00:10:09,690 --> 00:10:11,553
+in the layers.
+
+225
+00:10:11,553 --> 00:10:13,970
+So maybe your neural model is
+the sequence of these vector
+
+226
+00:10:13,970 --> 00:10:15,110
+representations.
+
+227
+00:10:15,110 --> 00:10:17,750
+A third option of
+sort of specificity
+
+228
+00:10:17,750 --> 00:10:21,758
+is to look at as much
+detail as you can.
+
+229
+00:10:21,758 --> 00:10:23,300
+You've got these
+parameters in there,
+
+230
+00:10:23,300 --> 00:10:26,250
+you've got the connections
+in the computation graph.
+
+231
+00:10:26,250 --> 00:10:29,480
+So now you're sort of trying to
+remove all of the abstraction
+
+232
+00:10:29,480 --> 00:10:32,020
+that you can and look at as
+many details as possible.
+
+233
+00:10:32,020 --> 00:10:34,520
+And all three of these sort of
+ways of looking at your model
+
+234
+00:10:34,520 --> 00:10:37,670
+and performing analysis
+are going to be useful
+
+235
+00:10:37,670 --> 00:10:42,230
+and will actually sort of
+travel slowly from 1 to 2 to 3
+
+236
+00:10:42,230 --> 00:10:43,490
+as we go through this lecture.
+
+237
+00:10:43,490 --> 00:10:47,040
+
+
+238
+00:10:47,040 --> 00:10:51,090
+OK, so we haven't actually
+talked about any analyses yet,
+
+239
+00:10:51,090 --> 00:10:55,230
+so we're going to get
+started on that now.
+
+240
+00:10:55,230 --> 00:10:57,720
+And we're starting with
+the sort of testing
+
+241
+00:10:57,720 --> 00:10:59,490
+our model's behaviors.
+
+242
+00:10:59,490 --> 00:11:02,540
+So would we want to see,
+will my model perform well?
+
+243
+00:11:02,540 --> 00:11:05,190
+I mean, the natural
+thing to ask is,
+
+244
+00:11:05,190 --> 00:11:09,880
+how does it behave on some
+sort of test set, right?
+
+245
+00:11:09,880 --> 00:11:12,660
+And so we don't really
+care about mechanisms
+
+246
+00:11:12,660 --> 00:11:15,750
+yet, why is it performing
+this, by what method
+
+247
+00:11:15,750 --> 00:11:16,937
+is it making its decision.
+
+248
+00:11:16,937 --> 00:11:18,520
+Instead, we're just
+interested in sort
+
+249
+00:11:18,520 --> 00:11:21,360
+of the more higher
+level of abstraction
+
+250
+00:11:21,360 --> 00:11:24,900
+of, does it perform the
+way I want it to perform?
+
+251
+00:11:24,900 --> 00:11:29,520
+So let's take our model
+evaluation that we are already
+
+252
+00:11:29,520 --> 00:11:33,660
+doing and sort of recast it
+in the framework of analysis.
+
+253
+00:11:33,660 --> 00:11:36,210
+So you've trained your
+model on some samples
+
+254
+00:11:36,210 --> 00:11:37,420
+from some distribution.
+
+255
+00:11:37,420 --> 00:11:40,480
+So you've got input/output
+pairs of some kind.
+
+256
+00:11:40,480 --> 00:11:42,420
+So how does the model
+behave on samples
+
+257
+00:11:42,420 --> 00:11:43,940
+from the same distribution?
+
+258
+00:11:43,940 --> 00:11:47,700
+It's a simple question
+and it's sort of known
+
+259
+00:11:47,700 --> 00:11:50,730
+as in-domain
+accuracy, or you can
+
+260
+00:11:50,730 --> 00:11:53,830
+say that the samples are IID and
+that's what you're testing on.
+
+261
+00:11:53,830 --> 00:11:56,310
+And this is just what we've
+been doing this whole time.
+
+262
+00:11:56,310 --> 00:11:59,850
+It's your test set accuracy
+or F1 or BLEU score.
+
+263
+00:11:59,850 --> 00:12:04,530
+And so you've got some
+model with some accuracy,
+
+264
+00:12:04,530 --> 00:12:08,048
+and maybe it's better than some
+model with some other accuracy
+
+265
+00:12:08,048 --> 00:12:09,090
+on this test set, r ight?
+
+266
+00:12:09,090 --> 00:12:10,673
+So this is what
+you're doing is you're
+
+267
+00:12:10,673 --> 00:12:14,370
+iterating on your models and
+your final project as well.
+
+268
+00:12:14,370 --> 00:12:16,590
+You say, well, on
+my test set, which
+
+269
+00:12:16,590 --> 00:12:18,630
+is what I've decided
+to care about for now,
+
+270
+00:12:18,630 --> 00:12:20,190
+model A does better.
+
+271
+00:12:20,190 --> 00:12:22,120
+They both seem pretty good.
+
+272
+00:12:22,120 --> 00:12:24,587
+And so maybe I'll choose
+model A to keep working on.
+
+273
+00:12:24,587 --> 00:12:26,670
+Maybe I'll choose it if
+you were putting something
+
+274
+00:12:26,670 --> 00:12:28,620
+into production.
+
+275
+00:12:28,620 --> 00:12:32,220
+But remember back to
+this idea that it's
+
+276
+00:12:32,220 --> 00:12:36,120
+just one number to summarize
+a very complex system.
+
+277
+00:12:36,120 --> 00:12:37,980
+It's not going to be
+sufficient to tell you
+
+278
+00:12:37,980 --> 00:12:42,930
+how it's going to perform in
+a wide variety of settings.
+
+279
+00:12:42,930 --> 00:12:44,250
+OK, so we've been doing this.
+
+280
+00:12:44,250 --> 00:12:48,330
+This is model evaluation
+as model analysis.
+
+281
+00:12:48,330 --> 00:12:52,050
+Now we are going to
+say, what if we are not
+
+282
+00:12:52,050 --> 00:12:56,380
+testing on exactly the same
+type of data that we trained on?
+
+283
+00:12:56,380 --> 00:12:59,250
+So now we're asking, did the
+model learn something such
+
+284
+00:12:59,250 --> 00:13:01,170
+that it's able to
+sort of extrapolate
+
+285
+00:13:01,170 --> 00:13:03,398
+or perform how I
+want it to on data
+
+286
+00:13:03,398 --> 00:13:05,190
+that looks a little
+bit different from what
+
+287
+00:13:05,190 --> 00:13:06,030
+it was trained on?
+
+288
+00:13:06,030 --> 00:13:08,322
+And we're going to take the
+example of natural language
+
+289
+00:13:08,322 --> 00:13:08,920
+inference.
+
+290
+00:13:08,920 --> 00:13:11,532
+So to recall the test of
+natural language inference,
+
+291
+00:13:11,532 --> 00:13:13,740
+and this is through the
+Multi-NLI data set that we're
+
+292
+00:13:13,740 --> 00:13:15,540
+just pulling our definition.
+
+293
+00:13:15,540 --> 00:13:16,930
+You have a premise.
+
+294
+00:13:16,930 --> 00:13:19,830
+He turned and saw Jon
+sleeping in his half-tent
+
+295
+00:13:19,830 --> 00:13:23,820
+And you have a hypothesis,
+he saw Jon was asleep.
+
+296
+00:13:23,820 --> 00:13:26,325
+And then you give
+them both to a model,
+
+297
+00:13:26,325 --> 00:13:28,200
+and this is the model
+that we had before that
+
+298
+00:13:28,200 --> 00:13:29,670
+had some good accuracy.
+
+299
+00:13:29,670 --> 00:13:31,710
+And the model is
+supposed to tell
+
+300
+00:13:31,710 --> 00:13:35,250
+whether the hypothesis
+is sort of implied
+
+301
+00:13:35,250 --> 00:13:37,680
+by the premise or contradicting.
+
+302
+00:13:37,680 --> 00:13:39,450
+So it could be
+contradicting, maybe,
+
+303
+00:13:39,450 --> 00:13:43,260
+if the hypothesis is John
+was awake, for example,
+
+304
+00:13:43,260 --> 00:13:44,340
+or he saw John was awake.
+
+305
+00:13:44,340 --> 00:13:45,690
+Maybe that'd be contradiction.
+
+306
+00:13:45,690 --> 00:13:49,270
+Neutral if sort of both could
+be true at the same time,
+
+307
+00:13:49,270 --> 00:13:50,220
+so to speak.
+
+308
+00:13:50,220 --> 00:13:51,970
+And then entailment,
+in this case,
+
+309
+00:13:51,970 --> 00:13:54,330
+it seems like you're saying
+that the premise implies
+
+310
+00:13:54,330 --> 00:13:55,870
+the hypothesis.
+
+311
+00:13:55,870 --> 00:13:58,475
+And so you would
+say, probably, this
+
+312
+00:13:58,475 --> 00:13:59,850
+is likely to get
+the right answer
+
+313
+00:13:59,850 --> 00:14:03,030
+since the accuracy
+of the model is 95%.
+
+314
+00:14:03,030 --> 00:14:06,180
+95% of the time, it
+gets the right answer.
+
+315
+00:14:06,180 --> 00:14:09,570
+And we're going to
+dig deeper into that.
+
+316
+00:14:09,570 --> 00:14:11,790
+What if the model
+is not doing what
+
+317
+00:14:11,790 --> 00:14:15,030
+we think we want it to be
+doing in order to perform
+
+318
+00:14:15,030 --> 00:14:16,780
+natural language inference?
+
+319
+00:14:16,780 --> 00:14:19,590
+So in a data set like
+Multi-NLI, the authors
+
+320
+00:14:19,590 --> 00:14:22,590
+who gathered the data set
+will have asked humans
+
+321
+00:14:22,590 --> 00:14:25,410
+to perform the task
+and gotten the accuracy
+
+322
+00:14:25,410 --> 00:14:27,150
+that the humans achieved.
+
+323
+00:14:27,150 --> 00:14:29,880
+And models nowadays are
+achieving accuracies
+
+324
+00:14:29,880 --> 00:14:33,870
+that are around where
+humans are achieving,
+
+325
+00:14:33,870 --> 00:14:36,570
+which sounds great at first.
+
+326
+00:14:36,570 --> 00:14:39,450
+But as we'll see, it's
+not the same as actually
+
+327
+00:14:39,450 --> 00:14:45,250
+performing the task more
+broadly in the right way.
+
+328
+00:14:45,250 --> 00:14:49,150
+So what if the model's not doing
+something smart, effectively?
+
+329
+00:14:49,150 --> 00:14:51,520
+We're going to use
+a diagnostic test
+
+330
+00:14:51,520 --> 00:14:54,663
+set of carefully
+constructed examples that
+
+331
+00:14:54,663 --> 00:14:56,080
+seem like things
+the models should
+
+332
+00:14:56,080 --> 00:15:01,150
+be able to do to test for a
+specific skill or capacity.
+
+333
+00:15:01,150 --> 00:15:03,130
+In this case, we'll use HANS.
+
+334
+00:15:03,130 --> 00:15:06,310
+So HANS is the Heuristic
+Analysis for NLI Systems
+
+335
+00:15:06,310 --> 00:15:10,000
+data set, and it's
+intended to take systems
+
+336
+00:15:10,000 --> 00:15:11,710
+that do natural
+language inference
+
+337
+00:15:11,710 --> 00:15:14,590
+and test whether they're
+using some simple syntactic
+
+338
+00:15:14,590 --> 00:15:15,935
+heuristics.
+
+339
+00:15:15,935 --> 00:15:17,560
+What we'll have in
+each of these cases,
+
+340
+00:15:17,560 --> 00:15:19,743
+we'll have some heuristic.
+
+341
+00:15:19,743 --> 00:15:21,160
+We'll talk through
+the definition.
+
+342
+00:15:21,160 --> 00:15:22,035
+We'll get an example.
+
+343
+00:15:22,035 --> 00:15:24,220
+So the first thing
+is lexical overlap.
+
+344
+00:15:24,220 --> 00:15:28,540
+So the model might
+do this thing where
+
+345
+00:15:28,540 --> 00:15:30,220
+it assumes that
+a premise entails
+
+346
+00:15:30,220 --> 00:15:32,710
+all hypotheses constructed
+from words in the premise.
+
+347
+00:15:32,710 --> 00:15:36,880
+So in this example,
+you have the premise,
+
+348
+00:15:36,880 --> 00:15:40,670
+the doctor was
+paid by the actor.
+
+349
+00:15:40,670 --> 00:15:43,700
+And then the hypothesis is,
+the doctor paid the actor.
+
+350
+00:15:43,700 --> 00:15:46,077
+And you'll notice that
+in bold here, the doctor,
+
+351
+00:15:46,077 --> 00:15:49,880
+OK, and then paid, and
+then the actor, right?
+
+352
+00:15:49,880 --> 00:15:52,400
+And so if you use
+this heuristic,
+
+353
+00:15:52,400 --> 00:15:54,650
+you will think that "the
+doctor was paid by the actor"
+
+354
+00:15:54,650 --> 00:15:56,300
+implies the doctor
+paid the actor.
+
+355
+00:15:56,300 --> 00:15:58,160
+That does not imply
+it, of course.
+
+356
+00:15:58,160 --> 00:16:00,382
+And so you could
+expect the model--
+
+357
+00:16:00,382 --> 00:16:02,090
+you want the model to
+be able to do this.
+
+358
+00:16:02,090 --> 00:16:03,505
+It's somewhat simple.
+
+359
+00:16:03,505 --> 00:16:04,880
+But if it's using
+this heuristic,
+
+360
+00:16:04,880 --> 00:16:07,790
+it won't get this example right.
+
+361
+00:16:07,790 --> 00:16:10,460
+Next is subsequence heuristics.
+
+362
+00:16:10,460 --> 00:16:15,470
+So here, if the model assumes
+that the premise entails
+
+363
+00:16:15,470 --> 00:16:17,510
+all of its continuous
+subsequences,
+
+364
+00:16:17,510 --> 00:16:19,080
+it will get this
+one wrong as well.
+
+365
+00:16:19,080 --> 00:16:23,210
+So this example is, "the
+doctor near the actor danced."
+
+366
+00:16:23,210 --> 00:16:24,080
+That's the premise.
+
+367
+00:16:24,080 --> 00:16:26,547
+The hypothesis is,
+"the actor danced."
+
+368
+00:16:26,547 --> 00:16:28,130
+Now, this is a simple
+syntactic thing.
+
+369
+00:16:28,130 --> 00:16:31,410
+The doctor is doing the
+dancing near the actor.
+
+370
+00:16:31,410 --> 00:16:33,710
+It's this prepositional phrase.
+
+371
+00:16:33,710 --> 00:16:36,005
+And so the model sort
+of uses this heuristic,
+
+372
+00:16:36,005 --> 00:16:37,130
+oh, look, the actor danced.
+
+373
+00:16:37,130 --> 00:16:39,560
+That's a subsequence,
+entailed, awesome.
+
+374
+00:16:39,560 --> 00:16:42,250
+And it'll get this
+one wrong as well.
+
+375
+00:16:42,250 --> 00:16:46,430
+And here's another one that's
+a lot like subsequence.
+
+376
+00:16:46,430 --> 00:16:51,410
+But so if the model thinks
+that the premise entails all
+
+377
+00:16:51,410 --> 00:16:55,680
+complete subtrees, so this is
+sort of fully formed phrases.
+
+378
+00:16:55,680 --> 00:17:00,350
+So the artist slept here is a
+fully formed sort of subtree.
+
+379
+00:17:00,350 --> 00:17:02,420
+"If the artist slept,
+the actor ran."
+
+380
+00:17:02,420 --> 00:17:03,920
+And then that's the premise.
+
+381
+00:17:03,920 --> 00:17:07,740
+Does it entail the
+hypothesis, the actor slept?
+
+382
+00:17:07,740 --> 00:17:09,680
+No.
+
+383
+00:17:09,680 --> 00:17:10,940
+Sorry, the artist slept.
+
+384
+00:17:10,940 --> 00:17:14,776
+That does not entail it because
+this is in that conditional.
+
+385
+00:17:14,776 --> 00:17:16,608
+OK, now let me pause
+here for some questions
+
+386
+00:17:16,608 --> 00:17:20,389
+before I move on to see
+how these models do.
+
+387
+00:17:20,390 --> 00:17:25,460
+Anyone unclear about how
+this sort of evaluation
+
+388
+00:17:25,460 --> 00:17:26,210
+is being set up?
+
+389
+00:17:26,210 --> 00:17:33,010
+
+
+390
+00:17:33,010 --> 00:17:33,510
+No?
+
+391
+00:17:33,510 --> 00:17:37,280
+
+
+392
+00:17:37,280 --> 00:17:37,780
+Cool.
+
+393
+00:17:37,780 --> 00:17:41,290
+
+
+394
+00:17:41,290 --> 00:17:42,790
+OK, so how do models perform?
+
+395
+00:17:42,790 --> 00:17:46,120
+That's sort of the
+question of the hour.
+
+396
+00:17:46,120 --> 00:17:49,300
+What we'll do is we'll
+look at these results
+
+397
+00:17:49,300 --> 00:17:51,860
+from the same paper that
+released the dataset.
+
+398
+00:17:51,860 --> 00:17:56,380
+So they took four
+strong Multi-NLI models
+
+399
+00:17:56,380 --> 00:17:57,730
+with the following accuracies.
+
+400
+00:17:57,730 --> 00:18:00,100
+So the accuracies here
+are something between 60
+
+401
+00:18:00,100 --> 00:18:01,840
+and 80 something, 80%.
+
+402
+00:18:01,840 --> 00:18:04,540
+BERT over here is
+doing the best, OK.
+
+403
+00:18:04,540 --> 00:18:08,200
+And in-domain, right,
+in that first sort
+
+404
+00:18:08,200 --> 00:18:11,050
+of setting that we
+talked about, you
+
+405
+00:18:11,050 --> 00:18:13,690
+get these reasonable accuracies.
+
+406
+00:18:13,690 --> 00:18:16,870
+And that is sort of what
+we said before about it
+
+407
+00:18:16,870 --> 00:18:19,850
+like looking pretty good.
+
+408
+00:18:19,850 --> 00:18:25,690
+And when we evaluate on
+HANS, in this setting here,
+
+409
+00:18:25,690 --> 00:18:28,210
+we have examples
+where the heuristics
+
+410
+00:18:28,210 --> 00:18:30,470
+we talked about actually work.
+
+411
+00:18:30,470 --> 00:18:32,080
+So if the model's
+using the heuristic,
+
+412
+00:18:32,080 --> 00:18:33,880
+it will get this right.
+
+413
+00:18:33,880 --> 00:18:36,930
+And it gets very
+high accuracies.
+
+414
+00:18:36,930 --> 00:18:40,900
+And then if we evaluate the
+model in the settings where
+
+415
+00:18:40,900 --> 00:18:44,570
+if it uses the heuristic,
+it gets the examples wrong,
+
+416
+00:18:44,570 --> 00:18:48,040
+maybe BERT's doing
+epsilon better than some
+
+417
+00:18:48,040 --> 00:18:49,210
+of the other stuff here.
+
+418
+00:18:49,210 --> 00:18:53,560
+But it's a very different story.
+
+419
+00:18:53,560 --> 00:18:55,450
+OK, and you saw those examples.
+
+420
+00:18:55,450 --> 00:19:02,980
+They're not complex in our
+sort of own idea of complexity.
+
+421
+00:19:02,980 --> 00:19:06,730
+And so this is why it sort
+of feels like a clear failure
+
+422
+00:19:06,730 --> 00:19:08,260
+of the system.
+
+423
+00:19:08,260 --> 00:19:11,140
+Now, you can say, though,
+that, well, maybe the training
+
+424
+00:19:11,140 --> 00:19:14,710
+data sort of didn't have any
+of those sort of phenomena,
+
+425
+00:19:14,710 --> 00:19:17,920
+so the model couldn't have
+learned not to do that.
+
+426
+00:19:17,920 --> 00:19:20,770
+And that's sort of a reasonable
+argument, except, well,
+
+427
+00:19:20,770 --> 00:19:23,500
+BERT is pretrained on a
+bunch of language text.
+
+428
+00:19:23,500 --> 00:19:25,330
+So you might hope,
+you might expect,
+
+429
+00:19:25,330 --> 00:19:26,788
+you might hope that
+it does better.
+
+430
+00:19:26,788 --> 00:19:29,830
+
+
+431
+00:19:29,830 --> 00:19:37,330
+OK, so we saw that example
+of models performing well
+
+432
+00:19:37,330 --> 00:19:40,300
+on examples that are like
+those that it was trained on,
+
+433
+00:19:40,300 --> 00:19:42,310
+and then performing
+not very well at all
+
+434
+00:19:42,310 --> 00:19:48,610
+on examples that seem reasonable
+but are sort of a little bit
+
+435
+00:19:48,610 --> 00:19:49,300
+tricky.
+
+436
+00:19:49,300 --> 00:19:52,030
+Now we're going to take
+this idea of having
+
+437
+00:19:52,030 --> 00:19:53,770
+a test set that we've
+carefully crafted
+
+438
+00:19:53,770 --> 00:19:55,700
+and go in a slightly
+different direction.
+
+439
+00:19:55,700 --> 00:19:57,430
+So we're to have,
+what does it mean
+
+440
+00:19:57,430 --> 00:20:00,010
+to try to understand the
+linguistic properties
+
+441
+00:20:00,010 --> 00:20:01,120
+of our models?
+
+442
+00:20:01,120 --> 00:20:03,310
+So that syntactic
+heuristics question
+
+443
+00:20:03,310 --> 00:20:05,230
+was one thing for natural
+language inference,
+
+444
+00:20:05,230 --> 00:20:08,650
+but can we sort of test how
+the models, whether they
+
+445
+00:20:08,650 --> 00:20:12,550
+think certain things are sort
+of right or wrong as language
+
+446
+00:20:12,550 --> 00:20:14,230
+models?
+
+447
+00:20:14,230 --> 00:20:16,270
+And the first way that
+we'll do this is we'll
+
+448
+00:20:16,270 --> 00:20:18,880
+ask, well, how do we
+think about what humans
+
+449
+00:20:18,880 --> 00:20:21,250
+think of as good language?
+
+450
+00:20:21,250 --> 00:20:26,590
+How do we evaluate their sort
+of preferences about language?
+
+451
+00:20:26,590 --> 00:20:29,000
+And one answer is minimal pairs.
+
+452
+00:20:29,000 --> 00:20:30,580
+And the idea of
+a minimal pair is
+
+453
+00:20:30,580 --> 00:20:34,660
+that you've got one sentence
+that sounds OK to a speaker.
+
+454
+00:20:34,660 --> 00:20:39,710
+So this sentence is, the chef
+who made the pizzas is here.
+
+455
+00:20:39,710 --> 00:20:43,570
+It's called it's an acceptable
+sentence, at least to me.
+
+456
+00:20:43,570 --> 00:20:47,500
+And then with a small
+change, a minimal change,
+
+457
+00:20:47,500 --> 00:20:50,020
+the sentence is no
+longer OK to the speaker.
+
+458
+00:20:50,020 --> 00:20:53,260
+So the chef who made
+the pizzas are here.
+
+459
+00:20:53,260 --> 00:20:57,250
+And this-- oops.
+
+460
+00:20:57,250 --> 00:21:01,180
+This should be
+present tense verbs.
+
+461
+00:21:01,180 --> 00:21:03,460
+In English, present tense
+verbs agree a number
+
+462
+00:21:03,460 --> 00:21:07,040
+with their subject when
+they are third person.
+
+463
+00:21:07,040 --> 00:21:10,410
+So chef, pizzas, OK.
+
+464
+00:21:10,410 --> 00:21:14,703
+And this is sort of a
+pretty general thing.
+
+465
+00:21:14,703 --> 00:21:15,870
+Most people don't like this.
+
+466
+00:21:15,870 --> 00:21:20,590
+It's a misconjugated verb,
+and so the syntax here
+
+467
+00:21:20,590 --> 00:21:23,070
+looks like you have the
+chef who made the pizzas.
+
+468
+00:21:23,070 --> 00:21:26,640
+And then this arc of
+agreement in number
+
+469
+00:21:26,640 --> 00:21:30,510
+is requiring the word "is"
+here to be singular "is"
+
+470
+00:21:30,510 --> 00:21:33,210
+instead of plural
+"are," despite the fact
+
+471
+00:21:33,210 --> 00:21:35,430
+that there's this
+noun, pizzas, which
+
+472
+00:21:35,430 --> 00:21:38,100
+is plural, closer linearly.
+
+473
+00:21:38,100 --> 00:21:39,840
+Comes back to
+dependency parsing.
+
+474
+00:21:39,840 --> 00:21:42,060
+We're back, OK?
+
+475
+00:21:42,060 --> 00:21:44,790
+And what this looks like
+in the tree structure,
+
+476
+00:21:44,790 --> 00:21:52,110
+right, is, well, "chef" and
+"is" are attached in the tree.
+
+477
+00:21:52,110 --> 00:21:54,580
+"Chef" is the subject
+of "is," "pizzas"
+
+478
+00:21:54,580 --> 00:21:57,180
+is down here in
+this subtree, and
+
+479
+00:21:57,180 --> 00:21:59,610
+so that subject-verb
+relationship has
+
+480
+00:21:59,610 --> 00:22:02,490
+this sort of agreement thing.
+
+481
+00:22:02,490 --> 00:22:05,640
+So this is a pretty sort of
+basic and interesting property
+
+482
+00:22:05,640 --> 00:22:09,180
+of language that also
+reflects the syntactic, sort
+
+483
+00:22:09,180 --> 00:22:11,082
+of hierarchical
+structure of language.
+
+484
+00:22:11,082 --> 00:22:13,290
+So we've been training these
+language models sampling
+
+485
+00:22:13,290 --> 00:22:15,690
+from them, seeing that they
+get interesting things.
+
+486
+00:22:15,690 --> 00:22:19,230
+And they tend to seem to
+generate syntactic content.
+
+487
+00:22:19,230 --> 00:22:21,900
+But does it really
+understand or does
+
+488
+00:22:21,900 --> 00:22:25,320
+it behave as if it understands
+this idea of agreement
+
+489
+00:22:25,320 --> 00:22:26,130
+more broadly?
+
+490
+00:22:26,130 --> 00:22:28,080
+And does it sort
+of get the syntax
+
+491
+00:22:28,080 --> 00:22:31,830
+right so that it matches
+the subjects and the verbs?
+
+492
+00:22:31,830 --> 00:22:34,590
+But language models
+can't tell us exactly
+
+493
+00:22:34,590 --> 00:22:37,030
+whether they think that a
+sentence is good or bad.
+
+494
+00:22:37,030 --> 00:22:40,390
+They just tell us the
+probability of a sentence.
+
+495
+00:22:40,390 --> 00:22:43,380
+So before, we had
+acceptable and unacceptable.
+
+496
+00:22:43,380 --> 00:22:45,690
+That's what we get from humans.
+
+497
+00:22:45,690 --> 00:22:47,880
+And the language
+model's analog is just,
+
+498
+00:22:47,880 --> 00:22:49,740
+does it assign
+higher probability
+
+499
+00:22:49,740 --> 00:22:52,170
+to the acceptable sentence
+in the minimal pair, right?
+
+500
+00:22:52,170 --> 00:22:56,580
+So you have the probability
+under the model of the chef who
+
+501
+00:22:56,580 --> 00:22:58,920
+made the pizzas is
+here, and then you
+
+502
+00:22:58,920 --> 00:23:01,560
+have the probability under
+the model of the chef who
+
+503
+00:23:01,560 --> 00:23:03,630
+made the pizzas are here.
+
+504
+00:23:03,630 --> 00:23:08,080
+And you want this probability
+here to be higher.
+
+505
+00:23:08,080 --> 00:23:10,500
+And if it is, that's
+sort of like a simple way
+
+506
+00:23:10,500 --> 00:23:15,360
+to test whether the model
+got it right effectively.
+
+507
+00:23:15,360 --> 00:23:19,380
+And just like in
+HANS, we can develop
+
+508
+00:23:19,380 --> 00:23:22,110
+a test set with very carefully
+chosen properties, right?
+
+509
+00:23:22,110 --> 00:23:27,840
+So most sentences in English
+don't have terribly complex
+
+510
+00:23:27,840 --> 00:23:30,780
+subject-verb agreement
+structure with a lot of words
+
+511
+00:23:30,780 --> 00:23:33,210
+in the middle, like "pizzas,"
+that are going to make it
+
+512
+00:23:33,210 --> 00:23:38,460
+difficult. So if I
+say, the dog runs,
+
+513
+00:23:38,460 --> 00:23:42,750
+sort of no way to get it
+wrong because there's no--
+
+514
+00:23:42,750 --> 00:23:44,920
+the syntax is very simple.
+
+515
+00:23:44,920 --> 00:23:49,350
+So we can create or we
+can look for sentences
+
+516
+00:23:49,350 --> 00:23:53,650
+that have these things called
+attractors in the sentence.
+
+517
+00:23:53,650 --> 00:23:56,490
+So "pizzas" is an
+attractor because the model
+
+518
+00:23:56,490 --> 00:23:59,220
+might be attracted
+to the plurality here
+
+519
+00:23:59,220 --> 00:24:02,900
+and get the conjugation wrong.
+
+520
+00:24:02,900 --> 00:24:03,900
+So this is our question.
+
+521
+00:24:03,900 --> 00:24:07,440
+Can language models sort of very
+generally handle these examples
+
+522
+00:24:07,440 --> 00:24:08,430
+with attractors?
+
+523
+00:24:08,430 --> 00:24:11,250
+So we can take examples
+with zero attractors,
+
+524
+00:24:11,250 --> 00:24:14,470
+see whether the model gets the
+minimal pairs evaluation right.
+
+525
+00:24:14,470 --> 00:24:18,307
+We can take examples with
+one attractor, to attractors,
+
+526
+00:24:18,307 --> 00:24:20,640
+you can see how people would
+still reasonably understand
+
+527
+00:24:20,640 --> 00:24:21,720
+these sentences, right?
+
+528
+00:24:21,720 --> 00:24:24,660
+Chef who made the pizzas and
+prepped the ingredients is--
+
+529
+00:24:24,660 --> 00:24:28,440
+it's still the chef who is,
+and then on and on and on.
+
+530
+00:24:28,440 --> 00:24:30,540
+It gets rarer,
+obviously, but you can
+
+531
+00:24:30,540 --> 00:24:32,520
+have more and more attractors.
+
+532
+00:24:32,520 --> 00:24:34,170
+And so now we've
+created this test set
+
+533
+00:24:34,170 --> 00:24:35,940
+that's intended to
+evaluate this very
+
+534
+00:24:35,940 --> 00:24:39,190
+specific linguistic phenomenon.
+
+535
+00:24:39,190 --> 00:24:44,250
+So in this paper here, Kuncoro
+et al trained an LSTM language
+
+536
+00:24:44,250 --> 00:24:47,790
+model on a subset of
+Wikipedia back in 2018,
+
+537
+00:24:47,790 --> 00:24:50,640
+and they evaluate it sort
+of in these buckets that
+
+538
+00:24:50,640 --> 00:24:55,710
+are specified by the paper
+that sort of introduce
+
+539
+00:24:55,710 --> 00:25:00,210
+subject-verb agreement
+to the NLP field,
+
+540
+00:25:00,210 --> 00:25:02,250
+more recently at least.
+
+541
+00:25:02,250 --> 00:25:04,710
+And they evaluate
+it in buckets based
+
+542
+00:25:04,710 --> 00:25:06,060
+on the number of attractors.
+
+543
+00:25:06,060 --> 00:25:09,570
+And so in this table here
+that you're about to see,
+
+544
+00:25:09,570 --> 00:25:11,790
+the numbers are
+sort of the percent
+
+545
+00:25:11,790 --> 00:25:14,040
+of times that you
+get this-- assign
+
+546
+00:25:14,040 --> 00:25:18,000
+higher probability to
+the correct sentence
+
+547
+00:25:18,000 --> 00:25:19,565
+in the minimal pair.
+
+548
+00:25:19,565 --> 00:25:21,690
+So if you were just to do
+random or majority class,
+
+549
+00:25:21,690 --> 00:25:23,110
+you get these errors.
+
+550
+00:25:23,110 --> 00:25:23,610
+Oh, sorry.
+
+551
+00:25:23,610 --> 00:25:26,440
+It's the percent of times
+that you get it wrong.
+
+552
+00:25:26,440 --> 00:25:27,240
+Sorry about that.
+
+553
+00:25:27,240 --> 00:25:29,640
+So lower is better.
+
+554
+00:25:29,640 --> 00:25:33,330
+And so with no attractors,
+you get very low error rates.
+
+555
+00:25:33,330 --> 00:25:38,850
+So this is 1.3 error rate
+with a 350 dimensional LSTM.
+
+556
+00:25:38,850 --> 00:25:42,960
+And with one attractor,
+your error rate is higher.
+
+557
+00:25:42,960 --> 00:25:45,510
+But actually, humans
+start to get errors
+
+558
+00:25:45,510 --> 00:25:47,310
+with more attractors, too.
+
+559
+00:25:47,310 --> 00:25:50,250
+So zero attractors is easy.
+
+560
+00:25:50,250 --> 00:25:52,747
+The larger the LSTM, it looks
+like, in general, the better
+
+561
+00:25:52,747 --> 00:25:53,580
+you're doing, right?
+
+562
+00:25:53,580 --> 00:25:56,340
+So the smaller model's
+doing worse, OK.
+
+563
+00:25:56,340 --> 00:25:58,380
+And then even on sort
+of very difficult
+
+564
+00:25:58,380 --> 00:26:00,913
+examples with four
+attractors, which--
+
+565
+00:26:00,913 --> 00:26:02,580
+try to think of an
+example in your head.
+
+566
+00:26:02,580 --> 00:26:06,540
+The chef made the pizzas
+and took out the trash and--
+
+567
+00:26:06,540 --> 00:26:08,820
+sort of has to be
+this long sentence.
+
+568
+00:26:08,820 --> 00:26:10,330
+The error rate is
+definitely higher,
+
+569
+00:26:10,330 --> 00:26:15,233
+so it gets more difficult.
+But it's still relatively low.
+
+570
+00:26:15,233 --> 00:26:16,900
+And so even on these
+very hard examples,
+
+571
+00:26:16,900 --> 00:26:19,630
+models are actually performing
+subject-verb number agreement
+
+572
+00:26:19,630 --> 00:26:21,220
+relatively well.
+
+573
+00:26:21,220 --> 00:26:21,910
+Very cool.
+
+574
+00:26:21,910 --> 00:26:25,500
+
+
+575
+00:26:25,500 --> 00:26:28,650
+OK, here's some examples
+that our model got wrong.
+
+576
+00:26:28,650 --> 00:26:31,117
+This is actually a worse model
+than the ones from the paper
+
+577
+00:26:31,117 --> 00:26:31,950
+that was just there.
+
+578
+00:26:31,950 --> 00:26:34,922
+But I think, actually, the
+errors are quite interesting.
+
+579
+00:26:34,922 --> 00:26:35,880
+So here's the sentence.
+
+580
+00:26:35,880 --> 00:26:41,320
+The ship that the player
+drives has a very high speed.
+
+581
+00:26:41,320 --> 00:26:44,520
+Now, this model thought
+that was less probable than,
+
+582
+00:26:44,520 --> 00:26:50,880
+the ship that the player
+drives have a very high speed.
+
+583
+00:26:50,880 --> 00:26:56,820
+My hypothesis, right, is that
+it sort of mis-analyzes drives
+
+584
+00:26:56,820 --> 00:26:59,937
+as a plural noun, for example.
+
+585
+00:26:59,937 --> 00:27:01,770
+It's sort of a difficult
+construction there.
+
+586
+00:27:01,770 --> 00:27:04,420
+I think it's pretty interesting.
+
+587
+00:27:04,420 --> 00:27:07,050
+Likewise, here, this one is fun.
+
+588
+00:27:07,050 --> 00:27:09,240
+The lead is also rather long.
+
+589
+00:27:09,240 --> 00:27:12,610
+5 paragraphs is pretty lengthy.
+
+590
+00:27:12,610 --> 00:27:16,770
+So here, "5 paragraphs" is
+a singular noun together
+
+591
+00:27:16,770 --> 00:27:21,305
+because it's a unit
+of length, I guess.
+
+592
+00:27:21,305 --> 00:27:22,680
+But the model
+thought that it was
+
+593
+00:27:22,680 --> 00:27:24,690
+more likely to say, five
+paragraphs are pretty
+
+594
+00:27:24,690 --> 00:27:30,060
+lengthy, because it's
+referring to this sort of five
+
+595
+00:27:30,060 --> 00:27:33,360
+paragraphs as the five
+actual paragraphs themselves,
+
+596
+00:27:33,360 --> 00:27:37,440
+as opposed to a single unit
+of length describing the lead.
+
+597
+00:27:37,440 --> 00:27:38,220
+Fascinating, OK.
+
+598
+00:27:38,220 --> 00:27:45,020
+
+
+599
+00:27:45,020 --> 00:27:46,570
+Maybe questions again?
+
+600
+00:27:46,570 --> 00:27:53,600
+
+
+601
+00:27:53,600 --> 00:27:55,990
+So I guess there are a couple.
+
+602
+00:27:55,990 --> 00:28:00,170
+Can we do the similar heuristic
+analysis for other tasks,
+
+603
+00:28:00,170 --> 00:28:02,440
+such as Q&A classification?
+
+604
+00:28:02,440 --> 00:28:05,560
+
+
+605
+00:28:05,560 --> 00:28:08,000
+Yes.
+
+606
+00:28:08,000 --> 00:28:08,500
+Yes.
+
+607
+00:28:08,500 --> 00:28:11,200
+I think that it's easier
+to do this kind of analysis
+
+608
+00:28:11,200 --> 00:28:18,220
+for the HANS style analysis
+with question answering
+
+609
+00:28:18,220 --> 00:28:23,930
+and other sorts of tasks because
+you can construct examples that
+
+610
+00:28:23,930 --> 00:28:34,330
+similarly have these heuristics
+and then have the answer depend
+
+611
+00:28:34,330 --> 00:28:35,800
+on the syntax or not.
+
+612
+00:28:35,800 --> 00:28:39,520
+The actual probability
+of one sentence
+
+613
+00:28:39,520 --> 00:28:41,020
+is higher than the
+other, of course,
+
+614
+00:28:41,020 --> 00:28:43,210
+is sort of a language
+model dependent thing.
+
+615
+00:28:43,210 --> 00:28:48,670
+But the idea that you can sort
+of develop kind of bespoke test
+
+616
+00:28:48,670 --> 00:28:54,010
+sets for various tasks, I
+think, is very, very general
+
+617
+00:28:54,010 --> 00:28:59,200
+and something I think is
+actually quite interesting.
+
+618
+00:28:59,200 --> 00:29:02,740
+Yes, so I won't go
+on further, but I
+
+619
+00:29:02,740 --> 00:29:04,960
+think the answer's just yes.
+
+620
+00:29:04,960 --> 00:29:07,270
+So there's another one.
+
+621
+00:29:07,270 --> 00:29:10,150
+How do you know where to
+find these failure cases?
+
+622
+00:29:10,150 --> 00:29:14,260
+Maybe that's the right time to
+advertise linguistics classes.
+
+623
+00:29:14,260 --> 00:29:16,150
+Sorry.
+
+624
+00:29:16,150 --> 00:29:18,220
+You're still very
+quiet over here.
+
+625
+00:29:18,220 --> 00:29:19,660
+How do we find what?
+
+626
+00:29:19,660 --> 00:29:23,140
+How do you know where to
+find these failure cases?
+
+627
+00:29:23,140 --> 00:29:23,810
+Oh, interesting.
+
+628
+00:29:23,810 --> 00:29:24,310
+Yes.
+
+629
+00:29:24,310 --> 00:29:27,010
+How do we know where to
+find the failure cases?
+
+630
+00:29:27,010 --> 00:29:28,930
+That's a good question.
+
+631
+00:29:28,930 --> 00:29:32,680
+I think I agree with Chris,
+that actually thinking
+
+632
+00:29:32,680 --> 00:29:38,020
+about what is interesting
+about things in language
+
+633
+00:29:38,020 --> 00:29:40,540
+is one way to do it.
+
+634
+00:29:40,540 --> 00:29:45,490
+Kind of the heuristics that
+we saw in our language model--
+
+635
+00:29:45,490 --> 00:29:49,270
+sorry, in our NLI
+models with HANS,
+
+636
+00:29:49,270 --> 00:29:54,310
+you can kind of imagine
+that if the model was
+
+637
+00:29:54,310 --> 00:29:57,040
+sort of ignoring facts
+about language and sort
+
+638
+00:29:57,040 --> 00:29:59,530
+of just doing this sort
+of rough bag of words
+
+639
+00:29:59,530 --> 00:30:03,730
+with some extra magic, then
+it would do well about as bad
+
+640
+00:30:03,730 --> 00:30:05,300
+as it's doing here.
+
+641
+00:30:05,300 --> 00:30:10,510
+And these sorts of ideas
+about understanding
+
+642
+00:30:10,510 --> 00:30:13,210
+that this statement, if the
+artist slept, the actor ran,
+
+643
+00:30:13,210 --> 00:30:15,940
+does not imply the artist
+slept, is the kind of thing
+
+644
+00:30:15,940 --> 00:30:18,340
+that maybe you'd
+think up on your own,
+
+645
+00:30:18,340 --> 00:30:22,720
+but also you'd spend time
+pondering about and thinking
+
+646
+00:30:22,720 --> 00:30:27,440
+broad thoughts about in
+linguistics curricula as well.
+
+647
+00:30:27,440 --> 00:30:32,900
+So anything else, Chris?
+
+648
+00:30:32,900 --> 00:30:35,920
+
+
+649
+00:30:35,920 --> 00:30:40,990
+So there's also-- well, I
+guess someone is also saying--
+
+650
+00:30:40,990 --> 00:30:44,440
+I think it's about the sort
+of intervening verbs example,
+
+651
+00:30:44,440 --> 00:30:46,630
+or intervening nouns--
+sorry-- example.
+
+652
+00:30:46,630 --> 00:30:50,260
+But the data set itself
+probably includes mistakes
+
+653
+00:30:50,260 --> 00:30:52,910
+with higher attractors.
+
+654
+00:30:52,910 --> 00:30:53,410
+Yeah.
+
+655
+00:30:53,410 --> 00:30:55,510
+Yeah, that's a good point.
+
+656
+00:30:55,510 --> 00:30:58,640
+Yeah, because humans make more
+and more mistakes as the number
+
+657
+00:30:58,640 --> 00:31:00,685
+of attractors gets larger.
+
+658
+00:31:00,685 --> 00:31:03,790
+
+
+659
+00:31:03,790 --> 00:31:06,250
+On the other hand, I
+think that the mistakes
+
+660
+00:31:06,250 --> 00:31:10,120
+are fewer in written
+text than in spoken.
+
+661
+00:31:10,120 --> 00:31:12,050
+Maybe I'm just making that up.
+
+662
+00:31:12,050 --> 00:31:13,490
+That's what I think.
+
+663
+00:31:13,490 --> 00:31:15,490
+But yeah, it would be
+interesting to actually go
+
+664
+00:31:15,490 --> 00:31:20,360
+through that test set and
+see how many of the errors
+
+665
+00:31:20,360 --> 00:31:22,300
+the really strong model
+makes are actually
+
+666
+00:31:22,300 --> 00:31:25,880
+due to be sort of observed
+form being incorrect.
+
+667
+00:31:25,880 --> 00:31:27,115
+I'd be super curious.
+
+668
+00:31:27,115 --> 00:31:34,660
+
+
+669
+00:31:34,660 --> 00:31:36,060
+OK, should I move on?
+
+670
+00:31:36,060 --> 00:31:36,670
+Yeah.
+
+671
+00:31:36,670 --> 00:31:37,170
+Great.
+
+672
+00:31:37,170 --> 00:31:50,850
+
+
+673
+00:31:50,850 --> 00:31:52,710
+OK, so what does
+it feel like we're
+
+674
+00:31:52,710 --> 00:31:55,350
+doing when we are
+kind of constructing
+
+675
+00:31:55,350 --> 00:31:58,200
+these sort of bespoke,
+small, careful test sets
+
+676
+00:31:58,200 --> 00:31:59,940
+for various phenomena?
+
+677
+00:31:59,940 --> 00:32:03,420
+Well, it is sort of
+feels like unit testing.
+
+678
+00:32:03,420 --> 00:32:10,710
+And in fact, this sort of idea
+has been brought to the fore,
+
+679
+00:32:10,710 --> 00:32:13,660
+you might say, in
+NLP unit tests,
+
+680
+00:32:13,660 --> 00:32:15,270
+but for these NLP
+neural networks.
+
+681
+00:32:15,270 --> 00:32:19,500
+In particular, the paper here
+that I'm citing at the bottom
+
+682
+00:32:19,500 --> 00:32:23,310
+suggests this minimum
+functionality test.
+
+683
+00:32:23,310 --> 00:32:26,430
+You want a small test set that
+targets a specific behavior.
+
+684
+00:32:26,430 --> 00:32:28,650
+That should sound like
+some of the things
+
+685
+00:32:28,650 --> 00:32:30,780
+that we've already talked about.
+
+686
+00:32:30,780 --> 00:32:34,690
+But in this case, we're going
+to get even more specific.
+
+687
+00:32:34,690 --> 00:32:36,880
+So here's a single test case.
+
+688
+00:32:36,880 --> 00:32:39,870
+We're going to have an
+expected label, what
+
+689
+00:32:39,870 --> 00:32:42,750
+was actually predicted, whether
+the model passed this unit
+
+690
+00:32:42,750 --> 00:32:43,560
+test.
+
+691
+00:32:43,560 --> 00:32:47,680
+And the labels are going to
+be sentiment analysis here.
+
+692
+00:32:47,680 --> 00:32:50,280
+So negative label,
+positive label, or neutral
+
+693
+00:32:50,280 --> 00:32:52,170
+are the three options.
+
+694
+00:32:52,170 --> 00:32:56,370
+And the unit test is going to
+consist simply of sentences
+
+695
+00:32:56,370 --> 00:32:57,690
+that follow this template.
+
+696
+00:32:57,690 --> 00:33:02,640
+I, then a negation, the positive
+verb, and then the thing.
+
+697
+00:33:02,640 --> 00:33:05,520
+So if you negation
+positive verb,
+
+698
+00:33:05,520 --> 00:33:07,740
+it means a negative verb, right?
+
+699
+00:33:07,740 --> 00:33:09,030
+And so here's an example.
+
+700
+00:33:09,030 --> 00:33:11,250
+I can't say I
+recommend the food.
+
+701
+00:33:11,250 --> 00:33:12,970
+The expected label is negative.
+
+702
+00:33:12,970 --> 00:33:15,030
+The answer that the model
+provided-- and this is,
+
+703
+00:33:15,030 --> 00:33:19,350
+I think, a commercial
+sentiment analysis system--
+
+704
+00:33:19,350 --> 00:33:20,970
+so it predicted positive.
+
+705
+00:33:20,970 --> 00:33:24,450
+And then, I didn't
+love the flight.
+
+706
+00:33:24,450 --> 00:33:27,150
+The expected label was negative,
+and then the predicted answer
+
+707
+00:33:27,150 --> 00:33:29,700
+was neutral.
+
+708
+00:33:29,700 --> 00:33:32,760
+And this commercial
+sentiment analysis system
+
+709
+00:33:32,760 --> 00:33:35,790
+gets a lot of what
+you could imagine
+
+710
+00:33:35,790 --> 00:33:38,350
+are pretty reasonably
+simple examples wrong.
+
+711
+00:33:38,350 --> 00:33:41,880
+And so what Ribeiro
+et al 2020 showed
+
+712
+00:33:41,880 --> 00:33:44,700
+is that they could actually
+provide a system that
+
+713
+00:33:44,700 --> 00:33:48,300
+sort of had this framework of
+building test cases for NLP
+
+714
+00:33:48,300 --> 00:33:52,860
+models to ML engineers
+working on these products
+
+715
+00:33:52,860 --> 00:33:57,240
+and give them that interface,
+and they would actually
+
+716
+00:33:57,240 --> 00:34:01,693
+find bugs, bugs being
+categories of high error,
+
+717
+00:34:01,693 --> 00:34:04,110
+right, find bugs in their
+models that they could then kind
+
+718
+00:34:04,110 --> 00:34:07,253
+try to go and fix,
+and that this was
+
+719
+00:34:07,253 --> 00:34:08,670
+kind of an efficient
+way of trying
+
+720
+00:34:08,670 --> 00:34:10,860
+to find things that
+were simple and still
+
+721
+00:34:10,860 --> 00:34:16,380
+wrong with what should be pretty
+sophisticated neural systems.
+
+722
+00:34:16,380 --> 00:34:18,870
+So I really like
+this, and it's sort
+
+723
+00:34:18,870 --> 00:34:21,510
+of a nice way of thinking
+more specifically about what
+
+724
+00:34:21,510 --> 00:34:27,150
+are the capabilities in sort
+of precise terms of our models.
+
+725
+00:34:27,150 --> 00:34:29,969
+And all together now,
+you've seen problems
+
+726
+00:34:29,969 --> 00:34:33,239
+in natural language inference.
+
+727
+00:34:33,239 --> 00:34:34,739
+You've seen language
+models actually
+
+728
+00:34:34,739 --> 00:34:37,320
+perform pretty well at the
+language modeling objective.
+
+729
+00:34:37,320 --> 00:34:41,370
+But then you just saw an example
+of a commercial sentiment
+
+730
+00:34:41,370 --> 00:34:44,880
+analysis system that sort of
+should do better and doesn't.
+
+731
+00:34:44,880 --> 00:34:49,020
+And this comes to this really,
+I think, broad and important
+
+732
+00:34:49,020 --> 00:34:53,159
+takeaway, which is, if
+you get high accuracy
+
+733
+00:34:53,159 --> 00:34:55,380
+on the in-domain
+test set, you are not
+
+734
+00:34:55,380 --> 00:34:59,100
+guaranteed high
+accuracy on even what
+
+735
+00:34:59,100 --> 00:35:03,480
+you might consider to be
+reasonable out-of-domain
+
+736
+00:35:03,480 --> 00:35:04,680
+evaluations.
+
+737
+00:35:04,680 --> 00:35:08,100
+And life is always
+out of domain,
+
+738
+00:35:08,100 --> 00:35:11,910
+and if you're building a system
+that will be given to users,
+
+739
+00:35:11,910 --> 00:35:13,980
+it's immediately out of
+domain, at the very least
+
+740
+00:35:13,980 --> 00:35:15,600
+because it's trained
+on text that's
+
+741
+00:35:15,600 --> 00:35:18,160
+now older than the things
+that the users are now saying.
+
+742
+00:35:18,160 --> 00:35:20,490
+So it's a really,
+really important take
+
+743
+00:35:20,490 --> 00:35:23,190
+away that your sort
+of benchmark accuracy
+
+744
+00:35:23,190 --> 00:35:26,310
+is a single number that does
+not guarantee good performance
+
+745
+00:35:26,310 --> 00:35:27,930
+on a wide variety of things.
+
+746
+00:35:27,930 --> 00:35:32,180
+And from a what are our neural
+networks doing perspective,
+
+747
+00:35:32,180 --> 00:35:33,990
+one way to think about
+it is that models
+
+748
+00:35:33,990 --> 00:35:36,480
+seem to be learning the
+data set, fitting sort
+
+749
+00:35:36,480 --> 00:35:39,840
+of the fine-grained sort
+of heuristic and statistics
+
+750
+00:35:39,840 --> 00:35:42,720
+that help it fit
+this one data set,
+
+751
+00:35:42,720 --> 00:35:44,520
+as opposed to learning the task.
+
+752
+00:35:44,520 --> 00:35:47,020
+So humans can perform
+natural language inference.
+
+753
+00:35:47,020 --> 00:35:49,952
+If you give them examples
+from whatever data set,
+
+754
+00:35:49,952 --> 00:35:51,660
+once you've told them
+how to do the task,
+
+755
+00:35:51,660 --> 00:35:55,170
+they'll be very
+generally strong at it.
+
+756
+00:35:55,170 --> 00:35:59,760
+But you take your MNLI model
+and you test it on HANS,
+
+757
+00:35:59,760 --> 00:36:02,877
+and it got whatever that
+was below chance accuracy.
+
+758
+00:36:02,877 --> 00:36:04,960
+That's not the kind of
+thing that you want to see.
+
+759
+00:36:04,960 --> 00:36:07,110
+So it definitely learns
+the data set well
+
+760
+00:36:07,110 --> 00:36:10,620
+because the accuracy
+in domain is high.
+
+761
+00:36:10,620 --> 00:36:16,020
+But our models are seemingly
+not frequently learning
+
+762
+00:36:16,020 --> 00:36:19,540
+sort of the mechanisms that we
+would like them to be learning.
+
+763
+00:36:19,540 --> 00:36:22,573
+Last week, we heard about
+language models and sort
+
+764
+00:36:22,573 --> 00:36:24,990
+of the implicit knowledge that
+they encode about the world
+
+765
+00:36:24,990 --> 00:36:26,230
+through pretraining.
+
+766
+00:36:26,230 --> 00:36:29,700
+And one of the ways that we saw
+the interactive language models
+
+767
+00:36:29,700 --> 00:36:32,010
+was providing them
+with a prompt,
+
+768
+00:36:32,010 --> 00:36:35,340
+like, Dante was born in
+mask, and then seeing
+
+769
+00:36:35,340 --> 00:36:39,120
+if it puts high probability on
+the correct continuation, which
+
+770
+00:36:39,120 --> 00:36:43,260
+requires you to access knowledge
+about where Dante was born.
+
+771
+00:36:43,260 --> 00:36:45,810
+And we didn't frame
+it this way last week,
+
+772
+00:36:45,810 --> 00:36:47,970
+but this fits into the
+set of behavioral studies
+
+773
+00:36:47,970 --> 00:36:49,350
+that we've done so far.
+
+774
+00:36:49,350 --> 00:36:51,750
+This is a specific
+kind of input.
+
+775
+00:36:51,750 --> 00:36:55,000
+You could ask this
+for multiple people.
+
+776
+00:36:55,000 --> 00:36:57,030
+We could swap out
+Dante for other people.
+
+777
+00:36:57,030 --> 00:37:00,570
+We could have swapped out born
+in for, I don't know, died in
+
+778
+00:37:00,570 --> 00:37:01,860
+or something.
+
+779
+00:37:01,860 --> 00:37:04,810
+And then there are
+test suites again.
+
+780
+00:37:04,810 --> 00:37:07,770
+And so it's all connected.
+
+781
+00:37:07,770 --> 00:37:10,770
+OK, so I won't go too deep
+into the knowledge of language
+
+782
+00:37:10,770 --> 00:37:12,420
+models in terms
+of world knowledge
+
+783
+00:37:12,420 --> 00:37:15,540
+because we've gone over
+it some, but when you're
+
+784
+00:37:15,540 --> 00:37:19,700
+thinking about ways of
+interacting with your models,
+
+785
+00:37:19,700 --> 00:37:22,500
+this sort of behavioral study
+can be very, very general,
+
+786
+00:37:22,500 --> 00:37:25,200
+even though, remember,
+we're at still this highest
+
+787
+00:37:25,200 --> 00:37:28,333
+level of abstraction where we're
+just looking at the probability
+
+788
+00:37:28,333 --> 00:37:29,625
+distributions that are defined.
+
+789
+00:37:29,625 --> 00:37:33,320
+
+
+790
+00:37:33,320 --> 00:37:35,100
+All right, so now
+we'll go into--
+
+791
+00:37:35,100 --> 00:37:37,310
+so we've sort of
+looked at understanding
+
+792
+00:37:37,310 --> 00:37:41,490
+in fine-grained areas what
+our model is actually doing.
+
+793
+00:37:41,490 --> 00:37:45,590
+What about sort of why,
+for an individual input,
+
+794
+00:37:45,590 --> 00:37:47,940
+is it getting the
+answer right or wrong?
+
+795
+00:37:47,940 --> 00:37:50,030
+And then are there
+changes to the inputs
+
+796
+00:37:50,030 --> 00:37:52,670
+that look fine to
+humans but actually
+
+797
+00:37:52,670 --> 00:37:55,800
+make the models do a bad job?
+
+798
+00:37:55,800 --> 00:37:59,960
+So one study that I love to
+reference that really draws
+
+799
+00:37:59,960 --> 00:38:02,990
+back into our original
+motivation of using
+
+800
+00:38:02,990 --> 00:38:06,740
+LSTM networks instead of simple
+recurrent neural networks
+
+801
+00:38:06,740 --> 00:38:10,370
+was that they could
+use long context.
+
+802
+00:38:10,370 --> 00:38:14,870
+But how long is your long-
+and short-term memory?
+
+803
+00:38:14,870 --> 00:38:19,280
+And the idea of
+Khandelwal et al 2018
+
+804
+00:38:19,280 --> 00:38:25,130
+was shuffle or remove contexts
+that are farther than some k
+
+805
+00:38:25,130 --> 00:38:29,010
+words away, changing k.
+
+806
+00:38:29,010 --> 00:38:33,210
+And if your accuracy, if
+the predictive ability
+
+807
+00:38:33,210 --> 00:38:35,820
+of your language model,
+the perplexity, right,
+
+808
+00:38:35,820 --> 00:38:37,800
+doesn't change once
+you do that, it
+
+809
+00:38:37,800 --> 00:38:40,470
+means the model wasn't
+actually using that context.
+
+810
+00:38:40,470 --> 00:38:42,130
+I think this is so cool.
+
+811
+00:38:42,130 --> 00:38:46,050
+So on the x-axis,
+we've got how far away
+
+812
+00:38:46,050 --> 00:38:49,050
+from the word that you're trying
+to predict are you actually
+
+813
+00:38:49,050 --> 00:38:52,140
+sort of corrupting,
+shuffling, or removing stuff
+
+814
+00:38:52,140 --> 00:38:54,160
+from the sequence?
+
+815
+00:38:54,160 --> 00:38:57,120
+And then on the y-axis
+is the increase in loss.
+
+816
+00:38:57,120 --> 00:39:00,570
+So if the increase
+in loss is 0, it
+
+817
+00:39:00,570 --> 00:39:03,900
+means that the model was not
+using the thing that you just
+
+818
+00:39:03,900 --> 00:39:06,120
+removed because if
+it was using it,
+
+819
+00:39:06,120 --> 00:39:08,060
+it would now do worse
+without it, right?
+
+820
+00:39:08,060 --> 00:39:11,250
+And so if you shuffle,
+in the blue line
+
+821
+00:39:11,250 --> 00:39:13,410
+here, if you shuffle
+the history that's
+
+822
+00:39:13,410 --> 00:39:18,563
+farther away from 50 words,
+the model does not even notice.
+
+823
+00:39:18,563 --> 00:39:19,980
+I think that's
+really interesting.
+
+824
+00:39:19,980 --> 00:39:23,610
+One, it says everything past
+50 words of this LSTM language
+
+825
+00:39:23,610 --> 00:39:26,040
+model, you could have
+given it in random order
+
+826
+00:39:26,040 --> 00:39:28,380
+and it wouldn't have noticed.
+
+827
+00:39:28,380 --> 00:39:31,050
+And then, two, it says that
+if you're closer than that,
+
+828
+00:39:31,050 --> 00:39:33,360
+it actually is making
+use of the word order.
+
+829
+00:39:33,360 --> 00:39:34,890
+That's a pretty long memory.
+
+830
+00:39:34,890 --> 00:39:36,630
+OK, that's really interesting.
+
+831
+00:39:36,630 --> 00:39:39,990
+And then if you actually
+remove the words entirely,
+
+832
+00:39:39,990 --> 00:39:42,630
+you can kind of notice
+that the words are
+
+833
+00:39:42,630 --> 00:39:45,600
+missing up to 200 words away.
+
+834
+00:39:45,600 --> 00:39:46,890
+So you don't know the order--
+
+835
+00:39:46,890 --> 00:39:48,640
+you don't care about
+the order they're in,
+
+836
+00:39:48,640 --> 00:39:50,500
+but you care whether
+they're there or not.
+
+837
+00:39:50,500 --> 00:39:53,130
+And so this is an
+evaluation of, well,
+
+838
+00:39:53,130 --> 00:39:54,810
+do LSTMs have long-term memory?
+
+839
+00:39:54,810 --> 00:39:57,420
+Well, this one at least
+has effectively no longer
+
+840
+00:39:57,420 --> 00:40:02,180
+than 200 words of
+memory, but also no less.
+
+841
+00:40:02,180 --> 00:40:03,900
+So very cool.
+
+842
+00:40:03,900 --> 00:40:06,830
+
+
+843
+00:40:06,830 --> 00:40:09,410
+So that's a general
+study for a single model.
+
+844
+00:40:09,410 --> 00:40:13,190
+It talks about its sort
+of average behavior
+
+845
+00:40:13,190 --> 00:40:14,600
+over a wide range of examples.
+
+846
+00:40:14,600 --> 00:40:17,000
+But we want to talk about
+individual predictions
+
+847
+00:40:17,000 --> 00:40:18,100
+on individual inputs.
+
+848
+00:40:18,100 --> 00:40:19,410
+So let's talk about that.
+
+849
+00:40:19,410 --> 00:40:23,690
+So one way of interpreting,
+why did my model
+
+850
+00:40:23,690 --> 00:40:26,630
+make this decision,
+that's very popular is,
+
+851
+00:40:26,630 --> 00:40:29,060
+for a single example,
+what parts of the input
+
+852
+00:40:29,060 --> 00:40:31,310
+actually led to the decision?
+
+853
+00:40:31,310 --> 00:40:34,350
+And this is where we come
+in with saliency map.
+
+854
+00:40:34,350 --> 00:40:38,720
+So saliency map provides a
+score for each word indicating
+
+855
+00:40:38,720 --> 00:40:40,650
+its importance to the
+model's prediction.
+
+856
+00:40:40,650 --> 00:40:44,113
+So you've got something
+like BERT here.
+
+857
+00:40:44,113 --> 00:40:44,780
+You've got BERT.
+
+858
+00:40:44,780 --> 00:40:47,510
+BERT Is making a
+prediction for this mask.
+
+859
+00:40:47,510 --> 00:40:50,595
+The mask rushed to the emergency
+room to see her patient.
+
+860
+00:40:50,595 --> 00:40:53,120
+
+
+861
+00:40:53,120 --> 00:40:55,790
+And the predictions that
+the model is making is
+
+862
+00:40:55,790 --> 00:40:58,550
+thinks with 47% it's
+going to be nurse that's
+
+863
+00:40:58,550 --> 00:41:02,360
+here in the mask instead,
+or maybe woman or doctor,
+
+864
+00:41:02,360 --> 00:41:04,490
+or mother, or girl, OK.
+
+865
+00:41:04,490 --> 00:41:06,620
+And then the saliency map
+is being visualized here
+
+866
+00:41:06,620 --> 00:41:07,670
+in orange.
+
+867
+00:41:07,670 --> 00:41:09,710
+According to this
+method of saliency
+
+868
+00:41:09,710 --> 00:41:11,960
+called simple gradients,
+which we'll get into,
+
+869
+00:41:11,960 --> 00:41:16,037
+"emergency," "her,"
+and the SEP token--
+
+870
+00:41:16,037 --> 00:41:17,870
+let's not worry about
+the SEP token for now,
+
+871
+00:41:17,870 --> 00:41:21,330
+but "emergency" and "her"
+are the important words,
+
+872
+00:41:21,330 --> 00:41:21,830
+apparently.
+
+873
+00:41:21,830 --> 00:41:23,780
+And the SEP token shows
+up in every sentence,
+
+874
+00:41:23,780 --> 00:41:25,250
+so I'm not going to--
+
+875
+00:41:25,250 --> 00:41:25,760
+right.
+
+876
+00:41:25,760 --> 00:41:29,247
+And so these two together
+are, according to this method,
+
+877
+00:41:29,247 --> 00:41:30,830
+what's important for
+the model to make
+
+878
+00:41:30,830 --> 00:41:33,360
+this prediction to mask.
+
+879
+00:41:33,360 --> 00:41:36,950
+And you can see maybe some
+statistics, biases, et cetera
+
+880
+00:41:36,950 --> 00:41:39,020
+that it's picked up
+in the predictions
+
+881
+00:41:39,020 --> 00:41:41,690
+and then have it mapped
+out onto the sentence.
+
+882
+00:41:41,690 --> 00:41:44,210
+And this is-- well, it
+seems like it's really
+
+883
+00:41:44,210 --> 00:41:46,880
+helping interpretability.
+
+884
+00:41:46,880 --> 00:41:52,560
+And yeah, I think that this
+is sort of a very useful tool.
+
+885
+00:41:52,560 --> 00:41:56,270
+Actually, this is part
+of a demo from AllenNLP
+
+886
+00:41:56,270 --> 00:42:00,800
+that allows you to do this
+yourself for any sentence
+
+887
+00:42:00,800 --> 00:42:02,700
+that you want.
+
+888
+00:42:02,700 --> 00:42:05,540
+So what's this way of
+making saliency maps?
+
+889
+00:42:05,540 --> 00:42:07,800
+We're not going to go--
+there's so many ways to do it.
+
+890
+00:42:07,800 --> 00:42:09,342
+We're going to take
+a very simple one
+
+891
+00:42:09,342 --> 00:42:12,660
+and work through why
+it sort of makes sense.
+
+892
+00:42:12,660 --> 00:42:17,190
+So the sort of issue is, how do
+you define importance, right?
+
+893
+00:42:17,190 --> 00:42:19,190
+What does it mean to be
+important to the model's
+
+894
+00:42:19,190 --> 00:42:20,613
+prediction?
+
+895
+00:42:20,613 --> 00:42:22,280
+And here's one way
+of thinking about it.
+
+896
+00:42:22,280 --> 00:42:24,167
+It's called the simple
+gradient method.
+
+897
+00:42:24,167 --> 00:42:25,250
+Let's get a little formal.
+
+898
+00:42:25,250 --> 00:42:28,430
+You've got words x1
+to xn, OK, and then
+
+899
+00:42:28,430 --> 00:42:30,830
+you've got a model's score
+for a given output class.
+
+900
+00:42:30,830 --> 00:42:34,160
+So maybe you've got, in the
+BERT example, each output
+
+901
+00:42:34,160 --> 00:42:38,280
+class with each output word
+that you could possibly predict.
+
+902
+00:42:38,280 --> 00:42:42,620
+And then you take the norm
+of the gradient of the score
+
+903
+00:42:42,620 --> 00:42:44,690
+with respect to each word.
+
+904
+00:42:44,690 --> 00:42:48,350
+OK, so what we're
+saying here is the score
+
+905
+00:42:48,350 --> 00:42:55,050
+is sort of the un-normalized
+probability for that class, OK?
+
+906
+00:42:55,050 --> 00:42:57,300
+So you've got a single class,
+you're taking the score.
+
+907
+00:42:57,300 --> 00:42:59,370
+It's, like, how
+likely it is, not yet
+
+908
+00:42:59,370 --> 00:43:02,580
+normalized by how likely
+everything else is sort of.
+
+909
+00:43:02,580 --> 00:43:05,190
+Gradient, how much
+is it going to change
+
+910
+00:43:05,190 --> 00:43:08,230
+if I move it a little bit
+in one direction or another?
+
+911
+00:43:08,230 --> 00:43:10,860
+And then you take the norm to
+get a scalar from a vector.
+
+912
+00:43:10,860 --> 00:43:12,180
+So it looks like this.
+
+913
+00:43:12,180 --> 00:43:14,430
+So salience of
+word "I," you have
+
+914
+00:43:14,430 --> 00:43:18,870
+the norm bars on the outside,
+gradient with respect to xi.
+
+915
+00:43:18,870 --> 00:43:22,710
+So that's, if I change
+a little bit locally xi,
+
+916
+00:43:22,710 --> 00:43:25,510
+how much does my score change?
+
+917
+00:43:25,510 --> 00:43:27,900
+So the idea is that
+a high gradient norm
+
+918
+00:43:27,900 --> 00:43:30,300
+means that if I were
+to change it locally,
+
+919
+00:43:30,300 --> 00:43:32,010
+I'd affect the score a lot.
+
+920
+00:43:32,010 --> 00:43:34,310
+And that means it was very
+important to the decision.
+
+921
+00:43:34,310 --> 00:43:35,800
+Let's visualize
+this a little bit.
+
+922
+00:43:35,800 --> 00:43:40,620
+So here on the y-axis,
+we've got loss, just
+
+923
+00:43:40,620 --> 00:43:41,550
+the loss of the model.
+
+924
+00:43:41,550 --> 00:43:44,100
+Sorry, this should be
+score, should be score.
+
+925
+00:43:44,100 --> 00:43:47,010
+And on the x-axis,
+you've got word space.
+
+926
+00:43:47,010 --> 00:43:51,720
+The word space is like sort
+of a flattening of the ability
+
+927
+00:43:51,720 --> 00:43:54,780
+to move your word embedding
+in 1,000-dimensional space.
+
+928
+00:43:54,780 --> 00:43:58,810
+I've just plotted it
+here in one dimension.
+
+929
+00:43:58,810 --> 00:44:00,870
+And now a high
+saliency thing, you
+
+930
+00:44:00,870 --> 00:44:04,320
+can see that the relationship
+between what should be score
+
+931
+00:44:04,320 --> 00:44:06,510
+and moving the
+word in word space,
+
+932
+00:44:06,510 --> 00:44:08,640
+you move it a little
+bit on the x-axis,
+
+933
+00:44:08,640 --> 00:44:10,497
+and the score changes a lot.
+
+934
+00:44:10,497 --> 00:44:12,330
+That's that derivative,
+that's the gradient.
+
+935
+00:44:12,330 --> 00:44:13,710
+Awesome, love it.
+
+936
+00:44:13,710 --> 00:44:16,800
+Low saliency, you move
+the word around locally,
+
+937
+00:44:16,800 --> 00:44:20,320
+and the score doesn't change.
+
+938
+00:44:20,320 --> 00:44:23,730
+So the interpretation
+is that means
+
+939
+00:44:23,730 --> 00:44:26,010
+that the actual
+identity of this word
+
+940
+00:44:26,010 --> 00:44:27,690
+wasn't that important
+to the prediction
+
+941
+00:44:27,690 --> 00:44:30,030
+because I could have changed
+it and the score wouldn't
+
+942
+00:44:30,030 --> 00:44:31,290
+have changed.
+
+943
+00:44:31,290 --> 00:44:33,840
+Now, why are there
+more methods than this?
+
+944
+00:44:33,840 --> 00:44:36,307
+Because, honestly,
+reading that, I was like,
+
+945
+00:44:36,307 --> 00:44:37,140
+that sounds awesome.
+
+946
+00:44:37,140 --> 00:44:38,190
+That sounds great.
+
+947
+00:44:38,190 --> 00:44:43,643
+There are sort of lots of
+issues with this kind of method,
+
+948
+00:44:43,643 --> 00:44:45,310
+and lots of ways of
+getting around them.
+
+949
+00:44:45,310 --> 00:44:46,590
+Here's one issue.
+
+950
+00:44:46,590 --> 00:44:50,220
+It's not perfect
+because, well, maybe
+
+951
+00:44:50,220 --> 00:44:54,000
+your linear approximation that
+the gradient gives you holds
+
+952
+00:44:54,000 --> 00:44:56,740
+only very, very locally, right?
+
+953
+00:44:56,740 --> 00:45:01,620
+So here the gradient is 0,
+so this is a low saliency
+
+954
+00:45:01,620 --> 00:45:04,320
+word because I'm at the
+bottom of this parabola.
+
+955
+00:45:04,320 --> 00:45:07,530
+But if I were to move it even a
+little bit in either direction,
+
+956
+00:45:07,530 --> 00:45:10,190
+the score would shoot up.
+
+957
+00:45:10,190 --> 00:45:11,820
+So is this not an
+important word?
+
+958
+00:45:11,820 --> 00:45:16,350
+It seems important to be
+right there, as opposed
+
+959
+00:45:16,350 --> 00:45:20,220
+to anywhere else, even sort of
+nearby, in order for the score
+
+960
+00:45:20,220 --> 00:45:21,930
+not to go up.
+
+961
+00:45:21,930 --> 00:45:24,750
+But the simple gradients
+method won't capture this
+
+962
+00:45:24,750 --> 00:45:27,030
+because it just looks
+at the gradient, which
+
+963
+00:45:27,030 --> 00:45:28,270
+is that 0 right there, OK?
+
+964
+00:45:28,270 --> 00:45:30,810
+
+
+965
+00:45:30,810 --> 00:45:32,790
+But if you want
+to look into more,
+
+966
+00:45:32,790 --> 00:45:34,290
+there's a bunch of
+different methods
+
+967
+00:45:34,290 --> 00:45:36,330
+that are sort of
+applied in these papers.
+
+968
+00:45:36,330 --> 00:45:40,185
+And I think that it's a good
+tool for the toolbox, OK?
+
+969
+00:45:40,185 --> 00:45:43,130
+
+
+970
+00:45:43,130 --> 00:45:47,220
+So that is one way of
+explaining a prediction.
+
+971
+00:45:47,220 --> 00:45:53,090
+And it has some issues, like
+why are individual words being
+
+972
+00:45:53,090 --> 00:45:56,785
+scored, as opposed to phrases
+or something like that.
+
+973
+00:45:56,785 --> 00:45:58,910
+But for now, we're going
+to move on to another type
+
+974
+00:45:58,910 --> 00:46:02,210
+of explanation, and I'm
+going to check the time.
+
+975
+00:46:02,210 --> 00:46:04,730
+OK, cool.
+
+976
+00:46:04,730 --> 00:46:06,480
+Actually, yeah, let
+me pause for a second.
+
+977
+00:46:06,480 --> 00:46:07,522
+Any questions about this?
+
+978
+00:46:07,522 --> 00:46:12,980
+
+
+979
+00:46:12,980 --> 00:46:16,080
+Earlier on, there were
+a couple of questions.
+
+980
+00:46:16,080 --> 00:46:19,730
+One of them was, what
+are your thoughts
+
+981
+00:46:19,730 --> 00:46:21,500
+on whether looking
+at attention weights
+
+982
+00:46:21,500 --> 00:46:24,530
+is a methodologically
+rigorous way of determining
+
+983
+00:46:24,530 --> 00:46:27,830
+the importance that the model
+places on certain tokens?
+
+984
+00:46:27,830 --> 00:46:31,800
+It seems like there's some back
+and forth in the literature.
+
+985
+00:46:31,800 --> 00:46:35,400
+That is a great
+question, and I probably
+
+986
+00:46:35,400 --> 00:46:37,290
+won't engage with
+that question as much
+
+987
+00:46:37,290 --> 00:46:40,560
+as I could if we had a
+second lecture on this.
+
+988
+00:46:40,560 --> 00:46:43,740
+I actually will provide some
+attention analyses and tell you
+
+989
+00:46:43,740 --> 00:46:46,890
+they're interesting, and then
+I'll sort of say a little bit
+
+990
+00:46:46,890 --> 00:46:58,710
+about why they can be
+interesting without being sort
+
+991
+00:46:58,710 --> 00:47:03,660
+of the end-all of analysis of
+where information is flowing
+
+992
+00:47:03,660 --> 00:47:05,940
+in a transformer, for example.
+
+993
+00:47:05,940 --> 00:47:08,370
+I think the debate
+is something that we
+
+994
+00:47:08,370 --> 00:47:11,650
+would have to get into in a
+much longer period of time.
+
+995
+00:47:11,650 --> 00:47:14,010
+But look at the slides
+that I show about attention
+
+996
+00:47:14,010 --> 00:47:16,140
+and the caveats that
+I provide, and let
+
+997
+00:47:16,140 --> 00:47:17,973
+me know if that answers
+your question first,
+
+998
+00:47:17,973 --> 00:47:19,932
+because we have quite a
+number of slides on it.
+
+999
+00:47:19,932 --> 00:47:21,840
+And if not, please,
+please, ask again,
+
+1000
+00:47:21,840 --> 00:47:24,970
+and we can chat more about it.
+
+1001
+00:47:24,970 --> 00:47:27,040
+Then maybe you can go on.
+
+1002
+00:47:27,040 --> 00:47:28,240
+Great, OK.
+
+1003
+00:47:28,240 --> 00:47:31,780
+So I think this is a really
+fascinating question, which
+
+1004
+00:47:31,780 --> 00:47:35,140
+also gets what was
+important about the input,
+
+1005
+00:47:35,140 --> 00:47:38,720
+but it actually kind of an
+even more direct way, which is,
+
+1006
+00:47:38,720 --> 00:47:41,650
+could I just keep some
+minimal part of the input
+
+1007
+00:47:41,650 --> 00:47:43,250
+and get the same answer?
+
+1008
+00:47:43,250 --> 00:47:45,490
+So here's an example from SQuAD.
+
+1009
+00:47:45,490 --> 00:47:48,010
+You have this passage,
+in 1899 John Jacob Astor
+
+1010
+00:47:48,010 --> 00:47:51,660
+IV invested $100,000 for Tesla.
+
+1011
+00:47:51,660 --> 00:47:54,160
+OK, and then the answer that
+is being predicted by the model
+
+1012
+00:47:54,160 --> 00:47:56,577
+is going to always be in blue,
+in these examples, Colorado
+
+1013
+00:47:56,577 --> 00:47:58,060
+Springs experiments.
+
+1014
+00:47:58,060 --> 00:47:59,740
+So you've got this passage.
+
+1015
+00:47:59,740 --> 00:48:03,503
+And the question is, what did
+Tesla spend Astor's money on?
+
+1016
+00:48:03,503 --> 00:48:05,920
+That's why the prediction is
+Colorado Springs experiments.
+
+1017
+00:48:05,920 --> 00:48:10,180
+The model gets the answer
+right, which is nice.
+
+1018
+00:48:10,180 --> 00:48:12,190
+And we would like to
+think it's because it's
+
+1019
+00:48:12,190 --> 00:48:14,880
+doing some kind of
+reading comprehension.
+
+1020
+00:48:14,880 --> 00:48:16,390
+But here's the issue.
+
+1021
+00:48:16,390 --> 00:48:19,780
+It turns out, based on
+this fascinating paper,
+
+1022
+00:48:19,780 --> 00:48:27,980
+that if you just reduced
+the question to, did,
+
+1023
+00:48:27,980 --> 00:48:30,680
+you actually get
+exactly the same answer.
+
+1024
+00:48:30,680 --> 00:48:33,080
+In fact, with the
+original question,
+
+1025
+00:48:33,080 --> 00:48:36,800
+the model had sort of a
+0.78 confidence probability
+
+1026
+00:48:36,800 --> 00:48:37,760
+in that answer.
+
+1027
+00:48:37,760 --> 00:48:41,780
+And with the reduced
+question, did,
+
+1028
+00:48:41,780 --> 00:48:43,580
+you get even higher confidence.
+
+1029
+00:48:43,580 --> 00:48:45,890
+And that, if you
+give a human this,
+
+1030
+00:48:45,890 --> 00:48:47,992
+they would not be
+able to know really
+
+1031
+00:48:47,992 --> 00:48:50,450
+what you're trying to ask about,
+so it seems like something
+
+1032
+00:48:50,450 --> 00:48:52,000
+is going really wonky here.
+
+1033
+00:48:52,000 --> 00:48:54,510
+
+
+1034
+00:48:54,510 --> 00:48:59,030
+So here's sort of a very high
+level overview of the method.
+
+1035
+00:48:59,030 --> 00:49:01,875
+In fact, it actually references
+our input saliency methods.
+
+1036
+00:49:01,875 --> 00:49:03,070
+Ah, nice, it's connected.
+
+1037
+00:49:03,070 --> 00:49:08,090
+So you iteratively remove
+non-salient or unimportant
+
+1038
+00:49:08,090 --> 00:49:08,870
+words.
+
+1039
+00:49:08,870 --> 00:49:13,320
+So here's a passage again
+talking about football,
+
+1040
+00:49:13,320 --> 00:49:13,820
+I think.
+
+1041
+00:49:13,820 --> 00:49:16,880
+Yeah, oh, nice.
+
+1042
+00:49:16,880 --> 00:49:18,680
+So the question is,
+where did the Broncos
+
+1043
+00:49:18,680 --> 00:49:20,010
+practice for the Super Bowl?
+
+1044
+00:49:20,010 --> 00:49:23,930
+Has the prediction of
+Stanford University.
+
+1045
+00:49:23,930 --> 00:49:25,410
+And that is correct.
+
+1046
+00:49:25,410 --> 00:49:26,990
+So again, seems nice.
+
+1047
+00:49:26,990 --> 00:49:30,290
+And now we're not actually
+going to get the model
+
+1048
+00:49:30,290 --> 00:49:31,190
+to be incorrect.
+
+1049
+00:49:31,190 --> 00:49:35,587
+We're just going to say, how
+can I change this question such
+
+1050
+00:49:35,587 --> 00:49:37,170
+that it'll still get
+the answer right?
+
+1051
+00:49:37,170 --> 00:49:39,950
+So I'm going to remove the
+word that was least important
+
+1052
+00:49:39,950 --> 00:49:41,790
+according to the
+saliency method.
+
+1053
+00:49:41,790 --> 00:49:44,870
+So now it's, where did the
+practice for the Super Bowl?
+
+1054
+00:49:44,870 --> 00:49:46,580
+Already, this is
+sort of unanswerable
+
+1055
+00:49:46,580 --> 00:49:48,590
+because you've got
+two teams practicing.
+
+1056
+00:49:48,590 --> 00:49:50,760
+You don't even know which
+one you're asking about.
+
+1057
+00:49:50,760 --> 00:49:53,720
+So why the model still thinks
+it's so confident in Stanford
+
+1058
+00:49:53,720 --> 00:49:55,350
+University makes no sense.
+
+1059
+00:49:55,350 --> 00:49:58,820
+But you can just
+sort of keep going.
+
+1060
+00:49:58,820 --> 00:50:03,650
+And now I think
+here the model stops
+
+1061
+00:50:03,650 --> 00:50:07,160
+being confident in the
+answer Stanford University.
+
+1062
+00:50:07,160 --> 00:50:10,460
+But I think this is
+really interesting
+
+1063
+00:50:10,460 --> 00:50:12,410
+just to show that
+if the model is
+
+1064
+00:50:12,410 --> 00:50:15,710
+able to do this with
+very high confidence,
+
+1065
+00:50:15,710 --> 00:50:19,190
+it's not reflecting the
+uncertainty that really should
+
+1066
+00:50:19,190 --> 00:50:23,960
+be there because you can't know
+what you're even asking about.
+
+1067
+00:50:23,960 --> 00:50:26,190
+OK, so what was important
+to make this answer?
+
+1068
+00:50:26,190 --> 00:50:30,080
+Well, at least these
+parts were important
+
+1069
+00:50:30,080 --> 00:50:31,850
+because you could
+keep just those parts
+
+1070
+00:50:31,850 --> 00:50:33,080
+and get the same answer.
+
+1071
+00:50:33,080 --> 00:50:36,230
+Fascinating.
+
+1072
+00:50:36,230 --> 00:50:38,030
+All right, so that's
+sort of the end
+
+1073
+00:50:38,030 --> 00:50:40,670
+of the admittedly
+brief talk section
+
+1074
+00:50:40,670 --> 00:50:45,330
+on thinking about input saliency
+methods and similar things.
+
+1075
+00:50:45,330 --> 00:50:47,300
+Now we're going to talk
+about actually breaking
+
+1076
+00:50:47,300 --> 00:50:50,970
+models and understanding
+models by breaking them.
+
+1077
+00:50:50,970 --> 00:50:52,490
+OK, cool.
+
+1078
+00:50:52,490 --> 00:50:54,410
+So if we have a passage
+here, Peyton Manning
+
+1079
+00:50:54,410 --> 00:50:58,460
+became the first
+quarterback something
+
+1080
+00:50:58,460 --> 00:51:02,157
+Super Bowl, age 39, past
+record held by John Elway.
+
+1081
+00:51:02,157 --> 00:51:03,740
+Again, we're doing
+question answering.
+
+1082
+00:51:03,740 --> 00:51:05,480
+We've got this
+question, what was
+
+1083
+00:51:05,480 --> 00:51:08,450
+the name of the quarterback
+who was 38 in the Super Bowl?
+
+1084
+00:51:08,450 --> 00:51:11,860
+The prediction is
+correct, looks good.
+
+1085
+00:51:11,860 --> 00:51:13,610
+Now we're not going
+to change the question
+
+1086
+00:51:13,610 --> 00:51:16,970
+to try to sort of make
+the question nonsensical
+
+1087
+00:51:16,970 --> 00:51:18,410
+while keeping the same answer.
+
+1088
+00:51:18,410 --> 00:51:22,293
+Instead, we're going
+to change the passage
+
+1089
+00:51:22,293 --> 00:51:24,710
+by adding this sentence at the
+end, which really shouldn't
+
+1090
+00:51:24,710 --> 00:51:25,490
+distract anyone.
+
+1091
+00:51:25,490 --> 00:51:29,090
+This is well-known
+quarterback Jeff Dean.
+
+1092
+00:51:29,090 --> 00:51:31,400
+Had jersey number
+37 in Champ Bowl.
+
+1093
+00:51:31,400 --> 00:51:32,510
+So this just doesn't--
+
+1094
+00:51:32,510 --> 00:51:35,750
+it's really not even related,
+but now the prediction
+
+1095
+00:51:35,750 --> 00:51:40,160
+is Jeff Dean for
+our nice QA model.
+
+1096
+00:51:40,160 --> 00:51:44,840
+And so this shows as well that
+it seems like maybe there's
+
+1097
+00:51:44,840 --> 00:51:48,930
+this end of the passage bias as
+to where the answer should be,
+
+1098
+00:51:48,930 --> 00:51:49,890
+for example.
+
+1099
+00:51:49,890 --> 00:51:52,850
+And so this is an
+adversarial example
+
+1100
+00:51:52,850 --> 00:51:55,220
+where we flipped the
+prediction by adding something
+
+1101
+00:51:55,220 --> 00:51:57,210
+that is innocuous to humans.
+
+1102
+00:51:57,210 --> 00:51:59,390
+And so sort of the
+higher level take away
+
+1103
+00:51:59,390 --> 00:52:01,700
+is, oh, it seems
+like the QA model
+
+1104
+00:52:01,700 --> 00:52:04,400
+that we had that seemed good
+is not actually performing
+
+1105
+00:52:04,400 --> 00:52:07,490
+QA how we want it to, even
+though its in-domain accuracy
+
+1106
+00:52:07,490 --> 00:52:09,870
+was good.
+
+1107
+00:52:09,870 --> 00:52:12,270
+And here's another example.
+
+1108
+00:52:12,270 --> 00:52:16,790
+So you've got this
+paragraph with the question,
+
+1109
+00:52:16,790 --> 00:52:19,580
+what has been the result
+of this publicity?
+
+1110
+00:52:19,580 --> 00:52:22,830
+The answer is, increased
+scrutiny on teacher misconduct.
+
+1111
+00:52:22,830 --> 00:52:25,040
+Now, instead of
+changing the paragraph,
+
+1112
+00:52:25,040 --> 00:52:27,630
+we're going to change
+the question in really,
+
+1113
+00:52:27,630 --> 00:52:32,210
+really seemingly insignificant
+ways to change the model's
+
+1114
+00:52:32,210 --> 00:52:32,850
+prediction.
+
+1115
+00:52:32,850 --> 00:52:37,900
+So first, what H-A and then
+I've got this typo L been
+
+1116
+00:52:37,900 --> 00:52:39,340
+the result of this publicity.
+
+1117
+00:52:39,340 --> 00:52:42,370
+The answer changes to
+teacher misconduct.
+
+1118
+00:52:42,370 --> 00:52:46,030
+Likely a human would sort of
+ignore this typo or something
+
+1119
+00:52:46,030 --> 00:52:47,600
+and answer the right answer.
+
+1120
+00:52:47,600 --> 00:52:49,330
+And then this is really nuts.
+
+1121
+00:52:49,330 --> 00:52:52,690
+Instead of asking, what has been
+the result of this publicity,
+
+1122
+00:52:52,690 --> 00:52:56,560
+if you ask, what's been the
+result of this publicity,
+
+1123
+00:52:56,560 --> 00:52:59,290
+the answer also changes.
+
+1124
+00:52:59,290 --> 00:53:02,950
+And the authors call this
+a semantically equivalent
+
+1125
+00:53:02,950 --> 00:53:04,390
+adversary.
+
+1126
+00:53:04,390 --> 00:53:05,620
+This is pretty rough.
+
+1127
+00:53:05,620 --> 00:53:09,730
+And in general, swapping "what"
+for "what's" in this QA model
+
+1128
+00:53:09,730 --> 00:53:12,950
+breaks it pretty frequently.
+
+1129
+00:53:12,950 --> 00:53:17,260
+And so, again, when you go
+back and sort of re-tinker
+
+1130
+00:53:17,260 --> 00:53:19,098
+how to build your
+model, you're going
+
+1131
+00:53:19,098 --> 00:53:20,890
+to be thinking about
+these things, not just
+
+1132
+00:53:20,890 --> 00:53:23,810
+the sort of average accuracy.
+
+1133
+00:53:23,810 --> 00:53:27,970
+So that's sort of
+talking about noise.
+
+1134
+00:53:27,970 --> 00:53:31,000
+Are models robust to
+noise in their inputs?
+
+1135
+00:53:31,000 --> 00:53:33,970
+Are humans robust to noise is
+another question we can ask.
+
+1136
+00:53:33,970 --> 00:53:38,710
+And so you can kind of go
+to this popular sort of meme
+
+1137
+00:53:38,710 --> 00:53:40,630
+passed around the
+internet from time
+
+1138
+00:53:40,630 --> 00:53:44,230
+to time, where you have all
+the letters in these words
+
+1139
+00:53:44,230 --> 00:53:44,840
+scrambled.
+
+1140
+00:53:44,840 --> 00:53:49,000
+You say, according to research
+at Cambridge University,
+
+1141
+00:53:49,000 --> 00:53:51,745
+it doesn't matter in what order
+the letters in a word are,
+
+1142
+00:53:51,745 --> 00:53:52,330
+right?
+
+1143
+00:53:52,330 --> 00:53:53,950
+And so it seems like--
+
+1144
+00:53:53,950 --> 00:53:57,550
+I think I did a pretty
+good job there--
+
+1145
+00:53:57,550 --> 00:53:59,510
+seemingly, right,
+we've got this noise.
+
+1146
+00:53:59,510 --> 00:54:01,270
+That's a specific kind of noise.
+
+1147
+00:54:01,270 --> 00:54:05,080
+And we can be robust as humans
+to reading and processing
+
+1148
+00:54:05,080 --> 00:54:10,078
+the language without actually
+all that much of a difficulty.
+
+1149
+00:54:10,078 --> 00:54:12,370
+So that's maybe something
+that we might want our models
+
+1150
+00:54:12,370 --> 00:54:15,100
+to also be robust to.
+
+1151
+00:54:15,100 --> 00:54:19,030
+And it's very practical as well.
+
+1152
+00:54:19,030 --> 00:54:23,630
+Noise is a part of all NLP
+systems inputs at all times.
+
+1153
+00:54:23,630 --> 00:54:25,510
+There's just no such
+thing effectively as
+
+1154
+00:54:25,510 --> 00:54:30,400
+having users, for example,
+and not having any noise.
+
+1155
+00:54:30,400 --> 00:54:32,530
+And so there's a study
+that was performed
+
+1156
+00:54:32,530 --> 00:54:36,430
+on some popular machine
+translation models where you
+
+1157
+00:54:36,430 --> 00:54:39,970
+train machine translation models
+in French, German, and Czech,
+
+1158
+00:54:39,970 --> 00:54:43,493
+I think all to English,
+and you get BLEU scores.
+
+1159
+00:54:43,493 --> 00:54:45,160
+These BLEU scores
+will look a lot better
+
+1160
+00:54:45,160 --> 00:54:46,720
+than the ones in
+your Assignment 4
+
+1161
+00:54:46,720 --> 00:54:48,620
+because much, much
+more training data.
+
+1162
+00:54:48,620 --> 00:54:51,070
+The idea is these are
+actually pretty strong machine
+
+1163
+00:54:51,070 --> 00:54:55,990
+translation systems, and
+that's in in-domain clean text.
+
+1164
+00:54:55,990 --> 00:54:59,200
+Now, if you add character
+swaps, like the ones
+
+1165
+00:54:59,200 --> 00:55:03,640
+we saw in that sentence
+about Cambridge,
+
+1166
+00:55:03,640 --> 00:55:07,510
+the BLEU scores take
+a pretty harsh dive.
+
+1167
+00:55:07,510 --> 00:55:09,590
+Not very good.
+
+1168
+00:55:09,590 --> 00:55:15,190
+And even if you take a somewhat
+more natural sort of typo noise
+
+1169
+00:55:15,190 --> 00:55:17,980
+distribution here, you'll
+see that you're still
+
+1170
+00:55:17,980 --> 00:55:25,390
+getting 20-ish very
+high drops in BLEU score
+
+1171
+00:55:25,390 --> 00:55:27,638
+through simply natural noise.
+
+1172
+00:55:27,638 --> 00:55:29,680
+And so maybe you'll go
+back and retrain the model
+
+1173
+00:55:29,680 --> 00:55:31,740
+on more types of noise,
+and then you ask, oh,
+
+1174
+00:55:31,740 --> 00:55:34,867
+if I do that is it robust to
+even different kinds of noise?
+
+1175
+00:55:34,867 --> 00:55:37,450
+These are the questions that are
+going to be really important.
+
+1176
+00:55:37,450 --> 00:55:39,033
+And it's important
+to know that you're
+
+1177
+00:55:39,033 --> 00:55:42,010
+able to break your model really
+easily so that you can then go
+
+1178
+00:55:42,010 --> 00:55:43,660
+and try to make it more robust.
+
+1179
+00:55:43,660 --> 00:55:46,480
+
+
+1180
+00:55:46,480 --> 00:55:53,290
+Now, let's see, 20
+minutes, awesome.
+
+1181
+00:55:53,290 --> 00:55:57,490
+Now we're going to, I guess--
+
+1182
+00:55:57,490 --> 00:55:59,770
+so now we're going to look
+at the representations
+
+1183
+00:55:59,770 --> 00:56:01,510
+of our neural networks.
+
+1184
+00:56:01,510 --> 00:56:03,580
+We've talked about
+sort of their behavior
+
+1185
+00:56:03,580 --> 00:56:06,040
+and then whether we
+could sort of change
+
+1186
+00:56:06,040 --> 00:56:09,050
+or observe reasons
+behind their behavior.
+
+1187
+00:56:09,050 --> 00:56:12,880
+Now we'll go into
+less abstraction,
+
+1188
+00:56:12,880 --> 00:56:15,880
+look more at the actual
+vector representations that
+
+1189
+00:56:15,880 --> 00:56:17,620
+are being built
+by models, and we
+
+1190
+00:56:17,620 --> 00:56:21,130
+can answer a different kind of
+question, at the very least,
+
+1191
+00:56:21,130 --> 00:56:24,170
+than with the other studies.
+
+1192
+00:56:24,170 --> 00:56:26,620
+The first thing is
+related to the question
+
+1193
+00:56:26,620 --> 00:56:28,750
+I was asked about
+attention, which
+
+1194
+00:56:28,750 --> 00:56:33,580
+is that some modeling components
+lend themselves to inspection.
+
+1195
+00:56:33,580 --> 00:56:36,280
+Now, this is a sentence that
+I chose somewhat carefully,
+
+1196
+00:56:36,280 --> 00:56:39,290
+actually, because in part
+of this debate, right,
+
+1197
+00:56:39,290 --> 00:56:41,680
+are they interpretable
+components?
+
+1198
+00:56:41,680 --> 00:56:44,290
+We'll see, but they
+lend themselves
+
+1199
+00:56:44,290 --> 00:56:46,510
+to inspection in
+the following way.
+
+1200
+00:56:46,510 --> 00:56:49,750
+You can visualize them well and
+you can correlate them easily
+
+1201
+00:56:49,750 --> 00:56:51,740
+with various properties.
+
+1202
+00:56:51,740 --> 00:56:53,840
+So let's say you have
+attention heads in BERT.
+
+1203
+00:56:53,840 --> 00:56:57,970
+This is from a really nice
+study that was done here
+
+1204
+00:56:57,970 --> 00:57:00,580
+where you look at
+attention heads of BERT
+
+1205
+00:57:00,580 --> 00:57:04,885
+and you say, on most sentences,
+this attention head had 1,
+
+1206
+00:57:04,885 --> 00:57:08,920
+1, seems to do this very sort of
+global aggregation, simple kind
+
+1207
+00:57:08,920 --> 00:57:11,680
+of operation, does this
+pretty consistently.
+
+1208
+00:57:11,680 --> 00:57:13,630
+That's cool.
+
+1209
+00:57:13,630 --> 00:57:15,670
+Is it interpretable?
+
+1210
+00:57:15,670 --> 00:57:18,430
+Well, maybe, right?
+
+1211
+00:57:18,430 --> 00:57:22,030
+So it's the first layer, which
+means that this word, "found,"
+
+1212
+00:57:22,030 --> 00:57:25,870
+is sort of uncontextualized.
+
+1213
+00:57:25,870 --> 00:57:29,230
+But in deeper
+layers, the problem
+
+1214
+00:57:29,230 --> 00:57:32,740
+is that once you do some
+rounds of attention,
+
+1215
+00:57:32,740 --> 00:57:36,700
+you've had information mixing
+and flowing between words.
+
+1216
+00:57:36,700 --> 00:57:39,910
+And how do you know exactly what
+information you're combining,
+
+1217
+00:57:39,910 --> 00:57:41,650
+what you're attending to, even?
+
+1218
+00:57:41,650 --> 00:57:44,410
+It's a little hard to tell.
+
+1219
+00:57:44,410 --> 00:57:47,500
+And saliency methods
+more directly
+
+1220
+00:57:47,500 --> 00:57:50,080
+sort of evaluate the
+importance of models.
+
+1221
+00:57:50,080 --> 00:57:51,940
+But it's still
+interesting to see
+
+1222
+00:57:51,940 --> 00:57:54,400
+at sort of a local
+mechanistic point of view
+
+1223
+00:57:54,400 --> 00:57:57,520
+what kinds of things
+are being attended to.
+
+1224
+00:57:57,520 --> 00:57:59,560
+So let's take another example.
+
+1225
+00:57:59,560 --> 00:58:02,440
+Some attention heads seemed
+to perform simple operations.
+
+1226
+00:58:02,440 --> 00:58:03,910
+So you have the
+global aggregation
+
+1227
+00:58:03,910 --> 00:58:05,350
+here that we saw already.
+
+1228
+00:58:05,350 --> 00:58:09,160
+Others seem to attend pretty
+robustly to the next token,
+
+1229
+00:58:09,160 --> 00:58:09,910
+cool.
+
+1230
+00:58:09,910 --> 00:58:11,710
+Next token is a great signal.
+
+1231
+00:58:11,710 --> 00:58:14,830
+Some heads attend
+to the SEP token,
+
+1232
+00:58:14,830 --> 00:58:16,750
+so here you have it
+attending to SEP.
+
+1233
+00:58:16,750 --> 00:58:18,730
+And then maybe some
+attended periods.
+
+1234
+00:58:18,730 --> 00:58:22,270
+Maybe that's sort of a
+splitting sentences together
+
+1235
+00:58:22,270 --> 00:58:24,730
+and things like that, not
+things that are hard to do,
+
+1236
+00:58:24,730 --> 00:58:26,230
+but things that
+some attention heads
+
+1237
+00:58:26,230 --> 00:58:27,647
+seemed to pretty
+robustly perform.
+
+1238
+00:58:27,647 --> 00:58:30,340
+
+
+1239
+00:58:30,340 --> 00:58:32,380
+Again, now, though,
+deep in the network,
+
+1240
+00:58:32,380 --> 00:58:37,670
+what's actually represented
+at this period at layer 11?
+
+1241
+00:58:37,670 --> 00:58:41,170
+Little unclear,
+little unclear, OK?
+
+1242
+00:58:41,170 --> 00:58:43,840
+So some heads,
+though, are correlated
+
+1243
+00:58:43,840 --> 00:58:45,850
+with really interesting
+linguistic properties.
+
+1244
+00:58:45,850 --> 00:58:49,780
+So this head is actually
+attending to noun modifiers.
+
+1245
+00:58:49,780 --> 00:58:53,440
+So you've got this, the
+complicated language
+
+1246
+00:58:53,440 --> 00:58:57,340
+in the huge new law, right?
+
+1247
+00:58:57,340 --> 00:58:59,830
+That's pretty fascinating.
+
+1248
+00:58:59,830 --> 00:59:03,760
+Even if the model is not doing
+this as a causal mechanism
+
+1249
+00:59:03,760 --> 00:59:06,310
+to do syntax
+necessarily, the fact
+
+1250
+00:59:06,310 --> 00:59:08,230
+that these things so
+strongly correlate
+
+1251
+00:59:08,230 --> 00:59:09,793
+is actually pretty cool.
+
+1252
+00:59:09,793 --> 00:59:11,710
+And so what we have in
+all of these studies is
+
+1253
+00:59:11,710 --> 00:59:14,170
+we've got an approximate
+interpretation
+
+1254
+00:59:14,170 --> 00:59:18,340
+and quantitative analysis
+relating, allowing
+
+1255
+00:59:18,340 --> 00:59:21,670
+us to reason about very
+complicated model behavior.
+
+1256
+00:59:21,670 --> 00:59:24,730
+They're all approximations, but
+they're definitely interesting.
+
+1257
+00:59:24,730 --> 00:59:26,760
+One other example is
+that of coreference.
+
+1258
+00:59:26,760 --> 00:59:29,440
+So we saw some work
+on coreference,
+
+1259
+00:59:29,440 --> 00:59:33,520
+and it seems like this
+head does a pretty OK job
+
+1260
+00:59:33,520 --> 00:59:37,490
+of actually matching
+up coreferent entities.
+
+1261
+00:59:37,490 --> 00:59:38,830
+These are in red--
+
+1262
+00:59:38,830 --> 00:59:41,710
+talks, negotiations, she, her.
+
+1263
+00:59:41,710 --> 00:59:43,920
+And that's not obvious
+how to do that.
+
+1264
+00:59:43,920 --> 00:59:46,960
+This is a difficult
+task, and so it does so
+
+1265
+00:59:46,960 --> 00:59:49,870
+with some percentage
+of the time.
+
+1266
+00:59:49,870 --> 00:59:52,270
+And again, it's sort of
+connecting very complex model
+
+1267
+00:59:52,270 --> 00:59:57,340
+behavior to these sort of
+interpretable summaries
+
+1268
+00:59:57,340 --> 01:00:00,190
+of correlating properties.
+
+1269
+01:00:00,190 --> 01:00:02,440
+Other cases, you can have
+individual hidden units
+
+1270
+01:00:02,440 --> 01:00:04,520
+that lend themselves
+to interpretation.
+
+1271
+01:00:04,520 --> 01:00:10,180
+So here you've got a character
+level LSTM language model.
+
+1272
+01:00:10,180 --> 01:00:12,040
+Each row here is a sentence.
+
+1273
+01:00:12,040 --> 01:00:13,715
+If you can't read it,
+that's totally OK.
+
+1274
+01:00:13,715 --> 01:00:15,340
+The interpretation
+that you should take
+
+1275
+01:00:15,340 --> 01:00:17,440
+is that, as we walk
+along the sentence,
+
+1276
+01:00:17,440 --> 01:00:20,560
+this single unit is
+going from, I think,
+
+1277
+01:00:20,560 --> 01:00:22,942
+very negative to very
+positive or very positive
+
+1278
+01:00:22,942 --> 01:00:23,650
+to very negative.
+
+1279
+01:00:23,650 --> 01:00:26,290
+I don't really remember.
+
+1280
+01:00:26,290 --> 01:00:30,045
+But it's tracking the
+position in the line.
+
+1281
+01:00:30,045 --> 01:00:31,670
+So it's just a linear
+positioning unit,
+
+1282
+01:00:31,670 --> 01:00:36,580
+and pretty robustly doing so
+across all of these sentences.
+
+1283
+01:00:36,580 --> 01:00:39,000
+So this is from a nice
+visualization study
+
+1284
+01:00:39,000 --> 01:00:41,850
+way back in 2016, way back.
+
+1285
+01:00:41,850 --> 01:00:44,910
+Here's another cell from
+that same LSTM language model
+
+1286
+01:00:44,910 --> 01:00:48,350
+that seems to sort of
+turn on inside quotes.
+
+1287
+01:00:48,350 --> 01:00:51,030
+So here's a quote,
+and then it turns on.
+
+1288
+01:00:51,030 --> 01:00:52,950
+So I guess that's
+positive in the blue.
+
+1289
+01:00:52,950 --> 01:00:57,090
+End quote here, and
+then it's negative.
+
+1290
+01:00:57,090 --> 01:01:00,690
+Here you start with no
+quote, negative in the red,
+
+1291
+01:01:00,690 --> 01:01:03,630
+see a quote, and then blue.
+
+1292
+01:01:03,630 --> 01:01:05,490
+Seems, again, very
+interpretable,
+
+1293
+01:01:05,490 --> 01:01:07,980
+also potentially a very useful
+feature to keep in mind.
+
+1294
+01:01:07,980 --> 01:01:10,200
+And this is just an
+individual unit in the LSTM
+
+1295
+01:01:10,200 --> 01:01:12,750
+that you can just look at
+and see that it does this.
+
+1296
+01:01:12,750 --> 01:01:14,343
+Very, very interesting.
+
+1297
+01:01:14,343 --> 01:01:17,520
+
+
+1298
+01:01:17,520 --> 01:01:19,620
+Even further on this,
+and this is actually
+
+1299
+01:01:19,620 --> 01:01:25,020
+a study by some AI and
+neuroscience researchers,
+
+1300
+01:01:25,020 --> 01:01:28,290
+is we saw that LSTMs were
+good at subject-verb number
+
+1301
+01:01:28,290 --> 01:01:29,520
+agreement.
+
+1302
+01:01:29,520 --> 01:01:31,290
+Can we figure out the
+mechanisms by which
+
+1303
+01:01:31,290 --> 01:01:32,890
+the LSTM is solving the task?
+
+1304
+01:01:32,890 --> 01:01:34,960
+Can we actually get
+some insight into that?
+
+1305
+01:01:34,960 --> 01:01:37,620
+And so we have a
+word-level language model.
+
+1306
+01:01:37,620 --> 01:01:39,048
+And the word-level
+language model
+
+1307
+01:01:39,048 --> 01:01:41,340
+is going to be a little small,
+but you have a sentence,
+
+1308
+01:01:41,340 --> 01:01:45,270
+the boy gently and
+kindly greets the.
+
+1309
+01:01:45,270 --> 01:01:47,920
+And this cell that's
+being tracked here,
+
+1310
+01:01:47,920 --> 01:01:51,015
+so it's an individual
+hidden unit, one dimension,
+
+1311
+01:01:51,015 --> 01:01:54,720
+right, is actually,
+after it sees "boy,"
+
+1312
+01:01:54,720 --> 01:01:57,760
+it sort of starts to go higher.
+
+1313
+01:01:57,760 --> 01:02:00,780
+And then it goes down
+to something very small
+
+1314
+01:02:00,780 --> 01:02:02,220
+once it sees "greets."
+
+1315
+01:02:02,220 --> 01:02:05,730
+And this cell seems to
+correlate with the scope
+
+1316
+01:02:05,730 --> 01:02:09,540
+of a subject-verb number
+agreement instance effectively.
+
+1317
+01:02:09,540 --> 01:02:12,630
+So here, the boy that watches
+the dog that watches the cat
+
+1318
+01:02:12,630 --> 01:02:16,440
+greets, you've got that
+cell again staying high,
+
+1319
+01:02:16,440 --> 01:02:20,430
+maintaining the scope of subject
+until "greets," at which point
+
+1320
+01:02:20,430 --> 01:02:21,780
+it stops.
+
+1321
+01:02:21,780 --> 01:02:23,430
+What allows it to do that?
+
+1322
+01:02:23,430 --> 01:02:27,370
+Probably some complex other
+dynamics in the network,
+
+1323
+01:02:27,370 --> 01:02:30,990
+but it's still a fascinating,
+I think, insight.
+
+1324
+01:02:30,990 --> 01:02:39,780
+And yeah, this is just
+neuron 1,150 in this LSTM.
+
+1325
+01:02:39,780 --> 01:02:42,450
+So those are sort of all
+observational studies
+
+1326
+01:02:42,450 --> 01:02:47,040
+that you could do by picking
+out individual components
+
+1327
+01:02:47,040 --> 01:02:50,160
+of the model, that you can
+sort of just take each one of
+
+1328
+01:02:50,160 --> 01:02:53,190
+and correlating them
+with some behavior.
+
+1329
+01:02:53,190 --> 01:02:57,240
+Now we'll look at a general
+class of methods called
+
+1330
+01:02:57,240 --> 01:03:02,490
+probing by which we still sort
+of use supervised knowledge,
+
+1331
+01:03:02,490 --> 01:03:06,270
+like knowledge of the
+type of coreference
+
+1332
+01:03:06,270 --> 01:03:07,230
+that we're looking for.
+
+1333
+01:03:07,230 --> 01:03:09,180
+But instead of seeing if it
+correlates with something
+
+1334
+01:03:09,180 --> 01:03:10,555
+that's immediately
+interpretable,
+
+1335
+01:03:10,555 --> 01:03:13,920
+like a attention
+head, we're going
+
+1336
+01:03:13,920 --> 01:03:16,620
+to look into the vector
+representations of the model
+
+1337
+01:03:16,620 --> 01:03:19,080
+and see if these
+properties can be read out
+
+1338
+01:03:19,080 --> 01:03:22,680
+by some simple function
+to say, oh, maybe
+
+1339
+01:03:22,680 --> 01:03:24,750
+this property was
+made very easily
+
+1340
+01:03:24,750 --> 01:03:26,860
+accessible by my neural network.
+
+1341
+01:03:26,860 --> 01:03:28,620
+So let's dig into this.
+
+1342
+01:03:28,620 --> 01:03:30,750
+So the general
+paradigm is that you've
+
+1343
+01:03:30,750 --> 01:03:35,280
+got language data that goes into
+some big pretrained transformer
+
+1344
+01:03:35,280 --> 01:03:38,880
+with fine tuning, and you
+get state of the art results.
+
+1345
+01:03:38,880 --> 01:03:40,890
+SOTA means State
+Of The Art, right?
+
+1346
+01:03:40,890 --> 01:03:44,220
+And so the question for the
+probing sort of methodology
+
+1347
+01:03:44,220 --> 01:03:47,310
+is, if it's providing these
+general purpose language
+
+1348
+01:03:47,310 --> 01:03:53,310
+representations, what does it
+actually encode about language?
+
+1349
+01:03:53,310 --> 01:03:54,517
+Can we quantify this?
+
+1350
+01:03:54,517 --> 01:03:56,100
+Can we figure out
+what kinds of things
+
+1351
+01:03:56,100 --> 01:03:58,200
+it's learning about language
+that we seemingly now
+
+1352
+01:03:58,200 --> 01:04:00,330
+don't have to tell it?
+
+1353
+01:04:00,330 --> 01:04:03,750
+And so you might have
+something like a sentence,
+
+1354
+01:04:03,750 --> 01:04:06,300
+like, I record the record.
+
+1355
+01:04:06,300 --> 01:04:07,890
+That's an interesting sentence.
+
+1356
+01:04:07,890 --> 01:04:11,700
+And you put it into your
+transformer model with its word
+
+1357
+01:04:11,700 --> 01:04:14,040
+embeddings at the
+beginning, maybe
+
+1358
+01:04:14,040 --> 01:04:16,200
+some layers of self
+attention and stuff,
+
+1359
+01:04:16,200 --> 01:04:17,640
+and you make some predictions.
+
+1360
+01:04:17,640 --> 01:04:19,890
+And now our objects
+of study are going
+
+1361
+01:04:19,890 --> 01:04:22,530
+to be these intermediate
+layers, right?
+
+1362
+01:04:22,530 --> 01:04:26,880
+So it's a vector per word
+or subword for every layer.
+
+1363
+01:04:26,880 --> 01:04:30,210
+And the question is, can we use
+these linguistic properties,
+
+1364
+01:04:30,210 --> 01:04:32,370
+like the dependency
+parsing that we
+
+1365
+01:04:32,370 --> 01:04:35,310
+had way back in the
+early part of the course,
+
+1366
+01:04:35,310 --> 01:04:41,010
+to understand sort of
+correlations between properties
+
+1367
+01:04:41,010 --> 01:04:44,100
+and the vectors and these
+things that we can interpret?
+
+1368
+01:04:44,100 --> 01:04:48,295
+We can interpret
+dependency parses.
+
+1369
+01:04:48,295 --> 01:04:49,920
+So there are a couple
+of things that we
+
+1370
+01:04:49,920 --> 01:04:51,690
+might want to look for here.
+
+1371
+01:04:51,690 --> 01:04:53,410
+We might want to
+look for semantics.
+
+1372
+01:04:53,410 --> 01:04:56,430
+So here in the sentence,
+"I record the record,"
+
+1373
+01:04:56,430 --> 01:04:58,350
+I am an agent.
+
+1374
+01:04:58,350 --> 01:05:00,840
+That's a semantics thing.
+
+1375
+01:05:00,840 --> 01:05:01,980
+Record is a patient.
+
+1376
+01:05:01,980 --> 01:05:04,050
+It's the thing
+I'm recording, OK?
+
+1377
+01:05:04,050 --> 01:05:06,383
+You might have syntax, so you
+might have the syntax tree
+
+1378
+01:05:06,383 --> 01:05:08,633
+that you're interested in,
+that's the dependency parse
+
+1379
+01:05:08,633 --> 01:05:09,240
+tree.
+
+1380
+01:05:09,240 --> 01:05:10,990
+Maybe you're interested
+in part of speech,
+
+1381
+01:05:10,990 --> 01:05:14,580
+right, because you have
+"record" and "record,"
+
+1382
+01:05:14,580 --> 01:05:17,280
+and the first one's a verb,
+the second one is a noun,
+
+1383
+01:05:17,280 --> 01:05:19,000
+they're identical strings.
+
+1384
+01:05:19,000 --> 01:05:21,440
+Does the model sort of
+encode that one is one
+
+1385
+01:05:21,440 --> 01:05:23,800
+and the other is the other?
+
+1386
+01:05:23,800 --> 01:05:26,230
+So how do we do
+this kind of study?
+
+1387
+01:05:26,230 --> 01:05:29,310
+So we're going to decide on a
+layer that we want to analyze
+
+1388
+01:05:29,310 --> 01:05:31,038
+and we're going to freeze BERT.
+
+1389
+01:05:31,038 --> 01:05:32,580
+So we're not going
+to fine tune BERT.
+
+1390
+01:05:32,580 --> 01:05:34,680
+All the parameters are frozen.
+
+1391
+01:05:34,680 --> 01:05:36,540
+So we decide on layer 2 of BERT.
+
+1392
+01:05:36,540 --> 01:05:38,340
+We're going to pass
+in some sentences.
+
+1393
+01:05:38,340 --> 01:05:41,615
+We decide on what's
+called a probe family.
+
+1394
+01:05:41,615 --> 01:05:44,040
+And the question
+I'm asking is, can I
+
+1395
+01:05:44,040 --> 01:05:47,640
+use a model from my
+family, say linear,
+
+1396
+01:05:47,640 --> 01:05:52,080
+to decode a property that
+I'm interested in really
+
+1397
+01:05:52,080 --> 01:05:53,700
+well from this layer?
+
+1398
+01:05:53,700 --> 01:05:56,760
+So it's indicating that
+this property is easily
+
+1399
+01:05:56,760 --> 01:05:59,970
+accessible to linear
+models, effectively.
+
+1400
+01:05:59,970 --> 01:06:03,690
+So maybe I train the model,
+I train a linear classifier,
+
+1401
+01:06:03,690 --> 01:06:08,617
+right, on top of BERT, and I
+get a really high accuracy.
+
+1402
+01:06:08,617 --> 01:06:10,200
+And that's sort of
+interesting already
+
+1403
+01:06:10,200 --> 01:06:13,530
+because you know from prior
+work in part of speech
+
+1404
+01:06:13,530 --> 01:06:16,680
+tagging that if you run a
+linear classifier on simpler
+
+1405
+01:06:16,680 --> 01:06:18,960
+features that aren't
+BERT, you probably
+
+1406
+01:06:18,960 --> 01:06:20,230
+don't get as high an accuracy.
+
+1407
+01:06:20,230 --> 01:06:22,170
+So that's an interesting
+sort of takeaway.
+
+1408
+01:06:22,170 --> 01:06:24,270
+But then you can
+also take a baseline.
+
+1409
+01:06:24,270 --> 01:06:25,980
+So I want to compare
+two layers now.
+
+1410
+01:06:25,980 --> 01:06:29,520
+So I've got layer 1 here, I
+want to compare it to layer 2.
+
+1411
+01:06:29,520 --> 01:06:32,220
+I train a probe on it as well.
+
+1412
+01:06:32,220 --> 01:06:34,390
+Maybe the accuracy
+isn't as good,
+
+1413
+01:06:34,390 --> 01:06:36,840
+and now I can say,
+oh, wow, look.
+
+1414
+01:06:36,840 --> 01:06:39,870
+By layer 2, part of
+speech is more easily
+
+1415
+01:06:39,870 --> 01:06:44,370
+accessible to linear functions
+than it was at layer 1.
+
+1416
+01:06:44,370 --> 01:06:45,150
+So what did that?
+
+1417
+01:06:45,150 --> 01:06:47,460
+Well, the self-attention
+and feed forward stuff
+
+1418
+01:06:47,460 --> 01:06:48,968
+made it more easily accessible.
+
+1419
+01:06:48,968 --> 01:06:50,760
+That's interesting
+because it's a statement
+
+1420
+01:06:50,760 --> 01:06:53,355
+about sort of the information
+processing of the model.
+
+1421
+01:06:53,355 --> 01:06:57,050
+
+
+1422
+01:06:57,050 --> 01:07:00,140
+OK, so we're going to
+analyze these layers.
+
+1423
+01:07:00,140 --> 01:07:02,540
+Let's take a second
+more to think about it
+
+1424
+01:07:02,540 --> 01:07:05,940
+and just really--
+give me just a second.
+
+1425
+01:07:05,940 --> 01:07:10,070
+So if you have the model's
+representations h1 to ht,
+
+1426
+01:07:10,070 --> 01:07:12,140
+and you have a
+function family f,
+
+1427
+01:07:12,140 --> 01:07:14,930
+that's the subset linear models,
+or maybe you have like a feed
+
+1428
+01:07:14,930 --> 01:07:18,590
+forward neural network, some
+fixed set of hyperparameters,
+
+1429
+01:07:18,590 --> 01:07:21,440
+freeze the model,
+train the probe.
+
+1430
+01:07:21,440 --> 01:07:23,210
+So you get some
+predictions for part
+
+1431
+01:07:23,210 --> 01:07:24,800
+of speech tagging or whatever.
+
+1432
+01:07:24,800 --> 01:07:28,460
+That's just the probe applied to
+the hidden state of the model.
+
+1433
+01:07:28,460 --> 01:07:30,860
+The probe is a member
+of the probe family.
+
+1434
+01:07:30,860 --> 01:07:33,200
+And then the extent
+that we can predict y
+
+1435
+01:07:33,200 --> 01:07:34,710
+is a measure of accessibility.
+
+1436
+01:07:34,710 --> 01:07:38,450
+So that's just kind of written
+out not as pictorially, OK?
+
+1437
+01:07:38,450 --> 01:07:44,030
+So I'm not going to stay on
+this for too much longer.
+
+1438
+01:07:44,030 --> 01:07:48,440
+And it may help in the
+search for causal mechanisms,
+
+1439
+01:07:48,440 --> 01:07:50,600
+but it sort of just gives
+us a rough understanding
+
+1440
+01:07:50,600 --> 01:07:53,390
+of processing of the
+model and what things
+
+1441
+01:07:53,390 --> 01:07:55,470
+are accessible at what layer.
+
+1442
+01:07:55,470 --> 01:07:56,810
+So what are some results here?
+
+1443
+01:07:56,810 --> 01:08:01,880
+So one result is that BERT, if
+you run linear probes on it,
+
+1444
+01:08:01,880 --> 01:08:03,770
+does really, really
+well on things
+
+1445
+01:08:03,770 --> 01:08:05,720
+that require syntax
+and part of speech
+
+1446
+01:08:05,720 --> 01:08:09,050
+and named entity recognition,
+actually, in some cases,
+
+1447
+01:08:09,050 --> 01:08:12,320
+approximately as well as just
+doing the very best thing you
+
+1448
+01:08:12,320 --> 01:08:15,380
+could possibly do without BERT.
+
+1449
+01:08:15,380 --> 01:08:18,020
+So it just makes easily
+accessible amazingly strong
+
+1450
+01:08:18,020 --> 01:08:20,149
+features for these
+properties, and that's
+
+1451
+01:08:20,149 --> 01:08:25,850
+an interesting sort of emergent
+quality of BERT, you might say.
+
+1452
+01:08:25,850 --> 01:08:29,240
+It seems like as well
+that the layers of BERT
+
+1453
+01:08:29,240 --> 01:08:31,430
+have this property
+where, so if you
+
+1454
+01:08:31,430 --> 01:08:36,859
+look at the columns of this plot
+here, each column is a task.
+
+1455
+01:08:36,859 --> 01:08:41,060
+You've got input words at the
+sort of layer 0 of BERT here.
+
+1456
+01:08:41,060 --> 01:08:44,000
+Layer 24 is the last
+layer of BERT-large.
+
+1457
+01:08:44,000 --> 01:08:46,700
+Lower performance is yellow,
+higher performance is blue.
+
+1458
+01:08:46,700 --> 01:08:50,180
+And I know the
+resolution isn't perfect,
+
+1459
+01:08:50,180 --> 01:08:53,832
+but consistently the best place
+to read out these properties
+
+1460
+01:08:53,832 --> 01:08:55,249
+is somewhere a bit
+past the middle
+
+1461
+01:08:55,250 --> 01:08:59,029
+of the model, which is it's
+a very consistent rule, which
+
+1462
+01:08:59,029 --> 01:09:01,040
+is fascinating.
+
+1463
+01:09:01,040 --> 01:09:04,130
+And then it seems
+as well, if you
+
+1464
+01:09:04,130 --> 01:09:06,620
+look at this function
+of increasingly
+
+1465
+01:09:06,620 --> 01:09:09,020
+abstract or increasingly
+difficult to compute
+
+1466
+01:09:09,020 --> 01:09:11,930
+linguistic properties on
+this axis, and increasing
+
+1467
+01:09:11,930 --> 01:09:14,720
+depth in the network
+on that axis, so
+
+1468
+01:09:14,720 --> 01:09:16,490
+the deeper you go
+in the network,
+
+1469
+01:09:16,490 --> 01:09:21,290
+it seems like the more
+easily you can access more
+
+1470
+01:09:21,290 --> 01:09:23,630
+and more abstract
+linguistic properties,
+
+1471
+01:09:23,630 --> 01:09:26,450
+suggesting that that
+accessibility is
+
+1472
+01:09:26,450 --> 01:09:29,359
+being constructed over time
+by the layers of processing
+
+1473
+01:09:29,359 --> 01:09:29,865
+of BERT.
+
+1474
+01:09:29,865 --> 01:09:31,490
+So it's building more
+and more abstract
+
+1475
+01:09:31,490 --> 01:09:34,399
+features, which I
+think is, again, sort
+
+1476
+01:09:34,399 --> 01:09:37,250
+of a really interesting result.
+
+1477
+01:09:37,250 --> 01:09:39,770
+And now I think--
+
+1478
+01:09:39,770 --> 01:09:42,560
+one thing that I
+think comes to mind
+
+1479
+01:09:42,560 --> 01:09:45,319
+that really brings us
+back right to day one
+
+1480
+01:09:45,319 --> 01:09:48,740
+is we built intuitions
+around Word2vec.
+
+1481
+01:09:48,740 --> 01:09:51,500
+We were asking, what does each
+dimension of Word2vec mean?
+
+1482
+01:09:51,500 --> 01:09:54,080
+And the answer was
+not really anything.
+
+1483
+01:09:54,080 --> 01:09:56,780
+But we could build
+intuitions about it
+
+1484
+01:09:56,780 --> 01:09:59,690
+and think about properties
+of it through sort
+
+1485
+01:09:59,690 --> 01:10:02,390
+of these connections between
+simple mathematical properties
+
+1486
+01:10:02,390 --> 01:10:05,760
+of Word2vec and
+linguistic properties
+
+1487
+01:10:05,760 --> 01:10:07,950
+that we could sort
+of understand.
+
+1488
+01:10:07,950 --> 01:10:11,400
+So we had this approximation,
+which is not 100% true,
+
+1489
+01:10:11,400 --> 01:10:12,840
+but some approximation
+that says,
+
+1490
+01:10:12,840 --> 01:10:17,700
+cosine similarity is
+effectively correlated
+
+1491
+01:10:17,700 --> 01:10:19,418
+with semantic similarity.
+
+1492
+01:10:19,418 --> 01:10:22,092
+
+
+1493
+01:10:22,092 --> 01:10:23,550
+Think about even
+if all we're going
+
+1494
+01:10:23,550 --> 01:10:25,200
+to do at the end
+of the day is fine
+
+1495
+01:10:25,200 --> 01:10:27,630
+tune these word
+embeddings anyway,
+
+1496
+01:10:27,630 --> 01:10:29,490
+likewise we had
+this sort of idea
+
+1497
+01:10:29,490 --> 01:10:32,160
+about the analogies being
+encoded by linear offsets.
+
+1498
+01:10:32,160 --> 01:10:35,970
+So some relationships
+are linear in space,
+
+1499
+01:10:35,970 --> 01:10:37,440
+and they didn't have to be.
+
+1500
+01:10:37,440 --> 01:10:39,000
+That's fascinating.
+
+1501
+01:10:39,000 --> 01:10:40,860
+It's this emergent
+property that we've now
+
+1502
+01:10:40,860 --> 01:10:43,140
+been able to study since
+we discovered this.
+
+1503
+01:10:43,140 --> 01:10:45,330
+Why is that the
+case in Word2vec?
+
+1504
+01:10:45,330 --> 01:10:47,790
+And in general, even
+though you can't interpret
+
+1505
+01:10:47,790 --> 01:10:50,880
+the individual
+dimensions of Word2vec,
+
+1506
+01:10:50,880 --> 01:10:53,880
+these sort of emergent,
+interpretable connections
+
+1507
+01:10:53,880 --> 01:10:56,700
+between approximate
+linguistic ideas
+
+1508
+01:10:56,700 --> 01:11:00,390
+and sort of simple math on
+these objects is fascinating.
+
+1509
+01:11:00,390 --> 01:11:04,680
+And so one piece of work that
+sort of extends this idea
+
+1510
+01:11:04,680 --> 01:11:06,510
+comes back to
+dependency parse trees.
+
+1511
+01:11:06,510 --> 01:11:09,420
+So they describe the
+syntax of sentences.
+
+1512
+01:11:09,420 --> 01:11:14,490
+And in a paper that
+I did with Chris,
+
+1513
+01:11:14,490 --> 01:11:16,620
+we showed that,
+actually, BERT and models
+
+1514
+01:11:16,620 --> 01:11:19,860
+like it make the dependency
+parse tree structure
+
+1515
+01:11:19,860 --> 01:11:24,600
+emergent, sort of more easily
+accessible than one might
+
+1516
+01:11:24,600 --> 01:11:26,650
+imagine in its vector space.
+
+1517
+01:11:26,650 --> 01:11:28,320
+So if you've got
+a tree right here,
+
+1518
+01:11:28,320 --> 01:11:33,000
+the chef who ran to the
+store was out of food, what
+
+1519
+01:11:33,000 --> 01:11:36,150
+you can sort of do is think
+about the tree in terms
+
+1520
+01:11:36,150 --> 01:11:38,980
+of distances between words.
+
+1521
+01:11:38,980 --> 01:11:42,360
+So you've got the number
+of edges in the tree.
+
+1522
+01:11:42,360 --> 01:11:44,170
+Between two words is
+their path distance.
+
+1523
+01:11:44,170 --> 01:11:48,143
+So you've got the distance
+between "chef" and "was" is 1.
+
+1524
+01:11:48,143 --> 01:11:50,310
+And we're going to use this
+interpretation of a tree
+
+1525
+01:11:50,310 --> 01:11:53,490
+as a distance to make a
+connection with BERT's
+
+1526
+01:11:53,490 --> 01:11:54,850
+embedding space.
+
+1527
+01:11:54,850 --> 01:11:56,520
+And what we were
+able to show is that
+
+1528
+01:11:56,520 --> 01:11:59,640
+under a single linear
+transformation,
+
+1529
+01:11:59,640 --> 01:12:02,970
+the squared Euclidean
+distance between BERT vectors
+
+1530
+01:12:02,970 --> 01:12:07,140
+for the same sentence
+actually correlates well,
+
+1531
+01:12:07,140 --> 01:12:09,840
+if you choose the
+B matrix right,
+
+1532
+01:12:09,840 --> 01:12:12,340
+with the distances in the tree.
+
+1533
+01:12:12,340 --> 01:12:16,380
+So here in this Euclidean
+space that we've transformed,
+
+1534
+01:12:16,380 --> 01:12:20,910
+the approximate distance between
+"chef" and "was" is also 1.
+
+1535
+01:12:20,910 --> 01:12:23,790
+Likewise, the difference
+between "was" and "store"
+
+1536
+01:12:23,790 --> 01:12:25,860
+is 4 in the tree.
+
+1537
+01:12:25,860 --> 01:12:29,460
+And in my simple sort of
+transformation of BERT space,
+
+1538
+01:12:29,460 --> 01:12:33,420
+the distance between "store" and
+"was" is also approximately 4,
+
+1539
+01:12:33,420 --> 01:12:36,390
+and this is true across a
+wide range of sentences.
+
+1540
+01:12:36,390 --> 01:12:40,440
+And this is, to me, a
+fascinating example of, again,
+
+1541
+01:12:40,440 --> 01:12:44,670
+emergent approximate structure
+in these very nonlinear models
+
+1542
+01:12:44,670 --> 01:12:47,450
+that don't necessarily need
+to encode things so simply.
+
+1543
+01:12:47,450 --> 01:12:52,465
+
+
+1544
+01:12:52,465 --> 01:12:53,340
+OK, all right, great.
+
+1545
+01:12:53,340 --> 01:12:57,150
+So probing studies and
+correlation studies are,
+
+1546
+01:12:57,150 --> 01:12:59,280
+I think, interesting and
+point us in directions
+
+1547
+01:12:59,280 --> 01:13:01,643
+to build intuitions
+about models.
+
+1548
+01:13:01,643 --> 01:13:03,810
+But they're not arguments
+that the model is actually
+
+1549
+01:13:03,810 --> 01:13:06,780
+using the thing that you're
+finding to make a decision.
+
+1550
+01:13:06,780 --> 01:13:09,516
+They're not causal studies.
+
+1551
+01:13:09,516 --> 01:13:12,070
+And this is for probing
+and correlation studies.
+
+1552
+01:13:12,070 --> 01:13:15,960
+So in some work that I
+did around the same time,
+
+1553
+01:13:15,960 --> 01:13:19,350
+we showed, actually, that
+certain conditions on probes
+
+1554
+01:13:19,350 --> 01:13:22,470
+allow you to achieve high
+accuracy on a task that's
+
+1555
+01:13:22,470 --> 01:13:24,810
+effectively just
+fitting random labels.
+
+1556
+01:13:24,810 --> 01:13:29,490
+And so there's a
+difficulty of interpreting
+
+1557
+01:13:29,490 --> 01:13:31,020
+what the model
+could or could not
+
+1558
+01:13:31,020 --> 01:13:34,930
+be doing with this thing that
+is somehow easily accessible.
+
+1559
+01:13:34,930 --> 01:13:37,500
+It's interesting that this
+property is easily accessible,
+
+1560
+01:13:37,500 --> 01:13:39,850
+but the model might not
+be doing anything with it,
+
+1561
+01:13:39,850 --> 01:13:42,450
+for example, because
+it's totally random.
+
+1562
+01:13:42,450 --> 01:13:44,670
+Likewise, another
+paper showed that you
+
+1563
+01:13:44,670 --> 01:13:46,740
+can achieve high
+accuracy with a probe,
+
+1564
+01:13:46,740 --> 01:13:49,830
+even if the model is trained
+to know that thing that you're
+
+1565
+01:13:49,830 --> 01:13:52,210
+probing for is not useful.
+
+1566
+01:13:52,210 --> 01:13:54,630
+And there's causal
+studies that sort of
+
+1567
+01:13:54,630 --> 01:13:55,920
+try to extend this work.
+
+1568
+01:13:55,920 --> 01:13:57,960
+It's much more difficult,
+but read this paper,
+
+1569
+01:13:57,960 --> 01:14:01,480
+and it's a fascinating
+line of future work.
+
+1570
+01:14:01,480 --> 01:14:04,650
+Now in my last two
+minutes, I want
+
+1571
+01:14:04,650 --> 01:14:06,870
+to talk about
+recasting model tweaks
+
+1572
+01:14:06,870 --> 01:14:09,450
+and ablations as analysis.
+
+1573
+01:14:09,450 --> 01:14:11,220
+So we had this
+improvement process
+
+1574
+01:14:11,220 --> 01:14:14,100
+where we had a network
+that was going to work OK,
+
+1575
+01:14:14,100 --> 01:14:16,650
+and we would see whether we
+could tweak it in simple ways
+
+1576
+01:14:16,650 --> 01:14:17,393
+to improve it.
+
+1577
+01:14:17,393 --> 01:14:18,810
+And then you could
+see whether you
+
+1578
+01:14:18,810 --> 01:14:21,035
+could remove anything
+and have it still be OK,
+
+1579
+01:14:21,035 --> 01:14:22,410
+and that's kind
+of like analysis.
+
+1580
+01:14:22,410 --> 01:14:23,370
+I have my network.
+
+1581
+01:14:23,370 --> 01:14:24,587
+Do I want it to--
+
+1582
+01:14:24,587 --> 01:14:26,670
+is it going to be better
+if it's more complicated?
+
+1583
+01:14:26,670 --> 01:14:28,378
+Is it going to be
+better if it's simpler?
+
+1584
+01:14:28,378 --> 01:14:30,210
+Can I get away with
+it being simpler?
+
+1585
+01:14:30,210 --> 01:14:33,960
+And so one example of some
+folks who did this is they
+
+1586
+01:14:33,960 --> 01:14:36,810
+took this idea of multiheaded
+attention and said,
+
+1587
+01:14:36,810 --> 01:14:38,430
+oh, so many heads.
+
+1588
+01:14:38,430 --> 01:14:39,702
+Are all the heads important?
+
+1589
+01:14:39,702 --> 01:14:41,160
+And what they showed
+is that if you
+
+1590
+01:14:41,160 --> 01:14:44,370
+train a system with
+multiheaded attention,
+
+1591
+01:14:44,370 --> 01:14:46,590
+and then just remove
+the heads at test time
+
+1592
+01:14:46,590 --> 01:14:48,720
+and not use them at
+all, you can actually
+
+1593
+01:14:48,720 --> 01:14:50,880
+do pretty well on
+the original task,
+
+1594
+01:14:50,880 --> 01:14:54,270
+not retraining, at all without
+some of the attention heads,
+
+1595
+01:14:54,270 --> 01:14:55,980
+showing that they
+weren't important.
+
+1596
+01:14:55,980 --> 01:14:58,410
+You could just get rid
+of them after training.
+
+1597
+01:14:58,410 --> 01:15:00,690
+And likewise, you can
+do the same thing for--
+
+1598
+01:15:00,690 --> 01:15:02,945
+this is on machine translation,
+this is on Multi-NLI.
+
+1599
+01:15:02,945 --> 01:15:04,320
+You can actually
+get away without
+
+1600
+01:15:04,320 --> 01:15:06,810
+a large, large percentage
+of your attention heads.
+
+1601
+01:15:06,810 --> 01:15:10,090
+
+
+1602
+01:15:10,090 --> 01:15:12,310
+Let's see.
+
+1603
+01:15:12,310 --> 01:15:15,040
+Yeah, so another thing
+that you could think about
+
+1604
+01:15:15,040 --> 01:15:18,117
+is questioning sort of
+the basics of the models
+
+1605
+01:15:18,117 --> 01:15:18,950
+that we're building.
+
+1606
+01:15:18,950 --> 01:15:20,525
+So we have transformer
+models that
+
+1607
+01:15:20,525 --> 01:15:22,900
+are sort of self-attention,
+feed forward, self-attention,
+
+1608
+01:15:22,900 --> 01:15:23,780
+feed forward.
+
+1609
+01:15:23,780 --> 01:15:27,460
+But why in that order, with
+some of the things omitted here?
+
+1610
+01:15:27,460 --> 01:15:30,280
+And this paper
+asked this question
+
+1611
+01:15:30,280 --> 01:15:32,900
+and said, if this is my
+transformer, self-attention,
+
+1612
+01:15:32,900 --> 01:15:35,150
+feed forward, self-attention,
+feed forward, et cetera,
+
+1613
+01:15:35,150 --> 01:15:37,540
+et cetera, et cetera, what
+if I just reordered it
+
+1614
+01:15:37,540 --> 01:15:39,762
+so that I had a bunch of
+self-attentions at the head
+
+1615
+01:15:39,762 --> 01:15:41,470
+and a bunch of feed
+forwards at the back?
+
+1616
+01:15:41,470 --> 01:15:43,390
+And they tried a bunch
+of these orderings,
+
+1617
+01:15:43,390 --> 01:15:45,830
+and this one
+actually does better.
+
+1618
+01:15:45,830 --> 01:15:48,670
+So this achieves a lower
+perplexity on a benchmark.
+
+1619
+01:15:48,670 --> 01:15:51,040
+And this is a way
+of analyzing what's
+
+1620
+01:15:51,040 --> 01:15:53,230
+important about the
+architectures that I'm building
+
+1621
+01:15:53,230 --> 01:15:56,240
+and how can they be changed
+in order to perform better.
+
+1622
+01:15:56,240 --> 01:15:58,408
+So neural models
+are very complex,
+
+1623
+01:15:58,408 --> 01:15:59,950
+and they're difficult
+to characterize
+
+1624
+01:15:59,950 --> 01:16:02,560
+and impossible to characterize
+with a single sort
+
+1625
+01:16:02,560 --> 01:16:05,680
+of statistic, I think, for your
+test set accuracy, especially
+
+1626
+01:16:05,680 --> 01:16:07,400
+in domain.
+
+1627
+01:16:07,400 --> 01:16:09,850
+And we want to find intuitive
+descriptions of model
+
+1628
+01:16:09,850 --> 01:16:14,060
+behaviors, but we should look at
+multiple levels of abstraction.
+
+1629
+01:16:14,060 --> 01:16:16,620
+And none of them are
+going to be complete.
+
+1630
+01:16:16,620 --> 01:16:19,110
+When someone tells you that
+their neural network is
+
+1631
+01:16:19,110 --> 01:16:23,790
+interpretable, I encourage you
+to engage critically with that.
+
+1632
+01:16:23,790 --> 01:16:27,390
+It's not necessarily false, but
+the levels of interpretability
+
+1633
+01:16:27,390 --> 01:16:29,550
+and what you can interpret,
+these are the questions
+
+1634
+01:16:29,550 --> 01:16:31,320
+that you should be
+asking because it's
+
+1635
+01:16:31,320 --> 01:16:35,010
+going to be opaque in some
+ways, almost definitely.
+
+1636
+01:16:35,010 --> 01:16:39,462
+And then bringing this-- this
+lens to your model building
+
+1637
+01:16:39,462 --> 01:16:41,670
+as you try to think about
+how to build better models,
+
+1638
+01:16:41,670 --> 01:16:44,250
+even if you're not going to be
+doing analysis as sort of one
+
+1639
+01:16:44,250 --> 01:16:46,900
+of your main driving goals.
+
+1640
+01:16:46,900 --> 01:16:50,250
+And with that, good luck
+on your final projects.
+
+1641
+01:16:50,250 --> 01:16:52,080
+I realize we're at time.
+
+1642
+01:16:52,080 --> 01:16:55,800
+The teaching staff is really
+appreciative of your efforts
+
+1643
+01:16:55,800 --> 01:16:57,240
+over this difficult quarter.
+
+1644
+01:16:57,240 --> 01:17:02,400
+And yeah, I guess there's
+a lecture left on Thursday,
+
+1645
+01:17:02,400 --> 01:17:06,620
+but yeah, this is my last
+one, so thanks, everyone.
+
+1646
+01:17:06,620 --> 01:17:11,000
+
+

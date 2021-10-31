@@ -1,0 +1,5068 @@
+1
+00:00:04,070 --> 00:00:07,510
+For today, I'm really delighted, um,
+
+2
+00:00:07,510 --> 00:00:12,635
+to introduce our third guest speaker, who's Marc'Aurelio Ranzato.
+
+3
+00:00:12,635 --> 00:00:18,610
+So he's originally from Italy and then worked at NYU with Yann LeCun,
+
+4
+00:00:18,610 --> 00:00:21,550
+and then has a post-doc with Geoffrey Hinton.
+
+5
+00:00:21,550 --> 00:00:24,835
+So he's a very dyed in the wool deep learning researcher.
+
+6
+00:00:24,835 --> 00:00:30,809
+A lot of his original work was in the areas like feature learning and vision,
+
+7
+00:00:30,809 --> 00:00:33,460
+but over the last few years he's really
+
+8
+00:00:33,460 --> 00:00:36,985
+turned his interests to natural language processing.
+
+9
+00:00:36,985 --> 00:00:38,530
+And in particular, um,
+
+10
+00:00:38,530 --> 00:00:39,730
+in the last few years,
+
+11
+00:00:39,730 --> 00:00:45,140
+he's worked a huge amount in looking at machine translation in general and in
+
+12
+00:00:45,140 --> 00:00:50,870
+particular machine translation for languages for which less resources are available.
+
+13
+00:00:50,870 --> 00:00:54,920
+So I saw a talk of his about six months ago on this topic.
+
+14
+00:00:54,920 --> 00:00:58,670
+And, um, through him and his team at Facebook,
+
+15
+00:00:58,670 --> 00:01:01,970
+they've really got a lot of exciting new work in ways to
+
+16
+00:01:01,970 --> 00:01:05,390
+bring neural machine translation up to the next level.
+
+17
+00:01:05,390 --> 00:01:09,620
+And so I hope that this would be a really great opportunity for everyone to
+
+18
+00:01:09,620 --> 00:01:14,345
+see some of the latest and most exciting techniques in neural machine translation.
+
+19
+00:01:14,345 --> 00:01:17,870
+That's sort of - of a next level beyond what we talked
+
+20
+00:01:17,870 --> 00:01:21,935
+about, and you guys all did on assignments 4 and 5 of the class.
+
+21
+00:01:21,935 --> 00:01:24,145
+Um, so take it away, Marc'Aurelio.
+
+22
+00:01:24,145 --> 00:01:25,460
+Okay. Thank you so much,
+
+23
+00:01:25,460 --> 00:01:26,660
+Chris, for inviting me.
+
+24
+00:01:26,660 --> 00:01:29,165
+Um, let me just put my face.
+
+25
+00:01:29,165 --> 00:01:31,205
+I'm here. [LAUGHTER] Hi everybody.
+
+26
+00:01:31,205 --> 00:01:35,155
+I'm gonna disable it now so you can focus on the presentation.
+
+27
+00:01:35,155 --> 00:01:39,485
+Um, so share.
+
+28
+00:01:39,485 --> 00:01:43,670
+I hope you should be able to see my presentation now.
+
+29
+00:01:43,670 --> 00:01:46,595
+Okay. So I'm very excited to
+
+30
+00:01:46,595 --> 00:01:50,510
+tell you a little bit about low resource machine translation.
+
+31
+00:01:50,510 --> 00:01:53,010
+And let's start by, uh,
+
+32
+00:01:53,010 --> 00:01:56,300
+revisiting, uh, the machine translation problems.
+
+33
+00:01:56,300 --> 00:02:00,890
+So let's say that we want to translate between English and French.
+
+34
+00:02:00,890 --> 00:02:04,940
+And, uh, we started with a big, uh,
+
+35
+00:02:04,940 --> 00:02:08,650
+training set where we have a collection of sentences,
+
+36
+00:02:08,650 --> 00:02:12,250
+uh, in English with their corresponding translation in French.
+
+37
+00:02:12,250 --> 00:02:15,760
+And this is what we call a parallel data set.
+
+38
+00:02:15,760 --> 00:02:18,205
+And in particular the sentences in English,
+
+39
+00:02:18,205 --> 00:02:21,010
+we call them source sentences, right?
+
+40
+00:02:21,010 --> 00:02:23,470
+And the corresponding sentences in French are,
+
+41
+00:02:23,470 --> 00:02:26,570
+uh, what we call the target sentences.
+
+42
+00:02:26,570 --> 00:02:32,590
+And now, uh, the learning problem is about for a given,
+
+43
+00:02:32,590 --> 00:02:34,390
+uh, sentence in English,
+
+44
+00:02:34,390 --> 00:02:36,430
+you want to predict the corresponding,
+
+45
+00:02:36,430 --> 00:02:38,140
+uh, sentence in French.
+
+46
+00:02:38,140 --> 00:02:43,525
+And, uh, the way that we do that is by minimizing the cross-entropy loss,
+
+47
+00:02:43,525 --> 00:02:46,750
+which maximizes the low probability of
+
+48
+00:02:46,750 --> 00:02:51,635
+the reference human translation given the input source sentence.
+
+49
+00:02:51,635 --> 00:02:57,050
+And we do this by stochastic gradient descent, using, uh,
+
+50
+00:02:57,050 --> 00:03:02,040
+as architecture a sequence to sequence with attention that as far as I know,
+
+51
+00:03:02,040 --> 00:03:07,175
+you started and- and- and you had a homework on a few weeks ago.
+
+52
+00:03:07,175 --> 00:03:11,090
+And then after you train this, at this time,
+
+53
+00:03:11,090 --> 00:03:14,285
+you are given a normal English sentence
+
+54
+00:03:14,285 --> 00:03:17,015
+and you want to produce the corresponding translation.
+
+55
+00:03:17,015 --> 00:03:19,295
+And in order to do that, um,
+
+56
+00:03:19,295 --> 00:03:23,045
+we usually, uh, employ a heuristic, uh,
+
+57
+00:03:23,045 --> 00:03:27,530
+search method like beam that tries to find, uh,
+
+58
+00:03:27,530 --> 00:03:32,940
+approximately the target sentence that maximizes the low probability given the- uh,
+
+59
+00:03:32,940 --> 00:03:36,685
+the given, uh, source sentence.
+
+60
+00:03:36,685 --> 00:03:41,420
+So this is at the high level how machine translation works.
+
+61
+00:03:41,420 --> 00:03:43,835
+And let's think about the assumptions that,
+
+62
+00:03:43,835 --> 00:03:45,410
+uh, we have been making,
+
+63
+00:03:45,410 --> 00:03:46,910
+uh, through this discussion.
+
+64
+00:03:46,910 --> 00:03:50,345
+So the first assumption is that we are working with two,
+
+65
+00:03:50,345 --> 00:03:53,300
+uh, fairly related languages like English and French.
+
+66
+00:03:53,300 --> 00:03:55,040
+And the second, uh,
+
+67
+00:03:55,040 --> 00:03:57,635
+assumptions is that we have at our disposal,
+
+68
+00:03:57,635 --> 00:03:59,960
+a large data set of parallel sentences.
+
+69
+00:03:59,960 --> 00:04:02,435
+Because here we are essentially doing,
+
+70
+00:04:02,435 --> 00:04:04,595
+uh, supervised learning, right?
+
+71
+00:04:04,595 --> 00:04:08,195
+And it is a beautiful example of end-to-end supervised learning,
+
+72
+00:04:08,195 --> 00:04:13,040
+that relies on the availability of a large parallel dataset.
+
+73
+00:04:13,040 --> 00:04:19,100
+And so in the world there are more than 6,000 languages.
+
+74
+00:04:19,100 --> 00:04:24,530
+Um, and needless to say,
+
+75
+00:04:24,530 --> 00:04:29,150
+most of these languages don't belong to the European family for
+
+76
+00:04:29,150 --> 00:04:33,875
+which much of the recent research on machine translation has been focusing on.
+
+77
+00:04:33,875 --> 00:04:36,395
+And even if you look at English,
+
+78
+00:04:36,395 --> 00:04:40,130
+English is spoken by less than 5% of- as
+
+79
+00:04:40,130 --> 00:04:44,575
+native languages speak- is spoken by less than 5% of the world population.
+
+80
+00:04:44,575 --> 00:04:48,860
+And so, uh, if you were
+
+81
+00:04:48,860 --> 00:04:53,765
+to count how many people speak a certain language and you look at that histogram,
+
+82
+00:04:53,765 --> 00:04:56,015
+it's a very heavy tailed distribution.
+
+83
+00:04:56,015 --> 00:05:01,685
+So even if you take the top 10 spoken languages,
+
+84
+00:05:01,685 --> 00:05:05,565
+you find that this accounts for less than 50%of the people in the world.
+
+85
+00:05:05,565 --> 00:05:12,860
+And, um, now if you look at the very far right of the tail,
+
+86
+00:05:12,860 --> 00:05:17,090
+those are languages for which there are very few speakers and essentially there
+
+87
+00:05:17,090 --> 00:05:20,755
+is no digitized data material for you to train anything.
+
+88
+00:05:20,755 --> 00:05:25,040
+So for- for those I think it's almost hopeless, I would say.
+
+89
+00:05:25,040 --> 00:05:27,845
+But in the middle of this tail,
+
+90
+00:05:27,845 --> 00:05:31,700
+we have a lot of languages for which there is some,
+
+91
+00:05:31,700 --> 00:05:34,685
+uh, digital data and for which, uh,
+
+92
+00:05:34,685 --> 00:05:37,880
+we don't have good ways to translate nowadays,
+
+93
+00:05:37,880 --> 00:05:42,500
+if you think about major providers like Google, Yandex,
+
+94
+00:05:42,500 --> 00:05:44,510
+Baidu, Facebook, and so on, and so forth,
+
+95
+00:05:44,510 --> 00:05:48,110
+they provide translation for the top 100 languages.
+
+96
+00:05:48,110 --> 00:05:53,985
+So we are still very much at the far right of this normal distribution.
+
+97
+00:05:53,985 --> 00:05:58,660
+And so, uh, if- if we're able to, uh, um,.
+
+98
+00:05:58,660 --> 00:06:02,015
+Improve machine translation in the middle,
+
+99
+00:06:02,015 --> 00:06:03,725
+I think we could do- uh,
+
+100
+00:06:03,725 --> 00:06:06,365
+it would be very impactful, right?
+
+101
+00:06:06,365 --> 00:06:09,950
+But so what happens as we walk down these tails?
+
+102
+00:06:09,950 --> 00:06:17,390
+So what happens is that the amount of data or parallel data decreases and,
+
+103
+00:06:17,390 --> 00:06:20,660
+uh, that correlates very much with the quality of
+
+104
+00:06:20,660 --> 00:06:23,690
+the automatic machine translation systems that we have.
+
+105
+00:06:23,690 --> 00:06:26,635
+And particularly as you can see here,
+
+106
+00:06:26,635 --> 00:06:29,660
+at some point there is actually a drastic drop
+
+107
+00:06:29,660 --> 00:06:33,065
+in accuracy of your machine translation system.
+
+108
+00:06:33,065 --> 00:06:40,365
+So, um, so perhaps the initial,
+
+109
+00:06:40,365 --> 00:06:44,540
+um, picture that we had in mind is a little different.
+
+110
+00:06:44,540 --> 00:06:49,220
+So now if we take a fairly low resource language like Nepali,
+
+111
+00:06:49,220 --> 00:06:51,320
+which is the language spoken in Nepal,
+
+112
+00:06:51,320 --> 00:06:54,630
+a lovely country northeast of India,
+
+113
+00:06:54,630 --> 00:06:57,440
+um, with more than 25 million people.
+
+114
+00:06:57,440 --> 00:07:02,210
+So it's not as handful of people.
+
+115
+00:07:02,210 --> 00:07:05,870
+Uh, first of all, the amount of training data is not as much as English.
+
+116
+00:07:05,870 --> 00:07:08,495
+French is much, much less than that.
+
+117
+00:07:08,495 --> 00:07:12,170
+And here, uh, let's use a different visual representation.
+
+118
+00:07:12,170 --> 00:07:15,080
+So let's use, um, uh,
+
+119
+00:07:15,080 --> 00:07:18,800
+few rectangles with a color that corresponds to the language.
+
+120
+00:07:18,800 --> 00:07:25,150
+So the blue rectangle is English data and the red rectangle is Nepali data.
+
+121
+00:07:25,150 --> 00:07:32,180
+Now, in practice, the parallel dataset is not
+
+122
+00:07:32,180 --> 00:07:36,590
+just such a monolithic thing because some part
+
+123
+00:07:36,590 --> 00:07:41,720
+originates in English and some parts originates in Nepali.
+
+124
+00:07:41,720 --> 00:07:50,240
+And now let's represent the Nepali translations of English data
+
+125
+00:07:50,240 --> 00:07:54,410
+with an empty rectangle where the color
+
+126
+00:07:54,410 --> 00:07:56,690
+corresponds to the language and whether you fill
+
+127
+00:07:56,690 --> 00:07:59,150
+it or not depends whether this is translation is,
+
+128
+00:07:59,150 --> 00:08:02,915
+so whether this is a human translation or whether it is,
+
+129
+00:08:02,915 --> 00:08:06,620
+uh, um, data originating in- in the language.
+
+130
+00:08:06,620 --> 00:08:08,870
+So in this case, we take, uh,
+
+131
+00:08:08,870 --> 00:08:12,395
+data that originates in English and we translate it into Nepali.
+
+132
+00:08:12,395 --> 00:08:17,870
+And so this is the empty red rectangle
+
+133
+00:08:17,870 --> 00:08:21,350
+and the same for when you go from Nepali to English.
+
+134
+00:08:21,350 --> 00:08:26,000
+Now, in general, the data that originates in English and
+
+135
+00:08:26,000 --> 00:08:30,485
+the data that originates in Nepali come from different- may come from different domains.
+
+136
+00:08:30,485 --> 00:08:33,815
+So here on the y-axis you have the domain.
+
+137
+00:08:33,815 --> 00:08:36,815
+And so in this example that I totally made up,
+
+138
+00:08:36,815 --> 00:08:39,210
+but it's pretty, um,
+
+139
+00:08:39,210 --> 00:08:41,929
+uh, indicative of what happens in practice.
+
+140
+00:08:41,929 --> 00:08:46,445
+You may have that English sentences may come from, let say Bible.
+
+141
+00:08:46,445 --> 00:08:50,525
+And so the Nepali here are translations from, uh, the Bible.
+
+142
+00:08:50,525 --> 00:08:57,210
+And, uh, the Nepali sentences may come from parliamentary data, okay?
+
+143
+00:08:57,350 --> 00:09:03,770
+So you may agree with me that translating a normal sentence from
+
+144
+00:09:03,770 --> 00:09:05,300
+the Bible is not
+
+145
+00:09:05,300 --> 00:09:10,190
+a super interesting task because the Bible is a pretty static dataset, right?
+
+146
+00:09:10,190 --> 00:09:13,795
+And so maybe we want to translate news data.
+
+147
+00:09:13,795 --> 00:09:17,595
+And, uh, but so, uh,
+
+148
+00:09:17,595 --> 00:09:19,860
+in practice we don't have any,
+
+149
+00:09:19,860 --> 00:09:22,940
+uh, parallel data in the news domain,
+
+150
+00:09:22,940 --> 00:09:24,440
+perhaps what we have,
+
+151
+00:09:24,440 --> 00:09:30,590
+so what we really want to do at the end is translate sentences from this test set,
+
+152
+00:09:30,590 --> 00:09:33,155
+that is English news into Nepali.
+
+153
+00:09:33,155 --> 00:09:36,700
+But all we have in the news domain is at
+
+154
+00:09:36,700 --> 00:09:40,025
+most monolingual data both in English and in Nepali.
+
+155
+00:09:40,025 --> 00:09:46,170
+So these are English sentences that are not aligned at all with the Nepali,
+
+156
+00:09:46,170 --> 00:09:47,860
+uh, sentences over here.
+
+157
+00:09:47,860 --> 00:09:52,900
+Here it just happened to be just data that you got from new sources.
+
+158
+00:09:52,900 --> 00:09:57,520
+Okay? And so this is a pretty complicated learning setting because you
+
+159
+00:09:57,520 --> 00:10:02,770
+have a little bit of parallel sentences and,
+
+160
+00:10:02,770 --> 00:10:06,280
+uh, that are in a different domain from the test set,
+
+161
+00:10:06,280 --> 00:10:12,905
+and, uh, all you have in the domain of interest is monolingual data.
+
+162
+00:10:12,905 --> 00:10:21,830
+And in fact, you may have also some other parallel data but in another language,
+
+163
+00:10:21,830 --> 00:10:24,740
+let's say Hindi that is in the same family as
+
+164
+00:10:24,740 --> 00:10:30,380
+Nepali but maybe these parallel data is in a different domain, let say books.
+
+165
+00:10:30,380 --> 00:10:35,525
+And perhaps you have also monolingual data in Hindi that is also in the book domain.
+
+166
+00:10:35,525 --> 00:10:42,140
+So in fact, what you really- [LAUGHTER] in- in practice,
+
+167
+00:10:42,140 --> 00:10:45,575
+what you'll find is that you may have a lot of languages
+
+168
+00:10:45,575 --> 00:10:51,185
+here from which you could learn and- and a lot of domains.
+
+169
+00:10:51,185 --> 00:10:54,950
+And all you want to do at the end is to be
+
+170
+00:10:54,950 --> 00:10:58,580
+able to translate news data in English into Nepali.
+
+171
+00:10:58,580 --> 00:11:01,130
+But you don't have any supervision for that.
+
+172
+00:11:01,130 --> 00:11:02,420
+You don't have any labeled data,
+
+173
+00:11:02,420 --> 00:11:03,710
+any parallel data for that.
+
+174
+00:11:03,710 --> 00:11:08,675
+All you have is a bunch of data in different domains and in different languages.
+
+175
+00:11:08,675 --> 00:11:10,280
+And so the question is,
+
+176
+00:11:10,280 --> 00:11:17,345
+how can you leverage all these data in order to perform your original translation task?
+
+177
+00:11:17,345 --> 00:11:21,350
+And so this is a- a Mondrian like learning setting,
+
+178
+00:11:21,350 --> 00:11:24,335
+which is pretty tricky.
+
+179
+00:11:24,335 --> 00:11:28,450
+And this is going to be the topic of this lecture.
+
+180
+00:11:28,450 --> 00:11:34,770
+And so, um, there is not a very, um,
+
+181
+00:11:34,770 --> 00:11:40,800
+clear definition of what Low Resource Machine Translation is but, loosely speaking, uh,
+
+182
+00:11:40,800 --> 00:11:44,120
+a language pair can be consider low-resource when the number of
+
+183
+00:11:44,120 --> 00:11:49,200
+parallel sentences in domain is less than 10,000. Okay?
+
+184
+00:11:49,200 --> 00:11:54,070
+And as, uh, order of magnitude.
+
+185
+00:11:54,070 --> 00:11:57,430
+And, uh, and this is very little,
+
+186
+00:11:57,430 --> 00:11:59,020
+particularly if you think
+
+187
+00:11:59,020 --> 00:12:01,930
+that modern neural machine translation systems
+
+188
+00:12:01,930 --> 00:12:06,055
+have easily hundreds of millions of parameters.
+
+189
+00:12:06,055 --> 00:12:08,350
+And so there are several challenges.
+
+190
+00:12:08,350 --> 00:12:10,270
+There are challenges that pertain to data and
+
+191
+00:12:10,270 --> 00:12:12,910
+challenges that pertain to the model design.
+
+192
+00:12:12,910 --> 00:12:15,610
+So in terms of the data,
+
+193
+00:12:15,610 --> 00:12:19,840
+it is very hard to get data to train, right?
+
+194
+00:12:19,840 --> 00:12:23,905
+It is very hard to figure out where to get the data to train,
+
+195
+00:12:23,905 --> 00:12:26,740
+data that is in- in a domain similar to
+
+196
+00:12:26,740 --> 00:12:29,620
+the domain that you are interested in eventually translating.
+
+197
+00:12:29,620 --> 00:12:32,635
+Uh, if that doesn't exist,
+
+198
+00:12:32,635 --> 00:12:35,830
+how to get data in similar languages on
+
+199
+00:12:35,830 --> 00:12:41,485
+other domains and even how to get data to evaluate your system on.
+
+200
+00:12:41,485 --> 00:12:44,515
+And on the modeling side, uh,
+
+201
+00:12:44,515 --> 00:12:46,510
+there is the question of, of course,
+
+202
+00:12:46,510 --> 00:12:48,685
+how to learn with,
+
+203
+00:12:48,685 --> 00:12:49,930
+uh, so little supervision,
+
+204
+00:12:49,930 --> 00:12:52,420
+so little direct supervision at the very least,
+
+205
+00:12:52,420 --> 00:12:55,510
+and how to operate in this,
+
+206
+00:12:55,510 --> 00:13:00,430
+um, framework for which you have so many languages and so many domains.
+
+207
+00:13:00,430 --> 00:13:07,390
+So, uh, so as,
+
+208
+00:13:07,390 --> 00:13:09,625
+uh, Chris mentioned at the very beginning,
+
+209
+00:13:09,625 --> 00:13:11,725
+my background is not really NMT.
+
+210
+00:13:11,725 --> 00:13:18,010
+My, um, I've always been interested in learning with less supervision.
+
+211
+00:13:18,010 --> 00:13:22,840
+And I think working low resource machine translation is,
+
+212
+00:13:22,840 --> 00:13:26,155
+at least personally, a very unique opportunity.
+
+213
+00:13:26,155 --> 00:13:29,710
+It's a very rare case in which my research agenda is aligned
+
+214
+00:13:29,710 --> 00:13:33,910
+with an application [LAUGHTER] because, um,
+
+215
+00:13:33,910 --> 00:13:39,070
+in low resource machine translation you don't have much level data and you need to make
+
+216
+00:13:39,070 --> 00:13:45,295
+the best use of auxiliary tasks and au- auxiliary data in order to, uh, perform well.
+
+217
+00:13:45,295 --> 00:13:47,305
+And this is a general problem.
+
+218
+00:13:47,305 --> 00:13:49,060
+And at the same time,
+
+219
+00:13:49,060 --> 00:13:51,925
+machine translation is a real application,
+
+220
+00:13:51,925 --> 00:13:55,990
+it's something that if we improve we can really, uh,
+
+221
+00:13:55,990 --> 00:13:58,660
+have a chance to improve, uh,
+
+222
+00:13:58,660 --> 00:14:03,250
+a lot of applications and- and- and the life of a lot of people.
+
+223
+00:14:03,250 --> 00:14:11,289
+So, uh, this concludes my introduction about low resource machine translation and,
+
+224
+00:14:11,289 --> 00:14:16,150
+um, the issues that we face when working on these languages.
+
+225
+00:14:16,150 --> 00:14:20,725
+Before, uh, and let me just,
+
+226
+00:14:20,725 --> 00:14:22,060
+uh, pause for a second,
+
+227
+00:14:22,060 --> 00:14:29,345
+seeing the- the outline of this talk goes around three pillars that in a way define,
+
+228
+00:14:29,345 --> 00:14:31,770
+uh, the cycle of research.
+
+229
+00:14:31,770 --> 00:14:34,010
+So the first pillar is data.
+
+230
+00:14:34,010 --> 00:14:38,680
+So, um, I'm going to review,
+
+231
+00:14:38,680 --> 00:14:42,115
+uh, how we can get data in particular for evaluation.
+
+232
+00:14:42,115 --> 00:14:44,725
+So, uh, data is the prerequisite to do
+
+233
+00:14:44,725 --> 00:14:49,420
+anything in our life as machine learner practitioners, right?
+
+234
+00:14:49,420 --> 00:14:53,845
+And then, uh, afterwards I'm gonna move to the modeling, so, uh,
+
+235
+00:14:53,845 --> 00:14:57,520
+describing some, uh, algorithms to, uh,
+
+236
+00:14:57,520 --> 00:15:01,374
+learn, um, on low resource languages.
+
+237
+00:15:01,374 --> 00:15:05,290
+And finally, I will conclude with some work on analyzing,
+
+238
+00:15:05,290 --> 00:15:09,264
+uh, what a model does when we train on low resource languages.
+
+239
+00:15:09,264 --> 00:15:13,330
+And in practice, like, uh, throughout my, um,
+
+240
+00:15:13,330 --> 00:15:19,225
+work here, I keep going around the circle because as I figured out,
+
+241
+00:15:19,225 --> 00:15:21,820
+uh, the issues that we have with the data, with the model,
+
+242
+00:15:21,820 --> 00:15:24,430
+then I make a mark with a dataset
+
+243
+00:15:24,430 --> 00:15:27,190
+that better fits the kinds of problems that I'm interested in,
+
+244
+00:15:27,190 --> 00:15:28,960
+and then I may, uh,
+
+245
+00:15:28,960 --> 00:15:34,000
+go back to the modeling side to improve the models and- and so on and so forth, okay?
+
+246
+00:15:34,000 --> 00:15:39,580
+And here I'm giving some references of the works that I'm presenting, not all of them.
+
+247
+00:15:39,580 --> 00:15:42,970
+And just so- uh, and just to be clear,
+
+248
+00:15:42,970 --> 00:15:46,570
+these are- this is not meant to be a chronological survey,
+
+249
+00:15:46,570 --> 00:15:53,320
+so these are not necessarily the works that introduce a certain- a- a certain idea,
+
+250
+00:15:53,320 --> 00:15:55,390
+but it's just, I would say,
+
+251
+00:15:55,390 --> 00:15:58,495
+the most accessible entry points on the topic,
+
+252
+00:15:58,495 --> 00:16:01,825
+and then you can go on the related work sections to figure out,
+
+253
+00:16:01,825 --> 00:16:05,080
+uh, if there was, eh,
+
+254
+00:16:05,080 --> 00:16:09,160
+some seminal paper that led to- to- to that line of research.
+
+255
+00:16:09,160 --> 00:16:13,210
+And of course, there is quite a bit of presenter bias because most of these, uh,
+
+256
+00:16:13,210 --> 00:16:15,910
+works are- are being co-authored by me,
+
+257
+00:16:15,910 --> 00:16:18,560
+so, uh, be mindful of that.
+
+258
+00:16:18,560 --> 00:16:21,775
+That said, do you have any questions so far?
+
+259
+00:16:21,775 --> 00:16:23,910
+Uh, I have a quick question about, uh,
+
+260
+00:16:23,910 --> 00:16:28,230
+I- I see people posting the model about Phrase-based and Neural Unsupervised MT.
+
+261
+00:16:28,230 --> 00:16:29,790
+I was wondering if you could talk about
+
+262
+00:16:29,790 --> 00:16:33,055
+the different approaches about unsupervised learning,
+
+263
+00:16:33,055 --> 00:16:39,910
+and also, uh, a- algorithms like GLoVe and Word2vec are possible in low resource languages.
+
+264
+00:16:39,910 --> 00:16:42,715
+Yeah, yeah, so, um,
+
+265
+00:16:42,715 --> 00:16:46,795
+Yuri, I- I- in this lecture I'm gonna focus on neural more.
+
+266
+00:16:46,795 --> 00:16:50,800
+Actually I'm not even going into details of the architecture,
+
+267
+00:16:50,800 --> 00:16:53,750
+I'm more talking about algorithms actually.
+
+268
+00:16:53,750 --> 00:16:57,060
+And so these algorithms are applicable both to
+
+269
+00:16:57,060 --> 00:16:59,430
+neural machine translation system as
+
+270
+00:16:59,430 --> 00:17:02,475
+well as through statistical machine translation systems.
+
+271
+00:17:02,475 --> 00:17:07,770
+Uh, when I go over this part I can,
+
+272
+00:17:07,770 --> 00:17:10,650
+um, uh, address a little bit your question and tell you
+
+273
+00:17:10,650 --> 00:17:14,280
+a little bit about the differences between the- these two.
+
+274
+00:17:14,280 --> 00:17:20,125
+Um, uh, and then in terms of, um, uh,
+
+275
+00:17:20,125 --> 00:17:25,464
+methods to learn word embeddings and- and- and sentence embeddings,
+
+276
+00:17:25,464 --> 00:17:28,044
+I'm gonna touch very briefly on that.
+
+277
+00:17:28,045 --> 00:17:29,725
+So at the end of the, er,
+
+278
+00:17:29,725 --> 00:17:31,540
+lecture, I'm gonna, uh,
+
+279
+00:17:31,540 --> 00:17:36,145
+refer to some recent work on filtering where people use,
+
+280
+00:17:36,145 --> 00:17:39,055
+um, sentence embedding methods.
+
+281
+00:17:39,055 --> 00:17:41,635
+It's not GloVe but it's,
+
+282
+00:17:41,635 --> 00:17:44,275
+uh, something, uh, similar in the way.
+
+283
+00:17:44,275 --> 00:17:49,015
+Um, in practice, uh, for word embeddings,
+
+284
+00:17:49,015 --> 00:17:52,240
+um, it's kind of,
+
+285
+00:17:52,240 --> 00:17:55,030
+I would say, um,
+
+286
+00:17:55,030 --> 00:17:58,060
+a prerequisite for machine translation because if you can
+
+287
+00:17:58,060 --> 00:18:01,825
+align word embeddings, you learn a dictionary,
+
+288
+00:18:01,825 --> 00:18:06,160
+and that's, uh, a primitive way to do machine translation.
+
+289
+00:18:06,160 --> 00:18:10,615
+So oftentimes we look at those things as a, um,
+
+290
+00:18:10,615 --> 00:18:15,955
+good sanity check or as a simplified machine translation task.
+
+291
+00:18:15,955 --> 00:18:19,510
+Whenever you have a reference dictionary for which you can then,
+
+292
+00:18:19,510 --> 00:18:23,270
+um, check the accuracy of your alignment.
+
+293
+00:18:25,680 --> 00:18:32,050
+But- so if you- let me get back to you when,
+
+294
+00:18:32,050 --> 00:18:34,795
+uh, we talk about, uh, uh, this paper, okay?
+
+295
+00:18:34,795 --> 00:18:37,300
+So let's talk about data then.
+
+296
+00:18:37,300 --> 00:18:41,230
+So, uh, let's go back to, uh, our English,
+
+297
+00:18:41,230 --> 00:18:47,125
+Nepali, um, um, translation task.
+
+298
+00:18:47,125 --> 00:18:49,150
+So there is, um, er, um,
+
+299
+00:18:49,150 --> 00:18:53,725
+a resource called OPUS,
+
+300
+00:18:53,725 --> 00:18:55,720
+which is a very nice, uh,
+
+301
+00:18:55,720 --> 00:18:58,600
+which hosts a very nice collection of datasets,
+
+302
+00:18:58,600 --> 00:19:02,650
+all publically available in- in lots of languages.
+
+303
+00:19:02,650 --> 00:19:05,590
+And, uh, when you go to this website,
+
+304
+00:19:05,590 --> 00:19:07,870
+the OPUS website, you find that for English,
+
+305
+00:19:07,870 --> 00:19:13,450
+Nepali, actually there are 1 million parallel sentences.
+
+306
+00:19:13,450 --> 00:19:15,730
+So maybe I lied to you,
+
+307
+00:19:15,730 --> 00:19:17,770
+telling you that this is a low resource language.
+
+308
+00:19:17,770 --> 00:19:23,755
+But if actually- if you look at what this corpus are,
+
+309
+00:19:23,755 --> 00:19:29,200
+you realize that pretty much half a million of these sentences come from,
+
+310
+00:19:29,200 --> 00:19:32,260
+uh, JW 300, uh, and, uh,
+
+311
+00:19:32,260 --> 00:19:34,195
+which is a religious magazine,
+
+312
+00:19:34,195 --> 00:19:37,585
+and then you have 60,000 sentences from the Bible,
+
+313
+00:19:37,585 --> 00:19:40,960
+and the rest come from GNOME, KDE, Ubuntu,
+
+314
+00:19:40,960 --> 00:19:45,030
+so these are computer related, um, materials, right?
+
+315
+00:19:45,030 --> 00:19:50,860
+And so again, unless you're interesting in translating novel sentences from the Bible,
+
+316
+00:19:50,860 --> 00:19:53,740
+uh, this is not,
+
+317
+00:19:53,740 --> 00:19:57,175
+um, super useful, I would say.
+
+318
+00:19:57,175 --> 00:20:03,520
+Um, and, uh, so one thing to notice that all this data originates from English,
+
+319
+00:20:03,520 --> 00:20:06,790
+we have nothing that originates from Nepali, first of all.
+
+320
+00:20:06,790 --> 00:20:08,920
+And second of all, if you are interested in,
+
+321
+00:20:08,920 --> 00:20:11,245
+let's say translating Wikipedia,
+
+322
+00:20:11,245 --> 00:20:16,660
+all you have is Wikipedia monolingual data both in English and Nepali,
+
+323
+00:20:16,660 --> 00:20:19,690
+and Nepali is not even very much.
+
+324
+00:20:19,690 --> 00:20:24,100
+And then of course you can add some monolingual data in another domain like Common Crawl,
+
+325
+00:20:24,100 --> 00:20:26,320
+which is just a dump of the Internet.
+
+326
+00:20:26,320 --> 00:20:29,860
+Uh, but again, uh,
+
+327
+00:20:29,860 --> 00:20:34,900
+translating between English and Nepali using publicly available data is going to be
+
+328
+00:20:34,900 --> 00:20:40,795
+a challenge because you don't have any in domain parallel dataset, okay?
+
+329
+00:20:40,795 --> 00:20:45,085
+All you have is at most some in domain monolingual data.
+
+330
+00:20:45,085 --> 00:20:47,500
+But there is an even bigger problem,
+
+331
+00:20:47,500 --> 00:20:52,480
+which is that there is no test data, right?
+
+332
+00:20:52,480 --> 00:20:56,140
+So here we don't have reference translations in
+
+333
+00:20:56,140 --> 00:21:00,485
+Nepali to measure the quality of our machine translation system.
+
+334
+00:21:00,485 --> 00:21:03,465
+And this is a big problem because if you don't have
+
+335
+00:21:03,465 --> 00:21:07,945
+a high-quality or you don't have at all, er, the set,
+
+336
+00:21:07,945 --> 00:21:11,530
+it's very hard to compare models and it's very hard
+
+337
+00:21:11,530 --> 00:21:15,760
+to do model selection to compare algorithms and- and our,
+
+338
+00:21:15,760 --> 00:21:17,380
+uh, field is crippled.
+
+339
+00:21:17,380 --> 00:21:22,240
+We need, uh, strong evaluation, uh, benchmarks.
+
+340
+00:21:22,240 --> 00:21:24,070
+And so this motivator,
+
+341
+00:21:24,070 --> 00:21:26,290
+a project that's called FloRes,
+
+342
+00:21:26,290 --> 00:21:30,340
+that stands for Facebook low resource- low resource, um,
+
+343
+00:21:30,340 --> 00:21:32,950
+evaluation benchmark for machine translation,
+
+344
+00:21:32,950 --> 00:21:35,795
+uh, where we took, uh,
+
+345
+00:21:35,795 --> 00:21:41,650
+Wikipedia sentences in English and translated them into Nepali and Sinhala,
+
+346
+00:21:41,650 --> 00:21:45,025
+and then we took, uh, Wikipedia.
+
+347
+00:21:45,025 --> 00:21:49,300
+We - we took sentences from Nepali Wikipedia and translating them
+
+348
+00:21:49,300 --> 00:21:53,320
+into English as well as from Sinhala Wikipedia and translated them into English.
+
+349
+00:21:53,320 --> 00:22:00,580
+Okay. So you may say this is a little bit boring because what's hard about it?
+
+350
+00:22:00,580 --> 00:22:03,400
+And [LAUGHTER] and tell me about,
+
+351
+00:22:03,400 --> 00:22:06,160
+um, you know, tricks to do better modeling.
+
+352
+00:22:06,160 --> 00:22:10,180
+But actually, you'd be surprised that this data collection process
+
+353
+00:22:10,180 --> 00:22:14,875
+was harder and more interesting also than we thought.
+
+354
+00:22:14,875 --> 00:22:20,790
+So it is hard because there are very few, ah,
+
+355
+00:22:20,790 --> 00:22:23,520
+fluent professional translators in
+
+356
+00:22:23,520 --> 00:22:27,185
+these languages and this is not even super low resource, right?
+
+357
+00:22:27,185 --> 00:22:30,655
+And so, since, ah, so, ah,
+
+358
+00:22:30,655 --> 00:22:36,700
+we dealt with a translator agency and typically there are not enough people,
+
+359
+00:22:36,700 --> 00:22:39,550
+ah, for which you can do kind of AB testing to
+
+360
+00:22:39,550 --> 00:22:43,345
+test the translation of one person with another one.
+
+361
+00:22:43,345 --> 00:22:46,390
+That's number one. Number two in general,
+
+362
+00:22:46,390 --> 00:22:51,010
+it's very hard to assess automatically the quality of the translation
+
+363
+00:22:51,010 --> 00:22:56,125
+because we don't have enough parallel data to train machine translation system, right?
+
+364
+00:22:56,125 --> 00:22:59,110
+And so we need to rely on other methods
+
+365
+00:22:59,110 --> 00:23:03,490
+than a well-trained machine translation system to assess the quality.
+
+366
+00:23:03,490 --> 00:23:09,940
+And so, ah, we build a pipeline where we would have,
+
+367
+00:23:09,940 --> 00:23:13,330
+ah, we would send the sentences to the translators.
+
+368
+00:23:13,330 --> 00:23:17,695
+Once the translations are back, we would, um,
+
+369
+00:23:17,695 --> 00:23:20,620
+do several checks like fluency checks,
+
+370
+00:23:20,620 --> 00:23:23,725
+ah, using, ah, a language model.
+
+371
+00:23:23,725 --> 00:23:26,320
+We would check for transliteration to make sure that
+
+372
+00:23:26,320 --> 00:23:29,665
+a sentence is not translated by simply transliterating.
+
+373
+00:23:29,665 --> 00:23:31,435
+We would check that, ah,
+
+374
+00:23:31,435 --> 00:23:35,365
+the language is the desired one, right?
+
+375
+00:23:35,365 --> 00:23:37,585
+And so we will have a lot of checks like that.
+
+376
+00:23:37,585 --> 00:23:42,565
+And then, if and of course here there are thresholds that you need to set somehow.
+
+377
+00:23:42,565 --> 00:23:48,790
+And then, ah, for those sentences that would fail, ah, this,
+
+378
+00:23:48,790 --> 00:23:55,135
+ah, this step we would send them back to, ah, re-translation.
+
+379
+00:23:55,135 --> 00:23:57,310
+And so after a few iterations of this,
+
+380
+00:23:57,310 --> 00:23:59,930
+then eventually we do also a human evaluation.
+
+381
+00:23:59,930 --> 00:24:06,195
+And then, ah, the sentences in this evaluation benchmark are those that are,
+
+382
+00:24:06,195 --> 00:24:08,565
+that have passed, that I've, um,
+
+383
+00:24:08,565 --> 00:24:14,585
+passed all the automatic and human assessment checks.
+
+384
+00:24:14,585 --> 00:24:19,345
+Now, um, it turns out that
+
+385
+00:24:19,345 --> 00:24:23,500
+there is not even very good literature that tells you how to collect data.
+
+386
+00:24:23,500 --> 00:24:25,780
+And in particular, for low-resource languages,
+
+387
+00:24:25,780 --> 00:24:30,640
+there are a lot of issues related to the quality of the translations.
+
+388
+00:24:30,640 --> 00:24:35,290
+And so this was a process that we thought would take us a couple of months,
+
+389
+00:24:35,290 --> 00:24:38,890
+but instead it took us more than six months.
+
+390
+00:24:38,890 --> 00:24:44,935
+Um, and, but that said, eventually we got a validation set, a test set,
+
+391
+00:24:44,935 --> 00:24:48,310
+and also a hidden test set because we used
+
+392
+00:24:48,310 --> 00:24:52,000
+this data for a WMT competition and, um, for that,
+
+393
+00:24:52,000 --> 00:24:54,100
+they needed to have a test set that was not
+
+394
+00:24:54,100 --> 00:24:57,265
+available to people to make sure that people were not,
+
+395
+00:24:57,265 --> 00:24:59,920
+ah, cross-validating on the test set.
+
+396
+00:24:59,920 --> 00:25:04,210
+And, um, here are some examples of sentences: So
+
+397
+00:25:04,210 --> 00:25:08,395
+this is from a sentence from the Sinhala Wikipedia,
+
+398
+00:25:08,395 --> 00:25:11,335
+translating into English a couple of sentences here,
+
+399
+00:25:11,335 --> 00:25:14,005
+and this from English Wikipedia translating into Sinhala.
+
+400
+00:25:14,005 --> 00:25:17,905
+I don't know how many people in the audience come from Sri Lanka,
+
+401
+00:25:17,905 --> 00:25:22,255
+ah, that could appreciate [LAUGHTER] this set.
+
+402
+00:25:22,255 --> 00:25:26,500
+But, um, one interesting thing that you can already see is that,
+
+403
+00:25:26,500 --> 00:25:28,885
+if you, although this is totally anecdotal,
+
+404
+00:25:28,885 --> 00:25:31,090
+because it's just a couple of sentences from,
+
+405
+00:25:31,090 --> 00:25:32,470
+for Sinhala and English,
+
+406
+00:25:32,470 --> 00:25:35,125
+you can see that - the topic,
+
+407
+00:25:35,125 --> 00:25:37,225
+kind of the topic distribution is different.
+
+408
+00:25:37,225 --> 00:25:39,565
+And - and here you have things that,
+
+409
+00:25:39,565 --> 00:25:45,295
+ah, would be a little unlikely in English Wikipedia.
+
+410
+00:25:45,295 --> 00:25:47,950
+And the same is for, ah,
+
+411
+00:25:47,950 --> 00:25:50,845
+Nepali English and - and English Nepali.
+
+412
+00:25:50,845 --> 00:25:55,240
+So, ah, we have a GitHub repository where we
+
+413
+00:25:55,240 --> 00:25:59,980
+host the data and also baseline models that we train on,
+
+414
+00:25:59,980 --> 00:26:04,330
+ah, publicly available data and then tested on this FloRes benchmark.
+
+415
+00:26:04,330 --> 00:26:06,730
+And, uh, last week we released
+
+416
+00:26:06,730 --> 00:26:10,345
+another couple of languages: English Pashto and English Timor,
+
+417
+00:26:10,345 --> 00:26:13,320
+and we are adding more and more languages,
+
+418
+00:26:13,320 --> 00:26:16,020
+uh, in the coming months.
+
+419
+00:26:16,020 --> 00:26:19,785
+So, um, the point of this, ah,
+
+420
+00:26:19,785 --> 00:26:24,640
+section is just to say that data is oftentime more
+
+421
+00:26:24,640 --> 00:26:29,050
+important than designing a model because without data in particular,
+
+422
+00:26:29,050 --> 00:26:32,020
+without a good evaluation benchmark it's
+
+423
+00:26:32,020 --> 00:26:36,880
+essentially impossible to do research in - in this area.
+
+424
+00:26:36,880 --> 00:26:39,640
+And collecting data is not trivial.
+
+425
+00:26:39,640 --> 00:26:40,780
+It's not trivial.
+
+426
+00:26:40,780 --> 00:26:44,890
+The process the - that you use is - is not, ah,
+
+427
+00:26:44,890 --> 00:26:49,525
+well-established and, ah, and in practice,
+
+428
+00:26:49,525 --> 00:26:51,775
+it - it is hard to do.
+
+429
+00:26:51,775 --> 00:26:55,255
+And another, ah, thing to consider, sorry,
+
+430
+00:26:55,255 --> 00:26:57,895
+is to, ah, look at the data,
+
+431
+00:26:57,895 --> 00:27:00,085
+look at the data when you collect it,
+
+432
+00:27:00,085 --> 00:27:04,060
+and also before you start training your model because you may realize
+
+433
+00:27:04,060 --> 00:27:09,025
+some issues with the quality of the translations if you speak the language,
+
+434
+00:27:09,025 --> 00:27:11,970
+oftentimes, English is on one side.
+
+435
+00:27:11,970 --> 00:27:17,220
+And, or may, you may discover biases or you may discover, ah, interesting things.
+
+436
+00:27:17,220 --> 00:27:18,870
+So always look at the data, ah,
+
+437
+00:27:18,870 --> 00:27:23,860
+as opposed to just apply your matter in a black box way.
+
+438
+00:27:23,860 --> 00:27:26,770
+Um, that concludes my, ah,
+
+439
+00:27:26,770 --> 00:27:30,985
+little, um, discussion of the data part.
+
+440
+00:27:30,985 --> 00:27:32,785
+Are there any questions on this?
+
+441
+00:27:32,785 --> 00:27:36,370
+Why don't people talk about building a language model for low resource languages?
+
+442
+00:27:36,370 --> 00:27:40,435
+Yeah, yeah, yeah. So in this case what we did, ah,
+
+443
+00:27:40,435 --> 00:27:43,180
+actually we took, ah,
+
+444
+00:27:43,180 --> 00:27:46,240
+the Common Crawl data.
+
+445
+00:27:46,240 --> 00:27:49,735
+And I think I actually don't remember exactly.
+
+446
+00:27:49,735 --> 00:27:52,225
+So for Nepali I think we had to, ah,
+
+447
+00:27:52,225 --> 00:27:54,310
+concatenate the Wikipedia data and
+
+448
+00:27:54,310 --> 00:27:57,670
+the Common Crawl data because the Wikipedia data was just too small.
+
+449
+00:27:57,670 --> 00:28:01,525
+And we simply train a count-based n-gram.
+
+450
+00:28:01,525 --> 00:28:04,645
+And then, the count-based n-gram gives you,
+
+451
+00:28:04,645 --> 00:28:05,890
+I don't know if you study this,
+
+452
+00:28:05,890 --> 00:28:11,709
+but it gives you the probability of one word given some fixed window of context.
+
+453
+00:28:11,709 --> 00:28:14,530
+And then, ah, for a given sentence,
+
+454
+00:28:14,530 --> 00:28:17,635
+we put like, let's say, what is it?
+
+455
+00:28:17,635 --> 00:28:20,680
+For a given sentence, you would, um,
+
+456
+00:28:20,680 --> 00:28:23,485
+compute a score for every board,
+
+457
+00:28:23,485 --> 00:28:26,830
+and then the score of a sentence is simply the average,
+
+458
+00:28:26,830 --> 00:28:30,820
+ah, low-probability score, ah,
+
+459
+00:28:30,820 --> 00:28:33,850
+across all the words in the sentence and that will give you a score and
+
+460
+00:28:33,850 --> 00:28:38,185
+then we will simply have a threshold on that.
+
+461
+00:28:38,185 --> 00:28:42,565
+And so all the sentences that would score too low,
+
+462
+00:28:42,565 --> 00:28:44,845
+that would be deemed not fluent enough,
+
+463
+00:28:44,845 --> 00:28:47,450
+would be sent for rework.
+
+464
+00:28:47,520 --> 00:28:50,665
+But, of course, um,
+
+465
+00:28:50,665 --> 00:28:52,300
+whenever you have an entity,
+
+466
+00:28:52,300 --> 00:28:56,455
+whenever you have, ah, you know,
+
+467
+00:28:56,455 --> 00:29:00,670
+it's not super reliable and if you go on
+
+468
+00:29:00,670 --> 00:29:04,465
+languages that are even lower resource than Sinhala than you have,
+
+469
+00:29:04,465 --> 00:29:10,450
+you don't even have really in domain data like Wikipedia is not in all the languages,
+
+470
+00:29:10,450 --> 00:29:13,225
+and then it becomes even harder.
+
+471
+00:29:13,225 --> 00:29:16,480
+And so, oftentimes,
+
+472
+00:29:16,480 --> 00:29:18,190
+so now that we are scaling this up,
+
+473
+00:29:18,190 --> 00:29:21,610
+we are looking at, um, language models,
+
+474
+00:29:21,610 --> 00:29:23,380
+neural language models that are trained in
+
+475
+00:29:23,380 --> 00:29:26,560
+a multilingual way and that are fine tuned on a small,
+
+476
+00:29:26,560 --> 00:29:30,010
+ah, in domain, ah,
+
+477
+00:29:30,010 --> 00:29:32,515
+limiting what they decide if available.
+
+478
+00:29:32,515 --> 00:29:36,595
+But yeah. Also this type is not particularly,
+
+479
+00:29:36,595 --> 00:29:39,220
+um, obvious how to do it.
+
+480
+00:29:39,220 --> 00:29:45,085
+Yeah, sure. So thank you for like this amazing result.
+
+481
+00:29:45,085 --> 00:29:47,380
+But, I just wanna comment because like,
+
+482
+00:29:47,380 --> 00:29:50,050
+I've noticed that like Wikipedia actually will have like
+
+483
+00:29:50,050 --> 00:29:53,065
+different content with different language you choose.
+
+484
+00:29:53,065 --> 00:29:57,070
+So for example, they'll have like very detailed,
+
+485
+00:29:57,070 --> 00:30:00,280
+like description of some like basically topic.
+
+486
+00:30:00,280 --> 00:30:02,260
+And then in other languages,
+
+487
+00:30:02,260 --> 00:30:06,445
+even if with like really commonly used language like Chinese,
+
+488
+00:30:06,445 --> 00:30:11,860
+they'll actually just have completely different content or basically simplified content.
+
+489
+00:30:11,860 --> 00:30:18,910
+So I'm like pretty sure this also gonna happen with like rarely used languages.
+
+490
+00:30:18,910 --> 00:30:20,995
+So yeah, I - I just,
+
+491
+00:30:20,995 --> 00:30:27,010
+I just generally think that like Wikipedia might not be like basically.
+
+492
+00:30:27,010 --> 00:30:28,855
+[OVERLAPPING] You might not be like
+
+493
+00:30:28,855 --> 00:30:33,380
+very direct reference to the tran - translation. Yeah.
+
+494
+00:30:33,380 --> 00:30:36,600
+Yeah, yeah, so it - it's an excellent point and this is
+
+495
+00:30:36,600 --> 00:30:40,155
+something that I'm going to discuss more in the third part of the lecture.
+
+496
+00:30:40,155 --> 00:30:43,580
+And, um, in a way,
+
+497
+00:30:43,580 --> 00:30:46,735
+ah, this is the translation problem, right?
+
+498
+00:30:46,735 --> 00:30:52,510
+So we need to accept the fact that content that is originated in
+
+499
+00:30:52,510 --> 00:30:54,775
+a certain language may have
+
+500
+00:30:54,775 --> 00:30:59,395
+a different topic distribution than content that originates in another language.
+
+501
+00:30:59,395 --> 00:31:02,305
+And what you want to translate is really a content that
+
+502
+00:31:02,305 --> 00:31:05,585
+originates in - in the source language.
+
+503
+00:31:05,585 --> 00:31:07,890
+Right? And so you need to - to live with it,
+
+504
+00:31:07,890 --> 00:31:10,620
+that that's, ah, that's what it is.
+
+505
+00:31:10,620 --> 00:31:14,610
+[LAUGHTER] So oftentimes in, um,
+
+506
+00:31:14,610 --> 00:31:18,420
+in the public benchmarks in - in the literature,
+
+507
+00:31:18,420 --> 00:31:22,110
+you find that people assume that corpora are comparable.
+
+508
+00:31:22,110 --> 00:31:25,069
+So everything that originates in English,
+
+509
+00:31:25,069 --> 00:31:29,800
+and - and let's see, Nepali essentially comes from the same kind of sources.
+
+510
+00:31:29,800 --> 00:31:32,155
+So it's news and it's all news,
+
+511
+00:31:32,155 --> 00:31:34,270
+talking about similar things.
+
+512
+00:31:34,270 --> 00:31:35,875
+But in practice, this is not true,
+
+513
+00:31:35,875 --> 00:31:37,419
+it's not true for Wikipedia,
+
+514
+00:31:37,419 --> 00:31:39,355
+as you correctly said,
+
+515
+00:31:39,355 --> 00:31:41,350
+but it's also true for news, right?
+
+516
+00:31:41,350 --> 00:31:44,125
+Because if - if local news in, ah,
+
+517
+00:31:44,125 --> 00:31:47,110
+Nepal and local news over here,
+
+518
+00:31:47,110 --> 00:31:49,360
+ah, it's quite different, right?
+
+519
+00:31:49,360 --> 00:31:53,530
+So this is a general problem, yeah, and this has
+
+520
+00:31:53,530 --> 00:31:59,750
+implications in terms of the matters that we are going to use as we will discuss later.
+
+521
+00:32:04,080 --> 00:32:10,015
+Other questions? Or- I'm not sure if I was clear.
+
+522
+00:32:10,015 --> 00:32:15,760
+It's really hard to [LAUGHTER] speak without seeing [LAUGHTER] without feedback.
+
+523
+00:32:15,760 --> 00:32:21,040
+[LAUGHTER] Uh, please- please let me know if- if- if anything is- is not clear.
+
+524
+00:32:21,040 --> 00:32:23,290
+Okay. Let's talk about modeling.
+
+525
+00:32:23,290 --> 00:32:26,710
+And this is going to be, um, most of,
+
+526
+00:32:26,710 --> 00:32:30,625
+uh, our- uh, where we are going to spend most of our time.
+
+527
+00:32:30,625 --> 00:32:34,210
+So remember that we have this, uh,
+
+528
+00:32:34,210 --> 00:32:36,880
+funky chart where we have domain and languages
+
+529
+00:32:36,880 --> 00:32:40,420
+and it's a pretty complicated learning setting.
+
+530
+00:32:40,420 --> 00:32:43,029
+And here for simplicity,
+
+531
+00:32:43,029 --> 00:32:48,280
+we are going to focus just on English and Nepali languages.
+
+532
+00:32:48,280 --> 00:32:51,550
+Um, and we start with the simplest setting ever,
+
+533
+00:32:51,550 --> 00:32:53,140
+which is Supervised Learning.
+
+534
+00:32:53,140 --> 00:32:56,575
+Assuming that all data is in the same domain.
+
+535
+00:32:56,575 --> 00:33:00,410
+So perhaps you have a small training set
+
+536
+00:33:00,450 --> 00:33:04,120
+and the test set is in the same domain
+
+537
+00:33:04,120 --> 00:33:07,510
+as the training set- as the parallel training set, okay?
+
+538
+00:33:07,510 --> 00:33:10,360
+So we denote as x,
+
+539
+00:33:10,360 --> 00:33:11,950
+the source sentence as y,
+
+540
+00:33:11,950 --> 00:33:15,610
+the target sentence d. So d is, uh,
+
+541
+00:33:15,610 --> 00:33:20,515
+the parallel dataset that collects all these sentence pairs, right?
+
+542
+00:33:20,515 --> 00:33:25,210
+And so this is the typical empirical risk minimization framework
+
+543
+00:33:25,210 --> 00:33:27,160
+whereby you, uh, you know,
+
+544
+00:33:27,160 --> 00:33:28,960
+you do supervised learning, in this case,p
+
+545
+00:33:28,960 --> 00:33:31,990
+you minimize the cross-entropy loss and you want to maximize
+
+546
+00:33:31,990 --> 00:33:35,380
+the probability of the target sentence given the source sentence.
+
+547
+00:33:35,380 --> 00:33:38,410
+And so a way to visualize this is to say that,
+
+548
+00:33:38,410 --> 00:33:41,665
+uh, x, uh, is my English sentence.
+
+549
+00:33:41,665 --> 00:33:43,330
+It goes to my encoder,
+
+550
+00:33:43,330 --> 00:33:47,215
+decoder NMT system that produces a prediction,
+
+551
+00:33:47,215 --> 00:33:52,390
+and then we have a loss that measure the discrepancy between the human reference that,
+
+552
+00:33:52,390 --> 00:33:54,850
+you know, you took the sentence x, you asked, uh,
+
+553
+00:33:54,850 --> 00:33:57,805
+your translator that gave you the human reference.
+
+554
+00:33:57,805 --> 00:34:00,520
+And so the cross-entropy loss measures the discrepancy
+
+555
+00:34:00,520 --> 00:34:04,750
+between the model prediction and the human reference, right?
+
+556
+00:34:04,750 --> 00:34:11,725
+Um, now, uh, notice that here I'm denoting with boxes.
+
+557
+00:34:11,725 --> 00:34:13,480
+Uh, [LAUGHTER] now, uh,
+
+558
+00:34:13,480 --> 00:34:15,460
+model components, in this case,
+
+559
+00:34:15,460 --> 00:34:20,139
+the blue box is the encoder that processes English, er, sentences,
+
+560
+00:34:20,139 --> 00:34:23,169
+and the red box is the decoder that,
+
+561
+00:34:23,170 --> 00:34:26,005
+uh, operates in Nepali.
+
+562
+00:34:26,005 --> 00:34:30,159
+And, uh, I just wanted to add one more thing,
+
+563
+00:34:30,159 --> 00:34:32,994
+which is that if you don't have a lot of parallel data,
+
+564
+00:34:32,995 --> 00:34:34,750
+you need to regularize.
+
+565
+00:34:34,750 --> 00:34:37,000
+And so you can do a word k,
+
+566
+00:34:37,000 --> 00:34:38,500
+uh, which is pretty standard.
+
+567
+00:34:38,500 --> 00:34:42,370
+So you kind of minimize the L2 norm or the parameters,
+
+568
+00:34:42,370 --> 00:34:45,040
+but there are also other methods that I think, uh,
+
+569
+00:34:45,040 --> 00:34:46,600
+in the machine learning class,
+
+570
+00:34:46,600 --> 00:34:50,380
+you may have seen like dropout where you set to zero at random,
+
+571
+00:34:50,380 --> 00:34:52,989
+uh, hidden units in your encoder decoder.
+
+572
+00:34:52,989 --> 00:34:57,310
+Or you can do label smoothing whereby you, um,
+
+573
+00:34:57,310 --> 00:35:02,530
+uh, in your cross-entropy loss instead of- actually it should be more more over here.
+
+574
+00:35:02,530 --> 00:35:05,500
+Uh, instead of setting, uh,
+
+575
+00:35:05,500 --> 00:35:07,690
+um, as a target,
+
+576
+00:35:07,690 --> 00:35:09,190
+uh, for the correct word.
+
+577
+00:35:09,190 --> 00:35:10,450
+So this is, uh,
+
+578
+00:35:10,450 --> 00:35:13,450
+the probability over the whole sequence which you can factorize over,
+
+579
+00:35:13,450 --> 00:35:17,230
+uh, each individual word by the product, uh, rule.
+
+580
+00:35:17,230 --> 00:35:19,855
+Uh, so for every word,
+
+581
+00:35:19,855 --> 00:35:22,510
+you- you- you have the correct,
+
+582
+00:35:22,510 --> 00:35:24,970
+uh, word that you want- sorry.
+
+583
+00:35:24,970 --> 00:35:28,465
+At every timestamp, you want to predict the next word.
+
+584
+00:35:28,465 --> 00:35:33,940
+And now instead of assigning 100% of probability on the, uh, next word,
+
+585
+00:35:33,940 --> 00:35:38,305
+you- let's say you assign 90% of the probability and the remaining 10%
+
+586
+00:35:38,305 --> 00:35:40,420
+you evenly distribute across
+
+587
+00:35:40,420 --> 00:35:43,540
+all the remaining words so that the model is not too overly confident.
+
+588
+00:35:43,540 --> 00:35:48,490
+So the combinations of these two things are usually good ways to,
+
+589
+00:35:48,490 --> 00:35:50,920
+um, regularize the system, okay?
+
+590
+00:35:50,920 --> 00:35:52,660
+So that's the simplest setting.
+
+591
+00:35:52,660 --> 00:35:58,285
+Now let's see what happens when we have also some source side, uh, monolingual data.
+
+592
+00:35:58,285 --> 00:36:03,220
+So here now we have a- an additional dataset that has only,
+
+593
+00:36:03,220 --> 00:36:08,620
+uh, sentences in the source- in the source language, English.
+
+594
+00:36:08,620 --> 00:36:10,000
+So in addition to d,
+
+595
+00:36:10,000 --> 00:36:12,010
+now we have also, uh,
+
+596
+00:36:12,010 --> 00:36:15,760
+M_s, which is the monolingual data on the source, uh, side.
+
+597
+00:36:15,760 --> 00:36:17,470
+And so we have a bunch of X's.
+
+598
+00:36:17,470 --> 00:36:22,570
+So typically, M is much greater than N, right?
+
+599
+00:36:22,570 --> 00:36:26,380
+And now, a typical way to use, uh, uh,
+
+600
+00:36:26,380 --> 00:36:31,955
+this data is to model the marginal distribution of the data of x, right?
+
+601
+00:36:31,955 --> 00:36:35,040
+And so there are many ways to do that.
+
+602
+00:36:35,040 --> 00:36:38,415
+One way that has proven to be pretty effective
+
+603
+00:36:38,415 --> 00:36:41,835
+in machine translation is to do denoising autoencoding.
+
+604
+00:36:41,835 --> 00:36:45,515
+And so here the idea is that, um,
+
+605
+00:36:45,515 --> 00:36:49,330
+you have something similar to what we had before,
+
+606
+00:36:49,330 --> 00:36:55,550
+except that now the input is taken from this monolingual dataset, okay?
+
+607
+00:36:55,550 --> 00:36:58,350
+And you add noise to it,
+
+608
+00:36:58,350 --> 00:37:01,380
+and I'm going to describe the noise in a- in a second.
+
+609
+00:37:01,380 --> 00:37:03,660
+And then the, er, job, uh,
+
+610
+00:37:03,660 --> 00:37:10,255
+of the encoder decoder is simply to denoise the noisy input.
+
+611
+00:37:10,255 --> 00:37:12,820
+And the cross-entropy loss measure the discrepancy
+
+612
+00:37:12,820 --> 00:37:17,890
+between the cle- the prediction and the actual clean input.
+
+613
+00:37:17,890 --> 00:37:22,630
+But now notice that the decoder is not
+
+614
+00:37:22,630 --> 00:37:27,520
+this red decoder because the decoder now is a decoder that operates in English,
+
+615
+00:37:27,520 --> 00:37:29,215
+but the encoder does not.
+
+616
+00:37:29,215 --> 00:37:31,540
+The encoder is- uh,
+
+617
+00:37:31,540 --> 00:37:34,270
+is, uh, the same that you have seen here.
+
+618
+00:37:34,270 --> 00:37:36,925
+So again, the- uh,
+
+619
+00:37:36,925 --> 00:37:40,030
+the loss function here is,
+
+620
+00:37:40,030 --> 00:37:42,040
+er, very similar to before, except that,
+
+621
+00:37:42,040 --> 00:37:46,270
+uh, the target is the clean input x,
+
+622
+00:37:46,270 --> 00:37:48,250
+and the input is,
+
+623
+00:37:48,250 --> 00:37:51,880
+uh, a noisifed version of x.
+
+624
+00:37:51,880 --> 00:37:54,910
+So in this case,
+
+625
+00:37:54,910 --> 00:37:58,465
+we are not predicting something in Nepali but something in English.
+
+626
+00:37:58,465 --> 00:37:59,920
+So this is a, uh,
+
+627
+00:37:59,920 --> 00:38:02,665
+if you want the limitation of- of this work,
+
+628
+00:38:02,665 --> 00:38:06,115
+but this is useful because you are anyway,
+
+629
+00:38:06,115 --> 00:38:09,190
+doing some good modeling of,
+
+630
+00:38:09,190 --> 00:38:11,650
+uh, the input sentences,
+
+631
+00:38:11,650 --> 00:38:14,800
+and you're gonna train the encoder parameters that are going to
+
+632
+00:38:14,800 --> 00:38:18,445
+be shared with your supervised system.
+
+633
+00:38:18,445 --> 00:38:21,610
+So the encoder is shared between,
+
+634
+00:38:21,610 --> 00:38:25,840
+um, uh, the translation task on parallel data, right?
+
+635
+00:38:25,840 --> 00:38:28,840
+And the denoising auto-encoder task.
+
+636
+00:38:28,840 --> 00:38:31,270
+So essentially you have an encoder and two decoders.
+
+637
+00:38:31,270 --> 00:38:32,530
+One that operates in Nepali,
+
+638
+00:38:32,530 --> 00:38:34,525
+one that operates in English.
+
+639
+00:38:34,525 --> 00:38:40,060
+And, um, so in terms of noise,
+
+640
+00:38:40,060 --> 00:38:44,560
+there are essentially two types of noise that we have been using in our work.
+
+641
+00:38:44,560 --> 00:38:46,795
+Others are possible, but, uh,
+
+642
+00:38:46,795 --> 00:38:50,800
+in the simplest case, you can drop words or swap words.
+
+643
+00:38:50,800 --> 00:38:53,395
+So assume that the input sentence is,
+
+644
+00:38:53,395 --> 00:38:54,880
+"The cat sat on the mat."
+
+645
+00:38:54,880 --> 00:38:57,280
+Then if you swap words, you may, uh,
+
+646
+00:38:57,280 --> 00:39:01,090
+provide at the input "The cat the on sat mat."
+
+647
+00:39:01,090 --> 00:39:06,624
+And so here the encoder decoder needs to understand a little bit of the- the syntax,
+
+648
+00:39:06,624 --> 00:39:09,640
+the grammatical rules in order to reorder.
+
+649
+00:39:09,640 --> 00:39:12,730
+If you drop- let's say you drop the last word,
+
+650
+00:39:12,730 --> 00:39:14,995
+"The cat sat on the," then, uh,
+
+651
+00:39:14,995 --> 00:39:19,210
+the model needs to understand a little bit of the semantics because it needs to assign,
+
+652
+00:39:19,210 --> 00:39:22,060
+a higher probability to mat now, right?
+
+653
+00:39:22,060 --> 00:39:26,800
+And so you can see that there is a little bit of,
+
+654
+00:39:26,800 --> 00:39:29,050
+uh, so there are two hyperparameters here.
+
+655
+00:39:29,050 --> 00:39:33,910
+So one- actually, there are several ways to use denoising auto-encoding.
+
+656
+00:39:33,910 --> 00:39:37,795
+So you can use denoising auto-encoding as a way to pre-train the encoder.
+
+657
+00:39:37,795 --> 00:39:40,270
+Or you can use it, uh,
+
+658
+00:39:40,270 --> 00:39:44,050
+as auxiliary loss when you do supervised learning.
+
+659
+00:39:44,050 --> 00:39:49,540
+So you can have this term plus Lambda, this term, okay?
+
+660
+00:39:49,540 --> 00:39:51,280
+So both ways are fine.
+
+661
+00:39:51,280 --> 00:39:58,420
+And, uh, so there is a very critical hyperparameter here,
+
+662
+00:39:58,420 --> 00:39:59,770
+which is the level of noise.
+
+663
+00:39:59,770 --> 00:40:03,565
+If you don't have any noise or if the noise level is too low,
+
+664
+00:40:03,565 --> 00:40:06,880
+then this task is trivial because of the attention,
+
+665
+00:40:06,880 --> 00:40:09,100
+you can simply copy the input.
+
+666
+00:40:09,100 --> 00:40:13,480
+And so the encoder and the decoder don't need to learn anything.
+
+667
+00:40:13,480 --> 00:40:15,745
+If the noise level is too high,
+
+668
+00:40:15,745 --> 00:40:18,400
+then you destroy the input here.
+
+669
+00:40:18,400 --> 00:40:23,755
+So the encoder is not useful and you just do language modeling using the decoder.
+
+670
+00:40:23,755 --> 00:40:28,360
+But remember that this decoder is then, uh,
+
+671
+00:40:28,360 --> 00:40:31,195
+not use- used for translation because, uh,
+
+672
+00:40:31,195 --> 00:40:35,755
+what you use for- in machine translation system is- is the encoder box, right?
+
+673
+00:40:35,755 --> 00:40:40,465
+The encoder module. Okay, so,
+
+674
+00:40:40,465 --> 00:40:44,545
+uh, there are other ways to use source-side monolingual data.
+
+675
+00:40:44,545 --> 00:40:47,004
+In addition to denoising of encoding,
+
+676
+00:40:47,004 --> 00:40:48,610
+you could also do, uh,
+
+677
+00:40:48,610 --> 00:40:54,400
+self-training, which is a method that comes from the '90s, if not earlier.
+
+678
+00:40:54,400 --> 00:40:56,500
+And the idea is very simple.
+
+679
+00:40:56,500 --> 00:40:59,245
+So again, you take a sentence from
+
+680
+00:40:59,245 --> 00:41:03,265
+your source-side monolingual dataset and you add noise to it,
+
+681
+00:41:03,265 --> 00:41:06,610
+and then you have an encoder decoder that tries to
+
+682
+00:41:06,610 --> 00:41:10,870
+this time translate from this noisy input, okay?
+
+683
+00:41:10,870 --> 00:41:12,400
+And now what's the reference?
+
+684
+00:41:12,400 --> 00:41:20,110
+The reference is given by a stale version of your machine translation system, okay?
+
+685
+00:41:20,110 --> 00:41:23,605
+Where the reference is produced by, let's say beam.
+
+686
+00:41:23,605 --> 00:41:29,320
+And so, uh, the cross-entropy loss is then going to measure the discrepancy between
+
+687
+00:41:29,320 --> 00:41:35,350
+your prediction and what the prediction from- from a stale version of your system gave.
+
+688
+00:41:35,350 --> 00:41:39,115
+And the reason why this works is that when you do beam,
+
+689
+00:41:39,115 --> 00:41:42,670
+you actually typically, um,
+
+690
+00:41:42,670 --> 00:41:47,495
+produce better quality, uh, outputs.
+
+691
+00:41:47,495 --> 00:41:49,440
+And so when you train,
+
+692
+00:41:49,440 --> 00:41:52,500
+now this encoder-decoder by cross-entropy loss,
+
+693
+00:41:52,500 --> 00:41:56,490
+you're going to learn the decoding process, okay?
+
+694
+00:41:56,490 --> 00:42:00,015
+And so this is something good for you.
+
+695
+00:42:00,015 --> 00:42:01,920
+In addition, when you train,
+
+696
+00:42:01,920 --> 00:42:03,435
+you inject noise and,
+
+697
+00:42:03,435 --> 00:42:05,099
+and the noise is regularizing,
+
+698
+00:42:05,099 --> 00:42:08,700
+it's kind of smoothing out your prediction space.
+
+699
+00:42:08,700 --> 00:42:13,919
+And so if you're predicting correctly one sentence now also nearby sentences,
+
+700
+00:42:13,919 --> 00:42:17,190
+and by nearby I mean sentences that are similar phrases
+
+701
+00:42:17,190 --> 00:42:20,820
+so they have a good overlap with the current sentence,
+
+702
+00:42:20,820 --> 00:42:24,945
+are gonna be more likely predicted correctly.
+
+703
+00:42:24,945 --> 00:42:29,055
+And so we have this paper where we analyze a little bit, uh, these aspects.
+
+704
+00:42:29,055 --> 00:42:31,605
+And so the algorithm is very simple.
+
+705
+00:42:31,605 --> 00:42:35,985
+And so first you train your machine translation system on the parallel data,
+
+706
+00:42:35,985 --> 00:42:38,100
+and then you repeat the following process.
+
+707
+00:42:38,100 --> 00:42:43,110
+So first you decode your monolingual dataset using your current,
+
+708
+00:42:43,110 --> 00:42:44,895
+uh, machine translation system.
+
+709
+00:42:44,895 --> 00:42:47,400
+And you make a new, uh,
+
+710
+00:42:47,400 --> 00:42:52,110
+parallel data set of sentences from your monolingual dataset with,
+
+711
+00:42:52,110 --> 00:42:55,020
+sorry, with the, ah,
+
+712
+00:42:55,020 --> 00:42:57,345
+translations from your current system.
+
+713
+00:42:57,345 --> 00:42:59,235
+And then you retrain the model,
+
+714
+00:42:59,235 --> 00:43:02,910
+this p of y- p of y given x on the union of
+
+715
+00:43:02,910 --> 00:43:07,620
+your original parallel data plus this, uh, auxiliary dataset.
+
+716
+00:43:07,620 --> 00:43:11,880
+And so here you have two hyperparameters.
+
+717
+00:43:11,880 --> 00:43:14,550
+One is the noise level and the other is
+
+718
+00:43:14,550 --> 00:43:18,750
+the hyperparameters that weight this, ah, auxiliary dataset.
+
+719
+00:43:18,750 --> 00:43:21,855
+So this is set training loss, okay?
+
+720
+00:43:21,855 --> 00:43:29,385
+Now let's- so that's- that concludes how we can use a source-side monolingual data.
+
+721
+00:43:29,385 --> 00:43:33,930
+Let me say a word about how we can use target-side monolingual data.
+
+722
+00:43:33,930 --> 00:43:37,155
+So you could use the target-side monolingual data, uh,
+
+723
+00:43:37,155 --> 00:43:39,000
+to train a language model and then train
+
+724
+00:43:39,000 --> 00:43:41,730
+the machine translation system in the residual space.
+
+725
+00:43:41,730 --> 00:43:42,945
+So this language model.
+
+726
+00:43:42,945 --> 00:43:47,415
+But it turns out that there is a much more effective way to leverage this data,
+
+727
+00:43:47,415 --> 00:43:49,410
+and that's called back translation.
+
+728
+00:43:49,410 --> 00:43:52,350
+So at the high level,
+
+729
+00:43:52,350 --> 00:43:53,460
+it works as follows.
+
+730
+00:43:53,460 --> 00:43:59,280
+So you take a sentence from your target-side monolingual data set, y_t here.
+
+731
+00:43:59,280 --> 00:44:02,310
+And on the parallel dataset,
+
+732
+00:44:02,310 --> 00:44:05,370
+you train also backward machine translation system
+
+733
+00:44:05,370 --> 00:44:07,230
+that goes from Nepali to English, okay?
+
+734
+00:44:07,230 --> 00:44:11,940
+So that's- so now you have a red encoder that takes Nepali and,
+
+735
+00:44:11,940 --> 00:44:14,760
+and the blue decoder that was in
+
+736
+00:44:14,760 --> 00:44:19,500
+the English space and so you map the sentence into English,
+
+737
+00:44:19,500 --> 00:44:21,825
+this Nepali sentence into English.
+
+738
+00:44:21,825 --> 00:44:26,010
+And now this may not be a correct translation but it's
+
+739
+00:44:26,010 --> 00:44:32,270
+a noisy input that you feed to your encoder-decoder that you want to train, right?
+
+740
+00:44:32,270 --> 00:44:36,140
+And so now the input is noisy,
+
+741
+00:44:36,140 --> 00:44:38,870
+but the target here is clean because it
+
+742
+00:44:38,870 --> 00:44:42,275
+comes from the original target-side monolingual dataset.
+
+743
+00:44:42,275 --> 00:44:52,080
+And so this is a very powerful algorithm because, um,
+
+744
+00:44:52,080 --> 00:44:59,100
+unlike cell training, here the targets are clean but the input is a little noisy,
+
+745
+00:44:59,100 --> 00:45:03,240
+and that's usually much better than having clean inputs but noisy targets, right?
+
+746
+00:45:03,240 --> 00:45:04,830
+Because the targets affect
+
+747
+00:45:04,830 --> 00:45:10,539
+essentially all the other signals that you backpropagate through the NMT systems.
+
+748
+00:45:10,550 --> 00:45:13,620
+And this is- and you can see back translation is
+
+749
+00:45:13,620 --> 00:45:15,750
+a way to do data augmentation because you
+
+750
+00:45:15,750 --> 00:45:20,610
+produce noisy version of inputs, ah,
+
+751
+00:45:20,610 --> 00:45:21,900
+for a given target,
+
+752
+00:45:21,900 --> 00:45:24,700
+a little bit like in vision where they do,
+
+753
+00:45:24,860 --> 00:45:28,140
+uh, well, I guess this is not the right audience to,
+
+754
+00:45:28,140 --> 00:45:29,250
+to do this analogy,
+
+755
+00:45:29,250 --> 00:45:32,430
+but it should work on vision you- you will do scaling,
+
+756
+00:45:32,430 --> 00:45:36,945
+rotation, different cropping, and that's a little bit similar to what we are doing here.
+
+757
+00:45:36,945 --> 00:45:40,680
+And so the algorithm again is,
+
+758
+00:45:40,680 --> 00:45:45,270
+you train, er, backward and then forward machine translation system on the parallel data.
+
+759
+00:45:45,270 --> 00:45:48,975
+And then you use your backward model to decode
+
+760
+00:45:48,975 --> 00:45:53,430
+the target-side monolingual dataset to produce an auxiliary parallel dataset.
+
+761
+00:45:53,430 --> 00:45:55,740
+And then you concatenate the,
+
+762
+00:45:55,740 --> 00:45:58,230
+the, the two datasets,
+
+763
+00:45:58,230 --> 00:46:00,840
+the original parallel data set and the auxiliary one
+
+764
+00:46:00,840 --> 00:46:04,635
+to train the new foreword model, okay?
+
+765
+00:46:04,635 --> 00:46:09,150
+Of course you can combine set training and back translation.
+
+766
+00:46:09,150 --> 00:46:14,220
+So if you have both source monolingual dataset and target monolingual dataset,
+
+767
+00:46:14,220 --> 00:46:16,770
+you can do the following.
+
+768
+00:46:16,770 --> 00:46:20,490
+So, uh, you can use the parallel data to train the forward and
+
+769
+00:46:20,490 --> 00:46:24,990
+the backward machine translation system and then at step two you
+
+770
+00:46:24,990 --> 00:46:29,190
+can use the forward model to decode- to
+
+771
+00:46:29,190 --> 00:46:33,885
+translate the source-side monolingual dataset into, uh, this data.
+
+772
+00:46:33,885 --> 00:46:39,000
+And you can use the backward machine translation system to
+
+773
+00:46:39,000 --> 00:46:45,465
+translate the target-side monolingual dataset into these, uh, translations, okay?
+
+774
+00:46:45,465 --> 00:46:49,200
+And then you treat these parallel sentences as
+
+775
+00:46:49,200 --> 00:46:52,935
+real data and you concatenate them to the parallel dataset.
+
+776
+00:46:52,935 --> 00:46:57,690
+And now you retrain both the forward and the backward machine translation systems.
+
+777
+00:46:57,690 --> 00:47:00,435
+And now as long as these two improve,
+
+778
+00:47:00,435 --> 00:47:03,690
+then you can go and do another iteration whereby you, again,
+
+779
+00:47:03,690 --> 00:47:05,040
+you read the code,
+
+780
+00:47:05,040 --> 00:47:09,990
+retranslate the source and the target-side monolingual dataset and then you go,
+
+781
+00:47:09,990 --> 00:47:12,760
+ah, and you retrain them.
+
+782
+00:47:13,430 --> 00:47:16,560
+And this is as far as I know,
+
+783
+00:47:16,560 --> 00:47:24,820
+the most effective way to leverage monolingual data in low-resource languages nowadays.
+
+784
+00:47:25,970 --> 00:47:32,055
+Lemme talk a little bit about how we can do multilingual training.
+
+785
+00:47:32,055 --> 00:47:39,060
+So in this case we have parallel datasets on different language pairs.
+
+786
+00:47:39,060 --> 00:47:43,080
+And, uh, so you have a parallel dataset for English-Nepali,
+
+787
+00:47:43,080 --> 00:47:45,750
+one for English-Hindi, one for Hindi-English,
+
+788
+00:47:45,750 --> 00:47:48,720
+or Nepali-Hindi, or any subset of these.
+
+789
+00:47:48,720 --> 00:47:51,720
+And this is super simple.
+
+790
+00:47:51,720 --> 00:47:53,910
+So the way that it works is that,
+
+791
+00:47:53,910 --> 00:47:58,200
+you have a single encoder and a single decoder, okay?
+
+792
+00:47:58,200 --> 00:48:01,890
+And you train by supervised learning.
+
+793
+00:48:01,890 --> 00:48:06,075
+The only change that needs to be made is that,
+
+794
+00:48:06,075 --> 00:48:09,990
+at the input of the encoder you concatenate also a
+
+795
+00:48:09,990 --> 00:48:14,595
+token that specifies the language in which you want to translate.
+
+796
+00:48:14,595 --> 00:48:20,160
+And so the encoder will learn to process multiple languages.
+
+797
+00:48:20,160 --> 00:48:25,515
+The decoder will learn to the- to produce
+
+798
+00:48:25,515 --> 00:48:28,920
+multiple languages as one and it will pick
+
+799
+00:48:28,920 --> 00:48:33,465
+the language based on the token specified by the encoder input.
+
+800
+00:48:33,465 --> 00:48:37,770
+And so training is just minimizing the cross-entropy loss for
+
+801
+00:48:37,770 --> 00:48:43,830
+all the parallel datasets that you have where you simply add an extra token,
+
+802
+00:48:43,830 --> 00:48:47,340
+ah, in the source sentence that specifies the target,
+
+803
+00:48:47,340 --> 00:48:50,680
+uh, language that you want to translate.
+
+804
+00:48:51,890 --> 00:48:56,520
+And the only thing that I wanted to add on this is that often
+
+805
+00:48:56,520 --> 00:49:00,990
+times it helps if you pre-process the data
+
+806
+00:49:00,990 --> 00:49:07,710
+by- I'm not sure if you learn about bipolar encoding sentence pieces,  essentially ways
+
+807
+00:49:07,710 --> 00:49:14,895
+to segment words into syllables or frequent, um, character n-grams.
+
+808
+00:49:14,895 --> 00:49:19,590
+And so if you concatenate this data in order to learn these ways to segment the data,
+
+809
+00:49:19,590 --> 00:49:21,630
+then it's also possible that for
+
+810
+00:49:21,630 --> 00:49:25,200
+many languages there is a good fraction of the dictionary that is shared.
+
+811
+00:49:25,200 --> 00:49:27,150
+And so this also helps,
+
+812
+00:49:27,150 --> 00:49:34,600
+making sure that you can do a good job translating multiple languages at one- at once.
+
+813
+00:49:34,880 --> 00:49:42,270
+And so my- the conclusion so far is that even without domain effect,
+
+814
+00:49:42,270 --> 00:49:47,970
+there are a lot of training paradigms depending on the available data that you have.
+
+815
+00:49:47,970 --> 00:49:53,040
+A priori, it's very hard to tell which method works
+
+816
+00:49:53,040 --> 00:49:58,245
+best nowadays because it really depends on how much data you have,
+
+817
+00:49:58,245 --> 00:50:01,710
+how different are the domains and-
+
+818
+00:50:01,710 --> 00:50:04,485
+and what is the language pair that you are working with.
+
+819
+00:50:04,485 --> 00:50:07,860
+For instance, the domains may be very different,
+
+820
+00:50:07,860 --> 00:50:09,465
+but if you have a lot of data,
+
+821
+00:50:09,465 --> 00:50:13,300
+maybe, um, it doesn't matter much.
+
+822
+00:50:13,640 --> 00:50:19,950
+In practice, we have keen regions denoising with encoding by translation,
+
+823
+00:50:19,950 --> 00:50:23,595
+multilingual training that we're pretty wide.
+
+824
+00:50:23,595 --> 00:50:27,180
+And nowadays, the field is
+
+825
+00:50:27,180 --> 00:50:31,095
+at the stage in which we are trying to figure out the best way to combine them.
+
+826
+00:50:31,095 --> 00:50:33,840
+And right now there is a lot of what I would say,
+
+827
+00:50:33,840 --> 00:50:37,845
+craftsmanship to figure out how to best combine them.
+
+828
+00:50:37,845 --> 00:50:41,070
+And, um, but hopefully we can
+
+829
+00:50:41,070 --> 00:50:43,320
+find- and I think there is a lot of
+
+830
+00:50:43,320 --> 00:50:46,185
+effort in trying to automate this process because right now,
+
+831
+00:50:46,185 --> 00:50:49,050
+um, there is a lot of cross-validation I would
+
+832
+00:50:49,050 --> 00:50:52,840
+say to figure out all these hyperparameters.
+
+833
+00:50:53,510 --> 00:50:58,275
+So the open challenges here is- are,
+
+834
+00:50:58,275 --> 00:51:01,800
+dealing with a diversity of domain or domains,
+
+835
+00:51:01,800 --> 00:51:09,345
+dealing with datasets that have very wildly different translation quality,
+
+836
+00:51:09,345 --> 00:51:11,730
+some are very noisy, some are very clean,
+
+837
+00:51:11,730 --> 00:51:14,400
+dealing with different- with datasets of
+
+838
+00:51:14,400 --> 00:51:18,700
+different size and very different language pairs.
+
+839
+00:51:19,250 --> 00:51:23,580
+And yeah.
+
+840
+00:51:23,580 --> 00:51:25,260
+And so I would say that in general,
+
+841
+00:51:25,260 --> 00:51:26,550
+it may be counter-intuitive,
+
+842
+00:51:26,550 --> 00:51:29,940
+but working low-resource machine translation doesn't
+
+843
+00:51:29,940 --> 00:51:33,795
+mean training small models on small data.
+
+844
+00:51:33,795 --> 00:51:36,975
+But actually means training even bigger models on
+
+845
+00:51:36,975 --> 00:51:41,300
+even more data because you need to compensate for the lack of supervision that you have,
+
+846
+00:51:41,300 --> 00:51:43,715
+of direct supervision that you have.
+
+847
+00:51:43,715 --> 00:51:47,375
+Very good. Before I go on,
+
+848
+00:51:47,375 --> 00:51:48,880
+are there any questions?
+
+849
+00:51:48,880 --> 00:51:51,765
+Um, yeah. I just had a quick question regarding,
+
+850
+00:51:51,765 --> 00:51:56,145
+um- in the- in a few of the previous algorithms that you described,
+
+851
+00:51:56,145 --> 00:51:59,715
+is it necessary to retrain entirely,
+
+852
+00:51:59,715 --> 00:52:02,010
+um, like retrain the model entirely,
+
+853
+00:52:02,010 --> 00:52:06,885
+or is there some way to augment the model or fine-tune it on the,
+
+854
+00:52:06,885 --> 00:52:09,000
+um, on the generated-
+
+855
+00:52:09,000 --> 00:52:13,845
+So actually what usually happens is that as you iterate,
+
+856
+00:52:13,845 --> 00:52:16,305
+you can make the model bigger.
+
+857
+00:52:16,305 --> 00:52:19,785
+So when you train on the parallel data set,
+
+858
+00:52:19,785 --> 00:52:23,370
+usually this is not much data and so you need to train in something small.
+
+859
+00:52:23,370 --> 00:52:25,455
+Otherwise, you over- overfit too much.
+
+860
+00:52:25,455 --> 00:52:28,155
+But once you add, uh,
+
+861
+00:52:28,155 --> 00:52:30,930
+the monolingual data that you- this,
+
+862
+00:52:30,930 --> 00:52:32,700
+uh, A_t data set,
+
+863
+00:52:32,700 --> 00:52:37,005
+then this model can be much bigger than the original model.
+
+864
+00:52:37,005 --> 00:52:43,019
+Now, it's not super obvious how to,
+
+865
+00:52:43,019 --> 00:52:47,490
+uh, you know, initialize a bigger model from a smaller model.
+
+866
+00:52:47,490 --> 00:52:52,335
+[LAUGHTER] And so that's why people usually initialize from random.
+
+867
+00:52:52,335 --> 00:52:55,740
+At the next iterations, you can,
+
+868
+00:52:55,740 --> 00:53:01,485
+um, initialize from the model at the previous iteration.
+
+869
+00:53:01,485 --> 00:53:09,510
+Uh, what we usually find is that initializing at random usually works as well.
+
+870
+00:53:09,510 --> 00:53:11,805
+Gotcha. Thank you.
+
+871
+00:53:11,805 --> 00:53:17,804
+Thank you. Okay. Any other question?
+
+872
+00:53:17,804 --> 00:53:21,645
+When you say, uh, usually the model launch, ah,
+
+873
+00:53:21,645 --> 00:53:24,615
+I was wondering do you mean that you add, ah,
+
+874
+00:53:24,615 --> 00:53:26,610
+more layers with more parameters,
+
+875
+00:53:26,610 --> 00:53:28,695
+ah, as the model keeps training?
+
+876
+00:53:28,695 --> 00:53:32,400
+Uh, usually you just make it bigger.
+
+877
+00:53:32,400 --> 00:53:39,450
+Yeah. Um, yeah, the more layers, more parameter.
+
+878
+00:53:39,450 --> 00:53:42,284
+So whether it is wider or- or deeper,
+
+879
+00:53:42,284 --> 00:53:50,630
+um, I think usually, um- yeah.
+
+880
+00:53:50,630 --> 00:53:53,520
+I'm not entirely sure there is a definite answer on that.
+
+881
+00:53:53,520 --> 00:53:59,610
+Um, usually making the encoder deeper is a good thing.
+
+882
+00:53:59,610 --> 00:54:02,970
+[LAUGHTER] Making the decoder deeper doesn't buy you much.
+
+883
+00:54:02,970 --> 00:54:07,950
+Um, so usually we play with the encoder, I would say.
+
+884
+00:54:07,950 --> 00:54:11,970
+And, um- but yeah, uh,
+
+885
+00:54:11,970 --> 00:54:15,210
+there is not so much difference in practice,
+
+886
+00:54:15,210 --> 00:54:18,360
+uh, I would say. Um, yeah.
+
+887
+00:54:18,360 --> 00:54:24,580
+So you can imagine just double the size of your hidden state, that would work.
+
+888
+00:54:25,670 --> 00:54:31,140
+Okay? Okay. So let's see how
+
+889
+00:54:31,140 --> 00:54:35,760
+this- so I- I didn't speak about models but I spoke about algorithms.
+
+890
+00:54:35,760 --> 00:54:38,400
+So you can turn these algorithms into models a little
+
+891
+00:54:38,400 --> 00:54:41,070
+bit and talk about joint distribution, marginal distribution.
+
+892
+00:54:41,070 --> 00:54:42,915
+But in my view,
+
+893
+00:54:42,915 --> 00:54:48,480
+it's just simpler to think in terms of algorithms because also the way that,
+
+894
+00:54:48,480 --> 00:54:50,445
+uh, we implement them.
+
+895
+00:54:50,445 --> 00:54:54,120
+And so let's see how these algorithms can be put
+
+896
+00:54:54,120 --> 00:54:57,240
+together in some interesting case studies.
+
+897
+00:54:57,240 --> 00:55:00,675
+So actually I realize that I'm really going slow.
+
+898
+00:55:00,675 --> 00:55:06,135
+So let's see the case where you only have monolingual data and no parallel data.
+
+899
+00:55:06,135 --> 00:55:10,020
+So this is what we call unsupervised machine translation.
+
+900
+00:55:10,020 --> 00:55:14,445
+So let's say that you have an English and a French data set, uh,
+
+901
+00:55:14,445 --> 00:55:17,220
+this is not a typical use-case of
+
+902
+00:55:17,220 --> 00:55:20,925
+unsupervised machine translation but this is where it works really well.
+
+903
+00:55:20,925 --> 00:55:23,610
+So let's focus for this for now.
+
+904
+00:55:23,610 --> 00:55:27,735
+And so you take a sentence from the target monolingual data set,
+
+905
+00:55:27,735 --> 00:55:29,535
+you go through your encoder-decoder,
+
+906
+00:55:29,535 --> 00:55:31,425
+and you produce an English translation.
+
+907
+00:55:31,425 --> 00:55:33,780
+Obviously, you don't have the reference here.
+
+908
+00:55:33,780 --> 00:55:39,300
+So what you could do is to feed this to a machine translation system
+
+909
+00:55:39,300 --> 00:55:41,970
+that goes from English to French so that
+
+910
+00:55:41,970 --> 00:55:44,640
+you kind of reconstruct the original French sentence.
+
+911
+00:55:44,640 --> 00:55:47,115
+And now you have- you can have another signal
+
+912
+00:55:47,115 --> 00:55:51,255
+to back-propagate through your machine translation system.
+
+913
+00:55:51,255 --> 00:55:55,005
+And you can do the same going from English to French to English.
+
+914
+00:55:55,005 --> 00:55:57,765
+This is very much what people have done in vision.
+
+915
+00:55:57,765 --> 00:55:59,700
+They call it, uh, cycle consistency.
+
+916
+00:55:59,700 --> 00:56:05,430
+You can see this as an auto-encoder where the intermediate representation is uh,
+
+917
+00:56:05,430 --> 00:56:08,820
+er, you know, er, is a language in- in English.
+
+918
+00:56:08,820 --> 00:56:11,550
+The problem is that, the- as it is,
+
+919
+00:56:11,550 --> 00:56:15,315
+the model is not constrained to produce something that is,
+
+920
+00:56:15,315 --> 00:56:17,654
+uh, a fluent English sentence.
+
+921
+00:56:17,654 --> 00:56:19,230
+So in the vision domain,
+
+922
+00:56:19,230 --> 00:56:20,850
+people use adversarial training,
+
+923
+00:56:20,850 --> 00:56:25,125
+but in NLP it's kinda tricky because this is a discrete sequence.
+
+924
+00:56:25,125 --> 00:56:28,260
+And so in order to make sure that this decoder
+
+925
+00:56:28,260 --> 00:56:32,085
+produces English- fluent English sentences,
+
+926
+00:56:32,085 --> 00:56:34,950
+you could imagine to do denoising auto-encoding, all right?
+
+927
+00:56:34,950 --> 00:56:38,880
+So you could take a no- you could take an English sentence,
+
+928
+00:56:38,880 --> 00:56:41,940
+noisify it, go through your denoising auto-encoding.
+
+929
+00:56:41,940 --> 00:56:44,835
+Now, this decoder is the same block that you have here,
+
+930
+00:56:44,835 --> 00:56:51,580
+it's gonna be forced to learn the statistics and the regularities of the English language.
+
+931
+00:56:51,920 --> 00:56:56,295
+The problem is that if you look at this decoder,
+
+932
+00:56:56,295 --> 00:57:01,155
+this decoder is, in the denoising auto-encoding game,
+
+933
+00:57:01,155 --> 00:57:07,320
+it is operating on the output of this encoder that takes English as input,
+
+934
+00:57:07,320 --> 00:57:10,515
+while here, encoder takes French as input.
+
+935
+00:57:10,515 --> 00:57:12,795
+It could be very well be the case that
+
+936
+00:57:12,795 --> 00:57:16,665
+the representation produced by these two encoders is different.
+
+937
+00:57:16,665 --> 00:57:19,530
+So this decoder may work very well in this setting,
+
+938
+00:57:19,530 --> 00:57:21,270
+but not in this setting.
+
+939
+00:57:21,270 --> 00:57:22,740
+And so in other ways,
+
+940
+00:57:22,740 --> 00:57:28,245
+how can we make sure that these red and blue blocks are interchangeable?
+
+941
+00:57:28,245 --> 00:57:32,220
+How can we make sure that there is good modularity?
+
+942
+00:57:32,220 --> 00:57:38,115
+And so- so one way to do this is to use the trick that we use for multilingual training,
+
+943
+00:57:38,115 --> 00:57:41,985
+whereby we have a single encoder and a single decoder.
+
+944
+00:57:41,985 --> 00:57:45,975
+So the decoder is shared across French and English,
+
+945
+00:57:45,975 --> 00:57:49,065
+and the encoder is shared across English and French.
+
+946
+00:57:49,065 --> 00:57:55,005
+And we specify the target language by an extra token, ah, at the input.
+
+947
+00:57:55,005 --> 00:57:56,970
+And so in particular,
+
+948
+00:57:56,970 --> 00:57:58,515
+if you learn, ah,
+
+949
+00:57:58,515 --> 00:58:00,630
+common VPs and if you share parameters,
+
+950
+00:58:00,630 --> 00:58:02,865
+then this process- sorry,
+
+951
+00:58:02,865 --> 00:58:05,550
+this process really works well and- and you have
+
+952
+00:58:05,550 --> 00:58:09,255
+an- a decoder that operates well with an- ah,
+
+953
+00:58:09,255 --> 00:58:12,570
+whenever it is fed with a hidden state that comes from
+
+954
+00:58:12,570 --> 00:58:16,410
+an encoder operating on English or French.
+
+955
+00:58:16,410 --> 00:58:21,525
+And so again, the ke- key ingredients are iterative backtranslation,
+
+956
+00:58:21,525 --> 00:58:24,510
+denoising auto-encoding and multi-lingual training.
+
+957
+00:58:24,510 --> 00:58:26,670
+And for unsupervised machine translation,
+
+958
+00:58:26,670 --> 00:58:29,820
+we do, uh, back translation in an
+
+959
+00:58:29,820 --> 00:58:33,270
+online manner whereby for a given mini-batch,
+
+960
+00:58:33,270 --> 00:58:36,165
+we do, uh, back translation.
+
+961
+00:58:36,165 --> 00:58:38,010
+We don't do it, uh,
+
+962
+00:58:38,010 --> 00:58:43,335
+with the stale version on the model but you could do that, well, that works less well.
+
+963
+00:58:43,335 --> 00:58:47,340
+And so when you do this on English-French, you find,
+
+964
+00:58:47,340 --> 00:58:51,120
+uh- actually you can get pretty good performance.
+
+965
+00:58:51,120 --> 00:58:56,910
+A BLEU of 30 usually gives you pretty fluent translations that are, uh, also adequate.
+
+966
+00:58:56,910 --> 00:59:01,035
+And, uh, if you compare that to what you got with the, er,
+
+967
+00:59:01,035 --> 00:59:04,800
+supervised baseline that is trained on the parallel data set,
+
+968
+00:59:04,800 --> 00:59:06,900
+you find that training on
+
+969
+00:59:06,900 --> 00:59:09,915
+10 million monolingual sentences
+
+970
+00:59:09,915 --> 00:59:13,665
+in English and 10 million French gives you the same, uh,
+
+971
+00:59:13,665 --> 00:59:17,610
+translation accuracy than training a supervised baseline,
+
+972
+00:59:17,610 --> 00:59:19,170
+that is this, um,
+
+973
+00:59:19,170 --> 00:59:25,620
+uh, red curve- actually this red curve- this blue curve and this red curve.
+
+974
+00:59:25,620 --> 00:59:26,760
+This is the neural version,
+
+975
+00:59:26,760 --> 00:59:31,364
+this is the phrase-based version with 100,000 parallel sentences.
+
+976
+00:59:31,364 --> 00:59:33,585
+So in other words,
+
+977
+00:59:33,585 --> 00:59:41,985
+each parallel sentence pair is equivalent to 100 monolinguals sentences.
+
+978
+00:59:41,985 --> 00:59:46,335
+Equivalent in the sense that they give you a machine translation system
+
+979
+00:59:46,335 --> 00:59:51,060
+of similar, uh, um, accuracy.
+
+980
+00:59:51,060 --> 00:59:56,010
+And so now the more the domains are different,
+
+981
+00:59:56,010 --> 01:00:02,550
+and the more the languages are different from each other, the worse it gets.
+
+982
+01:00:02,550 --> 01:00:05,910
+And so that's why when you do low-resource machine translation,
+
+983
+01:00:05,910 --> 01:00:08,550
+this is the extreme case of unsupervised machine translation,
+
+984
+01:00:08,550 --> 01:00:11,790
+you need to learn from lots of data in order to
+
+985
+01:00:11,790 --> 01:00:16,210
+compensate for the lack of direct supervision. Um-
+
+986
+01:00:17,540 --> 01:00:24,030
+I'm gonna, um, maybe give you, uh,
+
+987
+01:00:24,030 --> 01:00:27,420
+an example on FloRes where for the FloRes,
+
+988
+01:00:27,420 --> 01:00:31,530
+as we have seen there was no in-domain parallel data.
+
+989
+01:00:31,530 --> 01:00:34,890
+There was some monolingual data that was in domain.
+
+990
+01:00:34,890 --> 01:00:36,240
+But not very much,
+
+991
+01:00:36,240 --> 01:00:40,770
+and there was quite a bit of auto- auto domain parallel data,
+
+992
+01:00:40,770 --> 01:00:43,170
+you remember the one we used sentences from,
+
+993
+01:00:43,170 --> 01:00:46,380
+um, Bible and Ubuntu.
+
+994
+01:00:46,380 --> 01:00:51,340
+And then we have quite a bit of monolingual data that is auto domain.
+
+995
+01:00:51,340 --> 01:00:55,115
+And so this is the supervised baseline.
+
+996
+01:00:55,115 --> 01:01:00,530
+Unsupervised machine translation here didn't work at all because very much like was
+
+997
+01:01:00,530 --> 01:01:05,610
+mentioning the- the Wikipedia domains are not quite, uh, aligned.
+
+998
+01:01:05,610 --> 01:01:09,435
+And so this doesn't have unsupervised machine translation.
+
+999
+01:01:09,435 --> 01:01:11,460
+If you do back translation,
+
+1000
+01:01:11,460 --> 01:01:12,810
+if you do iterative back-translation,
+
+1001
+01:01:12,810 --> 01:01:15,780
+you do quite a bit better than the supervised baseline,
+
+1002
+01:01:15,780 --> 01:01:18,270
+which is quite good.
+
+1003
+01:01:18,270 --> 01:01:21,105
+But now if you add those, so English-Hindi,
+
+1004
+01:01:21,105 --> 01:01:23,940
+parallel data, you do quite a bit better.
+
+1005
+01:01:23,940 --> 01:01:26,910
+And now also the unsupervised machine translation works.
+
+1006
+01:01:26,910 --> 01:01:29,220
+It's unsupervised for English- English-Nepali,
+
+1007
+01:01:29,220 --> 01:01:32,100
+but you do have supervision for English-Hindi.
+
+1008
+01:01:32,100 --> 01:01:35,835
+And so the combination of backtranslation and,
+
+1009
+01:01:35,835 --> 01:01:40,515
+um, multilingual training is here, the winning combination.
+
+1010
+01:01:40,515 --> 01:01:44,595
+And this is something that we see, uh, through in general.
+
+1011
+01:01:44,595 --> 01:01:49,485
+Okay? So I'm gonna skip the results on English-Burmese.
+
+1012
+01:01:49,485 --> 01:01:52,020
+Actually I had a nice demo.
+
+1013
+01:01:52,020 --> 01:01:55,540
+But I'm going to show it to you later if there is time.
+
+1014
+01:01:55,550 --> 01:01:59,145
+Um, and so, as I said,
+
+1015
+01:01:59,145 --> 01:02:05,475
+we have quite a few good components which we can combine pretty easily.
+
+1016
+01:02:05,475 --> 01:02:09,720
+Right now the research is about how to best combine them,
+
+1017
+01:02:09,720 --> 01:02:11,460
+how to best weigh datasets,
+
+1018
+01:02:11,460 --> 01:02:14,895
+how to best weigh the examples in order to automate
+
+1019
+01:02:14,895 --> 01:02:19,440
+the current cross-validation based process, I would say.
+
+1020
+01:02:19,440 --> 01:02:22,440
+And the other message here is that
+
+1021
+01:02:22,440 --> 01:02:26,700
+it's- low-resource machine translation is a big data problem.
+
+1022
+01:02:26,700 --> 01:02:28,740
+It- it requires big compute,
+
+1023
+01:02:28,740 --> 01:02:30,870
+it's a pretty big engineering feat.
+
+1024
+01:02:30,870 --> 01:02:33,720
+Uh, in order to, uh,
+
+1025
+01:02:33,720 --> 01:02:37,425
+compensate for the lack of parallel data.
+
+1026
+01:02:37,425 --> 01:02:40,410
+Are there any questions on this?
+
+1027
+01:02:40,410 --> 01:02:44,730
+I- I was just wondering when you mentioned that the parallel to, um,
+
+1028
+01:02:44,730 --> 01:02:47,370
+vision in cycle consistency, um,
+
+1029
+01:02:47,370 --> 01:02:50,460
+you mentioned that we can't do adversarial training-
+
+1030
+01:02:50,460 --> 01:02:51,105
+Yeah.
+
+1031
+01:02:51,105 --> 01:02:54,600
+-and I was just wondering if you could flesh that out and wh we couldn't just
+
+1032
+01:02:54,600 --> 01:02:59,550
+use say like an LSTM that performs adversarial training better.
+
+1033
+01:02:59,550 --> 01:03:05,100
+Yeah. Yes. So there are actually a bunch of papers trying to do, um,
+
+1034
+01:03:05,100 --> 01:03:08,280
+adversarial training or, uh,
+
+1035
+01:03:08,280 --> 01:03:12,345
+dense style training for, uh, text generation.
+
+1036
+01:03:12,345 --> 01:03:17,145
+I must say that it's a pretty active research area.
+
+1037
+01:03:17,145 --> 01:03:20,220
+I haven't seen a very compelling demonstration
+
+1038
+01:03:20,220 --> 01:03:23,160
+that these methods work very well with, we've tried.
+
+1039
+01:03:23,160 --> 01:03:26,355
+And it's a little difficult to backpropagate.
+
+1040
+01:03:26,355 --> 01:03:28,860
+So when this produces a sentence,
+
+1041
+01:03:28,860 --> 01:03:30,720
+you need to produce a,
+
+1042
+01:03:30,720 --> 01:03:33,480
+you know, a sentence and that's discrete.
+
+1043
+01:03:33,480 --> 01:03:37,950
+And so you could backpropagate using reinforce kind of methods.
+
+1044
+01:03:37,950 --> 01:03:42,045
+You could do a lot of these things but essentially-
+
+1045
+01:03:42,045 --> 01:03:47,445
+it's just a little hard to make it work and it's very finicky.
+
+1046
+01:03:47,445 --> 01:03:51,000
+So it may work on simple datasets,
+
+1047
+01:03:51,000 --> 01:03:53,475
+but at scale, it's very hard to.
+
+1048
+01:03:53,475 --> 01:03:55,725
+So another thing- another consideration is that
+
+1049
+01:03:55,725 --> 01:03:58,320
+anything that you do has to work at scale.
+
+1050
+01:03:58,320 --> 01:04:01,680
+Because again, the value- the amount of
+
+1051
+01:04:01,680 --> 01:04:05,715
+information that you get from a monolingual sentence is not very much.
+
+1052
+01:04:05,715 --> 01:04:07,380
+And now if you do a lot of compute,
+
+1053
+01:04:07,380 --> 01:04:11,250
+if you- or if your gradients have a lot of noise, uh,
+
+1054
+01:04:11,250 --> 01:04:12,810
+like when you train with reinforce,
+
+1055
+01:04:12,810 --> 01:04:16,890
+then, uh, it's not going to work.
+
+1056
+01:04:16,890 --> 01:04:21,240
+But it's possible that people may come up with ways to make it work.
+
+1057
+01:04:21,240 --> 01:04:26,055
+I don't think this is true at present,
+
+1058
+01:04:26,055 --> 01:04:27,390
+but it could be in the future.
+
+1059
+01:04:27,390 --> 01:04:31,200
+So let me spend five minutes on the analysis, um,
+
+1060
+01:04:31,200 --> 01:04:33,555
+and then you will have the slides so you can,
+
+1061
+01:04:33,555 --> 01:04:35,790
+uh, go over the remaining details.
+
+1062
+01:04:35,790 --> 01:04:40,545
+So here, uh, we- so the- the starting point is to say, well,
+
+1063
+01:04:40,545 --> 01:04:42,690
+if I want to simulate
+
+1064
+01:04:42,690 --> 01:04:46,530
+low-resource machine translation with a high resource language like French to English.
+
+1065
+01:04:46,530 --> 01:04:49,005
+Let's say you take EuroParl data, you have,
+
+1066
+01:04:49,005 --> 01:04:53,744
+let's say 20,000 parallel sentences and 100,000 monolingual target sentences,
+
+1067
+01:04:53,744 --> 01:04:55,020
+and you apply backtranslation,
+
+1068
+01:04:55,020 --> 01:04:56,820
+you get a very nice improvement.
+
+1069
+01:04:56,820 --> 01:04:59,670
+Now, if you come here to Facebook,
+
+1070
+01:04:59,670 --> 01:05:03,104
+[LAUGHTER] and- and you try this on Facebook data,
+
+1071
+01:05:03,104 --> 01:05:07,275
+you find that the improvement is actually very, very minimal.
+
+1072
+01:05:07,275 --> 01:05:11,100
+And that relates to the discussion that we had at the very beginning,
+
+1073
+01:05:11,100 --> 01:05:15,450
+that what people talk about in different parts of the world is very different.
+
+1074
+01:05:15,450 --> 01:05:20,820
+And so now you- you need- it's like you need to align two, uh,
+
+1075
+01:05:20,820 --> 01:05:24,300
+point clouds, but the distribution in these two point clouds is very,
+
+1076
+01:05:24,300 --> 01:05:25,350
+very different from each other,
+
+1077
+01:05:25,350 --> 01:05:27,825
+and so it's very difficult to align them.
+
+1078
+01:05:27,825 --> 01:05:30,090
+And so here I was making the example that
+
+1079
+01:05:30,090 --> 01:05:33,150
+even for English speaking countries, if you look at
+
+1080
+01:05:33,150 --> 01:05:35,730
+topics on- on sports,
+
+1081
+01:05:35,730 --> 01:05:38,310
+you have that- in America people may
+
+1082
+01:05:38,310 --> 01:05:41,490
+talk more about Football and Baseball while in the UK,
+
+1083
+01:05:41,490 --> 01:05:43,230
+more about Cricket and Soccer, right?
+
+1084
+01:05:43,230 --> 01:05:45,990
+And so for the same topic,
+
+1085
+01:05:45,990 --> 01:05:47,460
+you have different distribution words,
+
+1086
+01:05:47,460 --> 01:05:51,135
+but you also have a different distribution of topics.
+
+1087
+01:05:51,135 --> 01:05:55,230
+And so this is what we call the source target domain mismatch.
+
+1088
+01:05:55,230 --> 01:05:58,545
+So you may have several kinds of domain mismatch.
+
+1089
+01:05:58,545 --> 01:06:01,110
+Typically, you have a mismatch
+
+1090
+01:06:01,110 --> 01:06:04,200
+between the training distribution and the test distribution.
+
+1091
+01:06:04,200 --> 01:06:08,295
+Here I'm talking also about the mismatch between the source domain,
+
+1092
+01:06:08,295 --> 01:06:10,110
+the source language, the source domain,
+
+1093
+01:06:10,110 --> 01:06:11,280
+and the target domain.
+
+1094
+01:06:11,280 --> 01:06:16,499
+Okay? And so there is a hypothesis that this may make backtranslation
+
+1095
+01:06:16,499 --> 01:06:18,615
+less effective because even if you were to
+
+1096
+01:06:18,615 --> 01:06:21,945
+perfectly translate target side monolingual data,
+
+1097
+01:06:21,945 --> 01:06:23,310
+once you translate it,
+
+1098
+01:06:23,310 --> 01:06:26,985
+it's going to be out of domain, uh,
+
+1099
+01:06:26,985 --> 01:06:29,490
+with respect to the data that you really want to translate,
+
+1100
+01:06:29,490 --> 01:06:31,740
+which originates in the source domain.
+
+1101
+01:06:31,740 --> 01:06:35,070
+And so we had a very,
+
+1102
+01:06:35,070 --> 01:06:37,380
+uh, nice controlled setting,
+
+1103
+01:06:37,380 --> 01:06:39,375
+to study this problem.
+
+1104
+01:06:39,375 --> 01:06:43,379
+Um, where, uh, we create
+
+1105
+01:06:43,379 --> 01:06:49,140
+a syntactic dataset where the source domain comes from EuroParl data,
+
+1106
+01:06:49,140 --> 01:06:51,660
+and the target domain counts from OpenSubtitles,
+
+1107
+01:06:51,660 --> 01:06:53,340
+which are movie captions.
+
+1108
+01:06:53,340 --> 01:06:57,465
+And now, by creating the target domain as a mixture of the two,
+
+1109
+01:06:57,465 --> 01:07:00,495
+you can precisely control the amount of,
+
+1110
+01:07:00,495 --> 01:07:04,365
+uh, in-domainess between the source and the target domain.
+
+1111
+01:07:04,365 --> 01:07:06,960
+And by varying Alpha,
+
+1112
+01:07:06,960 --> 01:07:08,115
+you can vary that.
+
+1113
+01:07:08,115 --> 01:07:10,860
+And so the major result is this figure,
+
+1114
+01:07:10,860 --> 01:07:16,185
+where Alpha measures how much is the target domain,
+
+1115
+01:07:16,185 --> 01:07:18,150
+uh, similar to the source domain.
+
+1116
+01:07:18,150 --> 01:07:19,485
+So if Alpha is equal to 1,
+
+1117
+01:07:19,485 --> 01:07:22,350
+they are all, uh, in the same domain.
+
+1118
+01:07:22,350 --> 01:07:24,090
+If Alpha is equal to 0, they are very different.
+
+1119
+01:07:24,090 --> 01:07:27,285
+One is EuroParl and the other is OpenSubtitles.
+
+1120
+01:07:27,285 --> 01:07:31,155
+And so it turns out that in these extreme regime,
+
+1121
+01:07:31,155 --> 01:07:34,590
+actually set training, which is this red line,
+
+1122
+01:07:34,590 --> 01:07:37,035
+works better than backtranslation.
+
+1123
+01:07:37,035 --> 01:07:40,290
+But as you make the domains more and more similar,
+
+1124
+01:07:40,290 --> 01:07:43,320
+backtranslation is much better than set training.
+
+1125
+01:07:43,320 --> 01:07:45,810
+And both of them are much better than,
+
+1126
+01:07:45,810 --> 01:07:49,630
+um, just if you were to use the parallel data.
+
+1127
+01:07:50,240 --> 01:07:53,490
+Um, so I'm going to skip all of this.
+
+1128
+01:07:53,490 --> 01:07:55,410
+You can look at the paper,
+
+1129
+01:07:55,410 --> 01:07:57,645
+uh, and the slides.
+
+1130
+01:07:57,645 --> 01:08:02,430
+I want to conclude that there are other things that I didn't talk about, like filtering.
+
+1131
+01:08:02,430 --> 01:08:06,075
+This is one of the most exciting things nowadays,
+
+1132
+01:08:06,075 --> 01:08:09,260
+and the idea is to, uh,
+
+1133
+01:08:09,260 --> 01:08:13,070
+essentially learn a joint embedding space for sentences
+
+1134
+01:08:13,070 --> 01:08:18,005
+by simply training a multilingual system on lots of public available data,
+
+1135
+01:08:18,005 --> 01:08:22,175
+and then you use this in order to do nearest neighbor retrieval
+
+1136
+01:08:22,175 --> 01:08:26,880
+of a sentence for what the corresponding translation would be in other languages.
+
+1137
+01:08:26,880 --> 01:08:30,090
+And they found that- they collected
+
+1138
+01:08:30,090 --> 01:08:33,660
+a large data set and they were able to beat the performance of
+
+1139
+01:08:33,660 --> 01:08:36,645
+state of the art machine translation system
+
+1140
+01:08:36,645 --> 01:08:40,965
+on high-resource languages like English-German, English-Russian.
+
+1141
+01:08:40,965 --> 01:08:46,170
+And the idea is that by using much more data, although noisy,
+
+1142
+01:08:46,170 --> 01:08:48,810
+you can do better than using a curated,
+
+1143
+01:08:48,810 --> 01:08:53,700
+high-quality dataset, and this is something that we see over and over.
+
+1144
+01:08:53,700 --> 01:08:56,790
+And again, the idea here is that we need to figure out
+
+1145
+01:08:56,790 --> 01:08:59,970
+how to best combine backtranslation, this filtering, multilingual,
+
+1146
+01:08:59,970 --> 01:09:04,005
+and pretraining in order to, uh, uh, get, uh,
+
+1147
+01:09:04,005 --> 01:09:09,975
+the best combination ever for solving or for improving low-resource machine translation.
+
+1148
+01:09:09,975 --> 01:09:14,010
+And so I just want to- maybe I should conclude here,
+
+1149
+01:09:14,010 --> 01:09:17,205
+uh, by thanking my collaborators and by, uh,
+
+1150
+01:09:17,205 --> 01:09:19,950
+telling you that, um, uh,
+
+1151
+01:09:19,950 --> 01:09:23,130
+if you have any questions about this lecture,
+
+1152
+01:09:23,130 --> 01:09:24,600
+you can always e-mail me,
+
+1153
+01:09:24,600 --> 01:09:26,790
+drop me a line, I'd be happy to follow up.
+
+1154
+01:09:26,790 --> 01:09:28,680
+And also, in my lab,
+
+1155
+01:09:28,680 --> 01:09:31,050
+we have a lot of opportunities,
+
+1156
+01:09:31,050 --> 01:09:35,760
+from internships to full-time positions as a research scientist, research engineer.
+
+1157
+01:09:35,760 --> 01:09:38,069
+So if you're interested or are curious,
+
+1158
+01:09:38,069 --> 01:09:42,609
+just also, uh, drop me an e-mail. Okay. Thank you.
+
+1159
+01:09:45,439 --> 01:09:48,299
+Thanks a lot, Marc'Aurelio.
+
+1160
+01:09:48,300 --> 01:09:53,729
+Um, so- so maybe there's still a few people that might have questions.
+
+1161
+01:09:53,729 --> 01:09:57,970
+And we are happy to stay a few more minutes for questions.
+
+1162
+01:10:00,830 --> 01:10:03,735
+Happy to answer questions.
+
+1163
+01:10:03,735 --> 01:10:05,625
+Yes.
+
+1164
+01:10:05,625 --> 01:10:09,540
+Uh, I'd love to learn more about the models that you used.
+
+1165
+01:10:09,540 --> 01:10:12,330
+Uh, actually, should we- should we go back to the model that you first talked
+
+1166
+01:10:12,330 --> 01:10:15,495
+about- spoke about, right, before back-translation?
+
+1167
+01:10:15,495 --> 01:10:17,445
+Uh, in order to understand, uh,
+
+1168
+01:10:17,445 --> 01:10:20,295
+you have a pipeline from English to English, right?
+
+1169
+01:10:20,295 --> 01:10:23,190
+In this one, uh, you want something like, uh,
+
+1170
+01:10:23,190 --> 01:10:25,290
+you- the data augmentation techniques
+
+1171
+01:10:25,290 --> 01:10:28,105
+like in vision such as dropping the word or switching,
+
+1172
+01:10:28,105 --> 01:10:31,865
+uh, switching words to be able to make an augmented dataset, is that right?
+
+1173
+01:10:31,865 --> 01:10:33,785
+That's right.
+
+1174
+01:10:33,785 --> 01:10:36,125
+So the analogy that I made is,
+
+1175
+01:10:36,125 --> 01:10:38,390
+for back-translation were, yes,
+
+1176
+01:10:38,390 --> 01:10:40,615
+all these methods, essentially,
+
+1177
+01:10:40,615 --> 01:10:45,150
+you don't have x and y- golden x and y pairs,
+
+1178
+01:10:45,150 --> 01:10:47,280
+and so for set training,
+
+1179
+01:10:47,280 --> 01:10:50,085
+what you do, you,
+
+1180
+01:10:50,085 --> 01:10:52,485
+uh, fantasize the target.
+
+1181
+01:10:52,485 --> 01:10:55,440
+For back-translation, you fantasize the input.
+
+1182
+01:10:55,440 --> 01:10:59,310
+And so you can see all these methods as a way in particular, back-translation,
+
+1183
+01:10:59,310 --> 01:11:04,875
+is very similar to the data augmentation that people do in vision in the sense that here,
+
+1184
+01:11:04,875 --> 01:11:07,995
+the transformation is not, uh, rule-based,
+
+1185
+01:11:07,995 --> 01:11:11,280
+it's produced by a backward machine translation system,
+
+1186
+01:11:11,280 --> 01:11:17,415
+but it does the same objective of regularizing by adding a lot of noisy,
+
+1187
+01:11:17,415 --> 01:11:19,170
+uh, uh, labeled data.
+
+1188
+01:11:19,170 --> 01:11:20,835
+So if you go back to the previous slide,
+
+1189
+01:11:20,835 --> 01:11:22,905
+when you say you fantasize the- the target.
+
+1190
+01:11:22,905 --> 01:11:25,215
+So in this case, you have, uh,
+
+1191
+01:11:25,215 --> 01:11:27,600
+one where you- where you predict the goal target and one
+
+1192
+01:11:27,600 --> 01:11:30,045
+where you- where you change the input and then predict the target,
+
+1193
+01:11:30,045 --> 01:11:31,500
+is that how it is?
+
+1194
+01:11:31,500 --> 01:11:33,075
+Yeah. So in- for set training,
+
+1195
+01:11:33,075 --> 01:11:37,380
+the way that it works is that you take the clean input,
+
+1196
+01:11:37,380 --> 01:11:41,850
+you pass it through your machine translation system at the previous iteration.
+
+1197
+01:11:41,850 --> 01:11:45,150
+And, uh, you decode with beam or with other methods,
+
+1198
+01:11:45,150 --> 01:11:48,390
+and you got a prediction for what the label should be.
+
+1199
+01:11:48,390 --> 01:11:51,150
+And that- that's now your reference.
+
+1200
+01:11:51,150 --> 01:11:55,680
+But the way that you train your machine translation system is by noisifying the input.
+
+1201
+01:11:55,680 --> 01:11:59,010
+So you add noise to your input and the noise is you drop words,
+
+1202
+01:11:59,010 --> 01:12:02,610
+you swap words, and then you try to predict the,
+
+1203
+01:12:02,610 --> 01:12:05,085
+uh, target that you fantasize.
+
+1204
+01:12:05,085 --> 01:12:07,965
+And the idea is that the- that the two targets should be the same?
+
+1205
+01:12:07,965 --> 01:12:11,460
+Yeah. So the prediction and- and these targets,
+
+1206
+01:12:11,460 --> 01:12:13,170
+when you train with cross-entropy loss,
+
+1207
+01:12:13,170 --> 01:12:16,035
+you- you try to tie them together as much as possible.
+
+1208
+01:12:16,035 --> 01:12:21,320
+Okay. Thanks so much. I have a followup question, later.
+
+1209
+01:12:21,320 --> 01:12:26,630
+Yeah. This is a very- this is one of the first semi-supervised learning methods that,
+
+1210
+01:12:26,630 --> 01:12:29,015
+uh, you find in the machine learning community.
+
+1211
+01:12:29,015 --> 01:12:32,330
+There are a lot of variants of this where they have perhaps, er, uh, uh,
+
+1212
+01:12:32,330 --> 01:12:39,315
+a community of experts that produces the, uh- the label.
+
+1213
+01:12:39,315 --> 01:12:43,060
+Um, there are a lot of variants of this and, um,
+
+1214
+01:12:43,060 --> 01:12:45,510
+it's something that makes a lot of sense,
+
+1215
+01:12:45,510 --> 01:12:48,330
+particularly for asymmetric tasks.
+
+1216
+01:12:48,330 --> 01:12:52,200
+Like if you do, image speci- if you do text classification,
+
+1217
+01:12:52,200 --> 01:12:53,520
+if you do summarization,
+
+1218
+01:12:53,520 --> 01:12:56,715
+then back-translation is not really applicable because,
+
+1219
+01:12:56,715 --> 01:13:02,790
+uh, you know, if you go from a label category- from a categorical,
+
+1220
+01:13:02,790 --> 01:13:05,580
+uh, uh, input to a whole sentence,
+
+1221
+01:13:05,580 --> 01:13:07,830
+that's a very difficult task, right?
+
+1222
+01:13:07,830 --> 01:13:13,110
+So back-translation works really well for symmetric tasks like, uh, machine translation.
+
+1223
+01:13:13,110 --> 01:13:15,000
+But for, uh, things that are,
+
+1224
+01:13:15,000 --> 01:13:17,070
+uh- for many-to-one mapping,
+
+1225
+01:13:17,070 --> 01:13:20,220
+self-training is definitely- definitely works better.
+
+1226
+01:13:20,220 --> 01:13:23,850
+Uh, self-training works well also in machine translation when
+
+1227
+01:13:23,850 --> 01:13:27,765
+there is a lot of domain mismatch between the source and the target as we're seeing.
+
+1228
+01:13:27,765 --> 01:13:32,850
+Yeah. So unfortunately, these algorithms- so it's hard to
+
+1229
+01:13:32,850 --> 01:13:37,770
+say in general what works best because it really depends on the application,
+
+1230
+01:13:37,770 --> 01:13:40,540
+it really depends on the kind of data that you have.
+
+1231
+01:13:41,660 --> 01:13:45,735
+Dose anyone else have a question they'd like to ask?
+
+1232
+01:13:45,735 --> 01:13:50,355
+Well, it seems like we're maybe not getting another immediate question.
+
+1233
+01:13:50,355 --> 01:13:53,355
+And I guess we have gone through the end of the time,
+
+1234
+01:13:53,355 --> 01:13:56,175
+that we're, uh, meant to do.
+
+1235
+01:13:56,175 --> 01:13:59,310
+So maybe we should call it and bring it to a close,
+
+1236
+01:13:59,310 --> 01:14:01,575
+but thank you so much, Marc'Aurelio.
+
+1237
+01:14:01,575 --> 01:14:04,200
+I mean, I hope everyone really enjoyed that.
+
+1238
+01:14:04,200 --> 01:14:09,270
+And I, you know, speaking as someone who did work in machine translation for a decade,
+
+1239
+01:14:09,270 --> 01:14:11,699
+though I haven't so much for the last few years,
+
+1240
+01:14:11,699 --> 01:14:13,005
+I mean, you know,
+
+1241
+01:14:13,005 --> 01:14:20,250
+it actually still seems to me just amazing how successfully you can build things,
+
+1242
+01:14:20,250 --> 01:14:22,665
+um, with these, um,
+
+1243
+01:14:22,665 --> 01:14:27,960
+building with monolingual data and using ideas like the back-translation.
+
+1244
+01:14:27,960 --> 01:14:32,430
+I mean, it's just actually incredible that that's providing such competitive,
+
+1245
+01:14:32,430 --> 01:14:36,015
+um, machine translation systems now.
+
+1246
+01:14:36,015 --> 01:14:37,530
+And, you know, obviously,
+
+1247
+01:14:37,530 --> 01:14:41,100
+this is something that isn't just of academic interest,
+
+1248
+01:14:41,100 --> 01:14:43,380
+as you might have realized if you've thought about it, right?
+
+1249
+01:14:43,380 --> 01:14:45,900
+If you're at a company like Facebook, right?
+
+1250
+01:14:45,900 --> 01:14:52,290
+Being able- actually able to translate well data on domains that are very
+
+1251
+01:14:52,290 --> 01:14:54,870
+far from news data or the Bible [LAUGHTER]
+
+1252
+01:14:54,870 --> 01:14:58,695
+and in languages of smaller communities of speakers,
+
+1253
+01:14:58,695 --> 01:15:01,800
+it's just actually super-duper important, um,
+
+1254
+01:15:01,800 --> 01:15:06,135
+to people being happy users of and members of communities.
+
+1255
+01:15:06,135 --> 01:15:08,070
+Yeah. And- and I just want to add,
+
+1256
+01:15:08,070 --> 01:15:11,400
+uh, the kind of- these methods are pretty general,
+
+1257
+01:15:11,400 --> 01:15:13,500
+so we apply them to summarization,
+
+1258
+01:15:13,500 --> 01:15:16,980
+Q&A, uh, style transfer.
+
+1259
+01:15:16,980 --> 01:15:21,570
+So, you know, it's really beautiful that- it's a set of
+
+1260
+01:15:21,570 --> 01:15:26,430
+tools that you can use them in many places and it's all about,
+
+1261
+01:15:26,430 --> 01:15:28,035
+you know, in a way, um,
+
+1262
+01:15:28,035 --> 01:15:31,620
+aligning domains with little, uh,
+
+1263
+01:15:31,620 --> 01:15:33,930
+supervision or correspondences, right?
+
+1264
+01:15:33,930 --> 01:15:35,670
+So, yeah.
+
+1265
+01:15:35,670 --> 01:15:37,605
+Okay. Thank you very much.
+
+1266
+01:15:37,605 --> 01:15:39,840
+Thank you. Thank you. Bye. Bye-bye.
+
+1267
+01:15:39,840 --> 01:15:41,200
+Bye.
+

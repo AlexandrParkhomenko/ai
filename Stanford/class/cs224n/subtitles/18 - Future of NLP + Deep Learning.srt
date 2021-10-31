@@ -1,0 +1,7406 @@
+1
+00:00:00,000 --> 00:00:04,990
+
+
+2
+00:00:04,990 --> 00:00:06,710
+Good afternoon, folks.
+
+3
+00:00:06,710 --> 00:00:08,733
+Welcome to lecture 18.
+
+4
+00:00:08,733 --> 00:00:10,150
+Today, we'll be
+talking about some
+
+5
+00:00:10,150 --> 00:00:13,690
+of the latest and greatest
+developments in neural NLP,
+
+6
+00:00:13,690 --> 00:00:17,080
+where we've come, and
+where we're headed.
+
+7
+00:00:17,080 --> 00:00:20,870
+Chris, just to be sure,
+are my presentation notes
+
+8
+00:00:20,870 --> 00:00:23,575
+visible from this
+board at this time?
+
+9
+00:00:23,575 --> 00:00:25,120
+You're visible.
+
+10
+00:00:25,120 --> 00:00:28,210
+OK, but not my
+presenter notes, right?
+
+11
+00:00:28,210 --> 00:00:28,960
+Correct.
+
+12
+00:00:28,960 --> 00:00:31,880
+OK, good, thank you.
+
+13
+00:00:31,880 --> 00:00:35,230
+So just as a reminder, note that
+your guest lecture reactions
+
+14
+00:00:35,230 --> 00:00:38,050
+are due tomorrow at 11:59 PM.
+
+15
+00:00:38,050 --> 00:00:40,570
+A great job with the
+project milestone reports.
+
+16
+00:00:40,570 --> 00:00:42,520
+You should have
+received feedback now.
+
+17
+00:00:42,520 --> 00:00:44,380
+If not, contact
+the course staff.
+
+18
+00:00:44,380 --> 00:00:47,680
+I think we had some
+last-minute issues,
+
+19
+00:00:47,680 --> 00:00:52,270
+but if that's not resolved,
+please contact us.
+
+20
+00:00:52,270 --> 00:00:54,580
+Finally, the project
+reports are due very soon,
+
+21
+00:00:54,580 --> 00:00:56,940
+on March 16th,
+which is next week.
+
+22
+00:00:56,940 --> 00:01:00,190
+There's one question on
+Ed about the leaderboard,
+
+23
+00:01:00,190 --> 00:01:03,400
+and the last day to
+submit on the leaderboard
+
+24
+00:01:03,400 --> 00:01:08,430
+is March 19th as well.
+
+25
+00:01:08,430 --> 00:01:10,950
+OK, so for today,
+we'll start by talking
+
+26
+00:01:10,950 --> 00:01:14,580
+about extremely large
+language models and GPT-3
+
+27
+00:01:14,580 --> 00:01:18,270
+that have recently gained
+a lot of popularity.
+
+28
+00:01:18,270 --> 00:01:21,300
+We'll then take a closer
+look at compositionality
+
+29
+00:01:21,300 --> 00:01:26,480
+and generalization of
+these neural models, why
+
+30
+00:01:26,480 --> 00:01:28,310
+transformer models
+like BERT and GPT-3
+
+31
+00:01:28,310 --> 00:01:30,890
+have really high performance
+on all benchmarks?
+
+32
+00:01:30,890 --> 00:01:32,990
+They just fail in
+really surprising ways
+
+33
+00:01:32,990 --> 00:01:33,980
+when they provide.
+
+34
+00:01:33,980 --> 00:01:35,930
+How can we strengthen
+our understanding
+
+35
+00:01:35,930 --> 00:01:39,590
+of evaluating these models so
+they more closely reflect task
+
+36
+00:01:39,590 --> 00:01:44,170
+performance in the real world?
+
+37
+00:01:44,170 --> 00:01:45,900
+And then, we end by
+talking about how
+
+38
+00:01:45,900 --> 00:01:49,050
+we can move beyond this really
+limited paradigm of teaching
+
+39
+00:01:49,050 --> 00:01:51,210
+models language
+only through text
+
+40
+00:01:51,210 --> 00:01:54,500
+and look at language grounding.
+
+41
+00:01:54,500 --> 00:01:56,360
+Finally, I'll give
+some practical tips
+
+42
+00:01:56,360 --> 00:01:59,370
+on how to move forward in
+your neural NLP research,
+
+43
+00:01:59,370 --> 00:02:02,330
+and this will include
+some practical tips
+
+44
+00:02:02,330 --> 00:02:05,710
+for the final project as well.
+
+45
+00:02:05,710 --> 00:02:12,190
+OK, so this meme
+really kind of captures
+
+46
+00:02:12,190 --> 00:02:14,320
+what's been going on
+in the field, really,
+
+47
+00:02:14,320 --> 00:02:17,710
+and it's just that ability
+to harness unlabeled data
+
+48
+00:02:17,710 --> 00:02:20,170
+has vastly increased
+over the last few years.
+
+49
+00:02:20,170 --> 00:02:23,500
+And this has been made possible
+due to advances in not just
+
+50
+00:02:23,500 --> 00:02:27,070
+hardware, but also systems,
+and our understanding
+
+51
+00:02:27,070 --> 00:02:30,100
+of self-supervised
+training, so we
+
+52
+00:02:30,100 --> 00:02:34,550
+can use lots and lots
+of unlabeled data.
+
+53
+00:02:34,550 --> 00:02:37,452
+So based on this, here's
+a general representation
+
+54
+00:02:37,452 --> 00:02:41,620
+learning recipe that just
+works for, basically,
+
+55
+00:02:41,620 --> 00:02:42,880
+most modalities.
+
+56
+00:02:42,880 --> 00:02:47,390
+So the recipe is
+basically as follows.
+
+57
+00:02:47,390 --> 00:02:48,580
+So convert your data.
+
+58
+00:02:48,580 --> 00:02:51,700
+If it's images, convert it.
+
+59
+00:02:51,700 --> 00:02:56,480
+Or it's not-- it's
+really modality-agnostic.
+
+60
+00:02:56,480 --> 00:02:59,020
+So you take your data out, if
+it's images, text, or videos,
+
+61
+00:02:59,020 --> 00:03:02,070
+and you convert it into
+a sequence of integers.
+
+62
+00:03:02,070 --> 00:03:03,600
+And in step two,
+you define a loss
+
+63
+00:03:03,600 --> 00:03:05,920
+function to maximize
+data likelihood,
+
+64
+00:03:05,920 --> 00:03:09,360
+or create a denoising
+auto-encoder loss.
+
+65
+00:03:09,360 --> 00:03:14,410
+Finally, in step three, train
+on lots and lots of data.
+
+66
+00:03:14,410 --> 00:03:16,300
+Certain properties
+emerge whenever
+
+67
+00:03:16,300 --> 00:03:17,450
+we scale up model size.
+
+68
+00:03:17,450 --> 00:03:20,570
+And this is really the
+surprising fact about scale.
+
+69
+00:03:20,570 --> 00:03:25,600
+So to give some examples of this
+recipe in action, here's GPT-3.
+
+70
+00:03:25,600 --> 00:03:28,540
+Which can learn to do a really
+nontrivial classification
+
+71
+00:03:28,540 --> 00:03:30,910
+problem with just
+two demonstrations.
+
+72
+00:03:30,910 --> 00:03:34,360
+And we'll talk more
+about this soon.
+
+73
+00:03:34,360 --> 00:03:36,520
+Another example, as
+we saw in lecture 14,
+
+74
+00:03:36,520 --> 00:03:38,860
+is T5, which does
+really effective closed
+
+75
+00:03:38,860 --> 00:03:44,110
+book QA by storing
+knowledge in its parameters.
+
+76
+00:03:44,110 --> 00:03:46,920
+Finally, just so I
+cover another modality,
+
+77
+00:03:46,920 --> 00:03:50,775
+here's a recent
+text-to-image generation
+
+78
+00:03:50,775 --> 00:03:56,410
+model with really impressive
+zero shot generalization.
+
+79
+00:03:56,410 --> 00:03:59,560
+OK, so now let's
+talk about GPT-3
+
+80
+00:03:59,560 --> 00:04:01,840
+So how big, really,
+are these models?
+
+81
+00:04:01,840 --> 00:04:03,550
+This table kind of
+presents some numbers
+
+82
+00:04:03,550 --> 00:04:07,400
+to put things in perspective.
+
+83
+00:04:07,400 --> 00:04:08,890
+So we have a
+collection of models,
+
+84
+00:04:08,890 --> 00:04:11,410
+starting with
+medium-size LSTMs, which
+
+85
+00:04:11,410 --> 00:04:15,340
+was sort of a staple in
+pre-2016 NLP, all the way
+
+86
+00:04:15,340 --> 00:04:18,040
+to humans, who have
+100 trillion synapses.
+
+87
+00:04:18,040 --> 00:04:19,540
+And somewhere in
+the middle, we have
+
+88
+00:04:19,540 --> 00:04:23,380
+GPT-2 with over a billion
+parameters and GPT-3 with over
+
+89
+00:04:23,380 --> 00:04:26,380
+150 billion parameters.
+
+90
+00:04:26,380 --> 00:04:29,110
+And this exceeds the number
+of synaptic connections
+
+91
+00:04:29,110 --> 00:04:31,690
+in a honeybee brain.
+
+92
+00:04:31,690 --> 00:04:34,060
+So obviously, anyone
+with a little knowledge
+
+93
+00:04:34,060 --> 00:04:38,290
+of neuroscience
+knows that this is
+
+94
+00:04:38,290 --> 00:04:40,840
+an apples-to-oranges
+comparison, but the point here
+
+95
+00:04:40,840 --> 00:04:42,220
+is that the scale
+of these models
+
+96
+00:04:42,220 --> 00:04:46,520
+is really starting to
+reach astronomical numbers.
+
+97
+00:04:46,520 --> 00:04:49,000
+So here are some
+facts about GPT-3.
+
+98
+00:04:49,000 --> 00:04:53,850
+For one, it's a large
+transformer with 96 layers.
+
+99
+00:04:53,850 --> 00:04:57,290
+It has more or less the
+same architecture as GPT-2,
+
+100
+00:04:57,290 --> 00:05:01,400
+with the exception that to
+scale up attention computation,
+
+101
+00:05:01,400 --> 00:05:04,002
+it uses these locally banded
+sparse attention patterns.
+
+102
+00:05:04,002 --> 00:05:05,960
+And I really encourage
+you to look at the paper
+
+103
+00:05:05,960 --> 00:05:07,273
+to understand the details.
+
+104
+00:05:07,273 --> 00:05:08,690
+The reason we
+mention this here is
+
+105
+00:05:08,690 --> 00:05:10,730
+because it kind of
+highlights that scaling up
+
+106
+00:05:10,730 --> 00:05:13,100
+is simply not just
+changing hyperparameters,
+
+107
+00:05:13,100 --> 00:05:14,960
+as many might believe,
+and it was really
+
+108
+00:05:14,960 --> 00:05:17,180
+non-trivial engineering
+and algorithms
+
+109
+00:05:17,180 --> 00:05:20,610
+to make computations efficient.
+
+110
+00:05:20,610 --> 00:05:24,020
+Finally, all of this is
+trained on 500 billion tokens
+
+111
+00:05:24,020 --> 00:05:26,450
+taken from The Common
+Crawl, Toronto Book
+
+112
+00:05:26,450 --> 00:05:30,040
+Scholars, Wikipedia.
+
+113
+00:05:30,040 --> 00:05:32,050
+So what's new
+about GPT-3, right?
+
+114
+00:05:32,050 --> 00:05:35,090
+So let's look at some of the
+results on the paper first.
+
+115
+00:05:35,090 --> 00:05:37,510
+So obviously, it does better
+on language modeling and text
+
+116
+00:05:37,510 --> 00:05:39,100
+completion problems.
+
+117
+00:05:39,100 --> 00:05:41,230
+As you can see
+from this table, it
+
+118
+00:05:41,230 --> 00:05:44,260
+does better than GPT-2 at
+language modeling in the Penn
+
+119
+00:05:44,260 --> 00:05:47,050
+Treebank, as well as
+better on story completion
+
+120
+00:05:47,050 --> 00:05:50,260
+on the story completion
+data set called LAMBADA.
+
+121
+00:05:50,260 --> 00:05:52,360
+To get a flavor
+of what's to come,
+
+122
+00:05:52,360 --> 00:05:55,180
+let's take a closer look at this
+LAMBADA story completion data
+
+123
+00:05:55,180 --> 00:05:56,020
+set.
+
+124
+00:05:56,020 --> 00:05:58,300
+So the task here is that
+we're given a short story,
+
+125
+00:05:58,300 --> 00:06:01,360
+and we are supposed to
+fill in the last word.
+
+126
+00:06:01,360 --> 00:06:04,690
+Satisfying the
+constraints of the problem
+
+127
+00:06:04,690 --> 00:06:07,210
+can be hard for a language
+model, which could generate
+
+128
+00:06:07,210 --> 00:06:08,650
+a multi-word completion.
+
+129
+00:06:08,650 --> 00:06:11,020
+But with GPT-3, the
+really new thing
+
+130
+00:06:11,020 --> 00:06:13,180
+is that we can just give
+a few examples as prompts
+
+131
+00:06:13,180 --> 00:06:15,597
+and sort of communicate a task
+specification to the model.
+
+132
+00:06:15,597 --> 00:06:17,770
+And now, GPT-3 knows
+how the completion
+
+133
+00:06:17,770 --> 00:06:19,060
+must be a single word.
+
+134
+00:06:19,060 --> 00:06:21,040
+This is a very, very
+powerful paradigm,
+
+135
+00:06:21,040 --> 00:06:24,340
+and we get some more examples
+of this in-context learning
+
+136
+00:06:24,340 --> 00:06:27,410
+in a couple more slides.
+
+137
+00:06:27,410 --> 00:06:29,450
+So apart from language
+modeling, it's
+
+138
+00:06:29,450 --> 00:06:32,450
+really good at these
+knowledge-intensive tasks,
+
+139
+00:06:32,450 --> 00:06:36,140
+like closed-book QA, as well
+as reading comprehension.
+
+140
+00:06:36,140 --> 00:06:37,550
+And here, we
+observe that scaling
+
+141
+00:06:37,550 --> 00:06:39,530
+up parameters results
+in a massive improvement
+
+142
+00:06:39,530 --> 00:06:42,410
+in performance.
+
+143
+00:06:42,410 --> 00:06:45,040
+So now let's talk about
+in-context learning.
+
+144
+00:06:45,040 --> 00:06:48,400
+GPT-3 demonstrates some
+level of task adaptation
+
+145
+00:06:48,400 --> 00:06:50,170
+to completely new tasks.
+
+146
+00:06:50,170 --> 00:06:53,670
+This happens via what's
+called in-context learning.
+
+147
+00:06:53,670 --> 00:06:55,420
+As shown in the figure,
+the model training
+
+148
+00:06:55,420 --> 00:06:58,570
+can be characterized as
+having an outer loop that
+
+149
+00:06:58,570 --> 00:07:00,340
+learns the set of
+parameters that
+
+150
+00:07:00,340 --> 00:07:04,640
+makes the learning of the inner
+loop as efficient as possible.
+
+151
+00:07:04,640 --> 00:07:06,940
+And with this sort
+of framework in mind,
+
+152
+00:07:06,940 --> 00:07:09,670
+we can really see how a good
+language model can also serve
+
+153
+00:07:09,670 --> 00:07:11,030
+as a good few-shot learner.
+
+154
+00:07:11,030 --> 00:07:13,910
+
+
+155
+00:07:13,910 --> 00:07:16,120
+So in this segment, we will
+have some fun with GPT-3
+
+156
+00:07:16,120 --> 00:07:22,340
+and look at some demonstrations
+of this in-context learning.
+
+157
+00:07:22,340 --> 00:07:24,883
+So to start off,
+here is an example
+
+158
+00:07:24,883 --> 00:07:27,050
+where someone's trying to
+create an application that
+
+159
+00:07:27,050 --> 00:07:30,740
+converts language, a
+language description,
+
+160
+00:07:30,740 --> 00:07:32,450
+to bash one-liners.
+
+161
+00:07:32,450 --> 00:07:34,370
+The first three
+examples are prompts,
+
+162
+00:07:34,370 --> 00:07:37,910
+followed by generated
+examples from GPT-3.
+
+163
+00:07:37,910 --> 00:07:40,790
+So it gets a list of
+running processes, right?
+
+164
+00:07:40,790 --> 00:07:41,588
+This one is easy.
+
+165
+00:07:41,588 --> 00:07:43,880
+It probably just involves
+looking through a hash table.
+
+166
+00:07:43,880 --> 00:07:45,255
+Some of the more
+challenging ones
+
+167
+00:07:45,255 --> 00:07:50,260
+that involve copying
+over some spans
+
+168
+00:07:50,260 --> 00:07:53,630
+from the texts-- like the scp
+example is kind of interesting,
+
+169
+00:07:53,630 --> 00:07:56,240
+as well as a harder
+one to parse, grep.
+
+170
+00:07:56,240 --> 00:07:59,370
+The scp example comes up
+a lot during office hours,
+
+171
+00:07:59,370 --> 00:08:03,800
+so GPT-3 knows how to do that.
+
+172
+00:08:03,800 --> 00:08:05,470
+Here's a somewhat
+more challenging one,
+
+173
+00:08:05,470 --> 00:08:07,053
+where the model is
+given a description
+
+174
+00:08:07,053 --> 00:08:09,040
+of a database in
+natural language,
+
+175
+00:08:09,040 --> 00:08:12,470
+and it starts to
+emulate that behavior.
+
+176
+00:08:12,470 --> 00:08:16,270
+So the text in bold is sort of
+the prompt given to the model.
+
+177
+00:08:16,270 --> 00:08:20,020
+The prompt includes
+somewhat of a function,
+
+178
+00:08:20,020 --> 00:08:22,910
+function specification
+of what a database is.
+
+179
+00:08:22,910 --> 00:08:25,090
+So it says that the database
+begins knowing nothing,
+
+180
+00:08:25,090 --> 00:08:27,820
+and the database knows
+everything that's added to it,
+
+181
+00:08:27,820 --> 00:08:30,010
+and the database does
+not know anything else.
+
+182
+00:08:30,010 --> 00:08:31,960
+And when you ask the
+question to the database,
+
+183
+00:08:31,960 --> 00:08:33,585
+if the answer is
+there in the database,
+
+184
+00:08:33,585 --> 00:08:35,320
+the database must
+return the answer.
+
+185
+00:08:35,320 --> 00:08:38,299
+Otherwise, it should say it
+does not know the answer.
+
+186
+00:08:38,299 --> 00:08:42,280
+So this is very new
+and very powerful.
+
+187
+00:08:42,280 --> 00:08:45,220
+And the prompt also
+includes some example usages
+
+188
+00:08:45,220 --> 00:08:48,160
+of when you ask 2 plus 2,
+the database does not know.
+
+189
+00:08:48,160 --> 00:08:49,780
+When you ask the
+capital of France,
+
+190
+00:08:49,780 --> 00:08:51,100
+the database does not know.
+
+191
+00:08:51,100 --> 00:08:53,380
+And then you add in
+a fact that Tom is
+
+192
+00:08:53,380 --> 00:08:55,120
+20 years old to the database.
+
+193
+00:08:55,120 --> 00:08:56,860
+And now you can start
+asking questions
+
+194
+00:08:56,860 --> 00:08:58,810
+like, where does Tom live?
+
+195
+00:08:58,810 --> 00:09:02,740
+And as expected, it says that
+the database does not know.
+
+196
+00:09:02,740 --> 00:09:05,870
+But now, if you ask
+it, what's Tom's age,
+
+197
+00:09:05,870 --> 00:09:08,230
+the database says that
+Tom is 20 years old.
+
+198
+00:09:08,230 --> 00:09:10,440
+And if you ask what's
+my age, the database
+
+199
+00:09:10,440 --> 00:09:12,260
+says, basically, that
+it does not know,
+
+200
+00:09:12,260 --> 00:09:13,510
+because that's not been added.
+
+201
+00:09:13,510 --> 00:09:16,100
+So this is really powerful.
+
+202
+00:09:16,100 --> 00:09:17,860
+Here's another one.
+
+203
+00:09:17,860 --> 00:09:20,530
+Now, in this example,
+the model is asked
+
+204
+00:09:20,530 --> 00:09:22,310
+to blend concepts together.
+
+205
+00:09:22,310 --> 00:09:24,040
+And so there's a
+definition of what
+
+206
+00:09:24,040 --> 00:09:25,760
+does it mean to blend concepts.
+
+207
+00:09:25,760 --> 00:09:27,670
+So if you take
+airplane and car, you
+
+208
+00:09:27,670 --> 00:09:30,960
+can blend that and
+get flying car.
+
+209
+00:09:30,960 --> 00:09:33,090
+That's essentially--
+there's a Wikipedia
+
+210
+00:09:33,090 --> 00:09:36,240
+definition of what
+concept blending is, along
+
+211
+00:09:36,240 --> 00:09:38,110
+with some examples.
+
+212
+00:09:38,110 --> 00:09:43,710
+Now, let's look at some
+problems for what GPT-3 answers.
+
+213
+00:09:43,710 --> 00:09:45,770
+So the first one
+is straightforward.
+
+214
+00:09:45,770 --> 00:09:48,770
+Two-dimensional space
+blended with 3D space gives
+
+215
+00:09:48,770 --> 00:09:50,960
+2.5-dimension space.
+
+216
+00:09:50,960 --> 00:09:54,050
+The one that is somewhat
+interesting is old and new
+
+217
+00:09:54,050 --> 00:09:57,010
+gets recycled.
+
+218
+00:09:57,010 --> 00:09:59,810
+Then, triangle and
+square gives trapezoid.
+
+219
+00:09:59,810 --> 00:10:01,910
+That's also interesting.
+
+220
+00:10:01,910 --> 00:10:06,500
+The one that's really nontrivial
+is a geology plus neurology
+
+221
+00:10:06,500 --> 00:10:09,530
+is sediment neurology, and
+I had no idea what this was.
+
+222
+00:10:09,530 --> 00:10:11,660
+It's apparently correct.
+
+223
+00:10:11,660 --> 00:10:15,220
+So clearly, it's able to do
+these very flexible things just
+
+224
+00:10:15,220 --> 00:10:18,390
+from a prompt.
+
+225
+00:10:18,390 --> 00:10:21,810
+So here's another
+class of examples
+
+226
+00:10:21,810 --> 00:10:26,130
+that GPT-3 gets somewhat
+right, and these
+
+227
+00:10:26,130 --> 00:10:28,602
+are these copycat
+analogy problems
+
+228
+00:10:28,602 --> 00:10:30,060
+which have been
+really well-studied
+
+229
+00:10:30,060 --> 00:10:31,980
+in cognitive science.
+
+230
+00:10:31,980 --> 00:10:33,630
+And the way it works
+is that I'm going
+
+231
+00:10:33,630 --> 00:10:35,760
+to give you some
+examples, and then
+
+232
+00:10:35,760 --> 00:10:39,060
+ask you to induce a
+function from these examples
+
+233
+00:10:39,060 --> 00:10:41,750
+and apply it to a new query.
+
+234
+00:10:41,750 --> 00:10:45,150
+So if a b c changes to a b
+d, what does p q i change to?
+
+235
+00:10:45,150 --> 00:10:47,160
+Well, p q i must
+change to p q s,
+
+236
+00:10:47,160 --> 00:10:49,710
+because the function you've done
+is that the last letter must
+
+237
+00:10:49,710 --> 00:10:51,870
+be incremented by 1.
+
+238
+00:10:51,870 --> 00:10:53,880
+And this function,
+humans can now
+
+239
+00:10:53,880 --> 00:10:57,130
+apply to examples
+of varying types.
+
+240
+00:10:57,130 --> 00:11:00,990
+So p repeated twice, q repeated
+twice, r repeated twice
+
+241
+00:11:00,990 --> 00:11:03,810
+must change to p repeated
+twice, q repeated twice,
+
+242
+00:11:03,810 --> 00:11:05,850
+and s repeated twice.
+
+243
+00:11:05,850 --> 00:11:09,300
+And it seems like GPT-3
+is able to get them right,
+
+244
+00:11:09,300 --> 00:11:13,920
+more or less, but the
+problem is that if you
+
+245
+00:11:13,920 --> 00:11:18,660
+ask it to generalize to
+examples that have an increasing
+
+246
+00:11:18,660 --> 00:11:20,580
+number of repetitions,
+then, that we're
+
+247
+00:11:20,580 --> 00:11:23,140
+seeing in the prompt,
+it's not able to do that.
+
+248
+00:11:23,140 --> 00:11:28,140
+So in this situation, you
+ask it to make an analogy
+
+249
+00:11:28,140 --> 00:11:31,607
+where the letters are
+repeated four times.
+
+250
+00:11:31,607 --> 00:11:32,940
+And it's never seen that before.
+
+251
+00:11:32,940 --> 00:11:34,600
+It doesn't know what to do.
+
+252
+00:11:34,600 --> 00:11:36,540
+And so it gets all
+of these wrong.
+
+253
+00:11:36,540 --> 00:11:38,280
+So there's a point
+to be made here
+
+254
+00:11:38,280 --> 00:11:41,700
+about just maybe
+these prompts are not
+
+255
+00:11:41,700 --> 00:11:45,480
+enough to convey the function
+the model should be learning,
+
+256
+00:11:45,480 --> 00:11:47,650
+and maybe with more
+examples, it can be done.
+
+257
+00:11:47,650 --> 00:11:52,005
+But the point is
+that it probably
+
+258
+00:11:52,005 --> 00:11:53,880
+does not have the same
+kind of generalization
+
+259
+00:11:53,880 --> 00:11:55,230
+that humans have.
+
+260
+00:11:55,230 --> 00:11:59,190
+And that brings us to sort of
+limitations of these models
+
+261
+00:11:59,190 --> 00:12:01,120
+and some open questions.
+
+262
+00:12:01,120 --> 00:12:04,690
+So just looking at the paper
+and parsing through the results,
+
+263
+00:12:04,690 --> 00:12:09,240
+it seems like the model is bad
+at logical and mathematical
+
+264
+00:12:09,240 --> 00:12:11,220
+reasoning, and anything
+that involves doing
+
+265
+00:12:11,220 --> 00:12:13,860
+multiple steps of reasoning.
+
+266
+00:12:13,860 --> 00:12:16,050
+And that explains why
+it's bad at arithmetic,
+
+267
+00:12:16,050 --> 00:12:18,630
+why it's bad at word
+problems, why it's not
+
+268
+00:12:18,630 --> 00:12:19,950
+great at analogy-making.
+
+269
+00:12:19,950 --> 00:12:23,160
+And even like traditional
+textual intermediate datasets
+
+270
+00:12:23,160 --> 00:12:27,580
+that seem to require
+logical reasoning, like RTE.
+
+271
+00:12:27,580 --> 00:12:29,320
+So the second, more
+subtle point is
+
+272
+00:12:29,320 --> 00:12:31,810
+that it's unclear
+how we can make
+
+273
+00:12:31,810 --> 00:12:33,310
+permanent updates to the model.
+
+274
+00:12:33,310 --> 00:12:35,620
+Maybe if I wanted you
+to model a new concept,
+
+275
+00:12:35,620 --> 00:12:38,080
+that's possible
+to do it while I'm
+
+276
+00:12:38,080 --> 00:12:39,320
+interacting with the system.
+
+277
+00:12:39,320 --> 00:12:41,600
+But once the interaction's
+over, it kind of
+
+278
+00:12:41,600 --> 00:12:44,140
+restarts and does not have
+a notion of knowledge.
+
+279
+00:12:44,140 --> 00:12:46,600
+And it's not that this is
+something that the model cannot
+
+280
+00:12:46,600 --> 00:12:49,120
+do in principle, but just
+something that's not really
+
+281
+00:12:49,120 --> 00:12:51,880
+been explored.
+
+282
+00:12:51,880 --> 00:12:54,490
+It doesn't seem to exhibit
+human-like generalizations,
+
+283
+00:12:54,490 --> 00:12:58,670
+often called systematicity, and
+I talk a lot more about that.
+
+284
+00:12:58,670 --> 00:13:00,580
+And finally,
+language is situated,
+
+285
+00:13:00,580 --> 00:13:02,890
+and GPT-3 is just
+learning from text,
+
+286
+00:13:02,890 --> 00:13:04,770
+and there's no exposure
+to other modalities.
+
+287
+00:13:04,770 --> 00:13:05,890
+There's no interaction.
+
+288
+00:13:05,890 --> 00:13:08,860
+So maybe the aspects of
+meaning that it acquires
+
+289
+00:13:08,860 --> 00:13:10,600
+are somewhat
+limited, and maybe we
+
+290
+00:13:10,600 --> 00:13:13,660
+should explore how we can
+bring in other modalities.
+
+291
+00:13:13,660 --> 00:13:18,560
+So we'll talk a lot more about
+these last few limitations
+
+292
+00:13:18,560 --> 00:13:21,250
+in the rest of the
+lecture, but maybe I
+
+293
+00:13:21,250 --> 00:13:23,650
+can pause for some questions
+now, if there are any.
+
+294
+00:13:23,650 --> 00:13:34,190
+
+
+295
+00:13:34,190 --> 00:13:37,360
+I don't think there's a
+big, outstanding question,
+
+296
+00:13:37,360 --> 00:13:43,600
+but I mean, I think some people
+aren't really clear on few-shot
+
+297
+00:13:43,600 --> 00:13:46,480
+setting and prompting
+versus learning,
+
+298
+00:13:46,480 --> 00:13:48,550
+and I think it might
+actually be good to explain
+
+299
+00:13:48,550 --> 00:13:49,630
+that a bit more.
+
+300
+00:13:49,630 --> 00:13:52,860
+OK, yeah.
+
+301
+00:13:52,860 --> 00:13:57,105
+So maybe let me take
+a simple example.
+
+302
+00:13:57,105 --> 00:14:02,430
+
+
+303
+00:14:02,430 --> 00:14:04,540
+Let me take this example here.
+
+304
+00:14:04,540 --> 00:14:08,802
+So prompting just
+means that-- so GPT-3,
+
+305
+00:14:08,802 --> 00:14:10,260
+if you go back to
+first principles,
+
+306
+00:14:10,260 --> 00:14:12,780
+right, GPT-3 is basically
+just a language model.
+
+307
+00:14:12,780 --> 00:14:15,635
+And what that means
+is, given a context,
+
+308
+00:14:15,635 --> 00:14:19,500
+it will tell you what's the
+probability of the next word,
+
+309
+00:14:19,500 --> 00:14:20,590
+right?
+
+310
+00:14:20,590 --> 00:14:24,826
+So if I can give it a
+context w1 through wk,
+
+311
+00:14:24,826 --> 00:14:30,360
+GPT-3 will tell me what's
+the probability of WK+1
+
+312
+00:14:30,360 --> 00:14:33,240
+for [INAUDIBLE] the vocabulary.
+
+313
+00:14:33,240 --> 00:14:36,000
+So that's what a
+language model is.
+
+314
+00:14:36,000 --> 00:14:37,860
+A prompt is
+essentially a context
+
+315
+00:14:37,860 --> 00:14:42,660
+that gets prepended before
+GPT-3 can start generating.
+
+316
+00:14:42,660 --> 00:14:45,030
+And what's happening
+with in-context learning
+
+317
+00:14:45,030 --> 00:14:48,630
+is that the context
+that you append,
+
+318
+00:14:48,630 --> 00:14:55,050
+that you prepend to GPT-3
+are basically x, y examples.
+
+319
+00:14:55,050 --> 00:14:59,820
+So that's the prompt, and
+the reason why it's also--
+
+320
+00:14:59,820 --> 00:15:01,500
+it's equivalent to
+few-shot learning
+
+321
+00:15:01,500 --> 00:15:05,590
+is because you prepend a
+small number of x, y examples.
+
+322
+00:15:05,590 --> 00:15:09,390
+So in this case, if I just
+prepend this one example that's
+
+323
+00:15:09,390 --> 00:15:11,703
+highlighted in
+purple, then that's
+
+324
+00:15:11,703 --> 00:15:13,870
+essentially one-shot learning
+because I just give it
+
+325
+00:15:13,870 --> 00:15:16,590
+a single example as context.
+
+326
+00:15:16,590 --> 00:15:21,860
+And now, given this query, which
+is also appended to the model,
+
+327
+00:15:21,860 --> 00:15:25,790
+it has to make a prediction.
+
+328
+00:15:25,790 --> 00:15:27,870
+So the input/output
+format is the same
+
+329
+00:15:27,870 --> 00:15:31,590
+as how a few-shot
+learner would receive,
+
+330
+00:15:31,590 --> 00:15:35,430
+but since it's a language
+model, the training dataset
+
+331
+00:15:35,430 --> 00:15:37,755
+is essentially presented
+as the context.
+
+332
+00:15:37,755 --> 00:15:43,620
+
+
+333
+00:15:43,620 --> 00:15:45,240
+So someone is still
+asking, can you
+
+334
+00:15:45,240 --> 00:15:48,720
+be more specific about the
+in-context learning setups?
+
+335
+00:15:48,720 --> 00:15:50,470
+What is the task?
+
+336
+00:15:50,470 --> 00:15:54,430
+Right, so let's see.
+
+337
+00:15:54,430 --> 00:15:55,480
+Maybe I can go to--
+
+338
+00:15:55,480 --> 00:16:01,271
+
+
+339
+00:16:01,271 --> 00:16:03,690
+yeah, so maybe I can
+go to this slide.
+
+340
+00:16:03,690 --> 00:16:08,620
+So the task is just that
+it's a language model.
+
+341
+00:16:08,620 --> 00:16:13,350
+So it gets a context, which
+is just a sequence of tokens,
+
+342
+00:16:13,350 --> 00:16:16,590
+and the task is just to--
+
+343
+00:16:16,590 --> 00:16:18,510
+so you have a
+sequence of tokens,
+
+344
+00:16:18,510 --> 00:16:20,640
+and then the model
+has to generate,
+
+345
+00:16:20,640 --> 00:16:23,070
+given a sequence of tokens.
+
+346
+00:16:23,070 --> 00:16:26,130
+And the way you can convert that
+into an actual machine learning
+
+347
+00:16:26,130 --> 00:16:29,170
+classification problem is that--
+
+348
+00:16:29,170 --> 00:16:33,990
+so for this example, maybe you
+give it 5 plus 8 equals 13,
+
+349
+00:16:33,990 --> 00:16:37,560
+7 plus 2 equals 9, and
+then 1 plus 0 equals,
+
+350
+00:16:37,560 --> 00:16:41,250
+and now, GPT-3 can
+fill in a number there.
+
+351
+00:16:41,250 --> 00:16:44,730
+And so that's how you convert it
+into a classification problem.
+
+352
+00:16:44,730 --> 00:16:49,380
+The context here would be these
+two examples of arithmetic,
+
+353
+00:16:49,380 --> 00:16:52,380
+like 5 plus 8 equals 13
+and 7 plus 2 equals 9.
+
+354
+00:16:52,380 --> 00:16:54,870
+And then, the query
+is 1 plus 0 equals.
+
+355
+00:16:54,870 --> 00:16:57,120
+And then, the model, since
+it's just a language model,
+
+356
+00:16:57,120 --> 00:16:59,878
+it has to fill in 1 plus
+0 equals question mark.
+
+357
+00:16:59,878 --> 00:17:01,170
+So it fills in something there.
+
+358
+00:17:01,170 --> 00:17:02,628
+It doesn't have to
+fill in numbers;
+
+359
+00:17:02,628 --> 00:17:04,800
+it could fill in anything.
+
+360
+00:17:04,800 --> 00:17:09,450
+But if it fills in a 1,
+it does the right job.
+
+361
+00:17:09,450 --> 00:17:12,210
+So that's how you can
+take a language model
+
+362
+00:17:12,210 --> 00:17:14,980
+into few-shot learning with it.
+
+363
+00:17:14,980 --> 00:17:16,598
+I'll keep on these questions.
+
+364
+00:17:16,598 --> 00:17:19,338
+How is in-context learning
+different from transfer
+
+365
+00:17:19,339 --> 00:17:19,839
+learning?
+
+366
+00:17:19,839 --> 00:17:24,010
+
+
+367
+00:17:24,010 --> 00:17:25,243
+So I guess the--
+
+368
+00:17:25,243 --> 00:17:27,879
+
+
+369
+00:17:27,880 --> 00:17:29,520
+in-context learning,
+I mean, you can
+
+370
+00:17:29,520 --> 00:17:32,280
+think of in-context learning
+as being a kind of transfer
+
+371
+00:17:32,280 --> 00:17:34,890
+learning, but transfer
+learning does not
+
+372
+00:17:34,890 --> 00:17:37,590
+specify the mechanism
+through which the transfer is
+
+373
+00:17:37,590 --> 00:17:38,760
+going to happen.
+
+374
+00:17:38,760 --> 00:17:41,370
+With in-context
+learning, the mechanism
+
+375
+00:17:41,370 --> 00:17:45,000
+is that the training
+examples are sort of
+
+376
+00:17:45,000 --> 00:17:50,460
+appended to the model, which
+is a language model, just
+
+377
+00:17:50,460 --> 00:17:51,790
+in order.
+
+378
+00:17:51,790 --> 00:17:55,740
+So let's say you have
+x, y, x1, y1, x2, y2,
+
+379
+00:17:55,740 --> 00:17:58,350
+and these are just appended
+directly to the model.
+
+380
+00:17:58,350 --> 00:18:03,720
+And now it makes prediction on
+some queries, some queries that
+
+381
+00:18:03,720 --> 00:18:05,070
+are drawn from this data set.
+
+382
+00:18:05,070 --> 00:18:08,700
+So yes, it is a subcategory
+of transfer learning,
+
+383
+00:18:08,700 --> 00:18:12,000
+but transfer learning
+does not specify
+
+384
+00:18:12,000 --> 00:18:14,170
+exactly how this transfer
+learning is achieved.
+
+385
+00:18:14,170 --> 00:18:16,320
+But in-context learning
+is very specific
+
+386
+00:18:16,320 --> 00:18:18,420
+and says that for
+language models,
+
+387
+00:18:18,420 --> 00:18:21,570
+you can essentially concatenate
+the training data set
+
+388
+00:18:21,570 --> 00:18:25,016
+and then present that
+to the language model.
+
+389
+00:18:25,016 --> 00:18:29,230
+If people still aren't
+sufficiently clear on what is
+
+390
+00:18:29,230 --> 00:18:33,820
+and what isn't happening
+with learning and prompting,
+
+391
+00:18:33,820 --> 00:18:37,150
+so another question is so
+in-context learning still
+
+392
+00:18:37,150 --> 00:18:39,280
+needs fine tuning question mark?
+
+393
+00:18:39,280 --> 00:18:43,525
+We need to train GPT-3 to do
+in-context learning, question
+
+394
+00:18:43,525 --> 00:18:44,450
+mark?
+
+395
+00:18:44,450 --> 00:18:51,370
+Right, so there are two parts
+to this question, right?
+
+396
+00:18:51,370 --> 00:18:52,970
+So the answer is, yes and no.
+
+397
+00:18:52,970 --> 00:18:56,460
+So of course, the model
+is a language model.
+
+398
+00:18:56,460 --> 00:18:57,910
+So it needs to be trained.
+
+399
+00:18:57,910 --> 00:18:59,770
+So you start with some
+random parameters,
+
+400
+00:18:59,770 --> 00:19:01,870
+and you need to train them.
+
+401
+00:19:01,870 --> 00:19:05,530
+But the model is trained
+as a language model, right?
+
+402
+00:19:05,530 --> 00:19:07,780
+And once the model
+is trained, you
+
+403
+00:19:07,780 --> 00:19:10,960
+can now use it to do
+transfer learning.
+
+404
+00:19:10,960 --> 00:19:14,950
+And the model parameters in
+in-context learning are fixed.
+
+405
+00:19:14,950 --> 00:19:17,590
+You do not update
+the model parameters.
+
+406
+00:19:17,590 --> 00:19:21,430
+All you do is that you give
+it these small training
+
+407
+00:19:21,430 --> 00:19:24,160
+sets to the model,
+which is just appended
+
+408
+00:19:24,160 --> 00:19:26,680
+to the model as context,
+and now the model
+
+409
+00:19:26,680 --> 00:19:29,650
+can start generating
+from that point on.
+
+410
+00:19:29,650 --> 00:19:34,980
+So in this example, if 5 plus 8
+equals 13 and 7 plus 2 equals 9
+
+411
+00:19:34,980 --> 00:19:40,380
+are two x, y examples, in
+vanilla transfer learning, what
+
+412
+00:19:40,380 --> 00:19:42,720
+you would do is that you would
+take some gradient steps,
+
+413
+00:19:42,720 --> 00:19:45,262
+update your model parameters,
+and then make a prediction on 1
+
+414
+00:19:45,262 --> 00:19:47,450
+plus 0 equals what, right?
+
+415
+00:19:47,450 --> 00:19:49,560
+But with in-context
+learning, all you're doing
+
+416
+00:19:49,560 --> 00:19:55,020
+is you just concatenate 5
+plus 8 equals 13 and 7 plus 2
+
+417
+00:19:55,020 --> 00:19:57,960
+equals 9 through the
+model's context window
+
+418
+00:19:57,960 --> 00:20:02,550
+and then make it predict what
+1 plus 0 should be equal to.
+
+419
+00:20:02,550 --> 00:20:08,790
+
+
+420
+00:20:08,790 --> 00:20:10,340
+Maybe we should end
+for now with one
+
+421
+00:20:10,340 --> 00:20:12,750
+other bigger-picture
+question, which
+
+422
+00:20:12,750 --> 00:20:15,420
+is, do you know of
+any research combining
+
+423
+00:20:15,420 --> 00:20:17,940
+these models with reinforcement
+learning for the more
+
+424
+00:20:17,940 --> 00:20:20,320
+complicated reasoning tasks?
+
+425
+00:20:20,320 --> 00:20:22,540
+So that is an
+excellent question.
+
+426
+00:20:22,540 --> 00:20:24,730
+There is some
+recent work on kind
+
+427
+00:20:24,730 --> 00:20:30,120
+of trying to align language
+models with human preferences,
+
+428
+00:20:30,120 --> 00:20:35,310
+where yes, there is some
+amount of fine-tuning
+
+429
+00:20:35,310 --> 00:20:36,750
+with reinforcement
+learning based
+
+430
+00:20:36,750 --> 00:20:38,740
+on these preferences
+from humans.
+
+431
+00:20:38,740 --> 00:20:42,420
+So maybe you want to do a
+summarization problem in GPT-3,
+
+432
+00:20:42,420 --> 00:20:44,820
+and the model produces
+multiple summaries.
+
+433
+00:20:44,820 --> 00:20:48,163
+And for each summary,
+maybe you have a reward
+
+434
+00:20:48,163 --> 00:20:49,830
+that is essentially
+a human preference--
+
+435
+00:20:49,830 --> 00:20:51,590
+like maybe I want to
+include some fact,
+
+436
+00:20:51,590 --> 00:20:55,870
+and I don't want to include
+some other non-important fact.
+
+437
+00:20:55,870 --> 00:20:57,960
+And so I can construct
+a reward out of that,
+
+438
+00:20:57,960 --> 00:21:02,070
+and I can fine-tune the
+parameters of my language model
+
+439
+00:21:02,070 --> 00:21:05,340
+basically using
+reinforcement learning
+
+440
+00:21:05,340 --> 00:21:08,700
+based on this reward, which is
+essentially human preferences.
+
+441
+00:21:08,700 --> 00:21:11,010
+So there's some very recent
+work that tries to do this.
+
+442
+00:21:11,010 --> 00:21:12,200
+But I'm not sure--
+
+443
+00:21:12,200 --> 00:21:13,770
+yeah, I'm not aware
+of any work that
+
+444
+00:21:13,770 --> 00:21:17,225
+tries to use reinforcement
+learning to teach reasoning
+
+445
+00:21:17,225 --> 00:21:18,600
+to these models,
+but I think it's
+
+446
+00:21:18,600 --> 00:21:21,140
+an interesting future
+direction to explore.
+
+447
+00:21:21,140 --> 00:21:27,920
+
+
+448
+00:21:27,920 --> 00:21:31,070
+OK, maybe you should
+go on at this point.
+
+449
+00:21:31,070 --> 00:21:31,570
+OK.
+
+450
+00:21:31,570 --> 00:21:37,410
+
+
+451
+00:21:37,410 --> 00:21:41,250
+OK, so we'll talk a bit more
+about these last two points--
+
+452
+00:21:41,250 --> 00:21:47,950
+so systematicity and
+language grounding.
+
+453
+00:21:47,950 --> 00:21:51,730
+So just to start off, how
+do you define systematicity?
+
+454
+00:21:51,730 --> 00:21:54,520
+So really, the
+definition is that there
+
+455
+00:21:54,520 --> 00:21:57,220
+is a definite and predictable
+pattern among the sentences
+
+456
+00:21:57,220 --> 00:22:00,130
+that native speakers of
+a language understand.
+
+457
+00:22:00,130 --> 00:22:03,568
+And so there's a systematic
+pattern among the sentences
+
+458
+00:22:03,568 --> 00:22:04,360
+that we understand.
+
+459
+00:22:04,360 --> 00:22:07,300
+What that means is, let's say
+there's a sentence like, "John
+
+460
+00:22:07,300 --> 00:22:08,770
+loves Mary" right?
+
+461
+00:22:08,770 --> 00:22:10,905
+And if a native speaker
+understands the sentence,
+
+462
+00:22:10,905 --> 00:22:13,280
+then they should also be able
+to understand the sentence,
+
+463
+00:22:13,280 --> 00:22:14,260
+"Mary loves John."
+
+464
+00:22:14,260 --> 00:22:16,780
+
+
+465
+00:22:16,780 --> 00:22:19,180
+And closely related to
+this idea of systematicity
+
+466
+00:22:19,180 --> 00:22:21,400
+is the principle of
+compositionality.
+
+467
+00:22:21,400 --> 00:22:25,367
+And for now, I'm going to ignore
+the definition by Montague
+
+468
+00:22:25,367 --> 00:22:26,950
+and just look at the
+rough definition,
+
+469
+00:22:26,950 --> 00:22:29,200
+and then we can come
+back to this other, more
+
+470
+00:22:29,200 --> 00:22:30,245
+concrete definition.
+
+471
+00:22:30,245 --> 00:22:31,870
+But the rough definition
+is essentially
+
+472
+00:22:31,870 --> 00:22:33,610
+that the meaning
+of an expression
+
+473
+00:22:33,610 --> 00:22:37,700
+is a function of the
+meaning of its parts.
+
+474
+00:22:37,700 --> 00:22:39,520
+So that brings us
+to the question,
+
+475
+00:22:39,520 --> 00:22:41,950
+are human languages
+really compositional?
+
+476
+00:22:41,950 --> 00:22:47,710
+And here are some examples that
+make us think that maybe yes.
+
+477
+00:22:47,710 --> 00:22:50,230
+So if you look at,
+what is the meaning
+
+478
+00:22:50,230 --> 00:22:52,450
+of the noun phrase
+"brown cow," so it
+
+479
+00:22:52,450 --> 00:22:55,390
+is composed of the
+meaning of the adjective
+
+480
+00:22:55,390 --> 00:22:58,428
+brown and the noun cow.
+
+481
+00:22:58,428 --> 00:23:00,970
+So all the things that are brown
+and all things that are cow,
+
+482
+00:23:00,970 --> 00:23:02,770
+take the intersection
+and get "brown cow."
+
+483
+00:23:02,770 --> 00:23:05,005
+Similarly, red rabbits, it's
+all things that are red,
+
+484
+00:23:05,005 --> 00:23:07,630
+all the things that are rabbits,
+combine them, get red rabbits.
+
+485
+00:23:07,630 --> 00:23:09,422
+And then, kicked the
+ball, this verb phrase
+
+486
+00:23:09,422 --> 00:23:12,400
+can be understood as you
+have some agent that's
+
+487
+00:23:12,400 --> 00:23:16,060
+performing a kicking
+operation on the ball.
+
+488
+00:23:16,060 --> 00:23:18,760
+But this is not always
+the case, that you
+
+489
+00:23:18,760 --> 00:23:21,550
+can get at the meaning
+of the whole thing
+
+490
+00:23:21,550 --> 00:23:23,560
+by combining meanings of parts.
+
+491
+00:23:23,560 --> 00:23:25,480
+So here you have
+some counter-examples
+
+492
+00:23:25,480 --> 00:23:26,710
+that people often use.
+
+493
+00:23:26,710 --> 00:23:29,820
+So a red herring does not mean
+all the things that are red
+
+494
+00:23:29,820 --> 00:23:31,570
+and all things that
+are herring, and "kick
+
+495
+00:23:31,570 --> 00:23:33,500
+the bucket" definitely
+does not mean
+
+496
+00:23:33,500 --> 00:23:35,500
+that there's an agent
+that's kicking the bucket.
+
+497
+00:23:35,500 --> 00:23:40,360
+So while these examples are
+supposed to be provocative--
+
+498
+00:23:40,360 --> 00:23:43,210
+we think that language is
+mostly compositional-- there's
+
+499
+00:23:43,210 --> 00:23:44,140
+lots of exceptions.
+
+500
+00:23:44,140 --> 00:23:47,380
+But for the vast majority of
+sentences that we've never
+
+501
+00:23:47,380 --> 00:23:49,270
+heard before, we're
+able to understand
+
+502
+00:23:49,270 --> 00:23:51,670
+what they mean by piecing
+together the words
+
+503
+00:23:51,670 --> 00:23:53,827
+that the sentence
+is composed of.
+
+504
+00:23:53,827 --> 00:23:56,035
+And so what that means is
+that maybe compositionality
+
+505
+00:23:56,035 --> 00:23:58,960
+of representations is a
+helpful prior that could lead
+
+506
+00:23:58,960 --> 00:24:02,230
+to systematicity in behavior.
+
+507
+00:24:02,230 --> 00:24:03,940
+And that brings us
+to the questions
+
+508
+00:24:03,940 --> 00:24:05,290
+that we ask in the segment.
+
+509
+00:24:05,290 --> 00:24:07,840
+Are neural representations
+compositional?
+
+510
+00:24:07,840 --> 00:24:10,600
+And the second question
+is, if so, do they
+
+511
+00:24:10,600 --> 00:24:14,290
+generalize systematically?
+
+512
+00:24:14,290 --> 00:24:18,610
+So how do you even
+measure if representations
+
+513
+00:24:18,610 --> 00:24:23,340
+that a neural network learns
+exhibit compositionality?
+
+514
+00:24:23,340 --> 00:24:25,870
+So let's go back
+to this definition
+
+515
+00:24:25,870 --> 00:24:29,110
+from Montague, which says
+that compositionality
+
+516
+00:24:29,110 --> 00:24:32,260
+is about the existence of
+a homomorphism from syntax
+
+517
+00:24:32,260 --> 00:24:34,480
+to semantics.
+
+518
+00:24:34,480 --> 00:24:38,050
+And to look at that, we
+have this example, which
+
+519
+00:24:38,050 --> 00:24:40,270
+is, Lisa does not skateboard.
+
+520
+00:24:40,270 --> 00:24:44,260
+And we have a syntax tree
+corresponding to this example.
+
+521
+00:24:44,260 --> 00:24:46,630
+And the meaning of
+the sentence can
+
+522
+00:24:46,630 --> 00:24:51,520
+be composed according
+to the structure that's
+
+523
+00:24:51,520 --> 00:24:53,350
+decided by the syntax.
+
+524
+00:24:53,350 --> 00:24:55,060
+So meaning of "Lisa
+does not skateboard"
+
+525
+00:24:55,060 --> 00:24:57,100
+is a function of the
+meaning of "Lisa"
+
+526
+00:24:57,100 --> 00:24:58,420
+and "does not skateboard."
+
+527
+00:24:58,420 --> 00:24:59,920
+The meaning of "does
+not skateboard"
+
+528
+00:24:59,920 --> 00:25:01,795
+is a function of "does"
+and "not skateboard."
+
+529
+00:25:01,795 --> 00:25:04,165
+The meaning of "not skateboard"
+is a function of "not"
+
+530
+00:25:04,165 --> 00:25:05,650
+and "skateboard."
+
+531
+00:25:05,650 --> 00:25:08,290
+So that's good, and
+so this gives us
+
+532
+00:25:08,290 --> 00:25:11,410
+one way of formalizing how we
+can measure compositionality
+
+533
+00:25:11,410 --> 00:25:13,850
+in neural representations.
+
+534
+00:25:13,850 --> 00:25:17,560
+And so compositionality of
+representations could be
+
+535
+00:25:17,560 --> 00:25:20,770
+thought of as how well the
+representation approximates
+
+536
+00:25:20,770 --> 00:25:24,760
+an explicitly homomorphic
+function in a learnt
+
+537
+00:25:24,760 --> 00:25:26,210
+representation space.
+
+538
+00:25:26,210 --> 00:25:29,380
+So what we are going to
+do is essentially measure,
+
+539
+00:25:29,380 --> 00:25:33,190
+if we were to construct a neural
+network whose computations are
+
+540
+00:25:33,190 --> 00:25:36,040
+based exactly according
+to these parse trees,
+
+541
+00:25:36,040 --> 00:25:39,850
+how far are the representations
+of a learnt model from this
+
+542
+00:25:39,850 --> 00:25:43,810
+explicitly compositional
+representation?
+
+543
+00:25:43,810 --> 00:25:45,550
+And that will give
+us some understanding
+
+544
+00:25:45,550 --> 00:25:47,800
+of how compositional
+the neural networks'
+
+545
+00:25:47,800 --> 00:25:50,330
+representations really are.
+
+546
+00:25:50,330 --> 00:25:55,370
+So to unpack that a little
+bit, instead of having--
+
+547
+00:25:55,370 --> 00:25:58,010
+yeah, so instead of
+having denotations,
+
+548
+00:25:58,010 --> 00:26:03,230
+we have representations
+in the node.
+
+549
+00:26:03,230 --> 00:26:07,100
+And to kind of be more
+concrete about that,
+
+550
+00:26:07,100 --> 00:26:08,840
+we first start by
+choosing a distance
+
+551
+00:26:08,840 --> 00:26:12,440
+function that tells us how far
+away two representations are.
+
+552
+00:26:12,440 --> 00:26:15,230
+And then, you also need
+a way to compose together
+
+553
+00:26:15,230 --> 00:26:21,530
+two constituents to give us sort
+of the meaning of the whole.
+
+554
+00:26:21,530 --> 00:26:24,710
+But once we have that,
+we can start by--
+
+555
+00:26:24,710 --> 00:26:27,800
+we can create an explicitly
+compositional function, right?
+
+556
+00:26:27,800 --> 00:26:33,770
+So what we do is we have
+these representations
+
+557
+00:26:33,770 --> 00:26:37,370
+at the leaves that are
+initialized randomly,
+
+558
+00:26:37,370 --> 00:26:39,670
+and the composition function
+that's also initialized
+
+559
+00:26:39,670 --> 00:26:43,520
+randomly, and then a forward
+pass according to this syntax,
+
+560
+00:26:43,520 --> 00:26:46,550
+is used to compute the
+representation of "Lisa
+
+561
+00:26:46,550 --> 00:26:47,840
+does not skateboard."
+
+562
+00:26:47,840 --> 00:26:49,580
+And once you have
+this representation,
+
+563
+00:26:49,580 --> 00:26:51,980
+you can create a loss function.
+
+564
+00:26:51,980 --> 00:26:54,350
+And this loss function
+measures, how far
+
+565
+00:26:54,350 --> 00:26:57,170
+are the representations
+of my neural network
+
+566
+00:26:57,170 --> 00:27:00,410
+from this second sort
+of proxy neural network
+
+567
+00:27:00,410 --> 00:27:02,010
+that I've created?
+
+568
+00:27:02,010 --> 00:27:06,500
+And then I can basically
+optimize both the composition
+
+569
+00:27:06,500 --> 00:27:10,010
+function and the
+embeddings of the leaves.
+
+570
+00:27:10,010 --> 00:27:12,380
+And then, once the
+optimization is finished,
+
+571
+00:27:12,380 --> 00:27:16,520
+I can measure, how far
+was the representation
+
+572
+00:27:16,520 --> 00:27:19,820
+of my neural net from this
+explicitly compositional
+
+573
+00:27:19,820 --> 00:27:22,100
+network on a handout set?
+
+574
+00:27:22,100 --> 00:27:24,470
+And that then tells me
+whether the representations
+
+575
+00:27:24,470 --> 00:27:28,600
+that my neural net learned were
+actually compositional or not.
+
+576
+00:27:28,600 --> 00:27:33,180
+So to see how well this
+works, let's look at a plot.
+
+577
+00:27:33,180 --> 00:27:37,860
+And this is relatively
+complex, but just
+
+578
+00:27:37,860 --> 00:27:43,290
+to unpack this a little bit,
+it plots the mutual information
+
+579
+00:27:43,290 --> 00:27:49,050
+between the input that the
+neural network receives versus
+
+580
+00:27:49,050 --> 00:27:53,150
+the representation against
+this tree reconstruction error
+
+581
+00:27:53,150 --> 00:27:55,380
+that we were talking about.
+
+582
+00:27:55,380 --> 00:27:59,340
+And to give some more
+background about what's to come,
+
+583
+00:27:59,340 --> 00:28:03,000
+there is a theory which
+is called the information
+
+584
+00:28:03,000 --> 00:28:07,320
+bottleneck theory, which
+says that as a neural network
+
+585
+00:28:07,320 --> 00:28:11,790
+trains, it first
+tries to maximize
+
+586
+00:28:11,790 --> 00:28:14,130
+the mutual information
+between the representation
+
+587
+00:28:14,130 --> 00:28:18,490
+and the input in an attempt to
+memorize the entire data set.
+
+588
+00:28:18,490 --> 00:28:20,620
+And that is called--
+
+589
+00:28:20,620 --> 00:28:22,730
+that is a memorization phase.
+
+590
+00:28:22,730 --> 00:28:24,670
+And then, once
+memorization is done,
+
+591
+00:28:24,670 --> 00:28:28,210
+there is a learning or a
+compression phase where
+
+592
+00:28:28,210 --> 00:28:30,850
+this mutual information
+starts to decrease
+
+593
+00:28:30,850 --> 00:28:34,060
+and the model is essentially
+trying to compress the data
+
+594
+00:28:34,060 --> 00:28:37,870
+or consolidate the knowledge in
+the data into its parameters.
+
+595
+00:28:37,870 --> 00:28:41,800
+And what we're seeing here
+is that as the model learns--
+
+596
+00:28:41,800 --> 00:28:44,890
+which is characterized by
+decreasing mutual information--
+
+597
+00:28:44,890 --> 00:28:47,200
+we see that the
+representations themselves
+
+598
+00:28:47,200 --> 00:28:50,230
+are becoming more and
+more compositional.
+
+599
+00:28:50,230 --> 00:28:52,510
+And overall, we
+observe that learning
+
+600
+00:28:52,510 --> 00:28:55,810
+is correlated with increased
+compositionality as measured
+
+601
+00:28:55,810 --> 00:28:57,880
+by this tree
+reconstruction error.
+
+602
+00:28:57,880 --> 00:29:01,790
+So that's really encouraging.
+
+603
+00:29:01,790 --> 00:29:06,810
+So now that we have a method
+of measuring compositionality,
+
+604
+00:29:06,810 --> 00:29:09,700
+of representations
+in these neural nets,
+
+605
+00:29:09,700 --> 00:29:13,628
+how do we start to
+create benchmarks?
+
+606
+00:29:13,628 --> 00:29:15,670
+Let's see if they are
+generalizing systematically
+
+607
+00:29:15,670 --> 00:29:17,920
+or not.
+
+608
+00:29:17,920 --> 00:29:22,140
+So to do that, here is a
+method for taking any data set
+
+609
+00:29:22,140 --> 00:29:25,200
+and splitting it into
+a train/test split that
+
+610
+00:29:25,200 --> 00:29:29,007
+explicitly tests for this
+kind of generalization.
+
+611
+00:29:29,007 --> 00:29:31,690
+
+
+612
+00:29:31,690 --> 00:29:36,060
+So to do that, we use this
+principle called maximizing
+
+613
+00:29:36,060 --> 00:29:37,710
+the compound divergence.
+
+614
+00:29:37,710 --> 00:29:41,010
+And to illustrate how
+this principle works,
+
+615
+00:29:41,010 --> 00:29:43,660
+we look at the store example.
+
+616
+00:29:43,660 --> 00:29:45,690
+So in the store example,
+we have a training data
+
+617
+00:29:45,690 --> 00:29:48,030
+set that consists
+of just two examples
+
+618
+00:29:48,030 --> 00:29:51,640
+and a test data set
+of just two examples.
+
+619
+00:29:51,640 --> 00:29:55,680
+The atoms are defined as sort
+of the primitive elements--
+
+620
+00:29:55,680 --> 00:29:58,870
+so entity words,
+predicates, question types.
+
+621
+00:29:58,870 --> 00:30:02,970
+So in the store example,
+Goldfinger, Christopher Nolan,
+
+622
+00:30:02,970 --> 00:30:05,280
+these are all sort of
+the primitive elements,
+
+623
+00:30:05,280 --> 00:30:07,350
+and the compounds
+are the compositions
+
+624
+00:30:07,350 --> 00:30:08,670
+of these primitive elements.
+
+625
+00:30:08,670 --> 00:30:10,350
+So, "Who directed entity?"
+
+626
+00:30:10,350 --> 00:30:12,870
+would be the composition
+of the question type
+
+627
+00:30:12,870 --> 00:30:15,705
+"did x predicate y" and
+then the predicate direct.
+
+628
+00:30:15,705 --> 00:30:19,000
+
+
+629
+00:30:19,000 --> 00:30:21,670
+So here's a basic machinery
+for producing compositionally
+
+630
+00:30:21,670 --> 00:30:23,380
+challenging splits.
+
+631
+00:30:23,380 --> 00:30:27,310
+So let's start by introducing
+two distributions.
+
+632
+00:30:27,310 --> 00:30:30,550
+So first distribution is
+the normalized frequency
+
+633
+00:30:30,550 --> 00:30:32,830
+distribution of the atoms.
+
+634
+00:30:32,830 --> 00:30:36,130
+So given any data set, if we
+know what the notion of atoms
+
+635
+00:30:36,130 --> 00:30:40,300
+are, we can basically
+compute the frequency of all
+
+636
+00:30:40,300 --> 00:30:43,330
+of the atoms and then normalize
+that by the total count,
+
+637
+00:30:43,330 --> 00:30:47,050
+and that's going to give
+us one distribution.
+
+638
+00:30:47,050 --> 00:30:49,690
+And we can repeat the same
+thing for the compounds,
+
+639
+00:30:49,690 --> 00:30:53,600
+and that will give us a
+second frequency distribution.
+
+640
+00:30:53,600 --> 00:30:57,640
+So note that these are just
+two probability distributions,
+
+641
+00:30:57,640 --> 00:31:00,280
+and once we have these
+two distributions,
+
+642
+00:31:00,280 --> 00:31:05,050
+we can essentially define the
+atom and compound divergence
+
+643
+00:31:05,050 --> 00:31:08,440
+simply as this quantity here.
+
+644
+00:31:08,440 --> 00:31:13,330
+And where there is the Chernoff
+coefficient between two
+
+645
+00:31:13,330 --> 00:31:16,360
+categorical distributions,
+the Chernoff coefficient
+
+646
+00:31:16,360 --> 00:31:20,710
+basically measures how far two
+categorical distributions are.
+
+647
+00:31:20,710 --> 00:31:23,560
+So just to get a bit more
+intuition about this,
+
+648
+00:31:23,560 --> 00:31:26,950
+if we set p to q, then
+the Chernoff coefficient
+
+649
+00:31:26,950 --> 00:31:31,210
+is 1, which means these
+representations are maximally
+
+650
+00:31:31,210 --> 00:31:32,300
+similar.
+
+651
+00:31:32,300 --> 00:31:37,990
+And then, if p is non-zero,
+everywhere q is 0--
+
+652
+00:31:37,990 --> 00:31:41,500
+or if p is 0 in all the
+places where q is 0--
+
+653
+00:31:41,500 --> 00:31:45,190
+then the Chernoff
+coefficient is exactly 0,
+
+654
+00:31:45,190 --> 00:31:47,530
+which means that these two
+distributions are maximally
+
+655
+00:31:47,530 --> 00:31:48,880
+far away.
+
+656
+00:31:48,880 --> 00:31:54,310
+And the overall goal by
+describing this objective
+
+657
+00:31:54,310 --> 00:31:56,650
+is that--
+
+658
+00:31:56,650 --> 00:31:58,210
+this loss objective
+is just that we
+
+659
+00:31:58,210 --> 00:32:01,360
+are going to maximize
+the compound divergence
+
+660
+00:32:01,360 --> 00:32:03,680
+and minimize the
+atom divergence.
+
+661
+00:32:03,680 --> 00:32:06,380
+And so what is the intuition
+behind doing such a thing?
+
+662
+00:32:06,380 --> 00:32:10,840
+So what we want is to ensure
+that the unigram distribution,
+
+663
+00:32:10,840 --> 00:32:13,090
+in some sense, is constant
+between the train and test
+
+664
+00:32:13,090 --> 00:32:18,610
+split so that the model does
+not encounter any new words.
+
+665
+00:32:18,610 --> 00:32:22,390
+But we want the compound
+divergence to be very high,
+
+666
+00:32:22,390 --> 00:32:25,660
+which means that these same
+words that the model has seen
+
+667
+00:32:25,660 --> 00:32:28,870
+many times must appear in
+new combinations, which
+
+668
+00:32:28,870 --> 00:32:33,140
+means that we are testing
+for systematicity.
+
+669
+00:32:33,140 --> 00:32:36,710
+And so if you follow
+this procedure
+
+670
+00:32:36,710 --> 00:32:41,150
+for a semantic parsing data
+set, let's say, what we see
+
+671
+00:32:41,150 --> 00:32:44,280
+is that as you
+increase the scale,
+
+672
+00:32:44,280 --> 00:32:46,400
+we see that this
+model just does better
+
+673
+00:32:46,400 --> 00:32:49,760
+and better at a
+compositional generalization.
+
+674
+00:32:49,760 --> 00:32:53,245
+But just pulling out a
+quote from this paper,
+
+675
+00:32:53,245 --> 00:32:55,370
+pre-training helps for
+compositional generalization
+
+676
+00:32:55,370 --> 00:32:57,090
+but doesn't fully solve it.
+
+677
+00:32:57,090 --> 00:32:58,670
+And what that means
+is that maybe,
+
+678
+00:32:58,670 --> 00:33:00,320
+as you keep scaling
+up these models,
+
+679
+00:33:00,320 --> 00:33:02,960
+you'll see better and
+better performance,
+
+680
+00:33:02,960 --> 00:33:06,723
+or maybe it starts to
+saturate at some point.
+
+681
+00:33:06,723 --> 00:33:08,140
+In any case, we
+should probably be
+
+682
+00:33:08,140 --> 00:33:09,792
+thinking more
+about this problem,
+
+683
+00:33:09,792 --> 00:33:11,500
+instead of just trying
+to brute-force it.
+
+684
+00:33:11,500 --> 00:33:14,060
+
+
+685
+00:33:14,060 --> 00:33:16,610
+So now, this segment
+kind of tells us
+
+686
+00:33:16,610 --> 00:33:19,070
+that the way we
+split a data set,
+
+687
+00:33:19,070 --> 00:33:22,640
+we can measure for
+different kinds of--
+
+688
+00:33:22,640 --> 00:33:25,227
+we can measure different
+behaviors of the model.
+
+689
+00:33:25,227 --> 00:33:26,810
+And that tells us
+that maybe we should
+
+690
+00:33:26,810 --> 00:33:29,090
+be thinking more critically
+about how we're evaluating
+
+691
+00:33:29,090 --> 00:33:31,340
+models in NLP in general.
+
+692
+00:33:31,340 --> 00:33:35,000
+So there has been a
+revolution, basically,
+
+693
+00:33:35,000 --> 00:33:36,710
+over the last few
+years in the field
+
+694
+00:33:36,710 --> 00:33:38,960
+where we're seeing all of
+these large transform models
+
+695
+00:33:38,960 --> 00:33:40,170
+beat all of our benchmarks.
+
+696
+00:33:40,170 --> 00:33:44,972
+At the same time, there is
+still not complete confidence
+
+697
+00:33:44,972 --> 00:33:47,180
+that once you deploy these
+systems in the real world,
+
+698
+00:33:47,180 --> 00:33:49,550
+they're going to be--
+
+699
+00:33:49,550 --> 00:33:51,740
+going to maintain
+their performance.
+
+700
+00:33:51,740 --> 00:33:53,210
+And so it's unclear
+if these gains
+
+701
+00:33:53,210 --> 00:33:55,790
+are coming from spurious
+correlations or some real task
+
+702
+00:33:55,790 --> 00:33:57,080
+understanding.
+
+703
+00:33:57,080 --> 00:33:59,030
+And so how do we
+design benchmarks
+
+704
+00:33:59,030 --> 00:34:01,820
+that accurately tell us
+how well this model is
+
+705
+00:34:01,820 --> 00:34:03,810
+going to do in the real world?
+
+706
+00:34:03,810 --> 00:34:05,540
+And so I'm going
+to give one example
+
+707
+00:34:05,540 --> 00:34:08,659
+of works that try to
+do this, and that's
+
+708
+00:34:08,659 --> 00:34:12,780
+the idea of dynamic benchmarks.
+
+709
+00:34:12,780 --> 00:34:14,360
+And the idea of
+dynamic benchmarks
+
+710
+00:34:14,360 --> 00:34:18,949
+is basically saying that
+instead of testing our models
+
+711
+00:34:18,949 --> 00:34:21,530
+on static test sets, we
+should be evaluating them
+
+712
+00:34:21,530 --> 00:34:24,139
+on an ever-changing
+dynamic benchmark.
+
+713
+00:34:24,139 --> 00:34:26,750
+And there's many recent
+examples of this,
+
+714
+00:34:26,750 --> 00:34:33,199
+and the idea dates back to
+a 2017 workshop at EMNLP.
+
+715
+00:34:33,199 --> 00:34:35,830
+And so the overall schematic
+looks something like this--
+
+716
+00:34:35,830 --> 00:34:39,340
+that we start with a training
+data set and a test data set,
+
+717
+00:34:39,340 --> 00:34:42,250
+which is the static corpora.
+
+718
+00:34:42,250 --> 00:34:44,170
+We train a model
+on that, and then,
+
+719
+00:34:44,170 --> 00:34:47,770
+once the model is trained,
+we deploy that and then
+
+720
+00:34:47,770 --> 00:34:50,350
+have humans create new
+examples that the model fails
+
+721
+00:34:50,350 --> 00:34:51,820
+to classify.
+
+722
+00:34:51,820 --> 00:34:55,540
+And crucially, we're looking
+for examples the model does not
+
+723
+00:34:55,540 --> 00:34:58,630
+get right, but humans
+have no issue figuring out
+
+724
+00:34:58,630 --> 00:34:59,710
+the answer to.
+
+725
+00:34:59,710 --> 00:35:02,740
+So by playing this game
+of whack-a-mole where
+
+726
+00:35:02,740 --> 00:35:04,942
+we humans figure
+out what are sort
+
+727
+00:35:04,942 --> 00:35:08,320
+of the holes in the
+model's understanding,
+
+728
+00:35:08,320 --> 00:35:11,050
+and then add that back
+into the training data,
+
+729
+00:35:11,050 --> 00:35:13,520
+retrain the model, deploy
+it again, have humans create
+
+730
+00:35:13,520 --> 00:35:16,060
+new examples, we can
+essentially construct
+
+731
+00:35:16,060 --> 00:35:20,500
+this never-ending data
+set, this never-ending test
+
+732
+00:35:20,500 --> 00:35:26,390
+set which can hopefully be
+a better proxy of estimating
+
+733
+00:35:26,390 --> 00:35:27,460
+real-world performance.
+
+734
+00:35:27,460 --> 00:35:30,940
+
+
+735
+00:35:30,940 --> 00:35:33,460
+So this is some very
+cutting-edge research,
+
+736
+00:35:33,460 --> 00:35:36,820
+and one of the main challenges
+of this class of works
+
+737
+00:35:36,820 --> 00:35:39,790
+is that it's unclear how
+much this can scale up.
+
+738
+00:35:39,790 --> 00:35:45,010
+Because maybe after
+multiple iterations
+
+739
+00:35:45,010 --> 00:35:47,770
+of this whack-a-mole, humans
+are just fundamentally
+
+740
+00:35:47,770 --> 00:35:49,210
+limited by creativity.
+
+741
+00:35:49,210 --> 00:35:54,820
+So figuring out how to deal with
+that is really an open problem.
+
+742
+00:35:54,820 --> 00:35:57,400
+And current approaches just
+use examples from other data
+
+743
+00:35:57,400 --> 00:36:01,030
+sets to prompt humans to
+think more creatively.
+
+744
+00:36:01,030 --> 00:36:05,320
+But maybe we can come up with
+better, more automated methods
+
+745
+00:36:05,320 --> 00:36:08,090
+of doing this.
+
+746
+00:36:08,090 --> 00:36:12,820
+So this brings us to sort
+of the final segment.
+
+747
+00:36:12,820 --> 00:36:15,310
+Or actually, let me stop
+for questions at this point
+
+748
+00:36:15,310 --> 00:36:17,800
+and see if people
+have questions.
+
+749
+00:36:17,800 --> 00:36:28,350
+
+
+750
+00:36:28,350 --> 00:36:29,790
+Here's a question.
+
+751
+00:36:29,790 --> 00:36:31,860
+With dynamic
+benchmark, doesn't this
+
+752
+00:36:31,860 --> 00:36:34,230
+mean that the model
+created will also
+
+753
+00:36:34,230 --> 00:36:37,410
+need to continually
+test/evaluate
+
+754
+00:36:37,410 --> 00:36:40,830
+the models on the new
+benchmarks, new data test,
+
+755
+00:36:40,830 --> 00:36:43,870
+new data sets?
+
+756
+00:36:43,870 --> 00:36:44,550
+Wait a second.
+
+757
+00:36:44,550 --> 00:36:49,700
+
+
+758
+00:36:49,700 --> 00:36:51,420
+Sorry, yeah.
+
+759
+00:36:51,420 --> 00:36:54,240
+So with dynamic
+benchmarks, yes, it's
+
+760
+00:36:54,240 --> 00:36:57,630
+absolutely true that you will
+have to continuously keep
+
+761
+00:36:57,630 --> 00:36:58,780
+training your model.
+
+762
+00:36:58,780 --> 00:37:04,470
+And that's just to ensure that
+the reason your model is not
+
+763
+00:37:04,470 --> 00:37:07,050
+doing well on the test
+set doesn't have to do
+
+764
+00:37:07,050 --> 00:37:09,540
+with this domain mismatch.
+
+765
+00:37:09,540 --> 00:37:14,610
+And what we are really trying
+to do is v measure how--
+
+766
+00:37:14,610 --> 00:37:17,130
+just come up with
+a better estimate
+
+767
+00:37:17,130 --> 00:37:19,860
+of the model's performance
+on the overall task,
+
+768
+00:37:19,860 --> 00:37:22,560
+and just trying to get
+more and more data.
+
+769
+00:37:22,560 --> 00:37:25,290
+So yes, to answer
+your question, yes, we
+
+770
+00:37:25,290 --> 00:37:27,400
+need to keep lecturing
+the model again and again.
+
+771
+00:37:27,400 --> 00:37:29,140
+But this can be automated.
+
+772
+00:37:29,140 --> 00:37:35,640
+OK, so I'll move on
+to language grounding.
+
+773
+00:37:35,640 --> 00:37:38,250
+So in this final
+segment, I'll talk
+
+774
+00:37:38,250 --> 00:37:42,840
+about how we can move beyond
+just training models on text
+
+775
+00:37:42,840 --> 00:37:45,430
+alone.
+
+776
+00:37:45,430 --> 00:37:48,690
+So many have
+articulated the need
+
+777
+00:37:48,690 --> 00:37:50,970
+to use modalities
+other than text
+
+778
+00:37:50,970 --> 00:37:54,900
+if we some day want to get at
+real language understanding.
+
+779
+00:37:54,900 --> 00:38:00,810
+And this has-- ever since we've
+had these big language models,
+
+780
+00:38:00,810 --> 00:38:03,120
+there has been sort of a
+re-kindling of this debate.
+
+781
+00:38:03,120 --> 00:38:06,210
+And recently, there was
+multiple papers on this.
+
+782
+00:38:06,210 --> 00:38:08,910
+And so at ACL last year,
+there was this paper
+
+783
+00:38:08,910 --> 00:38:11,910
+that argues through
+multiple thought experiments
+
+784
+00:38:11,910 --> 00:38:14,130
+that it's actually
+impossible to acquire
+
+785
+00:38:14,130 --> 00:38:17,490
+meaning from form alone,
+where meaning refers
+
+786
+00:38:17,490 --> 00:38:19,920
+to the communicative
+intent of a speaker
+
+787
+00:38:19,920 --> 00:38:25,500
+and form refers to
+text or speech signals.
+
+788
+00:38:25,500 --> 00:38:27,750
+A more moderate version
+of this was put forward
+
+789
+00:38:27,750 --> 00:38:30,360
+by the second paper,
+where they say
+
+790
+00:38:30,360 --> 00:38:33,270
+that training on
+only web-scale data
+
+791
+00:38:33,270 --> 00:38:36,530
+limits the world scope
+of models and limits
+
+792
+00:38:36,530 --> 00:38:41,130
+the aspects of meanings that
+the model can actually acquire.
+
+793
+00:38:41,130 --> 00:38:42,710
+And so here's a
+look at a diagram
+
+794
+00:38:42,710 --> 00:38:44,730
+that I've borrowed
+from the paper.
+
+795
+00:38:44,730 --> 00:38:47,550
+And what they say
+is the error where
+
+796
+00:38:47,550 --> 00:38:51,400
+we were training models on
+the supervised data sets,
+
+797
+00:38:51,400 --> 00:38:53,790
+models were limited
+in world scope 1.
+
+798
+00:38:53,790 --> 00:38:58,270
+And now that we've moved on
+to exploiting unlabeled data,
+
+799
+00:38:58,270 --> 00:39:00,600
+we're now in world scope
+2, where models just
+
+800
+00:39:00,600 --> 00:39:05,220
+have strictly more signal to get
+more aspects of meaning here.
+
+801
+00:39:05,220 --> 00:39:07,780
+If you mix in additional
+modalities to this--
+
+802
+00:39:07,780 --> 00:39:11,430
+so maybe you mix in videos,
+and maybe you mix in images--
+
+803
+00:39:11,430 --> 00:39:15,690
+then that expands out the whole
+scope of the model further,
+
+804
+00:39:15,690 --> 00:39:18,390
+and now, maybe it can apply
+more aspects of meaning, such
+
+805
+00:39:18,390 --> 00:39:25,350
+that it knows that the lexical
+item "red" refers to red image
+
+806
+00:39:25,350 --> 00:39:26,920
+visibility.
+
+807
+00:39:26,920 --> 00:39:28,780
+And then, if you
+go beyond that, you
+
+808
+00:39:28,780 --> 00:39:31,560
+can have a model
+that is embodied,
+
+809
+00:39:31,560 --> 00:39:33,310
+and it's actually
+living in an environment
+
+810
+00:39:33,310 --> 00:39:37,960
+where it can interact with its
+data, conduct interventions
+
+811
+00:39:37,960 --> 00:39:39,400
+and experiments.
+
+812
+00:39:39,400 --> 00:39:41,980
+And then, if you go out,
+go even beyond that,
+
+813
+00:39:41,980 --> 00:39:44,400
+you can have models that
+live in a social world
+
+814
+00:39:44,400 --> 00:39:46,150
+where they can interact
+with other models.
+
+815
+00:39:46,150 --> 00:39:49,360
+Because after all, the purpose
+of language is to communicate.
+
+816
+00:39:49,360 --> 00:39:54,260
+And so you can have a social
+world where models can
+
+817
+00:39:54,260 --> 00:39:55,510
+communicate with other models.
+
+818
+00:39:55,510 --> 00:40:00,070
+That kind of expands out
+aspects of the world.
+
+819
+00:40:00,070 --> 00:40:04,210
+And so GPT-3 is
+in world scope 2.
+
+820
+00:40:04,210 --> 00:40:07,540
+So there are a lot of open
+questions in this space.
+
+821
+00:40:07,540 --> 00:40:10,740
+So given that there are all of
+these good arguments about how
+
+822
+00:40:10,740 --> 00:40:12,690
+we need to move
+beyond text, what
+
+823
+00:40:12,690 --> 00:40:16,170
+is the best way to
+do this at scale?
+
+824
+00:40:16,170 --> 00:40:20,700
+We know that babies cannot
+learn language from watching TV
+
+825
+00:40:20,700 --> 00:40:21,910
+alone, for example.
+
+826
+00:40:21,910 --> 00:40:24,955
+So there has to be
+some intervention,
+
+827
+00:40:24,955 --> 00:40:26,580
+and there has to be
+interactions, then,
+
+828
+00:40:26,580 --> 00:40:28,210
+that need to happen.
+
+829
+00:40:28,210 --> 00:40:29,850
+But at the same
+time, the question
+
+830
+00:40:29,850 --> 00:40:35,400
+is, how far can models go by
+just training on static data,
+
+831
+00:40:35,400 --> 00:40:38,250
+as long as we have additional
+modalities, especially when we
+
+832
+00:40:38,250 --> 00:40:40,480
+combine this with scale?
+
+833
+00:40:40,480 --> 00:40:42,760
+And if interactions
+with the environment
+
+834
+00:40:42,760 --> 00:40:46,270
+are really necessary, how do we
+collect data and design systems
+
+835
+00:40:46,270 --> 00:40:50,070
+that interact minimally or
+in a cost-effective way?
+
+836
+00:40:50,070 --> 00:40:52,190
+And then, finally, could
+pre-training on text
+
+837
+00:40:52,190 --> 00:41:01,110
+still be useful if any of
+these other research directions
+
+838
+00:41:01,110 --> 00:41:03,850
+become more sample-efficient?
+
+839
+00:41:03,850 --> 00:41:07,170
+So if you're interested in
+learning more about this topic,
+
+840
+00:41:07,170 --> 00:41:09,570
+I highly encourage
+you to take CS224U,
+
+841
+00:41:09,570 --> 00:41:10,980
+which is offered in the spring.
+
+842
+00:41:10,980 --> 00:41:13,601
+They have multiple lectures
+on just language grounding.
+
+843
+00:41:13,601 --> 00:41:19,010
+
+
+844
+00:41:19,010 --> 00:41:21,260
+OK, so in this
+final segment, I'm
+
+845
+00:41:21,260 --> 00:41:23,360
+going to talk a little
+bit more about how
+
+846
+00:41:23,360 --> 00:41:27,440
+you can get involved with NLP
+and deep learning research
+
+847
+00:41:27,440 --> 00:41:32,120
+and how you can
+make more progress.
+
+848
+00:41:32,120 --> 00:41:34,840
+So here are some
+general principles
+
+849
+00:41:34,840 --> 00:41:37,942
+for how to make progress
+in your own NLP research.
+
+850
+00:41:37,942 --> 00:41:39,400
+So I think the most
+important thing
+
+851
+00:41:39,400 --> 00:41:41,800
+is to just read
+broadly, which means--
+
+852
+00:41:41,800 --> 00:41:45,250
+and not just read the latest
+and greatest papers on arXiv,
+
+853
+00:41:45,250 --> 00:41:50,020
+but also read pre-2010
+statistical NLP.
+
+854
+00:41:50,020 --> 00:41:53,200
+Learn about the mathematical
+foundations of machine
+
+855
+00:41:53,200 --> 00:41:55,810
+learning to understand
+how generalization works.
+
+856
+00:41:55,810 --> 00:41:58,570
+So take CS229M.
+
+857
+00:41:58,570 --> 00:42:01,790
+Learn more about language,
+which means taking classes
+
+858
+00:42:01,790 --> 00:42:03,040
+in the Linguistics Department.
+
+859
+00:42:03,040 --> 00:42:06,460
+In particular I would
+recommend Linguist 130a,
+
+860
+00:42:06,460 --> 00:42:09,500
+and also take CS224u.
+
+861
+00:42:09,500 --> 00:42:13,180
+And finally, if you
+want to take inspiration
+
+862
+00:42:13,180 --> 00:42:15,250
+from how babies
+learn, then definitely
+
+863
+00:42:15,250 --> 00:42:18,130
+read about child language
+acquisition literature.
+
+864
+00:42:18,130 --> 00:42:20,860
+It's fascinating.
+
+865
+00:42:20,860 --> 00:42:24,070
+Finally, learn your
+software tools,
+
+866
+00:42:24,070 --> 00:42:29,290
+which involves scripting
+tools, version control, data
+
+867
+00:42:29,290 --> 00:42:32,760
+wrangling, learning how
+to visualize quickly
+
+868
+00:42:32,760 --> 00:42:34,090
+with Jupyter Notebooks.
+
+869
+00:42:34,090 --> 00:42:38,188
+And deep learning often involves
+running multiple experiments
+
+870
+00:42:38,188 --> 00:42:40,480
+with different types of
+parameters and different ideas,
+
+871
+00:42:40,480 --> 00:42:41,365
+all in parallel.
+
+872
+00:42:41,365 --> 00:42:43,240
+And sometimes, it can
+get really hard to keep
+
+873
+00:42:43,240 --> 00:42:44,352
+track of everything.
+
+874
+00:42:44,352 --> 00:42:46,060
+So learn how to use
+experiment management
+
+875
+00:42:46,060 --> 00:42:47,310
+tools like weights and biases.
+
+876
+00:42:47,310 --> 00:42:50,570
+
+
+877
+00:42:50,570 --> 00:42:54,680
+And finally, I'll talk
+about some, really quick,
+
+878
+00:42:54,680 --> 00:42:57,200
+final project tips.
+
+879
+00:42:57,200 --> 00:42:59,163
+So first, let's
+just start by saying
+
+880
+00:42:59,163 --> 00:43:01,205
+that if your approach
+doesn't seem to be working,
+
+881
+00:43:01,205 --> 00:43:03,200
+please do not panic.
+
+882
+00:43:03,200 --> 00:43:05,510
+Put assert statements
+everywhere,
+
+883
+00:43:05,510 --> 00:43:08,480
+and check if the computations
+that you're doing are correct.
+
+884
+00:43:08,480 --> 00:43:10,340
+Use breakpoints
+extensively-- and I'll
+
+885
+00:43:10,340 --> 00:43:13,000
+talk a bit more about this.
+
+886
+00:43:13,000 --> 00:43:16,410
+Check if the loss function that
+you've implemented is correct.
+
+887
+00:43:16,410 --> 00:43:20,990
+And one way of debugging that is
+to see that the initial values
+
+888
+00:43:20,990 --> 00:43:21,490
+are correct.
+
+889
+00:43:21,490 --> 00:43:23,615
+So if you're doing a theory
+classification problem,
+
+890
+00:43:23,615 --> 00:43:27,100
+then the initial loss should
+be the natural log of k.
+
+891
+00:43:27,100 --> 00:43:30,320
+Always, always, always start
+by create a small training data
+
+892
+00:43:30,320 --> 00:43:33,250
+set which has 5 to 10
+examples and see if your model
+
+893
+00:43:33,250 --> 00:43:34,910
+can completely overfit to that.
+
+894
+00:43:34,910 --> 00:43:38,440
+If not, there's a problem
+with your training loop.
+
+895
+00:43:38,440 --> 00:43:41,500
+Check for saturating
+activations and dead ReLUs.
+
+896
+00:43:41,500 --> 00:43:44,020
+And often, this
+can be fixed by--
+
+897
+00:43:44,020 --> 00:43:46,040
+maybe there's some
+problems to gradients,
+
+898
+00:43:46,040 --> 00:43:48,442
+or maybe there's some problems
+with the initialization.
+
+899
+00:43:48,442 --> 00:43:49,900
+Which brings me to
+the next point--
+
+900
+00:43:49,900 --> 00:43:51,190
+check the gradient values.
+
+901
+00:43:51,190 --> 00:43:53,080
+See if they're too
+small, which means
+
+902
+00:43:53,080 --> 00:43:56,505
+that maybe you should be using
+residual connections or LSTMs.
+
+903
+00:43:56,505 --> 00:43:57,880
+Or if they're too
+large, then you
+
+904
+00:43:57,880 --> 00:43:59,320
+should use gradient clipping.
+
+905
+00:43:59,320 --> 00:44:02,170
+In fact, always use
+gradient clipping.
+
+906
+00:44:02,170 --> 00:44:03,910
+Overall, be methodical.
+
+907
+00:44:03,910 --> 00:44:07,180
+If your approach doesn't
+work, come up with hypotheses
+
+908
+00:44:07,180 --> 00:44:08,500
+for why this might be the case.
+
+909
+00:44:08,500 --> 00:44:10,660
+Design Oracle
+experiments to debug it.
+
+910
+00:44:10,660 --> 00:44:13,960
+Look at your data, and look at
+the errors that it's making,
+
+911
+00:44:13,960 --> 00:44:17,510
+and just try to be
+systematic about everything.
+
+912
+00:44:17,510 --> 00:44:23,280
+So I'll just say a little
+bit more about breakpoints.
+
+913
+00:44:23,280 --> 00:44:25,250
+So there's this great
+library called pdb.
+
+914
+00:44:25,250 --> 00:44:27,050
+It's like gdb, but
+it's for Python.
+
+915
+00:44:27,050 --> 00:44:29,140
+So that's pdb.
+
+916
+00:44:29,140 --> 00:44:33,200
+To create a breakpoint, just
+add the line import pdb,
+
+917
+00:44:33,200 --> 00:44:37,130
+pdb.set_trace before the
+line you want to inspect.
+
+918
+00:44:37,130 --> 00:44:39,650
+So earlier today, I was
+trying to play around
+
+919
+00:44:39,650 --> 00:44:44,030
+with the Transformers
+library, and I was trying
+
+920
+00:44:44,030 --> 00:44:45,290
+to do question answering.
+
+921
+00:44:45,290 --> 00:44:47,660
+So I have a really
+small training corpus,
+
+922
+00:44:47,660 --> 00:44:49,730
+and the context
+is, one morning, I
+
+923
+00:44:49,730 --> 00:44:51,950
+shot an elephant in my pajamas.
+
+924
+00:44:51,950 --> 00:44:54,860
+How he got into my
+pajamas, I don't know.
+
+925
+00:44:54,860 --> 00:44:57,410
+And the question is,
+what did I shoot?
+
+926
+00:44:57,410 --> 00:44:59,750
+And to solve this
+problem, I basically
+
+927
+00:44:59,750 --> 00:45:03,950
+imported a organizer
+and a BERT model,
+
+928
+00:45:03,950 --> 00:45:06,960
+and I initialized my tokenizer,
+initialized my model,
+
+929
+00:45:06,960 --> 00:45:08,240
+I tokenized my input.
+
+930
+00:45:08,240 --> 00:45:10,670
+I set my model
+into the eval mode,
+
+931
+00:45:10,670 --> 00:45:13,620
+and I tried to
+look at the output.
+
+932
+00:45:13,620 --> 00:45:16,940
+But I get this error,
+and at face value
+
+933
+00:45:16,940 --> 00:45:19,290
+it's not clear what's
+causing this error.
+
+934
+00:45:19,290 --> 00:45:22,130
+And so the best way to look
+at what's causing this error
+
+935
+00:45:22,130 --> 00:45:24,870
+is to actually put a breakpoint.
+
+936
+00:45:24,870 --> 00:45:27,650
+So right after model.eval,
+I put a breakpoint,
+
+937
+00:45:27,650 --> 00:45:30,320
+because I know that that's
+where the problem is.
+
+938
+00:45:30,320 --> 00:45:35,380
+So the problem is in line 21, so
+I put a breakpoint at line 21.
+
+939
+00:45:35,380 --> 00:45:37,300
+And now, once I put
+this breakpoint,
+
+940
+00:45:37,300 --> 00:45:40,840
+I can just run my
+script again, and it
+
+941
+00:45:40,840 --> 00:45:43,060
+stops before executing line 21.
+
+942
+00:45:43,060 --> 00:45:46,250
+And at this point, I can
+examine all of my variables.
+
+943
+00:45:46,250 --> 00:45:48,040
+So I can look at
+the tokenized input,
+
+944
+00:45:48,040 --> 00:45:49,870
+because maybe that's
+where the problem is.
+
+945
+00:45:49,870 --> 00:45:54,250
+And lo and behold, I see
+that it's actually a list.
+
+946
+00:45:54,250 --> 00:45:57,460
+So it's a dictionary of lists,
+whereas models typically
+
+947
+00:45:57,460 --> 00:45:59,170
+expect a dodged answer.
+
+948
+00:45:59,170 --> 00:46:01,120
+So now I know what
+the problem is,
+
+949
+00:46:01,120 --> 00:46:04,030
+and that means I can
+quickly go ahead and fix it,
+
+950
+00:46:04,030 --> 00:46:05,915
+and everything just looks.
+
+951
+00:46:05,915 --> 00:46:07,540
+So this just shows
+that you should just
+
+952
+00:46:07,540 --> 00:46:10,700
+breakpoints everywhere if
+your code is not working,
+
+953
+00:46:10,700 --> 00:46:15,350
+and it can just help you
+debug really quickly.
+
+954
+00:46:15,350 --> 00:46:18,230
+OK, so finally, I
+would say that if you
+
+955
+00:46:18,230 --> 00:46:21,410
+want to get involved with
+an independent research,
+
+956
+00:46:21,410 --> 00:46:23,720
+and if you really like
+to find a project,
+
+957
+00:46:23,720 --> 00:46:26,520
+we have the CLIPS
+program at Stanford.
+
+958
+00:46:26,520 --> 00:46:29,750
+And this is a way for
+undergrads, masters students,
+
+959
+00:46:29,750 --> 00:46:33,010
+and PhDs who are interested
+in doing NLP research
+
+960
+00:46:33,010 --> 00:46:36,420
+and want to get involved
+with the NLP group.
+
+961
+00:46:36,420 --> 00:46:40,380
+So we highly encourage
+you to apply to CLIPS.
+
+962
+00:46:40,380 --> 00:46:44,420
+And so yeah, so I'll
+conclude today's class
+
+963
+00:46:44,420 --> 00:46:48,920
+by saying that we've made a lot
+of progress in the last decade,
+
+964
+00:46:48,920 --> 00:46:52,280
+and that's mostly due
+to clever understanding
+
+965
+00:46:52,280 --> 00:46:54,740
+of neural networks, data,
+hardware, all of that
+
+966
+00:46:54,740 --> 00:46:56,253
+combined with scale.
+
+967
+00:46:56,253 --> 00:46:57,920
+We have some really
+amazing technologies
+
+968
+00:46:57,920 --> 00:46:59,378
+that can do pretty
+exciting things,
+
+969
+00:46:59,378 --> 00:47:02,990
+and we saw some
+examples of that today.
+
+970
+00:47:02,990 --> 00:47:05,120
+In the short term,
+I expect that we'll
+
+971
+00:47:05,120 --> 00:47:07,400
+see more scaling,
+because it just
+
+972
+00:47:07,400 --> 00:47:10,940
+seems to help-- so perhaps
+even larger models.
+
+973
+00:47:10,940 --> 00:47:12,420
+But this is not trivial.
+
+974
+00:47:12,420 --> 00:47:15,860
+So I said that before,
+and I'll say it again,
+
+975
+00:47:15,860 --> 00:47:18,050
+scaling requires really
+non-trivial engineering
+
+976
+00:47:18,050 --> 00:47:21,530
+efforts, and sometimes
+even clever algorithms.
+
+977
+00:47:21,530 --> 00:47:23,900
+And so there's a lot
+of interesting systems
+
+978
+00:47:23,900 --> 00:47:25,400
+work to be done here.
+
+979
+00:47:25,400 --> 00:47:27,860
+But in the long
+term, we really need
+
+980
+00:47:27,860 --> 00:47:29,660
+to be thinking more
+about these bigger
+
+981
+00:47:29,660 --> 00:47:32,760
+problems of systematicity,
+generalization.
+
+982
+00:47:32,760 --> 00:47:36,260
+How can we make our models
+learn a new concept really
+
+983
+00:47:36,260 --> 00:47:38,870
+quickly so that it's
+fast and efficient?
+
+984
+00:47:38,870 --> 00:47:41,330
+And then, we also need
+to create benchmarks
+
+985
+00:47:41,330 --> 00:47:42,860
+that we can actually just--
+
+986
+00:47:42,860 --> 00:47:46,130
+if my model that has some
+[INAUDIBLE] and some sentiment
+
+987
+00:47:46,130 --> 00:47:48,470
+analysis data set and I
+deploy it in the real world,
+
+988
+00:47:48,470 --> 00:47:50,770
+that should be
+reflected in the number
+
+989
+00:47:50,770 --> 00:47:52,020
+that I get from the benchmark.
+
+990
+00:47:52,020 --> 00:47:54,320
+So we need to make
+progress in the way
+
+991
+00:47:54,320 --> 00:47:55,850
+that we evaluate models.
+
+992
+00:47:55,850 --> 00:47:58,460
+And then, also,
+figuring out a way
+
+993
+00:47:58,460 --> 00:48:01,340
+to move beyond text in
+a more tractable way,
+
+994
+00:48:01,340 --> 00:48:04,220
+this is also really essential.
+
+995
+00:48:04,220 --> 00:48:05,490
+So yeah, that's it.
+
+996
+00:48:05,490 --> 00:48:08,000
+Good luck with
+your final project.
+
+997
+00:48:08,000 --> 00:48:10,060
+I can take more
+questions at this point.
+
+998
+00:48:10,060 --> 00:48:12,840
+
+
+999
+00:48:12,840 --> 00:48:16,080
+So I answered a question
+earlier that, actually, I
+
+1000
+00:48:16,080 --> 00:48:20,280
+think you could also opine on.
+
+1001
+00:48:20,280 --> 00:48:22,620
+It was the question of
+whether you have a large model
+
+1002
+00:48:22,620 --> 00:48:26,370
+that's pre-trained on language,
+if it will actually help you
+
+1003
+00:48:26,370 --> 00:48:27,480
+in other domains--
+
+1004
+00:48:27,480 --> 00:48:32,850
+like you apply it to
+vision stuff, yeah.
+
+1005
+00:48:32,850 --> 00:48:37,133
+Yeah, so I guess the
+answer is actually yes.
+
+1006
+00:48:37,133 --> 00:48:39,300
+There was a paper that came
+out relatively recently,
+
+1007
+00:48:39,300 --> 00:48:42,210
+like just a few days
+ago, that it just takes--
+
+1008
+00:48:42,210 --> 00:48:44,298
+I think it was GPT-2?
+
+1009
+00:48:44,298 --> 00:48:44,840
+I'm not sure.
+
+1010
+00:48:44,840 --> 00:48:48,670
+It's one large transformer model
+that's pre-trained on text,
+
+1011
+00:48:48,670 --> 00:48:52,120
+and other modalities,
+and I think it definitely
+
+1012
+00:48:52,120 --> 00:48:54,070
+applied to images,
+and I think it
+
+1013
+00:48:54,070 --> 00:48:58,600
+applied to math problems
+and some more modalities
+
+1014
+00:48:58,600 --> 00:49:01,962
+and showed that it's actually
+pretty effective at transfer.
+
+1015
+00:49:01,962 --> 00:49:03,670
+So if you pre-train
+on text, and then you
+
+1016
+00:49:03,670 --> 00:49:05,482
+move to a different
+modality, that helps.
+
+1017
+00:49:05,482 --> 00:49:06,940
+I think part of
+the reason for that
+
+1018
+00:49:06,940 --> 00:49:09,610
+is just that across
+modalities, there
+
+1019
+00:49:09,610 --> 00:49:13,430
+is a lot of autoregressive
+structure that is shared.
+
+1020
+00:49:13,430 --> 00:49:18,040
+And I think one reason for
+that is that language is really
+
+1021
+00:49:18,040 --> 00:49:19,760
+referring to the
+world around it,
+
+1022
+00:49:19,760 --> 00:49:23,920
+and so you might expect
+that there is some--
+
+1023
+00:49:23,920 --> 00:49:25,960
+there is some
+correspondence that's
+
+1024
+00:49:25,960 --> 00:49:28,120
+just beyond
+autoregresssive structure.
+
+1025
+00:49:28,120 --> 00:49:32,320
+So there's also works that
+show that if you have just
+
+1026
+00:49:32,320 --> 00:49:35,290
+text-only representations and
+image-only representations,
+
+1027
+00:49:35,290 --> 00:49:37,990
+you can actually learn a simple
+linear classifier-- like you
+
+1028
+00:49:37,990 --> 00:49:40,240
+can learn to align with
+these representations.
+
+1029
+00:49:40,240 --> 00:49:42,782
+And all of these works are just
+showing that there's actually
+
+1030
+00:49:42,782 --> 00:49:44,500
+a lot more in common
+between modalities
+
+1031
+00:49:44,500 --> 00:49:46,990
+than we thought
+in the beginning.
+
+1032
+00:49:46,990 --> 00:49:51,340
+So yeah, I think yeah, it's
+possible to pre-train on text
+
+1033
+00:49:51,340 --> 00:49:54,760
+and then fine-tune on
+your modality of interest.
+
+1034
+00:49:54,760 --> 00:49:58,090
+And it should probably
+be effective--
+
+1035
+00:49:58,090 --> 00:49:59,830
+of course, based on
+what the modality is.
+
+1036
+00:49:59,830 --> 00:50:04,345
+But for images and videos,
+it's certainly effective.
+
+1037
+00:50:04,345 --> 00:50:13,750
+
+
+1038
+00:50:13,750 --> 00:50:14,700
+No more questions?
+
+1039
+00:50:14,700 --> 00:50:20,100
+
+
+1040
+00:50:20,100 --> 00:50:24,390
+Well, a couple of
+questions have turned up.
+
+1041
+00:50:24,390 --> 00:50:28,140
+One is, what's the
+difference between CS224u
+
+1042
+00:50:28,140 --> 00:50:32,245
+and this class in terms of
+the topics covered and focus?
+
+1043
+00:50:32,245 --> 00:50:33,870
+Do you want to answer
+that one, Shikar,
+
+1044
+00:50:33,870 --> 00:50:36,296
+or should I have a
+go at answering it?
+
+1045
+00:50:36,296 --> 00:50:38,080
+Maybe you should
+answer this one.
+
+1046
+00:50:38,080 --> 00:50:44,640
+OK, so next quarter, CS224u,
+Natural Language Understanding,
+
+1047
+00:50:44,640 --> 00:50:50,610
+is co-taught by Chris
+Potts and Bill McCartney.
+
+1048
+00:50:50,610 --> 00:50:57,000
+So in essence it's
+meant to be different
+
+1049
+00:50:57,000 --> 00:51:00,420
+that natural language
+understanding focuses
+
+1050
+00:51:00,420 --> 00:51:03,180
+on what its name is--
+
+1051
+00:51:03,180 --> 00:51:05,520
+sort of how to build
+computer systems that
+
+1052
+00:51:05,520 --> 00:51:09,270
+understand the sentences
+of natural language.
+
+1053
+00:51:09,270 --> 00:51:13,170
+Now, in truth, the boundary
+is kind of complex,
+
+1054
+00:51:13,170 --> 00:51:17,640
+because we do some natural
+language understanding
+
+1055
+00:51:17,640 --> 00:51:19,745
+in this class as well.
+
+1056
+00:51:19,745 --> 00:51:21,120
+And certainly,
+for the people who
+
+1057
+00:51:21,120 --> 00:51:23,520
+are doing the default
+final project,
+
+1058
+00:51:23,520 --> 00:51:26,970
+question-answering, well, that's
+absolutely a natural language
+
+1059
+00:51:26,970 --> 00:51:29,040
+understanding task.
+
+1060
+00:51:29,040 --> 00:51:33,840
+But the distinction is
+meant to be that at least
+
+1061
+00:51:33,840 --> 00:51:37,290
+a lot of what we
+do in this class--
+
+1062
+00:51:37,290 --> 00:51:42,600
+things like the assignment
+3 dependency parser
+
+1063
+00:51:42,600 --> 00:51:44,970
+or building the
+machine translation
+
+1064
+00:51:44,970 --> 00:51:48,540
+system in assignment 4--
+
+1065
+00:51:48,540 --> 00:51:51,720
+that they are in some sense
+natural language processing
+
+1066
+00:51:51,720 --> 00:51:54,810
+tasks where processing
+can mean anything,
+
+1067
+00:51:54,810 --> 00:52:00,480
+but it commonly means you're
+doing useful, intelligent stuff
+
+1068
+00:52:00,480 --> 00:52:05,460
+with human language input, but
+you're not necessarily deeply
+
+1069
+00:52:05,460 --> 00:52:06,760
+understanding it.
+
+1070
+00:52:06,760 --> 00:52:10,230
+So there is some
+overlap in the classes.
+
+1071
+00:52:10,230 --> 00:52:14,310
+If you do CS224u, you'll
+certainly see word vectors
+
+1072
+00:52:14,310 --> 00:52:16,500
+and transformers again.
+
+1073
+00:52:16,500 --> 00:52:21,000
+But the emphasis is on doing a
+lot more with natural language
+
+1074
+00:52:21,000 --> 00:52:22,620
+understanding tasks.
+
+1075
+00:52:22,620 --> 00:52:27,890
+And so that includes things
+like building semantic parsers--
+
+1076
+00:52:27,890 --> 00:52:30,780
+so they're the kind
+of devices that
+
+1077
+00:52:30,780 --> 00:52:34,350
+will respond to
+questions and commands
+
+1078
+00:52:34,350 --> 00:52:40,020
+such as an Alexa or
+Google Assistant will do--
+
+1079
+00:52:40,020 --> 00:52:42,930
+building relation
+extraction systems
+
+1080
+00:52:42,930 --> 00:52:47,340
+which get out particular facts
+out of a piece of text, of, oh,
+
+1081
+00:52:47,340 --> 00:52:52,500
+this person took on this
+position at this company,
+
+1082
+00:52:52,500 --> 00:52:56,760
+looking at grounded language
+learning and grounded language
+
+1083
+00:52:56,760 --> 00:52:58,320
+understanding, where
+you're not only
+
+1084
+00:52:58,320 --> 00:53:01,410
+using the language
+but the world context
+
+1085
+00:53:01,410 --> 00:53:06,090
+to get information,
+and other tasks that--
+
+1086
+00:53:06,090 --> 00:53:07,890
+I mean, I guess you
+can look at the website
+
+1087
+00:53:07,890 --> 00:53:11,550
+to get more details of it.
+
+1088
+00:53:11,550 --> 00:53:15,270
+Relevant to this class,
+I mean, a lot of people
+
+1089
+00:53:15,270 --> 00:53:19,050
+also find it an opportunity
+to just get further
+
+1090
+00:53:19,050 --> 00:53:24,690
+in doing projects in the area
+of natural language processing.
+
+1091
+00:53:24,690 --> 00:53:27,910
+That's by the nature of
+the structure of the class,
+
+1092
+00:53:27,910 --> 00:53:31,170
+since it more
+assumes that people
+
+1093
+00:53:31,170 --> 00:53:34,140
+know how to build deep
+learning, natural language
+
+1094
+00:53:34,140 --> 00:53:38,550
+systems at the beginning,
+rather than a large percentage
+
+1095
+00:53:38,550 --> 00:53:41,130
+of the class going
+into, OK, you have
+
+1096
+00:53:41,130 --> 00:53:42,810
+to do all of these assignments.
+
+1097
+00:53:42,810 --> 00:53:45,570
+Although there are little
+assignments earlier on
+
+1098
+00:53:45,570 --> 00:53:49,185
+that there's more time to work
+on a project for the quarter.
+
+1099
+00:53:49,185 --> 00:53:54,100
+
+
+1100
+00:53:54,100 --> 00:53:57,265
+OK, here's one more question
+that maybe Shikar could do.
+
+1101
+00:53:57,265 --> 00:53:59,590
+Do you know of
+attempts to crowdsource
+
+1102
+00:53:59,590 --> 00:54:01,240
+dynamic benchmarks--
+
+1103
+00:54:01,240 --> 00:54:02,200
+e.g.
+
+1104
+00:54:02,200 --> 00:54:05,200
+users uploading
+adversarial examples
+
+1105
+00:54:05,200 --> 00:54:09,640
+for evaluation in
+online learning?
+
+1106
+00:54:09,640 --> 00:54:14,770
+Yeah, so actually,
+the main idea there
+
+1107
+00:54:14,770 --> 00:54:16,310
+is to use crowdsourcing, right?
+
+1108
+00:54:16,310 --> 00:54:19,000
+So in fact, there
+is this bench--
+
+1109
+00:54:19,000 --> 00:54:22,840
+so there is this platform that
+was created by [INAUDIBLE]..
+
+1110
+00:54:22,840 --> 00:54:27,160
+It's called DynaBench, and
+the objective is just that.
+
+1111
+00:54:27,160 --> 00:54:31,690
+To construct this
+dynamically-evolving benchmark,
+
+1112
+00:54:31,690 --> 00:54:36,160
+we are just going to offload
+it to users of this platform.
+
+1113
+00:54:36,160 --> 00:54:38,170
+And you can-- it
+essentially gives you
+
+1114
+00:54:38,170 --> 00:54:41,200
+utilities for
+deploying your model
+
+1115
+00:54:41,200 --> 00:54:46,420
+and then having humans
+try to fool the model.
+
+1116
+00:54:46,420 --> 00:54:48,100
+Yeah, so this is--
+
+1117
+00:54:48,100 --> 00:54:51,160
+it's basically how
+the dynamic evaluator,
+
+1118
+00:54:51,160 --> 00:54:55,420
+the dynamic benchmark
+collection actually works.
+
+1119
+00:54:55,420 --> 00:54:59,980
+So you deploy a model
+on some platform,
+
+1120
+00:54:59,980 --> 00:55:03,880
+and then you get humans
+to fool the system, yeah.
+
+1121
+00:55:03,880 --> 00:55:18,710
+
+
+1122
+00:55:18,710 --> 00:55:19,550
+Here's a question.
+
+1123
+00:55:19,550 --> 00:55:23,000
+Can you address the problems
+of NLP models not able
+
+1124
+00:55:23,000 --> 00:55:26,610
+to remember really long
+contexts and techniques to infer
+
+1125
+00:55:26,610 --> 00:55:29,960
+on really large input length?
+
+1126
+00:55:29,960 --> 00:55:37,420
+Yeah, so I guess there have
+been a few works recently
+
+1127
+00:55:37,420 --> 00:55:39,700
+that kind of try to scale
+up transformers to really
+
+1128
+00:55:39,700 --> 00:55:42,580
+large context lengths.
+
+1129
+00:55:42,580 --> 00:55:45,370
+One of them is
+like the reformer,
+
+1130
+00:55:45,370 --> 00:55:47,380
+and there's also
+the Transformer XL.
+
+1131
+00:55:47,380 --> 00:55:49,338
+That was-- I think it
+was one of the first ones
+
+1132
+00:55:49,338 --> 00:55:51,640
+to try and do that.
+
+1133
+00:55:51,640 --> 00:55:58,090
+I think what is unclear is
+whether you can combine that
+
+1134
+00:55:58,090 --> 00:56:01,690
+with the scale of
+these GPT-like models,
+
+1135
+00:56:01,690 --> 00:56:04,750
+and if you see qualitatively
+different things
+
+1136
+00:56:04,750 --> 00:56:07,445
+once you do that.
+
+1137
+00:56:07,445 --> 00:56:09,070
+And part of it is
+just that all of this
+
+1138
+00:56:09,070 --> 00:56:11,032
+is just so recent, right?
+
+1139
+00:56:11,032 --> 00:56:12,490
+But yeah, I think
+the open question
+
+1140
+00:56:12,490 --> 00:56:16,690
+there is that, can you take
+these really long context
+
+1141
+00:56:16,690 --> 00:56:20,590
+transformers that can
+operate over long contexts,
+
+1142
+00:56:20,590 --> 00:56:23,200
+combine that with
+scale of GPT-3,
+
+1143
+00:56:23,200 --> 00:56:25,660
+and then get models
+that can actually
+
+1144
+00:56:25,660 --> 00:56:29,350
+reason with these
+really large contexts?
+
+1145
+00:56:29,350 --> 00:56:31,150
+Because I guess a
+hypothesis of scale
+
+1146
+00:56:31,150 --> 00:56:34,330
+is that once you train
+language models at scale,
+
+1147
+00:56:34,330 --> 00:56:36,200
+it can start to do these things.
+
+1148
+00:56:36,200 --> 00:56:38,890
+And so to do that
+for long context,
+
+1149
+00:56:38,890 --> 00:56:42,850
+we actually need to have long
+context transformers that
+
+1150
+00:56:42,850 --> 00:56:43,810
+are trained at scale.
+
+1151
+00:56:43,810 --> 00:56:46,626
+And I don't think people
+have done that yet.
+
+1152
+00:56:46,626 --> 00:56:55,575
+
+
+1153
+00:56:55,575 --> 00:56:56,950
+So I'm seeing this
+other question
+
+1154
+00:56:56,950 --> 00:57:00,032
+about language acquisition.
+
+1155
+00:57:00,032 --> 00:57:01,740
+Chris, do you have
+some thoughts on this?
+
+1156
+00:57:01,740 --> 00:57:05,799
+Or maybe I can just
+present to everyone.
+
+1157
+00:57:05,799 --> 00:57:10,730
+
+
+1158
+00:57:10,730 --> 00:57:14,020
+So the question is,
+what do you think
+
+1159
+00:57:14,020 --> 00:57:16,780
+we can learn from baby
+language acquisition?
+
+1160
+00:57:16,780 --> 00:57:20,080
+Can we build a language model
+in a more interactive way,
+
+1161
+00:57:20,080 --> 00:57:22,030
+like reinforcement learning?
+
+1162
+00:57:22,030 --> 00:57:26,080
+Do you know any
+of these attempts?
+
+1163
+00:57:26,080 --> 00:57:29,320
+That's a big, huge
+question, and I
+
+1164
+00:57:29,320 --> 00:57:32,890
+think the short and non-helpful
+answer is that there are kind
+
+1165
+00:57:32,890 --> 00:57:35,740
+of no answers at the moment.
+
+1166
+00:57:35,740 --> 00:57:40,390
+People have certainly tried to
+do things at various scales,
+
+1167
+00:57:40,390 --> 00:57:44,650
+but we just have
+no technology that
+
+1168
+00:57:44,650 --> 00:57:48,370
+is the least bit
+convincing for being
+
+1169
+00:57:48,370 --> 00:57:50,830
+able to replicate
+the language learning
+
+1170
+00:57:50,830 --> 00:57:53,720
+ability of a human child.
+
+1171
+00:57:53,720 --> 00:57:58,090
+But after that prologue,
+what I could say is, I mean,
+
+1172
+00:57:58,090 --> 00:58:02,620
+yeah, there are definitely
+ideas to have in your head.
+
+1173
+00:58:02,620 --> 00:58:05,860
+So there are clear
+results, which
+
+1174
+00:58:05,860 --> 00:58:11,210
+is that little kids don't
+learn by watching videos.
+
+1175
+00:58:11,210 --> 00:58:17,380
+So it seems like interaction
+is completely key.
+
+1176
+00:58:17,380 --> 00:58:21,280
+Little kids don't learn
+from language alone.
+
+1177
+00:58:21,280 --> 00:58:25,210
+They're in a very rich
+environment where people
+
+1178
+00:58:25,210 --> 00:58:28,090
+are sort of both learning
+stuff from the environment
+
+1179
+00:58:28,090 --> 00:58:31,780
+in general, and in
+particular, they're
+
+1180
+00:58:31,780 --> 00:58:36,370
+learning a lot from what
+language acquisition
+
+1181
+00:58:36,370 --> 00:58:38,770
+researchers refer
+to as "attention,"
+
+1182
+00:58:38,770 --> 00:58:42,040
+which is different to
+what we mean by attention.
+
+1183
+00:58:42,040 --> 00:58:44,980
+But it means that
+the caregiver will
+
+1184
+00:58:44,980 --> 00:58:48,730
+be looking at the object
+that's the focus of interest,
+
+1185
+00:58:48,730 --> 00:58:50,740
+and commonly other
+things as well,
+
+1186
+00:58:50,740 --> 00:58:54,310
+like picking it up, and bringing
+it near the kid, and all
+
+1187
+00:58:54,310 --> 00:58:57,320
+those kinds of things.
+
+1188
+00:58:57,320 --> 00:59:03,290
+And babies and young kids get
+to experiment a lot, right?
+
+1189
+00:59:03,290 --> 00:59:06,350
+So regardless of
+whether it's learning
+
+1190
+00:59:06,350 --> 00:59:09,560
+what happens when
+you have some blocks
+
+1191
+00:59:09,560 --> 00:59:11,840
+that you stack up
+and play with them,
+
+1192
+00:59:11,840 --> 00:59:16,730
+or you're learning language,
+you sort of experiment
+
+1193
+00:59:16,730 --> 00:59:20,840
+by trying some things and see
+what kind of response you get.
+
+1194
+00:59:20,840 --> 00:59:25,430
+And again, that's essentially
+building on the interactivity
+
+1195
+00:59:25,430 --> 00:59:28,880
+of it, that you're getting
+some kind of response
+
+1196
+00:59:28,880 --> 00:59:30,590
+to any utterance you make.
+
+1197
+00:59:30,590 --> 00:59:34,310
+And this is something
+that's been hotly debated
+
+1198
+00:59:34,310 --> 00:59:36,600
+in the language
+acquisition literature.
+
+1199
+00:59:36,600 --> 00:59:41,450
+So a traditional
+Chomskyan position
+
+1200
+00:59:41,450 --> 00:59:49,100
+is that if human beings don't
+get effective feedback--
+
+1201
+00:59:49,100 --> 00:59:52,610
+supervised labels--
+when they talk--
+
+1202
+00:59:52,610 --> 00:59:56,150
+and in some very narrow sense,
+well, that's true right.
+
+1203
+00:59:56,150 --> 00:59:58,370
+It's just not the case
+that after a baby tries
+
+1204
+00:59:58,370 --> 01:00:00,950
+to say something,
+that they get feedback
+
+1205
+01:00:00,950 --> 01:00:07,880
+of, syntax error in English
+on word 4, or they get given,
+
+1206
+01:00:07,880 --> 01:00:12,080
+here's the semantic form I
+took away from your utterance.
+
+1207
+01:00:12,080 --> 01:00:17,000
+But in a more indirect way, they
+clearly get enormous feedback.
+
+1208
+01:00:17,000 --> 01:00:19,550
+They can see what
+kind of response
+
+1209
+01:00:19,550 --> 01:00:24,380
+they get from their
+caregiver at every corner.
+
+1210
+01:00:24,380 --> 01:00:29,060
+And so in your question,
+you were suggesting that,
+
+1211
+01:00:29,060 --> 01:00:32,810
+well, somehow, we
+should be making
+
+1212
+01:00:32,810 --> 01:00:35,240
+use of reinforcement learning,
+because we have something
+
+1213
+01:00:35,240 --> 01:00:37,970
+like a reward signal there.
+
+1214
+01:00:37,970 --> 01:00:42,680
+And in a big picture way,
+I'd say, huh, yeah, I agree.
+
+1215
+01:00:42,680 --> 01:00:46,400
+In terms of a much more specific
+way as to, well, how could
+
+1216
+01:00:46,400 --> 01:00:49,010
+we possibly get that to
+work, to learn something
+
+1217
+01:00:49,010 --> 01:00:53,570
+with the richness
+of human language,
+
+1218
+01:00:53,570 --> 01:00:57,200
+I think we don't have much idea.
+
+1219
+01:00:57,200 --> 01:00:59,660
+But there has started
+to be some work.
+
+1220
+01:00:59,660 --> 01:01:03,830
+So people have been
+sort of building
+
+1221
+01:01:03,830 --> 01:01:10,010
+virtual environments, which
+you have your avatar in,
+
+1222
+01:01:10,010 --> 01:01:12,710
+and that you can manipulate
+in the virtual environment,
+
+1223
+01:01:12,710 --> 01:01:16,040
+and there's linguistic input,
+and it can succeed in getting
+
+1224
+01:01:16,040 --> 01:01:18,770
+rewards for sort
+of doing a command,
+
+1225
+01:01:18,770 --> 01:01:20,600
+where the command can
+be something like,
+
+1226
+01:01:20,600 --> 01:01:24,530
+pick up the orange block,
+or something like that.
+
+1227
+01:01:24,530 --> 01:01:29,830
+And to a small extent,
+people have been
+
+1228
+01:01:29,830 --> 01:01:31,780
+able to build things that work.
+
+1229
+01:01:31,780 --> 01:01:38,320
+I mean, as you might be picking
+up, I mean, I guess so far,
+
+1230
+01:01:38,320 --> 01:01:40,930
+at least, I've just been
+kind of underwhelmed,
+
+1231
+01:01:40,930 --> 01:01:44,050
+because it seems like the
+complexity of what people have
+
+1232
+01:01:44,050 --> 01:01:48,820
+achieved is sort of just
+so primitive compared
+
+1233
+01:01:48,820 --> 01:01:51,820
+to the full complexity
+of language, right?
+
+1234
+01:01:51,820 --> 01:01:53,800
+The kind of
+languages that people
+
+1235
+01:01:53,800 --> 01:01:56,500
+have been able to
+get systems to learn
+
+1236
+01:01:56,500 --> 01:01:59,380
+are ones that can
+do pick up commands,
+
+1237
+01:01:59,380 --> 01:02:04,390
+where they can learn "blue
+cube" versus "orange sphere,"
+
+1238
+01:02:04,390 --> 01:02:07,390
+and that's sort of about
+how far people have gotten.
+
+1239
+01:02:07,390 --> 01:02:12,550
+And that's sort of such a teeny,
+small corner of what's involved
+
+1240
+01:02:12,550 --> 01:02:14,230
+in learning a human language.
+
+1241
+01:02:14,230 --> 01:02:17,090
+
+
+1242
+01:02:17,090 --> 01:02:20,260
+One thing I'll just
+add to that is I
+
+1243
+01:02:20,260 --> 01:02:23,770
+think there are some
+principles of how
+
+1244
+01:02:23,770 --> 01:02:26,200
+kids learn that you
+could have tried
+
+1245
+01:02:26,200 --> 01:02:27,310
+to apply to deep learning.
+
+1246
+01:02:27,310 --> 01:02:29,470
+And one example
+that comes to mind
+
+1247
+01:02:29,470 --> 01:02:32,590
+is curriculum
+learning, where there's
+
+1248
+01:02:32,590 --> 01:02:36,190
+a lot of literature that
+shows that babies tend
+
+1249
+01:02:36,190 --> 01:02:40,287
+to pay attention to things
+that is just slightly
+
+1250
+01:02:40,287 --> 01:02:42,370
+challenging for them, and
+they don't pay attention
+
+1251
+01:02:42,370 --> 01:02:44,060
+to things that are
+extremely challenging
+
+1252
+01:02:44,060 --> 01:02:46,060
+and also don't pay attention
+to things that they
+
+1253
+01:02:46,060 --> 01:02:47,350
+know how to solve.
+
+1254
+01:02:47,350 --> 01:02:49,720
+And many researchers
+have really tried
+
+1255
+01:02:49,720 --> 01:02:53,080
+to get curriculum
+learning to work,
+
+1256
+01:02:53,080 --> 01:02:57,040
+and the verdict on that is
+that it seems to kind of work
+
+1257
+01:02:57,040 --> 01:02:59,350
+when you're in reinforcement
+learning settings,
+
+1258
+01:02:59,350 --> 01:03:02,020
+but it's unclear if
+it's going to work on
+
+1259
+01:03:02,020 --> 01:03:03,640
+like supervised
+learning settings.
+
+1260
+01:03:03,640 --> 01:03:05,570
+But I still think that
+it's under-explored,
+
+1261
+01:03:05,570 --> 01:03:09,580
+and maybe there should
+be more attempts
+
+1262
+01:03:09,580 --> 01:03:13,370
+to kind of see if you can look
+at the curriculum learning
+
+1263
+01:03:13,370 --> 01:03:14,710
+and if that improves anything.
+
+1264
+01:03:14,710 --> 01:03:17,757
+
+
+1265
+01:03:17,757 --> 01:03:18,340
+Yeah, I agree.
+
+1266
+01:03:18,340 --> 01:03:21,070
+Curriculum learning
+is an important idea
+
+1267
+01:03:21,070 --> 01:03:23,170
+which we haven't
+really talked about,
+
+1268
+01:03:23,170 --> 01:03:27,610
+but it seems like it certainly
+is central to human learning.
+
+1269
+01:03:27,610 --> 01:03:29,980
+And there's been some
+minor successes with it
+
+1270
+01:03:29,980 --> 01:03:32,800
+in the machine learning
+world, but it sort of
+
+1271
+01:03:32,800 --> 01:03:35,140
+seems like it's
+an idea you should
+
+1272
+01:03:35,140 --> 01:03:37,330
+be able to do a lot
+more with in the future
+
+1273
+01:03:37,330 --> 01:03:41,020
+as you move from
+models that are just
+
+1274
+01:03:41,020 --> 01:03:45,220
+doing one narrow task to trying
+to do a more general language
+
+1275
+01:03:45,220 --> 01:03:49,480
+acquisition process.
+
+1276
+01:03:49,480 --> 01:03:51,970
+Shall I attempt the
+next question as well?
+
+1277
+01:03:51,970 --> 01:03:54,610
+OK, the next question
+is, is the reason
+
+1278
+01:03:54,610 --> 01:03:57,490
+humans learn languages
+better just because we
+
+1279
+01:03:57,490 --> 01:04:01,300
+are pre-trained over millions
+of years of physics simulation?
+
+1280
+01:04:01,300 --> 01:04:05,610
+Maybe we should pre-train
+a model the same way.
+
+1281
+01:04:05,610 --> 01:04:09,910
+So I mean, I presume what you're
+saying is "physics simulation,"
+
+1282
+01:04:09,910 --> 01:04:13,900
+you're evoking evolution when
+you're talking about millions
+
+1283
+01:04:13,900 --> 01:04:14,930
+of years.
+
+1284
+01:04:14,930 --> 01:04:23,920
+So this is a controversial,
+debated, big question.
+
+1285
+01:04:23,920 --> 01:04:28,540
+So again, if I invoke
+Chomsky again-- so
+
+1286
+01:04:28,540 --> 01:04:33,565
+Noam Chomsky is sort of the most
+famous linguist in the world.
+
+1287
+01:04:33,565 --> 01:04:36,100
+
+
+1288
+01:04:36,100 --> 01:04:41,560
+And essentially, Noam Chomsky's
+career, starting in the 1950s,
+
+1289
+01:04:41,560 --> 01:04:47,380
+is built around the idea
+that little children get
+
+1290
+01:04:47,380 --> 01:04:51,310
+such dubious linguistic input--
+
+1291
+01:04:51,310 --> 01:04:53,800
+because they hear a
+random bunch of stuff,
+
+1292
+01:04:53,800 --> 01:04:57,430
+they don't get much feedback
+on what they say, et cetera--
+
+1293
+01:04:57,430 --> 01:05:02,110
+that language could not
+be learned empirically
+
+1294
+01:05:02,110 --> 01:05:07,660
+just from the data observed,
+and the only possible assumption
+
+1295
+01:05:07,660 --> 01:05:14,740
+to work from is significant
+parts of human language
+
+1296
+01:05:14,740 --> 01:05:17,590
+are innate in the human genome.
+
+1297
+01:05:17,590 --> 01:05:21,370
+Babies are born with it, and
+that explains the miracle
+
+1298
+01:05:21,370 --> 01:05:25,420
+by which very little
+humans learn amazingly
+
+1299
+01:05:25,420 --> 01:05:29,230
+fast how human languages work.
+
+1300
+01:05:29,230 --> 01:05:31,990
+Now, to speak in
+credit for that idea,
+
+1301
+01:05:31,990 --> 01:05:37,660
+for those of you who have not
+been around little children,
+
+1302
+01:05:37,660 --> 01:05:40,900
+I mean, I think one does
+just have to acknowledge,
+
+1303
+01:05:40,900 --> 01:05:46,690
+human language acquisition
+by live little kids,
+
+1304
+01:05:46,690 --> 01:05:49,750
+I mean, it does just seem
+to be miraculous, right,
+
+1305
+01:05:49,750 --> 01:05:52,510
+that you go through
+this sort of slow phase
+
+1306
+01:05:52,510 --> 01:05:59,320
+for a couple of years where the
+kid sort of goos and gaas some
+
+1307
+01:05:59,320 --> 01:06:00,280
+syllables.
+
+1308
+01:06:00,280 --> 01:06:02,980
+And then, there's a fairly long
+period where they've picked up
+
+1309
+01:06:02,980 --> 01:06:07,090
+a few words, and they
+can say, juice, juice
+
+1310
+01:06:07,090 --> 01:06:10,190
+when they want to drink some
+juice, and nothing else.
+
+1311
+01:06:10,190 --> 01:06:14,200
+And then, it just seems like
+there's this phase change where
+
+1312
+01:06:14,200 --> 01:06:17,080
+the kids suddenly
+realize, wait, this
+
+1313
+01:06:17,080 --> 01:06:19,510
+is a productive,
+generative sentence system!
+
+1314
+01:06:19,510 --> 01:06:21,430
+I can say whole sentences!
+
+1315
+01:06:21,430 --> 01:06:24,490
+And then, in an
+incredibly short period,
+
+1316
+01:06:24,490 --> 01:06:27,190
+they seem to
+transition from saying
+
+1317
+01:06:27,190 --> 01:06:33,490
+one- and two-word utterances
+to suddenly they can say,
+
+1318
+01:06:33,490 --> 01:06:39,070
+Daddy come home in garage,
+putting bike in garage.
+
+1319
+01:06:39,070 --> 01:06:41,590
+And you go, wow, how did they
+suddenly discover language?
+
+1320
+01:06:41,590 --> 01:06:45,350
+
+
+1321
+01:06:45,350 --> 01:06:47,680
+So it is kind of amazing.
+
+1322
+01:06:47,680 --> 01:06:52,270
+But personally,
+for me, at least,
+
+1323
+01:06:52,270 --> 01:06:56,260
+I've just never believed
+the strong versions
+
+1324
+01:06:56,260 --> 01:07:00,700
+of the hypothesis
+that human beings have
+
+1325
+01:07:00,700 --> 01:07:05,320
+much in the way of
+language-specific knowledge
+
+1326
+01:07:05,320 --> 01:07:07,270
+or structure in
+their brains that
+
+1327
+01:07:07,270 --> 01:07:10,120
+comes from genetic inheritance.
+
+1328
+01:07:10,120 --> 01:07:14,380
+Clearly, humans do have
+these very clever brains,
+
+1329
+01:07:14,380 --> 01:07:19,060
+and if we're at the level of,
+saying, being able to think,
+
+1330
+01:07:19,060 --> 01:07:23,860
+or being able to interpret
+the visual world, that's
+
+1331
+01:07:23,860 --> 01:07:29,140
+things that have developed
+over tens of millions of years.
+
+1332
+01:07:29,140 --> 01:07:34,540
+And evolution can be a large
+part of the explanation,
+
+1333
+01:07:34,540 --> 01:07:39,250
+and humans are
+clearly born with lots
+
+1334
+01:07:39,250 --> 01:07:42,370
+of vision-specific
+hardware in their brains,
+
+1335
+01:07:42,370 --> 01:07:44,440
+as are a lot of other creatures.
+
+1336
+01:07:44,440 --> 01:07:50,170
+But when you come
+to language, no one
+
+1337
+01:07:50,170 --> 01:07:52,570
+knows when language was--
+
+1338
+01:07:52,570 --> 01:07:54,760
+in a sort of modern-like form--
+
+1339
+01:07:54,760 --> 01:07:57,640
+first became available,
+because there
+
+1340
+01:07:57,640 --> 01:08:02,440
+aren't any fossils of
+people saying the word
+
+1341
+01:08:02,440 --> 01:08:04,870
+"spear" or something like that.
+
+1342
+01:08:04,870 --> 01:08:08,230
+But to the extent that
+there are estimates
+
+1343
+01:08:08,230 --> 01:08:14,710
+based on what you can see of
+the spread of proto-humans
+
+1344
+01:08:14,710 --> 01:08:19,120
+and their apparent
+social structures,
+
+1345
+01:08:19,120 --> 01:08:22,120
+from what you can
+find in fossils,
+
+1346
+01:08:22,120 --> 01:08:27,470
+most people guess that language
+is at most a million years old.
+
+1347
+01:08:27,470 --> 01:08:33,729
+And that's just too short a
+time for any significant--
+
+1348
+01:08:33,729 --> 01:08:36,939
+for evolution have built
+any significant structure
+
+1349
+01:08:36,939 --> 01:08:40,109
+inside human brains that's
+specific to language.
+
+1350
+01:08:40,109 --> 01:08:44,920
+So I kind of think that
+the working assumption
+
+1351
+01:08:44,920 --> 01:08:49,090
+has to be that there's
+just about nothing
+
+1352
+01:08:49,090 --> 01:08:51,790
+specific to language
+in human brains,
+
+1353
+01:08:51,790 --> 01:08:55,420
+and the most
+plausible hypothesis--
+
+1354
+01:08:55,420 --> 01:08:58,899
+not that I know very much about
+neuroscience when it comes down
+
+1355
+01:08:58,899 --> 01:09:03,550
+to it-- is that humans were
+being able to repurpose
+
+1356
+01:09:03,550 --> 01:09:07,479
+hardware that was originally
+built for other purposes,
+
+1357
+01:09:07,479 --> 01:09:10,720
+like visual scene
+interpretation and memory,
+
+1358
+01:09:10,720 --> 01:09:16,330
+and that that gave a basis of
+having all this clever hardware
+
+1359
+01:09:16,330 --> 01:09:18,020
+that you could then
+use for language.
+
+1360
+01:09:18,020 --> 01:09:21,880
+So it's kind of like GPUs were
+invented for playing computer
+
+1361
+01:09:21,880 --> 01:09:24,970
+games, and we were able
+to repurpose that hardware
+
+1362
+01:09:24,970 --> 01:09:25,810
+to do deep learning.
+
+1363
+01:09:25,810 --> 01:09:33,910
+
+
+1364
+01:09:33,910 --> 01:09:38,404
+OK, we've got a lot have
+come out at the end.
+
+1365
+01:09:38,404 --> 01:09:41,830
+OK, so this one
+was answered live.
+
+1366
+01:09:41,830 --> 01:09:42,850
+Let's see.
+
+1367
+01:09:42,850 --> 01:09:44,660
+Yeah, if you could name--
+
+1368
+01:09:44,660 --> 01:09:46,180
+I guess this is
+for either of you--
+
+1369
+01:09:46,180 --> 01:09:52,359
+one main bottleneck as to
+if we could provide feedback
+
+1370
+01:09:52,359 --> 01:09:56,050
+efficiently to our systems
+like babies are given feedback,
+
+1371
+01:09:56,050 --> 01:09:58,570
+what's the bottleneck
+that remains
+
+1372
+01:09:58,570 --> 01:10:03,940
+in trying to have more
+human-like language
+
+1373
+01:10:03,940 --> 01:10:04,660
+acquisition?
+
+1374
+01:10:04,660 --> 01:10:21,080
+
+
+1375
+01:10:21,080 --> 01:10:23,510
+I mean, I can opine on this.
+
+1376
+01:10:23,510 --> 01:10:26,040
+Or were you saying
+something, Shikar?
+
+1377
+01:10:26,040 --> 01:10:27,590
+Yeah, I was just
+going to say that I
+
+1378
+01:10:27,590 --> 01:10:31,580
+think it's a bit of everything.
+
+1379
+01:10:31,580 --> 01:10:35,750
+I think in terms of models, one
+thing I would say is that we
+
+1380
+01:10:35,750 --> 01:10:39,200
+know that there's more feedback
+connections and feed-forward
+
+1381
+01:10:39,200 --> 01:10:44,030
+connections in the brain, and
+we haven't really figured out
+
+1382
+01:10:44,030 --> 01:10:46,400
+a way of--
+
+1383
+01:10:46,400 --> 01:10:51,300
+so of course, we had RNNs,
+which sort of implements
+
+1384
+01:10:51,300 --> 01:10:53,980
+you can move to a algorithm that
+sort of implements a feedback
+
+1385
+01:10:53,980 --> 01:10:54,480
+loop.
+
+1386
+01:10:54,480 --> 01:10:57,020
+But we still haven't
+really figured out
+
+1387
+01:10:57,020 --> 01:11:01,100
+how to use that knowledge, that
+the brain has a lot of feedback
+
+1388
+01:11:01,100 --> 01:11:05,490
+connections, and then apply
+that to practical systems.
+
+1389
+01:11:05,490 --> 01:11:10,550
+So I think on the modeling,
+and maybe that's one problem.
+
+1390
+01:11:10,550 --> 01:11:15,110
+There is-- I think [INAUDIBLE]
+learning is maybe one of them,
+
+1391
+01:11:15,110 --> 01:11:16,910
+but I think the
+one that's probably
+
+1392
+01:11:16,910 --> 01:11:19,580
+going to have the most bang
+for the buck is really just
+
+1393
+01:11:19,580 --> 01:11:22,225
+figuring out how we
+can move beyond text.
+
+1394
+01:11:22,225 --> 01:11:25,640
+And I think there's just
+so much more information
+
+1395
+01:11:25,640 --> 01:11:28,620
+that's available that
+we're just not using.
+
+1396
+01:11:28,620 --> 01:11:31,910
+And so I think that's where
+most of the progress might come,
+
+1397
+01:11:31,910 --> 01:11:34,910
+is from figuring out what's
+most practical way of going
+
+1398
+01:11:34,910 --> 01:11:37,070
+beyond text.
+
+1399
+01:11:37,070 --> 01:11:38,150
+This is what I think.
+
+1400
+01:11:38,150 --> 01:11:45,090
+
+
+1401
+01:11:45,090 --> 01:11:50,370
+OK, let's see.
+
+1402
+01:11:50,370 --> 01:11:52,075
+What are some
+important NLP topics
+
+1403
+01:11:52,075 --> 01:11:53,700
+that we have not
+covered in this class?
+
+1404
+01:11:53,700 --> 01:12:00,110
+
+
+1405
+01:12:00,110 --> 01:12:02,600
+I'll do that.
+
+1406
+01:12:02,600 --> 01:12:04,640
+Well, sort of one
+answer is, a lot
+
+1407
+01:12:04,640 --> 01:12:08,870
+of the topics that are
+covered in CS224u, because we
+
+1408
+01:12:08,870 --> 01:12:11,560
+do make a bit of an effort
+to keep them disjoint.
+
+1409
+01:12:11,560 --> 01:12:14,060
+They're not fully-- right.
+
+1410
+01:12:14,060 --> 01:12:16,850
+So there's sort
+of lots of topics
+
+1411
+01:12:16,850 --> 01:12:21,350
+in language understanding that
+we haven't covered, right?
+
+1412
+01:12:21,350 --> 01:12:28,370
+So if you want to make a
+voice assistant like Alexa,
+
+1413
+01:12:28,370 --> 01:12:31,220
+Siri, or Google
+Assistant, well, you
+
+1414
+01:12:31,220 --> 01:12:33,710
+need to sort of be
+able to interface
+
+1415
+01:12:33,710 --> 01:12:38,420
+with systems APIs that can do
+things like delete your mail
+
+1416
+01:12:38,420 --> 01:12:40,670
+or buy you concert tickets.
+
+1417
+01:12:40,670 --> 01:12:42,920
+And so you need to be able
+to convert from language
+
+1418
+01:12:42,920 --> 01:12:46,850
+into an explicit semantic
+form that can interact
+
+1419
+01:12:46,850 --> 01:12:48,250
+with the systems of the world.
+
+1420
+01:12:48,250 --> 01:12:51,720
+And we haven't talked
+about that at all.
+
+1421
+01:12:51,720 --> 01:12:54,380
+So there's lots of language
+understanding stuff.
+
+1422
+01:12:54,380 --> 01:12:59,400
+There's also lots of
+language generation things.
+
+1423
+01:12:59,400 --> 01:13:04,340
+So effectively, for language
+generation, all we have done
+
+1424
+01:13:04,340 --> 01:13:05,030
+is--
+
+1425
+01:13:05,030 --> 01:13:07,880
+neural language
+models, they are great.
+
+1426
+01:13:07,880 --> 01:13:09,980
+Run them, and they
+will generate language.
+
+1427
+01:13:09,980 --> 01:13:13,700
+And in one sense, that's true.
+
+1428
+01:13:13,700 --> 01:13:16,370
+It's just awesome the
+kind of generation
+
+1429
+01:13:16,370 --> 01:13:22,370
+you can do with things
+like GPT-2 or -3.
+
+1430
+01:13:22,370 --> 01:13:28,220
+But where that's missing is
+that's really only giving you
+
+1431
+01:13:28,220 --> 01:13:34,955
+the ability to produce fluent
+text, where it rabbits off
+
+1432
+01:13:34,955 --> 01:13:38,750
+and produces fluent text,
+that, if you actually
+
+1433
+01:13:38,750 --> 01:13:42,470
+wanted to have a good natural
+language generation system,
+
+1434
+01:13:42,470 --> 01:13:47,090
+you also have to have
+higher-level planning of what
+
+1435
+01:13:47,090 --> 01:13:50,750
+you're going to talk
+about and how you
+
+1436
+01:13:50,750 --> 01:13:53,000
+are going to express it, right?
+
+1437
+01:13:53,000 --> 01:13:57,770
+So that in most situations in
+natural language, you think,
+
+1438
+01:13:57,770 --> 01:14:01,970
+OK, well, I want to
+explain to people something
+
+1439
+01:14:01,970 --> 01:14:05,270
+about why it's important to
+do math classes at college.
+
+1440
+01:14:05,270 --> 01:14:08,000
+Let me think how
+to organize this.
+
+1441
+01:14:08,000 --> 01:14:10,820
+Maybe I should talk about some
+of the different applications
+
+1442
+01:14:10,820 --> 01:14:15,770
+where math turns up and how
+it's a really good grounding.
+
+1443
+01:14:15,770 --> 01:14:19,970
+Whatever-- you plan out, here's
+how I can present some ideas.
+
+1444
+01:14:19,970 --> 01:14:23,210
+And that kind of natural
+language generation
+
+1445
+01:14:23,210 --> 01:14:29,450
+we're not doing and we
+haven't done any of.
+
+1446
+01:14:29,450 --> 01:14:33,290
+Yeah, so that's
+what I was saying--
+
+1447
+01:14:33,290 --> 01:14:35,870
+more understanding,
+more generation, which
+
+1448
+01:14:35,870 --> 01:14:38,060
+is most of NLP, you could say.
+
+1449
+01:14:38,060 --> 01:14:41,870
+I mean, obviously, there are,
+then, sort of particular tasks
+
+1450
+01:14:41,870 --> 01:14:45,920
+that we can talk about that
+we either have or have not
+
+1451
+01:14:45,920 --> 01:14:47,420
+explicitly addressed.
+
+1452
+01:14:47,420 --> 01:14:52,910
+
+
+1453
+01:14:52,910 --> 01:14:58,580
+OK, has there been any work
+in putting language models
+
+1454
+01:14:58,580 --> 01:15:01,340
+into an environment in
+which they can communicate
+
+1455
+01:15:01,340 --> 01:15:03,110
+to achieve a task?
+
+1456
+01:15:03,110 --> 01:15:06,770
+And do you think this would
+help with unsupervised learning?
+
+1457
+01:15:06,770 --> 01:15:12,070
+
+
+1458
+01:15:12,070 --> 01:15:17,550
+So I guess there's been a lot of
+work on emergent communication,
+
+1459
+01:15:17,550 --> 01:15:24,180
+and also self-play, where you
+have these different models
+
+1460
+01:15:24,180 --> 01:15:27,000
+which are initialized
+as language models that
+
+1461
+01:15:27,000 --> 01:15:30,750
+attempt to communicate with
+each other to solve some task.
+
+1462
+01:15:30,750 --> 01:15:33,780
+And then, you have
+a reward at the end
+
+1463
+01:15:33,780 --> 01:15:35,860
+whether they were able to
+finish the task or not.
+
+1464
+01:15:35,860 --> 01:15:37,318
+And then, based on
+that reward, you
+
+1465
+01:15:37,318 --> 01:15:40,230
+attempt to learn the
+communication strategy.
+
+1466
+01:15:40,230 --> 01:15:44,387
+And this started out as emergent
+communication with self-play,
+
+1467
+01:15:44,387 --> 01:15:45,720
+and then there was recent work--
+
+1468
+01:15:45,720 --> 01:15:48,030
+I think it was like either
+last year or the year
+
+1469
+01:15:48,030 --> 01:15:50,670
+before that-- where they
+showed that if you initialized
+
+1470
+01:15:50,670 --> 01:15:54,720
+these models with language
+model pre-training,
+
+1471
+01:15:54,720 --> 01:15:59,040
+you basically prevent
+this problem of language
+
+1472
+01:15:59,040 --> 01:16:02,820
+drift, where the language
+or the communication
+
+1473
+01:16:02,820 --> 01:16:04,710
+protocol that your
+models end up learning
+
+1474
+01:16:04,710 --> 01:16:08,760
+has nothing to do
+with actual language.
+
+1475
+01:16:08,760 --> 01:16:10,470
+And so yeah, I mean
+from that sense,
+
+1476
+01:16:10,470 --> 01:16:12,390
+there has been some work.
+
+1477
+01:16:12,390 --> 01:16:14,010
+But it's very little of it.
+
+1478
+01:16:14,010 --> 01:16:15,850
+I think it's some groups
+that tried to study
+
+1479
+01:16:15,850 --> 01:16:17,100
+this, but nothing beyond that.
+
+1480
+01:16:17,100 --> 01:16:23,230
+
+
+1481
+01:16:23,230 --> 01:16:27,520
+OK, I mean, the last two
+questions are about genes.
+
+1482
+01:16:27,520 --> 01:16:30,642
+
+
+1483
+01:16:30,642 --> 01:16:32,860
+Well, there's one question
+about whether genes
+
+1484
+01:16:32,860 --> 01:16:36,436
+may have some correlations
+from social cues
+
+1485
+01:16:36,436 --> 01:16:38,060
+or a reward-based system.
+
+1486
+01:16:38,060 --> 01:16:41,545
+I don't know if either of
+you have opinions about this,
+
+1487
+01:16:41,545 --> 01:16:42,170
+but if you do--
+
+1488
+01:16:42,170 --> 01:16:45,560
+
+
+1489
+01:16:45,560 --> 01:16:48,560
+Yeah, I mean, I don't
+have anything very deep
+
+1490
+01:16:48,560 --> 01:16:49,805
+to say about this question.
+
+1491
+01:16:49,805 --> 01:16:53,240
+So it's on the
+importance of social cues
+
+1492
+01:16:53,240 --> 01:16:56,300
+as opposed to pure
+reward-based systems.
+
+1493
+01:16:56,300 --> 01:17:00,320
+Well, I mean, in some
+sense, a social cue
+
+1494
+01:17:00,320 --> 01:17:04,700
+you can also regard as
+a reward, that people
+
+1495
+01:17:04,700 --> 01:17:08,660
+like to have other people
+put a smile on their face
+
+1496
+01:17:08,660 --> 01:17:10,650
+when you say something.
+
+1497
+01:17:10,650 --> 01:17:16,550
+But I do think generally,
+when people are saying,
+
+1498
+01:17:16,550 --> 01:17:19,880
+what have we not covered,
+another thing that we've barely
+
+1499
+01:17:19,880 --> 01:17:24,110
+covered is the social
+side of language.
+
+1500
+01:17:24,110 --> 01:17:29,780
+So a huge, interesting
+thing about language
+
+1501
+01:17:29,780 --> 01:17:33,160
+is it has this very
+dynamic, big dynamic range.
+
+1502
+01:17:33,160 --> 01:17:37,250
+So on the one hand, you can
+talk about very precise things
+
+1503
+01:17:37,250 --> 01:17:37,910
+in language.
+
+1504
+01:17:37,910 --> 01:17:40,430
+So you can sort of talk
+about math formulas,
+
+1505
+01:17:40,430 --> 01:17:43,380
+and steps in a proof,
+and things like that,
+
+1506
+01:17:43,380 --> 01:17:45,980
+so that there's a lot of
+precision in language.
+
+1507
+01:17:45,980 --> 01:17:49,600
+But on the other
+hand, you can just
+
+1508
+01:17:49,600 --> 01:17:53,060
+phatically mumble, mumble
+whatever words at all,
+
+1509
+01:17:53,060 --> 01:17:56,030
+and you're not really sort
+of communicating anything
+
+1510
+01:17:56,030 --> 01:17:58,850
+in the way of a
+propositional content.
+
+1511
+01:17:58,850 --> 01:18:01,220
+What you're really
+trying to communicate
+
+1512
+01:18:01,220 --> 01:18:05,030
+is, oh, I'm thinking
+about you right now.
+
+1513
+01:18:05,030 --> 01:18:08,210
+Oh, I'm concerned with
+how you're feeling,
+
+1514
+01:18:08,210 --> 01:18:10,530
+or whatever it is in the
+circumstances, right?
+
+1515
+01:18:10,530 --> 01:18:14,030
+So that a huge part
+of language use
+
+1516
+01:18:14,030 --> 01:18:18,740
+is in forms of
+social communication
+
+1517
+01:18:18,740 --> 01:18:20,480
+between human beings.
+
+1518
+01:18:20,480 --> 01:18:26,840
+And that's another big
+part of actually building
+
+1519
+01:18:26,840 --> 01:18:30,400
+successful natural
+language systems, right?
+
+1520
+01:18:30,400 --> 01:18:34,160
+So if you think
+negatively about something
+
+1521
+01:18:34,160 --> 01:18:37,160
+like the virtual assistants
+I've been falling back on a lot,
+
+1522
+01:18:37,160 --> 01:18:43,910
+is that they have virtually
+no ability as social language
+
+1523
+01:18:43,910 --> 01:18:44,820
+users, right?
+
+1524
+01:18:44,820 --> 01:18:48,980
+So we're now training a
+generation of little kids
+
+1525
+01:18:48,980 --> 01:18:52,190
+that what you should
+do is sort of bark
+
+1526
+01:18:52,190 --> 01:18:55,850
+out commands as if
+you were serving
+
+1527
+01:18:55,850 --> 01:18:59,630
+in the German Army in
+World War II or something
+
+1528
+01:18:59,630 --> 01:19:05,600
+and that there's none of the
+kind of social part of how
+
+1529
+01:19:05,600 --> 01:19:12,290
+to use language to
+communicate satisfactorily
+
+1530
+01:19:12,290 --> 01:19:15,410
+with human beings and to
+maintain a social system,
+
+1531
+01:19:15,410 --> 01:19:18,950
+and that that's a huge
+part of human language use
+
+1532
+01:19:18,950 --> 01:19:22,805
+that kids have to learn and
+learn to use successfully,
+
+1533
+01:19:22,805 --> 01:19:23,600
+right?
+
+1534
+01:19:23,600 --> 01:19:26,120
+A lot of being
+successful in the world
+
+1535
+01:19:26,120 --> 01:19:31,190
+is, when you want someone
+to do something for you,
+
+1536
+01:19:31,190 --> 01:19:35,980
+you know that there are good
+ways to ask them for it.
+
+1537
+01:19:35,980 --> 01:19:39,470
+Yes, some of it is choice of
+how to present the arguments,
+
+1538
+01:19:39,470 --> 01:19:44,060
+but some of it is by
+building social rapport,
+
+1539
+01:19:44,060 --> 01:19:46,520
+and asking nicely
+and reasonably,
+
+1540
+01:19:46,520 --> 01:19:50,420
+and making it seem like you're
+a sweet person that other people
+
+1541
+01:19:50,420 --> 01:19:52,040
+should do something for.
+
+1542
+01:19:52,040 --> 01:19:54,590
+And human beings are
+very good at that,
+
+1543
+01:19:54,590 --> 01:19:57,770
+and being good at that is
+a really important skill
+
+1544
+01:19:57,770 --> 01:20:00,820
+for being able to
+navigate the world well.
+
+1545
+01:20:00,820 --> 01:20:05,000
+
+

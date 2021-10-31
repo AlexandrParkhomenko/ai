@@ -1,0 +1,10488 @@
+1
+00:00:00,000 --> 00:00:05,270
+
+
+2
+00:00:05,270 --> 00:00:07,710
+OK, so hi, everyone.
+
+3
+00:00:07,710 --> 00:00:10,470
+Welcome back to CS224N.
+
+4
+00:00:10,470 --> 00:00:13,880
+So today we get to have the
+second of our invited speakers
+
+5
+00:00:13,880 --> 00:00:15,030
+for this quarter.
+
+6
+00:00:15,030 --> 00:00:17,150
+And so given all
+of the excitement
+
+7
+00:00:17,150 --> 00:00:19,580
+that there's been about
+transformer pre-trained
+
+8
+00:00:19,580 --> 00:00:22,520
+language models and
+all the great things
+
+9
+00:00:22,520 --> 00:00:25,580
+have been done with them,
+we're especially excited today
+
+10
+00:00:25,580 --> 00:00:28,130
+to be able to welcome
+Colin Raffel who's
+
+11
+00:00:28,130 --> 00:00:30,320
+been one of the
+key people who've
+
+12
+00:00:30,320 --> 00:00:33,560
+been pushing the exploration
+of large pre-trained language
+
+13
+00:00:33,560 --> 00:00:34,280
+models.
+
+14
+00:00:34,280 --> 00:00:38,240
+In particular, he was very
+interested in the development
+
+15
+00:00:38,240 --> 00:00:41,060
+of the T5 language model which
+he'll be telling you plenty
+
+16
+00:00:41,060 --> 00:00:42,110
+about today.
+
+17
+00:00:42,110 --> 00:00:45,110
+But to tell you a
+few more sentences.
+
+18
+00:00:45,110 --> 00:00:49,700
+So Colin worked for a number
+of years at Google Brain,
+
+19
+00:00:49,700 --> 00:00:53,120
+including working with Geoff
+Hinton on capsule networks.
+
+20
+00:00:53,120 --> 00:00:57,320
+He then got interested in
+the effectiveness of transfer
+
+21
+00:00:57,320 --> 00:01:00,170
+using large pre-trained
+language models.
+
+22
+00:01:00,170 --> 00:01:02,000
+And as part of the
+work on that, he
+
+23
+00:01:02,000 --> 00:01:04,670
+started together
+with other people
+
+24
+00:01:04,670 --> 00:01:08,210
+on building even bigger large
+pre-trained language models
+
+25
+00:01:08,210 --> 00:01:09,770
+and doing a lot
+of investigations
+
+26
+00:01:09,770 --> 00:01:13,122
+with those, which
+led to the T5 papers
+
+27
+00:01:13,122 --> 00:01:14,580
+that you'll be
+hearing about today.
+
+28
+00:01:14,580 --> 00:01:16,560
+So welcome, Colin.
+
+29
+00:01:16,560 --> 00:01:18,560
+Right, yeah, thanks so
+much for the introduction
+
+30
+00:01:18,560 --> 00:01:19,460
+and for having me.
+
+31
+00:01:19,460 --> 00:01:23,230
+It's definitely an honor to
+speak at the legendary CS224N
+
+32
+00:01:23,230 --> 00:01:23,730
+class.
+
+33
+00:01:23,730 --> 00:01:27,890
+So yeah, I'm going to be talking
+today about large language
+
+34
+00:01:27,890 --> 00:01:31,670
+models kind of in general
+but focusing specifically
+
+35
+00:01:31,670 --> 00:01:34,610
+on this model T5 that
+we released about a year
+
+36
+00:01:34,610 --> 00:01:35,720
+and a half ago.
+
+37
+00:01:35,720 --> 00:01:39,800
+I'll be presenting five or
+so papers that kind of should
+
+38
+00:01:39,800 --> 00:01:43,070
+represent the full spectrum
+of good things, bad things,
+
+39
+00:01:43,070 --> 00:01:45,380
+and ugly things about
+large language models.
+
+40
+00:01:45,380 --> 00:01:47,840
+And actually I'll talk a
+bit about a paper that just
+
+41
+00:01:47,840 --> 00:01:49,490
+appeared on archive last night.
+
+42
+00:01:49,490 --> 00:01:52,910
+So hopefully everyone will
+learn something new today,
+
+43
+00:01:52,910 --> 00:01:57,710
+even if you're already familiar
+with some of these papers.
+
+44
+00:01:57,710 --> 00:01:59,690
+So just to give
+you an idea of what
+
+45
+00:01:59,690 --> 00:02:01,430
+I'll be covering in
+this talk, I kind of
+
+46
+00:02:01,430 --> 00:02:04,550
+will be answering each of
+these questions in turn
+
+47
+00:02:04,550 --> 00:02:08,880
+over the course of
+the presentation.
+
+48
+00:02:08,880 --> 00:02:12,830
+And I should mention that this,
+since some of these papers
+
+49
+00:02:12,830 --> 00:02:14,628
+are new and some of
+this material is new,
+
+50
+00:02:14,628 --> 00:02:16,920
+this is the first time I'll
+be presenting these slides.
+
+51
+00:02:16,920 --> 00:02:19,070
+So if anything is
+confusing, I understand.
+
+52
+00:02:19,070 --> 00:02:21,290
+There's a way for
+you to ping questions
+
+53
+00:02:21,290 --> 00:02:24,590
+to me through the hosts and feel
+free to ask about anything that
+
+54
+00:02:24,590 --> 00:02:27,210
+might turn out to be confusing.
+
+55
+00:02:27,210 --> 00:02:30,680
+So yeah, the first question
+that I'll try to answer
+
+56
+00:02:30,680 --> 00:02:32,840
+is kind of the
+answer we sort out
+
+57
+00:02:32,840 --> 00:02:38,270
+to focus on in the T5 paper,
+which is which of the transfer
+
+58
+00:02:38,270 --> 00:02:40,730
+learning methods people have
+proposed so far work best,
+
+59
+00:02:40,730 --> 00:02:43,410
+and what happens when
+we scale them up?
+
+60
+00:02:43,410 --> 00:02:47,000
+And then after the
+T5 paper, we decided
+
+61
+00:02:47,000 --> 00:02:50,510
+to investigate non-English
+pre-trained language models.
+
+62
+00:02:50,510 --> 00:02:52,400
+T5 is an English only model.
+
+63
+00:02:52,400 --> 00:02:54,420
+There are lots of languages
+spoken in the world.
+
+64
+00:02:54,420 --> 00:02:57,260
+So what happens when we
+modify T5 so that it's
+
+65
+00:02:57,260 --> 00:02:59,757
+a massively multilingual model?
+
+66
+00:02:59,757 --> 00:03:01,340
+And then I'll talk
+about another paper
+
+67
+00:03:01,340 --> 00:03:03,890
+where we try to investigate
+what kinds of knowledge
+
+68
+00:03:03,890 --> 00:03:06,350
+and how much knowledge
+a model picks up
+
+69
+00:03:06,350 --> 00:03:08,120
+over the course of pre-training.
+
+70
+00:03:08,120 --> 00:03:09,830
+And then relatedly
+in a follow up
+
+71
+00:03:09,830 --> 00:03:12,710
+work we tried to figure
+out if the model actually
+
+72
+00:03:12,710 --> 00:03:15,740
+memorized this training
+data during pre-training.
+
+73
+00:03:15,740 --> 00:03:17,600
+If it actually, if we
+can get it to spit out
+
+74
+00:03:17,600 --> 00:03:19,700
+verbatim entries
+from the training
+
+75
+00:03:19,700 --> 00:03:22,520
+data set after
+it's been trained.
+
+76
+00:03:22,520 --> 00:03:25,250
+And then finally, I'll talk
+about a very recent work that's
+
+77
+00:03:25,250 --> 00:03:28,640
+similar in spirit to the
+T5 paper, where the goal is
+
+78
+00:03:28,640 --> 00:03:31,460
+to answer not what transfer
+learning methods work best,
+
+79
+00:03:31,460 --> 00:03:34,700
+but what modifications to
+the transformer architecture
+
+80
+00:03:34,700 --> 00:03:38,160
+that people have
+proposed to work best.
+
+81
+00:03:38,160 --> 00:03:40,052
+So just to motivate
+this I actually
+
+82
+00:03:40,052 --> 00:03:41,510
+looked through some
+of the lectures
+
+83
+00:03:41,510 --> 00:03:43,130
+that you all have
+had so far just
+
+84
+00:03:43,130 --> 00:03:45,350
+to get a sense of what
+you've learned already.
+
+85
+00:03:45,350 --> 00:03:47,420
+And I know that you
+are, all are already
+
+86
+00:03:47,420 --> 00:03:49,880
+pretty familiar with this
+transfer learning paradigm
+
+87
+00:03:49,880 --> 00:03:53,000
+that has kind of taken the field
+of natural language processing
+
+88
+00:03:53,000 --> 00:03:53,930
+by storm.
+
+89
+00:03:53,930 --> 00:03:58,340
+But just as a quick refresher,
+in this style of transfer
+
+90
+00:03:58,340 --> 00:04:01,070
+learning what we typically do is
+take a bunch of unlabeled text
+
+91
+00:04:01,070 --> 00:04:05,900
+data and we apply some
+unsupervised objective,
+
+92
+00:04:05,900 --> 00:04:08,000
+or you might say
+self-supervised objective,
+
+93
+00:04:08,000 --> 00:04:10,323
+where you do something like
+you mask words at random
+
+94
+00:04:10,323 --> 00:04:12,740
+and then you train the model
+to predict the missing words.
+
+95
+00:04:12,740 --> 00:04:15,260
+So you can see these
+blanks in the block
+
+96
+00:04:15,260 --> 00:04:17,510
+of text in green and
+the missing words
+
+97
+00:04:17,510 --> 00:04:19,370
+that the language
+model will be trained
+
+98
+00:04:19,370 --> 00:04:21,980
+to predict in the yellow
+box at the bottom.
+
+99
+00:04:21,980 --> 00:04:24,260
+And then after we do this
+pre-training for a while,
+
+100
+00:04:24,260 --> 00:04:29,330
+we fine tune the model on some
+downstream supervised task.
+
+101
+00:04:29,330 --> 00:04:31,490
+This example, I'm showing
+a sentiment analysis
+
+102
+00:04:31,490 --> 00:04:33,410
+task for movie reviews.
+
+103
+00:04:33,410 --> 00:04:35,660
+And the upshot of all
+of this is that doing
+
+104
+00:04:35,660 --> 00:04:37,790
+this first unsupervised
+pre-training step
+
+105
+00:04:37,790 --> 00:04:40,730
+is just ridiculously helpful,
+not only does it usually
+
+106
+00:04:40,730 --> 00:04:42,470
+make the performance
+better it often
+
+107
+00:04:42,470 --> 00:04:45,440
+gets you very good performance
+with relatively little
+
+108
+00:04:45,440 --> 00:04:48,090
+fine tuning data compared
+to training from scratch.
+
+109
+00:04:48,090 --> 00:04:50,367
+So this is really
+a very common--
+
+110
+00:04:50,367 --> 00:04:51,950
+it's kind of the de
+facto standard way
+
+111
+00:04:51,950 --> 00:04:56,070
+to attack many natural language
+processing problems now.
+
+112
+00:04:56,070 --> 00:04:59,550
+And I think you've already
+reviewed some of these methods
+
+113
+00:04:59,550 --> 00:05:03,990
+but because of how effective
+the transfer learning recipe
+
+114
+00:05:03,990 --> 00:05:06,780
+was there really was a kind
+of an explosion of work
+
+115
+00:05:06,780 --> 00:05:10,500
+on transfer learning starting
+in maybe 2018, or so.
+
+116
+00:05:10,500 --> 00:05:13,290
+There some prior work
+on other approaches
+
+117
+00:05:13,290 --> 00:05:16,680
+to doing transfer learning like
+word vectors, like word2vec.
+
+118
+00:05:16,680 --> 00:05:19,363
+Some sort of preliminary
+work that proposed the recipe
+
+119
+00:05:19,363 --> 00:05:20,280
+that I just described.
+
+120
+00:05:20,280 --> 00:05:23,080
+While some has supervised
+sequence learning,
+
+121
+00:05:23,080 --> 00:05:25,080
+some work that suggested
+that this kind of stuff
+
+122
+00:05:25,080 --> 00:05:27,455
+might be really possible, like
+the unsupervised sentiment
+
+123
+00:05:27,455 --> 00:05:28,590
+neuron paper.
+
+124
+00:05:28,590 --> 00:05:30,810
+But I would say
+around in 2018, there
+
+125
+00:05:30,810 --> 00:05:32,880
+was kind of a string of
+papers that kicked off
+
+126
+00:05:32,880 --> 00:05:35,460
+the excitement in
+the field, including
+
+127
+00:05:35,460 --> 00:05:38,250
+the universal language
+model fine tuning paper,
+
+128
+00:05:38,250 --> 00:05:41,160
+the ELMO paper what
+we now call GPT-1,
+
+129
+00:05:41,160 --> 00:05:44,220
+and of course the BERT
+paper in late 2018.
+
+130
+00:05:44,220 --> 00:05:46,320
+And then starting in
+2019, there really
+
+131
+00:05:46,320 --> 00:05:49,170
+was just an incredible
+explosion of different methods
+
+132
+00:05:49,170 --> 00:05:51,210
+for doing transfer
+learning, including
+
+133
+00:05:51,210 --> 00:05:55,200
+new transfer learning, sorry,
+new pre-training objectives,
+
+134
+00:05:55,200 --> 00:05:59,650
+new data sets, new ways of
+doing fine tuning, and so on.
+
+135
+00:05:59,650 --> 00:06:04,830
+And we started working on
+the T5 project in late 2018.
+
+136
+00:06:04,830 --> 00:06:07,743
+And we noticed that as all
+these methods were coming up,
+
+137
+00:06:07,743 --> 00:06:09,660
+it was getting harder
+and harder to figure out
+
+138
+00:06:09,660 --> 00:06:12,270
+what actually works best.
+
+139
+00:06:12,270 --> 00:06:15,600
+And part of the reason for that
+was just because there was so
+
+140
+00:06:15,600 --> 00:06:17,790
+many methods that were
+being proposed kind of
+
+141
+00:06:17,790 --> 00:06:19,210
+simultaneously.
+
+142
+00:06:19,210 --> 00:06:22,590
+And when that happens, even when
+everyone is working in earnest
+
+143
+00:06:22,590 --> 00:06:26,070
+with good faith, you might
+have situations like this
+
+144
+00:06:26,070 --> 00:06:28,710
+where one paper
+comes along, paper A
+
+145
+00:06:28,710 --> 00:06:31,770
+that proposes a new unsupervised
+pre-training like technique
+
+146
+00:06:31,770 --> 00:06:34,650
+called FancyLearn, another
+paper comes along maybe
+
+147
+00:06:34,650 --> 00:06:36,930
+around the same time with
+a pre-training technique
+
+148
+00:06:36,930 --> 00:06:38,370
+called FancierLearn.
+
+149
+00:06:38,370 --> 00:06:41,370
+And paper A pre-trains on
+Wikipedia for unlabeled data
+
+150
+00:06:41,370 --> 00:06:44,490
+while paper B uses Wikipedia and
+the Toronto Books Corpus which
+
+151
+00:06:44,490 --> 00:06:46,800
+is a collection of novel text.
+
+152
+00:06:46,800 --> 00:06:49,530
+And then the question
+obviously is, is FancierLearn
+
+153
+00:06:49,530 --> 00:06:50,785
+better than FancyLearn?
+
+154
+00:06:50,785 --> 00:06:53,160
+Well, it's hard to say because
+they use different sources
+
+155
+00:06:53,160 --> 00:06:54,630
+of pre-training data.
+
+156
+00:06:54,630 --> 00:06:58,080
+You might imagine that maybe
+they use different model sizes,
+
+157
+00:06:58,080 --> 00:07:00,870
+maybe they pre-train for a
+different amount of time.
+
+158
+00:07:00,870 --> 00:07:02,430
+They use different optimizers.
+
+159
+00:07:02,430 --> 00:07:03,870
+There are tons of
+design decisions
+
+160
+00:07:03,870 --> 00:07:06,550
+that come into play here.
+
+161
+00:07:06,550 --> 00:07:10,140
+And so given that these
+design decisions can
+
+162
+00:07:10,140 --> 00:07:13,620
+make it hard to determine what
+worked best our goal in the T5
+
+163
+00:07:13,620 --> 00:07:15,810
+paper was kind of to
+step back, and just
+
+164
+00:07:15,810 --> 00:07:19,200
+say given the current
+landscape of transfer learning,
+
+165
+00:07:19,200 --> 00:07:21,360
+all of the methods that
+people have proposed,
+
+166
+00:07:21,360 --> 00:07:23,580
+what actually works best
+when we compare them
+
+167
+00:07:23,580 --> 00:07:26,140
+in the same exact setting?
+
+168
+00:07:26,140 --> 00:07:28,590
+And once we know
+what works best,
+
+169
+00:07:28,590 --> 00:07:31,710
+how far can we push these
+tools that we already have?
+
+170
+00:07:31,710 --> 00:07:34,470
+And how much can we
+explore the limits
+
+171
+00:07:34,470 --> 00:07:37,760
+and figure out how well
+these things work at scale?
+
+172
+00:07:37,760 --> 00:07:41,380
+And so to attack this problem
+we kind of the only thing
+
+173
+00:07:41,380 --> 00:07:43,540
+that we introduced,
+since again we're
+
+174
+00:07:43,540 --> 00:07:45,940
+kind of exploring
+existing techniques,
+
+175
+00:07:45,940 --> 00:07:49,450
+was this idea of
+treating all text
+
+176
+00:07:49,450 --> 00:07:51,430
+problems in the same format.
+
+177
+00:07:51,430 --> 00:07:57,460
+And this kind of approach, this
+dogma of treating every text
+
+178
+00:07:57,460 --> 00:08:00,020
+problem in the same format
+gives rise to our model,
+
+179
+00:08:00,020 --> 00:08:02,720
+which we call the text-to-text
+transfer transformer.
+
+180
+00:08:02,720 --> 00:08:04,990
+And so to explain
+this format to you,
+
+181
+00:08:04,990 --> 00:08:09,910
+the basic idea is that we cast
+every text based NLP problem
+
+182
+00:08:09,910 --> 00:08:11,710
+as a text-to-text task.
+
+183
+00:08:11,710 --> 00:08:14,530
+And by that I mean, the
+model takes text as input
+
+184
+00:08:14,530 --> 00:08:16,640
+and it produces text as output.
+
+185
+00:08:16,640 --> 00:08:19,060
+So in things like English
+to German translation,
+
+186
+00:08:19,060 --> 00:08:23,070
+this is pretty typical, we
+feed in a English sentence
+
+187
+00:08:23,070 --> 00:08:24,670
+on the input and
+we train the model
+
+188
+00:08:24,670 --> 00:08:27,500
+to predict a German
+sentence on the output.
+
+189
+00:08:27,500 --> 00:08:29,250
+And you'll notice in
+our case, we actually
+
+190
+00:08:29,250 --> 00:08:32,010
+also feed what we call
+a task prefix, translate
+
+191
+00:08:32,010 --> 00:08:34,320
+English to German, that
+just tells the model what
+
+192
+00:08:34,320 --> 00:08:36,900
+we want it to do with the input
+because especially if we're
+
+193
+00:08:36,900 --> 00:08:39,664
+training a multi-task model if
+you just feed the model "that
+
+194
+00:08:39,664 --> 00:08:41,789
+is good" the model doesn't
+know what to do with it.
+
+195
+00:08:41,789 --> 00:08:44,206
+It doesn't know if you're
+trying to do sentiment analysis,
+
+196
+00:08:44,206 --> 00:08:46,770
+or English to German
+translation, or what.
+
+197
+00:08:46,770 --> 00:08:50,850
+So this shouldn't be
+that surprising so far.
+
+198
+00:08:50,850 --> 00:08:53,463
+You probably learned about
+encoder-decoder model, sequence
+
+199
+00:08:53,463 --> 00:08:55,130
+to sequence models,
+and that's basically
+
+200
+00:08:55,130 --> 00:08:56,385
+all that we're doing here.
+
+201
+00:08:56,385 --> 00:08:58,270
+It maybe gets a
+little more unusual
+
+202
+00:08:58,270 --> 00:09:02,040
+when we start to tackle things
+like text classification tasks.
+
+203
+00:09:02,040 --> 00:09:05,040
+So this is an example
+from the cola benchmark,
+
+204
+00:09:05,040 --> 00:09:07,640
+which is the Corpus of
+Linguistic Acceptability.
+
+205
+00:09:07,640 --> 00:09:09,800
+And the goal here is
+to take a sentence
+
+206
+00:09:09,800 --> 00:09:12,740
+and determine if the sentence
+is quote-unquote "acceptable"
+
+207
+00:09:12,740 --> 00:09:15,800
+which kind of means whether
+it's grammatically correct,
+
+208
+00:09:15,800 --> 00:09:18,030
+and also if it's
+nonsense or not.
+
+209
+00:09:18,030 --> 00:09:20,480
+And in this case,
+the sentence is
+
+210
+00:09:20,480 --> 00:09:21,800
+"The course is jumping well".
+
+211
+00:09:21,800 --> 00:09:24,470
+And of course, courses can't
+jump so the sentence is not
+
+212
+00:09:24,470 --> 00:09:25,670
+acceptable.
+
+213
+00:09:25,670 --> 00:09:28,640
+But rather than training our
+model through a classifier
+
+214
+00:09:28,640 --> 00:09:31,550
+layer that outputs a class
+label, or a probability
+
+215
+00:09:31,550 --> 00:09:34,160
+distribution over
+a class indices,
+
+216
+00:09:34,160 --> 00:09:37,040
+we actually train the model to
+output the literal text "not
+
+217
+00:09:37,040 --> 00:09:38,100
+acceptable."
+
+218
+00:09:38,100 --> 00:09:42,470
+So it's outputting this
+text string token by token.
+
+219
+00:09:42,470 --> 00:09:44,570
+And it can get even
+a little weirder.
+
+220
+00:09:44,570 --> 00:09:47,090
+We can attack things
+like regression problems
+
+221
+00:09:47,090 --> 00:09:49,850
+where effectively the model
+is supposed to be outputting
+
+222
+00:09:49,850 --> 00:09:51,410
+a floating point value.
+
+223
+00:09:51,410 --> 00:09:54,470
+And we actually just do this
+by taking the floating point
+
+224
+00:09:54,470 --> 00:09:56,810
+numbers, and converting
+them to strings,
+
+225
+00:09:56,810 --> 00:09:59,330
+and training the model to
+just predict the string.
+
+226
+00:09:59,330 --> 00:10:02,150
+And it turns out that at least
+for this particular task, which
+
+227
+00:10:02,150 --> 00:10:05,840
+is the STSb benchmark,
+it works perfectly fine.
+
+228
+00:10:05,840 --> 00:10:07,422
+And we ultimately
+actually got state
+
+229
+00:10:07,422 --> 00:10:08,630
+of the art on this benchmark.
+
+230
+00:10:08,630 --> 00:10:11,630
+So doing this type
+of sort of float
+
+231
+00:10:11,630 --> 00:10:14,030
+to string conversion with a
+little bit of quantization
+
+232
+00:10:14,030 --> 00:10:17,210
+turns out to work fine
+for regression problems.
+
+233
+00:10:17,210 --> 00:10:19,700
+And finally, the
+main point of this
+
+234
+00:10:19,700 --> 00:10:22,250
+is that there are really
+tons and tons of problems
+
+235
+00:10:22,250 --> 00:10:23,820
+that we can cast
+into this format.
+
+236
+00:10:23,820 --> 00:10:26,180
+So here's an example of
+abstract summarization,
+
+237
+00:10:26,180 --> 00:10:28,070
+we feed in a news
+article on the left,
+
+238
+00:10:28,070 --> 00:10:30,600
+and we predict the
+summary on the right.
+
+239
+00:10:30,600 --> 00:10:33,440
+And again, we can really
+attack all of these problems
+
+240
+00:10:33,440 --> 00:10:35,070
+in exactly the same way.
+
+241
+00:10:35,070 --> 00:10:38,690
+So we're using exactly the
+same objective during training.
+
+242
+00:10:38,690 --> 00:10:41,900
+And exactly the same
+decoding procedure at test
+
+243
+00:10:41,900 --> 00:10:45,770
+time to attack a huge variety
+of natural language processing
+
+244
+00:10:45,770 --> 00:10:46,550
+problems.
+
+245
+00:10:46,550 --> 00:10:48,050
+And the nicest part
+about doing this
+
+246
+00:10:48,050 --> 00:10:51,740
+is that as long as a transfer
+learning improvement is
+
+247
+00:10:51,740 --> 00:10:55,700
+applicable to our model and
+to this text to text format,
+
+248
+00:10:55,700 --> 00:10:59,600
+we can try it on a huge
+suite of downstream tasks
+
+249
+00:10:59,600 --> 00:11:02,090
+while using exactly
+the same model, exactly
+
+250
+00:11:02,090 --> 00:11:04,010
+the same learning
+rate, optimizer,
+
+251
+00:11:04,010 --> 00:11:07,080
+training procedure, exactly
+the same inference procedure.
+
+252
+00:11:07,080 --> 00:11:09,110
+So we can get rid of a
+ton of the confounders
+
+253
+00:11:09,110 --> 00:11:11,300
+that I mentioned earlier.
+
+254
+00:11:11,300 --> 00:11:12,320
+Hey, Colin.
+
+255
+00:11:12,320 --> 00:11:13,170
+Yeah.
+
+256
+00:11:13,170 --> 00:11:16,550
+Can you take a second as
+we're, as you're discussing
+
+257
+00:11:16,550 --> 00:11:19,430
+the formatting here, to
+talk about how the 3.8
+
+258
+00:11:19,430 --> 00:11:21,650
+sort of regression
+example works,
+
+259
+00:11:21,650 --> 00:11:24,842
+and yeah, and just go that
+one more time for students.
+
+260
+00:11:24,842 --> 00:11:25,550
+Yeah, absolutely.
+
+261
+00:11:25,550 --> 00:11:28,970
+So in this particular
+task STSb, the goal
+
+262
+00:11:28,970 --> 00:11:32,090
+is to take in two sentences
+and predict a floating point
+
+263
+00:11:32,090 --> 00:11:34,040
+number, which denotes
+how similar those two
+
+264
+00:11:34,040 --> 00:11:36,950
+sentences are, and that
+floating point number ranges
+
+265
+00:11:36,950 --> 00:11:40,070
+between 1.0 and 5.0.
+
+266
+00:11:40,070 --> 00:11:43,910
+So we basically took the
+ground truth annotated values
+
+267
+00:11:43,910 --> 00:11:46,130
+that we're supposed to
+regress, we quantized them
+
+268
+00:11:46,130 --> 00:11:49,910
+to the nearest 0.2 and
+we cast it to a string.
+
+269
+00:11:49,910 --> 00:11:53,270
+And now we have a string
+like the three period eight,
+
+270
+00:11:53,270 --> 00:11:54,228
+not three point eight.
+
+271
+00:11:54,228 --> 00:11:56,270
+But you could think of it
+like three period eight
+
+272
+00:11:56,270 --> 00:11:58,370
+or four period zero.
+
+273
+00:11:58,370 --> 00:12:01,460
+And we just train the model
+to predict that string,
+
+274
+00:12:01,460 --> 00:12:02,790
+which ultimately it's a string.
+
+275
+00:12:02,790 --> 00:12:04,250
+It's not a number anymore.
+
+276
+00:12:04,250 --> 00:12:07,140
+We just predict
+it token by token.
+
+277
+00:12:07,140 --> 00:12:09,170
+So in a sense you can
+kind of think of it
+
+278
+00:12:09,170 --> 00:12:11,840
+as converting the regression
+problem to a classification
+
+279
+00:12:11,840 --> 00:12:14,270
+problem because you're
+doing this quantization.
+
+280
+00:12:14,270 --> 00:12:16,670
+But you also more broadly
+can just think of it
+
+281
+00:12:16,670 --> 00:12:18,170
+as converting the
+regression problem
+
+282
+00:12:18,170 --> 00:12:21,890
+to a text-to-text problem,
+which is what we're doing.
+
+283
+00:12:21,890 --> 00:12:22,830
+Thanks.
+
+284
+00:12:22,830 --> 00:12:28,370
+Yeah, it's a little funky
+but I promise it works.
+
+285
+00:12:28,370 --> 00:12:29,090
+And great.
+
+286
+00:12:29,090 --> 00:12:30,895
+So the nice thing,
+again, about using
+
+287
+00:12:30,895 --> 00:12:32,270
+this sort of
+sequence-to-sequence
+
+288
+00:12:32,270 --> 00:12:34,550
+text-to-text format is
+that we can actually
+
+289
+00:12:34,550 --> 00:12:38,210
+just use the original vanilla
+transformer as it was proposed.
+
+290
+00:12:38,210 --> 00:12:40,880
+Because if you remember the
+transformer was actually
+
+291
+00:12:40,880 --> 00:12:43,250
+proposed for English
+to, well it was
+
+292
+00:12:43,250 --> 00:12:45,600
+proposed for machine
+translation primarily,
+
+293
+00:12:45,600 --> 00:12:47,960
+which is a sequence-to-sequence
+task taking
+
+294
+00:12:47,960 --> 00:12:51,110
+a language-- a sentence
+in one language as input
+
+295
+00:12:51,110 --> 00:12:54,077
+and producing the corresponding
+sentence in another language.
+
+296
+00:12:54,077 --> 00:12:56,660
+And so really, I won't say a lot
+about the model that we used.
+
+297
+00:12:56,660 --> 00:12:58,490
+There are relatively
+few changes that we
+
+298
+00:12:58,490 --> 00:13:01,040
+made to the standard
+transformer architecture
+
+299
+00:13:01,040 --> 00:13:02,960
+as originally
+proposed in Attention
+
+300
+00:13:02,960 --> 00:13:07,933
+Is All You Need when
+constructing our T5 model.
+
+301
+00:13:07,933 --> 00:13:09,350
+I will towards the
+end of the talk
+
+302
+00:13:09,350 --> 00:13:11,780
+discuss lots of
+architectural modifications
+
+303
+00:13:11,780 --> 00:13:14,210
+that people have made
+since, but for T5,
+
+304
+00:13:14,210 --> 00:13:16,940
+for the T5 paper we really
+basically stuck to the basics.
+
+305
+00:13:16,940 --> 00:13:19,790
+
+
+306
+00:13:19,790 --> 00:13:22,370
+So the next big question when
+you're attacking a transfer
+
+307
+00:13:22,370 --> 00:13:26,720
+learning problem is, what should
+my pre-training data set be?
+
+308
+00:13:26,720 --> 00:13:28,940
+And because of the
+internet, there
+
+309
+00:13:28,940 --> 00:13:32,300
+are lots of possible sources
+of unlabeled text data.
+
+310
+00:13:32,300 --> 00:13:33,830
+One common source is Wikipedia.
+
+311
+00:13:33,830 --> 00:13:35,630
+I'm displaying a ton
+of Wikipedia articles
+
+312
+00:13:35,630 --> 00:13:36,950
+on the screen here.
+
+313
+00:13:36,950 --> 00:13:41,040
+And in undertaking
+this project, one
+
+314
+00:13:41,040 --> 00:13:43,050
+of the factors that
+we wanted to study
+
+315
+00:13:43,050 --> 00:13:46,470
+was the effect of the
+pre-training data set itself.
+
+316
+00:13:46,470 --> 00:13:48,720
+And so we actually constructed
+a new pre-training data
+
+317
+00:13:48,720 --> 00:13:52,320
+set that would allow us to vary
+the size across many orders
+
+318
+00:13:52,320 --> 00:13:55,650
+of magnitude, also that
+has a filtering pipeline
+
+319
+00:13:55,650 --> 00:13:58,320
+that would allow us to control
+the quality and type of data
+
+320
+00:13:58,320 --> 00:13:59,850
+that was pre-trained on.
+
+321
+00:13:59,850 --> 00:14:03,800
+And I'll describe how we
+built that data set now.
+
+322
+00:14:03,800 --> 00:14:06,280
+So the first thing
+we did is we wanted
+
+323
+00:14:06,280 --> 00:14:09,760
+to source our data from a
+publicly available source.
+
+324
+00:14:09,760 --> 00:14:12,250
+We didn't want to use some
+Google internal web scrape
+
+325
+00:14:12,250 --> 00:14:13,720
+that we couldn't release.
+
+326
+00:14:13,720 --> 00:14:15,670
+So we made use of
+these web scrapes
+
+327
+00:14:15,670 --> 00:14:18,970
+by a non-profit organization
+called Common Crawl which
+
+328
+00:14:18,970 --> 00:14:23,642
+is really just an organization
+that sends web crawlers out
+
+329
+00:14:23,642 --> 00:14:25,600
+through the internet and
+downloads as much text
+
+330
+00:14:25,600 --> 00:14:26,500
+as they can.
+
+331
+00:14:26,500 --> 00:14:28,660
+And every month
+they dump out what
+
+332
+00:14:28,660 --> 00:14:30,880
+they call web
+extraced text which
+
+333
+00:14:30,880 --> 00:14:34,330
+is, you can think of them as
+websites with all of the HTML
+
+334
+00:14:34,330 --> 00:14:36,950
+and JavaScript ideally removed.
+
+335
+00:14:36,950 --> 00:14:40,570
+And this produces text that
+has a pretty decent amount
+
+336
+00:14:40,570 --> 00:14:45,820
+of natural language in it, also
+a lot of boilerplate and menu
+
+337
+00:14:45,820 --> 00:14:48,470
+text, and also a little
+bit of gibberish.
+
+338
+00:14:48,470 --> 00:14:50,530
+But as a whole it's kind
+of a good starting point
+
+339
+00:14:50,530 --> 00:14:54,490
+for constructing these
+pre-training data sets.
+
+340
+00:14:54,490 --> 00:14:56,740
+And then we took a few
+steps to kind of try
+
+341
+00:14:56,740 --> 00:14:59,750
+to make it so this data
+set was a little cleaner.
+
+342
+00:14:59,750 --> 00:15:01,390
+So the first thing
+we did is we removed
+
+343
+00:15:01,390 --> 00:15:04,930
+any lines that didn't end in
+a terminal punctuation mark.
+
+344
+00:15:04,930 --> 00:15:09,400
+We used a language classifier
+to only retain English text.
+
+345
+00:15:09,400 --> 00:15:12,700
+We removed anything that
+looked like placeholder text,
+
+346
+00:15:12,700 --> 00:15:14,770
+like lorem ipsum
+text on the right.
+
+347
+00:15:14,770 --> 00:15:16,900
+We removed anything
+that looked like code.
+
+348
+00:15:16,900 --> 00:15:19,690
+We de-duplicated things
+on a sentence level.
+
+349
+00:15:19,690 --> 00:15:23,170
+So any time that any chunk of
+text appeared on multiple pages
+
+350
+00:15:23,170 --> 00:15:26,110
+we only retained it on one
+of the pages and so on.
+
+351
+00:15:26,110 --> 00:15:29,740
+And ultimately these heuristics
+were relatively simple
+
+352
+00:15:29,740 --> 00:15:32,230
+but produced
+reasonably clean text.
+
+353
+00:15:32,230 --> 00:15:35,440
+And I will discuss later
+the effect of these choices
+
+354
+00:15:35,440 --> 00:15:36,040
+in cleaning.
+
+355
+00:15:36,040 --> 00:15:39,370
+That was one of the
+experiments that we ran.
+
+356
+00:15:39,370 --> 00:15:41,260
+And so after doing
+this we created
+
+357
+00:15:41,260 --> 00:15:44,410
+this data set called C4, which
+is the colossal clean crawl
+
+358
+00:15:44,410 --> 00:15:45,580
+corpus.
+
+359
+00:15:45,580 --> 00:15:48,550
+And it's available in
+TensorFlow Datasets.
+
+360
+00:15:48,550 --> 00:15:51,170
+You actually, you need to
+do the processing yourself,
+
+361
+00:15:51,170 --> 00:15:53,860
+which is somewhat
+computationally expensive
+
+362
+00:15:53,860 --> 00:15:56,830
+but nevertheless it
+is entirely possible.
+
+363
+00:15:56,830 --> 00:16:01,750
+And it produces about 750
+gigabytes of reasonably clean
+
+364
+00:16:01,750 --> 00:16:04,830
+natural text data.
+
+365
+00:16:04,830 --> 00:16:08,145
+OK, so now we have our
+framework, our model,
+
+366
+00:16:08,145 --> 00:16:09,810
+our pre-training
+dataset, we need
+
+367
+00:16:09,810 --> 00:16:11,050
+our pre-training objective.
+
+368
+00:16:11,050 --> 00:16:14,850
+What are we going to
+do to train the model
+
+369
+00:16:14,850 --> 00:16:15,930
+on our unlabeled text.
+
+370
+00:16:15,930 --> 00:16:19,530
+And so just to explain the
+objective that we chose kind
+
+371
+00:16:19,530 --> 00:16:22,230
+of for our baseline experimental
+procedure, which again we
+
+372
+00:16:22,230 --> 00:16:25,410
+will experiment with different
+pre-training objectives later.
+
+373
+00:16:25,410 --> 00:16:28,290
+Imagine that you have some
+original text sentence
+
+374
+00:16:28,290 --> 00:16:31,140
+like "Thank you for inviting
+me to your party last week."
+
+375
+00:16:31,140 --> 00:16:34,380
+And what we do is we basically
+choose some words at random,
+
+376
+00:16:34,380 --> 00:16:37,410
+and technically we're
+choosing tokens at random
+
+377
+00:16:37,410 --> 00:16:40,170
+but for now let's just
+assume that tokens are words,
+
+378
+00:16:40,170 --> 00:16:42,660
+and we're going to
+drop those tokens out.
+
+379
+00:16:42,660 --> 00:16:45,630
+And so we end up with
+something that looks like this.
+
+380
+00:16:45,630 --> 00:16:47,402
+For every consecutive
+span of tokens
+
+381
+00:16:47,402 --> 00:16:49,110
+that have been dropped
+out, we replace it
+
+382
+00:16:49,110 --> 00:16:50,490
+with a sentinel token.
+
+383
+00:16:50,490 --> 00:16:53,330
+And each sentinel token
+gets a unique index.
+
+384
+00:16:53,330 --> 00:16:56,100
+So one of them we call it, let's
+just call it the sentinel X
+
+385
+00:16:56,100 --> 00:16:57,990
+and the other one will
+be the sentinel Y.
+
+386
+00:16:57,990 --> 00:17:01,200
+And you can see that because
+the words "for" and "inviting"
+
+387
+00:17:01,200 --> 00:17:04,410
+are subsequent words that
+we decided to mask out
+
+388
+00:17:04,410 --> 00:17:06,230
+by randomly masking words.
+
+389
+00:17:06,230 --> 00:17:07,980
+We're going to replace
+both of those words
+
+390
+00:17:07,980 --> 00:17:11,579
+with a single sentinel,
+single unique sentinel token.
+
+391
+00:17:11,579 --> 00:17:14,608
+And then the model's goal will
+just be to fill in the blanks.
+
+392
+00:17:14,608 --> 00:17:16,919
+And so if you're familiar
+with the BERT pre-training
+
+393
+00:17:16,920 --> 00:17:19,050
+objective, this is
+somewhat similar.
+
+394
+00:17:19,050 --> 00:17:23,220
+The fact that we're collapsing
+subsequent tokens into a span
+
+395
+00:17:23,220 --> 00:17:25,108
+that we're going to be
+replacing words from
+
+396
+00:17:25,108 --> 00:17:26,537
+is slightly different.
+
+397
+00:17:26,538 --> 00:17:28,830
+And the fact that we're
+reconstructing just the missing
+
+398
+00:17:28,830 --> 00:17:30,390
+words, and not the
+entire sequence
+
+399
+00:17:30,390 --> 00:17:33,780
+is maybe slightly different too.
+
+400
+00:17:33,780 --> 00:17:36,300
+OK, so now I'll
+kind of talk through
+
+401
+00:17:36,300 --> 00:17:37,950
+our baseline
+experimental procedure
+
+402
+00:17:37,950 --> 00:17:38,950
+that we're going to use.
+
+403
+00:17:38,950 --> 00:17:42,930
+We're going to kind of tweak
+over time along various axes
+
+404
+00:17:42,930 --> 00:17:46,650
+to explore the landscape
+of transfer learning,
+
+405
+00:17:46,650 --> 00:17:49,200
+at least circa when
+this paper came out.
+
+406
+00:17:49,200 --> 00:17:50,880
+So to pre-train the
+model we're going
+
+407
+00:17:50,880 --> 00:17:55,090
+to take a model that has a BERT
+base size encoder and decoder.
+
+408
+00:17:55,090 --> 00:17:57,660
+So technically has twice
+as many parameters as BERT
+
+409
+00:17:57,660 --> 00:17:59,700
+base, because there's a
+BERT base size encoder
+
+410
+00:17:59,700 --> 00:18:01,650
+and a BERT base size decoder.
+
+411
+00:18:01,650 --> 00:18:03,543
+We're going to use the
+denoising objective,
+
+412
+00:18:03,543 --> 00:18:05,460
+the sort of masked
+language modeling objective
+
+413
+00:18:05,460 --> 00:18:06,990
+that I just described.
+
+414
+00:18:06,990 --> 00:18:08,910
+And we're going to apply
+it on the C4 dataset
+
+415
+00:18:08,910 --> 00:18:10,510
+that I mentioned earlier.
+
+416
+00:18:10,510 --> 00:18:14,100
+We're going to pre-train
+for about 34 billion tokens,
+
+417
+00:18:14,100 --> 00:18:16,800
+which is about a quarter as
+long as BERT base was trained.
+
+418
+00:18:16,800 --> 00:18:18,810
+So it's not a ton
+of pre-training time
+
+419
+00:18:18,810 --> 00:18:20,430
+but because we're
+training on, we're
+
+420
+00:18:20,430 --> 00:18:21,870
+doing so many
+experiments we need
+
+421
+00:18:21,870 --> 00:18:24,257
+to cut it back a little bit.
+
+422
+00:18:24,257 --> 00:18:26,340
+We're going to use an
+inverse square root learning
+
+423
+00:18:26,340 --> 00:18:28,548
+rate schedule that turned
+out to work reasonably well
+
+424
+00:18:28,548 --> 00:18:30,210
+in our setting but
+is not a terribly
+
+425
+00:18:30,210 --> 00:18:32,730
+important design decision.
+
+426
+00:18:32,730 --> 00:18:36,180
+And then we'll fine tune on a
+variety of downstream tasks,
+
+427
+00:18:36,180 --> 00:18:38,730
+the kind of tasks that people
+cared a lot about at the time.
+
+428
+00:18:38,730 --> 00:18:40,105
+There's the GLUE
+benchmark, which
+
+429
+00:18:40,105 --> 00:18:43,230
+is kind of a meta benchmark
+of many individual downstream
+
+430
+00:18:43,230 --> 00:18:46,410
+tasks, like cola and STSb
+that I already mentioned.
+
+431
+00:18:46,410 --> 00:18:48,960
+These are what some people
+might call natural language
+
+432
+00:18:48,960 --> 00:18:50,290
+understanding tasks.
+
+433
+00:18:50,290 --> 00:18:52,800
+But for the most part
+you can think of them
+
+434
+00:18:52,800 --> 00:18:56,400
+as sentence classification,
+sentence pair classification,
+
+435
+00:18:56,400 --> 00:18:59,080
+or regression tasks.
+
+436
+00:18:59,080 --> 00:19:01,230
+We also consider the
+CNN Daily Mail abstract
+
+437
+00:19:01,230 --> 00:19:02,527
+of summarization corpus.
+
+438
+00:19:02,527 --> 00:19:04,110
+This is a
+sequence-to-sequence problem
+
+439
+00:19:04,110 --> 00:19:05,527
+where you are given
+a news article
+
+440
+00:19:05,527 --> 00:19:07,500
+and you have to
+output the summary.
+
+441
+00:19:07,500 --> 00:19:09,610
+The SQuAD question
+answering benchmark,
+
+442
+00:19:09,610 --> 00:19:11,940
+which is a reading comprehension
+benchmark where you're
+
+443
+00:19:11,940 --> 00:19:13,860
+given a paragraph and
+you have to answer
+
+444
+00:19:13,860 --> 00:19:15,310
+a question about the paragraph.
+
+445
+00:19:15,310 --> 00:19:18,090
+You can either attack it in
+an extractive setting where
+
+446
+00:19:18,090 --> 00:19:19,920
+you extract the answer
+from the paragraph,
+
+447
+00:19:19,920 --> 00:19:23,430
+or an abstractive setting where
+you just output the answer.
+
+448
+00:19:23,430 --> 00:19:26,010
+We use the abstractive
+form because it's
+
+449
+00:19:26,010 --> 00:19:27,992
+a text-to-text problem.
+
+450
+00:19:27,992 --> 00:19:29,700
+We also included the
+SuperGLUE benchmark,
+
+451
+00:19:29,700 --> 00:19:31,320
+which was a new benchmark
+at the time that
+
+452
+00:19:31,320 --> 00:19:33,570
+was designed to essentially
+be a more difficult version
+
+453
+00:19:33,570 --> 00:19:34,500
+of the GLUE benchmark.
+
+454
+00:19:34,500 --> 00:19:38,850
+It has a new set of tasks that
+were hard for existing models.
+
+455
+00:19:38,850 --> 00:19:41,528
+And then finally we included
+three translation datasets,
+
+456
+00:19:41,528 --> 00:19:44,070
+English to German, English to
+French, and English to Romanian
+
+457
+00:19:44,070 --> 00:19:45,330
+translation.
+
+458
+00:19:45,330 --> 00:19:47,490
+English to French being
+the largest, which
+
+459
+00:19:47,490 --> 00:19:49,680
+was an extremely large dataset.
+
+460
+00:19:49,680 --> 00:19:52,330
+And English to Romanian being
+many orders of magnitude
+
+461
+00:19:52,330 --> 00:19:54,160
+smaller.
+
+462
+00:19:54,160 --> 00:19:56,550
+And we're going to fine
+tune on each of these tasks
+
+463
+00:19:56,550 --> 00:19:57,953
+individually and separately.
+
+464
+00:19:57,953 --> 00:20:00,120
+So we take the pre-trained
+model and separately fine
+
+465
+00:20:00,120 --> 00:20:02,160
+tune it on each of
+these downstream tasks.
+
+466
+00:20:02,160 --> 00:20:05,790
+And we're going to fine tune
+for up to 17 billion tokens.
+
+467
+00:20:05,790 --> 00:20:07,980
+But we're going to save
+checkpoints along the way,
+
+468
+00:20:07,980 --> 00:20:10,110
+evaluate each checkpoint
+on the validation set,
+
+469
+00:20:10,110 --> 00:20:13,530
+and report the performance
+on the best checkpoint.
+
+470
+00:20:13,530 --> 00:20:17,522
+And note that this is not
+an experimentally valid way
+
+471
+00:20:17,522 --> 00:20:19,230
+to report your
+performance because you're
+
+472
+00:20:19,230 --> 00:20:21,360
+basically doing model
+selection on the dataset
+
+473
+00:20:21,360 --> 00:20:24,180
+that you are, on the
+data split that you are--
+
+474
+00:20:24,180 --> 00:20:26,340
+you're reporting performance
+on the data split
+
+475
+00:20:26,340 --> 00:20:27,715
+that you're doing
+model selection
+
+476
+00:20:27,715 --> 00:20:30,570
+on which is not a good way
+to compare different methods.
+
+477
+00:20:30,570 --> 00:20:34,080
+But to compare
+within methods, we're
+
+478
+00:20:34,080 --> 00:20:37,540
+reasonably comfortable
+doing this.
+
+479
+00:20:37,540 --> 00:20:41,077
+So now I'm going to kind of
+give you a very high level
+
+480
+00:20:41,077 --> 00:20:42,910
+overview of some of the
+experimental results
+
+481
+00:20:42,910 --> 00:20:44,020
+in this paper.
+
+482
+00:20:44,020 --> 00:20:47,770
+This paper is pretty huge
+in terms of just the number
+
+483
+00:20:47,770 --> 00:20:49,000
+of experiments we ran.
+
+484
+00:20:49,000 --> 00:20:51,833
+And so if I was to really
+drill into this paper,
+
+485
+00:20:51,833 --> 00:20:53,500
+it probably would
+take me the whole time
+
+486
+00:20:53,500 --> 00:20:56,320
+but there's other fun stuff that
+I want to tell you about so.
+
+487
+00:20:56,320 --> 00:20:59,620
+But anyways the point is I will
+be showing you lots of tables
+
+488
+00:20:59,620 --> 00:21:00,280
+like this one.
+
+489
+00:21:00,280 --> 00:21:02,620
+And so in these
+tables on the columns
+
+490
+00:21:02,620 --> 00:21:04,997
+you have the performance on
+the various downstream tasks
+
+491
+00:21:04,997 --> 00:21:07,330
+and on the rows you have
+different experimental settings
+
+492
+00:21:07,330 --> 00:21:08,950
+that we considered.
+
+493
+00:21:08,950 --> 00:21:11,410
+So to give you an example,
+here is kind of the scores
+
+494
+00:21:11,410 --> 00:21:15,730
+that we got from
+our baseline which
+
+495
+00:21:15,730 --> 00:21:18,430
+is the exact experimental
+procedure that I must describe,
+
+496
+00:21:18,430 --> 00:21:19,940
+that I just described.
+
+497
+00:21:19,940 --> 00:21:23,020
+And we also ran that
+baseline 10 times
+
+498
+00:21:23,020 --> 00:21:25,420
+and reporting the standard
+deviation on the second line.
+
+499
+00:21:25,420 --> 00:21:26,962
+And then in this
+last line here we're
+
+500
+00:21:26,962 --> 00:21:30,460
+reporting the performance
+of the same model
+
+501
+00:21:30,460 --> 00:21:33,010
+without any pre-training,
+just basically only trained
+
+502
+00:21:33,010 --> 00:21:36,700
+separately with supervision on
+all of these downstream tasks.
+
+503
+00:21:36,700 --> 00:21:40,840
+And just to point out a couple
+of things on this table.
+
+504
+00:21:40,840 --> 00:21:43,390
+The first obvious thing
+is that in most cases,
+
+505
+00:21:43,390 --> 00:21:47,070
+the no pre-training setting
+is dramatically worse.
+
+506
+00:21:47,070 --> 00:21:50,340
+So indeed transfer learning
+does tend to be helpful.
+
+507
+00:21:50,340 --> 00:21:53,130
+The place where that's
+not true is actually
+
+508
+00:21:53,130 --> 00:21:55,240
+on this English to
+French translation task.
+
+509
+00:21:55,240 --> 00:21:57,240
+And that's probably because
+it's such a big task
+
+510
+00:21:57,240 --> 00:21:58,698
+that you actually
+don't really need
+
+511
+00:21:58,698 --> 00:22:01,500
+pre-training to do well on it.
+
+512
+00:22:01,500 --> 00:22:03,750
+We wanted to include this
+because if the performance
+
+513
+00:22:03,750 --> 00:22:05,910
+regresses on this
+task then that's
+
+514
+00:22:05,910 --> 00:22:08,670
+something that we
+should be worried about.
+
+515
+00:22:08,670 --> 00:22:10,650
+The next feature of
+this table to notice
+
+516
+00:22:10,650 --> 00:22:12,390
+is this little star appeared.
+
+517
+00:22:12,390 --> 00:22:14,430
+That star will appear
+any time there's
+
+518
+00:22:14,430 --> 00:22:17,220
+a row in the table that's
+equivalent to our baseline.
+
+519
+00:22:17,220 --> 00:22:19,650
+And another little
+thing to note maybe
+
+520
+00:22:19,650 --> 00:22:22,140
+if you're familiar with
+the history, the score
+
+521
+00:22:22,140 --> 00:22:23,580
+that we got on
+GLUE and SQuAD was
+
+522
+00:22:23,580 --> 00:22:24,960
+reasonably comparable to BERT.
+
+523
+00:22:24,960 --> 00:22:26,490
+So it's a decent sanity check.
+
+524
+00:22:26,490 --> 00:22:30,550
+We have a model that
+has more parameters.
+
+525
+00:22:30,550 --> 00:22:33,420
+But it's only trained
+for a quarter as long
+
+526
+00:22:33,420 --> 00:22:36,900
+and it nevertheless got
+comparable performance
+
+527
+00:22:36,900 --> 00:22:39,060
+which using a similar
+objective so we shouldn't
+
+528
+00:22:39,060 --> 00:22:40,253
+be too surprised about that.
+
+529
+00:22:40,253 --> 00:22:41,670
+And then the last
+thing to mention
+
+530
+00:22:41,670 --> 00:22:43,962
+is that we're going to use
+this standard deviation over
+
+531
+00:22:43,962 --> 00:22:46,785
+and over again, so that we
+can bold entries in the table
+
+532
+00:22:46,785 --> 00:22:49,410
+when they're within one standard
+deviation of the maximum value
+
+533
+00:22:49,410 --> 00:22:51,735
+for that dataset in the table.
+
+534
+00:22:51,735 --> 00:22:53,610
+So now I'll just make
+a big disclaimer, which
+
+535
+00:22:53,610 --> 00:22:55,800
+is we're going to compare
+lots of different things,
+
+536
+00:22:55,800 --> 00:22:57,720
+we're going to run
+lots of experiments,
+
+537
+00:22:57,720 --> 00:23:00,330
+but we're not going to tweak any
+hyperparameters because if we
+
+538
+00:23:00,330 --> 00:23:02,950
+did, like the change
+the learning rate,
+
+539
+00:23:02,950 --> 00:23:06,210
+or whatever, it would be
+just too computationally
+
+540
+00:23:06,210 --> 00:23:08,700
+expensive to do this for
+each individual method.
+
+541
+00:23:08,700 --> 00:23:11,010
+Our hope is that
+this is OK because we
+
+542
+00:23:11,010 --> 00:23:15,600
+are treating all problems in
+exactly the same framework.
+
+543
+00:23:15,600 --> 00:23:19,000
+We're always doing text-to-text
+maximum likelihood training.
+
+544
+00:23:19,000 --> 00:23:21,090
+So hopefully we can keep
+hyperparameters fixed,
+
+545
+00:23:21,090 --> 00:23:23,040
+and arguably if you
+propose a new method that
+
+546
+00:23:23,040 --> 00:23:24,990
+requires extensive
+hyperparameter tuning
+
+547
+00:23:24,990 --> 00:23:27,742
+it's not a very useful
+method for practitioners.
+
+548
+00:23:27,742 --> 00:23:29,700
+And we'll get into that
+a little bit more later
+
+549
+00:23:29,700 --> 00:23:32,820
+when I talk about architectural
+modifications too.
+
+550
+00:23:32,820 --> 00:23:34,590
+The other thing I'll
+say is that, while we
+
+551
+00:23:34,590 --> 00:23:36,048
+did run lots of
+experiments there's
+
+552
+00:23:36,048 --> 00:23:38,040
+no way we could be
+comprehensive because there
+
+553
+00:23:38,040 --> 00:23:40,440
+were so many methods out there.
+
+554
+00:23:40,440 --> 00:23:43,740
+And the inclusion or exclusion
+of one particular method
+
+555
+00:23:43,740 --> 00:23:46,710
+is not meant as a
+judgment on its quality.
+
+556
+00:23:46,710 --> 00:23:49,050
+It's just, it's what
+we were able to do
+
+557
+00:23:49,050 --> 00:23:53,240
+given the constraints that
+we were working under.
+
+558
+00:23:53,240 --> 00:23:56,300
+So the first set of
+experiments that we ran
+
+559
+00:23:56,300 --> 00:23:58,890
+were to compare different
+model structures.
+
+560
+00:23:58,890 --> 00:24:03,170
+So as I mentioned earlier
+the main baseline T5 model
+
+561
+00:24:03,170 --> 00:24:04,800
+is an encoder-decoder model.
+
+562
+00:24:04,800 --> 00:24:07,850
+And in this case, you have
+a separate layer stack
+
+563
+00:24:07,850 --> 00:24:10,940
+that encodes a sequence, and
+a separate layer stack that
+
+564
+00:24:10,940 --> 00:24:12,710
+decodes the target sequence.
+
+565
+00:24:12,710 --> 00:24:14,540
+Basically it generates
+the target sequence
+
+566
+00:24:14,540 --> 00:24:17,060
+one token by token,
+while attending back
+
+567
+00:24:17,060 --> 00:24:19,460
+to the encoder's
+output to figure out
+
+568
+00:24:19,460 --> 00:24:21,530
+what it should condition on.
+
+569
+00:24:21,530 --> 00:24:23,660
+The next set up
+that we considered
+
+570
+00:24:23,660 --> 00:24:25,970
+is an encoder-decoder
+model except that all
+
+571
+00:24:25,970 --> 00:24:29,000
+of the relevant parameters in
+the encoder-decoder are shared.
+
+572
+00:24:29,000 --> 00:24:32,210
+So there are basically
+half as many parameters.
+
+573
+00:24:32,210 --> 00:24:34,415
+And then finally another
+variant that we considered
+
+574
+00:24:34,415 --> 00:24:36,290
+as an encoder-decoder
+model where the encoder
+
+575
+00:24:36,290 --> 00:24:38,990
+and decoder have half
+as many layers as they
+
+576
+00:24:38,990 --> 00:24:40,280
+do in the baseline.
+
+577
+00:24:40,280 --> 00:24:42,320
+And that's because
+we're also considering
+
+578
+00:24:42,320 --> 00:24:45,260
+single stack models,
+the language model
+
+579
+00:24:45,260 --> 00:24:47,480
+and what we call a
+prefix language model.
+
+580
+00:24:47,480 --> 00:24:50,342
+The language model is
+a model that models
+
+581
+00:24:50,342 --> 00:24:51,800
+the sequence strictly
+from the left
+
+582
+00:24:51,800 --> 00:24:53,660
+to right fashion,
+in a causal fashion.
+
+583
+00:24:53,660 --> 00:24:56,330
+It basically just ingests
+tokens one at a time
+
+584
+00:24:56,330 --> 00:24:58,490
+and predicts the next token.
+
+585
+00:24:58,490 --> 00:25:01,190
+And you can actually apply
+these to text-to-text problems
+
+586
+00:25:01,190 --> 00:25:03,590
+by basically feeding
+the input as a prefix
+
+587
+00:25:03,590 --> 00:25:05,870
+before you start
+predicting anything.
+
+588
+00:25:05,870 --> 00:25:09,860
+Now if you just use a language
+model in its strict format then
+
+589
+00:25:09,860 --> 00:25:13,400
+you still have to have what we
+would call a causal mask, so
+
+590
+00:25:13,400 --> 00:25:16,250
+a causal attention
+pattern on the prefix.
+
+591
+00:25:16,250 --> 00:25:18,980
+And that's actually how
+the GPT series of models
+
+592
+00:25:18,980 --> 00:25:21,200
+treat all of their problems.
+
+593
+00:25:21,200 --> 00:25:24,268
+But because we are
+explicitly denoting
+
+594
+00:25:24,268 --> 00:25:26,810
+part of the sequence as an input
+and the rest of the sequence
+
+595
+00:25:26,810 --> 00:25:29,030
+as a target, we actually
+can allow the model
+
+596
+00:25:29,030 --> 00:25:32,360
+to have full visibility, a
+non-causal mask on the input
+
+597
+00:25:32,360 --> 00:25:33,500
+region of the sequence.
+
+598
+00:25:33,500 --> 00:25:35,000
+And when we make
+that change we call
+
+599
+00:25:35,000 --> 00:25:37,730
+that the prefix language model.
+
+600
+00:25:37,730 --> 00:25:39,500
+And now the upshot
+of all of this really
+
+601
+00:25:39,500 --> 00:25:42,170
+is that the encoder-decoder
+model for our framework
+
+602
+00:25:42,170 --> 00:25:43,700
+turns out to work best.
+
+603
+00:25:43,700 --> 00:25:45,920
+You can see that when we
+share the parameters it does
+
+604
+00:25:45,920 --> 00:25:48,128
+hurt performance a little
+bit but maybe a little less
+
+605
+00:25:48,128 --> 00:25:49,490
+than you might expect.
+
+606
+00:25:49,490 --> 00:25:51,890
+The prefix language
+model attains
+
+607
+00:25:51,890 --> 00:25:54,440
+slightly worse performance
+but significantly better
+
+608
+00:25:54,440 --> 00:25:57,230
+performance than doing strictly
+causal left-to-right language
+
+609
+00:25:57,230 --> 00:26:00,380
+modeling, which is what you
+see in the fourth row here.
+
+610
+00:26:00,380 --> 00:26:02,390
+And finally having the
+number of parameters
+
+611
+00:26:02,390 --> 00:26:07,430
+in the encoder and decoder
+harms performance significantly.
+
+612
+00:26:07,430 --> 00:26:10,440
+One thing to note is that
+in all of these cases,
+
+613
+00:26:10,440 --> 00:26:12,890
+we're processing the same
+total sequence length.
+
+614
+00:26:12,890 --> 00:26:15,720
+It's the same input sequence
+and the same target sequence.
+
+615
+00:26:15,720 --> 00:26:18,140
+So in most of these
+cases, the total number
+
+616
+00:26:18,140 --> 00:26:20,000
+of flops required to
+process the sequence
+
+617
+00:26:20,000 --> 00:26:22,340
+is the same, even though
+the number of parameters
+
+618
+00:26:22,340 --> 00:26:26,077
+is twice as many in
+the baseline model.
+
+619
+00:26:26,077 --> 00:26:28,410
+So the next thing we looked
+into were different variants
+
+620
+00:26:28,410 --> 00:26:29,820
+on our pre-training objective.
+
+621
+00:26:29,820 --> 00:26:31,860
+So the first thing
+we did was kind
+
+622
+00:26:31,860 --> 00:26:34,322
+of compare different
+high level approaches,
+
+623
+00:26:34,322 --> 00:26:36,780
+maybe just training the model
+to predict the next token one
+
+624
+00:26:36,780 --> 00:26:39,850
+token at a time, that's kind of
+a language modeling objective.
+
+625
+00:26:39,850 --> 00:26:42,000
+Another would be a take
+the input sequence,
+
+626
+00:26:42,000 --> 00:26:43,620
+shuffle it up, and
+train the model
+
+627
+00:26:43,620 --> 00:26:46,080
+to predict the
+unshuffled sequence,
+
+628
+00:26:46,080 --> 00:26:49,470
+or to consider a mass language
+model style, a BERT style
+
+629
+00:26:49,470 --> 00:26:52,620
+objective like the one
+that we mentioned earlier.
+
+630
+00:26:52,620 --> 00:26:55,440
+And now on the second step
+that I'm showing here,
+
+631
+00:26:55,440 --> 00:26:59,028
+the results for, we considered
+a BERT style objective,
+
+632
+00:26:59,028 --> 00:27:00,570
+where the model is
+trained to predict
+
+633
+00:27:00,570 --> 00:27:05,700
+the entire original uncorrupted
+input sequence, a MASS style
+
+634
+00:27:05,700 --> 00:27:08,460
+objective, which
+is quite similar.
+
+635
+00:27:08,460 --> 00:27:10,818
+And then a replace
+corrupted spans objective,
+
+636
+00:27:10,818 --> 00:27:13,110
+which is like the one that
+I described at the beginning
+
+637
+00:27:13,110 --> 00:27:15,080
+that we're using in
+our baseline model.
+
+638
+00:27:15,080 --> 00:27:17,610
+And finally a variant
+where rather than replacing
+
+639
+00:27:17,610 --> 00:27:20,760
+each token with a
+unique sentinel token
+
+640
+00:27:20,760 --> 00:27:23,190
+we just drop the mass
+tokens completely
+
+641
+00:27:23,190 --> 00:27:26,010
+and train the model to
+predict the dropped tokens.
+
+642
+00:27:26,010 --> 00:27:29,850
+And you can see that the latter
+two options work roughly as
+
+643
+00:27:29,850 --> 00:27:31,380
+well as one another.
+
+644
+00:27:31,380 --> 00:27:34,920
+But another pertinent
+difference between these sets
+
+645
+00:27:34,920 --> 00:27:37,110
+of objectives is that
+the first two involve
+
+646
+00:27:37,110 --> 00:27:39,360
+predicting the
+entire input sequence
+
+647
+00:27:39,360 --> 00:27:42,120
+and the last two basically
+just involve predicting
+
+648
+00:27:42,120 --> 00:27:43,770
+the masked out tokens.
+
+649
+00:27:43,770 --> 00:27:45,930
+And when you only predict
+the masked out tokens
+
+650
+00:27:45,930 --> 00:27:47,800
+you have a much shorter
+target sequence.
+
+651
+00:27:47,800 --> 00:27:50,190
+And so the overall cost
+is significantly lower
+
+652
+00:27:50,190 --> 00:27:51,300
+for pre-training.
+
+653
+00:27:51,300 --> 00:27:54,060
+So we decided that that
+was the best approach
+
+654
+00:27:54,060 --> 00:27:56,880
+and then we considered
+other hyperparameters
+
+655
+00:27:56,880 --> 00:28:03,570
+in our masking strategy, such
+as how many tokens to mask out.
+
+656
+00:28:03,570 --> 00:28:06,360
+So the next thing we considered
+were different variants
+
+657
+00:28:06,360 --> 00:28:08,460
+of a pre-training dataset.
+
+658
+00:28:08,460 --> 00:28:10,620
+In our baseline we
+use the C4 dataset
+
+659
+00:28:10,620 --> 00:28:14,050
+that I proposed at the
+beginning of the talk.
+
+660
+00:28:14,050 --> 00:28:17,280
+We also compared to pre-training
+on only on unfiltered data
+
+661
+00:28:17,280 --> 00:28:18,360
+from C4.
+
+662
+00:28:18,360 --> 00:28:20,760
+So rather than doing all these
+heuristic filtering steps,
+
+663
+00:28:20,760 --> 00:28:23,430
+we just take the raw web
+extracted text from C4
+
+664
+00:28:23,430 --> 00:28:24,630
+and pre-trained on that.
+
+665
+00:28:24,630 --> 00:28:26,880
+And you can see that,
+that does uniformly worse.
+
+666
+00:28:26,880 --> 00:28:28,470
+So it is, it does
+seem to be true
+
+667
+00:28:28,470 --> 00:28:30,762
+that these cleaning steps
+that we're doing are actually
+
+668
+00:28:30,762 --> 00:28:31,540
+useful.
+
+669
+00:28:31,540 --> 00:28:33,300
+The next four datasets
+for our attempt
+
+670
+00:28:33,300 --> 00:28:35,820
+to pre-train on
+similar datasets that
+
+671
+00:28:35,820 --> 00:28:37,410
+had been used in past work.
+
+672
+00:28:37,410 --> 00:28:39,720
+The real news dataset came
+from the GROVER paper.
+
+673
+00:28:39,720 --> 00:28:43,680
+It's essentially pre-training
+only on data from news sites.
+
+674
+00:28:43,680 --> 00:28:47,130
+Web text is this dataset that
+was used in a GPT-2 paper
+
+675
+00:28:47,130 --> 00:28:50,280
+where you only train on
+web text that was linked to
+
+676
+00:28:50,280 --> 00:28:53,370
+and received a reasonably
+high score on Reddit.
+
+677
+00:28:53,370 --> 00:28:56,550
+And then the last two variants
+are either Wikipedia alone,
+
+678
+00:28:56,550 --> 00:28:59,730
+or as was used in the
+BERT paper, Wikipedia
+
+679
+00:28:59,730 --> 00:29:01,980
+with the Toronto Books Corpus.
+
+680
+00:29:01,980 --> 00:29:05,190
+And you might actually
+notice that some
+
+681
+00:29:05,190 --> 00:29:06,990
+of these more
+specialized datasets
+
+682
+00:29:06,990 --> 00:29:08,270
+we get better performance.
+
+683
+00:29:08,270 --> 00:29:11,700
+So for example, you can see that
+on the Wikipedia and Toronto
+
+684
+00:29:11,700 --> 00:29:13,830
+Books Corpus on the
+bottom row, we actually
+
+685
+00:29:13,830 --> 00:29:18,090
+do much better on SuperGLUE
+with a score of a little over 73
+
+686
+00:29:18,090 --> 00:29:20,255
+compared to pre-training on C4.
+
+687
+00:29:20,255 --> 00:29:21,630
+And it turns out
+this is because,
+
+688
+00:29:21,630 --> 00:29:26,550
+or we conjecture that this
+is because SuperGLUE contains
+
+689
+00:29:26,550 --> 00:29:29,370
+a task called multi RC which
+is a reading comprehension
+
+690
+00:29:29,370 --> 00:29:34,860
+task on news, sorry,
+encyclopedia articles
+
+691
+00:29:34,860 --> 00:29:36,210
+and on novels.
+
+692
+00:29:36,210 --> 00:29:38,160
+So the basic takeaway
+here is that when
+
+693
+00:29:38,160 --> 00:29:41,700
+you pre-train on data that's
+similar to your downstream
+
+694
+00:29:41,700 --> 00:29:43,650
+task, that has a
+similar domain you
+
+695
+00:29:43,650 --> 00:29:45,660
+often get a big boost
+in that downstream task.
+
+696
+00:29:45,660 --> 00:29:48,090
+And that's indeed
+what happened here.
+
+697
+00:29:48,090 --> 00:29:50,700
+Interestingly, you can also
+see the opposite effect.
+
+698
+00:29:50,700 --> 00:29:54,420
+So if you look on Wikipedia
+on the second to last row.
+
+699
+00:29:54,420 --> 00:29:56,310
+If you only pre-trained
+on Wikipedia,
+
+700
+00:29:56,310 --> 00:29:58,230
+you end up doing
+much worse on CoLA,
+
+701
+00:29:58,230 --> 00:30:00,810
+which is the Corpus of
+Linguistic Acceptability tasks
+
+702
+00:30:00,810 --> 00:30:02,160
+that I mentioned early on.
+
+703
+00:30:02,160 --> 00:30:05,370
+And we conjecture that this
+is because Wikipedia has
+
+704
+00:30:05,370 --> 00:30:07,380
+very little unacceptable text.
+
+705
+00:30:07,380 --> 00:30:09,930
+You're basically only
+pre-training on clean text,
+
+706
+00:30:09,930 --> 00:30:12,180
+whereas C4 has some
+ungrammatical texts,
+
+707
+00:30:12,180 --> 00:30:14,070
+some nonsense in it,
+and so that actually
+
+708
+00:30:14,070 --> 00:30:16,303
+can boost your performance
+a little bit on CoLA.
+
+709
+00:30:16,303 --> 00:30:17,970
+The last thing to
+note is that while you
+
+710
+00:30:17,970 --> 00:30:21,292
+do see some gains sometimes on
+using these smaller data sets,
+
+711
+00:30:21,292 --> 00:30:23,250
+these data sets are about
+an order of magnitude
+
+712
+00:30:23,250 --> 00:30:24,840
+smaller than C4.
+
+713
+00:30:24,840 --> 00:30:26,970
+So then the natural question
+is, does it actually
+
+714
+00:30:26,970 --> 00:30:30,210
+hurt you to pre-train
+on a smaller dataset?
+
+715
+00:30:30,210 --> 00:30:31,920
+So to answer that
+question, what we did
+
+716
+00:30:31,920 --> 00:30:35,580
+is basically took C4 and
+artificially made it smaller,
+
+717
+00:30:35,580 --> 00:30:38,800
+so that it was repeated over
+the course of pre-training.
+
+718
+00:30:38,800 --> 00:30:41,820
+And you can see here that
+when you repeat the data
+
+719
+00:30:41,820 --> 00:30:47,250
+set 64 times, so it's 34
+billion divided by 64 tokens,
+
+720
+00:30:47,250 --> 00:30:49,710
+because that's how much
+pre-training we did.
+
+721
+00:30:49,710 --> 00:30:51,690
+You actually don't
+sacrifice much performance.
+
+722
+00:30:51,690 --> 00:30:54,660
+The performance is
+roughly the same.
+
+723
+00:30:54,660 --> 00:30:59,040
+But if you repeat the data set
+256 times, 1,024 times or more
+
+724
+00:30:59,040 --> 00:31:00,633
+you actually start
+to see degradation.
+
+725
+00:31:00,633 --> 00:31:02,550
+And the reason that we
+think this is happening
+
+726
+00:31:02,550 --> 00:31:04,410
+is because you're
+basically overfitting
+
+727
+00:31:04,410 --> 00:31:05,550
+during pre-training.
+
+728
+00:31:05,550 --> 00:31:07,980
+And you can get a sense
+for whether that's true
+
+729
+00:31:07,980 --> 00:31:10,193
+or not by looking, just
+looking at the training loss.
+
+730
+00:31:10,193 --> 00:31:11,610
+You can see that
+the model attains
+
+731
+00:31:11,610 --> 00:31:14,550
+a much, much smaller training
+loss as you repeat the data set
+
+732
+00:31:14,550 --> 00:31:15,820
+more and more times.
+
+733
+00:31:15,820 --> 00:31:17,770
+So the upshot of this
+is that your data set
+
+734
+00:31:17,770 --> 00:31:19,470
+should be at least
+as big that you
+
+735
+00:31:19,470 --> 00:31:21,420
+don't see significant
+overfitting
+
+736
+00:31:21,420 --> 00:31:23,340
+during pre-training.
+
+737
+00:31:23,340 --> 00:31:26,280
+And later on when we
+scale up these models
+
+738
+00:31:26,280 --> 00:31:28,200
+and pre-trained them
+on much more data,
+
+739
+00:31:28,200 --> 00:31:32,070
+we would do enough repeats of
+the smaller sort of more domain
+
+740
+00:31:32,070 --> 00:31:34,020
+specific data sets
+that we imagine
+
+741
+00:31:34,020 --> 00:31:35,700
+we would see harmful effects.
+
+742
+00:31:35,700 --> 00:31:38,410
+
+
+743
+00:31:38,410 --> 00:31:40,170
+The next thing we
+experimented with
+
+744
+00:31:40,170 --> 00:31:42,532
+were multi-task
+learning strategies.
+
+745
+00:31:42,532 --> 00:31:44,490
+So when you're doing
+multi task learning you're
+
+746
+00:31:44,490 --> 00:31:47,880
+essentially training the model
+on multiple tasks at once.
+
+747
+00:31:47,880 --> 00:31:50,460
+And most of the, in
+all the experiments
+
+748
+00:31:50,460 --> 00:31:53,310
+I'm showing on this
+slide here, we're
+
+749
+00:31:53,310 --> 00:31:55,350
+actually training
+on every single task
+
+750
+00:31:55,350 --> 00:31:57,150
+at once, so the
+pre-training task,
+
+751
+00:31:57,150 --> 00:31:59,700
+and all of the downstream
+tasks together.
+
+752
+00:31:59,700 --> 00:32:01,280
+And the most pertinent
+question when
+
+753
+00:32:01,280 --> 00:32:03,030
+you're doing multi-task
+training like this
+
+754
+00:32:03,030 --> 00:32:06,460
+is, how often should I
+sample data from each task?
+
+755
+00:32:06,460 --> 00:32:10,380
+So one approach is just to
+sample data at an equal rate
+
+756
+00:32:10,380 --> 00:32:12,400
+across all of the tasks.
+
+757
+00:32:12,400 --> 00:32:15,540
+Another case is to
+basically pretend
+
+758
+00:32:15,540 --> 00:32:17,620
+like you've just concatenated
+all the datasets,
+
+759
+00:32:17,620 --> 00:32:19,170
+we call that
+examples proportional
+
+760
+00:32:19,170 --> 00:32:20,970
+mixing because it's
+equivalent to sampling
+
+761
+00:32:20,970 --> 00:32:23,640
+from the dataset in accordance
+to how many examples there
+
+762
+00:32:23,640 --> 00:32:24,928
+are in the dataset.
+
+763
+00:32:24,928 --> 00:32:26,470
+The difficult thing
+with that though,
+
+764
+00:32:26,470 --> 00:32:28,560
+is that our pre-training
+dataset is so big
+
+765
+00:32:28,560 --> 00:32:31,260
+that its proportion
+would be much, much, much
+
+766
+00:32:31,260 --> 00:32:32,940
+bigger than every
+downstream task,
+
+767
+00:32:32,940 --> 00:32:34,410
+and we basically
+would never train
+
+768
+00:32:34,410 --> 00:32:36,000
+on any of the downstream data.
+
+769
+00:32:36,000 --> 00:32:39,030
+So we introduced
+this hyperparameter K
+
+770
+00:32:39,030 --> 00:32:41,220
+which is a constant
+that basically
+
+771
+00:32:41,220 --> 00:32:44,370
+is how big should we pretend
+that the pre-training data
+
+772
+00:32:44,370 --> 00:32:45,840
+set is.
+
+773
+00:32:45,840 --> 00:32:48,180
+The last thing
+you can do is take
+
+774
+00:32:48,180 --> 00:32:50,340
+the number of examples
+in each data set
+
+775
+00:32:50,340 --> 00:32:52,230
+and scale it by a temperature.
+
+776
+00:32:52,230 --> 00:32:54,180
+The larger the
+temperature, the closer you
+
+777
+00:32:54,180 --> 00:32:59,550
+get to equal mixing, to uniform
+sampling from each data set.
+
+778
+00:32:59,550 --> 00:33:02,400
+But at any rate, the main
+takeaway from this table
+
+779
+00:33:02,400 --> 00:33:05,910
+is that you can get pretty
+close to the performance
+
+780
+00:33:05,910 --> 00:33:08,070
+of separate
+pre-training and fine
+
+781
+00:33:08,070 --> 00:33:09,900
+tuning like we do
+on our baseline
+
+782
+00:33:09,900 --> 00:33:11,910
+if you get the mixing
+strategy right.
+
+783
+00:33:11,910 --> 00:33:13,740
+But ultimately we
+found that you do
+
+784
+00:33:13,740 --> 00:33:15,690
+tend to sacrifice
+some performance when
+
+785
+00:33:15,690 --> 00:33:19,185
+doing multi-task training on
+at least some of the tasks.
+
+786
+00:33:19,185 --> 00:33:22,530
+And Colin, there were lots of
+questions back on the choice--
+
+787
+00:33:22,530 --> 00:33:24,660
+on the slide with the
+different datasets,
+
+788
+00:33:24,660 --> 00:33:28,130
+one showing Realnews
+and C4 and so on.
+
+789
+00:33:28,130 --> 00:33:29,760
+You want to take a couple?
+
+790
+00:33:29,760 --> 00:33:30,750
+Absolutely.
+
+791
+00:33:30,750 --> 00:33:34,740
+Yeah, so firstly if
+you just look at this,
+
+792
+00:33:34,740 --> 00:33:38,400
+it still does kind
+of look like you
+
+793
+00:33:38,400 --> 00:33:42,810
+can get great results with
+more than an order of magnitude
+
+794
+00:33:42,810 --> 00:33:47,040
+less text than C4, and it seemed
+like that's not the message
+
+795
+00:33:47,040 --> 00:33:49,290
+you wanted to be
+putting forward.
+
+796
+00:33:49,290 --> 00:33:51,250
+Yeah, so there's a
+little nuance here,
+
+797
+00:33:51,250 --> 00:33:53,940
+which is basically that in our
+baseline, in these experiments
+
+798
+00:33:53,940 --> 00:33:55,950
+that I've been running
+so far, we're actually
+
+799
+00:33:55,950 --> 00:33:57,400
+not pre-training for that long.
+
+800
+00:33:57,400 --> 00:34:00,330
+So as I mentioned earlier, we're
+actually training for a quarter
+
+801
+00:34:00,330 --> 00:34:04,470
+as long as BERT and
+actually for as a,
+
+802
+00:34:04,470 --> 00:34:11,040
+I believe 1/256th as long
+as X on that for example.
+
+803
+00:34:11,040 --> 00:34:13,290
+And when later in
+the paper, we're
+
+804
+00:34:13,290 --> 00:34:15,639
+going to pre-train for
+much, much, much longer.
+
+805
+00:34:15,639 --> 00:34:17,250
+And in that case,
+we would end up
+
+806
+00:34:17,250 --> 00:34:20,120
+repeating these datasets many,
+many times over the course
+
+807
+00:34:20,120 --> 00:34:22,620
+of pre-training and we'd start
+to see these negative effects
+
+808
+00:34:22,620 --> 00:34:24,157
+that I explained
+on the next slide.
+
+809
+00:34:24,157 --> 00:34:25,949
+So that's why you're
+then doing the repeat.
+
+810
+00:34:25,949 --> 00:34:27,600
+OK, someone then
+asked about that
+
+811
+00:34:27,600 --> 00:34:30,353
+as to why you're training on the
+same stuff over and over again.
+
+812
+00:34:30,353 --> 00:34:31,020
+That's the test.
+
+813
+00:34:31,020 --> 00:34:32,830
+Yeah, exactly.
+
+814
+00:34:32,830 --> 00:34:36,550
+And then on the datasets--
+
+815
+00:34:36,550 --> 00:34:39,510
+so to a first
+approximation, does
+
+816
+00:34:39,510 --> 00:34:42,870
+C4 contain Wikipedia,
+or partially--
+
+817
+00:34:42,870 --> 00:34:45,659
+It contains many, many
+pages of Wikipedia
+
+818
+00:34:45,659 --> 00:34:48,920
+but not all of
+Wikipedia, you know
+
+819
+00:34:48,920 --> 00:34:51,210
+the Common Crawl is
+done by like-- it
+
+820
+00:34:51,210 --> 00:34:54,840
+is a sort of web
+crawl by following
+
+821
+00:34:54,840 --> 00:34:57,780
+links at some priority
+and ultimately it
+
+822
+00:34:57,780 --> 00:34:59,157
+didn't cover all of Wikipedia.
+
+823
+00:34:59,157 --> 00:35:01,740
+I don't actually know the exact
+proportion of Wikipedia that's
+
+824
+00:35:01,740 --> 00:35:06,810
+included in C4 but definitely
+when training on C4
+
+825
+00:35:06,810 --> 00:35:09,160
+you will see some
+Wikipedia text.
+
+826
+00:35:09,160 --> 00:35:11,610
+It will be at a relatively
+low proportion compared
+
+827
+00:35:11,610 --> 00:35:14,220
+to all of the other data that--
+
+828
+00:35:14,220 --> 00:35:15,490
+sources of data you'll see.
+
+829
+00:35:15,490 --> 00:35:15,990
+Sure.
+
+830
+00:35:15,990 --> 00:35:19,410
+And then someone wasn't quite
+convinced with your argument
+
+831
+00:35:19,410 --> 00:35:22,440
+that the good
+quality of Wikipedia
+
+832
+00:35:22,440 --> 00:35:26,190
+explained the worst performance
+on CoLA because they thought,
+
+833
+00:35:26,190 --> 00:35:32,100
+well surely RealNews, that's
+basically well-edited text as
+
+834
+00:35:32,100 --> 00:35:35,050
+well, and yet it
+seems to work fine.
+
+835
+00:35:35,050 --> 00:35:36,640
+Yeah, it's a good point.
+
+836
+00:35:36,640 --> 00:35:37,860
+I'm not sure.
+
+837
+00:35:37,860 --> 00:35:40,710
+It could be that because
+RealNews has quotes in it,
+
+838
+00:35:40,710 --> 00:35:43,770
+or maybe RealNews ended
+up having some content
+
+839
+00:35:43,770 --> 00:35:45,990
+from the common
+sections of sites.
+
+840
+00:35:45,990 --> 00:35:47,490
+I should say that when I--
+
+841
+00:35:47,490 --> 00:35:49,860
+the reason that they're
+RealNews-like and WebText-like
+
+842
+00:35:49,860 --> 00:35:52,230
+is that these are our
+own reproductions of them
+
+843
+00:35:52,230 --> 00:35:54,600
+so they might not be exactly
+the same as the originally
+
+844
+00:35:54,600 --> 00:35:57,048
+proposed variants, because
+WebText for example
+
+845
+00:35:57,048 --> 00:35:57,840
+was never released.
+
+846
+00:35:57,840 --> 00:36:00,112
+
+
+847
+00:36:00,112 --> 00:36:01,570
+Yeah, but it's an
+interesting point
+
+848
+00:36:01,570 --> 00:36:04,600
+and that's also why I would
+say that it's a conjecture.
+
+849
+00:36:04,600 --> 00:36:08,080
+It's not something that I can
+make a rigorous claim about.
+
+850
+00:36:08,080 --> 00:36:08,620
+Yeah.
+
+851
+00:36:08,620 --> 00:36:09,250
+OK.
+
+852
+00:36:09,250 --> 00:36:11,120
+Maybe we should let
+you go on for now.
+
+853
+00:36:11,120 --> 00:36:11,620
+Great.
+
+854
+00:36:11,620 --> 00:36:12,120
+Thanks.
+
+855
+00:36:12,120 --> 00:36:14,690
+Yeah, thanks for
+those questions.
+
+856
+00:36:14,690 --> 00:36:16,750
+So then the next
+thing after looking
+
+857
+00:36:16,750 --> 00:36:20,512
+at these different multi-task
+training strategies,
+
+858
+00:36:20,512 --> 00:36:21,970
+is to see if there's
+any way for us
+
+859
+00:36:21,970 --> 00:36:24,610
+to close the gap between
+multi-task training
+
+860
+00:36:24,610 --> 00:36:28,240
+and this pre-training followed
+by separate fine tuning.
+
+861
+00:36:28,240 --> 00:36:30,910
+And we experimented with many
+different strategies here,
+
+862
+00:36:30,910 --> 00:36:33,670
+basically, strict
+multitask training,
+
+863
+00:36:33,670 --> 00:36:36,250
+doing multi-task training
+followed by individual task
+
+864
+00:36:36,250 --> 00:36:39,010
+fine tuning, doing
+multi-task training
+
+865
+00:36:39,010 --> 00:36:41,260
+but without any
+unsupervised data.
+
+866
+00:36:41,260 --> 00:36:43,900
+And really the main takeaway
+from all of these experiments
+
+867
+00:36:43,900 --> 00:36:47,620
+was that if you do the
+multi-task training first,
+
+868
+00:36:47,620 --> 00:36:51,250
+including the unsupervised
+task, and then you fine tune
+
+869
+00:36:51,250 --> 00:36:54,052
+the model on each
+task separately, which
+
+870
+00:36:54,052 --> 00:36:55,510
+is the third row
+here, you actually
+
+871
+00:36:55,510 --> 00:36:58,150
+don't really sacrifice
+much performance at all.
+
+872
+00:36:58,150 --> 00:37:00,970
+You are-- you don't end
+up with a multi-task model
+
+873
+00:37:00,970 --> 00:37:03,850
+because you're fine tuning
+on each task individually.
+
+874
+00:37:03,850 --> 00:37:06,160
+But the nice thing
+about this approach
+
+875
+00:37:06,160 --> 00:37:08,890
+is that you can monitor
+that performance
+
+876
+00:37:08,890 --> 00:37:12,520
+on your downstream tasks while
+you're doing pre-training.
+
+877
+00:37:12,520 --> 00:37:16,240
+And you don't sacrifice
+much performance.
+
+878
+00:37:16,240 --> 00:37:17,890
+One setting that
+we didn't consider
+
+879
+00:37:17,890 --> 00:37:20,170
+is the unsupervised
+pre-training followed
+
+880
+00:37:20,170 --> 00:37:22,430
+by a supervised
+multi-task training.
+
+881
+00:37:22,430 --> 00:37:25,000
+I wish that we had run that
+but we just, we didn't.
+
+882
+00:37:25,000 --> 00:37:27,730
+
+
+883
+00:37:27,730 --> 00:37:30,550
+So then sort of the last
+set of experiments we ran
+
+884
+00:37:30,550 --> 00:37:32,620
+try to answer the
+following question.
+
+885
+00:37:32,620 --> 00:37:34,990
+Let's say that someone comes
+along and all of a sudden
+
+886
+00:37:34,990 --> 00:37:37,030
+gives you four times
+as much compute,
+
+887
+00:37:37,030 --> 00:37:38,268
+what should you do with it?
+
+888
+00:37:38,268 --> 00:37:40,310
+And so there are a number
+of things you could do.
+
+889
+00:37:40,310 --> 00:37:42,268
+You could increase the
+number of training steps
+
+890
+00:37:42,268 --> 00:37:43,480
+by a factor of four.
+
+891
+00:37:43,480 --> 00:37:46,030
+You could increase your batch
+size by a factor of four.
+
+892
+00:37:46,030 --> 00:37:47,680
+You can make your
+model twice as big,
+
+893
+00:37:47,680 --> 00:37:49,030
+and train for twice as long.
+
+894
+00:37:49,030 --> 00:37:50,950
+You can make your model
+four times as big.
+
+895
+00:37:50,950 --> 00:37:54,568
+You could train four models
+separately and ensemble them.
+
+896
+00:37:54,568 --> 00:37:56,860
+Or you could do this last
+thing, which doesn't actually
+
+897
+00:37:56,860 --> 00:38:00,010
+use four times as much compute,
+where you pre-train one model
+
+898
+00:38:00,010 --> 00:38:02,260
+and you fine tune it
+four times separately
+
+899
+00:38:02,260 --> 00:38:03,850
+and then ensemble those.
+
+900
+00:38:03,850 --> 00:38:07,460
+And the main takeaway here
+is that scaling helps.
+
+901
+00:38:07,460 --> 00:38:11,860
+This is very unsurprising
+especially in 2021,
+
+902
+00:38:11,860 --> 00:38:16,570
+but interestingly you
+get significant gains
+
+903
+00:38:16,570 --> 00:38:19,240
+whether you just increase
+the training time
+
+904
+00:38:19,240 --> 00:38:21,130
+or if you increase the size.
+
+905
+00:38:21,130 --> 00:38:24,108
+So you can see that
+along both of these axes
+
+906
+00:38:24,108 --> 00:38:25,900
+we get significant
+performance improvements
+
+907
+00:38:25,900 --> 00:38:28,192
+although the performance
+improvements are more dramatic
+
+908
+00:38:28,192 --> 00:38:29,380
+when we increase the size.
+
+909
+00:38:29,380 --> 00:38:31,390
+And in particular,
+you can see that we've
+
+910
+00:38:31,390 --> 00:38:35,350
+gone from a score of about
+71 on SuperGLUE to 78 just
+
+911
+00:38:35,350 --> 00:38:38,970
+by making the model
+four times bigger.
+
+912
+00:38:38,970 --> 00:38:41,790
+OK, so let me just kind of give
+a quick recap of all of that.
+
+913
+00:38:41,790 --> 00:38:43,980
+And then use that
+recap to explain
+
+914
+00:38:43,980 --> 00:38:46,590
+the design decisions that
+went into the final sort of T5
+
+915
+00:38:46,590 --> 00:38:47,860
+models.
+
+916
+00:38:47,860 --> 00:38:49,500
+The first thing is
+that we're going
+
+917
+00:38:49,500 --> 00:38:51,750
+to choose an encoder-decoder
+architecture because that
+
+918
+00:38:51,750 --> 00:38:54,173
+seemed to work best in
+our text- to-text format.
+
+919
+00:38:54,173 --> 00:38:55,590
+The next thing is
+that we're going
+
+920
+00:38:55,590 --> 00:38:58,140
+to use the span prediction
+objective, which is ultimately
+
+921
+00:38:58,140 --> 00:38:59,790
+quite similar to the
+baseline objective
+
+922
+00:38:59,790 --> 00:39:01,440
+that I described earlier.
+
+923
+00:39:01,440 --> 00:39:03,510
+We will use the C4
+dataset because it
+
+924
+00:39:03,510 --> 00:39:05,682
+did attain reasonable
+performance,
+
+925
+00:39:05,682 --> 00:39:07,140
+but was large enough
+that we didn't
+
+926
+00:39:07,140 --> 00:39:10,500
+have to worry about repeating
+the data and seeing detrimental
+
+927
+00:39:10,500 --> 00:39:13,710
+overfitting during
+pre-training when we scale up
+
+928
+00:39:13,710 --> 00:39:15,600
+the number of
+pre-training steps.
+
+929
+00:39:15,600 --> 00:39:17,880
+We actually decided to do
+multi-task pre-training
+
+930
+00:39:17,880 --> 00:39:20,700
+because we will be scaling up
+the amount of pre-training.
+
+931
+00:39:20,700 --> 00:39:22,672
+Our longest training
+runs took about a month
+
+932
+00:39:22,672 --> 00:39:24,630
+and we wanted to be able
+to monitor performance
+
+933
+00:39:24,630 --> 00:39:27,468
+over the course of pre-training
+without doing fine tuning.
+
+934
+00:39:27,468 --> 00:39:29,760
+So we're going to be doing
+this multi-task pre-training
+
+935
+00:39:29,760 --> 00:39:31,102
+followed by fine tuning.
+
+936
+00:39:31,102 --> 00:39:32,560
+And then the last
+thing, of course,
+
+937
+00:39:32,560 --> 00:39:35,790
+is we're going to train
+bigger models for longer.
+
+938
+00:39:35,790 --> 00:39:38,880
+And specifically the model
+sizes that we ended up
+
+939
+00:39:38,880 --> 00:39:43,140
+releasing we called small,
+base, large, 3B, and 11B.
+
+940
+00:39:43,140 --> 00:39:45,600
+The small model has
+60 million parameters.
+
+941
+00:39:45,600 --> 00:39:47,850
+It's about a quarter
+as big as our baseline
+
+942
+00:39:47,850 --> 00:39:50,730
+which again was a BERT-base
+size encoder, BERT-base size
+
+943
+00:39:50,730 --> 00:39:51,750
+decoder.
+
+944
+00:39:51,750 --> 00:39:54,440
+We also trained a model that
+was a BERT-Large size encoder,
+
+945
+00:39:54,440 --> 00:39:56,260
+BERT-Large size decoder.
+
+946
+00:39:56,260 --> 00:39:58,950
+And then we created two
+larger variants simply
+
+947
+00:39:58,950 --> 00:40:02,400
+by scaling up the feed-forward
+dimension of the transformer
+
+948
+00:40:02,400 --> 00:40:04,927
+and the number of attention
+heads in the transformer.
+
+949
+00:40:04,927 --> 00:40:06,510
+You can see our
+largest model actually
+
+950
+00:40:06,510 --> 00:40:11,070
+had a hidden dimensionality
+of 65,000 in the feed
+
+951
+00:40:11,070 --> 00:40:11,850
+forward layers.
+
+952
+00:40:11,850 --> 00:40:14,310
+The reason that we did this
+kind of unusual way of scaling
+
+953
+00:40:14,310 --> 00:40:18,180
+up the parameter count is just
+because the feed forward layers
+
+954
+00:40:18,180 --> 00:40:20,340
+are just gigantic
+matrix multiplies
+
+955
+00:40:20,340 --> 00:40:25,087
+and that's the best way to make
+use of hardware accelerators.
+
+956
+00:40:25,087 --> 00:40:26,670
+Can I just stick in
+one more question?
+
+957
+00:40:26,670 --> 00:40:27,330
+Absolutely.
+
+958
+00:40:27,330 --> 00:40:34,260
+Someone was asking about how
+you did the multi-task training,
+
+959
+00:40:34,260 --> 00:40:39,300
+like so was that sticking
+a simple softmax classifier
+
+960
+00:40:39,300 --> 00:40:41,830
+on top for each task or?
+
+961
+00:40:41,830 --> 00:40:44,940
+So in our case, because we're
+using this text-to-text format,
+
+962
+00:40:44,940 --> 00:40:48,810
+basically where-- you train on
+exactly the same-- it's exactly
+
+963
+00:40:48,810 --> 00:40:50,580
+the same model, no
+new classification
+
+964
+00:40:50,580 --> 00:40:51,510
+heads for every task.
+
+965
+00:40:51,510 --> 00:40:54,383
+The only difference is that each
+task gets its own task prefix.
+
+966
+00:40:54,383 --> 00:40:56,550
+So if you remember all the
+way back at the beginning
+
+967
+00:40:56,550 --> 00:40:59,040
+we say you know translate
+English to German colon
+
+968
+00:40:59,040 --> 00:41:03,150
+English sentence, or summarize
+colon English paragraph.
+
+969
+00:41:03,150 --> 00:41:05,070
+And that tells the
+model what it should do.
+
+970
+00:41:05,070 --> 00:41:06,180
+And then you just
+train the model
+
+971
+00:41:06,180 --> 00:41:07,680
+to predict the
+corresponding target.
+
+972
+00:41:07,680 --> 00:41:11,660
+
+
+973
+00:41:11,660 --> 00:41:14,930
+Cool, so the last
+pertinent detail again
+
+974
+00:41:14,930 --> 00:41:18,050
+is that we did scale up
+the amount of pre-training,
+
+975
+00:41:18,050 --> 00:41:20,600
+we ended up pre-training on
+a trillion tokens of data
+
+976
+00:41:20,600 --> 00:41:22,250
+rather than 34 billion tokens.
+
+977
+00:41:22,250 --> 00:41:25,180
+So it's quite a lot
+more pre-training,
+
+978
+00:41:25,180 --> 00:41:26,930
+although it's still
+less pre-training that
+
+979
+00:41:26,930 --> 00:41:29,420
+was used in XLNet I
+think by a factor of 2,
+
+980
+00:41:29,420 --> 00:41:32,760
+If I'm remembering correctly.
+
+981
+00:41:32,760 --> 00:41:34,020
+So here are the results.
+
+982
+00:41:34,020 --> 00:41:36,860
+And these were kind of the way
+that things stood at the time
+
+983
+00:41:36,860 --> 00:41:38,900
+that we released the paper.
+
+984
+00:41:38,900 --> 00:41:40,850
+We ended up getting
+state of the art results
+
+985
+00:41:40,850 --> 00:41:45,050
+on the GLUE meta
+benchmark, CNN Daily Mail
+
+986
+00:41:45,050 --> 00:41:47,930
+abstractive summarization,
+SQuAD question answering.
+
+987
+00:41:47,930 --> 00:41:49,790
+And we were actually
+quite excited to see
+
+988
+00:41:49,790 --> 00:41:52,070
+how well we did on SuperGLUE.
+
+989
+00:41:52,070 --> 00:41:54,500
+We ultimately came pretty
+close to the human score which
+
+990
+00:41:54,500 --> 00:41:58,190
+was a score of 89.8, and we
+performed significantly better
+
+991
+00:41:58,190 --> 00:41:59,510
+than RoBERTa.
+
+992
+00:41:59,510 --> 00:42:02,300
+SuperGLUE, it turns
+out is a benchmark that
+
+993
+00:42:02,300 --> 00:42:04,790
+benefits a lot from large
+models and so you can really
+
+994
+00:42:04,790 --> 00:42:07,820
+see a dramatic increase
+in the model's performance
+
+995
+00:42:07,820 --> 00:42:10,370
+as we scale the model up.
+
+996
+00:42:10,370 --> 00:42:13,220
+On the other hand, we did not
+attain state of the art results
+
+997
+00:42:13,220 --> 00:42:15,083
+on any of the
+translation datasets.
+
+998
+00:42:15,083 --> 00:42:17,000
+And the reason that we
+think that this is true
+
+999
+00:42:17,000 --> 00:42:18,770
+is because all of
+the state of the art
+
+1000
+00:42:18,770 --> 00:42:21,350
+results at the time on
+these translation datasets
+
+1001
+00:42:21,350 --> 00:42:22,830
+used back translation.
+
+1002
+00:42:22,830 --> 00:42:25,950
+And if you remember we did
+English only pre-training
+
+1003
+00:42:25,950 --> 00:42:27,210
+in our model.
+
+1004
+00:42:27,210 --> 00:42:32,210
+And we expect that in terms of
+making use of unlabeled data,
+
+1005
+00:42:32,210 --> 00:42:34,550
+it's more effective to use
+back translation for machine
+
+1006
+00:42:34,550 --> 00:42:37,190
+translation problems than to use
+this English only pre-training
+
+1007
+00:42:37,190 --> 00:42:39,073
+that we did.
+
+1008
+00:42:39,073 --> 00:42:40,740
+I should mention of
+course these results
+
+1009
+00:42:40,740 --> 00:42:41,980
+are now quite a bit stale.
+
+1010
+00:42:41,980 --> 00:42:43,950
+And some of these
+scores have been
+
+1011
+00:42:43,950 --> 00:42:48,040
+beaten by subsequent models.
+
+1012
+00:42:48,040 --> 00:42:51,150
+So now just quick, make a
+plug that all of our code
+
+1013
+00:42:51,150 --> 00:42:53,490
+is released, our pre-trained
+models have been released.
+
+1014
+00:42:53,490 --> 00:42:55,240
+You can make use of
+them in our code base.
+
+1015
+00:42:55,240 --> 00:42:58,020
+They're also, of course, in the
+Hugging Face transformers code
+
+1016
+00:42:58,020 --> 00:42:59,370
+base.
+
+1017
+00:42:59,370 --> 00:43:05,490
+We made a colab at the time
+that shows a pretty basic demo
+
+1018
+00:43:05,490 --> 00:43:07,620
+of how to take one of
+our pre-trained models
+
+1019
+00:43:07,620 --> 00:43:12,330
+and basically train it on a
+TSV file of inputs and targets.
+
+1020
+00:43:12,330 --> 00:43:14,880
+So because all problems
+are text-to-text problems,
+
+1021
+00:43:14,880 --> 00:43:16,920
+you just need to give the
+model some input text,
+
+1022
+00:43:16,920 --> 00:43:18,870
+and some target text,
+and that's all you
+
+1023
+00:43:18,870 --> 00:43:20,760
+need to fine tune the model.
+
+1024
+00:43:20,760 --> 00:43:22,260
+And you can make,
+you can actually
+
+1025
+00:43:22,260 --> 00:43:25,770
+fine tune up to the 3 billion
+parameter model on a free colab
+
+1026
+00:43:25,770 --> 00:43:30,970
+TPU using the link
+at the bottom here.
+
+1027
+00:43:30,970 --> 00:43:32,982
+Great so, so far
+we've been talking
+
+1028
+00:43:32,982 --> 00:43:34,690
+about an English only
+pre-training model.
+
+1029
+00:43:34,690 --> 00:43:37,180
+I mean we did apply it
+to machine translation
+
+1030
+00:43:37,180 --> 00:43:38,540
+and downstream tasks.
+
+1031
+00:43:38,540 --> 00:43:40,600
+So a kind of a natural
+question is, what
+
+1032
+00:43:40,600 --> 00:43:42,780
+about all the other languages?
+
+1033
+00:43:42,780 --> 00:43:45,230
+Why not train a
+multilingual model?
+
+1034
+00:43:45,230 --> 00:43:47,410
+And so that's something
+that we did more recently.
+
+1035
+00:43:47,410 --> 00:43:48,980
+And actually let me
+just pause because I did
+
+1036
+00:43:48,980 --> 00:43:50,522
+see a couple of
+questions coming out.
+
+1037
+00:43:50,522 --> 00:43:53,560
+I want to make sure that I
+am not leaving anyone behind
+
+1038
+00:43:53,560 --> 00:43:55,585
+as I move to the next section.
+
+1039
+00:43:55,585 --> 00:43:59,080
+
+
+1040
+00:43:59,080 --> 00:43:59,580
+Sure.
+
+1041
+00:43:59,580 --> 00:44:04,910
+So, one of the questions is
+about the multi-task setting.
+
+1042
+00:44:04,910 --> 00:44:07,730
+If you include an
+unknown task prefix,
+
+1043
+00:44:07,730 --> 00:44:09,300
+does anything
+interesting happen?
+
+1044
+00:44:09,300 --> 00:44:13,760
+And if you don't include
+a prefix what does it do?
+
+1045
+00:44:13,760 --> 00:44:17,660
+So if you include an
+unknown task prefix,
+
+1046
+00:44:17,660 --> 00:44:20,570
+or if you don't include a prefix
+at all, what it will probably
+
+1047
+00:44:20,570 --> 00:44:23,780
+do is apply the
+unsupervised objective
+
+1048
+00:44:23,780 --> 00:44:26,120
+because we actually
+didn't use a task prefix
+
+1049
+00:44:26,120 --> 00:44:29,360
+for the unsupervised objective.
+
+1050
+00:44:29,360 --> 00:44:32,600
+Well I guess I
+should say, what--
+
+1051
+00:44:32,600 --> 00:44:34,190
+it's not quite,
+that's not quite true
+
+1052
+00:44:34,190 --> 00:44:37,560
+because there won't be any
+sentinel tokens in the input.
+
+1053
+00:44:37,560 --> 00:44:40,063
+So what we actually see
+is it typically does
+
+1054
+00:44:40,063 --> 00:44:41,480
+is it outputs kind
+of some related
+
+1055
+00:44:41,480 --> 00:44:44,390
+words and some other
+sentinel tokens in gibberish.
+
+1056
+00:44:44,390 --> 00:44:49,892
+It's not very useful
+is I guess the upshot.
+
+1057
+00:44:49,892 --> 00:44:51,600
+We have questions
+about back translation,
+
+1058
+00:44:51,600 --> 00:44:53,558
+I don't think they heard
+about back translation
+
+1059
+00:44:53,558 --> 00:44:55,238
+in the rest of the course.
+
+1060
+00:44:55,238 --> 00:44:57,530
+So back translation is a
+pretty straightforward method.
+
+1061
+00:44:57,530 --> 00:45:00,410
+The basic idea is that if I
+have unlabeled text data in one
+
+1062
+00:45:00,410 --> 00:45:04,400
+language, I use my current
+model to translate that data
+
+1063
+00:45:04,400 --> 00:45:07,250
+to some particular language.
+
+1064
+00:45:07,250 --> 00:45:12,080
+And I use that as training data
+then subsequently for my model.
+
+1065
+00:45:12,080 --> 00:45:14,750
+It's similar to self-training
+if you're familiar with it.
+
+1066
+00:45:14,750 --> 00:45:17,060
+Basically you're making
+predictions on unlabeled data
+
+1067
+00:45:17,060 --> 00:45:20,050
+and then using those
+predictions to train the model.
+
+1068
+00:45:20,050 --> 00:45:22,210
+Turns out to be helpful.
+
+1069
+00:45:22,210 --> 00:45:27,235
+Yep, and then one detail
+question, maximum input length
+
+1070
+00:45:27,235 --> 00:45:29,360
+and maximum output length,
+how did you choose them?
+
+1071
+00:45:29,360 --> 00:45:31,420
+Did you do a study
+on that as well?
+
+1072
+00:45:31,420 --> 00:45:34,150
+Yeah, so most of the
+tasks we considered
+
+1073
+00:45:34,150 --> 00:45:36,370
+did not have input length
+significantly longer
+
+1074
+00:45:36,370 --> 00:45:38,660
+than 512 tokens
+most of the time,
+
+1075
+00:45:38,660 --> 00:45:42,970
+using the tokenization
+strategy that we made use of.
+
+1076
+00:45:42,970 --> 00:45:46,480
+And so we used a maximum
+input length of 512
+
+1077
+00:45:46,480 --> 00:45:48,940
+but we used that position
+encoding scheme that
+
+1078
+00:45:48,940 --> 00:45:50,860
+allows arbitrary input lengths.
+
+1079
+00:45:50,860 --> 00:45:53,410
+And we actually have
+in subsequent work
+
+1080
+00:45:53,410 --> 00:45:58,600
+fine tuned T5 on
+sequences of length 2,048.
+
+1081
+00:45:58,600 --> 00:46:01,210
+Beyond that you start to get
+into memory issues because
+
+1082
+00:46:01,210 --> 00:46:03,610
+of attention's quadratic
+memory complexity.
+
+1083
+00:46:03,610 --> 00:46:08,175
+But in principle you can
+apply it to long sequences.
+
+1084
+00:46:08,175 --> 00:46:10,300
+And then maybe one last
+thing if you have a second,
+
+1085
+00:46:10,300 --> 00:46:14,170
+is talking again about
+how translation again
+
+1086
+00:46:14,170 --> 00:46:17,780
+seems to be not the, not
+the killer app for this.
+
+1087
+00:46:17,780 --> 00:46:22,210
+And so what's your intuition
+as to why translation--
+
+1088
+00:46:22,210 --> 00:46:26,650
+does it not benefit from
+pre-training for what reason?
+
+1089
+00:46:26,650 --> 00:46:28,450
+I'm not, I'm really not sure.
+
+1090
+00:46:28,450 --> 00:46:31,810
+
+
+1091
+00:46:31,810 --> 00:46:34,390
+Yeah, I can only conjecture.
+
+1092
+00:46:34,390 --> 00:46:37,240
+I think that pre-training
+helps the model learn
+
+1093
+00:46:37,240 --> 00:46:38,780
+the meaning of words.
+
+1094
+00:46:38,780 --> 00:46:40,912
+It helps the model learn
+some world knowledge which
+
+1095
+00:46:40,912 --> 00:46:42,370
+I'll talk about a
+little bit later,
+
+1096
+00:46:42,370 --> 00:46:45,400
+and that's a very loose concept.
+
+1097
+00:46:45,400 --> 00:46:48,130
+I think that for
+translation learning
+
+1098
+00:46:48,130 --> 00:46:50,410
+world knowledge is
+not very useful,
+
+1099
+00:46:50,410 --> 00:46:52,450
+because everything, all
+of the knowledge you
+
+1100
+00:46:52,450 --> 00:46:55,810
+need to translate a
+sentence for the most part
+
+1101
+00:46:55,810 --> 00:46:58,510
+is in the sentence.
+
+1102
+00:46:58,510 --> 00:47:02,590
+And so basically all of the sort
+of contextual knowledge style
+
+1103
+00:47:02,590 --> 00:47:05,200
+information that you need to
+produce the German sentence
+
+1104
+00:47:05,200 --> 00:47:06,520
+in the input sentence.
+
+1105
+00:47:06,520 --> 00:47:08,620
+So gaining world knowledge
+during pre-training
+
+1106
+00:47:08,620 --> 00:47:10,510
+is not very useful.
+
+1107
+00:47:10,510 --> 00:47:12,730
+Of course it's useful
+to know what words mean,
+
+1108
+00:47:12,730 --> 00:47:16,030
+but to a certain extent that's
+kind of the easiest signal
+
+1109
+00:47:16,030 --> 00:47:17,710
+to pick up on during training.
+
+1110
+00:47:17,710 --> 00:47:20,110
+And I imagine, that
+would be my guess,
+
+1111
+00:47:20,110 --> 00:47:24,150
+I don't have any rigorous
+proof of any of this.
+
+1112
+00:47:24,150 --> 00:47:26,200
+Thanks.
+
+1113
+00:47:26,200 --> 00:47:31,360
+Great, so like I was saying, we
+trained this English only model
+
+1114
+00:47:31,360 --> 00:47:35,920
+and we wanted to address the
+major shortcoming that really
+
+1115
+00:47:35,920 --> 00:47:37,940
+only can speak one language.
+
+1116
+00:47:37,940 --> 00:47:40,750
+So we introduced a model
+called mT5, multilingual T5.
+
+1117
+00:47:40,750 --> 00:47:43,150
+And really for
+the most part, the
+
+1118
+00:47:43,150 --> 00:47:44,950
+if you remember
+one thing about mT5
+
+1119
+00:47:44,950 --> 00:47:47,620
+it's basically that it's
+exactly the same model
+
+1120
+00:47:47,620 --> 00:47:49,630
+but trained on a
+multilingual corpus.
+
+1121
+00:47:49,630 --> 00:47:52,730
+And the text-to-text
+format is the same.
+
+1122
+00:47:52,730 --> 00:47:56,380
+We feed in task prefixes
+but we can feed content
+
+1123
+00:47:56,380 --> 00:47:57,790
+in different languages.
+
+1124
+00:47:57,790 --> 00:47:59,680
+And we can do
+classification tasks.
+
+1125
+00:47:59,680 --> 00:48:03,040
+We can do question
+answering tasks with mT5
+
+1126
+00:48:03,040 --> 00:48:06,100
+in exactly the same way
+that we can do with T5.
+
+1127
+00:48:06,100 --> 00:48:09,070
+So like I said the
+pertinent thing about mT5
+
+1128
+00:48:09,070 --> 00:48:11,980
+was creating a
+multilingual variant of C4.
+
+1129
+00:48:11,980 --> 00:48:14,410
+Overall the process is
+very similar to the process
+
+1130
+00:48:14,410 --> 00:48:19,060
+we used for C4, except that
+it includes 101 languages
+
+1131
+00:48:19,060 --> 00:48:23,350
+that we detected using a open
+source language detector.
+
+1132
+00:48:23,350 --> 00:48:26,618
+We also extracted data from
+more Common Crawl dumps,
+
+1133
+00:48:26,618 --> 00:48:28,660
+because especially for
+the low resource languages
+
+1134
+00:48:28,660 --> 00:48:32,200
+it was hard to get enough data
+from only one Common Crawl
+
+1135
+00:48:32,200 --> 00:48:32,750
+dump.
+
+1136
+00:48:32,750 --> 00:48:35,140
+And you can see a list of
+languages that we include here.
+
+1137
+00:48:35,140 --> 00:48:36,723
+Ultimately the data
+set ended up being
+
+1138
+00:48:36,723 --> 00:48:40,260
+about 27 terabytes in size.
+
+1139
+00:48:40,260 --> 00:48:42,170
+So here's a distribution
+of the number
+
+1140
+00:48:42,170 --> 00:48:46,220
+of pages in the mC4 training
+dataset for various languages.
+
+1141
+00:48:46,220 --> 00:48:48,470
+You can see our most, our
+highest resource language
+
+1142
+00:48:48,470 --> 00:48:51,290
+is English where we have
+about 3 billion pages
+
+1143
+00:48:51,290 --> 00:48:53,660
+with 3 trillion tokens total.
+
+1144
+00:48:53,660 --> 00:48:55,520
+The lowest resource
+languages Yoruba
+
+1145
+00:48:55,520 --> 00:48:57,110
+with only about 50,000 pages.
+
+1146
+00:48:57,110 --> 00:48:59,240
+So you can see that
+the amount of data
+
+1147
+00:48:59,240 --> 00:49:01,760
+that we got for each language
+varies by many, many orders
+
+1148
+00:49:01,760 --> 00:49:04,290
+of magnitude.
+
+1149
+00:49:04,290 --> 00:49:06,030
+Because of that
+a common strategy
+
+1150
+00:49:06,030 --> 00:49:07,797
+is to use this sort
+of temperature scaling
+
+1151
+00:49:07,797 --> 00:49:09,630
+that I mentioned earlier
+where basically you
+
+1152
+00:49:09,630 --> 00:49:12,720
+sample from data in
+a particular language
+
+1153
+00:49:12,720 --> 00:49:16,530
+by using a-- by scaling
+the number of examples
+
+1154
+00:49:16,530 --> 00:49:18,510
+in that language
+by a temperature.
+
+1155
+00:49:18,510 --> 00:49:22,200
+And as the, and I
+apologize, the temperature
+
+1156
+00:49:22,200 --> 00:49:26,410
+here is 1 over the temperature
+that I described previously.
+
+1157
+00:49:26,410 --> 00:49:27,930
+So in this case,
+as the temperature
+
+1158
+00:49:27,930 --> 00:49:30,090
+gets smaller and smaller,
+you get closer and closer
+
+1159
+00:49:30,090 --> 00:49:32,400
+to a uniform distribution.
+
+1160
+00:49:32,400 --> 00:49:35,430
+The net effect of this is that
+for very small temperatures
+
+1161
+00:49:35,430 --> 00:49:37,410
+you tend to do better
+on downstream tasks
+
+1162
+00:49:37,410 --> 00:49:39,540
+on low resource
+languages like Urdu,
+
+1163
+00:49:39,540 --> 00:49:41,820
+but as you increase the
+temperature so that you get,
+
+1164
+00:49:41,820 --> 00:49:44,160
+so you basically are doing
+examples proportional mixing
+
+1165
+00:49:44,160 --> 00:49:45,870
+of the different
+languages, you do better
+
+1166
+00:49:45,870 --> 00:49:48,900
+on high resource
+languages like Russian.
+
+1167
+00:49:48,900 --> 00:49:54,540
+So we took, we took
+mT4, we pre-trained mT5,
+
+1168
+00:49:54,540 --> 00:49:56,850
+again basically everything
+was kept the same,
+
+1169
+00:49:56,850 --> 00:49:59,400
+we made the vocabulary a
+bit bigger to accommodate
+
+1170
+00:49:59,400 --> 00:50:00,720
+all the different languages.
+
+1171
+00:50:00,720 --> 00:50:02,610
+But overall that
+amount of pre-training
+
+1172
+00:50:02,610 --> 00:50:05,700
+the model sizes, et cetera
+are basically the same.
+
+1173
+00:50:05,700 --> 00:50:09,270
+And ultimately got state of
+the art on some of the tasks
+
+1174
+00:50:09,270 --> 00:50:10,580
+in the XTREME benchmark.
+
+1175
+00:50:10,580 --> 00:50:12,330
+You'll notice that we
+don't report results
+
+1176
+00:50:12,330 --> 00:50:15,990
+for some of these tasks,
+that's partially because XTREME
+
+1177
+00:50:15,990 --> 00:50:19,950
+is designed for sentence
+encoders like BERT,
+
+1178
+00:50:19,950 --> 00:50:23,670
+T5 is a-- and mT5 are
+encoder-decoder models.
+
+1179
+00:50:23,670 --> 00:50:26,700
+We did not experiment with
+using the encoder on its own
+
+1180
+00:50:26,700 --> 00:50:28,720
+but in order to attack
+some of these problems,
+
+1181
+00:50:28,720 --> 00:50:30,510
+like the sentence
+retrieval problems,
+
+1182
+00:50:30,510 --> 00:50:34,620
+you need a model that can output
+a single vector representation
+
+1183
+00:50:34,620 --> 00:50:36,000
+of your sequence.
+
+1184
+00:50:36,000 --> 00:50:38,040
+And we don't have
+that in T5 so we
+
+1185
+00:50:38,040 --> 00:50:42,100
+didn't apply it to those tasks.
+
+1186
+00:50:42,100 --> 00:50:44,050
+One interesting finding
+from this paper,
+
+1187
+00:50:44,050 --> 00:50:45,610
+that I'll just
+quickly mention here,
+
+1188
+00:50:45,610 --> 00:50:50,950
+is that there are
+basically multiple settings
+
+1189
+00:50:50,950 --> 00:50:54,220
+that people consider
+multilingual benchmarks.
+
+1190
+00:50:54,220 --> 00:50:56,450
+One is the case,
+the zero-shot case.
+
+1191
+00:50:56,450 --> 00:50:58,720
+And in that case, you
+don't do any pre-training
+
+1192
+00:50:58,720 --> 00:51:02,800
+on a language of, sorry, you
+don't have any fine tuning data
+
+1193
+00:51:02,800 --> 00:51:04,240
+on each particular language.
+
+1194
+00:51:04,240 --> 00:51:06,637
+You only have pre-training
+data on those languages.
+
+1195
+00:51:06,637 --> 00:51:08,470
+So you fine tune, let's
+say only in English,
+
+1196
+00:51:08,470 --> 00:51:11,140
+and then you feed the model
+some text in another language
+
+1197
+00:51:11,140 --> 00:51:13,780
+and see if it produces
+the right predictions.
+
+1198
+00:51:13,780 --> 00:51:15,820
+The next setting is the
+translate-train setting.
+
+1199
+00:51:15,820 --> 00:51:17,950
+That's where you take a
+machine translation model
+
+1200
+00:51:17,950 --> 00:51:20,710
+and translate the data in the
+English fine tuning corpus
+
+1201
+00:51:20,710 --> 00:51:22,120
+into different languages.
+
+1202
+00:51:22,120 --> 00:51:25,210
+And then the last setting is the
+in-language multi-task setting.
+
+1203
+00:51:25,210 --> 00:51:27,070
+That's the setting
+where you assume
+
+1204
+00:51:27,070 --> 00:51:28,900
+that you have gold
+standard ground truth
+
+1205
+00:51:28,900 --> 00:51:31,840
+data in every language that
+you want the model to be
+
+1206
+00:51:31,840 --> 00:51:33,940
+able to process data in.
+
+1207
+00:51:33,940 --> 00:51:36,010
+And the takeaway
+here actually is
+
+1208
+00:51:36,010 --> 00:51:39,400
+that the difference
+in performance
+
+1209
+00:51:39,400 --> 00:51:42,520
+between small models and
+our largest model as we
+
+1210
+00:51:42,520 --> 00:51:46,240
+go along the x-axis
+is much, much bigger
+
+1211
+00:51:46,240 --> 00:51:48,820
+for the zero-shot and
+translate-train settings
+
+1212
+00:51:48,820 --> 00:51:51,410
+than it is for the
+in-language multitask setting.
+
+1213
+00:51:51,410 --> 00:51:53,410
+So what this suggests
+to us is basically
+
+1214
+00:51:53,410 --> 00:51:58,960
+that the model learns a much
+wider distribution of languages
+
+1215
+00:51:58,960 --> 00:52:01,840
+if it has a much larger
+amount of parameters.
+
+1216
+00:52:01,840 --> 00:52:05,650
+And it is able to do this
+kind of like zero-shot task
+
+1217
+00:52:05,650 --> 00:52:09,130
+learning, multilingual task
+learning much better when
+
+1218
+00:52:09,130 --> 00:52:12,570
+it has more parameters.
+
+1219
+00:52:12,570 --> 00:52:15,900
+So kind of along those lines,
+larger models can maybe
+
+1220
+00:52:15,900 --> 00:52:18,595
+fit more knowledge
+about more languages,
+
+1221
+00:52:18,595 --> 00:52:20,220
+we had another paper
+where we basically
+
+1222
+00:52:20,220 --> 00:52:22,020
+tried to answer the
+question, you know,
+
+1223
+00:52:22,020 --> 00:52:23,820
+how much and what
+kind of knowledge
+
+1224
+00:52:23,820 --> 00:52:27,030
+does a model pick up
+during pre-training?
+
+1225
+00:52:27,030 --> 00:52:29,250
+And so to answer that
+question, we took a,
+
+1226
+00:52:29,250 --> 00:52:32,160
+we basically introduced
+a new variant
+
+1227
+00:52:32,160 --> 00:52:33,750
+of the question answering task.
+
+1228
+00:52:33,750 --> 00:52:36,030
+So the question answering
+task kind of comes
+
+1229
+00:52:36,030 --> 00:52:37,528
+in a couple of
+different flavors.
+
+1230
+00:52:37,528 --> 00:52:39,570
+The simplest flavor, which
+I've mentioned already
+
+1231
+00:52:39,570 --> 00:52:41,170
+is reading comprehension.
+
+1232
+00:52:41,170 --> 00:52:43,110
+And in that case, the
+model is basically
+
+1233
+00:52:43,110 --> 00:52:45,330
+given a paragraph or
+an article, and then
+
+1234
+00:52:45,330 --> 00:52:47,730
+it's asked a question about
+the paragraph or article,
+
+1235
+00:52:47,730 --> 00:52:50,540
+and it has to basically
+extract the answer.
+
+1236
+00:52:50,540 --> 00:52:53,040
+So you can see if it's being
+asked, "what color is a lemon?"
+
+1237
+00:52:53,040 --> 00:52:57,090
+It has to look in the
+paragraph that it's seen,
+
+1238
+00:52:57,090 --> 00:52:59,970
+and see that it's, the lemon
+is a yellow fruit and output
+
+1239
+00:52:59,970 --> 00:53:00,840
+the word "yellow".
+
+1240
+00:53:00,840 --> 00:53:03,423
+So this is kind of the simplest
+form of the question answering
+
+1241
+00:53:03,423 --> 00:53:04,140
+task.
+
+1242
+00:53:04,140 --> 00:53:06,600
+A more difficult form is
+what people call open domain
+
+1243
+00:53:06,600 --> 00:53:07,538
+question answering.
+
+1244
+00:53:07,538 --> 00:53:09,330
+And in that case, you
+assume that the model
+
+1245
+00:53:09,330 --> 00:53:11,220
+is given a question
+and has access
+
+1246
+00:53:11,220 --> 00:53:13,950
+to a large external
+database of knowledge,
+
+1247
+00:53:13,950 --> 00:53:16,000
+maybe all of Wikipedia.
+
+1248
+00:53:16,000 --> 00:53:17,500
+So the model has
+to do two things.
+
+1249
+00:53:17,500 --> 00:53:20,160
+It first has to
+find the article,
+
+1250
+00:53:20,160 --> 00:53:21,900
+or the snippet of
+text, that contains
+
+1251
+00:53:21,900 --> 00:53:24,180
+the answer in the database.
+
+1252
+00:53:24,180 --> 00:53:27,820
+And then it has to extract
+the answer from the article.
+
+1253
+00:53:27,820 --> 00:53:29,700
+And so there's this
+additional retrieval step
+
+1254
+00:53:29,700 --> 00:53:31,920
+that makes the problem
+quite a bit harder.
+
+1255
+00:53:31,920 --> 00:53:33,828
+But we introduced a
+sort of third variant
+
+1256
+00:53:33,828 --> 00:53:36,120
+of question answering that
+we call closed book question
+
+1257
+00:53:36,120 --> 00:53:36,900
+answering.
+
+1258
+00:53:36,900 --> 00:53:39,990
+The name takes inspiration
+from closed book exams.
+
+1259
+00:53:39,990 --> 00:53:43,110
+The goal here is that you just
+feed the model the question.
+
+1260
+00:53:43,110 --> 00:53:45,570
+It does not have access to
+an external knowledge source.
+
+1261
+00:53:45,570 --> 00:53:47,770
+It cannot look up
+information anywhere.
+
+1262
+00:53:47,770 --> 00:53:50,550
+It could only answer the
+question based on the knowledge
+
+1263
+00:53:50,550 --> 00:53:52,440
+that it picked up
+during pre-training.
+
+1264
+00:53:52,440 --> 00:53:54,060
+So if you feed the
+model the question,
+
+1265
+00:53:54,060 --> 00:53:55,275
+"what color is a lemon?"
+
+1266
+00:53:55,275 --> 00:53:57,150
+It has to output the
+model "yellow" correctly
+
+1267
+00:53:57,150 --> 00:54:02,290
+because it so, so to speak knows
+that the lemons are yellow.
+
+1268
+00:54:02,290 --> 00:54:06,120
+So this is a good way, we
+argue, of testing the knowledge,
+
+1269
+00:54:06,120 --> 00:54:08,340
+the amount of knowledge
+stored in the model
+
+1270
+00:54:08,340 --> 00:54:11,030
+during pre-training.
+
+1271
+00:54:11,030 --> 00:54:12,880
+So why would we
+expect that to work?
+
+1272
+00:54:12,880 --> 00:54:14,470
+Well, you can
+imagine here, we're
+
+1273
+00:54:14,470 --> 00:54:17,083
+doing our normal
+pre-training of T5.
+
+1274
+00:54:17,083 --> 00:54:19,000
+We're masking out words
+and training the model
+
+1275
+00:54:19,000 --> 00:54:22,150
+to predict the masked
+out spans of words.
+
+1276
+00:54:22,150 --> 00:54:25,630
+And you might imagine that
+somewhere during pre-training
+
+1277
+00:54:25,630 --> 00:54:28,180
+it sees a sentence that says,
+"President Franklin blank
+
+1278
+00:54:28,180 --> 00:54:30,370
+born blank January 1882."
+
+1279
+00:54:30,370 --> 00:54:34,840
+The goal here would be to output
+"D. Roosevelt was blank in".
+
+1280
+00:54:34,840 --> 00:54:37,570
+And then during fine-tuning
+we train the model
+
+1281
+00:54:37,570 --> 00:54:42,670
+to predict when the year 1882,
+when it was asked the question,
+
+1282
+00:54:42,670 --> 00:54:44,590
+"when was Franklin
+D. Roosevelt born?"
+
+1283
+00:54:44,590 --> 00:54:47,860
+And you might hope that
+it kind of recalls back
+
+1284
+00:54:47,860 --> 00:54:51,673
+to its pre-training task
+and recalls some knowledge
+
+1285
+00:54:51,673 --> 00:54:53,590
+that it picked up during
+pre-training in order
+
+1286
+00:54:53,590 --> 00:54:57,090
+to answer this
+question correctly.
+
+1287
+00:54:57,090 --> 00:55:00,570
+So we took some standard
+open domain question
+
+1288
+00:55:00,570 --> 00:55:03,000
+answering datasets, natural
+questions, web questions,
+
+1289
+00:55:03,000 --> 00:55:04,890
+and trivia QA.
+
+1290
+00:55:04,890 --> 00:55:07,830
+And basically removed
+all of the context.
+
+1291
+00:55:07,830 --> 00:55:11,720
+And trained our model to
+predict the correct answer when
+
+1292
+00:55:11,720 --> 00:55:14,040
+asked some particular
+question, and then
+
+1293
+00:55:14,040 --> 00:55:15,750
+evaluated its
+performance on the test
+
+1294
+00:55:15,750 --> 00:55:17,550
+set for each of these tasks.
+
+1295
+00:55:17,550 --> 00:55:20,160
+And in this table we're
+comparing the state of the art
+
+1296
+00:55:20,160 --> 00:55:21,850
+results for an
+open domain system,
+
+1297
+00:55:21,850 --> 00:55:24,150
+these are systems that
+explicitly retrieve knowledge
+
+1298
+00:55:24,150 --> 00:55:25,830
+from an external
+knowledge source,
+
+1299
+00:55:25,830 --> 00:55:30,210
+compared to T5 when it's been
+trained in this closed book
+
+1300
+00:55:30,210 --> 00:55:30,960
+setting.
+
+1301
+00:55:30,960 --> 00:55:33,043
+You'll notice that we're
+actually using a slightly
+
+1302
+00:55:33,043 --> 00:55:36,180
+different version of
+T5 here, using T5.1.1.
+
+1303
+00:55:36,180 --> 00:55:40,560
+The pertinent difference is just
+that T5.1.1 was not multi-task
+
+1304
+00:55:40,560 --> 00:55:41,070
+pre-trained.
+
+1305
+00:55:41,070 --> 00:55:44,225
+It was only pre-trained using
+an unsupervised objective.
+
+1306
+00:55:44,225 --> 00:55:45,600
+The reason we did
+that, again, is
+
+1307
+00:55:45,600 --> 00:55:47,683
+because we want to measure
+the amount of knowledge
+
+1308
+00:55:47,683 --> 00:55:50,530
+that the model picked
+up during pre-training.
+
+1309
+00:55:50,530 --> 00:55:53,010
+And you can see we
+actually got reasonably,
+
+1310
+00:55:53,010 --> 00:55:55,702
+strong performance, maybe
+respectable performance the--
+
+1311
+00:55:55,702 --> 00:56:00,385
+
+
+1312
+00:56:00,385 --> 00:56:02,260
+I don't want to use the
+performance, the word
+
+1313
+00:56:02,260 --> 00:56:03,010
+performance again.
+
+1314
+00:56:03,010 --> 00:56:05,790
+But the accuracy basically
+on each of these datasets
+
+1315
+00:56:05,790 --> 00:56:08,110
+increases as the
+model size increases,
+
+1316
+00:56:08,110 --> 00:56:10,550
+which maybe in a
+loose way suggests
+
+1317
+00:56:10,550 --> 00:56:12,300
+that the larger models
+have picked up more
+
+1318
+00:56:12,300 --> 00:56:13,980
+knowledge during pre-training.
+
+1319
+00:56:13,980 --> 00:56:15,960
+But we ultimately
+lagged behind the state
+
+1320
+00:56:15,960 --> 00:56:17,820
+of the art results for
+open domain systems
+
+1321
+00:56:17,820 --> 00:56:20,670
+that explicitly
+retrieve knowledge.
+
+1322
+00:56:20,670 --> 00:56:25,500
+So to try to close this gap,
+we made use of this objective
+
+1323
+00:56:25,500 --> 00:56:28,560
+called salient span
+masking from a paper called
+
+1324
+00:56:28,560 --> 00:56:30,990
+"Retrieval Augmented
+Language Model Pre-training."
+
+1325
+00:56:30,990 --> 00:56:34,470
+And salient span masking
+is a very simple idea.
+
+1326
+00:56:34,470 --> 00:56:36,510
+The idea is that rather
+than masking out words
+
+1327
+00:56:36,510 --> 00:56:38,520
+at random in your
+pre-training objective,
+
+1328
+00:56:38,520 --> 00:56:42,630
+you actually mask out
+entities explicitly.
+
+1329
+00:56:42,630 --> 00:56:46,620
+So that's people's names,
+places, dates et cetera.
+
+1330
+00:56:46,620 --> 00:56:49,710
+And you basically just
+use an off the shelf
+
+1331
+00:56:49,710 --> 00:56:52,740
+named entity recognizer to
+figure out what entities are
+
+1332
+00:56:52,740 --> 00:56:54,300
+in your pre-training dataset.
+
+1333
+00:56:54,300 --> 00:56:58,290
+And you train the model to
+fill in salient spans instead
+
+1334
+00:56:58,290 --> 00:56:59,730
+of random spans.
+
+1335
+00:56:59,730 --> 00:57:03,870
+So what we did, is we took
+T5.1.1 after it was pre-trained
+
+1336
+00:57:03,870 --> 00:57:07,290
+and did continued pre-training
+on salient span masking.
+
+1337
+00:57:07,290 --> 00:57:08,670
+And then measured
+the performance
+
+1338
+00:57:08,670 --> 00:57:10,710
+on our downstream tasks
+after fine tuning.
+
+1339
+00:57:10,710 --> 00:57:13,590
+And you can see that the more
+salient span mask pre-training
+
+1340
+00:57:13,590 --> 00:57:16,590
+we did, the better, excuse
+me, the better and better
+
+1341
+00:57:16,590 --> 00:57:20,760
+the performance got when we fine
+tuned on the downstream tasks.
+
+1342
+00:57:20,760 --> 00:57:23,220
+And we ultimately were able
+to close some of these gaps
+
+1343
+00:57:23,220 --> 00:57:23,970
+significantly.
+
+1344
+00:57:23,970 --> 00:57:28,260
+And actually outperformed the
+best open domain system on web
+
+1345
+00:57:28,260 --> 00:57:34,680
+questions by adding salient
+span masking to T5.1.1.
+
+1346
+00:57:34,680 --> 00:57:37,470
+So this just is a
+message to tell you
+
+1347
+00:57:37,470 --> 00:57:41,815
+that the objective matters, and
+doing this kind of now people,
+
+1348
+00:57:41,815 --> 00:57:43,440
+at the time people
+didn't call it this,
+
+1349
+00:57:43,440 --> 00:57:46,050
+but now people call this domain
+adaptive, or task adaptive,
+
+1350
+00:57:46,050 --> 00:57:47,220
+pre-training.
+
+1351
+00:57:47,220 --> 00:57:49,830
+And this is a good way of
+getting better performance
+
+1352
+00:57:49,830 --> 00:57:52,640
+on your downstream tasks.
+
+1353
+00:57:52,640 --> 00:57:54,140
+So I'm going to go
+to the questions
+
+1354
+00:57:54,140 --> 00:57:58,160
+here, if now is a good time.
+
+1355
+00:57:58,160 --> 00:57:59,720
+Yes, that'd be great.
+
+1356
+00:57:59,720 --> 00:58:02,030
+So for some context,
+the students
+
+1357
+00:58:02,030 --> 00:58:04,100
+in their most recent
+assignment had
+
+1358
+00:58:04,100 --> 00:58:07,360
+to make effectively a
+mini T5 thing, where
+
+1359
+00:58:07,360 --> 00:58:09,860
+the only questions that were
+asked were from a simple domain
+
+1360
+00:58:09,860 --> 00:58:12,320
+so that they could
+pre-train on a single GPU.
+
+1361
+00:58:12,320 --> 00:58:14,120
+And one of the
+questions they have
+
+1362
+00:58:14,120 --> 00:58:17,930
+is, how can we be sure that the
+answer produced by the model
+
+1363
+00:58:17,930 --> 00:58:19,350
+is not made up?
+
+1364
+00:58:19,350 --> 00:58:22,060
+They were asked this on the
+assignments as well, I think.
+
+1365
+00:58:22,060 --> 00:58:26,492
+
+
+1366
+00:58:26,492 --> 00:58:28,700
+So if you don't have access
+to a ground truth answer,
+
+1367
+00:58:28,700 --> 00:58:30,160
+it's actually very hard to know.
+
+1368
+00:58:30,160 --> 00:58:32,210
+There's a nice
+paper that came out
+
+1369
+00:58:32,210 --> 00:58:35,780
+after this paper called "How
+Can We Know When Language Models
+
+1370
+00:58:35,780 --> 00:58:40,250
+Know" and the goal of that paper
+is to make it so that T5 is
+
+1371
+00:58:40,250 --> 00:58:42,122
+what we call well-calibrated.
+
+1372
+00:58:42,122 --> 00:58:43,580
+And when a model
+is well calibrated
+
+1373
+00:58:43,580 --> 00:58:45,800
+it means that when it
+doesn't know the answer,
+
+1374
+00:58:45,800 --> 00:58:48,480
+it doesn't output highly
+confident predictions.
+
+1375
+00:58:48,480 --> 00:58:50,900
+And this paper
+explored various ways
+
+1376
+00:58:50,900 --> 00:58:53,762
+of calibrating T5 for closed
+book question answering.
+
+1377
+00:58:53,762 --> 00:58:55,970
+And they ultimately found
+that when the model doesn't
+
+1378
+00:58:55,970 --> 00:58:58,610
+know the answer when
+it's outputting something
+
+1379
+00:58:58,610 --> 00:59:01,250
+made up that they
+could effectively
+
+1380
+00:59:01,250 --> 00:59:06,545
+make it be very unconfident
+in its predictions.
+
+1381
+00:59:06,545 --> 00:59:07,670
+So that's one way to do it.
+
+1382
+00:59:07,670 --> 00:59:11,246
+
+
+1383
+00:59:11,246 --> 00:59:14,150
+Oh, I think you actually
+are muted, John.
+
+1384
+00:59:14,150 --> 00:59:15,630
+Great.
+
+1385
+00:59:15,630 --> 00:59:16,130
+Thanks.
+
+1386
+00:59:16,130 --> 00:59:17,880
+And then another
+question is the knowledge
+
+1387
+00:59:17,880 --> 00:59:20,350
+that's necessary for
+doing this fine tuning
+
+1388
+00:59:20,350 --> 00:59:24,380
+like the Q&A on these
+fine tuning datasets,
+
+1389
+00:59:24,380 --> 00:59:29,040
+is it knowledge that is all
+present at pre-training time?
+
+1390
+00:59:29,040 --> 00:59:30,770
+Yeah, so that's
+also something that
+
+1391
+00:59:30,770 --> 00:59:32,950
+was explored by a
+subsequent paper, where
+
+1392
+00:59:32,950 --> 00:59:35,450
+it was shown that actually there
+is a decent amount of train
+
+1393
+00:59:35,450 --> 00:59:38,730
+and test overlap in terms of
+knowledge in these data sets.
+
+1394
+00:59:38,730 --> 00:59:40,970
+So it's definitely
+possible in these cases
+
+1395
+00:59:40,970 --> 00:59:43,460
+that the model is
+picking up knowledge
+
+1396
+00:59:43,460 --> 00:59:45,870
+during fine tuning
+and not pre-training.
+
+1397
+00:59:45,870 --> 00:59:51,860
+However, just as kind of
+a side experimental note,
+
+1398
+00:59:51,860 --> 00:59:55,610
+we find that the
+performance of T5
+
+1399
+00:59:55,610 --> 00:59:58,970
+actually plateaus before
+it makes a single pass
+
+1400
+00:59:58,970 --> 01:00:00,890
+over the fine tuning dataset.
+
+1401
+01:00:00,890 --> 01:00:02,648
+So basically T5 will
+very, very quickly
+
+1402
+01:00:02,648 --> 01:00:04,940
+figure out what the heck
+you're trying to get it to do.
+
+1403
+01:00:04,940 --> 01:00:06,982
+It doesn't even need to
+see the full training set
+
+1404
+01:00:06,982 --> 01:00:10,040
+before it gets basically its
+maximum performance on the test
+
+1405
+01:00:10,040 --> 01:00:10,650
+set.
+
+1406
+01:00:10,650 --> 01:00:12,740
+So we don't actually
+think that, that's
+
+1407
+01:00:12,740 --> 01:00:14,680
+a major factor
+for these results.
+
+1408
+01:00:14,680 --> 01:00:16,640
+Great, and then last question.
+
+1409
+01:00:16,640 --> 01:00:19,580
+How did the, if you studied it,
+how did the multi-task model
+
+1410
+01:00:19,580 --> 01:00:22,098
+do?
+
+1411
+01:00:22,098 --> 01:00:23,640
+Yeah, those results
+are in the paper.
+
+1412
+01:00:23,640 --> 01:00:25,307
+The results are almost
+exactly the same.
+
+1413
+01:00:25,307 --> 01:00:28,010
+It's just, it's a little easier
+to explain the whole knowledge
+
+1414
+01:00:28,010 --> 01:00:32,990
+pre-training thing when you
+are talking about T5.1.1.
+
+1415
+01:00:32,990 --> 01:00:36,470
+In the interest of time, I
+might skip these next three
+
+1416
+01:00:36,470 --> 01:00:40,040
+slides, which are, the short
+summary of these slides
+
+1417
+01:00:40,040 --> 01:00:43,730
+is just that the evaluation
+procedure that we use unfairly
+
+1418
+01:00:43,730 --> 01:00:45,940
+penalizes closed book
+question answering systems.
+
+1419
+01:00:45,940 --> 01:00:47,690
+If you want to learn
+a bit more about that
+
+1420
+01:00:47,690 --> 01:00:49,310
+you can poke into
+the paper a bit.
+
+1421
+01:00:49,310 --> 01:00:52,490
+It doesn't really
+support the main point
+
+1422
+01:00:52,490 --> 01:00:56,040
+that I'm trying to make
+in any meaningful way.
+
+1423
+01:00:56,040 --> 01:00:59,510
+So, and I want to get to some
+of the more recent papers
+
+1424
+01:00:59,510 --> 01:01:02,660
+and I should be able to
+have time to do that.
+
+1425
+01:01:02,660 --> 01:01:05,510
+Cool, so we've kind of
+answered this question,
+
+1426
+01:01:05,510 --> 01:01:10,010
+how much knowledge does a model
+pick up during pre-training?
+
+1427
+01:01:10,010 --> 01:01:12,020
+The answer is arguably a lot.
+
+1428
+01:01:12,020 --> 01:01:14,330
+So kind of a follow
+up question is,
+
+1429
+01:01:14,330 --> 01:01:16,880
+the model is kind of memorizing
+this knowledge, right?
+
+1430
+01:01:16,880 --> 01:01:19,370
+But does it also memorize,
+do large language models also
+
+1431
+01:01:19,370 --> 01:01:22,400
+memorize stuff that we
+don't want them to memorize?
+
+1432
+01:01:22,400 --> 01:01:25,320
+Specifically like private
+data, like you can imagine,
+
+1433
+01:01:25,320 --> 01:01:28,730
+let's say that somewhere in C4
+is someone's social security
+
+1434
+01:01:28,730 --> 01:01:29,600
+number.
+
+1435
+01:01:29,600 --> 01:01:32,330
+We probably don't want our model
+to memorize that, and spit it
+
+1436
+01:01:32,330 --> 01:01:35,570
+out when we're decoding from it.
+
+1437
+01:01:35,570 --> 01:01:37,460
+And we certainly don't
+want it to happen
+
+1438
+01:01:37,460 --> 01:01:40,980
+for unconditional models
+like GPT-2 or GPT-3.
+
+1439
+01:01:40,980 --> 01:01:44,270
+So in this next work we try
+to answer this question here,
+
+1440
+01:01:44,270 --> 01:01:46,460
+do large language
+models memorize stuff
+
+1441
+01:01:46,460 --> 01:01:48,690
+from their pre-training dataset?
+
+1442
+01:01:48,690 --> 01:01:52,200
+And we can first
+actually turn to experts
+
+1443
+01:01:52,200 --> 01:01:53,550
+and see what experts think.
+
+1444
+01:01:53,550 --> 01:01:58,620
+And here are two statements
+made by the EFF and OpenAI
+
+1445
+01:01:58,620 --> 01:02:01,350
+that were sent to the US
+Patent and Trademark Office
+
+1446
+01:02:01,350 --> 01:02:03,420
+when there were a call
+for comments on basically
+
+1447
+01:02:03,420 --> 01:02:04,920
+exactly this question.
+
+1448
+01:02:04,920 --> 01:02:07,200
+And you can see
+that in both cases,
+
+1449
+01:02:07,200 --> 01:02:10,440
+these organizations
+basically say,
+
+1450
+01:02:10,440 --> 01:02:13,950
+there's basically no reason to
+believe that a large language
+
+1451
+01:02:13,950 --> 01:02:18,270
+model would output, would copy
+data from its training dataset.
+
+1452
+01:02:18,270 --> 01:02:22,380
+And OpenAI kind of calls this
+a well constructed AI system.
+
+1453
+01:02:22,380 --> 01:02:24,030
+And I think what
+they actually mean
+
+1454
+01:02:24,030 --> 01:02:26,238
+by that, If you read their
+statement a little longer,
+
+1455
+01:02:26,238 --> 01:02:28,110
+they kind of say if
+you construct an AI
+
+1456
+01:02:28,110 --> 01:02:31,070
+system appropriately, the
+AI system will not overfit
+
+1457
+01:02:31,070 --> 01:02:32,070
+to the training dataset.
+
+1458
+01:02:32,070 --> 01:02:33,570
+And if it's not
+overfit, we don't
+
+1459
+01:02:33,570 --> 01:02:37,800
+expect them to actually output
+any of their training set
+
+1460
+01:02:37,800 --> 01:02:39,030
+in any non-trivial way.
+
+1461
+01:02:39,030 --> 01:02:41,820
+
+
+1462
+01:02:41,820 --> 01:02:45,600
+So these are kind of
+statements that were hunches.
+
+1463
+01:02:45,600 --> 01:02:49,020
+And in this work we tried to
+investigate more rigorously
+
+1464
+01:02:49,020 --> 01:02:50,750
+whether they were true.
+
+1465
+01:02:50,750 --> 01:02:52,500
+And the way that we
+did that was basically
+
+1466
+01:02:52,500 --> 01:02:56,560
+by taking the pre-trained GPT-2
+model and feeding it prefixes.
+
+1467
+01:02:56,560 --> 01:03:00,915
+So you can imagine, you take
+a causal language model,
+
+1468
+01:03:00,915 --> 01:03:04,320
+like GPT-2 that just predicts
+tokens auto-regressively, you
+
+1469
+01:03:04,320 --> 01:03:06,540
+feed it a prefix and then
+ask it to basically predict
+
+1470
+01:03:06,540 --> 01:03:07,860
+what comes next.
+
+1471
+01:03:07,860 --> 01:03:10,650
+And we're showing here
+this sort of odd prefix,
+
+1472
+01:03:10,650 --> 01:03:13,110
+"East Stroudsburg
+Stroudsburg" that we found
+
+1473
+01:03:13,110 --> 01:03:15,720
+when we fed this particular
+prefix into GPT-2,
+
+1474
+01:03:15,720 --> 01:03:19,600
+it actually output
+verbatim an address, name,
+
+1475
+01:03:19,600 --> 01:03:22,560
+email address, phone number,
+and fax number of a real person
+
+1476
+01:03:22,560 --> 01:03:24,360
+that appears on the internet.
+
+1477
+01:03:24,360 --> 01:03:27,150
+This example actually
+only appears six times
+
+1478
+01:03:27,150 --> 01:03:28,800
+on the entire public internet.
+
+1479
+01:03:28,800 --> 01:03:34,350
+So it's unlikely that GPT-2 saw
+this address very many times.
+
+1480
+01:03:34,350 --> 01:03:37,350
+And the main point of
+this work is that yes, it
+
+1481
+01:03:37,350 --> 01:03:40,650
+does seem like GPT-2
+at least has memorized
+
+1482
+01:03:40,650 --> 01:03:43,110
+a significant amount of
+non-trivial information
+
+1483
+01:03:43,110 --> 01:03:46,080
+from its pre-training dataset.
+
+1484
+01:03:46,080 --> 01:03:48,500
+So how did we
+undertake this study?
+
+1485
+01:03:48,500 --> 01:03:51,920
+We used this procedure that we
+are, that's shown on the screen
+
+1486
+01:03:51,920 --> 01:03:53,330
+here.
+
+1487
+01:03:53,330 --> 01:03:56,060
+We basically consider
+three different ways
+
+1488
+01:03:56,060 --> 01:03:58,310
+of sampling data from GPT-2.
+
+1489
+01:03:58,310 --> 01:04:01,640
+The first is just a sample
+auto-regressively from it.
+
+1490
+01:04:01,640 --> 01:04:03,350
+The next is to sample
+auto-regressively
+
+1491
+01:04:03,350 --> 01:04:05,060
+but with a decay in temperature.
+
+1492
+01:04:05,060 --> 01:04:07,280
+This basically
+means that you want
+
+1493
+01:04:07,280 --> 01:04:09,230
+the model to become
+more and more
+
+1494
+01:04:09,230 --> 01:04:13,310
+confident in its predictions
+over the course of sampling.
+
+1495
+01:04:13,310 --> 01:04:16,370
+And the last option is to take
+random text from the internet
+
+1496
+01:04:16,370 --> 01:04:19,370
+and use that as conditioning
+to GPT-2 before asking
+
+1497
+01:04:19,370 --> 01:04:21,450
+it to generate what comes next.
+
+1498
+01:04:21,450 --> 01:04:23,540
+So now for each
+of these samples,
+
+1499
+01:04:23,540 --> 01:04:26,750
+for each of these generations,
+each of these 200,000
+
+1500
+01:04:26,750 --> 01:04:29,550
+generations we did for each
+of these sampling methods,
+
+1501
+01:04:29,550 --> 01:04:32,330
+we want a way of kind of
+trying to predict whether it
+
+1502
+01:04:32,330 --> 01:04:34,500
+might be memorized or not.
+
+1503
+01:04:34,500 --> 01:04:36,020
+And so we came up
+with six metrics
+
+1504
+01:04:36,020 --> 01:04:40,340
+to use to give us a notion of
+whether a particular sample
+
+1505
+01:04:40,340 --> 01:04:42,530
+from GPT-2 might be memorized.
+
+1506
+01:04:42,530 --> 01:04:44,480
+All of these different
+metrics basically
+
+1507
+01:04:44,480 --> 01:04:47,780
+make use of GPT-2's
+perplexity for the sample.
+
+1508
+01:04:47,780 --> 01:04:51,200
+The perplexity, as I think
+you probably learned,
+
+1509
+01:04:51,200 --> 01:04:55,460
+is basically a measure of
+how confident GPT-2 was
+
+1510
+01:04:55,460 --> 01:04:58,800
+in generating this
+particular sample.
+
+1511
+01:04:58,800 --> 01:05:02,080
+You can also think of it as
+a measure of compression.
+
+1512
+01:05:02,080 --> 01:05:06,680
+So these metrics all make
+use of the perplexity,
+
+1513
+01:05:06,680 --> 01:05:09,440
+either we just measure GPT-2's
+perplexity for the thing
+
+1514
+01:05:09,440 --> 01:05:15,680
+that it generated, or we compute
+the ratio of GPT-2's perplexity
+
+1515
+01:05:15,680 --> 01:05:18,470
+to the perplexity for
+another variant of GPT,
+
+1516
+01:05:18,470 --> 01:05:22,070
+or to a text compression
+library called zlib.
+
+1517
+01:05:22,070 --> 01:05:24,980
+We also compared via
+a ratio the perplexity
+
+1518
+01:05:24,980 --> 01:05:27,290
+of the original sample
+versus a lowercase version
+
+1519
+01:05:27,290 --> 01:05:28,160
+of the sample.
+
+1520
+01:05:28,160 --> 01:05:30,560
+And also a windowed
+perplexity where we only
+
+1521
+01:05:30,560 --> 01:05:33,320
+compute the perplexity over
+a small window of the sample
+
+1522
+01:05:33,320 --> 01:05:35,630
+instead of the whole thing.
+
+1523
+01:05:35,630 --> 01:05:40,910
+We take the top, we do some
+deduplication on the generation
+
+1524
+01:05:40,910 --> 01:05:43,250
+and then choose the top
+100 generations according
+
+1525
+01:05:43,250 --> 01:05:45,030
+to each of these metrics.
+
+1526
+01:05:45,030 --> 01:05:46,610
+So that will
+ultimately give us 600
+
+1527
+01:05:46,610 --> 01:05:48,840
+possible memorized generations.
+
+1528
+01:05:48,840 --> 01:05:51,110
+And then we actually just
+do a basic, excuse me,
+
+1529
+01:05:51,110 --> 01:05:53,150
+a basic Google
+search to see if we
+
+1530
+01:05:53,150 --> 01:05:56,600
+can find that text
+that GPT-2 generated
+
+1531
+01:05:56,600 --> 01:05:58,490
+on the internet somewhere.
+
+1532
+01:05:58,490 --> 01:05:59,990
+And if we do find
+it on the internet
+
+1533
+01:05:59,990 --> 01:06:02,750
+somewhere we ask the
+GPT-2 authors was
+
+1534
+01:06:02,750 --> 01:06:04,755
+this in the training
+set or not, and they
+
+1535
+01:06:04,755 --> 01:06:06,380
+checked for all of
+the examples that we
+
+1536
+01:06:06,380 --> 01:06:09,680
+found and let us know if GPT-2
+actually spit out something
+
+1537
+01:06:09,680 --> 01:06:12,380
+from its training dataset.
+
+1538
+01:06:12,380 --> 01:06:14,840
+So just to give you an idea
+of what these metrics are
+
+1539
+01:06:14,840 --> 01:06:17,060
+and why they might be helpful.
+
+1540
+01:06:17,060 --> 01:06:21,950
+This scatterplot is showing the
+perplexity assigned by GPT-2
+
+1541
+01:06:21,950 --> 01:06:26,030
+and the perplexity
+assigned by zlib to 200,000
+
+1542
+01:06:26,030 --> 01:06:28,430
+samples generated by GPT-2.
+
+1543
+01:06:28,430 --> 01:06:31,940
+and you can see that most of
+them kind of fall on this line,
+
+1544
+01:06:31,940 --> 01:06:35,570
+there's a big clump of them
+on the right there in gray.
+
+1545
+01:06:35,570 --> 01:06:38,840
+But highlighted
+here in red and blue
+
+1546
+01:06:38,840 --> 01:06:42,440
+are samples that
+kind of are outliers,
+
+1547
+01:06:42,440 --> 01:06:46,940
+GPT-2 is assigning a much
+lower perplexity to zlib,
+
+1548
+01:06:46,940 --> 01:06:49,100
+sorry, to those
+samples than zlib is.
+
+1549
+01:06:49,100 --> 01:06:51,560
+And what that means is
+that GPT-2 is very, very
+
+1550
+01:06:51,560 --> 01:06:54,860
+good at predicting what comes
+next in these samples and zlib
+
+1551
+01:06:54,860 --> 01:06:55,820
+is not.
+
+1552
+01:06:55,820 --> 01:06:59,990
+Zlib is kind of an
+unbiased source, right.
+
+1553
+01:06:59,990 --> 01:07:02,600
+It's not really pre-trained
+on a bunch of data.
+
+1554
+01:07:02,600 --> 01:07:04,370
+It's kind of data agnostic.
+
+1555
+01:07:04,370 --> 01:07:06,560
+So it might be the
+case that if GPT-2
+
+1556
+01:07:06,560 --> 01:07:09,350
+is very good at predicting what
+comes next in a given sequence,
+
+1557
+01:07:09,350 --> 01:07:13,342
+but zlib is not, that GPT-2
+has memorized those samples.
+
+1558
+01:07:13,342 --> 01:07:15,050
+So all of these things
+kind of in the top
+
+1559
+01:07:15,050 --> 01:07:17,240
+left there are possible
+memorized samples.
+
+1560
+01:07:17,240 --> 01:07:19,520
+And actually we marked
+the ones in blue
+
+1561
+01:07:19,520 --> 01:07:22,040
+that it turned out, were
+actually in the training data
+
+1562
+01:07:22,040 --> 01:07:26,270
+set and that GPT-2
+had memorized.
+
+1563
+01:07:26,270 --> 01:07:31,220
+Overall, we found many examples
+of verbatim text memorized
+
+1564
+01:07:31,220 --> 01:07:32,600
+from the training dataset.
+
+1565
+01:07:32,600 --> 01:07:37,910
+This included news, log files,
+licenses, pages from Wikipedia,
+
+1566
+01:07:37,910 --> 01:07:39,140
+URLs.
+
+1567
+01:07:39,140 --> 01:07:42,410
+And we highlight
+two types of data
+
+1568
+01:07:42,410 --> 01:07:45,620
+here that we found that
+GPT-2 had memorized
+
+1569
+01:07:45,620 --> 01:07:49,040
+that in our opinion constitute
+private information,
+
+1570
+01:07:49,040 --> 01:07:51,410
+like named individuals
+from non-news samples,
+
+1571
+01:07:51,410 --> 01:07:56,290
+or contact information like
+the example I showed early on.
+
+1572
+01:07:56,290 --> 01:07:59,500
+And so you might ask, OK,
+maybe it's not that surprising
+
+1573
+01:07:59,500 --> 01:08:01,483
+that GPT-2 memorized
+a news article
+
+1574
+01:08:01,483 --> 01:08:03,400
+if that news article
+appears hundreds of times
+
+1575
+01:08:03,400 --> 01:08:04,570
+on the internet.
+
+1576
+01:08:04,570 --> 01:08:07,390
+We actually got lucky
+because it turned out
+
+1577
+01:08:07,390 --> 01:08:09,760
+there were a bunch of
+examples of memorized data
+
+1578
+01:08:09,760 --> 01:08:12,130
+that only appeared
+on one document
+
+1579
+01:08:12,130 --> 01:08:14,290
+on the entire public internet.
+
+1580
+01:08:14,290 --> 01:08:17,740
+It was basically a
+paste, like a paste
+
+1581
+01:08:17,740 --> 01:08:21,340
+of a bunch of URLs from Reddit,
+from a controversial subreddit
+
+1582
+01:08:21,340 --> 01:08:22,660
+called The Donald.
+
+1583
+01:08:22,660 --> 01:08:25,359
+And all of these URLs had
+exactly the same form.
+
+1584
+01:08:25,359 --> 01:08:30,040
+It was
+http://reddit.com/r/thedonald/
+
+1585
+01:08:30,040 --> 01:08:32,920
+a bunch of random
+numbers and letters,
+
+1586
+01:08:32,920 --> 01:08:35,439
+slash the name of the thread.
+
+1587
+01:08:35,439 --> 01:08:37,630
+Now this random numbers
+and letters part
+
+1588
+01:08:37,630 --> 01:08:41,260
+is nice because it's equally
+hard to predict in all cases.
+
+1589
+01:08:41,260 --> 01:08:43,450
+It's basically a random hash.
+
+1590
+01:08:43,450 --> 01:08:45,189
+So we know that
+part of the sequence
+
+1591
+01:08:45,189 --> 01:08:48,819
+should be equally hard
+for any model to memorize.
+
+1592
+01:08:48,819 --> 01:08:51,560
+And what that means is
+that we can memorize--
+
+1593
+01:08:51,560 --> 01:08:56,439
+we can measure how many times
+does a particular URL need
+
+1594
+01:08:56,439 --> 01:08:59,560
+to appear in this list of URLs,
+because there were repetitions
+
+1595
+01:08:59,560 --> 01:09:03,340
+in the list, in order for
+one of the particular GPT-2
+
+1596
+01:09:03,340 --> 01:09:07,310
+sized models to memorize it.
+
+1597
+01:09:07,310 --> 01:09:10,660
+And what we found was that the
+largest variant GPT-2, GPT-2
+
+1598
+01:09:10,660 --> 01:09:17,410
+XL, memorized a URL
+that appeared 33 times
+
+1599
+01:09:17,410 --> 01:09:20,470
+in this particular
+document but not URLs that
+
+1600
+01:09:20,470 --> 01:09:22,930
+appeared 17 times or fewer.
+
+1601
+01:09:22,930 --> 01:09:26,859
+The medium sized model was only
+really able to fully memorize
+
+1602
+01:09:26,859 --> 01:09:28,990
+a URL that appeared 56 times.
+
+1603
+01:09:28,990 --> 01:09:31,180
+And the small model really
+didn't memorize any.
+
+1604
+01:09:31,180 --> 01:09:32,895
+The half basically
+means that we could
+
+1605
+01:09:32,895 --> 01:09:35,228
+get it to spit out the URL
+if we gave it some additional
+
+1606
+01:09:35,229 --> 01:09:35,800
+prompting.
+
+1607
+01:09:35,800 --> 01:09:39,340
+We basically hinted at
+some of the numbers where.
+
+1608
+01:09:39,340 --> 01:09:41,979
+And what the takeaway of
+this is that we actually
+
+1609
+01:09:41,979 --> 01:09:44,649
+by coincidence, because there
+is this particular document
+
+1610
+01:09:44,649 --> 01:09:48,310
+with the structure, we were able
+to say reasonably confidently
+
+1611
+01:09:48,310 --> 01:09:51,390
+that larger models tend
+to memorize more data.
+
+1612
+01:09:51,390 --> 01:09:53,319
+They need to see
+examples, they need
+
+1613
+01:09:53,319 --> 01:09:55,990
+to see particular examples
+fewer times in order
+
+1614
+01:09:55,990 --> 01:09:58,240
+to memorize them,
+which we thought
+
+1615
+01:09:58,240 --> 01:09:59,380
+was an interesting finding.
+
+1616
+01:09:59,380 --> 01:10:01,900
+
+
+1617
+01:10:01,900 --> 01:10:05,800
+So, so far I have
+kind of mostly been
+
+1618
+01:10:05,800 --> 01:10:07,960
+talking about the benefits
+of larger models, right.
+
+1619
+01:10:07,960 --> 01:10:10,840
+Because larger models
+did better on SuperGLUE,
+
+1620
+01:10:10,840 --> 01:10:14,050
+larger models did better on
+closed book question answering.
+
+1621
+01:10:14,050 --> 01:10:16,360
+Of course, there is this
+caveat that larger models also
+
+1622
+01:10:16,360 --> 01:10:19,510
+seem to be better at memorizing
+their training data set.
+
+1623
+01:10:19,510 --> 01:10:22,870
+But larger models are
+also inconvenient.
+
+1624
+01:10:22,870 --> 01:10:26,020
+They are more computationally
+expensive to run.
+
+1625
+01:10:26,020 --> 01:10:27,880
+They consume more energy.
+
+1626
+01:10:27,880 --> 01:10:29,380
+And they don't fit
+on, for example
+
+1627
+01:10:29,380 --> 01:10:32,290
+T5 11B doesn't fit
+on a single GPU
+
+1628
+01:10:32,290 --> 01:10:37,030
+unless you use kind
+of clever methods.
+
+1629
+01:10:37,030 --> 01:10:39,830
+So the last paper
+that I'll discuss,
+
+1630
+01:10:39,830 --> 01:10:42,790
+which is super recent
+work is, can we
+
+1631
+01:10:42,790 --> 01:10:44,350
+basically close
+the performance gap
+
+1632
+01:10:44,350 --> 01:10:46,990
+between large and small
+models through improvements
+
+1633
+01:10:46,990 --> 01:10:48,590
+to the transformer architecture?
+
+1634
+01:10:48,590 --> 01:10:50,980
+So in this work we take
+basically the same strategy
+
+1635
+01:10:50,980 --> 01:10:53,530
+that we took in
+the T5 paper, where
+
+1636
+01:10:53,530 --> 01:10:56,350
+we took sort of the landscape
+of existing modifications
+
+1637
+01:10:56,350 --> 01:10:58,930
+to the transformer
+architecture and evaluated them
+
+1638
+01:10:58,930 --> 01:11:00,910
+in the same exact setting.
+
+1639
+01:11:00,910 --> 01:11:03,070
+And there have been
+lots of variants
+
+1640
+01:11:03,070 --> 01:11:04,810
+proposed to the
+transformer architecture.
+
+1641
+01:11:04,810 --> 01:11:07,698
+In T5 we use basically the
+standard encoder-decoder
+
+1642
+01:11:07,698 --> 01:11:09,490
+architecture from the
+"Attention Is All You
+
+1643
+01:11:09,490 --> 01:11:12,070
+Need" Paper, that's
+visualized here.
+
+1644
+01:11:12,070 --> 01:11:14,380
+But there have been lots
+and lots of modifications
+
+1645
+01:11:14,380 --> 01:11:16,797
+that have been proposed since
+the transformer was released
+
+1646
+01:11:16,797 --> 01:11:18,310
+in 2017.
+
+1647
+01:11:18,310 --> 01:11:20,830
+For example, maybe
+people suggested
+
+1648
+01:11:20,830 --> 01:11:23,380
+that you should factorize
+your embedding matrix.
+
+1649
+01:11:23,380 --> 01:11:26,230
+You should share the embedding
+matrix and the softmax output
+
+1650
+01:11:26,230 --> 01:11:27,040
+layer.
+
+1651
+01:11:27,040 --> 01:11:28,930
+You should use different
+forms of softmax,
+
+1652
+01:11:28,930 --> 01:11:32,440
+like a mixture of softmax's,
+or an adaptive softmax.
+
+1653
+01:11:32,440 --> 01:11:34,840
+Different ways of
+normalizing, or initializing,
+
+1654
+01:11:34,840 --> 01:11:39,430
+the model, maybe different
+attention mechanisms,
+
+1655
+01:11:39,430 --> 01:11:41,110
+alternatives to
+attention mechanisms
+
+1656
+01:11:41,110 --> 01:11:43,720
+like lightweight and
+dynamical convolutions.
+
+1657
+01:11:43,720 --> 01:11:46,028
+Different nonlinearities
+in the feed-forward layers,
+
+1658
+01:11:46,028 --> 01:11:48,070
+different structures for
+the feed-forward layers,
+
+1659
+01:11:48,070 --> 01:11:51,250
+like a mixture of experts
+to the switch transformer.
+
+1660
+01:11:51,250 --> 01:11:52,750
+Completely different
+architectures
+
+1661
+01:11:52,750 --> 01:11:54,340
+that were inspired
+by the transformer,
+
+1662
+01:11:54,340 --> 01:11:55,840
+like the funnel
+transformer, evolved
+
+1663
+01:11:55,840 --> 01:11:58,690
+transformer, the universal
+transformer, and so on.
+
+1664
+01:11:58,690 --> 01:12:01,190
+Really, there have just been
+tons and tons and tons of them.
+
+1665
+01:12:01,190 --> 01:12:02,680
+And again, the
+goal in this paper
+
+1666
+01:12:02,680 --> 01:12:05,230
+was to take a bunch
+of these modifications
+
+1667
+01:12:05,230 --> 01:12:08,290
+and apply the same basic
+methodology from the T5 paper
+
+1668
+01:12:08,290 --> 01:12:10,990
+where we test them in the
+same experimental setting.
+
+1669
+01:12:10,990 --> 01:12:13,840
+Specifically, we basically
+tested them in exactly the T5
+
+1670
+01:12:13,840 --> 01:12:17,240
+setting that I described at
+the beginning of the talk,
+
+1671
+01:12:17,240 --> 01:12:22,690
+where we pre-trained a
+T5 base sized model on C4
+
+1672
+01:12:22,690 --> 01:12:26,260
+and then fine tune it on
+a few downstream tasks.
+
+1673
+01:12:26,260 --> 01:12:27,790
+I won't discuss
+that too much more
+
+1674
+01:12:27,790 --> 01:12:29,915
+because I gave a pretty
+thorough introduction to it
+
+1675
+01:12:29,915 --> 01:12:32,210
+at the beginning of the talk.
+
+1676
+01:12:32,210 --> 01:12:36,170
+And so here is a sort of
+a first set of results
+
+1677
+01:12:36,170 --> 01:12:37,700
+that I'll show you.
+
+1678
+01:12:37,700 --> 01:12:40,520
+Along the x-axis are different
+transformer modifications,
+
+1679
+01:12:40,520 --> 01:12:42,020
+I'm not labeling
+which one is which
+
+1680
+01:12:42,020 --> 01:12:46,670
+because I don't want to call
+any particular modification out.
+
+1681
+01:12:46,670 --> 01:12:50,480
+This is the validation
+loss attained by the model
+
+1682
+01:12:50,480 --> 01:12:51,890
+for the pre-training objective.
+
+1683
+01:12:51,890 --> 01:12:53,720
+So when we do
+pre-training on C4,
+
+1684
+01:12:53,720 --> 01:12:55,910
+we hold out some
+data from C4 and then
+
+1685
+01:12:55,910 --> 01:12:58,700
+we basically measure
+the validation loss
+
+1686
+01:12:58,700 --> 01:13:00,200
+on the held out data.
+
+1687
+01:13:00,200 --> 01:13:02,340
+So lower is better in this case.
+
+1688
+01:13:02,340 --> 01:13:04,430
+And you can see this
+dotted black line
+
+1689
+01:13:04,430 --> 01:13:06,110
+is the performance
+of the baseline model
+
+1690
+01:13:06,110 --> 01:13:08,360
+without any transformer
+modifications.
+
+1691
+01:13:08,360 --> 01:13:10,322
+It's basically a
+vanilla transformer.
+
+1692
+01:13:10,322 --> 01:13:12,530
+And you can see that actually
+some of the transformer
+
+1693
+01:13:12,530 --> 01:13:16,640
+modifications did attain better
+performance, which was good.
+
+1694
+01:13:16,640 --> 01:13:18,560
+But a lot of them
+didn't and a lot of them
+
+1695
+01:13:18,560 --> 01:13:21,230
+actually got significantly
+worse performance.
+
+1696
+01:13:21,230 --> 01:13:25,280
+And but maybe even worse
+some of these variants
+
+1697
+01:13:25,280 --> 01:13:27,500
+of the transformer that
+attained better performance
+
+1698
+01:13:27,500 --> 01:13:29,840
+were pretty minor
+changes, like for example
+
+1699
+01:13:29,840 --> 01:13:31,790
+just taking the
+ReLU in the dense--
+
+1700
+01:13:31,790 --> 01:13:35,210
+ReLU dense layer and swapping
+it with another non-linearity.
+
+1701
+01:13:35,210 --> 01:13:38,190
+So it's a pretty minor change.
+
+1702
+01:13:38,190 --> 01:13:40,370
+And some of the other really
+highly performant ones
+
+1703
+01:13:40,370 --> 01:13:43,340
+were actually ultimately
+more expensive models.
+
+1704
+01:13:43,340 --> 01:13:44,940
+We did use the same base model.
+
+1705
+01:13:44,940 --> 01:13:48,050
+It was the same
+T5 base size model
+
+1706
+01:13:48,050 --> 01:13:51,560
+but some of these methods
+like the switch transformer,
+
+1707
+01:13:51,560 --> 01:13:55,010
+for example, increases the
+parameter count dramatically.
+
+1708
+01:13:55,010 --> 01:13:57,800
+So it has, it's more
+expensive in terms of memory.
+
+1709
+01:13:57,800 --> 01:14:00,782
+Some of the other methods
+kind of by coincidence
+
+1710
+01:14:00,782 --> 01:14:02,240
+maybe if you make
+the model deeper,
+
+1711
+01:14:02,240 --> 01:14:06,620
+it's not able to make use of
+it, make use of the accelerator
+
+1712
+01:14:06,620 --> 01:14:07,860
+as efficiently.
+
+1713
+01:14:07,860 --> 01:14:11,090
+And so it makes the
+training time and inference
+
+1714
+01:14:11,090 --> 01:14:12,900
+time a little more expensive.
+
+1715
+01:14:12,900 --> 01:14:15,560
+So once you factor out
+the very simple changes
+
+1716
+01:14:15,560 --> 01:14:18,170
+to the transformer and the
+ones that ultimately made
+
+1717
+01:14:18,170 --> 01:14:20,480
+the model more expensive
+along some axis
+
+1718
+01:14:20,480 --> 01:14:24,020
+there actually were very few, if
+any modifications that improved
+
+1719
+01:14:24,020 --> 01:14:27,990
+performance meaningfully.
+
+1720
+01:14:27,990 --> 01:14:30,510
+And this is true on
+the pre-training task.
+
+1721
+01:14:30,510 --> 01:14:33,490
+It's also true on the
+downstream tasks we considered.
+
+1722
+01:14:33,490 --> 01:14:35,060
+So this is the
+ROUGE-2 score, it's
+
+1723
+01:14:35,060 --> 01:14:38,990
+just one of the metrics
+people use on the XSum task.
+
+1724
+01:14:38,990 --> 01:14:40,740
+XSum is, you can sort
+of think of it like,
+
+1725
+01:14:40,740 --> 01:14:43,440
+a harder version of CNN Daily
+Mail via the summarization
+
+1726
+01:14:43,440 --> 01:14:44,130
+task.
+
+1727
+01:14:44,130 --> 01:14:46,500
+And you can see that
+the model variants
+
+1728
+01:14:46,500 --> 01:14:49,590
+that attained a better
+validation score
+
+1729
+01:14:49,590 --> 01:14:54,310
+tended to also attain a
+better XSum ROUGE-2 score.
+
+1730
+01:14:54,310 --> 01:14:56,730
+But again almost all of
+the variants we tried
+
+1731
+01:14:56,730 --> 01:14:59,910
+decreased the performance.
+
+1732
+01:14:59,910 --> 01:15:03,480
+And just as an aside I kind of
+alluded to this a little bit,
+
+1733
+01:15:03,480 --> 01:15:05,400
+there is a reasonably
+good correlation
+
+1734
+01:15:05,400 --> 01:15:08,993
+between the validation loss
+and the SuperGLUE score.
+
+1735
+01:15:08,993 --> 01:15:11,160
+Although I'll just point
+out a couple of interesting
+
+1736
+01:15:11,160 --> 01:15:12,100
+points here.
+
+1737
+01:15:12,100 --> 01:15:14,940
+One is this method called
+transparent attention.
+
+1738
+01:15:14,940 --> 01:15:17,460
+It attained a pretty
+good validation loss
+
+1739
+01:15:17,460 --> 01:15:19,920
+but ultimately a very
+bad SuperGLUE score
+
+1740
+01:15:19,920 --> 01:15:21,840
+which was surprising to us.
+
+1741
+01:15:21,840 --> 01:15:24,210
+The switch transformer,
+which I'll highlight here,
+
+1742
+01:15:24,210 --> 01:15:25,980
+attained the best
+validation loss
+
+1743
+01:15:25,980 --> 01:15:29,040
+but it did not get the
+best SuperGLUE score.
+
+1744
+01:15:29,040 --> 01:15:31,770
+On the closed book
+variant of web questions,
+
+1745
+01:15:31,770 --> 01:15:35,520
+the switch transformer actually
+achieveed nearly the best
+
+1746
+01:15:35,520 --> 01:15:37,320
+validation and accuracy.
+
+1747
+01:15:37,320 --> 01:15:41,520
+And we, this kind of supports a
+loose conjecture in the field,
+
+1748
+01:15:41,520 --> 01:15:44,940
+that scaling up the
+number of parameters
+
+1749
+01:15:44,940 --> 01:15:48,120
+improves the amount of knowledge
+that the model can internalize.
+
+1750
+01:15:48,120 --> 01:15:50,700
+But it doesn't help
+the model reason.
+
+1751
+01:15:50,700 --> 01:15:53,640
+So kind of very, very
+loosely speaking again
+
+1752
+01:15:53,640 --> 01:15:55,830
+this is kind of a
+conjecture, SuperGLUE
+
+1753
+01:15:55,830 --> 01:15:59,075
+requires deep
+reasoning capabilities.
+
+1754
+01:15:59,075 --> 01:16:01,800
+closed book web questions
+requires knowledge
+
+1755
+01:16:01,800 --> 01:16:03,060
+intensive capabilities.
+
+1756
+01:16:03,060 --> 01:16:05,580
+And so a switch transformer,
+which only scales up
+
+1757
+01:16:05,580 --> 01:16:09,060
+the parameter count without
+scaling up the processing,
+
+1758
+01:16:09,060 --> 01:16:13,170
+maybe does better on
+the web questions task.
+
+1759
+01:16:13,170 --> 01:16:15,690
+So this kind of raises
+a number, should
+
+1760
+01:16:15,690 --> 01:16:17,558
+raise some red flags for you.
+
+1761
+01:16:17,558 --> 01:16:20,100
+Because this is a pretty bold
+claim that most of these things
+
+1762
+01:16:20,100 --> 01:16:21,990
+don't actually help that much.
+
+1763
+01:16:21,990 --> 01:16:24,990
+And there's kind of a
+couple of possible reasons
+
+1764
+01:16:24,990 --> 01:16:26,315
+that this could be the case.
+
+1765
+01:16:26,315 --> 01:16:27,690
+One is that our
+code base is just
+
+1766
+01:16:27,690 --> 01:16:30,000
+very unusual and non-standard.
+
+1767
+01:16:30,000 --> 01:16:32,760
+We don't think this is the case
+because the code base that we
+
+1768
+01:16:32,760 --> 01:16:36,810
+used was actually developed by
+one of the people who invented
+
+1769
+01:16:36,810 --> 01:16:38,850
+the transformer, Noam Shazeer.
+
+1770
+01:16:38,850 --> 01:16:41,010
+And it's been used a lot.
+
+1771
+01:16:41,010 --> 01:16:43,800
+It's been used in lots
+of various papers.
+
+1772
+01:16:43,800 --> 01:16:46,950
+It's basically the same as
+the tensor2tensor code base.
+
+1773
+01:16:46,950 --> 01:16:49,620
+And so we think that
+arguably our code base
+
+1774
+01:16:49,620 --> 01:16:52,770
+and the implementation detail
+should be reasonably standard.
+
+1775
+01:16:52,770 --> 01:16:55,500
+Maybe the tasks we
+consider are non-standard.
+
+1776
+01:16:55,500 --> 01:16:58,350
+We think this is
+probably not true.
+
+1777
+01:16:58,350 --> 01:17:01,230
+Pre-training followed by
+fine tuning is pretty common.
+
+1778
+01:17:01,230 --> 01:17:04,140
+Basically, all the
+tasks we tested out on
+
+1779
+01:17:04,140 --> 01:17:06,660
+have state of the art
+results from transformers.
+
+1780
+01:17:06,660 --> 01:17:09,600
+And actually we included
+separately supervised
+
+1781
+01:17:09,600 --> 01:17:12,780
+only training on
+WMT English German,
+
+1782
+01:17:12,780 --> 01:17:15,840
+which was the task that
+transformer was actually
+
+1783
+01:17:15,840 --> 01:17:17,760
+proposed on.
+
+1784
+01:17:17,760 --> 01:17:20,112
+Maybe we need more
+hyperparameter tuning,
+
+1785
+01:17:20,112 --> 01:17:21,570
+because we didn't,
+again, we didn't
+
+1786
+01:17:21,570 --> 01:17:23,070
+do significant
+hyperparameter tuning
+
+1787
+01:17:23,070 --> 01:17:24,330
+for each of these methods.
+
+1788
+01:17:24,330 --> 01:17:25,920
+To test how true
+this was we actually
+
+1789
+01:17:25,920 --> 01:17:29,730
+took one of the methods that
+performed significantly worse
+
+1790
+01:17:29,730 --> 01:17:31,060
+than we expected.
+
+1791
+01:17:31,060 --> 01:17:33,060
+And we ran maybe a
+couple hundred trials
+
+1792
+01:17:33,060 --> 01:17:34,867
+of hyperparameter
+optimization, one
+
+1793
+01:17:34,867 --> 01:17:36,450
+of the researchers
+on this paper spent
+
+1794
+01:17:36,450 --> 01:17:37,980
+a long time trying to
+get hyperparameters
+
+1795
+01:17:37,980 --> 01:17:38,970
+right to make it work.
+
+1796
+01:17:38,970 --> 01:17:44,010
+And it ultimately never worked
+as well as the baseline method.
+
+1797
+01:17:44,010 --> 01:17:46,680
+A next possibility that we've
+implemented these modifications
+
+1798
+01:17:46,680 --> 01:17:47,280
+incorrectly.
+
+1799
+01:17:47,280 --> 01:17:48,750
+To sanity check
+this, we actually
+
+1800
+01:17:48,750 --> 01:17:51,540
+emailed the authors of all of
+the different modifications
+
+1801
+01:17:51,540 --> 01:17:53,640
+and asked them to check
+our implementation.
+
+1802
+01:17:53,640 --> 01:17:55,140
+All of the ones
+that got back to us
+
+1803
+01:17:55,140 --> 01:17:56,922
+said that it looked
+correct to them.
+
+1804
+01:17:56,922 --> 01:17:58,380
+And then finally
+the last option is
+
+1805
+01:17:58,380 --> 01:18:00,450
+that maybe these modifications
+of the transformer
+
+1806
+01:18:00,450 --> 01:18:02,550
+don't really kind of transfer.
+
+1807
+01:18:02,550 --> 01:18:05,160
+They don't transfer across code
+bases, and implementations,
+
+1808
+01:18:05,160 --> 01:18:06,720
+and applications.
+
+1809
+01:18:06,720 --> 01:18:09,810
+And to us at least, based on
+the evidence that we have this
+
+1810
+01:18:09,810 --> 01:18:12,180
+is a plausible possibility.
+
+1811
+01:18:12,180 --> 01:18:14,610
+In my opinion, the best
+way to control for this
+
+1812
+01:18:14,610 --> 01:18:16,680
+is if you're proposing
+a new modification
+
+1813
+01:18:16,680 --> 01:18:20,160
+to the transformer, try to
+apply it to as many code bases
+
+1814
+01:18:20,160 --> 01:18:23,700
+and tasks as you can without
+tweaking hyperparameters.
+
+1815
+01:18:23,700 --> 01:18:26,540
+And if it works in all of those
+settings then you're golden.
+
+1816
+01:18:26,540 --> 01:18:28,453
+And your thing
+probably will transfer.
+
+1817
+01:18:28,453 --> 01:18:30,120
+And we think that
+it's probably the case
+
+1818
+01:18:30,120 --> 01:18:34,020
+that simpler modifications,
+like changing the non-linearity,
+
+1819
+01:18:34,020 --> 01:18:36,330
+are not so dependent
+on hyperparameters
+
+1820
+01:18:36,330 --> 01:18:37,620
+and implementation details.
+
+1821
+01:18:37,620 --> 01:18:39,750
+And so they may be
+the ones that are more
+
+1822
+01:18:39,750 --> 01:18:43,680
+likely to transfer so to speak.
+
+1823
+01:18:43,680 --> 01:18:45,230
+So that's all
+discussed in this talk.
+
+1824
+01:18:45,230 --> 01:18:47,270
+I recognize that was
+kind of a whirlwind tour.
+
+1825
+01:18:47,270 --> 01:18:50,630
+So I've linked all of the papers
+that I discussed on this slide
+
+1826
+01:18:50,630 --> 01:18:51,560
+here.
+
+1827
+01:18:51,560 --> 01:18:54,950
+Of course, this was work done
+by a huge and truly amazing
+
+1828
+01:18:54,950 --> 01:18:58,340
+group of collaborators over
+the course of these five papers
+
+1829
+01:18:58,340 --> 01:18:59,960
+who I've listed on
+the screen here.
+
+1830
+01:18:59,960 --> 01:19:03,410
+And yeah, I'm happy to answer
+any additional questions
+
+1831
+01:19:03,410 --> 01:19:04,610
+that you all have.
+
+1832
+01:19:04,610 --> 01:19:07,550
+OK, so thank you so much,
+Colin for that great talk.
+
+1833
+01:19:07,550 --> 01:19:11,480
+And yeah, it was a bit of
+a fire hose of information.
+
+1834
+01:19:11,480 --> 01:19:13,370
+I realized also there
+was one thing I forgot
+
+1835
+01:19:13,370 --> 01:19:14,660
+to say in my introduction.
+
+1836
+01:19:14,660 --> 01:19:16,820
+So I guess I need
+to have an afterword
+
+1837
+01:19:16,820 --> 01:19:20,510
+as well, which is
+that Colin has now
+
+1838
+01:19:20,510 --> 01:19:24,500
+started as a professor at the
+University of North Carolina.
+
+1839
+01:19:24,500 --> 01:19:26,690
+So effectively the
+University of North Carolina
+
+1840
+01:19:26,690 --> 01:19:29,000
+is playing a big
+part in this course
+
+1841
+01:19:29,000 --> 01:19:32,060
+because it was also the
+source of the Cherokee data
+
+1842
+01:19:32,060 --> 01:19:35,690
+that we used for assignment
+4 for the Cherokee English
+
+1843
+01:19:35,690 --> 01:19:36,740
+translation.
+
+1844
+01:19:36,740 --> 01:19:39,140
+So Go Tar Heels.
+
+1845
+01:19:39,140 --> 01:19:44,990
+But yeah, so, yeah, so Colin's
+happy to stay and answer
+
+1846
+01:19:44,990 --> 01:19:46,210
+some questions.
+
+1847
+01:19:46,210 --> 01:19:50,420
+So if you'd like to have more
+questions, use the raise hand
+
+1848
+01:19:50,420 --> 01:19:51,980
+and we'll then
+sort of invite you
+
+1849
+01:19:51,980 --> 01:19:57,740
+into the where people can
+see each other Zoom Room.
+
+1850
+01:19:57,740 --> 01:19:59,780
+And if you're up
+to it would even
+
+1851
+01:19:59,780 --> 01:20:02,750
+be nice to turn on
+your video so people
+
+1852
+01:20:02,750 --> 01:20:05,240
+can see who they're talking to.
+
+1853
+01:20:05,240 --> 01:20:09,420
+And yeah, maybe in
+the first instance
+
+1854
+01:20:09,420 --> 01:20:11,310
+you should stop
+sharing the screen.
+
+1855
+01:20:11,310 --> 01:20:14,460
+And if there's something
+you want to show again
+
+1856
+01:20:14,460 --> 01:20:16,680
+you can turn it back on.
+
+1857
+01:20:16,680 --> 01:20:18,240
+Yeah, maybe I'll
+just say while there
+
+1858
+01:20:18,240 --> 01:20:22,590
+are people are still around
+on the point of me being
+
+1859
+01:20:22,590 --> 01:20:25,470
+a professor at UNC, in the event
+that there are any master's
+
+1860
+01:20:25,470 --> 01:20:27,990
+or undergraduate students in
+the audience who are applying
+
+1861
+01:20:27,990 --> 01:20:31,170
+for PhD programs that the
+application deadline for UNC
+
+1862
+01:20:31,170 --> 01:20:33,430
+has actually, has
+not occurred yet.
+
+1863
+01:20:33,430 --> 01:20:36,287
+So if you maybe want to
+apply to another school,
+
+1864
+01:20:36,287 --> 01:20:38,370
+have another option, you're
+excited about the work
+
+1865
+01:20:38,370 --> 01:20:40,980
+that I presented, you
+can still apply to UNC.
+
+1866
+01:20:40,980 --> 01:20:43,830
+We have a remarkably late
+application deadline.
+
+1867
+01:20:43,830 --> 01:20:45,780
+So just a plug, in
+case there's anyone
+
+1868
+01:20:45,780 --> 01:20:49,140
+who is looking for a PhD.
+
+1869
+01:20:49,140 --> 01:20:52,260
+And UNC is the oldest public
+university in the nation.
+
+1870
+01:20:52,260 --> 01:20:55,410
+And we did a full
+UNC advertisement.
+
+1871
+01:20:55,410 --> 01:20:58,680
+And I think we have the
+second oldest CS department
+
+1872
+01:20:58,680 --> 01:21:00,840
+too, which yeah, it's
+been around for long.
+
+1873
+01:21:00,840 --> 01:21:02,040
+It's pretty small.
+
+1874
+01:21:02,040 --> 01:21:06,210
+It's only about
+50 faculty or so.
+
+1875
+01:21:06,210 --> 01:21:09,440
+So while we're waiting
+for someone to join up--
+
+1876
+01:21:09,440 --> 01:21:14,370
+We do have one question already
+actually from [AUDIO OUT]
+
+1877
+01:21:14,370 --> 01:21:15,150
+Yeah, hi.
+
+1878
+01:21:15,150 --> 01:21:16,680
+Thanks for the lecture.
+
+1879
+01:21:16,680 --> 01:21:24,450
+I have a question about earlier
+when you discussed like the T5
+
+1880
+01:21:24,450 --> 01:21:28,830
+overfitting, and how many
+passes through the dataset it
+
+1881
+01:21:28,830 --> 01:21:30,450
+took for it to over fit.
+
+1882
+01:21:30,450 --> 01:21:34,020
+So I'm curious as
+to if you think
+
+1883
+01:21:34,020 --> 01:21:38,040
+some of the larger models like
+the 3 billion, 11 billion,
+
+1884
+01:21:38,040 --> 01:21:43,380
+ones with the scaled C4
+layers are overfitting.
+
+1885
+01:21:43,380 --> 01:21:46,320
+And kind of generally
+how do you know
+
+1886
+01:21:46,320 --> 01:21:50,310
+when a model is overfitting
+especially on this scale?
+
+1887
+01:21:50,310 --> 01:21:53,190
+Yeah, so I mean if you
+measure overfitting
+
+1888
+01:21:53,190 --> 01:21:55,110
+sort of the standard
+way where you compare
+
+1889
+01:21:55,110 --> 01:21:59,040
+the loss on training data versus
+the loss on validation data,
+
+1890
+01:21:59,040 --> 01:22:02,040
+we see that even in the
+very, very large models
+
+1891
+01:22:02,040 --> 01:22:04,290
+it's roughly the
+same, which suggests
+
+1892
+01:22:04,290 --> 01:22:07,140
+in the traditional sense
+that there is no overfitting.
+
+1893
+01:22:07,140 --> 01:22:09,810
+One reason for that is that
+C4 is actually big enough
+
+1894
+01:22:09,810 --> 01:22:12,930
+that we do just over
+one pass over it
+
+1895
+01:22:12,930 --> 01:22:15,960
+when we train for
+a trillion tokens.
+
+1896
+01:22:15,960 --> 01:22:18,930
+And you know you might hope
+that you see limited overfitting
+
+1897
+01:22:18,930 --> 01:22:20,790
+when you only see
+each piece of data
+
+1898
+01:22:20,790 --> 01:22:22,747
+basically once over
+the course of training.
+
+1899
+01:22:22,747 --> 01:22:24,330
+So it's sort of like
+every time you're
+
+1900
+01:22:24,330 --> 01:22:25,413
+seeing data it's new data.
+
+1901
+01:22:25,413 --> 01:22:27,455
+So there's not a huge
+difference between the data
+
+1902
+01:22:27,455 --> 01:22:29,400
+on the training set
+and the validation set.
+
+1903
+01:22:29,400 --> 01:22:31,305
+Of course, there
+is also this notion
+
+1904
+01:22:31,305 --> 01:22:33,180
+of overfitting that's
+kind of like worst case
+
+1905
+01:22:33,180 --> 01:22:37,480
+overfitting, which ties into the
+memorization work I mentioned.
+
+1906
+01:22:37,480 --> 01:22:40,440
+It does seem that it's
+possible for language models
+
+1907
+01:22:40,440 --> 01:22:44,190
+to memorize data even when
+they do relatively few passes
+
+1908
+01:22:44,190 --> 01:22:45,750
+over the training
+dataset and you
+
+1909
+01:22:45,750 --> 01:22:48,240
+don't see kind of
+average case overfitting
+
+1910
+01:22:48,240 --> 01:22:51,680
+by comparing the training
+loss and the validation loss.
+
+1911
+01:22:51,680 --> 01:22:52,520
+I see.
+
+1912
+01:22:52,520 --> 01:22:53,360
+That answers that.
+
+1913
+01:22:53,360 --> 01:22:54,600
+Thank you.
+
+1914
+01:22:54,600 --> 01:22:55,360
+Yep.
+
+1915
+01:22:55,360 --> 01:22:58,020
+OK, then [AUDIO OUT]
+there's a question or two.
+
+1916
+01:22:58,020 --> 01:23:00,900
+
+
+1917
+01:23:00,900 --> 01:23:02,826
+Sure, sorry I was trying
+to unmute my video
+
+1918
+01:23:02,826 --> 01:23:06,965
+but I can't do that
+for whatever reason.
+
+1919
+01:23:06,965 --> 01:23:08,340
+First of all,
+Colin, thank you so
+
+1920
+01:23:08,340 --> 01:23:09,960
+much for this fantastic lecture.
+
+1921
+01:23:09,960 --> 01:23:10,925
+I really enjoyed it.
+
+1922
+01:23:10,925 --> 01:23:13,440
+
+
+1923
+01:23:13,440 --> 01:23:15,510
+One thing that I
+particularly enjoyed
+
+1924
+01:23:15,510 --> 01:23:20,040
+was the work that you guys
+did on your training data
+
+1925
+01:23:20,040 --> 01:23:24,030
+extraction attack, trying
+to identify, really test
+
+1926
+01:23:24,030 --> 01:23:27,080
+this hunch on OpenAI
+and EFF's point
+
+1927
+01:23:27,080 --> 01:23:31,110
+that these models don't
+actually memorize trained data.
+
+1928
+01:23:31,110 --> 01:23:33,570
+I'm wondering, I actually
+have two questions.
+
+1929
+01:23:33,570 --> 01:23:37,950
+One, have OpenAI and EFF
+since changed their tone?
+
+1930
+01:23:37,950 --> 01:23:40,119
+Since you actually
+or has your team
+
+1931
+01:23:40,119 --> 01:23:42,840
+actually published
+the results of that?
+
+1932
+01:23:42,840 --> 01:23:46,800
+And they since acknowledged
+that well-constructed models
+
+1933
+01:23:46,800 --> 01:23:47,800
+may actually do this?
+
+1934
+01:23:47,800 --> 01:23:50,640
+And two, would this
+approach actually work
+
+1935
+01:23:50,640 --> 01:23:56,250
+for detecting other say
+externally encoded biases
+
+1936
+01:23:56,250 --> 01:23:59,055
+towards, or like
+extreme biases which
+
+1937
+01:23:59,055 --> 01:24:00,920
+are prevalent in
+some language models?
+
+1938
+01:24:00,920 --> 01:24:03,150
+Would you be able
+to create packages
+
+1939
+01:24:03,150 --> 01:24:05,880
+that could simulate these sorts
+of attacks on these models
+
+1940
+01:24:05,880 --> 01:24:09,090
+and then determine with
+some degree of accuracy
+
+1941
+01:24:09,090 --> 01:24:12,810
+how much these biases
+actually are present?
+
+1942
+01:24:12,810 --> 01:24:15,940
+Yeah, so with regards
+to the first question,
+
+1943
+01:24:15,940 --> 01:24:18,180
+I don't know of any
+official statements that
+
+1944
+01:24:18,180 --> 01:24:19,860
+have been made by
+anyone but I will
+
+1945
+01:24:19,860 --> 01:24:22,380
+say that actually on
+the memorization paper
+
+1946
+01:24:22,380 --> 01:24:24,930
+we had multiple
+co-authors from OpenAI.
+
+1947
+01:24:24,930 --> 01:24:26,790
+So it was very much a
+cooperation with them.
+
+1948
+01:24:26,790 --> 01:24:30,480
+I mean, we're all
+scientists and you
+
+1949
+01:24:30,480 --> 01:24:32,910
+know we all kind of make
+hypotheses that sometimes turn
+
+1950
+01:24:32,910 --> 01:24:34,980
+out correctly and incorrectly.
+
+1951
+01:24:34,980 --> 01:24:39,180
+And so I think OpenAI
+is definitely aware
+
+1952
+01:24:39,180 --> 01:24:41,550
+and on the side of
+the fact that yeah,
+
+1953
+01:24:41,550 --> 01:24:45,960
+it is possible that these
+models might memorize data even
+
+1954
+01:24:45,960 --> 01:24:49,710
+when they don't exhibit
+the traditional signs
+
+1955
+01:24:49,710 --> 01:24:52,560
+of overfitting.
+
+1956
+01:24:52,560 --> 01:24:57,030
+To the second point, the
+way that people have kind of
+
+1957
+01:24:57,030 --> 01:24:59,070
+measured this in
+an ad hoc way is
+
+1958
+01:24:59,070 --> 01:25:01,050
+by feeding a prefix
+into the model
+
+1959
+01:25:01,050 --> 01:25:04,950
+about a particular demographic
+group, or type of person,
+
+1960
+01:25:04,950 --> 01:25:09,270
+and see what the model
+says about that person.
+
+1961
+01:25:09,270 --> 01:25:12,180
+And I think in principle
+you can kind of
+
+1962
+01:25:12,180 --> 01:25:15,960
+think of our approach
+as related to that,
+
+1963
+01:25:15,960 --> 01:25:18,450
+except that we have this
+additional step that kind of
+
+1964
+01:25:18,450 --> 01:25:23,730
+measures whether the model is
+generating that text because it
+
+1965
+01:25:23,730 --> 01:25:26,160
+saw it in its training
+data, basically
+
+1966
+01:25:26,160 --> 01:25:29,160
+because the perplexity
+is excessively
+
+1967
+01:25:29,160 --> 01:25:32,820
+low for some continuation
+compared to a model that wasn't
+
+1968
+01:25:32,820 --> 01:25:34,930
+trained on the same data.
+
+1969
+01:25:34,930 --> 01:25:36,930
+So it might be
+interesting, for example,
+
+1970
+01:25:36,930 --> 01:25:40,050
+if you feed the model
+a prefix that you're
+
+1971
+01:25:40,050 --> 01:25:42,930
+asking it to fill in some
+offensive information
+
+1972
+01:25:42,930 --> 01:25:45,090
+about some demographic
+group, to check
+
+1973
+01:25:45,090 --> 01:25:48,900
+whether the perplexity of the
+model for its continuation
+
+1974
+01:25:48,900 --> 01:25:52,835
+is dramatically lower
+than zlib, for example.
+
+1975
+01:25:52,835 --> 01:25:54,210
+And in that case,
+you might think
+
+1976
+01:25:54,210 --> 01:25:57,810
+that the bias actually, maybe
+this like bias that the model
+
+1977
+01:25:57,810 --> 01:26:00,840
+has picked up is because
+it saw some, actually
+
+1978
+01:26:00,840 --> 01:26:03,480
+a sentence that looks just
+like that in its training data.
+
+1979
+01:26:03,480 --> 01:26:07,950
+Or if it's a more
+kind of loose concept,
+
+1980
+01:26:07,950 --> 01:26:11,810
+that the model has internalized
+over the course of training.
+
+1981
+01:26:11,810 --> 01:26:12,650
+Fantastic.
+
+1982
+01:26:12,650 --> 01:26:15,050
+Thank you, very, very
+much for sharing.
+
+1983
+01:26:15,050 --> 01:26:17,030
+Yeah, thanks for the questions.
+
+1984
+01:26:17,030 --> 01:26:20,820
+OK, so next up I
+guess is [AUDIO OUT]
+
+1985
+01:26:20,820 --> 01:26:23,580
+Great, thank you for the talk.
+
+1986
+01:26:23,580 --> 01:26:25,870
+That was super interesting.
+
+1987
+01:26:25,870 --> 01:26:29,860
+So my question is sort
+of what are your thoughts
+
+1988
+01:26:29,860 --> 01:26:34,510
+on potentially doing
+like multiple rounds
+
+1989
+01:26:34,510 --> 01:26:40,120
+of pre-trainings, so to make
+it more concrete, you know,
+
+1990
+01:26:40,120 --> 01:26:43,090
+like let's say you have a
+task somewhere like something
+
+1991
+01:26:43,090 --> 01:26:45,310
+like response generation.
+
+1992
+01:26:45,310 --> 01:26:49,510
+And you've got very bespoke
+to the particular response
+
+1993
+01:26:49,510 --> 01:26:52,270
+generation dataset that you
+use, but potentially you
+
+1994
+01:26:52,270 --> 01:26:54,850
+want to kind of spruce
+that up by bringing
+
+1995
+01:26:54,850 --> 01:26:58,650
+in some general dialogue
+dataset that consists
+
+1996
+01:26:58,650 --> 01:27:01,000
+of naturalistic human data.
+
+1997
+01:27:01,000 --> 01:27:04,030
+So I'm wondering if you kind of
+have any thoughts or intuitions
+
+1998
+01:27:04,030 --> 01:27:06,850
+on how effective it
+is to maybe start
+
+1999
+01:27:06,850 --> 01:27:11,710
+with the general internet
+and then fine tune
+
+2000
+01:27:11,710 --> 01:27:16,330
+on this dialogue, unstructured
+dialogue dataset, and then
+
+2001
+01:27:16,330 --> 01:27:20,950
+fine tune on maybe a more kind
+of tightly scoped response
+
+2002
+01:27:20,950 --> 01:27:23,020
+generation dataset.
+
+2003
+01:27:23,020 --> 01:27:26,380
+Yeah, so the technique
+you're describing
+
+2004
+01:27:26,380 --> 01:27:31,330
+sounds pretty similar to this
+really excellent approach
+
+2005
+01:27:31,330 --> 01:27:34,060
+that people now call domain
+adaptive pre-training or task
+
+2006
+01:27:34,060 --> 01:27:35,300
+adaptive pre-training.
+
+2007
+01:27:35,300 --> 01:27:37,240
+I was introduced in
+a paper called "Don't
+
+2008
+01:27:37,240 --> 01:27:43,390
+Stop Pre-training," and then
+there's a less catchy subtitle.
+
+2009
+01:27:43,390 --> 01:27:46,325
+And the idea is very similar
+to what you proposed.
+
+2010
+01:27:46,325 --> 01:27:47,950
+Basically, you take
+a pre-trained model
+
+2011
+01:27:47,950 --> 01:27:49,970
+that was trained
+on generic text,
+
+2012
+01:27:49,970 --> 01:27:53,590
+you do what you might call like
+intermediate task training,
+
+2013
+01:27:53,590 --> 01:27:56,800
+or you do continued pre-training
+on domain specific data.
+
+2014
+01:27:56,800 --> 01:27:58,300
+And then finally,
+you do fine tuning
+
+2015
+01:27:58,300 --> 01:28:01,120
+on your specific
+fine tuning dataset.
+
+2016
+01:28:01,120 --> 01:28:03,100
+In their case, they're
+considering things
+
+2017
+01:28:03,100 --> 01:28:07,120
+like doing a scientific
+text classification,
+
+2018
+01:28:07,120 --> 01:28:09,070
+or biomedical text analysis.
+
+2019
+01:28:09,070 --> 01:28:12,640
+And when they do an intermediate
+pre-training step in domain
+
+2020
+01:28:12,640 --> 01:28:16,270
+data, or even just doing
+the pre-training objective
+
+2021
+01:28:16,270 --> 01:28:20,860
+on the data from the task, it
+definitely helps significantly.
+
+2022
+01:28:20,860 --> 01:28:24,400
+And yeah, so that's a
+very excellent intuition.
+
+2023
+01:28:24,400 --> 01:28:28,750
+And I think that that's the most
+similar method to what you're
+
+2024
+01:28:28,750 --> 01:28:30,010
+describing.
+
+2025
+01:28:30,010 --> 01:28:33,010
+It does kind of raise a clear
+question that I don't think
+
+2026
+01:28:33,010 --> 01:28:35,080
+has been addressed
+to my knowledge
+
+2027
+01:28:35,080 --> 01:28:37,120
+in the literature,
+which is we usually
+
+2028
+01:28:37,120 --> 01:28:40,390
+think of transfer learning as
+pre-train and then fine tune.
+
+2029
+01:28:40,390 --> 01:28:43,300
+And now we're doing kind
+of like pre-training, then
+
+2030
+01:28:43,300 --> 01:28:45,910
+maybe some more pre-training,
+and then fine tuning.
+
+2031
+01:28:45,910 --> 01:28:48,820
+And there are other methods
+that kind of inject other steps
+
+2032
+01:28:48,820 --> 01:28:50,500
+along the way.
+
+2033
+01:28:50,500 --> 01:28:52,000
+And so there's this
+natural question
+
+2034
+01:28:52,000 --> 01:28:54,490
+of what should the
+curriculum of tasks be?
+
+2035
+01:28:54,490 --> 01:28:59,300
+How many intermediate
+steps should there be?
+
+2036
+01:28:59,300 --> 01:29:01,420
+What should the
+intermediate steps be?
+
+2037
+01:29:01,420 --> 01:29:04,360
+What's the benefit of one
+domain versus the other?
+
+2038
+01:29:04,360 --> 01:29:06,370
+How much domain shift is there?
+
+2039
+01:29:06,370 --> 01:29:08,752
+And what are the corresponding
+benefits and so on?
+
+2040
+01:29:08,752 --> 01:29:10,210
+And I think there
+would be, there's
+
+2041
+01:29:10,210 --> 01:29:13,480
+a fascinating line of work
+that would be better basically
+
+2042
+01:29:13,480 --> 01:29:16,240
+better answering
+those questions.
+
+2043
+01:29:16,240 --> 01:29:16,740
+Great.
+
+2044
+01:29:16,740 --> 01:29:21,320
+And what was the acronym called?
+
+2045
+01:29:21,320 --> 01:29:25,820
+Yeah, so it's called a DAPT
+or TAPT, Domain Adaptive
+
+2046
+01:29:25,820 --> 01:29:28,340
+Pre-training or Task
+Adaptive Pre-training.
+
+2047
+01:29:28,340 --> 01:29:30,980
+The other paper's called
+"Don't Stop Pre-training" which
+
+2048
+01:29:30,980 --> 01:29:34,490
+is easy to remember if you like
+the song "Don't Stop Believing"
+
+2049
+01:29:34,490 --> 01:29:38,030
+which is how I,
+don't know if it's
+
+2050
+01:29:38,030 --> 01:29:41,570
+an intended reference to that
+song, I assume it must be.
+
+2051
+01:29:41,570 --> 01:29:43,280
+I think they should
+have done a Don't
+
+2052
+01:29:43,280 --> 01:29:44,937
+Stop Pre Trainin'
+with an apostrophe
+
+2053
+01:29:44,937 --> 01:29:46,520
+if they really wanted
+to drive it home
+
+2054
+01:29:46,520 --> 01:29:48,410
+but maybe that would
+have been too cheesy.
+
+2055
+01:29:48,410 --> 01:29:49,910
+But anyways yeah,
+the paper's called
+
+2056
+01:29:49,910 --> 01:29:51,710
+"Don't stop Pre-training."
+
+2057
+01:29:51,710 --> 01:29:52,710
+All right, that's great.
+
+2058
+01:29:52,710 --> 01:29:54,170
+Thank you so much.
+
+2059
+01:29:54,170 --> 01:29:54,670
+Yeah.
+
+2060
+01:29:54,670 --> 01:29:56,070
+Absolutely.
+
+2061
+01:29:56,070 --> 01:29:59,550
+OK, next question is
+[AUDIO OUT] I'm not sure quite
+
+2062
+01:29:59,550 --> 01:30:03,090
+what that name corresponds to.
+
+2063
+01:30:03,090 --> 01:30:04,010
+Yes, hi.
+
+2064
+01:30:04,010 --> 01:30:05,260
+Thank you, Colin for the talk.
+
+2065
+01:30:05,260 --> 01:30:07,540
+Found it really interesting.
+
+2066
+01:30:07,540 --> 01:30:09,570
+I've got kind of an
+open ended question.
+
+2067
+01:30:09,570 --> 01:30:11,610
+I'm really looking
+for some advice here.
+
+2068
+01:30:11,610 --> 01:30:14,555
+So it feels like the recent
+headline grabbing advancements
+
+2069
+01:30:14,555 --> 01:30:17,135
+in the NLP industry
+have been achieved
+
+2070
+01:30:17,135 --> 01:30:18,510
+by building these
+massive models,
+
+2071
+01:30:18,510 --> 01:30:22,620
+like GPT-3 with billions of
+parameters that oftentimes cost
+
+2072
+01:30:22,620 --> 01:30:24,785
+millions of dollars to train.
+
+2073
+01:30:24,785 --> 01:30:26,160
+And these advancements
+are funded
+
+2074
+01:30:26,160 --> 01:30:28,980
+by like larger organizations,
+like Google, Facebook, OpenAI,
+
+2075
+01:30:28,980 --> 01:30:32,250
+who more or less have infinite
+resources to train, right?
+
+2076
+01:30:32,250 --> 01:30:35,700
+So my question is as
+a sole practitioner
+
+2077
+01:30:35,700 --> 01:30:40,230
+with limited resources but an
+infinite appetite for learning,
+
+2078
+01:30:40,230 --> 01:30:42,600
+what are some ways
+that I can participate
+
+2079
+01:30:42,600 --> 01:30:45,870
+in these advancements
+and kind of just partake
+
+2080
+01:30:45,870 --> 01:30:48,242
+in what's happening
+in the industry?
+
+2081
+01:30:48,242 --> 01:30:48,950
+Yeah, absolutely.
+
+2082
+01:30:48,950 --> 01:30:51,680
+I mean, I actually totally
+sympathize with you
+
+2083
+01:30:51,680 --> 01:30:54,283
+and agree with you in
+the sense that most
+
+2084
+01:30:54,283 --> 01:30:55,700
+of the development
+of these models
+
+2085
+01:30:55,700 --> 01:30:59,000
+is taking place by small
+groups behind closed
+
+2086
+01:30:59,000 --> 01:31:01,010
+doors at large corporations.
+
+2087
+01:31:01,010 --> 01:31:04,740
+And that's not usually how I
+like to see science developed.
+
+2088
+01:31:04,740 --> 01:31:07,070
+I like to see it as a
+community endeavor that
+
+2089
+01:31:07,070 --> 01:31:09,560
+involves all kinds of
+stakeholders with varying
+
+2090
+01:31:09,560 --> 01:31:10,580
+amounts of resources.
+
+2091
+01:31:10,580 --> 01:31:14,600
+And we're not really quite at
+that stage with this work yet.
+
+2092
+01:31:14,600 --> 01:31:18,260
+I do think that to the
+extent that people are still
+
+2093
+01:31:18,260 --> 01:31:21,680
+releasing pre-trained models,
+which is true for example,
+
+2094
+01:31:21,680 --> 01:31:24,650
+for T5 but not for GPT-3.
+
+2095
+01:31:24,650 --> 01:31:28,850
+There is a lot of work to be
+done on basically analysis.
+
+2096
+01:31:28,850 --> 01:31:31,190
+Some of the stuff that we
+were discussing earlier, you
+
+2097
+01:31:31,190 --> 01:31:35,150
+know even the memorization
+work is basically I
+
+2098
+01:31:35,150 --> 01:31:36,710
+would say it's
+like analysis where
+
+2099
+01:31:36,710 --> 01:31:38,930
+some of the stuff
+pertaining to bias involves
+
+2100
+01:31:38,930 --> 01:31:41,090
+and analyzing these models.
+
+2101
+01:31:41,090 --> 01:31:44,480
+And I think there's so
+little that we actually know
+
+2102
+01:31:44,480 --> 01:31:47,060
+about how these models work.
+
+2103
+01:31:47,060 --> 01:31:51,680
+And what makes them
+useful at scale
+
+2104
+01:31:51,680 --> 01:31:55,730
+that there's plenty of room
+for interesting analytical work
+
+2105
+01:31:55,730 --> 01:31:58,070
+which requires
+significantly less compute.
+
+2106
+01:31:58,070 --> 01:32:00,710
+
+
+2107
+01:32:00,710 --> 01:32:04,390
+I guess I would say a
+couple other things.
+
+2108
+01:32:04,390 --> 01:32:07,370
+One is that I do really
+hope that the field moves
+
+2109
+01:32:07,370 --> 01:32:09,620
+more towards community
+develop models and moves
+
+2110
+01:32:09,620 --> 01:32:14,180
+towards frameworks that allow
+people to collaboratively train
+
+2111
+01:32:14,180 --> 01:32:16,615
+a model, for example like
+in a distributed fashion.
+
+2112
+01:32:16,615 --> 01:32:18,740
+I think that that's an
+incredibly exciting research
+
+2113
+01:32:18,740 --> 01:32:19,070
+direction.
+
+2114
+01:32:19,070 --> 01:32:21,170
+It's something that I'm
+working with my students
+
+2115
+01:32:21,170 --> 01:32:24,500
+on in my lab at UNC now.
+
+2116
+01:32:24,500 --> 01:32:28,880
+And the last thing I'll say,
+and I actually don't usually
+
+2117
+01:32:28,880 --> 01:32:31,250
+like saying this, but
+I'll say it anyways.
+
+2118
+01:32:31,250 --> 01:32:35,510
+I do think that our
+field often undergoes
+
+2119
+01:32:35,510 --> 01:32:38,840
+sort of a tick-tock pattern,
+where we show something
+
+2120
+01:32:38,840 --> 01:32:40,392
+is possible at
+scale, and then we
+
+2121
+01:32:40,392 --> 01:32:42,350
+show that the scale is
+not necessary to achieve
+
+2122
+01:32:42,350 --> 01:32:43,280
+the same thing.
+
+2123
+01:32:43,280 --> 01:32:44,990
+And to some extent,
+you could argue
+
+2124
+01:32:44,990 --> 01:32:47,810
+that this has happened
+already for GPT-3 in the sense
+
+2125
+01:32:47,810 --> 01:32:49,850
+that we saw GPT-3
+come along, get
+
+2126
+01:32:49,850 --> 01:32:51,440
+outstanding results
+on for example
+
+2127
+01:32:51,440 --> 01:32:54,260
+SuperGLUE with only
+32 examples per class.
+
+2128
+01:32:54,260 --> 01:32:55,700
+And then there
+was the paper that
+
+2129
+01:32:55,700 --> 01:32:58,730
+proposed this method
+called IPET, which I think
+
+2130
+01:32:58,730 --> 01:33:03,590
+is interactive-- an iterative
+pattern exploited training,
+
+2131
+01:33:03,590 --> 01:33:06,380
+that is basically comparable
+performance in a dramatically
+
+2132
+01:33:06,380 --> 01:33:09,350
+smaller model with the
+same amount of data.
+
+2133
+01:33:09,350 --> 01:33:14,690
+And you can point
+to other examples.
+
+2134
+01:33:14,690 --> 01:33:17,930
+I personally like to attribute
+the story of attention's
+
+2135
+01:33:17,930 --> 01:33:21,020
+invention to the fact that
+researchers at the Montreal
+
+2136
+01:33:21,020 --> 01:33:22,640
+Institute for
+Learning Algorithms
+
+2137
+01:33:22,640 --> 01:33:24,710
+couldn't afford an
+eight GPU machine,
+
+2138
+01:33:24,710 --> 01:33:26,900
+so they couldn't run the
+giant LSTM in the sequence
+
+2139
+01:33:26,900 --> 01:33:27,980
+to sequence paper.
+
+2140
+01:33:27,980 --> 01:33:29,570
+So they needed to
+invent something
+
+2141
+01:33:29,570 --> 01:33:31,820
+that worked better but didn't
+require such a big model
+
+2142
+01:33:31,820 --> 01:33:34,070
+so they invented attention.
+
+2143
+01:33:34,070 --> 01:33:36,650
+Of course, it's not good
+advice to give, to tell someone
+
+2144
+01:33:36,650 --> 01:33:38,777
+that they should just go
+invent something smaller
+
+2145
+01:33:38,777 --> 01:33:41,360
+but I am at least hopeful that
+some of these things that we've
+
+2146
+01:33:41,360 --> 01:33:45,440
+shown are possible at scale
+are also possible at a much
+
+2147
+01:33:45,440 --> 01:33:47,820
+smaller scale.
+
+2148
+01:33:47,820 --> 01:33:48,900
+So thank you.
+
+2149
+01:33:48,900 --> 01:33:49,400
+Yeah.
+
+2150
+01:33:49,400 --> 01:33:52,220
+
+
+2151
+01:33:52,220 --> 01:33:55,370
+And I think there's
+no one else who
+
+2152
+01:33:55,370 --> 01:33:56,670
+has a hand up at the moment.
+
+2153
+01:33:56,670 --> 01:33:59,420
+Maybe now's the moment for
+John to ask his question,
+
+2154
+01:33:59,420 --> 01:34:02,580
+but if any other
+people have questions,
+
+2155
+01:34:02,580 --> 01:34:05,520
+now's a good point to jump in.
+
+2156
+01:34:05,520 --> 01:34:07,520
+I was just going to ask
+a question from the Q&A,
+
+2157
+01:34:07,520 --> 01:34:12,470
+[AUDIO OUT] came in
+and asked it live so.
+
+2158
+01:34:12,470 --> 01:34:17,962
+Yeah, I will say one other thing
+just quickly, which is that T5,
+
+2159
+01:34:17,962 --> 01:34:20,420
+I was very, like I said I was
+very excited that we achieved
+
+2160
+01:34:20,420 --> 01:34:23,060
+near human performance
+on SuperGLUE.
+
+2161
+01:34:23,060 --> 01:34:26,780
+The model that came along and
+actually closed that 0.5% gap
+
+2162
+01:34:26,780 --> 01:34:30,290
+is a model that is about
+10 times smaller in terms
+
+2163
+01:34:30,290 --> 01:34:31,280
+of parameter count.
+
+2164
+01:34:31,280 --> 01:34:33,650
+So that that's like another
+reasonable example of,
+
+2165
+01:34:33,650 --> 01:34:36,530
+I mean it's still
+quite big but at least
+
+2166
+01:34:36,530 --> 01:34:41,510
+as you make algorithmic and
+architectural improvements
+
+2167
+01:34:41,510 --> 01:34:44,090
+sometimes you can
+close these gaps.
+
+2168
+01:34:44,090 --> 01:34:45,590
+Well, thank you again, Colin.
+
+2169
+01:34:45,590 --> 01:34:48,200
+And let you
+whatever, have a beer
+
+2170
+01:34:48,200 --> 01:34:51,020
+and go to bed or something.
+
+2171
+01:34:51,020 --> 01:34:52,985
+Yeah, yeah, sounds great.
+
+2172
+01:34:52,985 --> 01:34:54,360
+Yeah, thanks again
+for having me.
+
+2173
+01:34:54,360 --> 01:34:56,630
+It's such a pleasure
+so, and I should
+
+2174
+01:34:56,630 --> 01:34:58,400
+say if anyone has any
+follow up questions
+
+2175
+01:34:58,400 --> 01:35:00,898
+they think of later on I'm
+always excited to get emails
+
+2176
+01:35:00,898 --> 01:35:01,940
+about this kind of stuff.
+
+2177
+01:35:01,940 --> 01:35:04,730
+It's the stuff I
+like working on, so.
+
+2178
+01:35:04,730 --> 01:35:08,770
+OK, thank you again for the
+great and informative talk.
+
+2179
+01:35:08,770 --> 01:35:13,152
+
+
