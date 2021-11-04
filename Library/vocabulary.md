@@ -16,6 +16,8 @@
 | Conditional Mutual Information | CMI | условная взаимная информация | УВИ |
 | Conditional Probability Table | CPT | таблица условных вероятностей | ТУВ |
 | Conditional Random Field | CRF | условное случайное поле | УСП |
+| Correlated Occurrence Analogue to Lexi-
+cal Semantic | COALS | Коррелированый Аналог Вхождения в Векторной Семантике | КАВВС* |
 | Cumulative Distribution Function        | CDF         |                                                    |              |
 | Decision Diagram | DD | диаграмма решений | ДГР |
 | Decision Tree | DTD | дерево решений | ДР |
