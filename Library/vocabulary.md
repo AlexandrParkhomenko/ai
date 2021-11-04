@@ -55,6 +55,7 @@
 | Law of Large Numbers | LLN | Закон больших чисел | ЗБЧ |
 | Limited Memory Influence Diagram | LIMID | диаграмма влияния с ограниченной памятью | ДВОП |
 | Linear Logistic Classifier              | LLC         |                                                    |              |
+| Latent Semantic Analysis | LSA |  |  |
 | Markov Blanket | MB | марковское ограждение | МО |
 | Markov Chain | MC | марковская цепь | МЦ |
 | Markov Decision Process | MDP | марковский процесс принятия решений | МППР |
