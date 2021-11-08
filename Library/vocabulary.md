@@ -7,6 +7,7 @@
 | Bayesian Constraint-based Causal Discovery | BCCD | байесовский причинно-следственный анализ с учетом ограничений | БПСА |
 | Bayesian Network | BN | байесовская сеть | БС |
 | Bayesian network Augmented Naive Bayes classifier | BAN | наивный байесовский классификатор, дополненный байесовской сетью | НБКБС |
+| BERT | Bidirectional Encode Representations from Transformers |  |  |
 | BigCLAM | Cluster Affiliation Model for Big Networks |  |  |
 | BlackBox | BB | атака с доступом только к входу и выходу модели | ЧЯ* |
 | Breadth-First Search | BFS | поиск в ширину |  |
