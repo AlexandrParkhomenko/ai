@@ -38,6 +38,7 @@ cal Semantic | COALS | Коррелированый Аналог Вхожден�
 | Fast Gradient Sign Method | FGSM | Быстрый Знака Градиента Метод | БЗГМ* |
 | Gated Reccurent Units | GRU | закрытые рекуррентные блоки |  |
 | Generative Adversarial Networks         | GAN         | генеративные состязательные сети                   |              |
+| Generative Pretrained Decoder | GPT | Генеративные претренированные декодеры | ГПД* |
 | Graph Attention Networks                | GAT         | графовые сети внимания                             |              |
 | Gibbs Random Field | GRM | случайное поле Гиббса | СПГ |
 | Graph Convolution Policy Network        | GCPN        |                                                    |              |
