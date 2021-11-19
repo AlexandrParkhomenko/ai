@@ -20,3 +20,4 @@
 - [NAACL](https://2021.naacl.org/)
 - https://www.aclweb.org/
 - [ICASSP](https://2021.ieeeicassp.org/) Conference on Acoustics, Speech and Signal Processing
+- WMT Machine Translation conference and competition
