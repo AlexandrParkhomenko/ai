@@ -93,6 +93,7 @@ cal Semantic | COALS | Коррелированый Аналог Вхожден�
 | Relational Probabilistic Graphical Model | RPGM | реляционная вероятностная графовая модель | РВГМ |
 | Semi-Naïve Bayesian Classifier | SNBC | частично наивный байесовский классификатор | ЧНБК |
 | network Significance Profile | SP | Профиль значимости сети | ПЗ* |
+| Statistical Machine Translation | SMT | Статистический Машинный Перевод | СМП* |
 | Stochastic Mixing Iterative Learning    | SMILe       |                                                    |              |
 | Stochastic-Shortest-Path                | SSP         |                                                    |              |
 | Strongly Connected Components           | SCCs        | Сильно Связанные Компоненты (Графа)                | ССК          |
