@@ -75,6 +75,7 @@ cal Semantic | COALS | Коррелированый Аналог Вхожден�
 | Naïve Bayes Classifier | NBC | наивный байесовский классификатор | НБК |
 | Negative Log Likelihood Multiclass      | NLLM        |                                                    |              |
 | Negative Log-Likelihood                 | NLL         |                                                    |              |
+| Neural Machine Translation              | NMT | Нейронный Машинный Перевод | НМП |
 | NeuroEvolution of Augmenting Topologies | NEAT | Нейроэволюция дополнительных топологий | НЭДТ |
 | NonLinear Programming                   | NLP         | Нелинейное программирование                        | НЛП*         |
 | Noise Contrastive Estimation            | NCE         | Оценка шума по контрасту                           |              |
