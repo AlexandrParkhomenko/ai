@@ -29,5 +29,8 @@
 - NLTK (Natural Language Toolkit)
 - [Dialogflow](https://github.com/dialogflow)
 
+### Datasets
+- [LIL Lab](https://github.com/lil-lab)
+
 ### Ресурсы
 - [Немного про word2vec](http://nlpx.net/archives/179)
