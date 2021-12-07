@@ -73,6 +73,7 @@ cal Semantic | COALS | Коррелированый Аналог Вхожден�
 | Most Probable Explanation | MPE | наиболее вероятное объяснение (обоснование) | НВО |
 | Multidimensional Bayesian network Classifier | MBC | многомерная байесовская сеть (классификатор) | МБС |
 | Naïve Bayes Classifier | NBC | наивный байесовский классификатор | НБК |
+| Natural Language Generation | NLG | Генерирование на Естественном Языке | ГЕЯ* |
 | Negative Log Likelihood Multiclass      | NLLM        |                                                    |              |
 | Negative Log-Likelihood                 | NLL         |                                                    |              |
 | Neural Machine Translation              | NMT | Нейронный Машинный Перевод | НМП |
