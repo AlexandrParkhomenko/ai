@@ -20,6 +20,7 @@
 | Correlated Occurrence Analogue to Lexi-
 cal Semantic | COALS | Коррелированый Аналог Вхождения в Векторной Семантике | КАВВС* |
 | Cumulative Distribution Function        | CDF         |                                                    |              |
+| denoising Entity Autoencoder | dEA |  шумоподавляющий Автоэнкодер Сущностей | щАС* | 
 | Decision Diagram | DD | диаграмма решений | ДГР |
 | Decision Tree | DTD | дерево решений | ДР |
 | Decentralized Partially Observable Markov Decision Process | Dec-POMDP | децентрализованный частично наблюдаемый марковский процесс принятия решений | |
