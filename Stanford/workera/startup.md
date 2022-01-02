@@ -4,6 +4,8 @@
 - [innovation and entrepreneurship](https://online.stanford.edu/innovation-and-entrepreneurship/free-content?category=All&course=All)
     - [Stanford d.school](https://www.youtube.com/channel/UCVNJZuJsInOCnvrHFyHCMDw/videos)
 
+- [75 lections](https://habr.com/ru/post/529224/)
+    - [Alan Kay](https://m.youtube.com/watch?v=id1WShzzMCQ)
 - [Питер Тиль. Курс лекций «Стартап». Стенфорд 2012.](https://habr.com/en/post/151193/)
 - [Tina Seelig: A crash course in creativity.](https://www.youtube.com/watch?v=gyM6rx69iqg)
 
