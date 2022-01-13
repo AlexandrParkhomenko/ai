@@ -5,3 +5,5 @@
 - 2 [Course Overview](https://www.youtube.com/watch?v=2w_qYPxuzeA)
 - 3 [Homework 1: Word Relatedness](https://www.youtube.com/watch?v=egEzcwbej1E)
 
+[github](https://github.com/cgpotts/cs224u)
+
