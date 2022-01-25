@@ -1,0 +1,1092 @@
+1
+00:00:04,960 --> 00:00:08,480
+hello everyone welcome to part two of
+
+2
+00:00:06,719 --> 00:00:10,718
+our series of screencasts on distributed
+
+3
+00:00:08,480 --> 00:00:14,559
+word representations the focus of this
+
+4
+00:00:10,718 --> 00:00:16,239
+screencast will be on matrix designs
+
+5
+00:00:14,558 --> 00:00:18,799
+let's start with the word by word design
+
+6
+00:00:16,239 --> 00:00:20,959
+that we concentrated on in part one uh
+
+7
+00:00:18,800 --> 00:00:23,439
+so here again we have our vocabulary
+
+8
+00:00:20,960 --> 00:00:25,599
+along the rows that same vocabulary is
+
+9
+00:00:23,439 --> 00:00:27,439
+repeated along the columns and the cell
+
+10
+00:00:25,599 --> 00:00:29,118
+values capture the number of times that
+
+11
+00:00:27,439 --> 00:00:31,518
+each row word co-occurred with each
+
+12
+00:00:29,118 --> 00:00:33,039
+column word in some large collection of
+
+13
+00:00:33,039 --> 00:00:36,159
+this matrix will have two properties
+
+14
+00:00:34,799 --> 00:00:38,399
+that i think make it noteworthy for
+
+15
+00:00:36,159 --> 00:00:41,279
+developing semantic representations the
+
+16
+00:00:38,399 --> 00:00:43,120
+first is it will be very dense and as we
+
+17
+00:00:41,280 --> 00:00:45,679
+bring in more data from ever larger
+
+18
+00:00:43,119 --> 00:00:47,759
+corporate will get denser and denser in
+
+19
+00:00:45,679 --> 00:00:49,519
+virtue of the fact that more words will
+
+20
+00:00:47,759 --> 00:00:51,439
+tend to co-occur with more other words
+
+21
+00:00:49,520 --> 00:00:53,440
+in these this ever larger collection of
+
+22
+00:00:53,439 --> 00:00:56,640
+the second is that it kind of has the
+
+23
+00:00:54,878 --> 00:00:58,558
+nice property that its dimensionality
+
+24
+00:00:56,640 --> 00:01:00,239
+will remain fixed even as we bring in
+
+25
+00:00:58,558 --> 00:01:02,558
+more data as long as we decide on the
+
+26
+00:01:00,238 --> 00:01:04,399
+vocabulary ahead of time all we'll be
+
+27
+00:01:02,558 --> 00:01:05,920
+doing is incrementing individual cell
+
+28
+00:01:04,400 --> 00:01:08,000
+values and so we can bring in as much
+
+29
+00:01:05,920 --> 00:01:10,879
+data as we want without changing the
+
+30
+00:01:08,000 --> 00:01:12,799
+fundamental design of the object
+
+31
+00:01:10,879 --> 00:01:14,798
+both of those other things are points of
+
+32
+00:01:12,799 --> 00:01:16,320
+contrast with another common design that
+
+33
+00:01:14,799 --> 00:01:18,320
+you see in the literature especially in
+
+34
+00:01:16,319 --> 00:01:20,879
+information retrieval and that is the
+
+35
+00:01:20,879 --> 00:01:24,879
+for this design again i have words along
+
+36
+00:01:22,719 --> 00:01:27,118
+the rows but my columns are now
+
+37
+00:01:24,879 --> 00:01:28,560
+individual documents and the cell values
+
+38
+00:01:27,118 --> 00:01:30,640
+capture the number of times that each
+
+39
+00:01:28,560 --> 00:01:31,920
+word occurs in each one of those
+
+40
+00:01:31,920 --> 00:01:36,320
+as you can imagine this is a very sparse
+
+41
+00:01:34,319 --> 00:01:38,319
+matrix in contrast to the word by word
+
+42
+00:01:36,319 --> 00:01:40,239
+one that we just looked at in virtue of
+
+43
+00:01:38,319 --> 00:01:41,679
+the fact that most words don't appear in
+
+44
+00:01:41,680 --> 00:01:45,200
+it will also have the property that as
+
+45
+00:01:43,438 --> 00:01:46,639
+we bring in more data in the form of
+
+46
+00:01:46,640 --> 00:01:50,640
+the shape of the matrix will change
+
+47
+00:01:48,399 --> 00:01:52,960
+we'll be adding column dimensions for
+
+48
+00:01:50,640 --> 00:01:55,359
+each new document that we bring into the
+
+49
+00:01:52,959 --> 00:01:57,599
+space and that could really affect the
+
+50
+00:01:55,359 --> 00:01:59,438
+kind of complications that we can do the
+
+51
+00:01:57,599 --> 00:02:01,199
+only thing that balances against the
+
+52
+00:01:59,438 --> 00:02:02,879
+ever increasing size of this matrix is
+
+53
+00:02:01,200 --> 00:02:04,399
+that because it is so sparse we might
+
+54
+00:02:02,879 --> 00:02:06,879
+have some easy and efficient ways of
+
+55
+00:02:04,399 --> 00:02:09,280
+storing it efficiently putting it on par
+
+56
+00:02:06,879 --> 00:02:12,400
+with a much more compact but dense word
+
+57
+00:02:09,280 --> 00:02:14,159
+by word matrix that i showed you before
+
+58
+00:02:12,400 --> 00:02:15,760
+now those are two very common designs
+
+59
+00:02:14,159 --> 00:02:17,598
+that you see in the literature but i
+
+60
+00:02:15,759 --> 00:02:19,199
+want you to think creatively and kind of
+
+61
+00:02:17,598 --> 00:02:21,119
+align your matrix design with it at
+
+62
+00:02:19,199 --> 00:02:22,560
+whatever problem you're trying to solve
+
+63
+00:02:21,120 --> 00:02:24,159
+so let me show you one that's really
+
+64
+00:02:24,159 --> 00:02:27,919
+this is what i've called the word by
+
+65
+00:02:27,919 --> 00:02:31,518
+i derived this from the switchboard
+
+66
+00:02:29,598 --> 00:02:33,518
+dialogue act corpus which is the
+
+67
+00:02:31,519 --> 00:02:35,680
+switchboard corpus where each dialogue
+
+68
+00:02:33,519 --> 00:02:37,599
+act has been annotated by an expert
+
+69
+00:02:35,680 --> 00:02:39,840
+annotator with the sort of dialogue act
+
+70
+00:02:37,598 --> 00:02:41,199
+or speech act that was performed by that
+
+71
+00:02:41,199 --> 00:02:45,679
+what that allows us to do is collect
+
+72
+00:02:43,680 --> 00:02:47,840
+a matrix where the rows are again words
+
+73
+00:02:45,680 --> 00:02:50,319
+but the columns are those individual
+
+74
+00:02:47,840 --> 00:02:52,000
+labels that annotators assigned i think
+
+75
+00:02:50,318 --> 00:02:53,518
+this is a really interesting matrix i
+
+76
+00:02:52,000 --> 00:02:55,120
+think if you appear even at this small
+
+77
+00:02:53,519 --> 00:02:57,840
+fragment you can see some interesting
+
+78
+00:02:55,120 --> 00:03:00,080
+information emerging so for example
+
+79
+00:02:57,840 --> 00:03:02,640
+absolutely occurs a lot in acceptance
+
+80
+00:03:00,080 --> 00:03:05,200
+dialogue acts whereas more hedged words
+
+81
+00:03:02,639 --> 00:03:07,119
+like actually in any way are more common
+
+82
+00:03:05,199 --> 00:03:09,199
+in things like rejecting part of a
+
+83
+00:03:07,120 --> 00:03:10,800
+previous utterance and i'm sure there
+
+84
+00:03:09,199 --> 00:03:12,799
+are lots of other interesting patterns
+
+85
+00:03:12,800 --> 00:03:16,239
+and of course that's just a glimpse of
+
+86
+00:03:14,239 --> 00:03:18,000
+the many other design choices that you
+
+87
+00:03:16,239 --> 00:03:19,519
+could make again think creatively you
+
+88
+00:03:18,000 --> 00:03:21,519
+could have something like adjective by
+
+89
+00:03:19,519 --> 00:03:23,759
+modified noun this would probably
+
+90
+00:03:21,519 --> 00:03:26,319
+capture some very local syntactic
+
+91
+00:03:23,759 --> 00:03:28,239
+information or collocational information
+
+92
+00:03:26,318 --> 00:03:30,878
+we could generalize that a bit to word
+
+93
+00:03:28,239 --> 00:03:33,200
+by syntactic context to explicitly try
+
+94
+00:03:30,878 --> 00:03:35,919
+to model how words associate with
+
+95
+00:03:35,919 --> 00:03:39,359
+be very different from our usual
+
+96
+00:03:39,360 --> 00:03:43,519
+word by search query might be a design
+
+97
+00:03:41,199 --> 00:03:44,798
+that you use information retrieval we
+
+98
+00:03:43,519 --> 00:03:46,959
+don't even have to limit this to
+
+99
+00:03:44,799 --> 00:03:48,640
+linguistic objects word by person could
+
+100
+00:03:46,959 --> 00:03:49,680
+capture the number of times that each
+
+101
+00:03:49,680 --> 00:03:54,239
+purchased a specific set of products and
+
+102
+00:03:52,318 --> 00:03:56,000
+then we could cluster people or products
+
+103
+00:03:56,000 --> 00:03:59,680
+we could also mix linguistic and
+
+104
+00:03:57,438 --> 00:04:01,519
+non-linguistic things so word by person
+
+105
+00:03:59,680 --> 00:04:03,920
+might capture different usage patterns
+
+106
+00:04:01,519 --> 00:04:05,120
+for individual speakers and again again
+
+107
+00:04:05,120 --> 00:04:08,878
+interesting clustering of words or of
+
+108
+00:04:08,878 --> 00:04:11,759
+we could also break out of two
+
+109
+00:04:10,400 --> 00:04:14,480
+dimensions we could have something like
+
+110
+00:04:11,759 --> 00:04:16,639
+word by word by pattern or verb by
+
+111
+00:04:14,479 --> 00:04:19,120
+subject by object many of the methods
+
+112
+00:04:16,639 --> 00:04:21,120
+that we cover in this unit are easily
+
+113
+00:04:19,120 --> 00:04:22,879
+generalized to more than two dimensions
+
+114
+00:04:21,120 --> 00:04:24,879
+so you could have that in mind and of
+
+115
+00:04:22,879 --> 00:04:26,959
+course as i said think creatively and
+
+116
+00:04:24,879 --> 00:04:29,279
+think in particular about how your
+
+117
+00:04:26,959 --> 00:04:31,198
+matrix design is aligned with whatever
+
+118
+00:04:29,279 --> 00:04:33,918
+modeling goal you have or whatever
+
+119
+00:04:33,918 --> 00:04:36,799
+another connection that i want to make
+
+120
+00:04:35,360 --> 00:04:39,520
+is that even though this feels like a
+
+121
+00:04:39,519 --> 00:04:44,079
+vector representations of words are
+
+122
+00:04:41,839 --> 00:04:46,239
+actually are of objects are actually
+
+123
+00:04:44,079 --> 00:04:48,478
+pervasive not only throughout machine
+
+124
+00:04:46,240 --> 00:04:50,879
+learning but also throughout science
+
+125
+00:04:48,478 --> 00:04:52,399
+right so think back to older modes of
+
+126
+00:04:50,879 --> 00:04:54,319
+nlp where we would write a lot of
+
+127
+00:04:52,399 --> 00:04:55,839
+feature functions we'll be exploring
+
+128
+00:04:54,319 --> 00:04:58,079
+such techniques they can be quite
+
+129
+00:04:55,839 --> 00:04:59,519
+powerful even though they feel very
+
+130
+00:04:58,079 --> 00:05:01,839
+different from the distributional
+
+131
+00:04:59,519 --> 00:05:04,319
+hypotheses that we've been pursuing in
+
+132
+00:05:01,839 --> 00:05:06,959
+fact they also represent individual data
+
+133
+00:05:04,319 --> 00:05:09,199
+points as vectors so for example given
+
+134
+00:05:06,959 --> 00:05:10,879
+the text like the movie was horrible i
+
+135
+00:05:09,199 --> 00:05:12,560
+might reduce that with my feature
+
+136
+00:05:10,879 --> 00:05:14,800
+functions to a vector that looks like
+
+137
+00:05:12,560 --> 00:05:17,280
+this and i might know as a human that
+
+138
+00:05:14,800 --> 00:05:19,759
+four captures the number of words
+
+139
+00:05:17,279 --> 00:05:21,359
+zero captures the number of proper names
+
+140
+00:05:19,759 --> 00:05:23,840
+and one over four captures the
+
+141
+00:05:21,360 --> 00:05:26,400
+percentage of negative words according
+
+142
+00:05:23,839 --> 00:05:28,719
+to some sentiment lexicon that's a human
+
+143
+00:05:26,399 --> 00:05:30,799
+level understanding of this in fact
+
+144
+00:05:28,720 --> 00:05:32,639
+those dimensions will acquire a meaning
+
+145
+00:05:30,800 --> 00:05:34,639
+to the extent that they assemble them
+
+146
+00:05:34,639 --> 00:05:38,400
+and the column wise elements are
+
+147
+00:05:38,399 --> 00:05:42,319
+so even though the origins of the data
+
+148
+00:05:40,079 --> 00:05:43,120
+are very different in fact this is just
+
+149
+00:05:43,120 --> 00:05:47,280
+vector representations of words in the
+
+150
+00:05:45,120 --> 00:05:49,038
+way we've been discussing it the same
+
+151
+00:05:47,279 --> 00:05:50,478
+thing happens in experimental sciences
+
+152
+00:05:49,038 --> 00:05:52,399
+where you might have an experimental
+
+153
+00:05:50,478 --> 00:05:54,879
+subject come in and perform some act in
+
+154
+00:05:52,399 --> 00:05:56,478
+the lab they do a complicated physical
+
+155
+00:05:54,879 --> 00:05:58,719
+and human thing and you reduce it down
+
+156
+00:05:56,478 --> 00:06:01,439
+to a couple of numbers like a choice
+
+157
+00:05:58,720 --> 00:06:03,520
+they made or a reaction time and a
+
+158
+00:06:03,519 --> 00:06:07,918
+we might model entire humans or entire
+
+159
+00:06:05,360 --> 00:06:10,400
+entire organisms with a vector of
+
+160
+00:06:07,918 --> 00:06:12,318
+numbers representing their physical
+
+161
+00:06:10,399 --> 00:06:14,560
+characteristics and perspectives and
+
+162
+00:06:12,319 --> 00:06:16,000
+outlooks and so forth again we might
+
+163
+00:06:14,560 --> 00:06:18,160
+know what these individual column
+
+164
+00:06:16,000 --> 00:06:20,319
+dimensions mean but they acquire a
+
+165
+00:06:18,160 --> 00:06:22,160
+meaning when we're doing modeling only
+
+166
+00:06:20,319 --> 00:06:24,479
+to the extent that they are embedded in
+
+167
+00:06:22,160 --> 00:06:26,560
+a matrix and can be compared to each
+
+168
+00:06:26,560 --> 00:06:30,399
+and so forth there are many other
+
+169
+00:06:28,079 --> 00:06:32,478
+examples of this where essentially
+
+170
+00:06:30,399 --> 00:06:34,719
+fundamentally all of our representations
+
+171
+00:06:32,478 --> 00:06:37,519
+are vector representations so maybe the
+
+172
+00:06:34,720 --> 00:06:39,120
+far out idea for this unit is just that
+
+173
+00:06:37,519 --> 00:06:41,439
+we can gather interesting vector
+
+174
+00:06:39,120 --> 00:06:43,439
+representations without all of the hand
+
+175
+00:06:41,439 --> 00:06:46,478
+built work that goes into the examples
+
+176
+00:06:46,639 --> 00:06:50,560
+a final technical point a question that
+
+177
+00:06:49,038 --> 00:06:52,318
+you should ask that's kind of separate
+
+178
+00:06:52,319 --> 00:06:56,720
+matrix design what is going to count as
+
+179
+00:06:54,800 --> 00:06:58,560
+co-occurrence so i think there are at
+
+180
+00:06:56,720 --> 00:07:00,560
+least two design choices that are really
+
+181
+00:06:58,560 --> 00:07:02,560
+important when answering this question
+
+182
+00:07:00,560 --> 00:07:04,879
+to illustrate them let's use this small
+
+183
+00:07:02,560 --> 00:07:08,079
+example so i have this text from swerve
+
+184
+00:07:04,879 --> 00:07:09,918
+of shore to bend of bay comma brings
+
+185
+00:07:08,079 --> 00:07:11,758
+and imagine that our focus word at our
+
+186
+00:07:09,918 --> 00:07:13,598
+particular point of analysis is this
+
+187
+00:07:13,598 --> 00:07:18,959
+and these indices here indicate going
+
+188
+00:07:15,759 --> 00:07:22,400
+left and right the distance by counts
+
+189
+00:07:18,959 --> 00:07:23,598
+from that particular focus word
+
+190
+00:07:22,399 --> 00:07:25,038
+the first question that you want to
+
+191
+00:07:25,038 --> 00:07:29,839
+co-occurrence is going to be so for
+
+192
+00:07:27,199 --> 00:07:31,759
+example if you set your window to 3
+
+193
+00:07:29,839 --> 00:07:33,679
+then the things that are within three
+
+194
+00:07:31,759 --> 00:07:35,840
+distance of your focus word will
+
+195
+00:07:33,680 --> 00:07:37,918
+co-occur with that word and everything
+
+196
+00:07:35,839 --> 00:07:39,758
+falling outside of that window will not
+
+197
+00:07:37,918 --> 00:07:41,359
+co-occur with that word according to
+
+198
+00:07:41,360 --> 00:07:44,960
+if you make your window really big it
+
+199
+00:07:42,959 --> 00:07:46,478
+might encompass the entire document if
+
+200
+00:07:44,959 --> 00:07:48,878
+you make it very small it might
+
+201
+00:07:46,478 --> 00:07:51,120
+encompass only very local kind of
+
+202
+00:07:48,879 --> 00:07:53,439
+collocational information so you can bet
+
+203
+00:07:51,120 --> 00:07:55,038
+that that's going to be meaningful
+
+204
+00:07:53,439 --> 00:07:56,839
+there's a separate choice that you can
+
+205
+00:07:55,038 --> 00:07:59,279
+make falling under the heading of
+
+206
+00:07:56,839 --> 00:08:01,279
+scaling i think a default choice for
+
+207
+00:07:59,279 --> 00:08:03,038
+scaling is to just call it flat so what
+
+208
+00:08:01,279 --> 00:08:05,359
+you're saying there is something is
+
+209
+00:08:03,038 --> 00:08:07,360
+going to co-occur once with your focus
+
+210
+00:08:05,360 --> 00:08:09,680
+word if it's in the window that you've
+
+211
+00:08:07,360 --> 00:08:11,120
+specified and that would kind of equally
+
+212
+00:08:09,680 --> 00:08:13,680
+weight all of the things that are in the
+
+213
+00:08:11,120 --> 00:08:15,360
+window you could also decide to scale
+
+214
+00:08:13,680 --> 00:08:18,319
+them a common scaling pattern would be
+
+215
+00:08:15,360 --> 00:08:21,120
+one over n where n is the distance by
+
+216
+00:08:18,319 --> 00:08:22,560
+word from your focus word that would
+
+217
+00:08:21,120 --> 00:08:24,879
+have the effect that things occurred
+
+218
+00:08:22,560 --> 00:08:26,959
+that occur close to the word of interest
+
+219
+00:08:24,879 --> 00:08:28,639
+a co-occur with it more than things that
+
+220
+00:08:26,959 --> 00:08:31,279
+are at the edges that are near the end
+
+221
+00:08:32,559 --> 00:08:35,518
+those choices are going to have really
+
+222
+00:08:34,158 --> 00:08:37,519
+profound effects on the kinds of
+
+223
+00:08:35,519 --> 00:08:39,759
+representations that you develop here
+
+224
+00:08:37,519 --> 00:08:42,240
+are some generalizations i could offer
+
+225
+00:08:39,759 --> 00:08:44,319
+larger flatter windows will capture more
+
+226
+00:08:42,240 --> 00:08:46,320
+semantic information as the window gets
+
+227
+00:08:44,320 --> 00:08:48,240
+very large to encompass for example the
+
+228
+00:08:46,320 --> 00:08:50,560
+entire document you'll be capturing
+
+229
+00:08:48,240 --> 00:08:52,480
+essentially topical information in
+
+230
+00:08:50,559 --> 00:08:54,958
+contrast if you make your window very
+
+231
+00:08:52,480 --> 00:08:56,879
+small and scaled you'll tend to capture
+
+232
+00:08:54,958 --> 00:08:59,359
+more syntactic or collocational
+
+233
+00:08:59,360 --> 00:09:02,639
+independently of these choices you could
+
+234
+00:09:00,879 --> 00:09:04,399
+decide how text boundaries are going to
+
+235
+00:09:02,639 --> 00:09:06,399
+be involved so a text boundary at the
+
+236
+00:09:04,399 --> 00:09:08,559
+level of a sentence or a paragraph for a
+
+237
+00:09:06,399 --> 00:09:10,080
+document or a corpus could be a hard
+
+238
+00:09:08,559 --> 00:09:12,159
+boundary that's independent of your
+
+239
+00:09:10,080 --> 00:09:13,920
+window or you could decide that you're
+
+240
+00:09:12,159 --> 00:09:15,519
+going to allow your window to go across
+
+241
+00:09:13,919 --> 00:09:17,519
+different notions of segment that you
+
+242
+00:09:15,519 --> 00:09:19,839
+have that's really up to you and again i
+
+243
+00:09:17,519 --> 00:09:21,839
+think it will have major consequences
+
+244
+00:09:19,839 --> 00:09:24,880
+for downstream tasks involving the
+
+245
+00:09:21,839 --> 00:09:26,959
+representations that you've created
+
+246
+00:09:24,879 --> 00:09:28,720
+to help you begin exploring this space
+
+247
+00:09:26,958 --> 00:09:31,278
+the associated code released for this
+
+248
+00:09:28,720 --> 00:09:34,399
+course the associated notebooks provide
+
+249
+00:09:31,278 --> 00:09:36,000
+you with four word by word matrices they
+
+250
+00:09:34,399 --> 00:09:38,559
+have a few things that allow you to do
+
+251
+00:09:36,000 --> 00:09:40,000
+comparisons first there are two matrices
+
+252
+00:09:38,559 --> 00:09:42,079
+that were developed from the yelp
+
+253
+00:09:40,000 --> 00:09:44,559
+academic data set which is a lot of
+
+254
+00:09:42,080 --> 00:09:46,080
+reviews of products and services and
+
+255
+00:09:44,559 --> 00:09:48,799
+there are two matrices that come from
+
+256
+00:09:46,080 --> 00:09:50,560
+gigaword which is newswire text so
+
+257
+00:09:48,799 --> 00:09:53,120
+there's fundamentally a real difference
+
+258
+00:09:53,120 --> 00:09:55,839
+in addition for each of those pairs of
+
+259
+00:09:55,839 --> 00:09:58,800
+for each of those corpora we have two
+
+260
+00:09:58,799 --> 00:10:03,919
+window size of five and scaling of one
+
+261
+00:10:01,039 --> 00:10:05,759
+over n which ought to by my hypotheses
+
+262
+00:10:03,919 --> 00:10:08,240
+deliver a lot of kind of collocational
+
+263
+00:10:08,240 --> 00:10:13,120
+and window size of 20 and scaling a flat
+
+264
+00:10:10,958 --> 00:10:15,039
+a very large window lots of things
+
+265
+00:10:13,120 --> 00:10:16,560
+co-occurring with lots of other things
+
+266
+00:10:15,039 --> 00:10:18,719
+that might be a better basis for
+
+267
+00:10:16,559 --> 00:10:20,879
+semantics and you have those two points
+
+268
+00:10:18,720 --> 00:10:22,720
+of variation both for yelp and for giga
+
+269
+00:10:20,879 --> 00:10:24,559
+word and i'm hoping that that kind of
+
+270
+00:10:22,720 --> 00:10:27,120
+gives you a sense for how these design
+
+271
+00:10:24,559 --> 00:10:28,958
+choices affect the representations that
+
+272
+00:10:28,958 --> 00:10:35,879
+with methods that we're going to cover
+
+273
+00:10:30,799 --> 00:10:35,879
+in later parts of the screencast series
+

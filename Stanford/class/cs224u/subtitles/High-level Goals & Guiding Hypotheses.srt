@@ -1,0 +1,876 @@
+1
+00:00:04,719 --> 00:00:08,480
+hello everyone welcome to the very first
+
+2
+00:00:06,639 --> 00:00:09,919
+screencast of the very first unit of our
+
+3
+00:00:08,480 --> 00:00:11,839
+course we're going to be talking about
+
+4
+00:00:09,919 --> 00:00:14,000
+distributed word representations or
+
+5
+00:00:14,000 --> 00:00:17,039
+and for this screencast i'm just going
+
+6
+00:00:15,359 --> 00:00:18,239
+to cover some high-level goals we have
+
+7
+00:00:19,600 --> 00:00:23,199
+hypotheses not only for this unit but
+
+8
+00:00:21,439 --> 00:00:26,000
+also hypotheses that will be with us
+
+9
+00:00:26,800 --> 00:00:30,640
+what i've depicted on the slide here is
+
+10
+00:00:28,559 --> 00:00:32,879
+our starting point both conceptually and
+
+11
+00:00:30,640 --> 00:00:34,640
+computationally this is a small fragment
+
+12
+00:00:34,640 --> 00:00:38,640
+co-occurrence matrix so along the rows
+
+13
+00:00:37,119 --> 00:00:40,640
+here you have a large vocabulary of
+
+14
+00:00:38,640 --> 00:00:42,558
+words the first few are emoticons at
+
+15
+00:00:42,558 --> 00:00:46,238
+exactly that same vocabulary is repeated
+
+16
+00:00:46,238 --> 00:00:49,679
+and the cell values here give the number
+
+17
+00:00:48,000 --> 00:00:52,159
+of times that each row word appeared
+
+18
+00:00:49,679 --> 00:00:53,679
+with each column word in a very large
+
+19
+00:00:53,679 --> 00:00:56,960
+i think the big idea that you want to
+
+20
+00:00:55,439 --> 00:00:58,640
+start getting used to is that there
+
+21
+00:01:00,320 --> 00:01:03,679
+it's not obvious to mere mortals that we
+
+22
+00:01:02,159 --> 00:01:05,759
+could extract anything about meaning
+
+23
+00:01:03,679 --> 00:01:07,438
+from such an abstract space but we're
+
+24
+00:01:05,760 --> 00:01:09,359
+going to see time and time again this is
+
+25
+00:01:07,438 --> 00:01:13,559
+actually a very powerful basis for
+
+26
+00:01:09,359 --> 00:01:13,560
+developing meaning representations
+
+27
+00:01:14,400 --> 00:01:19,200
+to start building intuition let's do a
+
+28
+00:01:16,799 --> 00:01:22,000
+small thought experiment so imagine that
+
+29
+00:01:19,200 --> 00:01:23,840
+i give you a small lexicon of words each
+
+30
+00:01:22,000 --> 00:01:25,599
+one of them labeled as either negative
+
+31
+00:01:23,840 --> 00:01:26,799
+or positive in the sense of sentiment
+
+32
+00:01:26,799 --> 00:01:30,159
+now that might be a useful resource but
+
+33
+00:01:28,640 --> 00:01:32,960
+i've called this a hopeless learning
+
+34
+00:01:30,159 --> 00:01:35,359
+scenario because if i give you four new
+
+35
+00:01:32,959 --> 00:01:37,919
+anonymous words to make predictions on
+
+36
+00:01:35,359 --> 00:01:39,680
+this resource over here is not useful at
+
+37
+00:01:37,920 --> 00:01:42,000
+all for making predictions in fact you
+
+38
+00:01:39,680 --> 00:01:43,600
+have essentially no information to go on
+
+39
+00:01:42,000 --> 00:01:46,078
+about what these anonymous words should
+
+40
+00:01:46,078 --> 00:01:50,239
+contrast that with a situation in which
+
+41
+00:01:48,239 --> 00:01:51,280
+i give you that label lexicon but in
+
+42
+00:01:51,280 --> 00:01:55,759
+i give you the number of times that each
+
+43
+00:01:53,040 --> 00:01:58,240
+lexicon word co-occurs in some large
+
+44
+00:01:55,759 --> 00:01:59,680
+text corpus with the two words excellent
+
+45
+00:01:59,680 --> 00:02:04,320
+i think with that information with those
+
+46
+00:02:01,759 --> 00:02:05,920
+columns from the word by word matrix you
+
+47
+00:02:04,319 --> 00:02:08,478
+can see that you have a lot of
+
+48
+00:02:05,920 --> 00:02:11,120
+predictive power in fact a really simple
+
+49
+00:02:08,479 --> 00:02:12,879
+classifier or even decision rule will be
+
+50
+00:02:11,120 --> 00:02:15,360
+able to do really well at predicting
+
+51
+00:02:12,878 --> 00:02:17,359
+these labels if a word co occurs more
+
+52
+00:02:15,360 --> 00:02:18,400
+often with terrible than excellent call
+
+53
+00:02:18,400 --> 00:02:22,800
+if a word co occurs with excellent more
+
+54
+00:02:20,239 --> 00:02:24,878
+often than terrible call it positive
+
+55
+00:02:22,800 --> 00:02:27,120
+that's a good predictive model and now
+
+56
+00:02:24,878 --> 00:02:29,120
+if i give you four new anonymous words
+
+57
+00:02:27,120 --> 00:02:30,800
+and in in addition you're allowed to
+
+58
+00:02:29,120 --> 00:02:32,800
+collect some co-occurrence information
+
+59
+00:02:30,800 --> 00:02:34,879
+about them with respect to excellent and
+
+60
+00:02:32,800 --> 00:02:36,239
+terrible then your same rule will be
+
+61
+00:02:34,878 --> 00:02:38,479
+able to make really good predictions
+
+62
+00:02:36,239 --> 00:02:40,080
+about these new anonymous words
+
+63
+00:02:38,479 --> 00:02:42,238
+that's the sense in which we've moved to
+
+64
+00:02:40,080 --> 00:02:44,080
+a very promising learning scenario and
+
+65
+00:02:42,239 --> 00:02:46,719
+it's just a glimpse of how we could
+
+66
+00:02:44,080 --> 00:02:48,879
+extract latent information about meaning
+
+67
+00:02:46,719 --> 00:02:50,719
+from these co-occurrence patterns and
+
+68
+00:02:48,878 --> 00:02:52,159
+now just play it forward and think the
+
+69
+00:02:50,719 --> 00:02:53,439
+vector space models that we'll be
+
+70
+00:02:52,159 --> 00:02:55,280
+building will have not just two
+
+71
+00:02:53,439 --> 00:02:57,359
+dimensions but hundreds or even
+
+72
+00:02:55,280 --> 00:02:59,199
+thousands of dimensions and there's no
+
+73
+00:02:57,360 --> 00:03:03,200
+telling how much information we'll find
+
+74
+00:02:59,199 --> 00:03:04,719
+latent in such a high dimensional space
+
+75
+00:03:03,199 --> 00:03:06,238
+so that brings me to these high-level
+
+76
+00:03:04,719 --> 00:03:08,000
+goals here first we want to begin
+
+77
+00:03:06,239 --> 00:03:10,800
+thinking about how these vectors could
+
+78
+00:03:08,000 --> 00:03:12,639
+encode meanings of linguistic units get
+
+79
+00:03:10,800 --> 00:03:14,640
+more used to that idea that i just
+
+80
+00:03:14,639 --> 00:03:18,559
+these are foundational concepts that
+
+81
+00:03:16,800 --> 00:03:20,879
+we'll be discussing not only for our
+
+82
+00:03:18,560 --> 00:03:22,479
+unit on vector space models which are
+
+83
+00:03:20,878 --> 00:03:24,000
+also called embeddings in modern
+
+84
+00:03:24,000 --> 00:03:27,680
+foundational concepts for all of the
+
+85
+00:03:25,840 --> 00:03:29,920
+more sophisticated deep learning models
+
+86
+00:03:27,680 --> 00:03:30,959
+that we'll be discussing later on in the
+
+87
+00:03:30,959 --> 00:03:35,280
+and of course i'm really hoping that
+
+88
+00:03:32,560 --> 00:03:37,039
+this this material is valuable to you
+
+89
+00:03:35,280 --> 00:03:38,959
+throughout the assignments that you do
+
+90
+00:03:37,039 --> 00:03:40,560
+and also valuable for the original
+
+91
+00:03:38,959 --> 00:03:43,519
+project work that you do in the second
+
+92
+00:03:43,680 --> 00:03:47,519
+some guiding hypotheses let's start with
+
+93
+00:03:45,759 --> 00:03:49,439
+the literature i would be remiss in a
+
+94
+00:03:47,519 --> 00:03:50,959
+lecture like this if i didn't quote j.r
+
+95
+00:03:49,439 --> 00:03:54,318
+firth you shall know a word by the
+
+96
+00:03:50,959 --> 00:03:56,319
+company it keeps this is a glimpse at
+
+97
+00:03:54,318 --> 00:03:58,238
+the kind of nominalist position that
+
+98
+00:03:56,318 --> 00:04:00,238
+first took about how to do linguistic
+
+99
+00:03:58,239 --> 00:04:02,959
+analysis he's really saying that we
+
+100
+00:04:00,239 --> 00:04:04,400
+should trust distributional information
+
+101
+00:04:04,400 --> 00:04:08,239
+zelic harris a linguist working at
+
+102
+00:04:06,318 --> 00:04:10,798
+around the same time has an even purer
+
+103
+00:04:08,239 --> 00:04:12,799
+statement of this hypothesis harris said
+
+104
+00:04:10,799 --> 00:04:14,959
+distributional statements can cover all
+
+105
+00:04:12,799 --> 00:04:16,879
+of the material of a language without
+
+106
+00:04:14,959 --> 00:04:18,399
+requiring support from other types of
+
+107
+00:04:18,399 --> 00:04:22,478
+daily cares really only trusted usage
+
+108
+00:04:20,639 --> 00:04:24,560
+information i think we don't need to be
+
+109
+00:04:22,478 --> 00:04:26,399
+so extreme in our position but we can
+
+110
+00:04:24,560 --> 00:04:28,879
+certainly align with harris in thinking
+
+111
+00:04:26,399 --> 00:04:30,560
+that there could be a lot about language
+
+112
+00:04:30,560 --> 00:04:33,759
+statements that is in co-occurrence
+
+113
+00:04:33,759 --> 00:04:37,439
+we might as well quote wittgenstein the
+
+114
+00:04:35,839 --> 00:04:38,799
+meaning of a word is its use in the
+
+115
+00:04:38,800 --> 00:04:42,319
+connection that wittgenstein might have
+
+116
+00:04:40,399 --> 00:04:44,079
+in mind might be a point of alignment
+
+117
+00:04:42,319 --> 00:04:45,360
+for him with firth and harris i'm not
+
+118
+00:04:45,360 --> 00:04:48,800
+but finally here's a kind of direct
+
+119
+00:04:48,800 --> 00:04:52,319
+of our high-level hypothesis this is
+
+120
+00:04:50,720 --> 00:04:54,400
+from one of the recommended readings by
+
+121
+00:04:52,319 --> 00:04:56,639
+attorney and pentel and they say if
+
+122
+00:04:54,399 --> 00:04:58,239
+units of text have similar vectors in a
+
+123
+00:04:56,639 --> 00:05:00,560
+text frequency matrix like the
+
+124
+00:04:58,240 --> 00:05:02,879
+co-occurrence matrix i showed you before
+
+125
+00:05:00,560 --> 00:05:04,639
+then they tend to have similar meanings
+
+126
+00:05:02,879 --> 00:05:06,079
+if we buy that hypothesis then we're
+
+127
+00:05:04,639 --> 00:05:08,160
+kind of licensed to build these
+
+128
+00:05:06,079 --> 00:05:10,240
+co-occurrence matrices and then make
+
+129
+00:05:08,160 --> 00:05:12,320
+inferences about at least similarity of
+
+130
+00:05:10,240 --> 00:05:15,199
+meaning on the basis of those objects
+
+131
+00:05:15,680 --> 00:05:20,160
+to finish here under the heading of
+
+132
+00:05:17,360 --> 00:05:21,439
+great power a great many design choices
+
+133
+00:05:20,160 --> 00:05:22,800
+i think one of the difficult things
+
+134
+00:05:21,439 --> 00:05:24,879
+about working in this space is that
+
+135
+00:05:22,800 --> 00:05:26,319
+there are a lot of moving pieces the
+
+136
+00:05:24,879 --> 00:05:28,399
+first choice you'll have to make is your
+
+137
+00:05:26,319 --> 00:05:30,560
+matrix design i've talked about the word
+
+138
+00:05:28,399 --> 00:05:33,198
+by word matrix but of course word by
+
+139
+00:05:30,560 --> 00:05:35,439
+document word by search proximity
+
+140
+00:05:33,199 --> 00:05:37,120
+adjective by modified noun these are all
+
+141
+00:05:35,439 --> 00:05:38,719
+different ways that you could construct
+
+142
+00:05:37,120 --> 00:05:40,639
+your rows and your columns in one of
+
+143
+00:05:38,720 --> 00:05:42,639
+these matrices and that's going to be
+
+144
+00:05:40,639 --> 00:05:44,560
+really fundamental you'll capture very
+
+145
+00:05:42,639 --> 00:05:47,439
+different distributional facts depending
+
+146
+00:05:44,560 --> 00:05:48,879
+on what kind of matrix design you choose
+
+147
+00:05:47,439 --> 00:05:50,399
+and in a way that's not even the first
+
+148
+00:05:48,879 --> 00:05:52,000
+choice that you need to make because in
+
+149
+00:05:50,399 --> 00:05:54,159
+constructing this matrix you'll make a
+
+150
+00:05:52,000 --> 00:05:56,079
+lot of choices about how to tokenize
+
+151
+00:05:54,160 --> 00:05:57,840
+whether to annotate what to do whether
+
+152
+00:05:56,079 --> 00:06:00,159
+do part of speech tagging for further
+
+153
+00:05:57,839 --> 00:06:01,918
+distinctions parsing feature selection
+
+154
+00:06:00,160 --> 00:06:03,280
+and so forth and so on you also have to
+
+155
+00:06:01,918 --> 00:06:05,359
+decide how you're going to group your
+
+156
+00:06:03,279 --> 00:06:07,519
+texts is your notion of co-occurrence
+
+157
+00:06:05,360 --> 00:06:10,160
+going to be based on the sentence or the
+
+158
+00:06:07,519 --> 00:06:12,560
+document or maybe documents clustered by
+
+159
+00:06:10,160 --> 00:06:14,080
+date or author or discourse context all
+
+160
+00:06:12,560 --> 00:06:16,160
+of those things will give you very
+
+161
+00:06:14,079 --> 00:06:18,240
+different notions of what it means to
+
+162
+00:06:16,160 --> 00:06:20,560
+co-occur and that will feed into your
+
+163
+00:06:20,560 --> 00:06:23,918
+having made all of those difficult
+
+164
+00:06:22,240 --> 00:06:25,918
+choices you now you're probably going to
+
+165
+00:06:23,918 --> 00:06:28,318
+want to take your count matrix and as
+
+166
+00:06:25,918 --> 00:06:30,399
+we'll say re-weight it that is adjust
+
+167
+00:06:28,319 --> 00:06:33,039
+the values by stretching and bending the
+
+168
+00:06:30,399 --> 00:06:34,959
+space in order to find more latent
+
+169
+00:06:33,038 --> 00:06:36,719
+information about meaning we're going to
+
+170
+00:06:34,959 --> 00:06:39,038
+talk about a lot of methods for doing
+
+171
+00:06:36,720 --> 00:06:40,960
+that and then you might furthermore want
+
+172
+00:06:39,038 --> 00:06:42,800
+to do some kind of dimensionality
+
+173
+00:06:40,959 --> 00:06:44,879
+reduction which is a step you could take
+
+174
+00:06:42,800 --> 00:06:47,038
+to capture even more higher order
+
+175
+00:06:44,879 --> 00:06:48,719
+notions of co-occurrence beyond the
+
+176
+00:06:47,038 --> 00:06:51,279
+simple co-occurrences that you see
+
+177
+00:06:48,720 --> 00:06:53,520
+evident in the original matrix that's a
+
+178
+00:06:51,279 --> 00:06:54,879
+powerful step there are a lot of choices
+
+179
+00:06:54,879 --> 00:06:58,399
+and then finally what's your notion of
+
+180
+00:06:56,399 --> 00:07:00,000
+similarity going to be for us we'll
+
+181
+00:07:01,839 --> 00:07:06,000
+distance cosine distance jacquard
+
+182
+00:07:06,000 --> 00:07:09,439
+depending on previous choices that
+
+183
+00:07:07,598 --> 00:07:11,279
+you've made the choice of vector
+
+184
+00:07:09,439 --> 00:07:13,439
+comparison method might have a real
+
+185
+00:07:11,279 --> 00:07:15,598
+impact on what you regard as similar and
+
+186
+00:07:13,439 --> 00:07:17,598
+different in your vector space
+
+187
+00:07:15,598 --> 00:07:19,360
+so this is a kind of dizzying array of
+
+188
+00:07:17,598 --> 00:07:22,959
+choices that you might have to make
+
+189
+00:07:19,360 --> 00:07:25,759
+there is a glimmer of hope though so
+
+190
+00:07:22,959 --> 00:07:28,000
+models like glove and word vec purport
+
+191
+00:07:25,759 --> 00:07:30,319
+to offer packaged solutions at least to
+
+192
+00:07:28,000 --> 00:07:31,360
+the design weighting and reduction steps
+
+193
+00:07:31,360 --> 00:07:34,720
+so they'll tell you for instance if you
+
+194
+00:07:32,879 --> 00:07:36,639
+use glove that it needs to be word by
+
+195
+00:07:34,720 --> 00:07:39,039
+word and then glove will simultaneously
+
+196
+00:07:36,639 --> 00:07:40,639
+perform these two steps and furthermore
+
+197
+00:07:39,038 --> 00:07:42,240
+for these methods since they tend to
+
+198
+00:07:40,639 --> 00:07:44,400
+deliver vectors that are pretty well
+
+199
+00:07:42,240 --> 00:07:46,960
+scaled in terms of their individual
+
+200
+00:07:44,399 --> 00:07:49,439
+values the choice of vector comparison
+
+201
+00:07:46,959 --> 00:07:51,038
+might not matter so much so models like
+
+202
+00:07:49,439 --> 00:07:53,598
+glove and workvec are a real step
+
+203
+00:07:51,038 --> 00:07:54,878
+forward in terms of taming this space
+
+204
+00:07:54,879 --> 00:07:59,439
+and we can add further that more recent
+
+205
+00:07:56,720 --> 00:08:01,360
+contextual embedding models dictate even
+
+206
+00:07:59,439 --> 00:08:03,598
+more of the design choices possibly all
+
+207
+00:08:01,360 --> 00:08:06,080
+the way back to how you tokenize and so
+
+208
+00:08:03,598 --> 00:08:08,560
+they could be um thought of as even more
+
+209
+00:08:06,079 --> 00:08:10,800
+unified solutions to the great many
+
+210
+00:08:08,560 --> 00:08:13,360
+design choices that you have here so
+
+211
+00:08:10,800 --> 00:08:16,000
+that's kind of conceptually a real
+
+212
+00:08:13,360 --> 00:08:17,840
+breakthrough i will say though that
+
+213
+00:08:16,000 --> 00:08:19,120
+baseline models constructed from the
+
+214
+00:08:17,839 --> 00:08:21,359
+simple things that i have in these
+
+215
+00:08:19,120 --> 00:08:23,360
+tables here are often competitive with
+
+216
+00:08:21,360 --> 00:08:25,520
+more these more advanced models but of
+
+217
+00:08:23,360 --> 00:08:27,520
+course which combination is something
+
+218
+00:08:25,519 --> 00:08:31,719
+that you'll probably have to discuss
+
+219
+00:08:27,519 --> 00:08:31,719
+to have to discover empirically
+
