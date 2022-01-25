@@ -1,0 +1,1835 @@
+1
+00:00:00,000 --> 00:00:04,058
+
+
+2
+00:00:04,058 --> 00:00:05,600
+CHRISTOPHER POTTS:
+Welcome, everyone.
+
+3
+00:00:05,600 --> 00:00:08,680
+This is part 7 in our series on
+supervised sentiment analysis.
+
+4
+00:00:08,680 --> 00:00:11,770
+The focus of this screencast
+is on feature representation
+
+5
+00:00:11,770 --> 00:00:12,288
+of data.
+
+6
+00:00:12,288 --> 00:00:14,080
+There are really two
+things I'd like to do.
+
+7
+00:00:14,080 --> 00:00:16,780
+First, just explore some
+ideas for effective feature
+
+8
+00:00:16,780 --> 00:00:19,480
+representation in the context
+of sentiment analysis.
+
+9
+00:00:19,480 --> 00:00:22,450
+And, second, cover some of
+the core technical concepts
+
+10
+00:00:22,450 --> 00:00:24,760
+that surround feature
+representation that you'd
+
+11
+00:00:24,760 --> 00:00:27,760
+do well to have in mind as you
+write new feature functions
+
+12
+00:00:27,760 --> 00:00:30,280
+and optimize models.
+
+13
+00:00:30,280 --> 00:00:31,960
+Let's begin in a
+familiar place which
+
+14
+00:00:31,960 --> 00:00:33,620
+is N-gram feature functions.
+
+15
+00:00:33,620 --> 00:00:35,980
+To this point in the
+series of screencasts,
+
+16
+00:00:35,980 --> 00:00:39,070
+I've been just focusing on
+unigram feature functions.
+
+17
+00:00:39,070 --> 00:00:41,440
+That's also called the
+"bag-of-words" model,
+
+18
+00:00:41,440 --> 00:00:44,980
+and we can easily generalize
+that idea to bigrams,
+
+19
+00:00:44,980 --> 00:00:47,150
+and trigrams, and so forth.
+
+20
+00:00:47,150 --> 00:00:48,670
+All of these schemes
+will be heavily
+
+21
+00:00:48,670 --> 00:00:50,350
+dependent on the
+tokenizer that you've
+
+22
+00:00:50,350 --> 00:00:52,720
+chosen because, of course in
+the end, for every example
+
+23
+00:00:52,720 --> 00:00:55,510
+we represent, we are simply
+tokenizing that example
+
+24
+00:00:55,510 --> 00:00:59,900
+and then counting the
+tokens in that example.
+
+25
+00:00:59,900 --> 00:01:02,530
+This can be combined of course
+with preprocessing steps.
+
+26
+00:01:02,530 --> 00:01:05,830
+In part 2 in this series, I
+covered the preprocessing idea
+
+27
+00:01:05,830 --> 00:01:06,760
+of _NEG marking.
+
+28
+00:01:06,760 --> 00:01:09,460
+Which is essentially
+to mark words
+
+29
+00:01:09,460 --> 00:01:11,590
+as they appear in
+a heuristic way
+
+30
+00:01:11,590 --> 00:01:13,780
+in the scope of
+negative morphemes
+
+31
+00:01:13,780 --> 00:01:16,780
+as a way of indicating
+that, for example, "good"
+
+32
+00:01:16,780 --> 00:01:19,510
+is positive in normal
+context but might
+
+33
+00:01:19,510 --> 00:01:22,870
+become negative when it is
+in the scope of a negation
+
+34
+00:01:22,870 --> 00:01:24,562
+like "not" or "never."
+
+35
+00:01:24,562 --> 00:01:26,770
+We would handle that as a
+preprocessing step and that
+
+36
+00:01:26,770 --> 00:01:30,760
+would just create more unigrams
+that our tokenizer would turn
+
+37
+00:01:30,760 --> 00:01:34,120
+into tokens and then would
+be counted by these feature
+
+38
+00:01:34,120 --> 00:01:37,330
+representation schemes.
+
+39
+00:01:37,330 --> 00:01:39,490
+A hallmark of these
+feature approaches
+
+40
+00:01:39,490 --> 00:01:42,220
+is that they create very
+large, very sparse feature
+
+41
+00:01:42,220 --> 00:01:43,210
+representations.
+
+42
+00:01:43,210 --> 00:01:46,240
+You are going to have a column
+in your feature representation
+
+43
+00:01:46,240 --> 00:01:48,640
+for every single word
+that appears anywhere
+
+44
+00:01:48,640 --> 00:01:50,392
+in your training data.
+
+45
+00:01:50,392 --> 00:01:51,850
+And another important
+thing to keep
+
+46
+00:01:51,850 --> 00:01:54,220
+in mind about this approach
+is that, by and large, they
+
+47
+00:01:54,220 --> 00:01:57,700
+will fail to directly model
+relationships between features
+
+48
+00:01:57,700 --> 00:02:00,680
+unless you make some special
+effort to effectively interact
+
+49
+00:02:00,680 --> 00:02:02,485
+these features.
+
+50
+00:02:02,485 --> 00:02:05,110
+All you'll be doing is studying
+their distribution with respect
+
+51
+00:02:05,110 --> 00:02:07,000
+to the class labels
+that you have.
+
+52
+00:02:07,000 --> 00:02:08,830
+And it's very
+unlikely that you'll
+
+53
+00:02:08,830 --> 00:02:11,170
+recover, in any
+deep way, the kind
+
+54
+00:02:11,170 --> 00:02:14,380
+of underlying synonymy of
+words like "couch" and "sofa,"
+
+55
+00:02:14,380 --> 00:02:15,470
+for example.
+
+56
+00:02:15,470 --> 00:02:16,960
+And this is a
+shortcoming that we
+
+57
+00:02:16,960 --> 00:02:20,140
+might want to address as
+we move into distributed
+
+58
+00:02:20,140 --> 00:02:25,030
+representations of
+examples like deep learn.
+
+59
+00:02:25,030 --> 00:02:27,210
+So for our first
+technical concept,
+
+60
+00:02:27,210 --> 00:02:30,330
+I would like to just distinguish
+between feature functions
+
+61
+00:02:30,330 --> 00:02:31,110
+and features.
+
+62
+00:02:31,110 --> 00:02:33,540
+And to do this, I've just got
+a fully worked out example
+
+63
+00:02:33,540 --> 00:02:35,670
+here using tools
+from scikit-learn
+
+64
+00:02:35,670 --> 00:02:38,520
+that I think will make the
+importance of this distinction
+
+65
+00:02:38,520 --> 00:02:40,380
+really clear and concrete.
+
+66
+00:02:40,380 --> 00:02:43,320
+So in cell 1, I've just
+loaded a bunch of libraries.
+
+67
+00:02:43,320 --> 00:02:46,950
+In cell 2, I've got my
+standard, kind of lazy unigrams
+
+68
+00:02:46,950 --> 00:02:50,100
+feature function, which is
+taking in a stringed text,
+
+69
+00:02:50,100 --> 00:02:53,040
+downcasing it, and then simply
+splitting on whitespace.
+
+70
+00:02:53,040 --> 00:02:55,200
+And then the counter
+here is just turning that
+
+71
+00:02:55,200 --> 00:02:57,420
+into a count dictionary
+mapping each token
+
+72
+00:02:57,420 --> 00:03:00,510
+to the number of times that
+it appears in this example,
+
+73
+00:03:00,510 --> 00:03:02,910
+according to our tokenizer.
+
+74
+00:03:02,910 --> 00:03:04,160
+That would be fine for now.
+
+75
+00:03:04,160 --> 00:03:06,680
+In cell 3, I have a
+tiny little corpus that
+
+76
+00:03:06,680 --> 00:03:09,640
+has just two words, a and b.
+
+77
+00:03:09,640 --> 00:03:12,340
+In cell 4, I create a
+list of dictionaries
+
+78
+00:03:12,340 --> 00:03:16,670
+by calling unigrams_phi on each
+of the texts in my corpus here.
+
+79
+00:03:16,670 --> 00:03:20,290
+So that gives me a list
+of count dictionaries.
+
+80
+00:03:20,290 --> 00:03:23,140
+In 5, I use a
+DictVectorizer, as covered
+
+81
+00:03:23,140 --> 00:03:24,360
+in a previous screencast.
+
+82
+00:03:24,360 --> 00:03:27,220
+And what that's going to do
+is when I call fit_transform
+
+83
+00:03:27,220 --> 00:03:29,080
+on my list of
+feature dictionaries,
+
+84
+00:03:29,080 --> 00:03:31,000
+it will turn it
+into a matrix, which
+
+85
+00:03:31,000 --> 00:03:34,390
+is the input that all of these
+scikit machine learning models
+
+86
+00:03:34,390 --> 00:03:36,700
+expect for their training data.
+
+87
+00:03:36,700 --> 00:03:38,320
+And in cell 7,
+I've just given you
+
+88
+00:03:38,320 --> 00:03:40,880
+what I hope is a pretty
+intuitive view of that design
+
+89
+00:03:40,880 --> 00:03:41,380
+matrix.
+
+90
+00:03:41,380 --> 00:03:44,500
+Underlyingly, it's
+just an NumPy array.
+
+91
+00:03:44,500 --> 00:03:47,530
+But if we use pandas, we can
+see that the columns here
+
+92
+00:03:47,530 --> 00:03:50,350
+correspond to the names of
+each one of the features.
+
+93
+00:03:50,350 --> 00:03:52,720
+Because we have just two
+word types in our corpus,
+
+94
+00:03:52,720 --> 00:03:55,870
+there are two columns, a
+and b, and each of the rows
+
+95
+00:03:55,870 --> 00:03:58,060
+corresponds to an
+example from our corpus.
+
+96
+00:03:58,060 --> 00:04:00,670
+And so you can see that our
+first example has been reduced
+
+97
+00:04:00,670 --> 00:04:04,450
+to a representation that has
+3 in its first dimension and 0
+
+98
+00:04:04,450 --> 00:04:07,150
+in its second, corresponding
+to the fact that it has three
+
+99
+00:04:07,150 --> 00:04:08,830
+a's and no b's.
+
+100
+00:04:08,830 --> 00:04:11,950
+Example 2, a, a, b
+is represented as a 2
+
+101
+00:04:11,950 --> 00:04:14,690
+in the first column and
+a 1 in the second column,
+
+102
+00:04:14,690 --> 00:04:15,890
+and so forth.
+
+103
+00:04:15,890 --> 00:04:17,170
+So that's a first distinction.
+
+104
+00:04:17,170 --> 00:04:20,529
+We have this feature function
+here, which is like a factory,
+
+105
+00:04:20,529 --> 00:04:23,680
+and depending on the data
+that come in for our corpus,
+
+106
+00:04:23,680 --> 00:04:26,020
+we're going to get very
+different features which
+
+107
+00:04:26,020 --> 00:04:29,110
+correspond to each one of
+the columns in this feature
+
+108
+00:04:29,110 --> 00:04:31,850
+representation matrix.
+
+109
+00:04:31,850 --> 00:04:33,600
+Let's continue this a
+little bit and think
+
+110
+00:04:33,600 --> 00:04:36,120
+about how this actually
+interacts with the optimization
+
+111
+00:04:36,120 --> 00:04:36,820
+process.
+
+112
+00:04:36,820 --> 00:04:40,170
+So in cell 7 here, I've just
+repeated that previous matrix
+
+113
+00:04:40,170 --> 00:04:41,460
+for reference.
+
+114
+00:04:41,460 --> 00:04:44,527
+In cell 8, I have the class
+labels for our four examples,
+
+115
+00:04:44,527 --> 00:04:46,610
+and you can see there are
+three distinct classes--
+
+116
+00:04:46,610 --> 00:04:49,230
+C1, C2, and C3.
+
+117
+00:04:49,230 --> 00:04:50,892
+I set up a logistic
+regression model,
+
+118
+00:04:50,892 --> 00:04:52,600
+although that's not
+especially important,
+
+119
+00:04:52,600 --> 00:04:54,480
+it's just a useful illustration.
+
+120
+00:04:54,480 --> 00:04:56,580
+And I call fit on my pair x, y.
+
+121
+00:04:56,580 --> 00:05:00,000
+That is my feature
+representations and my labels,
+
+122
+00:05:00,000 --> 00:05:02,070
+and that's the
+optimization process.
+
+123
+00:05:02,070 --> 00:05:04,620
+As part of that, and for
+a convention for scikit,
+
+124
+00:05:04,620 --> 00:05:08,640
+the optimization process
+creates this new attribute coef_
+
+125
+00:05:08,640 --> 00:05:12,390
+and this new attribute classes_.
+
+126
+00:05:12,390 --> 00:05:14,940
+coef_ here, these are the
+weights that we learned as part
+
+127
+00:05:14,940 --> 00:05:18,300
+of the optimization process, and
+of course classes_ corresponds
+
+128
+00:05:18,300 --> 00:05:22,200
+to the classes that inferred
+from the label y that we input.
+
+129
+00:05:22,200 --> 00:05:24,360
+And here I'm just using
+a pandas data frame again
+
+130
+00:05:24,360 --> 00:05:25,620
+to try to make this intuitive.
+
+131
+00:05:25,620 --> 00:05:29,040
+It's really just a NumPy
+array, this coef_ object here.
+
+132
+00:05:29,040 --> 00:05:31,980
+And you can see that
+the resulting matrix has
+
+133
+00:05:31,980 --> 00:05:34,260
+a row for each
+one of our classes
+
+134
+00:05:34,260 --> 00:05:37,290
+and a column for each
+one of our features.
+
+135
+00:05:37,290 --> 00:05:40,020
+And that's a useful reminder
+that what the optimization
+
+136
+00:05:40,020 --> 00:05:42,720
+process for models like
+this is actually doing
+
+137
+00:05:42,720 --> 00:05:46,710
+is learning a weight that
+associates class feature name
+
+138
+00:05:46,710 --> 00:05:48,868
+pairs with a weight, right?
+
+139
+00:05:48,868 --> 00:05:50,910
+So it's not just that we
+learn individual weights
+
+140
+00:05:50,910 --> 00:05:53,340
+for features, but rather
+we learn them with respect
+
+141
+00:05:53,340 --> 00:05:54,950
+to each one of the classes.
+
+142
+00:05:54,950 --> 00:05:57,090
+And that's a hallmark
+of optimization
+
+143
+00:05:57,090 --> 00:05:59,757
+for multi-class
+models like this one.
+
+144
+00:05:59,757 --> 00:06:02,340
+And then in cell 12, I've just
+shown you that you can actually
+
+145
+00:06:02,340 --> 00:06:07,260
+use the coef_ and this
+other bias term, intercept_,
+
+146
+00:06:07,260 --> 00:06:09,320
+to recreate the
+predictions of the model.
+
+147
+00:06:09,320 --> 00:06:13,350
+All you're doing is multiplying
+examples by those coefficients
+
+148
+00:06:13,350 --> 00:06:15,060
+and adding in the bias term.
+
+149
+00:06:15,060 --> 00:06:17,910
+And this matrix here
+is identical to what
+
+150
+00:06:17,910 --> 00:06:21,270
+you get in scikit, if you simply
+directly call predict_proba
+
+151
+00:06:21,270 --> 00:06:23,790
+for predict probabilities
+on your examples.
+
+152
+00:06:23,790 --> 00:06:28,190
+
+
+153
+00:06:28,190 --> 00:06:29,690
+Let's turn back to
+what we're trying
+
+154
+00:06:29,690 --> 00:06:32,850
+to do to create good models,
+having those ideas in mind.
+
+155
+00:06:32,850 --> 00:06:35,607
+So let's just cover a few other
+ideas for hand-built feature
+
+156
+00:06:35,607 --> 00:06:37,940
+functions that I think could
+be effective for sentiment.
+
+157
+00:06:37,940 --> 00:06:40,190
+So, of course, we could have
+lexicon-derived features.
+
+158
+00:06:40,190 --> 00:06:42,890
+I earlier showed you a
+bunch of different lexicons.
+
+159
+00:06:42,890 --> 00:06:45,020
+And that could be used
+to group our unigrams.
+
+160
+00:06:45,020 --> 00:06:47,960
+So we could have these feature
+functions work in conjunction
+
+161
+00:06:47,960 --> 00:06:50,510
+with a "bag-of-words" or
+"bag-of-acronyms" model,
+
+162
+00:06:50,510 --> 00:06:53,120
+or we could use them to
+replace that model and develop
+
+163
+00:06:53,120 --> 00:06:56,810
+a sparser feature
+representation space.
+
+164
+00:06:56,810 --> 00:06:58,370
+We could also do
+the negation marking
+
+165
+00:06:58,370 --> 00:07:01,260
+that I mentioned before, and
+we could generalize that idea.
+
+166
+00:07:01,260 --> 00:07:03,440
+So many things in
+language take scope
+
+167
+00:07:03,440 --> 00:07:06,050
+in a way that will affect
+the semantics of words
+
+168
+00:07:06,050 --> 00:07:07,400
+that are in their scope.
+
+169
+00:07:07,400 --> 00:07:10,040
+So another classical example
+behind-- besides negation
+
+170
+00:07:10,040 --> 00:07:13,970
+is these modal adverbs like
+"quite possibly" or "totally".
+
+171
+00:07:13,970 --> 00:07:16,160
+We might have the idea
+that they are modulating
+
+172
+00:07:16,160 --> 00:07:17,600
+the extent to which
+the speaker is
+
+173
+00:07:17,600 --> 00:07:20,990
+committed to "masterpiece"
+or "amazing," in this case.
+
+174
+00:07:20,990 --> 00:07:23,330
+And keeping track of
+that semantic association
+
+175
+00:07:23,330 --> 00:07:26,120
+with simple underscore
+marking of some kind
+
+176
+00:07:26,120 --> 00:07:28,550
+might be useful for
+giving our model a chance
+
+177
+00:07:28,550 --> 00:07:30,620
+to see that these
+unigrams are different
+
+178
+00:07:30,620 --> 00:07:33,350
+depending on their environment.
+
+179
+00:07:33,350 --> 00:07:34,975
+We can also have
+length based features,
+
+180
+00:07:34,975 --> 00:07:37,225
+and that's just a useful
+reminder that these don't all
+
+181
+00:07:37,225 --> 00:07:38,400
+have to be count features.
+
+182
+00:07:38,400 --> 00:07:41,450
+We can have real valued
+features of various kinds
+
+183
+00:07:41,450 --> 00:07:44,000
+and they could signal something
+important about the class
+
+184
+00:07:44,000 --> 00:07:44,750
+label.
+
+185
+00:07:44,750 --> 00:07:47,720
+For example, I think
+neutral reviews,
+
+186
+00:07:47,720 --> 00:07:50,360
+three star reviews tend to
+be longer than one and five
+
+187
+00:07:50,360 --> 00:07:53,705
+star reviews, so might
+as well throw that in.
+
+188
+00:07:53,705 --> 00:07:55,580
+And we could expand that
+idea of float valued
+
+189
+00:07:55,580 --> 00:07:56,705
+features a little bit more.
+
+190
+00:07:56,705 --> 00:07:58,980
+I like the idea of
+thwarted expectations
+
+191
+00:07:58,980 --> 00:08:01,160
+which you might keep
+track of as the ratio
+
+192
+00:08:01,160 --> 00:08:04,670
+of positive to negative
+words in a sentence.
+
+193
+00:08:04,670 --> 00:08:09,050
+The idea being that very often
+if that ratio is exaggerated,
+
+194
+00:08:09,050 --> 00:08:11,660
+it's telling you the opposite
+story that you might expect
+
+195
+00:08:11,660 --> 00:08:13,040
+about the overall sentiment.
+
+196
+00:08:13,040 --> 00:08:15,950
+Many, many positive
+words stacked up together
+
+197
+00:08:15,950 --> 00:08:19,250
+might actually be preparing
+you for a negative assessment
+
+198
+00:08:19,250 --> 00:08:20,780
+and the reverse.
+
+199
+00:08:20,780 --> 00:08:22,670
+But the important thing
+about this feature
+
+200
+00:08:22,670 --> 00:08:25,700
+is that it wouldn't decide for
+you what these ratios mean.
+
+201
+00:08:25,700 --> 00:08:27,770
+You would just hope that
+it was a useful signal
+
+202
+00:08:27,770 --> 00:08:30,860
+that your model might pick
+up on as part of optimization
+
+203
+00:08:30,860 --> 00:08:34,370
+to figure out how to make
+use of the information.
+
+204
+00:08:34,370 --> 00:08:36,620
+And then, finally, we could
+do things, various kinds
+
+205
+00:08:36,620 --> 00:08:38,659
+of ad-hoc feature
+functions to try
+
+206
+00:08:38,659 --> 00:08:41,480
+to capture the fact that
+many uses of language
+
+207
+00:08:41,480 --> 00:08:43,880
+are non-literal and might
+be signaling exactly
+
+208
+00:08:43,880 --> 00:08:46,420
+the opposite of what they
+seem to do on their surface.
+
+209
+00:08:46,420 --> 00:08:48,530
+Like, "Not exactly
+a masterpiece."
+
+210
+00:08:48,530 --> 00:08:51,530
+is probably a pretty
+negative review.
+
+211
+00:08:51,530 --> 00:08:54,380
+It was "Like 50 hours long." is
+not saying that it was actually
+
+212
+00:08:54,380 --> 00:08:57,560
+50 hours long but rather,
+with hyperbole, indicating
+
+213
+00:08:57,560 --> 00:09:00,163
+that it was much too long
+or something like that.
+
+214
+00:09:00,163 --> 00:09:02,330
+And "The best movie in the
+history of the universe."
+
+215
+00:09:02,330 --> 00:09:06,290
+could be a ringing endorsement,
+but it could just as easily
+
+216
+00:09:06,290 --> 00:09:08,420
+be a bit of sarcasm.
+
+217
+00:09:08,420 --> 00:09:10,370
+Capturing those kind
+of subtle distinctions
+
+218
+00:09:10,370 --> 00:09:11,910
+is, of course, much
+more difficult.
+
+219
+00:09:11,910 --> 00:09:13,610
+But the hand-built
+feature functions
+
+220
+00:09:13,610 --> 00:09:15,920
+that you write where you
+could try to capture it,
+
+221
+00:09:15,920 --> 00:09:17,660
+and if they have
+a positive effect,
+
+222
+00:09:17,660 --> 00:09:20,713
+then maybe you've made
+some real progress.
+
+223
+00:09:20,713 --> 00:09:22,130
+And that's a good
+transition point
+
+224
+00:09:22,130 --> 00:09:25,320
+to this topic of assessing
+individual feature functions.
+
+225
+00:09:25,320 --> 00:09:27,620
+As you can see, the philosophy
+in this mode of work
+
+226
+00:09:27,620 --> 00:09:29,840
+is that you write lots
+of feature functions
+
+227
+00:09:29,840 --> 00:09:32,720
+and kind of see how well
+they can do at improving
+
+228
+00:09:32,720 --> 00:09:34,400
+your model overall.
+
+229
+00:09:34,400 --> 00:09:36,380
+You might end up with
+a very large model
+
+230
+00:09:36,380 --> 00:09:38,090
+with many correlated
+features and that
+
+231
+00:09:38,090 --> 00:09:40,880
+might lead you to want to do
+some feature selection to weed
+
+232
+00:09:40,880 --> 00:09:44,660
+out the ones that are not
+contributing in a positive way.
+
+233
+00:09:44,660 --> 00:09:46,833
+Now, scikit-learn
+has a whole library
+
+234
+00:09:46,833 --> 00:09:48,500
+for doing this called
+feature selection,
+
+235
+00:09:48,500 --> 00:09:50,600
+and it offers lots
+of functions that
+
+236
+00:09:50,600 --> 00:09:52,910
+will let you assess how much
+information your feature
+
+237
+00:09:52,910 --> 00:09:55,550
+functions contain with
+respect to the labels
+
+238
+00:09:55,550 --> 00:09:57,240
+for your classification problem.
+
+239
+00:09:57,240 --> 00:09:58,400
+So this is very powerful.
+
+240
+00:09:58,400 --> 00:10:01,400
+And I encourage you to use them,
+but you should be a little bit
+
+241
+00:10:01,400 --> 00:10:02,840
+cautious.
+
+242
+00:10:02,840 --> 00:10:06,500
+Take care when assessing
+feature functions individually
+
+243
+00:10:06,500 --> 00:10:08,930
+because correlations
+between those features
+
+244
+00:10:08,930 --> 00:10:12,590
+will make the assessments
+very hard to interpret.
+
+245
+00:10:12,590 --> 00:10:15,063
+The problem here is that
+your model is holistically
+
+246
+00:10:15,063 --> 00:10:16,730
+thinking about how
+all of these features
+
+247
+00:10:16,730 --> 00:10:19,070
+relate to your class
+label and figuring out
+
+248
+00:10:19,070 --> 00:10:21,530
+how to optimize
+weights on that basis,
+
+249
+00:10:21,530 --> 00:10:23,660
+whereas the feature function
+methods, many of them,
+
+250
+00:10:23,660 --> 00:10:25,640
+just look at individual
+features and how
+
+251
+00:10:25,640 --> 00:10:26,960
+they relate to the class label.
+
+252
+00:10:26,960 --> 00:10:29,882
+So you're losing all that
+correlational context.
+
+253
+00:10:29,882 --> 00:10:31,340
+And to make that
+a little concrete,
+
+254
+00:10:31,340 --> 00:10:34,430
+I just cooked up an example
+here, an idealized one, that
+
+255
+00:10:34,430 --> 00:10:36,080
+shows how you could be misled.
+
+256
+00:10:36,080 --> 00:10:39,110
+So I have three
+features, x1, x2, and x3
+
+257
+00:10:39,110 --> 00:10:42,020
+in a simple binary
+classification problem.
+
+258
+00:10:42,020 --> 00:10:44,990
+And I use the chi-square
+test from feature selection
+
+259
+00:10:44,990 --> 00:10:47,540
+to kind of assess how important
+each one of these features
+
+260
+00:10:47,540 --> 00:10:51,090
+is with respect to this
+classification problem.
+
+261
+00:10:51,090 --> 00:10:53,060
+And what I found is
+that, intuitively, it
+
+262
+00:10:53,060 --> 00:10:56,900
+looks like x1 and x2 are
+really powerful features.
+
+263
+00:10:56,900 --> 00:10:58,920
+And that might lead me
+to think, well, I'll
+
+264
+00:10:58,920 --> 00:11:00,950
+drop the third
+feature and include
+
+265
+00:11:00,950 --> 00:11:03,570
+just one and two in my model.
+
+266
+00:11:03,570 --> 00:11:04,530
+So far, so good.
+
+267
+00:11:04,530 --> 00:11:07,280
+However, if we thoroughly
+explore this space, what
+
+268
+00:11:07,280 --> 00:11:10,880
+we find is that in truth a
+simple linear model performs
+
+269
+00:11:10,880 --> 00:11:13,490
+best with just feature
+x1 and actually
+
+270
+00:11:13,490 --> 00:11:17,000
+including x2 hurts the
+model, despite the fact
+
+271
+00:11:17,000 --> 00:11:19,970
+that it has this positive
+feature importance value.
+
+272
+00:11:19,970 --> 00:11:21,470
+So what you really
+ought to be doing
+
+273
+00:11:21,470 --> 00:11:23,450
+is using just this
+single feature,
+
+274
+00:11:23,450 --> 00:11:25,310
+but these methods
+can't tell us that.
+
+275
+00:11:25,310 --> 00:11:29,210
+And even a positive
+feature selection value
+
+276
+00:11:29,210 --> 00:11:30,860
+might actually be
+something that's
+
+277
+00:11:30,860 --> 00:11:33,080
+at odds with what we're
+trying to do with our model,
+
+278
+00:11:33,080 --> 00:11:35,210
+as this example shows.
+
+279
+00:11:35,210 --> 00:11:37,550
+So, ideally, what
+you would do is
+
+280
+00:11:37,550 --> 00:11:39,830
+consider more holistic
+assessment methods
+
+281
+00:11:39,830 --> 00:11:41,600
+which scikit also offers.
+
+282
+00:11:41,600 --> 00:11:44,000
+This would be things like
+systematically removing
+
+283
+00:11:44,000 --> 00:11:47,990
+or perturbing feature values in
+the context of the full model
+
+284
+00:11:47,990 --> 00:11:50,600
+that you're optimizing
+and comparing performance
+
+285
+00:11:50,600 --> 00:11:51,680
+across those models.
+
+286
+00:11:51,680 --> 00:11:53,600
+This is much more
+expensive because you're
+
+287
+00:11:53,600 --> 00:11:55,550
+optimizing many, many models.
+
+288
+00:11:55,550 --> 00:11:58,093
+So it might be prohibitive
+for some classes of models
+
+289
+00:11:58,093 --> 00:11:59,010
+that you're exploring.
+
+290
+00:11:59,010 --> 00:12:02,210
+But if you can do it, this
+will be more reliable.
+
+291
+00:12:02,210 --> 00:12:04,340
+However, if this
+is impossible, it
+
+292
+00:12:04,340 --> 00:12:07,700
+might still be productive
+to do some feature selection
+
+293
+00:12:07,700 --> 00:12:09,295
+using simpler methods.
+
+294
+00:12:09,295 --> 00:12:10,670
+You should just
+be aware that you
+
+295
+00:12:10,670 --> 00:12:12,740
+might be doing
+something that's not
+
+296
+00:12:12,740 --> 00:12:15,485
+optimal for the actual
+optimization problem
+
+297
+00:12:15,485 --> 00:12:16,235
+that you've posed.
+
+298
+00:12:16,235 --> 00:12:18,567
+
+
+299
+00:12:18,567 --> 00:12:20,400
+OK, and the final section
+of this screencast
+
+300
+00:12:20,400 --> 00:12:22,980
+is a kind of transition into
+the world of deep learning.
+
+301
+00:12:22,980 --> 00:12:26,270
+I've called this distributed
+representations as features.
+
+302
+00:12:26,270 --> 00:12:28,020
+This is a very different
+mode for thinking
+
+303
+00:12:28,020 --> 00:12:30,240
+about representing examples.
+
+304
+00:12:30,240 --> 00:12:34,388
+What we do in this case is
+take our token stream as before
+
+305
+00:12:34,388 --> 00:12:36,930
+but instead of writing a lot of
+hand-built feature functions,
+
+306
+00:12:36,930 --> 00:12:40,348
+we simply look up each one of
+those tokens in some embedding
+
+307
+00:12:40,348 --> 00:12:40,890
+that we have.
+
+308
+00:12:40,890 --> 00:12:42,450
+For example, it
+could be an embedding
+
+309
+00:12:42,450 --> 00:12:45,390
+that you created in the
+first unit of this course.
+
+310
+00:12:45,390 --> 00:12:48,390
+Or it could be a GloVe
+embedding or a static embedding
+
+311
+00:12:48,390 --> 00:12:50,740
+that you derived from
+BERT representations,
+
+312
+00:12:50,740 --> 00:12:52,125
+and so forth and so on.
+
+313
+00:12:52,125 --> 00:12:54,000
+The important thing is
+that each token is now
+
+314
+00:12:54,000 --> 00:12:57,720
+represented by a vector and
+that could be a powerful idea
+
+315
+00:12:57,720 --> 00:13:00,450
+because in representing each
+of these words as vectors,
+
+316
+00:13:00,450 --> 00:13:04,110
+we are now capturing
+the relationships
+
+317
+00:13:04,110 --> 00:13:05,400
+between those tokens.
+
+318
+00:13:05,400 --> 00:13:07,080
+We might now have
+a hope of seeing
+
+319
+00:13:07,080 --> 00:13:09,600
+that "sofa" and
+"couch" are actually
+
+320
+00:13:09,600 --> 00:13:11,760
+similar features
+in general and not
+
+321
+00:13:11,760 --> 00:13:15,240
+just with respect to the
+class labels that we have.
+
+322
+00:13:15,240 --> 00:13:17,157
+So that's the idea why
+this might be powerful.
+
+323
+00:13:17,157 --> 00:13:19,073
+So we take all those
+vectors and look them up.
+
+324
+00:13:19,073 --> 00:13:20,860
+However, for all these
+classifier models,
+
+325
+00:13:20,860 --> 00:13:22,950
+we need a fixed
+dimensional representation
+
+326
+00:13:22,950 --> 00:13:25,162
+to feed into the
+actual classifier unit.
+
+327
+00:13:25,162 --> 00:13:27,120
+So we're going to have
+to combine those vectors
+
+328
+00:13:27,120 --> 00:13:29,120
+in some way, and the
+simplest thing you could do
+
+329
+00:13:29,120 --> 00:13:31,987
+is combine them via some
+function like sum or mean,
+
+330
+00:13:31,987 --> 00:13:33,517
+right?
+
+331
+00:13:33,517 --> 00:13:35,100
+So take all these
+things, for example,
+
+332
+00:13:35,100 --> 00:13:37,590
+and take their average and that
+would give me another fixed
+
+333
+00:13:37,590 --> 00:13:40,530
+dimensional representation,
+no matter how many tokens are
+
+334
+00:13:40,530 --> 00:13:42,430
+in each one of the examples.
+
+335
+00:13:42,430 --> 00:13:47,160
+And that average vector would
+be the input to the classifier.
+
+336
+00:13:47,160 --> 00:13:50,760
+So if each one of these vectors
+has dimension 300, then so,
+
+337
+00:13:50,760 --> 00:13:52,350
+too, does the feature
+representation
+
+338
+00:13:52,350 --> 00:13:54,060
+of my entire example.
+
+339
+00:13:54,060 --> 00:13:56,880
+And I now have a
+classifier which
+
+340
+00:13:56,880 --> 00:13:58,860
+is processing feature
+representations that
+
+341
+00:13:58,860 --> 00:14:00,810
+have 300 columns.
+
+342
+00:14:00,810 --> 00:14:03,540
+Each dimension in the
+underlying embedding space
+
+343
+00:14:03,540 --> 00:14:05,640
+now corresponds to a feature.
+
+344
+00:14:05,640 --> 00:14:07,350
+And that's the basis
+for optimization.
+
+345
+00:14:07,350 --> 00:14:09,960
+And I'd say an eye opening
+thing about this class of models
+
+346
+00:14:09,960 --> 00:14:12,810
+is despite them
+being very compact--
+
+347
+00:14:12,810 --> 00:14:16,290
+300 dimensions versus 20,000
+that you might have from
+
+348
+00:14:16,290 --> 00:14:17,640
+a "bag-of-words" model--
+
+349
+00:14:17,640 --> 00:14:20,520
+they turn out to
+be very powerful.
+
+350
+00:14:20,520 --> 00:14:22,530
+And this final slide
+here just shows you
+
+351
+00:14:22,530 --> 00:14:25,380
+how to implement those using
+tools and other utilities
+
+352
+00:14:25,380 --> 00:14:26,603
+for our course.
+
+353
+00:14:26,603 --> 00:14:28,020
+So I'm going to
+use GloVe, and I'm
+
+354
+00:14:28,020 --> 00:14:30,960
+going to use the 300 dimensional
+GloVe space which is included
+
+355
+00:14:30,960 --> 00:14:32,910
+in your data distribution.
+
+356
+00:14:32,910 --> 00:14:35,518
+In 4 and 5 here, we just
+write simple feature functions
+
+357
+00:14:35,518 --> 00:14:37,560
+and the hallmark of these
+is that they are simply
+
+358
+00:14:37,560 --> 00:14:39,660
+looking up words
+in the embedding
+
+359
+00:14:39,660 --> 00:14:42,180
+and then combining them
+via whatever function they
+
+360
+00:14:42,180 --> 00:14:43,440
+use or specifies.
+
+361
+00:14:43,440 --> 00:14:45,270
+So the output of
+this is directly
+
+362
+00:14:45,270 --> 00:14:48,780
+a vector representation
+of each example.
+
+363
+00:14:48,780 --> 00:14:51,878
+In cell 6, we set up a
+logistic regression, as before.
+
+364
+00:14:51,878 --> 00:14:53,670
+Of course, it could be
+a much fancier model
+
+365
+00:14:53,670 --> 00:14:55,740
+but logistic regression will do.
+
+366
+00:14:55,740 --> 00:14:59,070
+And then we use sst_experiment
+almost exactly as before.
+
+367
+00:14:59,070 --> 00:15:00,810
+The one change we
+need to remember
+
+368
+00:15:00,810 --> 00:15:03,060
+to make in operating
+in this mode is
+
+369
+00:15:03,060 --> 00:15:05,970
+to set the flag of
+vectorized equals false.
+
+370
+00:15:05,970 --> 00:15:09,600
+We already have each example
+represented as a vector,
+
+371
+00:15:09,600 --> 00:15:12,210
+so we do not need to pass it
+through that whole process
+
+372
+00:15:12,210 --> 00:15:14,850
+of using a DictVectorizer
+to turn count
+
+373
+00:15:14,850 --> 00:15:17,220
+dictionaries into vectors.
+
+374
+00:15:17,220 --> 00:15:19,050
+And as I said before,
+these turn out
+
+375
+00:15:19,050 --> 00:15:21,510
+to be quite good models
+despite their compactness.
+
+376
+00:15:21,510 --> 00:15:24,240
+And the final thing I'll
+say is that this model
+
+377
+00:15:24,240 --> 00:15:27,600
+is a nice transition into
+the recurrent neural networks
+
+378
+00:15:27,600 --> 00:15:30,570
+that we'll study in the final
+screencast for this unit, which
+
+379
+00:15:30,570 --> 00:15:33,540
+essentially generalize
+this idea by learning
+
+380
+00:15:33,540 --> 00:15:35,850
+an interesting combination
+function for all
+
+381
+00:15:35,850 --> 00:15:39,050
+the vectors for each of
+the individual tokens.
+
+382
+00:15:39,050 --> 00:15:43,019
+
+

@@ -1,0 +1,787 @@
+1
+00:00:00,000 --> 00:00:04,400
+
+
+2
+00:00:04,400 --> 00:00:05,900
+CHRISTOPHER POTTS:
+Welcome to part 4
+
+3
+00:00:05,900 --> 00:00:07,942
+in our series on grounded
+language understanding.
+
+4
+00:00:07,942 --> 00:00:10,670
+Our topic is varieties
+of contextual grounding.
+
+5
+00:00:10,670 --> 00:00:12,830
+What I'd really like to
+do is make connections
+
+6
+00:00:12,830 --> 00:00:16,610
+with additional tasks as a way
+of drawing out what I think
+
+7
+00:00:16,610 --> 00:00:18,860
+is one of the central
+insights behind the work
+
+8
+00:00:18,860 --> 00:00:21,740
+that we're doing, which is
+that speakers should try
+
+9
+00:00:21,740 --> 00:00:24,640
+to be informative in context.
+
+10
+00:00:24,640 --> 00:00:26,640
+Let me explain a bit more
+about what that means.
+
+11
+00:00:26,640 --> 00:00:30,410
+So our task is this task of
+color reference in context.
+
+12
+00:00:30,410 --> 00:00:33,920
+The speaker is given three color
+patches, one of them designated
+
+13
+00:00:33,920 --> 00:00:35,810
+the target, and
+the speaker's task
+
+14
+00:00:35,810 --> 00:00:37,520
+is to communicate
+which of the three
+
+15
+00:00:37,520 --> 00:00:40,680
+is the target to the listener
+who's in the same context,
+
+16
+00:00:40,680 --> 00:00:42,850
+but of course doesn't
+know what the target is.
+
+17
+00:00:42,850 --> 00:00:45,350
+And what I think you see running
+through the human data here
+
+18
+00:00:45,350 --> 00:00:48,950
+is that speakers are striving
+to be informative in context.
+
+19
+00:00:48,950 --> 00:00:50,750
+In this first case,
+the speaker can just
+
+20
+00:00:50,750 --> 00:00:53,640
+say "blue" because the
+contrasts are so clear.
+
+21
+00:00:53,640 --> 00:00:55,550
+But in the second case,
+merely saying "blue"
+
+22
+00:00:55,550 --> 00:00:56,910
+would be really unhelpful.
+
+23
+00:00:56,910 --> 00:00:58,910
+It would be uninformative
+in the context
+
+24
+00:00:58,910 --> 00:01:01,010
+because there are
+these two blues.
+
+25
+00:01:01,010 --> 00:01:02,600
+And as a result, the
+speaker is pushed
+
+26
+00:01:02,600 --> 00:01:04,019
+to do something
+more interesting,
+
+27
+00:01:04,019 --> 00:01:06,800
+the darker blue one,
+making implicit reference
+
+28
+00:01:06,800 --> 00:01:09,740
+to the context in an effort
+to communicate effectively
+
+29
+00:01:09,740 --> 00:01:11,180
+with the listener.
+
+30
+00:01:11,180 --> 00:01:14,270
+And that communication aspect,
+I think, can be so powerful
+
+31
+00:01:14,270 --> 00:01:17,690
+and runs through lots of tasks,
+both ones that explicitly
+
+32
+00:01:17,690 --> 00:01:19,940
+involve communication
+and ones that
+
+33
+00:01:19,940 --> 00:01:22,430
+involve a more general setting.
+
+34
+00:01:22,430 --> 00:01:25,280
+One case of the latter is I
+think discriminative image
+
+35
+00:01:25,280 --> 00:01:27,860
+labeling, which is tackled in
+this lovely paper, Mau et al.
+
+36
+00:01:27,860 --> 00:01:29,240
+2016.
+
+37
+00:01:29,240 --> 00:01:31,820
+The task here is given an
+image to label entities
+
+38
+00:01:31,820 --> 00:01:33,680
+that are in those images.
+
+39
+00:01:33,680 --> 00:01:35,990
+And for many, many contexts,
+it would be a shame
+
+40
+00:01:35,990 --> 00:01:39,020
+if our goal was to label
+these two entities here
+
+41
+00:01:39,020 --> 00:01:41,180
+and we simply called
+them both dog.
+
+42
+00:01:41,180 --> 00:01:42,860
+It's uninformative
+in the sense that it
+
+43
+00:01:42,860 --> 00:01:44,540
+doesn't distinguish
+the two entities
+
+44
+00:01:44,540 --> 00:01:46,140
+in the context of this picture.
+
+45
+00:01:46,140 --> 00:01:49,520
+What we might hope is that we
+would get fuller descriptions,
+
+46
+00:01:49,520 --> 00:01:51,320
+like a little dog
+jumping and catching
+
+47
+00:01:51,320 --> 00:01:54,830
+a Frisbee and a big dog
+running, fuller descriptions
+
+48
+00:01:54,830 --> 00:01:58,370
+in the sense that they provide
+more detail that distinguishes
+
+49
+00:01:58,370 --> 00:02:00,380
+the two dogs.
+
+50
+00:02:00,380 --> 00:02:03,230
+And we could extend that to
+full image captioning as well.
+
+51
+00:02:03,230 --> 00:02:05,330
+Again, given these
+three images, it
+
+52
+00:02:05,330 --> 00:02:07,610
+would be a shame if our
+image captioning system just
+
+53
+00:02:07,610 --> 00:02:09,320
+labeled them all dog.
+
+54
+00:02:09,320 --> 00:02:11,090
+We might have the
+intuition that we
+
+55
+00:02:11,090 --> 00:02:14,300
+would like the image captioning
+system to produce descriptions
+
+56
+00:02:14,300 --> 00:02:18,380
+of these images that would help
+a listener figure out which
+
+57
+00:02:18,380 --> 00:02:20,250
+image was being described.
+
+58
+00:02:20,250 --> 00:02:22,490
+And we might have a
+further goal for this image
+
+59
+00:02:22,490 --> 00:02:26,420
+captioning system that as we
+change the set of distractors,
+
+60
+00:02:26,420 --> 00:02:28,190
+it's sensitive to
+that and produces
+
+61
+00:02:28,190 --> 00:02:31,310
+different descriptions,
+trying to be informative
+
+62
+00:02:31,310 --> 00:02:33,800
+relative to these new
+contexts that we're creating,
+
+63
+00:02:33,800 --> 00:02:35,960
+amplifying some
+kinds of information
+
+64
+00:02:35,960 --> 00:02:37,880
+and leaving out other
+kinds of information
+
+65
+00:02:37,880 --> 00:02:40,940
+to the extent that they would
+help the listener achieve
+
+66
+00:02:40,940 --> 00:02:44,150
+that task of figuring out which
+image was being described.
+
+67
+00:02:44,150 --> 00:02:46,740
+
+
+68
+00:02:46,740 --> 00:02:48,690
+Machine translation
+is another area
+
+69
+00:02:48,690 --> 00:02:51,300
+that might benefit from
+this notion of informativity
+
+70
+00:02:51,300 --> 00:02:51,930
+and context.
+
+71
+00:02:51,930 --> 00:02:53,940
+This was explored
+in a lovely paper
+
+72
+00:02:53,940 --> 00:02:57,240
+by Reuben Cohn-Gordon
+and Noah Goodman in 2019.
+
+73
+00:02:57,240 --> 00:03:01,020
+So let's say our task is to
+go from English to French.
+
+74
+00:03:01,020 --> 00:03:04,382
+Reuben and Noah just observed
+that at the time, these two
+
+75
+00:03:04,382 --> 00:03:06,090
+English inputs, "she
+chopped up the tree"
+
+76
+00:03:06,090 --> 00:03:09,000
+and "she chopped down the
+tree" were both mapped
+
+77
+00:03:09,000 --> 00:03:11,820
+to the same French
+translation, which
+
+78
+00:03:11,820 --> 00:03:15,120
+is a shame given how different
+those two English inputs are
+
+79
+00:03:15,120 --> 00:03:16,650
+in terms of their meanings.
+
+80
+00:03:16,650 --> 00:03:19,290
+What we would like is to
+have the English inputs map
+
+81
+00:03:19,290 --> 00:03:21,330
+to different French sentences.
+
+82
+00:03:21,330 --> 00:03:23,400
+And their intuition
+about how to achieve
+
+83
+00:03:23,400 --> 00:03:26,530
+that would be to achieve
+some kind of invariance
+
+84
+00:03:26,530 --> 00:03:30,060
+so that given the translation
+from English to French,
+
+85
+00:03:30,060 --> 00:03:31,740
+we should be able
+to do the reverse,
+
+86
+00:03:31,740 --> 00:03:35,820
+figure out from the French which
+underlying English state was
+
+87
+00:03:35,820 --> 00:03:38,560
+being, quote, referred
+to in this context.
+
+88
+00:03:38,560 --> 00:03:41,400
+So its language on both sides,
+but it's drawing on this idea
+
+89
+00:03:41,400 --> 00:03:45,055
+that we want translations that
+are informative in the sense
+
+90
+00:03:45,055 --> 00:03:46,680
+that they would help
+someone figure out
+
+91
+00:03:46,680 --> 00:03:49,590
+what the original
+system input was.
+
+92
+00:03:49,590 --> 00:03:53,250
+Same guiding idea, drawing on
+this metaphor of communication,
+
+93
+00:03:53,250 --> 00:03:56,480
+but now to achieve
+good translations.
+
+94
+00:03:56,480 --> 00:03:58,700
+And in other domains,
+it's just very intuitive
+
+95
+00:03:58,700 --> 00:04:00,650
+to think about
+informativity in context.
+
+96
+00:04:00,650 --> 00:04:03,080
+So Daniel Fried et al,
+we have a lovely paper
+
+97
+00:04:03,080 --> 00:04:05,540
+exploring how to give
+navigational instructions
+
+98
+00:04:05,540 --> 00:04:09,370
+drawing on pragmatic ideas
+like informativity and context.
+
+99
+00:04:09,370 --> 00:04:11,870
+And for example, they have both
+speaker and listener agents,
+
+100
+00:04:11,870 --> 00:04:13,700
+and they observed
+that the base speaker
+
+101
+00:04:13,700 --> 00:04:17,640
+is true but uninformative,
+whereas their rational speaker,
+
+102
+00:04:17,640 --> 00:04:20,180
+which brings in
+pragmatic ideas, is
+
+103
+00:04:20,180 --> 00:04:22,460
+more sensitive to the
+kinds of information
+
+104
+00:04:22,460 --> 00:04:25,490
+that a listener would need
+to follow an instruction.
+
+105
+00:04:25,490 --> 00:04:27,680
+And the same thing is
+true on the listener side.
+
+106
+00:04:27,680 --> 00:04:29,940
+The base listener is
+unsure how to proceed,
+
+107
+00:04:29,940 --> 00:04:32,750
+but the rational listener
+was able to infer
+
+108
+00:04:32,750 --> 00:04:35,630
+that since this instruction
+didn't mention this couch over
+
+109
+00:04:35,630 --> 00:04:38,360
+here, it was probably not
+relevant to the instruction,
+
+110
+00:04:38,360 --> 00:04:39,980
+and therefore,
+this listener stops
+
+111
+00:04:39,980 --> 00:04:44,090
+at this point in interpreting
+the navigational instructions.
+
+112
+00:04:44,090 --> 00:04:45,710
+And Stefanie Tellex
+and colleagues
+
+113
+00:04:45,710 --> 00:04:47,360
+have explored this
+idea in the context
+
+114
+00:04:47,360 --> 00:04:48,830
+of human-robot interaction.
+
+115
+00:04:48,830 --> 00:04:51,837
+They've called their central
+mechanism inverse semantics.
+
+116
+00:04:51,837 --> 00:04:53,420
+And this is, again,
+just the intuition
+
+117
+00:04:53,420 --> 00:04:56,330
+that a robot producing
+language ought
+
+118
+00:04:56,330 --> 00:04:58,760
+to produce language
+that reduces ambiguity
+
+119
+00:04:58,760 --> 00:05:00,320
+for the human listener.
+
+120
+00:05:00,320 --> 00:05:02,120
+In this context
+here, where the robot
+
+121
+00:05:02,120 --> 00:05:03,920
+is trying to get
+help from the human,
+
+122
+00:05:03,920 --> 00:05:05,433
+it shouldn't just say help me.
+
+123
+00:05:05,433 --> 00:05:07,100
+The human won't know
+how to take action.
+
+124
+00:05:07,100 --> 00:05:09,260
+But it also shouldn't do
+something simple like,
+
+125
+00:05:09,260 --> 00:05:10,430
+hand me the leg.
+
+126
+00:05:10,430 --> 00:05:12,290
+The robot should be
+sensitive to the fact
+
+127
+00:05:12,290 --> 00:05:15,290
+that there are multiple
+table legs in this context,
+
+128
+00:05:15,290 --> 00:05:19,310
+and the robot needs to ensure
+that the human listener is not
+
+129
+00:05:19,310 --> 00:05:21,810
+faced with an
+insurmountable ambiguity.
+
+130
+00:05:21,810 --> 00:05:23,930
+And that would, therefore,
+push this robot,
+
+131
+00:05:23,930 --> 00:05:26,870
+in being aware of
+the listener state,
+
+132
+00:05:26,870 --> 00:05:29,090
+to produce descriptions
+that were more like hand me
+
+133
+00:05:29,090 --> 00:05:30,950
+the white leg on
+the table, fully
+
+134
+00:05:30,950 --> 00:05:35,570
+disambiguating from the
+perspective of the listener.
+
+135
+00:05:35,570 --> 00:05:38,270
+And I'd like to push this idea
+of informativity in context
+
+136
+00:05:38,270 --> 00:05:40,940
+even further by connecting
+with one of the classic tasks
+
+137
+00:05:40,940 --> 00:05:43,640
+in machine learning, which is
+optical character recognition.
+
+138
+00:05:43,640 --> 00:05:46,160
+Even this task, I
+believe, can benefit
+
+139
+00:05:46,160 --> 00:05:50,030
+from notions of contrast and
+informativity in context.
+
+140
+00:05:50,030 --> 00:05:52,183
+On the left, I have
+four digits, and you
+
+141
+00:05:52,183 --> 00:05:53,600
+can see that this
+is a speaker who
+
+142
+00:05:53,600 --> 00:05:56,630
+puts little hooks at the
+top of their 1s and slashes
+
+143
+00:05:56,630 --> 00:05:57,440
+through their 7s.
+
+144
+00:05:57,440 --> 00:05:59,120
+And those two pieces
+of information
+
+145
+00:05:59,120 --> 00:06:01,820
+would help us disambiguate
+the final digit
+
+146
+00:06:01,820 --> 00:06:03,677
+and infer that it was a 1.
+
+147
+00:06:03,677 --> 00:06:06,260
+On the right here, we're pushed
+in a very different direction.
+
+148
+00:06:06,260 --> 00:06:08,030
+This is a speaker who
+does not put hooks
+
+149
+00:06:08,030 --> 00:06:11,373
+on the top of their 1s or
+slashes through their 7s,
+
+150
+00:06:11,373 --> 00:06:13,790
+and that would lead us to think
+that this final digit here
+
+151
+00:06:13,790 --> 00:06:14,750
+is a 7.
+
+152
+00:06:14,750 --> 00:06:17,520
+Notice that, in terms of
+what's actually on the page,
+
+153
+00:06:17,520 --> 00:06:20,720
+these two digits are
+identical, but the context
+
+154
+00:06:20,720 --> 00:06:22,850
+is what's leading us in
+very different directions,
+
+155
+00:06:22,850 --> 00:06:25,015
+and we can assume that at
+some fundamental level,
+
+156
+00:06:25,015 --> 00:06:27,140
+the speaker is going to be
+informative in the sense
+
+157
+00:06:27,140 --> 00:06:29,432
+that they're going to write
+in ways that are consistent
+
+158
+00:06:29,432 --> 00:06:31,880
+and draw an intended contrast
+between their digits,
+
+159
+00:06:31,880 --> 00:06:34,220
+and that's what guides us
+toward what are ultimately
+
+160
+00:06:34,220 --> 00:06:36,830
+the correct classification
+decisions, even
+
+161
+00:06:36,830 --> 00:06:40,900
+for this apparently
+mechanical-seeming environment.
+
+162
+00:06:40,900 --> 00:06:44,000
+
+

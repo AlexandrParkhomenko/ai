@@ -1,0 +1,715 @@
+1
+00:00:00,000 --> 00:00:04,340
+
+
+2
+00:00:04,340 --> 00:00:05,840
+CHRISTOPHER POTTS:
+Welcome, everyone
+
+3
+00:00:05,840 --> 00:00:07,820
+to part 3 in our series
+on grounded language
+
+4
+00:00:07,820 --> 00:00:08,780
+understanding.
+
+5
+00:00:08,780 --> 00:00:10,730
+Recall that in
+part 2, we focused
+
+6
+00:00:10,730 --> 00:00:12,680
+on speakers, speakers
+in our sense,
+
+7
+00:00:12,680 --> 00:00:15,470
+taking on linguistic
+representations as inputs
+
+8
+00:00:15,470 --> 00:00:18,260
+and generate language
+on that basis.
+
+9
+00:00:18,260 --> 00:00:20,270
+Listeners are the
+converse of that.
+
+10
+00:00:20,270 --> 00:00:22,340
+They accept linguistic inputs.
+
+11
+00:00:22,340 --> 00:00:24,170
+And try to make a
+guess about the state
+
+12
+00:00:24,170 --> 00:00:27,320
+of the world on the basis
+of that linguistic input.
+
+13
+00:00:27,320 --> 00:00:29,330
+For this unit, in
+terms of modeling,
+
+14
+00:00:29,330 --> 00:00:31,550
+our focus is going
+to be on speakers.
+
+15
+00:00:31,550 --> 00:00:33,950
+But I think it's helpful to
+have the listener perspective
+
+16
+00:00:33,950 --> 00:00:35,870
+in mind as you create speakers.
+
+17
+00:00:35,870 --> 00:00:38,240
+And you might even bring
+in the listener perspective
+
+18
+00:00:38,240 --> 00:00:40,400
+as part of your original system.
+
+19
+00:00:40,400 --> 00:00:42,110
+And I'll cover some
+techniques for doing
+
+20
+00:00:42,110 --> 00:00:44,720
+that in the context of
+the rational SpeechX model
+
+21
+00:00:44,720 --> 00:00:47,390
+a bit later in this series.
+
+22
+00:00:47,390 --> 00:00:49,550
+Now to make the speaker
+task meaningful,
+
+23
+00:00:49,550 --> 00:00:52,410
+we need to complicate our
+previous task a little bit.
+
+24
+00:00:52,410 --> 00:00:56,100
+So in part 2, we had for the
+speaker, just a single colors
+
+25
+00:00:56,100 --> 00:00:56,600
+input.
+
+26
+00:00:56,600 --> 00:01:00,313
+And their task was to produce
+a description on that basis.
+
+27
+00:01:00,313 --> 00:01:01,730
+For listeners,
+we're going to move
+
+28
+00:01:01,730 --> 00:01:03,200
+to a more complicated task.
+
+29
+00:01:03,200 --> 00:01:06,080
+And this is the task that's
+our focus for the entire unit.
+
+30
+00:01:06,080 --> 00:01:08,615
+It comes from the Stanford
+colors in context corpus.
+
+31
+00:01:08,615 --> 00:01:11,360
+And for that corpus,
+the context is not just
+
+32
+00:01:11,360 --> 00:01:14,540
+a single color representation,
+but now three colors.
+
+33
+00:01:14,540 --> 00:01:17,870
+And the idea is that the
+speaker is privately told which
+
+34
+00:01:17,870 --> 00:01:19,640
+of those three is their target.
+
+35
+00:01:19,640 --> 00:01:22,070
+And they produce a description
+that will hopefully
+
+36
+00:01:22,070 --> 00:01:25,130
+communicate to a listener, who's
+looking at those same three
+
+37
+00:01:25,130 --> 00:01:28,600
+colors, which one was
+the speaker's target.
+
+38
+00:01:28,600 --> 00:01:31,070
+You can see that gets really
+interesting and grounded
+
+39
+00:01:31,070 --> 00:01:31,830
+very quickly.
+
+40
+00:01:31,830 --> 00:01:34,920
+So in this first case, the
+three colors are very different.
+
+41
+00:01:34,920 --> 00:01:36,410
+And the speaker
+simply said blue.
+
+42
+00:01:36,410 --> 00:01:37,980
+And that seems to
+get the job done.
+
+43
+00:01:37,980 --> 00:01:40,317
+And I think a listener
+receiving blue as input
+
+44
+00:01:40,317 --> 00:01:41,900
+would know which of
+these three colors
+
+45
+00:01:41,900 --> 00:01:44,390
+was the speaker's
+private target.
+
+46
+00:01:44,390 --> 00:01:45,950
+When we move to
+the second context,
+
+47
+00:01:45,950 --> 00:01:47,655
+we have two competing blues.
+
+48
+00:01:47,655 --> 00:01:48,530
+They're very similar.
+
+49
+00:01:48,530 --> 00:01:51,980
+And as a result, the speaker
+said the darker blue one.
+
+50
+00:01:51,980 --> 00:01:55,310
+And the idea is that this
+comparative here, darker blue,
+
+51
+00:01:55,310 --> 00:01:57,140
+is making the
+implicit reference,
+
+52
+00:01:57,140 --> 00:02:00,170
+not only to the target
+but to at least one
+
+53
+00:02:00,170 --> 00:02:02,090
+of the two distractors.
+
+54
+00:02:02,090 --> 00:02:03,350
+Third example is similar.
+
+55
+00:02:03,350 --> 00:02:05,570
+Teal, not the two
+that are more green.
+
+56
+00:02:05,570 --> 00:02:07,820
+That's really grounded
+in the full context here.
+
+57
+00:02:07,820 --> 00:02:09,949
+The speaker is not
+only identifying
+
+58
+00:02:09,949 --> 00:02:11,660
+properties of the
+target but also
+
+59
+00:02:11,660 --> 00:02:16,040
+properties of the distractor
+in order to draw out contrasts.
+
+60
+00:02:16,040 --> 00:02:18,170
+And I think the final
+two examples here are
+
+61
+00:02:18,170 --> 00:02:20,380
+interesting in different ways.
+
+62
+00:02:20,380 --> 00:02:23,300
+So here we have the
+target on the left.
+
+63
+00:02:23,300 --> 00:02:25,617
+In the first example,
+the speaker said purple.
+
+64
+00:02:25,617 --> 00:02:27,200
+And in the second
+example, the speaker
+
+65
+00:02:27,200 --> 00:02:30,830
+said blue even though these
+are identical colors here
+
+66
+00:02:30,830 --> 00:02:32,060
+for the targets.
+
+67
+00:02:32,060 --> 00:02:35,120
+The reason we saw a variation
+is because the distractors
+
+68
+00:02:35,120 --> 00:02:36,125
+are so different.
+
+69
+00:02:36,125 --> 00:02:38,000
+And that just shows you
+that even though this
+
+70
+00:02:38,000 --> 00:02:39,740
+is a simple task,
+it is meaningfully
+
+71
+00:02:39,740 --> 00:02:44,220
+grounded in the full context
+that we're talking about.
+
+72
+00:02:44,220 --> 00:02:46,320
+Now what we'll do for our
+listeners is essentially
+
+73
+00:02:46,320 --> 00:02:48,450
+give them these
+utterances as inputs
+
+74
+00:02:48,450 --> 00:02:50,340
+and have them function
+as classifiers,
+
+75
+00:02:50,340 --> 00:02:52,860
+making a guess about
+which of the three colors
+
+76
+00:02:52,860 --> 00:02:57,765
+is the most likely, that the
+speaker was trying to refer to.
+
+77
+00:02:57,765 --> 00:02:58,890
+So in a little more detail.
+
+78
+00:02:58,890 --> 00:03:00,680
+Here's the neural
+listener model.
+
+79
+00:03:00,680 --> 00:03:03,200
+It's again, an
+encoder-decoder architecture.
+
+80
+00:03:03,200 --> 00:03:06,073
+For the encoder side, we can
+imagine some recurrent neural
+
+81
+00:03:06,073 --> 00:03:07,490
+network or something
+that is going
+
+82
+00:03:07,490 --> 00:03:10,460
+to consume a sequence
+of tokens, look them up
+
+83
+00:03:10,460 --> 00:03:11,990
+in an embedding
+space and then have
+
+84
+00:03:11,990 --> 00:03:14,810
+some sequence of hidden states.
+
+85
+00:03:14,810 --> 00:03:18,080
+For the decoder, the handoff
+happens for the final encoder
+
+86
+00:03:18,080 --> 00:03:19,400
+state, presumably.
+
+87
+00:03:19,400 --> 00:03:22,370
+And what we're going to do here
+is extract some statistics,
+
+88
+00:03:22,370 --> 00:03:24,950
+in this case, a mean
+and covariance matrix,
+
+89
+00:03:24,950 --> 00:03:27,260
+and use those for scoring.
+
+90
+00:03:27,260 --> 00:03:28,920
+So in a little more detail.
+
+91
+00:03:28,920 --> 00:03:32,060
+We have those three colors
+that's given for the listener.
+
+92
+00:03:32,060 --> 00:03:33,630
+Those are represented down here.
+
+93
+00:03:33,630 --> 00:03:36,050
+When we embed those
+in some color space,
+
+94
+00:03:36,050 --> 00:03:37,520
+we could use the
+Fourier transform,
+
+95
+00:03:37,520 --> 00:03:39,020
+just like we did
+for the speakers
+
+96
+00:03:39,020 --> 00:03:41,480
+at the end of the
+previous screen test.
+
+97
+00:03:41,480 --> 00:03:44,630
+And then we'll use those extract
+statistics from the encoder
+
+98
+00:03:44,630 --> 00:03:46,730
+to create a scoring function.
+
+99
+00:03:46,730 --> 00:03:49,100
+And then we just need to
+define a softmax classifier
+
+100
+00:03:49,100 --> 00:03:50,390
+on top of those scores.
+
+101
+00:03:50,390 --> 00:03:53,720
+And it will be that module
+that makes it guess,
+
+102
+00:03:53,720 --> 00:03:56,900
+based on this encoder
+representation, about which
+
+103
+00:03:56,900 --> 00:03:58,880
+of the three colors the
+speaker was referring
+
+104
+00:03:58,880 --> 00:04:02,420
+to, so fundamentally, a kind
+of classification decision
+
+105
+00:04:02,420 --> 00:04:05,270
+in this continuous space
+of colors and encoder
+
+106
+00:04:05,270 --> 00:04:08,460
+representations.
+
+107
+00:04:08,460 --> 00:04:10,290
+Now once we start
+thinking in this mode,
+
+108
+00:04:10,290 --> 00:04:12,630
+I think a lot of
+other tasks can be
+
+109
+00:04:12,630 --> 00:04:15,590
+thought of as listener-based
+communication tasks.
+
+110
+00:04:15,590 --> 00:04:19,829
+So even the simplest classifiers
+are listeners in our sense.
+
+111
+00:04:19,829 --> 00:04:21,390
+They consume language.
+
+112
+00:04:21,390 --> 00:04:23,250
+And they make an
+inference about the world,
+
+113
+00:04:23,250 --> 00:04:25,320
+usually in a very
+structured space, right?
+
+114
+00:04:25,320 --> 00:04:28,410
+So even in the simple case
+of our sentiment analysis,
+
+115
+00:04:28,410 --> 00:04:30,600
+you receive a linguistic
+input, and you
+
+116
+00:04:30,600 --> 00:04:33,130
+make a guess about whether the
+state is positive, negative,
+
+117
+00:04:33,130 --> 00:04:36,070
+or neutral as its
+common classifier.
+
+118
+00:04:36,070 --> 00:04:38,700
+But thinking of it as
+a communication task
+
+119
+00:04:38,700 --> 00:04:42,340
+might bring new
+dimensions to the problem.
+
+120
+00:04:42,340 --> 00:04:45,130
+Semantic parsers are
+also complex listeners.
+
+121
+00:04:45,130 --> 00:04:46,510
+They consume language.
+
+122
+00:04:46,510 --> 00:04:48,630
+They create a rich,
+latent representations
+
+123
+00:04:48,630 --> 00:04:50,380
+out of logical form.
+
+124
+00:04:50,380 --> 00:04:52,930
+And then they predict into
+some structured prediction
+
+125
+00:04:52,930 --> 00:04:56,450
+space like a database
+or something like that.
+
+126
+00:04:56,450 --> 00:04:59,730
+Scene generation is clearly
+a kind of listener task.
+
+127
+00:04:59,730 --> 00:05:02,510
+In this task, you
+map from language
+
+128
+00:05:02,510 --> 00:05:06,150
+to structured representations
+of visual scenes.
+
+129
+00:05:06,150 --> 00:05:08,990
+So it's a very complicated
+version of our simple color
+
+130
+00:05:08,990 --> 00:05:10,880
+reference problem.
+
+131
+00:05:10,880 --> 00:05:12,530
+Young et al explored
+the idea that we
+
+132
+00:05:12,530 --> 00:05:15,410
+might learn visual denotations
+for linguistic expressions,
+
+133
+00:05:15,410 --> 00:05:19,100
+mapping from language into
+some highly structured space
+
+134
+00:05:19,100 --> 00:05:22,310
+similar to same description.
+
+135
+00:05:22,310 --> 00:05:24,680
+Mei et al, 2015,
+developed a sequence
+
+136
+00:05:24,680 --> 00:05:27,410
+to sequence model that's
+very much like the above.
+
+137
+00:05:27,410 --> 00:05:31,880
+But the idea is that instead
+of having simple output spaces,
+
+138
+00:05:31,880 --> 00:05:34,897
+we have entire
+navigational instructions
+
+139
+00:05:34,897 --> 00:05:35,730
+that we want to get.
+
+140
+00:05:35,730 --> 00:05:37,355
+So that's going from
+a linguistic input
+
+141
+00:05:37,355 --> 00:05:40,680
+into some kind of
+action sequence.
+
+142
+00:05:40,680 --> 00:05:42,660
+And finally, the
+CerealBar data set
+
+143
+00:05:42,660 --> 00:05:45,780
+is an interesting one to
+explore in our context.
+
+144
+00:05:45,780 --> 00:05:48,990
+That was a task of learning
+to execute full instructions.
+
+145
+00:05:48,990 --> 00:05:52,290
+So that's, again, mapping some
+pretty complicated utterances
+
+146
+00:05:52,290 --> 00:05:54,570
+into some embedded
+action that you
+
+147
+00:05:54,570 --> 00:05:56,315
+want to take in a game world.
+
+148
+00:05:56,315 --> 00:05:59,010
+And that could be a very
+exciting extension of what
+
+149
+00:05:59,010 --> 00:06:01,160
+we've just been covering.
+
+150
+00:06:01,160 --> 00:06:05,000
+
+

@@ -1,0 +1,1362 @@
+1
+00:00:00,000 --> 00:00:04,658
+
+
+2
+00:00:04,658 --> 00:00:06,950
+BILL MACCARTNEY: So that's
+the end of the introduction.
+
+3
+00:00:06,950 --> 00:00:10,660
+Let's now begin to drill
+down on the data resources
+
+4
+00:00:10,660 --> 00:00:13,215
+that we'll need to
+launch our investigation.
+
+5
+00:00:13,215 --> 00:00:14,590
+And there are two
+different kinds
+
+6
+00:00:14,590 --> 00:00:19,600
+of data we need to talk
+about, the corpus and the KB.
+
+7
+00:00:19,600 --> 00:00:21,490
+Just like any other
+NLP problem, we
+
+8
+00:00:21,490 --> 00:00:25,180
+need to start with a
+corpus, a large collection
+
+9
+00:00:25,180 --> 00:00:26,680
+of natural language text.
+
+10
+00:00:26,680 --> 00:00:29,620
+And for relation extraction,
+we need sentences containing
+
+11
+00:00:29,620 --> 00:00:32,530
+two or more entities.
+
+12
+00:00:32,530 --> 00:00:35,830
+And because our goal is
+to do relation extraction
+
+13
+00:00:35,830 --> 00:00:38,350
+with distant
+supervision, we need
+
+14
+00:00:38,350 --> 00:00:42,100
+to be able to connect
+the entities to a KB.
+
+15
+00:00:42,100 --> 00:00:45,340
+So we need a corpus in
+which the entity mentions
+
+16
+00:00:45,340 --> 00:00:49,420
+are annotated with
+entity resolutions, which
+
+17
+00:00:49,420 --> 00:00:53,560
+map them to unique
+unambiguous identifiers.
+
+18
+00:00:53,560 --> 00:00:56,665
+The same identifiers
+that are used in the KB.
+
+19
+00:00:56,665 --> 00:00:59,300
+
+
+20
+00:00:59,300 --> 00:01:02,900
+So in this representation,
+I've got the string Elon
+
+21
+00:01:02,900 --> 00:01:06,900
+Musk, which is just an
+English language string.
+
+22
+00:01:06,900 --> 00:01:09,470
+That's what we call
+an entity mention.
+
+23
+00:01:09,470 --> 00:01:14,690
+And then I've got Elon_Musk,
+which is an entity ID.
+
+24
+00:01:14,690 --> 00:01:17,990
+It's a unique
+unambiguous identifier
+
+25
+00:01:17,990 --> 00:01:26,870
+for this entity in some
+predefined dictionary of entity
+
+26
+00:01:26,870 --> 00:01:27,810
+IDs.
+
+27
+00:01:27,810 --> 00:01:29,810
+And it's very common
+for this purpose
+
+28
+00:01:29,810 --> 00:01:32,930
+to use something
+like Wikipedia, which
+
+29
+00:01:32,930 --> 00:01:37,400
+has one Wikipedia page
+for almost any entity
+
+30
+00:01:37,400 --> 00:01:38,330
+that you can think of.
+
+31
+00:01:38,330 --> 00:01:40,813
+
+
+32
+00:01:40,813 --> 00:01:42,230
+For our investigation,
+we're going
+
+33
+00:01:42,230 --> 00:01:45,050
+to use an adaptation of
+the Wikilinks corpus, which
+
+34
+00:01:45,050 --> 00:01:49,040
+was produced by Google
+and UMass in 2013.
+
+35
+00:01:49,040 --> 00:01:52,550
+The full corpus contains
+40 million entity mentions
+
+36
+00:01:52,550 --> 00:01:54,980
+from 10 million web pages.
+
+37
+00:01:54,980 --> 00:02:00,650
+And each entity mentioned is
+annotated with a Wikipedia URL.
+
+38
+00:02:00,650 --> 00:02:03,710
+But we're going to use just
+a subset of the full corpus
+
+39
+00:02:03,710 --> 00:02:08,190
+in order to make
+things manageable.
+
+40
+00:02:08,190 --> 00:02:10,258
+So let's start to look
+at some of the code we'll
+
+41
+00:02:10,258 --> 00:02:14,860
+use in the Python
+notebooks for this topic.
+
+42
+00:02:14,860 --> 00:02:17,250
+The data assets
+that we'll use live
+
+43
+00:02:17,250 --> 00:02:22,840
+in a subdirectory of our data
+directory called rel_ext_data
+
+44
+00:02:22,840 --> 00:02:26,650
+and we've defined a class
+called corpus, which
+
+45
+00:02:26,650 --> 00:02:29,890
+holds the examples and which
+lets you quickly look up
+
+46
+00:02:29,890 --> 00:02:33,560
+examples containing
+specific entities.
+
+47
+00:02:33,560 --> 00:02:35,710
+So if we load our
+corpus, we find
+
+48
+00:02:35,710 --> 00:02:38,860
+that it contains more
+than 330,000 examples.
+
+49
+00:02:38,860 --> 00:02:40,270
+Pretty good size.
+
+50
+00:02:40,270 --> 00:02:43,780
+It's small enough that we
+can work with it easily
+
+51
+00:02:43,780 --> 00:02:46,870
+on an ordinary laptop,
+but it's big enough
+
+52
+00:02:46,870 --> 00:02:50,440
+to support effective
+machine learning.
+
+53
+00:02:50,440 --> 00:02:53,350
+And we can print out a
+representative example
+
+54
+00:02:53,350 --> 00:02:55,060
+from the corpus.
+
+55
+00:02:55,060 --> 00:02:57,680
+Actually, this is
+a bit hard to read.
+
+56
+00:02:57,680 --> 00:03:02,910
+So let me give you a different
+view of the same example.
+
+57
+00:03:02,910 --> 00:03:05,490
+We represent examples
+using the example
+
+58
+00:03:05,490 --> 00:03:11,150
+class, which is a namedtuple
+with 12 fields listed here.
+
+59
+00:03:11,150 --> 00:03:14,440
+The first two fields
+entity_1 and entity_2
+
+60
+00:03:14,440 --> 00:03:19,210
+contain unique identifiers for
+the two entities mentioned.
+
+61
+00:03:19,210 --> 00:03:21,730
+We name identities
+using Wiki IDs,
+
+62
+00:03:21,730 --> 00:03:25,870
+which you can think of as the
+last portion of a Wikipedia
+
+63
+00:03:25,870 --> 00:03:28,730
+URL.
+
+64
+00:03:28,730 --> 00:03:30,740
+The next five fields
+represent the text
+
+65
+00:03:30,740 --> 00:03:34,340
+surrounding the two mentions,
+divided into five chunks.
+
+66
+00:03:34,340 --> 00:03:37,640
+So left contains the text
+before the first mention.
+
+67
+00:03:37,640 --> 00:03:40,970
+mention_1 is the
+first mention itself.
+
+68
+00:03:40,970 --> 00:03:44,510
+middle contains the text
+between the two mentions.
+
+69
+00:03:44,510 --> 00:03:48,440
+mention_2 is the second mention
+and right contains the text
+
+70
+00:03:48,440 --> 00:03:52,130
+after the second mention.
+
+71
+00:03:52,130 --> 00:03:56,120
+And the last five fields contain
+the same five chunks of text,
+
+72
+00:03:56,120 --> 00:03:58,640
+but this time,
+annotated with part
+
+73
+00:03:58,640 --> 00:04:00,560
+of speech tags,
+which may turn out
+
+74
+00:04:00,560 --> 00:04:03,380
+to be useful when we start
+building models for relation
+
+75
+00:04:03,380 --> 00:04:04,471
+extraction.
+
+76
+00:04:04,471 --> 00:04:08,240
+
+
+77
+00:04:08,240 --> 00:04:10,940
+Now, whenever you start
+to work with a new dataset
+
+78
+00:04:10,940 --> 00:04:13,730
+it's good practice to
+do some data exploration
+
+79
+00:04:13,730 --> 00:04:15,680
+to get familiar with the data.
+
+80
+00:04:15,680 --> 00:04:18,290
+A big part of this is getting
+a sense of the high level
+
+81
+00:04:18,290 --> 00:04:21,470
+characteristics of the
+data, summary statistics,
+
+82
+00:04:21,470 --> 00:04:24,000
+distributions and so on.
+
+83
+00:04:24,000 --> 00:04:26,210
+For example, how many
+entities are there
+
+84
+00:04:26,210 --> 00:04:28,650
+and what are the
+most common ones?
+
+85
+00:04:28,650 --> 00:04:33,540
+Here's some code that computes
+that and here are the results.
+
+86
+00:04:33,540 --> 00:04:36,740
+So there are more than
+95,000 unique entities,
+
+87
+00:04:36,740 --> 00:04:40,040
+and it looks like the most
+common entities are dominated
+
+88
+00:04:40,040 --> 00:04:41,930
+by geographic locations.
+
+89
+00:04:41,930 --> 00:04:45,330
+
+
+90
+00:04:45,330 --> 00:04:47,820
+Now the main benefit we
+get from the corpus class
+
+91
+00:04:47,820 --> 00:04:50,520
+is the ability to retrieve
+the examples containing
+
+92
+00:04:50,520 --> 00:04:52,990
+specific entities.
+
+93
+00:04:52,990 --> 00:04:54,720
+So let's find
+examples containing
+
+94
+00:04:54,720 --> 00:04:56,460
+Elon Musk and Tesla Motors.
+
+95
+00:04:56,460 --> 00:04:59,840
+
+
+96
+00:04:59,840 --> 00:05:05,150
+There are five such examples,
+and here's the first one.
+
+97
+00:05:05,150 --> 00:05:09,050
+Actually, this might not be
+all of the examples containing
+
+98
+00:05:09,050 --> 00:05:11,090
+Elon Musk and Tesla Motors.
+
+99
+00:05:11,090 --> 00:05:15,350
+It's only the examples where
+Elon Musk was mentioned first
+
+100
+00:05:15,350 --> 00:05:18,170
+and Tesla Motors was
+mentioned second.
+
+101
+00:05:18,170 --> 00:05:20,420
+There may be additional
+examples that
+
+102
+00:05:20,420 --> 00:05:22,770
+have them in the reverse order.
+
+103
+00:05:22,770 --> 00:05:27,950
+So let's check, look for
+Tesla Motors, Elon Musk.
+
+104
+00:05:27,950 --> 00:05:31,500
+Sure enough, two more
+examples in reverse order.
+
+105
+00:05:31,500 --> 00:05:33,170
+So going forward,
+we'll have to remember
+
+106
+00:05:33,170 --> 00:05:36,140
+to check both
+directions when we're
+
+107
+00:05:36,140 --> 00:05:39,950
+looking for examples containing
+a specific pair of entities.
+
+108
+00:05:39,950 --> 00:05:42,740
+OK, a few last
+observations on the corpus.
+
+109
+00:05:42,740 --> 00:05:45,620
+First, this corpus
+is not without flaws.
+
+110
+00:05:45,620 --> 00:05:47,060
+As you get more
+familiar with it,
+
+111
+00:05:47,060 --> 00:05:49,670
+you'll probably discover
+that it contains
+
+112
+00:05:49,670 --> 00:05:56,000
+many examples that are nearly,
+but not exactly duplicates.
+
+113
+00:05:56,000 --> 00:06:00,500
+This seems to be an artifact
+of the web document sampling
+
+114
+00:06:00,500 --> 00:06:04,010
+methodology that was used in the
+construction of the Wikilinks
+
+115
+00:06:04,010 --> 00:06:05,870
+data set.
+
+116
+00:06:05,870 --> 00:06:08,180
+And it winds up creating
+a few distortions
+
+117
+00:06:08,180 --> 00:06:10,830
+and we may see some
+examples of this later.
+
+118
+00:06:10,830 --> 00:06:13,370
+But even though the
+corpus has a few warts,
+
+119
+00:06:13,370 --> 00:06:17,950
+it will serve our
+purposes just fine.
+
+120
+00:06:17,950 --> 00:06:20,070
+One thing that this
+corpus does not include
+
+121
+00:06:20,070 --> 00:06:23,380
+is any annotation
+about relations.
+
+122
+00:06:23,380 --> 00:06:26,760
+So it could not be used for
+the fully supervised approach
+
+123
+00:06:26,760 --> 00:06:28,830
+to relation extraction,
+because that
+
+124
+00:06:28,830 --> 00:06:33,360
+requires a relation label on
+each pair of entity mentions.
+
+125
+00:06:33,360 --> 00:06:35,340
+And we don't have any
+such annotation here.
+
+126
+00:06:35,340 --> 00:06:38,640
+The only annotations that
+we have in this corpus
+
+127
+00:06:38,640 --> 00:06:40,590
+are entity resolutions.
+
+128
+00:06:40,590 --> 00:06:44,550
+Mapping an entity
+mention to an entity ID.
+
+129
+00:06:44,550 --> 00:06:46,740
+That means that in
+order to make headway,
+
+130
+00:06:46,740 --> 00:06:50,310
+we'll need to connect the
+corpus with an external source
+
+131
+00:06:50,310 --> 00:06:53,010
+of knowledge about relations.
+
+132
+00:06:53,010 --> 00:06:53,955
+We need a KB.
+
+133
+00:06:53,955 --> 00:06:57,510
+
+
+134
+00:06:57,510 --> 00:07:00,540
+Happily our data distribution
+does include a KB,
+
+135
+00:07:00,540 --> 00:07:03,690
+which is derived from Freebase.
+
+136
+00:07:03,690 --> 00:07:05,890
+Freebase has an
+interesting history.
+
+137
+00:07:05,890 --> 00:07:09,300
+It was created in the
+late 2000s by a company
+
+138
+00:07:09,300 --> 00:07:13,560
+called Metaweb led by
+John Giannandrea, who
+
+139
+00:07:13,560 --> 00:07:16,110
+later became my boss.
+
+140
+00:07:16,110 --> 00:07:20,880
+Google acquired Metaweb
+in 2010, and Freebase
+
+141
+00:07:20,880 --> 00:07:24,630
+became the foundation of
+Google's knowledge graph.
+
+142
+00:07:24,630 --> 00:07:27,060
+Unfortunately,
+Google shut Freebase
+
+143
+00:07:27,060 --> 00:07:30,670
+down in 2016, which was tragic.
+
+144
+00:07:30,670 --> 00:07:35,200
+But the Freebase data is still
+available from various sources.
+
+145
+00:07:35,200 --> 00:07:39,180
+So our KB is a collection
+of relational triples each
+
+146
+00:07:39,180 --> 00:07:43,540
+consisting of a relation,
+a subject, and an object.
+
+147
+00:07:43,540 --> 00:07:47,130
+So for example, place_of_birth,
+Barack_Obama, Honolulu.
+
+148
+00:07:47,130 --> 00:07:49,800
+has_spouse, Barack_Obama,
+Michelle_Obama.
+
+149
+00:07:49,800 --> 00:07:53,460
+Author, The Audacity
+of Hope, Barack_Obama.
+
+150
+00:07:53,460 --> 00:07:55,650
+So as you might
+guess, the relation
+
+151
+00:07:55,650 --> 00:07:58,890
+is one of a handful of
+predefined constants
+
+152
+00:07:58,890 --> 00:08:02,220
+like place_of_birth
+birth or has_spouse.
+
+153
+00:08:02,220 --> 00:08:04,980
+The subject and the
+object are entities
+
+154
+00:08:04,980 --> 00:08:07,440
+represented by Wiki IDs.
+
+155
+00:08:07,440 --> 00:08:10,230
+It's the same ID space
+used in the corpus.
+
+156
+00:08:10,230 --> 00:08:14,070
+Wiki IDs are basically the
+last part of a Wikipedia URL.
+
+157
+00:08:14,070 --> 00:08:17,910
+
+
+158
+00:08:17,910 --> 00:08:19,560
+Now just like we
+did for the corpus,
+
+159
+00:08:19,560 --> 00:08:23,910
+we've created a KB class
+to store the KB triples
+
+160
+00:08:23,910 --> 00:08:26,910
+and some associated indexes.
+
+161
+00:08:26,910 --> 00:08:29,460
+This class makes it
+easy and efficient
+
+162
+00:08:29,460 --> 00:08:36,340
+to look up KB triples both
+by relation and by entities.
+
+163
+00:08:36,340 --> 00:08:38,880
+So here, we're just
+loading the data
+
+164
+00:08:38,880 --> 00:08:42,419
+and printing a count
+of the KB triples.
+
+165
+00:08:42,419 --> 00:08:45,180
+There are 45,000 KB
+triples, so this is quite
+
+166
+00:08:45,180 --> 00:08:46,890
+a bit smaller than the corpus.
+
+167
+00:08:46,890 --> 00:08:53,970
+If you remember the
+corpus has 330 examples
+
+168
+00:08:53,970 --> 00:08:57,390
+and we can print out
+the first KB triple.
+
+169
+00:08:57,390 --> 00:09:01,620
+So this is a KB triple that
+says that the contains relation
+
+170
+00:09:01,620 --> 00:09:04,530
+holds between Brickfields and
+Kuala Lumpur Sentral railway
+
+171
+00:09:04,530 --> 00:09:09,720
+station which I did not know.
+
+172
+00:09:09,720 --> 00:09:13,280
+
+
+173
+00:09:13,280 --> 00:09:16,670
+Just like we do with the corpus,
+let's do some data exploration
+
+174
+00:09:16,670 --> 00:09:20,090
+to get a sense of the high
+level characteristics of the KB.
+
+175
+00:09:20,090 --> 00:09:22,850
+So first, how many
+relations are there?
+
+176
+00:09:22,850 --> 00:09:25,820
+The all_relations
+attribute of the KB
+
+177
+00:09:25,820 --> 00:09:29,000
+contains a list
+of its relations.
+
+178
+00:09:29,000 --> 00:09:33,750
+And it seems that
+there are 16 of them.
+
+179
+00:09:33,750 --> 00:09:36,600
+Well, what are the relations
+and how big are they?
+
+180
+00:09:36,600 --> 00:09:40,050
+This code prints out
+a list with sizes.
+
+181
+00:09:40,050 --> 00:09:43,110
+Note the
+get_triples_for_relation
+
+182
+00:09:43,110 --> 00:09:47,370
+method, which returns a
+list of the KB triples
+
+183
+00:09:47,370 --> 00:09:50,130
+for a given relation.
+
+184
+00:09:50,130 --> 00:09:55,200
+You begin to get a sense of what
+kind of stuff is in this KB.
+
+185
+00:09:55,200 --> 00:09:57,420
+It looks like the
+contains relation
+
+186
+00:09:57,420 --> 00:10:01,410
+is really big with more
+than 18,000 triples.
+
+187
+00:10:01,410 --> 00:10:03,840
+And there are a
+few relations that
+
+188
+00:10:03,840 --> 00:10:11,700
+are pretty small with
+fewer than 1,000 triples.
+
+189
+00:10:11,700 --> 00:10:16,530
+Here's some code, that prints
+one example from each relations
+
+190
+00:10:16,530 --> 00:10:20,930
+so that we can form a better
+sense of what they mean.
+
+191
+00:10:20,930 --> 00:10:26,460
+Some of these are familiar facts
+like adjoins, France, Spain.
+
+192
+00:10:26,460 --> 00:10:29,640
+Others might refer to
+unfamiliar entities.
+
+193
+00:10:29,640 --> 00:10:34,860
+So for example, I've never
+heard of Sheridan Le Fanu.
+
+194
+00:10:34,860 --> 00:10:38,520
+But I think you can quickly
+form an intuitive sense of what
+
+195
+00:10:38,520 --> 00:10:40,050
+each relation is about.
+
+196
+00:10:40,050 --> 00:10:44,050
+
+
+197
+00:10:44,050 --> 00:10:46,600
+Now one of the most important
+message in a KB class
+
+198
+00:10:46,600 --> 00:10:51,160
+is get_triples_for_entities
+which lets us look up triples
+
+199
+00:10:51,160 --> 00:10:53,710
+by the entities they contain.
+
+200
+00:10:53,710 --> 00:10:55,540
+So let's use it to
+see what triples
+
+201
+00:10:55,540 --> 00:10:59,530
+contain France and Germany.
+
+202
+00:10:59,530 --> 00:11:02,080
+OK, sure, they belong
+to the adjoins relation.
+
+203
+00:11:02,080 --> 00:11:03,400
+That makes sense.
+
+204
+00:11:03,400 --> 00:11:07,450
+Now relations like adjoins
+are intuitively symmetric.
+
+205
+00:11:07,450 --> 00:11:11,410
+So we'd expect to find the
+inverse triple in the KB
+
+206
+00:11:11,410 --> 00:11:15,280
+as well, and yep, it's there.
+
+207
+00:11:15,280 --> 00:11:17,830
+But note that
+there's no guarantee
+
+208
+00:11:17,830 --> 00:11:21,970
+that such inverse triples
+actually appear in the KB.
+
+209
+00:11:21,970 --> 00:11:25,480
+There's no guarantee
+that the KB is complete.
+
+210
+00:11:25,480 --> 00:11:29,110
+And you could easily write some
+code to find missing inverses.
+
+211
+00:11:29,110 --> 00:11:33,020
+
+
+212
+00:11:33,020 --> 00:11:35,810
+Now, that relation
+adjoins is symmetric,
+
+213
+00:11:35,810 --> 00:11:39,620
+but most relations are
+intuitively asymmetric.
+
+214
+00:11:39,620 --> 00:11:41,000
+So let's see what
+triples we have
+
+215
+00:11:41,000 --> 00:11:44,690
+for Tesla_Motors and Elon_Musk.
+
+216
+00:11:44,690 --> 00:11:46,700
+OK, they belong to
+the founders relation.
+
+217
+00:11:46,700 --> 00:11:47,390
+Good.
+
+218
+00:11:47,390 --> 00:11:48,690
+That's expected.
+
+219
+00:11:48,690 --> 00:11:51,320
+That's an asymmetric relation.
+
+220
+00:11:51,320 --> 00:11:54,845
+What about the inverse,
+Elon Musk and Tesla Motors?
+
+221
+00:11:54,845 --> 00:11:57,680
+
+
+222
+00:11:57,680 --> 00:12:02,030
+OK, they belong to the
+worked_at relation.
+
+223
+00:12:02,030 --> 00:12:05,240
+Seems like a funny way to
+describe Elon's role at Tesla,
+
+224
+00:12:05,240 --> 00:12:07,460
+but OK.
+
+225
+00:12:07,460 --> 00:12:10,370
+So this shows that you
+can have one relation
+
+226
+00:12:10,370 --> 00:12:13,820
+between x and y and a
+different relation that
+
+227
+00:12:13,820 --> 00:12:15,888
+holds between y and x.
+
+228
+00:12:15,888 --> 00:12:19,024
+
+
+229
+00:12:19,024 --> 00:12:21,040
+One more observation.
+
+230
+00:12:21,040 --> 00:12:23,110
+There may be more
+than one relation
+
+231
+00:12:23,110 --> 00:12:25,180
+that holds between a
+given pair of entities,
+
+232
+00:12:25,180 --> 00:12:27,440
+even in one direction.
+
+233
+00:12:27,440 --> 00:12:30,490
+So for example, let's
+see what triples hold--
+
+234
+00:12:30,490 --> 00:12:32,405
+what triples contain
+Cleopatra and
+
+235
+00:12:32,405 --> 00:12:33,655
+Ptolemy_XIII_Theos_Philopator.
+
+236
+00:12:33,655 --> 00:12:40,620
+
+
+237
+00:12:40,620 --> 00:12:41,910
+Oh, my goodness.
+
+238
+00:12:41,910 --> 00:12:44,700
+This pair belongs to
+both the has_sibling
+
+239
+00:12:44,700 --> 00:12:50,400
+relation and the has_spouse
+relation to which I can only
+
+240
+00:12:50,400 --> 00:12:51,830
+say, oh.
+
+241
+00:12:51,830 --> 00:12:54,990
+
+
+242
+00:12:54,990 --> 00:12:59,430
+Moving right along, let's
+look at the distribution
+
+243
+00:12:59,430 --> 00:13:01,200
+of entities in a KB.
+
+244
+00:13:01,200 --> 00:13:05,760
+How many entities are there and
+what are the most common ones?
+
+245
+00:13:05,760 --> 00:13:10,050
+Well, here's some code
+that computes that.
+
+246
+00:13:10,050 --> 00:13:12,960
+There are 40,000
+entities in the KB.
+
+247
+00:13:12,960 --> 00:13:16,890
+So that's fewer than half as
+many entities as in the corpus.
+
+248
+00:13:16,890 --> 00:13:21,520
+If you remember, the corpus
+has 95,000 unique entities.
+
+249
+00:13:21,520 --> 00:13:24,990
+So there are lots of
+entities in the corpus that
+
+250
+00:13:24,990 --> 00:13:27,930
+don't appear in the KB at all.
+
+251
+00:13:27,930 --> 00:13:30,240
+But just like the corpus,
+the most common entities
+
+252
+00:13:30,240 --> 00:13:34,080
+are dominated by geographic
+locations, England, India,
+
+253
+00:13:34,080 --> 00:13:35,340
+Italy and so on.
+
+254
+00:13:35,340 --> 00:13:38,760
+
+
+255
+00:13:38,760 --> 00:13:42,060
+Note that there's no
+promise or expectation
+
+256
+00:13:42,060 --> 00:13:44,460
+that this KB is complete.
+
+257
+00:13:44,460 --> 00:13:46,470
+For one thing, the
+KB doesn't even
+
+258
+00:13:46,470 --> 00:13:49,260
+contain many of the
+entities from the corpus.
+
+259
+00:13:49,260 --> 00:13:51,930
+And even for the
+entities it does include,
+
+260
+00:13:51,930 --> 00:13:56,100
+there may be possible triples
+which are true in the world
+
+261
+00:13:56,100 --> 00:13:59,160
+but are missing from the KB.
+
+262
+00:13:59,160 --> 00:14:01,140
+So as an example,
+these triples are
+
+263
+00:14:01,140 --> 00:14:04,020
+in the KB, founders,
+Tesla_Motors, Elon_Musk,
+
+264
+00:14:04,020 --> 00:14:08,010
+worked_at, Elon_Musk,
+Tesla_Motors, Founders, SpaceX,
+
+265
+00:14:08,010 --> 00:14:09,030
+Elon_Musk.
+
+266
+00:14:09,030 --> 00:14:12,150
+You might expect to find
+worked_at, at, Elon_Musk,
+
+267
+00:14:12,150 --> 00:14:13,050
+SpaceX.
+
+268
+00:14:13,050 --> 00:14:16,500
+But nope, that triple
+is not in the KB.
+
+269
+00:14:16,500 --> 00:14:18,360
+That's weird.
+
+270
+00:14:18,360 --> 00:14:21,660
+Well, in fact, the whole
+point of relation extraction
+
+271
+00:14:21,660 --> 00:14:25,740
+is to identify new relational
+triples from natural language
+
+272
+00:14:25,740 --> 00:14:28,800
+text so that we can
+add them to a KB.
+
+273
+00:14:28,800 --> 00:14:33,570
+If our KB's were complete, we
+wouldn't have anything to do.
+
+274
+00:14:33,570 --> 00:14:36,090
+Now actually, in
+this case, you might
+
+275
+00:14:36,090 --> 00:14:40,440
+object that we don't need to
+do relation extraction to make
+
+276
+00:14:40,440 --> 00:14:41,730
+that completion.
+
+277
+00:14:41,730 --> 00:14:45,090
+We could write some
+logic that recognizes
+
+278
+00:14:45,090 --> 00:14:51,060
+that founders, xy
+entails worked at yx
+
+279
+00:14:51,060 --> 00:14:53,730
+and apply that
+rule systematically
+
+280
+00:14:53,730 --> 00:14:57,060
+across the KB and use that
+to fill in the missing
+
+281
+00:14:57,060 --> 00:14:58,890
+triple in this case.
+
+282
+00:14:58,890 --> 00:15:00,690
+But the general
+point still stands
+
+283
+00:15:00,690 --> 00:15:03,180
+that there may be
+lots of triples
+
+284
+00:15:03,180 --> 00:15:06,750
+that are true in the world
+but missing from the KB
+
+285
+00:15:06,750 --> 00:15:11,400
+where that strategy is not going
+to allow us to add the missing
+
+286
+00:15:11,400 --> 00:15:13,550
+information.
+
+287
+00:15:13,550 --> 00:15:17,000
+
+

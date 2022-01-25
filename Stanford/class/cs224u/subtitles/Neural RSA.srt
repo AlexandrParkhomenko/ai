@@ -1,0 +1,893 @@
+1
+00:00:00,000 --> 00:00:04,250
+
+
+2
+00:00:04,250 --> 00:00:06,000
+CHRISTOPHER POTTS:
+Welcome back, everyone.
+
+3
+00:00:06,000 --> 00:00:08,197
+This is part six in our
+series on Grounded Language
+
+4
+00:00:08,197 --> 00:00:08,780
+Understanding.
+
+5
+00:00:08,780 --> 00:00:10,970
+We're going to be talking
+about neural RSA, which
+
+6
+00:00:10,970 --> 00:00:14,060
+is our combination of
+the Rational Speech Acts
+
+7
+00:00:14,060 --> 00:00:16,192
+model with the kind of
+machine learning models
+
+8
+00:00:16,192 --> 00:00:17,900
+that we've been focused
+on for this unit.
+
+9
+00:00:17,900 --> 00:00:20,120
+And I'm hoping that
+this draws together
+
+10
+00:00:20,120 --> 00:00:22,370
+a bunch of themes from
+our earlier screencasts,
+
+11
+00:00:22,370 --> 00:00:24,140
+and also sets you
+up, if you choose
+
+12
+00:00:24,140 --> 00:00:27,950
+to, to apply these ideas in the
+context of an original system
+
+13
+00:00:27,950 --> 00:00:30,051
+or a final project.
+
+14
+00:00:30,051 --> 00:00:32,509
+I'm going to be talking in a
+general way about these ideas.
+
+15
+00:00:32,509 --> 00:00:34,134
+They really emerge
+from the papers that
+
+16
+00:00:34,134 --> 00:00:36,470
+are listed on this slide,
+and the full references
+
+17
+00:00:36,470 --> 00:00:39,747
+are given at the end
+of the slide show.
+
+18
+00:00:39,747 --> 00:00:41,080
+Now, what's our motivation here?
+
+19
+00:00:41,080 --> 00:00:44,530
+Recall that in screencast four,
+I presented a bunch of tasks
+
+20
+00:00:44,530 --> 00:00:47,680
+that I claimed would benefit
+from the back and forth
+
+21
+00:00:47,680 --> 00:00:51,610
+reasoning that RSA offers
+grounded in specific contexts.
+
+22
+00:00:51,610 --> 00:00:54,760
+And those tasks included
+discriminative image labeling,
+
+23
+00:00:54,760 --> 00:00:57,880
+image captioning,
+machine translation,
+
+24
+00:00:57,880 --> 00:01:00,940
+collaborative problem
+solving, interpreting complex
+
+25
+00:01:00,940 --> 00:01:03,400
+descriptions, especially
+navigational instructions,
+
+26
+00:01:03,400 --> 00:01:05,980
+and maybe even optical
+character recognition.
+
+27
+00:01:05,980 --> 00:01:07,870
+And I think we can
+think of other tasks
+
+28
+00:01:07,870 --> 00:01:10,810
+that we could put into the
+mold, like the colors in context
+
+29
+00:01:10,810 --> 00:01:15,530
+task, and really benefit from
+the mechanisms that RSA offers.
+
+30
+00:01:15,530 --> 00:01:18,100
+However, as we saw at the
+end of the RSA screencast,
+
+31
+00:01:18,100 --> 00:01:20,050
+there are some
+obstacles to doing this.
+
+32
+00:01:20,050 --> 00:01:23,890
+RSA is standardly presented
+as not especially scalable.
+
+33
+00:01:23,890 --> 00:01:25,990
+It's also not especially
+sensitive to the kind
+
+34
+00:01:25,990 --> 00:01:29,260
+of variation that we're likely
+to see in actual usage data
+
+35
+00:01:29,260 --> 00:01:32,260
+in the large-scale corpora
+that would support these tasks.
+
+36
+00:01:32,260 --> 00:01:34,480
+And relatedly, it just
+doesn't have any notion
+
+37
+00:01:34,480 --> 00:01:37,690
+of bounded rationality, even
+though, of course, once humans
+
+38
+00:01:37,690 --> 00:01:40,330
+interact, they're not
+perfectly rational, even
+
+39
+00:01:40,330 --> 00:01:43,290
+in the pragmatic
+sense that RSA offers.
+
+40
+00:01:43,290 --> 00:01:45,790
+And there's another dimension
+to this problem for motivation
+
+41
+00:01:45,790 --> 00:01:49,810
+here, which is that RSA harbors
+a really powerful insight.
+
+42
+00:01:49,810 --> 00:01:52,390
+And we might hope that we
+can achieve more impact
+
+43
+00:01:52,390 --> 00:01:55,690
+for that model by bringing in
+new kinds of assessment for it.
+
+44
+00:01:55,690 --> 00:01:58,630
+You know, taking it out of the
+psychology and linguistics lab
+
+45
+00:01:58,630 --> 00:02:00,310
+and into the world of AI.
+
+46
+00:02:00,310 --> 00:02:02,740
+And in turn, achieve
+more impact for RSA.
+
+47
+00:02:02,740 --> 00:02:05,110
+And maybe show more of
+the scientific world
+
+48
+00:02:05,110 --> 00:02:08,380
+that RSA has a really
+powerful insight behind it.
+
+49
+00:02:08,380 --> 00:02:10,960
+But, of course, to realize
+all of this potential,
+
+50
+00:02:10,960 --> 00:02:13,540
+we're going to have to overcome
+some of those core issues
+
+51
+00:02:13,540 --> 00:02:14,762
+and scalability.
+
+52
+00:02:14,762 --> 00:02:16,220
+And that's what
+I'll show you here.
+
+53
+00:02:16,220 --> 00:02:18,130
+I think I can offer
+a simple recipe
+
+54
+00:02:18,130 --> 00:02:21,610
+for doing that and testing
+out a lot of these ideas.
+
+55
+00:02:21,610 --> 00:02:23,170
+To make this concrete,
+let's continue
+
+56
+00:02:23,170 --> 00:02:25,600
+to ground our discussion
+in our core task, which
+
+57
+00:02:25,600 --> 00:02:27,700
+is this colors in context task.
+
+58
+00:02:27,700 --> 00:02:30,460
+Just recall that, if you're
+playing the speaker role,
+
+59
+00:02:30,460 --> 00:02:32,830
+you're presented with three
+color patches, one of them
+
+60
+00:02:32,830 --> 00:02:35,110
+privately designated
+as your target.
+
+61
+00:02:35,110 --> 00:02:37,570
+And your task is to
+describe that target
+
+62
+00:02:37,570 --> 00:02:40,000
+in that context for a listener.
+
+63
+00:02:40,000 --> 00:02:41,590
+And then, in turn,
+the listener task
+
+64
+00:02:41,590 --> 00:02:43,960
+is given the three
+patches, and no idea
+
+65
+00:02:43,960 --> 00:02:46,960
+which one is the target,
+and a speaker utterance.
+
+66
+00:02:46,960 --> 00:02:49,985
+Use that utterance to figure out
+which was the speaker's target.
+
+67
+00:02:49,985 --> 00:02:51,610
+And so you can hear
+in that description
+
+68
+00:02:51,610 --> 00:02:54,160
+that this is potentially a
+kind of communication game,
+
+69
+00:02:54,160 --> 00:02:57,310
+and would support the
+back and forth reasoning
+
+70
+00:02:57,310 --> 00:03:01,130
+that is the hallmark of the
+Rational Speech Acts model.
+
+71
+00:03:01,130 --> 00:03:05,090
+So how are we going to take this
+task and RSA and combine them?
+
+72
+00:03:05,090 --> 00:03:07,700
+Well, the first step
+is straightforward.
+
+73
+00:03:07,700 --> 00:03:10,450
+We're going to start with
+a literal neural speaker.
+
+74
+00:03:10,450 --> 00:03:13,480
+I've given that as S
+theta up here with literal
+
+75
+00:03:13,480 --> 00:03:15,580
+indicating that
+it's a base agent.
+
+76
+00:03:15,580 --> 00:03:18,670
+And for this, it's just going to
+be exactly the natural language
+
+77
+00:03:18,670 --> 00:03:21,550
+generation system that we
+explored in the earliest
+
+78
+00:03:21,550 --> 00:03:23,140
+parts of the screencast, right?
+
+79
+00:03:23,140 --> 00:03:26,170
+Except now, we're going to
+consume three color patches
+
+80
+00:03:26,170 --> 00:03:29,140
+with the target always
+given in the final position.
+
+81
+00:03:29,140 --> 00:03:31,780
+And then the decoding task
+is to offer a description.
+
+82
+00:03:31,780 --> 00:03:34,120
+And we can make a lot of
+different model choices here,
+
+83
+00:03:34,120 --> 00:03:36,820
+but the fundamental
+insight is that we can now
+
+84
+00:03:36,820 --> 00:03:40,840
+treat this agent as a kind
+of black box base listener.
+
+85
+00:03:40,840 --> 00:03:42,910
+Instead of having
+to hand specify
+
+86
+00:03:42,910 --> 00:03:46,870
+a semantic grammar, which would
+be impossible even for the task
+
+87
+00:03:46,870 --> 00:03:49,390
+the size of the colors
+in context dataset,
+
+88
+00:03:49,390 --> 00:03:52,030
+we now just train
+an agent, and use it
+
+89
+00:03:52,030 --> 00:03:54,173
+to play the role
+of the base agent.
+
+90
+00:03:54,173 --> 00:03:55,840
+And we can, of course,
+do the same thing
+
+91
+00:03:55,840 --> 00:03:57,882
+for the neural literal
+listener, who will, again,
+
+92
+00:03:57,882 --> 00:03:59,620
+have some parameters
+theta, which
+
+93
+00:03:59,620 --> 00:04:03,640
+will represent this entire
+encoder/decoder architecture.
+
+94
+00:04:03,640 --> 00:04:06,880
+This neural literal listener
+will process incoming messages
+
+95
+00:04:06,880 --> 00:04:08,110
+as a sequence.
+
+96
+00:04:08,110 --> 00:04:12,250
+And then given some context of
+colors and a scoring function,
+
+97
+00:04:12,250 --> 00:04:15,130
+make a guess about which
+one of those three colors
+
+98
+00:04:15,130 --> 00:04:18,550
+the message that it had as
+input was being referred to.
+
+99
+00:04:18,550 --> 00:04:21,579
+And again, instead of hand
+specifying the lexicon,
+
+100
+00:04:21,579 --> 00:04:24,110
+we just treat this
+agent as a black box.
+
+101
+00:04:24,110 --> 00:04:27,520
+It serves the role of
+the literal listener.
+
+102
+00:04:27,520 --> 00:04:30,910
+And from there, the RSA
+recursion, so to speak,
+
+103
+00:04:30,910 --> 00:04:32,450
+is very easy to apply.
+
+104
+00:04:32,450 --> 00:04:35,758
+Let's consider the base
+case of a pragmatic speaker.
+
+105
+00:04:35,758 --> 00:04:37,300
+So you can see over
+here, we're going
+
+106
+00:04:37,300 --> 00:04:40,540
+to use our trained
+literal listener.
+
+107
+00:04:40,540 --> 00:04:44,770
+And this is the most basic
+form that the speaker can have.
+
+108
+00:04:44,770 --> 00:04:47,170
+And we've just gotten
+now a pragmatic agent
+
+109
+00:04:47,170 --> 00:04:50,200
+that is reasoning about
+states of the world as inputs
+
+110
+00:04:50,200 --> 00:04:53,230
+and making message
+choices on that basis.
+
+111
+00:04:53,230 --> 00:04:56,270
+And it's doing that not
+in terms of the raw data,
+
+112
+00:04:56,270 --> 00:04:58,840
+but rather in terms of how
+the literal listener would
+
+113
+00:04:58,840 --> 00:05:02,350
+reason about the raw data,
+so that core RSA insight.
+
+114
+00:05:02,350 --> 00:05:05,440
+But we're just essentially
+using L0 here as the mechanism
+
+115
+00:05:05,440 --> 00:05:08,050
+to derive the
+speaker distribution.
+
+116
+00:05:08,050 --> 00:05:10,240
+Now, there is one catch
+here as we discussed.
+
+117
+00:05:10,240 --> 00:05:12,940
+In principle for RSA,
+this would be a summation
+
+118
+00:05:12,940 --> 00:05:14,680
+over all messages,
+which would be
+
+119
+00:05:14,680 --> 00:05:18,500
+completely intractable for any
+realistically-sized language
+
+120
+00:05:18,500 --> 00:05:19,000
+model.
+
+121
+00:05:19,000 --> 00:05:23,170
+What we can do to overcome
+that obstacle is simply
+
+122
+00:05:23,170 --> 00:05:26,770
+use our trained literal speaker,
+which I presented before,
+
+123
+00:05:26,770 --> 00:05:28,480
+and sample utterances from it.
+
+124
+00:05:28,480 --> 00:05:31,270
+And that small sample
+will serve as the basis
+
+125
+00:05:31,270 --> 00:05:33,290
+for this normalization
+down here.
+
+126
+00:05:33,290 --> 00:05:35,510
+So it's an approximation,
+but it's an easy one,
+
+127
+00:05:35,510 --> 00:05:37,510
+given that we have this
+trained agent down here.
+
+128
+00:05:37,510 --> 00:05:40,860
+And in practice, we've seen that
+it does quite well in serving
+
+129
+00:05:40,860 --> 00:05:43,335
+as the normalization constant.
+
+130
+00:05:43,335 --> 00:05:44,960
+And then the neural
+pragmatic listeners
+
+131
+00:05:44,960 --> 00:05:46,502
+are even more
+straightforward, having
+
+132
+00:05:46,502 --> 00:05:48,350
+defined that pragmatic speaker.
+
+133
+00:05:48,350 --> 00:05:51,020
+To put a listener on top
+of that is really easy.
+
+134
+00:05:51,020 --> 00:05:53,180
+Again, you essentially
+just apply Bayes' rule,
+
+135
+00:05:53,180 --> 00:05:54,980
+and you get a listener out.
+
+136
+00:05:54,980 --> 00:05:57,270
+And in the Monroe et al
+paper as you've seen,
+
+137
+00:05:57,270 --> 00:05:59,510
+we actually found that
+weighted combinations
+
+138
+00:05:59,510 --> 00:06:02,870
+of the literal listener
+and the pragmatic listener
+
+139
+00:06:02,870 --> 00:06:07,657
+were the best at the
+colors in context task.
+
+140
+00:06:07,657 --> 00:06:09,240
+But let me just close
+up by mentioning
+
+141
+00:06:09,240 --> 00:06:11,245
+a few other related
+strands of work
+
+142
+00:06:11,245 --> 00:06:12,870
+that you might think
+about bringing in.
+
+143
+00:06:12,870 --> 00:06:15,570
+And what I just showed you is
+the most basic form of this,
+
+144
+00:06:15,570 --> 00:06:18,090
+but many extensions
+have been explored.
+
+145
+00:06:18,090 --> 00:06:20,790
+So Golland et al 2010
+is a really early paper
+
+146
+00:06:20,790 --> 00:06:24,090
+in the history of these ideas
+that is quite forward-thinking.
+
+147
+00:06:24,090 --> 00:06:26,670
+They explore recursive
+speaker listener reasoning
+
+148
+00:06:26,670 --> 00:06:30,240
+as part of interpreting complex
+utterances compositionally,
+
+149
+00:06:30,240 --> 00:06:32,300
+with grounding in a
+simple visual world.
+
+150
+00:06:32,300 --> 00:06:34,860
+And I love the connection
+with semantic composition.
+
+151
+00:06:34,860 --> 00:06:37,590
+This Wang et al 2016 paper
+does even more of that.
+
+152
+00:06:37,590 --> 00:06:40,230
+Pragmatic reasoning
+helps in online learning
+
+153
+00:06:40,230 --> 00:06:43,510
+of semantic parsers.
+
+154
+00:06:43,510 --> 00:06:46,570
+I mentioned before, work by
+Stefanie Tellex and colleagues
+
+155
+00:06:46,570 --> 00:06:48,370
+on what they call
+inverse semantics, which
+
+156
+00:06:48,370 --> 00:06:50,890
+is a simple RSA
+mechanism applied
+
+157
+00:06:50,890 --> 00:06:53,120
+in the context of
+human-robot interaction
+
+158
+00:06:53,120 --> 00:06:56,920
+to help humans and robots
+collaborate more efficiently.
+
+159
+00:06:56,920 --> 00:07:00,550
+Khani et al extend this to more
+free form social interaction
+
+160
+00:07:00,550 --> 00:07:04,650
+by showing that RSA has a role
+to play in collaborative games.
+
+161
+00:07:04,650 --> 00:07:07,660
+I mentioned before this work
+by Reuben Cohn-Gordon and Noah
+
+162
+00:07:07,660 --> 00:07:11,060
+Goodman on RSA for translation.
+
+163
+00:07:11,060 --> 00:07:13,460
+Reuben Cohn-Gordon did
+a lot of innovative work
+
+164
+00:07:13,460 --> 00:07:16,100
+as part of his PhD in
+the context of RSA.
+
+165
+00:07:16,100 --> 00:07:20,060
+He also explored applying RSA
+at the word and character level,
+
+166
+00:07:20,060 --> 00:07:23,630
+so removing the approximation
+that we sample from S0 speaker
+
+167
+00:07:23,630 --> 00:07:25,370
+to create the denominator.
+
+168
+00:07:25,370 --> 00:07:29,150
+Rather, instead, he applies
+RSA at every single timestep
+
+169
+00:07:29,150 --> 00:07:32,150
+in a left-to-right
+sequential decoding step.
+
+170
+00:07:32,150 --> 00:07:34,310
+And that timestep could
+be either the word level
+
+171
+00:07:34,310 --> 00:07:36,110
+or surprisingly, it
+was very effective
+
+172
+00:07:36,110 --> 00:07:37,940
+at the character level.
+
+173
+00:07:37,940 --> 00:07:39,440
+And then these final
+two papers here
+
+174
+00:07:39,440 --> 00:07:41,273
+just show that we could
+move out of the mode
+
+175
+00:07:41,273 --> 00:07:45,410
+of pre-training the base
+agents and applying RSA on top.
+
+176
+00:07:45,410 --> 00:07:49,590
+And instead, have a mechanism
+of end-to-end RSA learning,
+
+177
+00:07:49,590 --> 00:07:53,090
+which is more ambitious in terms
+of learning and model set up.
+
+178
+00:07:53,090 --> 00:07:55,250
+But provides more
+chances for us to be
+
+179
+00:07:55,250 --> 00:07:58,310
+responsive to the nature
+of actual usage data,
+
+180
+00:07:58,310 --> 00:08:01,300
+while still making good on
+the central insights of RSA,
+
+181
+00:08:01,300 --> 00:08:04,460
+and with luck, seeing some
+empirical benefits from doing
+
+182
+00:08:04,460 --> 00:08:06,010
+that.
+
+183
+00:08:06,010 --> 00:08:10,134
+
+

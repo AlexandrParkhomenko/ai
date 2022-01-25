@@ -1,0 +1,2003 @@
+1
+00:00:00,000 --> 00:00:04,138
+
+
+2
+00:00:04,138 --> 00:00:05,680
+CHRISTOPHER POTTS:
+Welcome, everyone.
+
+3
+00:00:05,680 --> 00:00:07,770
+This is part 1 in our
+series on grounded language
+
+4
+00:00:07,770 --> 00:00:08,550
+understanding.
+
+5
+00:00:08,550 --> 00:00:10,050
+I'm just going to
+give an overview.
+
+6
+00:00:10,050 --> 00:00:11,717
+With grounding, I
+feel like we're really
+
+7
+00:00:11,717 --> 00:00:14,790
+getting at the heart of what
+makes NLU so special for NLP
+
+8
+00:00:14,790 --> 00:00:17,200
+and also for artificial
+intelligence more broadly.
+
+9
+00:00:17,200 --> 00:00:18,420
+So this is exciting.
+
+10
+00:00:18,420 --> 00:00:19,560
+Let's dive in.
+
+11
+00:00:19,560 --> 00:00:21,690
+Now, grounding is
+a very large topic.
+
+12
+00:00:21,690 --> 00:00:24,030
+And so to ground it
+so to speak we're
+
+13
+00:00:24,030 --> 00:00:26,070
+going to be focused on
+a particular task, which
+
+14
+00:00:26,070 --> 00:00:27,810
+is color reference in context.
+
+15
+00:00:27,810 --> 00:00:30,330
+I'll be saying much more
+about that later on.
+
+16
+00:00:30,330 --> 00:00:33,390
+This notebook, Colors
+Overview, provides an overview
+
+17
+00:00:33,390 --> 00:00:35,610
+of the data set,
+and that data set
+
+18
+00:00:35,610 --> 00:00:37,830
+is the centerpiece for the
+homework and associated
+
+19
+00:00:37,830 --> 00:00:39,400
+bake-off.
+
+20
+00:00:39,400 --> 00:00:41,080
+The Core Reading
+is the paper that
+
+21
+00:00:41,080 --> 00:00:43,720
+introduced that dataset,
+Monroe et al., 2017.
+
+22
+00:00:43,720 --> 00:00:45,880
+And I think that paper
+is noteworthy also
+
+23
+00:00:45,880 --> 00:00:48,670
+for introducing some
+interesting modeling ideas that
+
+24
+00:00:48,670 --> 00:00:50,380
+are worthy of
+further exploration,
+
+25
+00:00:50,380 --> 00:00:52,773
+possibly in final projects.
+
+26
+00:00:52,773 --> 00:00:54,940
+And then I also just want
+to recommend a whole bunch
+
+27
+00:00:54,940 --> 00:00:55,960
+of auxiliary readings.
+
+28
+00:00:55,960 --> 00:00:59,320
+Not required but exciting
+extensions that you might make.
+
+29
+00:00:59,320 --> 00:01:01,090
+I think grounding is
+a wonderful chance
+
+30
+00:01:01,090 --> 00:01:02,890
+to do interdisciplinary work.
+
+31
+00:01:02,890 --> 00:01:07,690
+You can connect NLP with
+robotics, and computer vision,
+
+32
+00:01:07,690 --> 00:01:10,198
+and human language
+acquisition, and probably lots
+
+33
+00:01:10,198 --> 00:01:10,865
+of other topics.
+
+34
+00:01:10,865 --> 00:01:12,620
+So I'm going to
+be pushing papers,
+
+35
+00:01:12,620 --> 00:01:15,070
+and dataset throughout
+this series of screencasts
+
+36
+00:01:15,070 --> 00:01:17,170
+in the hopes that you
+can pick up those ideas,
+
+37
+00:01:17,170 --> 00:01:20,680
+and run with them for
+your own projects.
+
+38
+00:01:20,680 --> 00:01:23,380
+Now to start, I thought we
+could just reflect a little bit
+
+39
+00:01:23,380 --> 00:01:27,910
+on the heart of this, which is
+why grounding is so important
+
+40
+00:01:27,910 --> 00:01:30,340
+and why natural language
+understanding is so hard.
+
+41
+00:01:30,340 --> 00:01:32,440
+And sort of to
+kick that off, I've
+
+42
+00:01:32,440 --> 00:01:34,870
+taken a slide idea
+from Andrew McCallum.
+
+43
+00:01:34,870 --> 00:01:37,270
+Andrew just asks us to
+reflect a little bit
+
+44
+00:01:37,270 --> 00:01:42,550
+on the 1967 Stanley Kubrick
+movie, 2001, A Space Odyssey.
+
+45
+00:01:42,550 --> 00:01:45,330
+In that movie, the spaceship's
+computer, which is called HAL,
+
+46
+00:01:45,330 --> 00:01:47,230
+can do three things
+that are noteworthy.
+
+47
+00:01:47,230 --> 00:01:49,360
+It can display
+computer graphics.
+
+48
+00:01:49,360 --> 00:01:51,820
+It can play chess,
+and it can conduct
+
+49
+00:01:51,820 --> 00:01:54,980
+natural open-domain
+conversations with humans.
+
+50
+00:01:54,980 --> 00:01:58,173
+So this is a chance to ask,
+how well did the filmmakers do
+
+51
+00:01:58,173 --> 00:01:59,590
+at predicting what
+computers would
+
+52
+00:01:59,590 --> 00:02:02,290
+be capable of in the
+actual year 2001?
+
+53
+00:02:02,290 --> 00:02:05,805
+Which is, of course, ancient
+history for us at this point.
+
+54
+00:02:05,805 --> 00:02:07,180
+So let's start
+with the graphics.
+
+55
+00:02:07,180 --> 00:02:09,460
+On the left, you have
+some of the graphics that
+
+56
+00:02:09,460 --> 00:02:11,480
+HAL able to display
+in the movie,
+
+57
+00:02:11,480 --> 00:02:14,260
+and you can see that they
+are extremely primitive.
+
+58
+00:02:14,260 --> 00:02:17,200
+The filmmakers seem to
+have wildly underestimated
+
+59
+00:02:17,200 --> 00:02:20,140
+just how much progress would
+happen in computer graphics.
+
+60
+00:02:20,140 --> 00:02:24,280
+By 1993, which is much
+earlier than 2001, of course,
+
+61
+00:02:24,280 --> 00:02:26,020
+we had the movie
+Jurassic Park, which
+
+62
+00:02:26,020 --> 00:02:30,370
+had these incredible graphics
+for lifelike moving dinosaurs.
+
+63
+00:02:30,370 --> 00:02:34,750
+So let's say that this is a kind
+of failure to imagine a future.
+
+64
+00:02:34,750 --> 00:02:37,240
+For chess, it seems like
+they've got the prediction just
+
+65
+00:02:37,240 --> 00:02:37,810
+about right.
+
+66
+00:02:37,810 --> 00:02:40,510
+So in the movie, HAL is
+an excellent chess player.
+
+67
+00:02:40,510 --> 00:02:44,680
+And just a few years before
+the actual 2001 in 1997,
+
+68
+00:02:44,680 --> 00:02:48,100
+Deep Blue was the
+first supercomputer
+
+69
+00:02:48,100 --> 00:02:51,950
+to beat world champion
+chess players.
+
+70
+00:02:51,950 --> 00:02:55,050
+What about dialogue and
+natural language use?
+
+71
+00:02:55,050 --> 00:02:58,130
+So on the left here, you have a
+sample dialogue from the movie.
+
+72
+00:02:58,130 --> 00:02:59,300
+Dave Bowman is the human.
+
+73
+00:02:59,300 --> 00:03:01,160
+He says, "Open the
+pod bay doors, HAL."
+
+74
+00:03:01,160 --> 00:03:03,170
+And HAL replies,
+"I'm sorry, Dave.
+
+75
+00:03:03,170 --> 00:03:04,850
+I'm afraid I can't do that."
+
+76
+00:03:04,850 --> 00:03:06,380
+"What are you
+talking about, HAL?"
+
+77
+00:03:06,380 --> 00:03:08,930
+Then HAL replies, "I know that
+you and Frank were planning
+
+78
+00:03:08,930 --> 00:03:11,880
+to disconnect me, and I'm afraid
+that's something I cannot allow
+
+79
+00:03:11,880 --> 00:03:13,130
+to happen."
+
+80
+00:03:13,130 --> 00:03:13,940
+Very interesting.
+
+81
+00:03:13,940 --> 00:03:15,800
+Not only is it fluent
+English, of course,
+
+82
+00:03:15,800 --> 00:03:18,470
+but it's also displaying
+really rich reasoning
+
+83
+00:03:18,470 --> 00:03:19,790
+about plans and goals.
+
+84
+00:03:19,790 --> 00:03:22,820
+And it's fully grounded in
+what's happening in the ship.
+
+85
+00:03:22,820 --> 00:03:25,610
+Just incredibly realistic.
+
+86
+00:03:25,610 --> 00:03:28,280
+To give the filmmakers even
+a fighting chance here,
+
+87
+00:03:28,280 --> 00:03:30,290
+let's move forward
+to the year 2014,
+
+88
+00:03:30,290 --> 00:03:32,600
+which is about when
+Siri hit the market.
+
+89
+00:03:32,600 --> 00:03:34,190
+And we talked
+about Siri earlier.
+
+90
+00:03:34,190 --> 00:03:37,220
+Here, you can see Siri doing
+a much more mundane version
+
+91
+00:03:37,220 --> 00:03:38,720
+of what we just saw
+HAL doing, which
+
+92
+00:03:38,720 --> 00:03:41,990
+is kind of proactively
+recognizing plans and goals,
+
+93
+00:03:41,990 --> 00:03:45,770
+and helping a human user solve
+a problem using fluent English.
+
+94
+00:03:45,770 --> 00:03:48,410
+In this case, it's just
+about where to buy food,
+
+95
+00:03:48,410 --> 00:03:51,380
+but the vision is very similar.
+
+96
+00:03:51,380 --> 00:03:55,580
+What was life actually like
+in 2014 or for that matter,
+
+97
+00:03:55,580 --> 00:03:56,960
+in the present day?
+
+98
+00:03:56,960 --> 00:03:59,120
+Well, I also showed
+you this dialogue
+
+99
+00:03:59,120 --> 00:04:00,675
+from Stephen Colbert
+from his show
+
+100
+00:04:00,675 --> 00:04:02,300
+that pretenses that
+he has been playing
+
+101
+00:04:02,300 --> 00:04:04,160
+with this phone all
+day, and therefore,
+
+102
+00:04:04,160 --> 00:04:06,500
+has failed to produce
+material for the show.
+
+103
+00:04:06,500 --> 00:04:08,660
+The cameras are on him,
+and he's desperate.
+
+104
+00:04:08,660 --> 00:04:10,250
+And he asks Siri for help.
+
+105
+00:04:10,250 --> 00:04:12,860
+And you can see here
+that Siri does not
+
+106
+00:04:12,860 --> 00:04:15,410
+have a deep understanding of
+what he's trying to achieve.
+
+107
+00:04:15,410 --> 00:04:18,050
+I've bolded God and cameras
+in Stephen's utterance
+
+108
+00:04:18,050 --> 00:04:19,760
+because you can see
+Siri just picks up
+
+109
+00:04:19,760 --> 00:04:23,000
+on those as kind of keywords,
+and says churches, and camera
+
+110
+00:04:23,000 --> 00:04:23,840
+stores.
+
+111
+00:04:23,840 --> 00:04:25,680
+It's not even
+topically relevant.
+
+112
+00:04:25,680 --> 00:04:27,590
+It's just a complete
+failure to recognize
+
+113
+00:04:27,590 --> 00:04:29,040
+what he's trying to do.
+
+114
+00:04:29,040 --> 00:04:31,130
+And then later things
+get even worse,
+
+115
+00:04:31,130 --> 00:04:33,410
+Siri really doesn't understand
+what Stephen is saying.
+
+116
+00:04:33,410 --> 00:04:37,640
+And so it does that standard
+escape valve, which is it
+
+117
+00:04:37,640 --> 00:04:41,180
+searches the web for the
+speech to text transcription
+
+118
+00:04:41,180 --> 00:04:43,490
+of the thing that he
+said in hopes that that
+
+119
+00:04:43,490 --> 00:04:44,540
+will be helpful.
+
+120
+00:04:44,540 --> 00:04:49,070
+A far cry from anything like
+a helpful, useful, human-like
+
+121
+00:04:49,070 --> 00:04:52,410
+interaction with language.
+
+122
+00:04:52,410 --> 00:04:54,090
+Now, why is this so difficult?
+
+123
+00:04:54,090 --> 00:04:56,700
+I think another angle
+on that question
+
+124
+00:04:56,700 --> 00:04:59,670
+is usefully brought to
+the fore with this analogy
+
+125
+00:04:59,670 --> 00:05:01,770
+that Stephen Levinson offers.
+
+126
+00:05:01,770 --> 00:05:03,960
+So he asks us to look
+at this Rembrandt sketch
+
+127
+00:05:03,960 --> 00:05:05,940
+here, and just
+reflect on the fact
+
+128
+00:05:05,940 --> 00:05:10,260
+that you can make out people and
+structures in the background.
+
+129
+00:05:10,260 --> 00:05:12,740
+But really, it's incredible
+that you can do any of that.
+
+130
+00:05:12,740 --> 00:05:15,480
+So he says, "We interpret
+this sketch instantly
+
+131
+00:05:15,480 --> 00:05:17,220
+and effortlessly as
+a gathering of people
+
+132
+00:05:17,220 --> 00:05:19,410
+before a structure,
+probably a gateway;
+
+133
+00:05:19,410 --> 00:05:21,480
+the people are listening
+to a single declaiming
+
+134
+00:05:21,480 --> 00:05:23,033
+figure in the center."
+
+135
+00:05:23,033 --> 00:05:24,450
+And then he says,
+"But all of this
+
+136
+00:05:24,450 --> 00:05:27,480
+is a miracle for there is
+little detailed information
+
+137
+00:05:27,480 --> 00:05:29,850
+in the lines or shading,
+such as there is.
+
+138
+00:05:29,850 --> 00:05:32,760
+Every line is a mere suggestion.
+
+139
+00:05:32,760 --> 00:05:35,160
+So here is the miracle:
+from a merest, sketchiest,
+
+140
+00:05:35,160 --> 00:05:37,620
+squiggle of lines,
+you and I converge
+
+141
+00:05:37,620 --> 00:05:41,080
+to find adumbration
+of a coherent scene."
+
+142
+00:05:41,080 --> 00:05:44,200
+That is indeed a visual miracle
+and a cognitive miracle.
+
+143
+00:05:44,200 --> 00:05:47,230
+And it's also a glimpse
+into why computer vision
+
+144
+00:05:47,230 --> 00:05:48,460
+is so challenging.
+
+145
+00:05:48,460 --> 00:05:50,950
+To make the connection with
+language, Levinson continues.
+
+146
+00:05:50,950 --> 00:05:52,840
+"The problem of
+utterance interpretation
+
+147
+00:05:52,840 --> 00:05:55,720
+is not dissimilar to
+this visual miracle.
+
+148
+00:05:55,720 --> 00:05:59,260
+An utterance is not as it were
+a veridical model or snapshot
+
+149
+00:05:59,260 --> 00:06:00,760
+of the scene it describes.
+
+150
+00:06:00,760 --> 00:06:03,940
+Rather an utterance is just
+as sketchy as the Rembrandt
+
+151
+00:06:03,940 --> 00:06:05,230
+drawing."
+
+152
+00:06:05,230 --> 00:06:09,040
+So much of what we communicate
+as speakers is left implicit.
+
+153
+00:06:09,040 --> 00:06:10,510
+And so much of
+what listeners are
+
+154
+00:06:10,510 --> 00:06:13,090
+able to extract from
+our utterances and stuff
+
+155
+00:06:13,090 --> 00:06:15,310
+that they're able to
+extract only by reasoning
+
+156
+00:06:15,310 --> 00:06:18,460
+in a general way about the
+context, plans, and goals,
+
+157
+00:06:18,460 --> 00:06:21,000
+world knowledge, and so forth.
+
+158
+00:06:21,000 --> 00:06:24,120
+If our utterances were
+actually fully encoding
+
+159
+00:06:24,120 --> 00:06:27,090
+in their semantics everything
+we intended to communicate,
+
+160
+00:06:27,090 --> 00:06:29,910
+I think we would have
+talking robots at this point.
+
+161
+00:06:29,910 --> 00:06:32,310
+But the truth is that
+so much of communication
+
+162
+00:06:32,310 --> 00:06:35,850
+in natural language is left
+up to the context in a very
+
+163
+00:06:35,850 --> 00:06:39,120
+general sense, and
+that's exactly what makes
+
+164
+00:06:39,120 --> 00:06:42,920
+this problem so challenging.
+
+165
+00:06:42,920 --> 00:06:45,050
+In a way though, all
+of this grounding
+
+166
+00:06:45,050 --> 00:06:46,970
+into the context and
+all this reasoning,
+
+167
+00:06:46,970 --> 00:06:48,560
+if you break it
+into your system,
+
+168
+00:06:48,560 --> 00:06:50,390
+it can make things easier.
+
+169
+00:06:50,390 --> 00:06:53,030
+It might make some intractable
+problems tractable.
+
+170
+00:06:53,030 --> 00:06:54,560
+And one glimpse
+of that it's just
+
+171
+00:06:54,560 --> 00:06:56,750
+this topic of what linguists
+and philosophers called
+
+172
+00:06:56,750 --> 00:06:58,070
+indexicality.
+
+173
+00:06:58,070 --> 00:07:02,150
+Indexicals are phrases like
+"I" as in "I am speaking."
+
+174
+00:07:02,150 --> 00:07:04,610
+That obviously makes
+reference to the speaker,
+
+175
+00:07:04,610 --> 00:07:06,290
+and that reference
+is going to vary
+
+176
+00:07:06,290 --> 00:07:07,970
+depending on who's speaking.
+
+177
+00:07:07,970 --> 00:07:09,740
+That's a case where
+you can't possibly
+
+178
+00:07:09,740 --> 00:07:12,590
+understand the statement
+unless you know something
+
+179
+00:07:12,590 --> 00:07:17,270
+about who's speaking, which is
+a very simple kind of grounding.
+
+180
+00:07:17,270 --> 00:07:19,910
+"We won" chose this, a
+similar kind of grounding,
+
+181
+00:07:19,910 --> 00:07:21,180
+but it's more complicated.
+
+182
+00:07:21,180 --> 00:07:23,870
+So now we have this phrase,
+we, which probably by default
+
+183
+00:07:23,870 --> 00:07:25,880
+is expected to
+include the speaker.
+
+184
+00:07:25,880 --> 00:07:27,800
+But it kind of needs
+to include others,
+
+185
+00:07:27,800 --> 00:07:30,320
+and figuring out who else it
+includes can be difficult.
+
+186
+00:07:30,320 --> 00:07:32,450
+And you also get more
+challenging uses, where
+
+187
+00:07:32,450 --> 00:07:34,460
+you say things like
+"we" as in, we,
+
+188
+00:07:34,460 --> 00:07:37,190
+as the sports team, that I
+follow or something like that.
+
+189
+00:07:37,190 --> 00:07:39,380
+So we have grounding
+plus a whole bunch
+
+190
+00:07:39,380 --> 00:07:41,360
+of contextual reasoning
+in order to figure out
+
+191
+00:07:41,360 --> 00:07:43,760
+what "We won" would mean.
+
+192
+00:07:43,760 --> 00:07:44,548
+"I am here."
+
+193
+00:07:44,548 --> 00:07:47,090
+Of course, "I" for the speaker,
+that's one kind of grounding,
+
+194
+00:07:47,090 --> 00:07:49,280
+but "here" is an
+indexical expression
+
+195
+00:07:49,280 --> 00:07:50,900
+referring to a
+location, and it does
+
+196
+00:07:50,900 --> 00:07:53,070
+that in a very complicated way.
+
+197
+00:07:53,070 --> 00:07:56,240
+When I say I am here, I could
+be in my office, or Stanford,
+
+198
+00:07:56,240 --> 00:07:58,310
+and I suppose all the
+way up to planet Earth.
+
+199
+00:07:58,310 --> 00:07:59,893
+Although, that's
+unlikely because it's
+
+200
+00:07:59,893 --> 00:08:04,550
+not so informative in 2021
+to say I'm on planet Earth.
+
+201
+00:08:04,550 --> 00:08:06,290
+"We want to go here"
+is another use.
+
+202
+00:08:06,290 --> 00:08:08,270
+It has "we" for one
+kind of grounding.
+
+203
+00:08:08,270 --> 00:08:11,220
+And in this case here,
+if I'm pointing to a map,
+
+204
+00:08:11,220 --> 00:08:13,370
+would be an even
+more complicated kind
+
+205
+00:08:13,370 --> 00:08:15,290
+of displaced
+indexical reference,
+
+206
+00:08:15,290 --> 00:08:17,630
+but the map is doing
+some iconic duty
+
+207
+00:08:17,630 --> 00:08:21,530
+for some actual place in the
+world that we are aiming to go.
+
+208
+00:08:21,530 --> 00:08:24,110
+So another kind of complicated
+reasoning, but again,
+
+209
+00:08:24,110 --> 00:08:27,820
+grounded in something about
+the utterance context.
+
+210
+00:08:27,820 --> 00:08:29,333
+"We went to a local
+bar after work."
+
+211
+00:08:29,333 --> 00:08:31,000
+Here, the indexical
+is the word "local,"
+
+212
+00:08:31,000 --> 00:08:33,190
+and it just shows that
+indexicality can sneak
+
+213
+00:08:33,190 --> 00:08:34,745
+into other parts of speech.
+
+214
+00:08:34,745 --> 00:08:37,120
+"Local" here is going to refer
+to things that are somehow
+
+215
+00:08:37,120 --> 00:08:40,659
+in the immediate vicinity of
+the location of the utterance
+
+216
+00:08:40,659 --> 00:08:44,300
+and again, in a very
+complicated way.
+
+217
+00:08:44,300 --> 00:08:46,100
+And then "three days
+ago," "tomorrow,"
+
+218
+00:08:46,100 --> 00:08:47,870
+and "now" are
+temporal indexicals.
+
+219
+00:08:47,870 --> 00:08:50,300
+And they just show that
+the meaning of an utterance
+
+220
+00:08:50,300 --> 00:08:52,353
+can vary depending
+on when it's spoken.
+
+221
+00:08:52,353 --> 00:08:54,020
+And all of these
+expressions are kind of
+
+222
+00:08:54,020 --> 00:08:58,290
+anchored to that
+time of utterance.
+
+223
+00:08:58,290 --> 00:09:00,360
+And there are other kinds
+of context dependence
+
+224
+00:09:00,360 --> 00:09:02,940
+that really require us
+to understand utterances
+
+225
+00:09:02,940 --> 00:09:05,243
+in their full grounded context.
+
+226
+00:09:05,243 --> 00:09:06,660
+Let's start with
+a simple example.
+
+227
+00:09:06,660 --> 00:09:07,535
+"Where are you from?"
+
+228
+00:09:07,535 --> 00:09:08,963
+This can be a
+vexing question when
+
+229
+00:09:08,963 --> 00:09:10,380
+people ask because
+it can often be
+
+230
+00:09:10,380 --> 00:09:14,010
+difficult to know what their
+true goals and intentions are
+
+231
+00:09:14,010 --> 00:09:14,760
+with the question.
+
+232
+00:09:14,760 --> 00:09:16,860
+They could mean your birthplace.
+
+233
+00:09:16,860 --> 00:09:18,490
+I would say Connecticut.
+
+234
+00:09:18,490 --> 00:09:20,040
+It could mean your nationality.
+
+235
+00:09:20,040 --> 00:09:21,540
+I might say the US.
+
+236
+00:09:21,540 --> 00:09:22,470
+Affiliation.
+
+237
+00:09:22,470 --> 00:09:25,560
+For me, that would be Stanford,
+and again, maybe one day
+
+238
+00:09:25,560 --> 00:09:27,690
+it will be informative to
+say planet Earth if there
+
+239
+00:09:27,690 --> 00:09:29,410
+are intergalactic meetings.
+
+240
+00:09:29,410 --> 00:09:31,410
+That one is typically
+ruled out because it's not
+
+241
+00:09:31,410 --> 00:09:33,810
+so helpful in 2021.
+
+242
+00:09:33,810 --> 00:09:35,460
+But for the rest
+of them, we kind of
+
+243
+00:09:35,460 --> 00:09:37,560
+have to guess often
+about what the speaker is
+
+244
+00:09:37,560 --> 00:09:41,532
+asking of us in order to
+figure out how to answer.
+
+245
+00:09:41,532 --> 00:09:42,740
+Here are some other examples.
+
+246
+00:09:42,740 --> 00:09:43,610
+"I didn't see any."
+
+247
+00:09:43,610 --> 00:09:46,190
+That's one particular sentence.
+
+248
+00:09:46,190 --> 00:09:47,900
+Its meaning is underspecified.
+
+249
+00:09:47,900 --> 00:09:51,080
+In the context of the question,
+"Are there typos in my slides,"
+
+250
+00:09:51,080 --> 00:09:53,870
+"I didn't see any"
+will take on one sense.
+
+251
+00:09:53,870 --> 00:09:56,120
+In the context, "Are there
+bookstores downtown,"
+
+252
+00:09:56,120 --> 00:09:58,940
+"I didn't see any" will take
+on a very different sense.
+
+253
+00:09:58,940 --> 00:10:00,440
+"Are there cookies
+in the cupboard,"
+
+254
+00:10:00,440 --> 00:10:02,690
+"I didn't see any" yet
+again, another kind of sense.
+
+255
+00:10:02,690 --> 00:10:04,820
+And of course, there
+is no end to the number
+
+256
+00:10:04,820 --> 00:10:07,340
+of different contexts we
+can place the sentence in.
+
+257
+00:10:07,340 --> 00:10:09,350
+And each one is
+likely to modulate
+
+258
+00:10:09,350 --> 00:10:12,170
+the meaning of "I didn't
+see any" in some complicated
+
+259
+00:10:12,170 --> 00:10:13,130
+and subtle way.
+
+260
+00:10:13,130 --> 00:10:17,340
+We hardly reflect on this, but
+it's an incredible process.
+
+261
+00:10:17,340 --> 00:10:19,430
+So just to round this
+out, here's an example.
+
+262
+00:10:19,430 --> 00:10:20,928
+Routine pragmatic enrichment.
+
+263
+00:10:20,928 --> 00:10:22,970
+I've got this simple
+sentence in the middle here,
+
+264
+00:10:22,970 --> 00:10:24,950
+"Many students met
+with me yesterday."
+
+265
+00:10:24,950 --> 00:10:26,690
+It's not a very
+complicated sentence
+
+266
+00:10:26,690 --> 00:10:27,980
+cognitively or linguistically.
+
+267
+00:10:27,980 --> 00:10:29,780
+I think we can
+easily understand it,
+
+268
+00:10:29,780 --> 00:10:32,240
+but reflect for a second
+on just how many hooks
+
+269
+00:10:32,240 --> 00:10:34,810
+this utterance has
+into the context.
+
+270
+00:10:34,810 --> 00:10:36,560
+We need to know what
+the time of utterance
+
+271
+00:10:36,560 --> 00:10:38,990
+is to understand yesterday
+and in turn, to understand
+
+272
+00:10:38,990 --> 00:10:40,130
+the whole sentence.
+
+273
+00:10:40,130 --> 00:10:42,980
+We need to ask, how big is the
+contextually restricted domain
+
+274
+00:10:42,980 --> 00:10:46,290
+of students here, in order to
+figure out whether how many,
+
+275
+00:10:46,290 --> 00:10:47,350
+many is.
+
+276
+00:10:47,350 --> 00:10:48,980
+Is it false for most students?
+
+277
+00:10:48,980 --> 00:10:51,740
+Did I avoid saying most or all
+because that would be false
+
+278
+00:10:51,740 --> 00:10:53,995
+and instead, chose
+a weaker form, many?
+
+279
+00:10:53,995 --> 00:10:55,370
+That would be a
+kind of reasoning
+
+280
+00:10:55,370 --> 00:10:57,230
+that many listeners
+will undergo.
+
+281
+00:10:57,230 --> 00:10:59,660
+What's the additional contextual
+restriction to students,
+
+282
+00:10:59,660 --> 00:11:01,370
+just students in our course?
+
+283
+00:11:01,370 --> 00:11:03,680
+Students I advise,
+students at Stanford,
+
+284
+00:11:03,680 --> 00:11:05,480
+students in the world.
+
+285
+00:11:05,480 --> 00:11:06,890
+Again, the context will tell us.
+
+286
+00:11:06,890 --> 00:11:07,682
+Who is the speaker?
+
+287
+00:11:07,682 --> 00:11:10,007
+Of course, that's a
+straightforward indexical.
+
+288
+00:11:10,007 --> 00:11:11,840
+And then there are other
+kinds of inferences
+
+289
+00:11:11,840 --> 00:11:15,020
+that we might make based on
+the restrictive modifiers
+
+290
+00:11:15,020 --> 00:11:16,813
+that the speaker chose.
+
+291
+00:11:16,813 --> 00:11:18,980
+Again, we don't reflect on
+it, but all of this stuff
+
+292
+00:11:18,980 --> 00:11:22,040
+is happening kind of
+effortlessly and automatically.
+
+293
+00:11:22,040 --> 00:11:25,610
+This, in Levinson's terms, is
+the merest, sketchiest squiggle
+
+294
+00:11:25,610 --> 00:11:27,530
+of what actually
+gets communicated.
+
+295
+00:11:27,530 --> 00:11:33,255
+And that is what's so hard
+about so many aspects of NLU.
+
+296
+00:11:33,255 --> 00:11:34,790
+Now, I want to go
+back into history
+
+297
+00:11:34,790 --> 00:11:38,600
+at least, once more to Terry
+Winograd's system SHRDLU
+
+298
+00:11:38,600 --> 00:11:42,380
+because this just shows that
+at the start of the field of AI
+
+299
+00:11:42,380 --> 00:11:45,680
+and Natural Language Processing,
+the focus was entirely
+
+300
+00:11:45,680 --> 00:11:48,050
+on these grounded
+understanding problems.
+
+301
+00:11:48,050 --> 00:11:50,640
+So SHRDLU was a
+fully grounded system
+
+302
+00:11:50,640 --> 00:11:54,230
+that parses the user's input,
+mapped it to a logical form,
+
+303
+00:11:54,230 --> 00:11:55,970
+and interpreted
+that logical form
+
+304
+00:11:55,970 --> 00:11:58,100
+in a very particular world.
+
+305
+00:11:58,100 --> 00:11:59,900
+And then it would try
+to take some action
+
+306
+00:11:59,900 --> 00:12:01,670
+and generate responses.
+
+307
+00:12:01,670 --> 00:12:04,640
+It's incredible, and I
+love this characterization
+
+308
+00:12:04,640 --> 00:12:05,930
+from this YouTube clip.
+
+309
+00:12:05,930 --> 00:12:07,580
+"One project did succeed.
+
+310
+00:12:07,580 --> 00:12:09,950
+Terry Winograd's program
+SHRDLU could use English
+
+311
+00:12:09,950 --> 00:12:11,960
+intelligently, but
+there was a catch.
+
+312
+00:12:11,960 --> 00:12:13,520
+The only subject
+you could discuss
+
+313
+00:12:13,520 --> 00:12:16,310
+was a micro-world of
+simulated blocks."
+
+314
+00:12:16,310 --> 00:12:18,410
+This is wonderful in the
+sense that it achieves
+
+315
+00:12:18,410 --> 00:12:20,360
+the goal of grounding,
+but it was very far
+
+316
+00:12:20,360 --> 00:12:24,680
+from being scalable in any sense
+that would make it practical.
+
+317
+00:12:24,680 --> 00:12:27,087
+But here's a kind of simple
+dialogue from SHRDLU.
+
+318
+00:12:27,087 --> 00:12:28,670
+And the thing I just
+want to point out
+
+319
+00:12:28,670 --> 00:12:30,350
+is that there is
+so much implicit
+
+320
+00:12:30,350 --> 00:12:31,970
+grounding into the context.
+
+321
+00:12:31,970 --> 00:12:34,662
+"The box" is restricted
+to the domain
+
+322
+00:12:34,662 --> 00:12:35,870
+and therefore, has reference.
+
+323
+00:12:35,870 --> 00:12:38,040
+Of course, there isn't a
+unique box in the universe.
+
+324
+00:12:38,040 --> 00:12:40,220
+So "the box" in
+the general context
+
+325
+00:12:40,220 --> 00:12:43,907
+might be very confusing, but in
+the blocks world it made sense,
+
+326
+00:12:43,907 --> 00:12:45,740
+and you can see that
+person leveraging that.
+
+327
+00:12:45,740 --> 00:12:48,140
+And the computer can
+understand it because it too
+
+328
+00:12:48,140 --> 00:12:50,750
+is grounded in this
+particular context,
+
+329
+00:12:50,750 --> 00:12:52,310
+and therefore, can
+make use of all
+
+330
+00:12:52,310 --> 00:12:55,760
+of that implicit information
+in forming its utterances,
+
+331
+00:12:55,760 --> 00:12:57,470
+and interpreting the
+human's utterances.
+
+332
+00:12:57,470 --> 00:13:00,800
+And you see that pervasively
+throughout sample dialogues
+
+333
+00:13:00,800 --> 00:13:01,460
+in the SHRDLU.
+
+334
+00:13:01,460 --> 00:13:04,310
+It's a compelling vision
+about the kinds of things
+
+335
+00:13:04,310 --> 00:13:06,290
+that we need to
+have, and all of it
+
+336
+00:13:06,290 --> 00:13:09,500
+turns on this very rich notion
+of grounding in the blocks
+
+337
+00:13:09,500 --> 00:13:12,000
+world.
+
+338
+00:13:12,000 --> 00:13:14,430
+Finally, another
+connection I want to make.
+
+339
+00:13:14,430 --> 00:13:17,610
+Let's just think the very
+best devices in the universe,
+
+340
+00:13:17,610 --> 00:13:21,000
+as far as we know, for acquiring
+natural languages are humans.
+
+341
+00:13:21,000 --> 00:13:22,100
+What do humans do?
+
+342
+00:13:22,100 --> 00:13:25,160
+Well, first language
+acquirers children
+
+343
+00:13:25,160 --> 00:13:27,440
+learn language with
+incredible speed.
+
+344
+00:13:27,440 --> 00:13:28,190
+That's noteworthy.
+
+345
+00:13:28,190 --> 00:13:29,930
+Just a few years.
+
+346
+00:13:29,930 --> 00:13:31,933
+Despite relatively few inputs--
+
+347
+00:13:31,933 --> 00:13:33,350
+I mean, they get
+a lot of language
+
+348
+00:13:33,350 --> 00:13:35,030
+data in the ideal
+situation, but it's
+
+349
+00:13:35,030 --> 00:13:37,880
+nothing compared to what
+currently language models get
+
+350
+00:13:37,880 --> 00:13:39,050
+to see.
+
+351
+00:13:39,050 --> 00:13:42,120
+And they use cues from
+contrast inherent in the forms
+
+352
+00:13:42,120 --> 00:13:42,620
+they hear.
+
+353
+00:13:42,620 --> 00:13:45,080
+That's a distributional idea
+that we're familiar with
+
+354
+00:13:45,080 --> 00:13:47,600
+but also social
+cues and assumptions
+
+355
+00:13:47,600 --> 00:13:49,080
+about the speaker's goals.
+
+356
+00:13:49,080 --> 00:13:50,810
+It just feel like
+the very richness
+
+357
+00:13:50,810 --> 00:13:54,470
+of this picture and
+its multi-modal aspects
+
+358
+00:13:54,470 --> 00:13:58,108
+are really important
+guiding clues for us.
+
+359
+00:13:58,108 --> 00:14:00,150
+So what are the consequences
+of all this for NLU?
+
+360
+00:14:00,150 --> 00:14:02,460
+Well, as I said, since
+human children are the best
+
+361
+00:14:02,460 --> 00:14:04,440
+agents in the universe
+at learning language
+
+362
+00:14:04,440 --> 00:14:06,960
+and they depend on grounding,
+it seems like our systems
+
+363
+00:14:06,960 --> 00:14:09,610
+ought to be grounded as well.
+
+364
+00:14:09,610 --> 00:14:11,650
+Problems that are
+intractable without grounding
+
+365
+00:14:11,650 --> 00:14:13,635
+are solvable with the
+right kinds of grounding.
+
+366
+00:14:13,635 --> 00:14:15,010
+That's important
+to keep in mind.
+
+367
+00:14:15,010 --> 00:14:18,250
+Grounded problems can seem hard,
+but the other aspect of that
+
+368
+00:14:18,250 --> 00:14:20,680
+is that some problems might
+be completely intractable
+
+369
+00:14:20,680 --> 00:14:22,840
+unless you have some
+notion of grounding.
+
+370
+00:14:22,840 --> 00:14:25,960
+Indexicals come to mind.
+
+371
+00:14:25,960 --> 00:14:27,400
+Thinking about current modeling.
+
+372
+00:14:27,400 --> 00:14:29,157
+Deep learning is
+a flexible toolkit
+
+373
+00:14:29,157 --> 00:14:31,240
+for reasoning about different
+kinds of information
+
+374
+00:14:31,240 --> 00:14:32,080
+in a single model.
+
+375
+00:14:32,080 --> 00:14:35,560
+You can bring in language
+data, image data, video data,
+
+376
+00:14:35,560 --> 00:14:37,240
+audio data, and so forth.
+
+377
+00:14:37,240 --> 00:14:40,960
+And therefore, it has led
+to conceptual improvements.
+
+378
+00:14:40,960 --> 00:14:42,800
+The ungrounded language
+models of today
+
+379
+00:14:42,800 --> 00:14:45,220
+get a lot of publicity,
+but there are also
+
+380
+00:14:45,220 --> 00:14:47,830
+many exciting systems that
+are fluently reasoning
+
+381
+00:14:47,830 --> 00:14:50,960
+about images, and video,
+and language together.
+
+382
+00:14:50,960 --> 00:14:54,220
+And I think that's a really
+nice step forward into the world
+
+383
+00:14:54,220 --> 00:14:55,870
+of true grounding.
+
+384
+00:14:55,870 --> 00:14:57,550
+So we should seek
+out and develop
+
+385
+00:14:57,550 --> 00:15:00,010
+dataset that include the
+right kind of grounding
+
+386
+00:15:00,010 --> 00:15:01,570
+because the central
+thesis here is
+
+387
+00:15:01,570 --> 00:15:06,200
+that that can lead to
+progress by leaps and bounds.
+
+388
+00:15:06,200 --> 00:15:07,790
+So again, to round
+this out, let me
+
+389
+00:15:07,790 --> 00:15:10,225
+encourage you to think about
+this for final projects.
+
+390
+00:15:10,225 --> 00:15:12,350
+We're going to be working
+with the Stanford English
+
+391
+00:15:12,350 --> 00:15:14,210
+Colors in Context Corpus.
+
+392
+00:15:14,210 --> 00:15:16,310
+There is also a Chinese
+version, and we've
+
+393
+00:15:16,310 --> 00:15:18,440
+explored exciting
+ideas involving
+
+394
+00:15:18,440 --> 00:15:20,690
+monolingual Chinese,
+and English speakers,
+
+395
+00:15:20,690 --> 00:15:24,200
+as well as bilingual
+models for this dataset.
+
+396
+00:15:24,200 --> 00:15:26,450
+If you want to do
+a little bit more
+
+397
+00:15:26,450 --> 00:15:29,070
+in terms of grounding, slightly
+more complicated context,
+
+398
+00:15:29,070 --> 00:15:31,970
+I would recommend the
+OneCommon dataset.
+
+399
+00:15:31,970 --> 00:15:36,900
+The Edinburgh Map Corpus is an
+early task-oriented grounded
+
+400
+00:15:36,900 --> 00:15:38,900
+corpus that could be
+exciting, especially if you
+
+401
+00:15:38,900 --> 00:15:41,630
+want to do some interesting
+initial steps involving
+
+402
+00:15:41,630 --> 00:15:44,270
+language and
+reinforcement learning.
+
+403
+00:15:44,270 --> 00:15:46,460
+The Cards Corpus would
+be much more ambitious
+
+404
+00:15:46,460 --> 00:15:47,600
+along those same lines.
+
+405
+00:15:47,600 --> 00:15:49,220
+It's a very
+open-ended, difficult,
+
+406
+00:15:49,220 --> 00:15:52,250
+task-oriented dialogue corpus.
+
+407
+00:15:52,250 --> 00:15:55,580
+Deal or No Deal is a forward
+thinking negotiation corpus.
+
+408
+00:15:55,580 --> 00:15:57,320
+Negotiation is a
+very interesting kind
+
+409
+00:15:57,320 --> 00:16:00,080
+of slightly adversarial,
+social grounding.
+
+410
+00:16:00,080 --> 00:16:01,850
+CraigsListBargain
+is another dataset
+
+411
+00:16:01,850 --> 00:16:05,360
+that you might use in the
+context of negotiation agents.
+
+412
+00:16:05,360 --> 00:16:08,300
+And then ALFRED,
+CrossTalk, and Room-to-Room
+
+413
+00:16:08,300 --> 00:16:09,770
+are all data sets
+that would allow
+
+414
+00:16:09,770 --> 00:16:13,040
+you to combine grounded language
+understanding with problems
+
+415
+00:16:13,040 --> 00:16:15,320
+relating to computer
+vision in various ways.
+
+416
+00:16:15,320 --> 00:16:18,800
+And again, that kind of
+interdisciplinary connection
+
+417
+00:16:18,800 --> 00:16:20,870
+could be crucial
+to making progress
+
+418
+00:16:20,870 --> 00:16:23,320
+on truly grounded systems.
+
+419
+00:16:23,320 --> 00:16:28,000
+
+
