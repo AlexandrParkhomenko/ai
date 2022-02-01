@@ -75,3 +75,6 @@ You can't give up on them. Never.
 | Christopher | [Potts](https://github.com/cgpotts) | Stanford Linguistics |
 | Limber | [Cheng](https://github.com/limberc) | Oxford |
 | Mufei | [Li](https://github.com/mufeili) | Shanghai |
+
+## Team links
+- https://www.microsoft.com/en-us/research/people/
