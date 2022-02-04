@@ -23,7 +23,8 @@
 - WMT Machine Translation conference and competition
 
 ### Robotics
-- [ICRA](https://www.icra2022.org/) [20](https://ewh.ieee.org/soc/ras/conf/fullysponsored/icra/ICRA2020/www.icra2020.org/index.html)
-- [RSS](https://roboticsconference.org/)
-- [CoRL](https://corlconf.github.io/) [22](https://corl2022.org/)
+- [ICRA](https://www.icra2022.org/) International Conference on Robotics and Automation [20](https://ewh.ieee.org/soc/ras/conf/fullysponsored/icra/ICRA2020/www.icra2020.org/index.html)
+- [RSS](https://roboticsconference.org/) Robotics: Science and Systems
+- [CoRL](https://corlconf.github.io/) The Conference on Robot Learning [22](https://corl2022.org/)
+- [IJRR](https://journals.sagepub.com/home/ijr) International Journal of Robotics Research
 
