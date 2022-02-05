@@ -1,4 +1,8 @@
-Виталий Лялин. [Инструменты для участников соревнований по машинному обучению](https://habr.com/ru/post/542292/)
+[AutoML](https://automl.org) предоставляет методы и процессы для
+
+- обеспечения доступного машинного обучения
+- повышения эффективности систем машинного обучения
+- ускорения исследования и разработки приложений ИИ
 
 [Determined](https://github.com/determined-ai/determined)
 **Платформа для тренировки моделей глубокого обучения.**
@@ -266,3 +270,6 @@ The Python programming language
 Embox is a configurable RTOS designed for resource constrained and embedded systems.
 
 
+## Links
+
+- Виталий Лялин. [Инструменты для участников соревнований по машинному обучению](https://habr.com/ru/post/542292/)
