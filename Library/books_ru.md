@@ -21,5 +21,8 @@
 - node2vec / DeepWalk / struc2vec
 - [Мальцев Антон - Ультимативное сравнение embedded платформ для AI](https://habr.com/en/company/recognitor/blog/468421/)
 
+### Open Data Science 
+- Олег Седухин - [Проблемы современного машинного обучения](https://habr.com/ru/company/ods/blog/651103/)
+
 ## Библиотеки
 - [РАИИ](http://raai.org/library/library.shtml?link)
