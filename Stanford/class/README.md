@@ -39,5 +39,5 @@ course                                            | |  course name              
  cs522[](https://web.stanford.edu/class/cs522/)  |*| [Seminar in Artificial Intelligence in Healthcare](https://www.youtube.com/watch?v=taigNFbAyYY&list=PLYn-ZmPR1DtNQJ-ot-L2V2EgUEH6OH_7w)       | Семинар по искусственному интеллекту в здравоохранении
  ycs0002 | | [Game Theory II](https://online.stanford.edu/courses/soe-ycs0002-game-theory) | Теория игр
 
-[cs](https://cs.stanford.edu/academics/courses)
+[cs](https://cs.stanford.edu/academics/courses) platform:[mc](https://moderncampus.com/products/destiny-one.html)
 
