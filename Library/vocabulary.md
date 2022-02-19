@@ -9,6 +9,7 @@
 | Bayesian network Augmented Naive Bayes classifier | BAN | наивный байесовский классификатор, дополненный байесовской сетью | НБКБС |
 | BERT | Bidirectional Encode Representations from Transformers |  |  |
 | BigCLAM | Cluster Affiliation Model for Big Networks |  |  |
+| BIST | Built-in Self Test |  |  |
 | BlackBox | BB | атака с доступом только к входу и выходу модели | ЧЯ* |
 | Breadth-First Search | BFS | поиск в ширину |  |
 | Causal Bayesian Network | CBN | причинно-следственная байесовская сеть | ПСБС |
