@@ -20,3 +20,25 @@ If you want your model to produce the minimum possible number of false positives
 - [Statistical Inference](https://leanpub.com/LittleInferenceBook/read#leanpub-auto-question) [videos](https://www.youtube.com/playlist?list=PLpl-gQkQivXiBmGyzLrUjzsblmQsLtkzJ)
 
 expected values = mean and variance
+
+```python
+import  nltk.translate.bleu_score as bleu
+
+# Setting the two different candidate translation that we will compare with two reference translations
+
+reference_translation=['The cat is on the mat.'.split(),
+                       'There is a cat on the mat.'.split()
+                      ]
+candidate_translation_1='the the the mat on the the.'.split()
+candidate_translation_2='The cat is on the matrix.'.split()
+
+# Calculating the BLEU score for candidate translation 1
+
+print("BLEU Score: ",bleu.sentence_bleu(reference_translation, candidate_translation_1))
+# The hypothesis contains 0 counts of 3-gram overlaps.
+# BLEU Score:  6.968148412761692e-155
+
+print("BLEU Score: ",bleu.sentence_bleu(reference_translation, candidate_translation_2))
+# BLEU Score:  0.7598356856515925
+
+```
