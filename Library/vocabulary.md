@@ -45,6 +45,7 @@ cal Semantic | COALS | Коррелированый Аналог Вхожден�
 | Generative Pretrained Decoder | GPT | Генеративные претренированные декодеры | ГПД* |
 | Graph Attention Networks                | GAT         | графовые сети внимания                             |              |
 | Gibbs Random Field | GRM | случайное поле Гиббса | СПГ |
+| Generative Pre-trained Transformer      | GPT         | генеративный предварительно обученный преобразователь | ГПОП      |
 | Graph Convolution Policy Network        | GCPN        |                                                    |              |
 | Graph Convolution Network               | GСN         | графовая сверточная сеть                           | ГСС          |
 | Graph Isomorphism Network               | GIN         | графовая изоморфная сеть                           | ГИС          |
