@@ -1,0 +1,4644 @@
+1
+00:00:05,519 --> 00:00:09,519
+so here we go it's a golden age for
+
+2
+00:00:09,519 --> 00:00:14,719
+let's start with a little bit of history
+
+3
+00:00:11,199 --> 00:00:16,719
+so way back when john mccarthy had
+
+4
+00:00:14,718 --> 00:00:19,039
+assembled a group of top scientists and
+
+5
+00:00:16,719 --> 00:00:20,719
+he said of this group we think that a
+
+6
+00:00:19,039 --> 00:00:22,720
+significant advance can be made in
+
+7
+00:00:20,719 --> 00:00:24,640
+artificial intelligence in one or more
+
+8
+00:00:22,719 --> 00:00:26,719
+of these problems a carefully selected
+
+9
+00:00:24,640 --> 00:00:28,080
+group of scientists work on it together
+
+10
+00:00:28,079 --> 00:00:32,238
+he had in fact assembled a crack team
+
+11
+00:00:30,399 --> 00:00:34,079
+but of course he there were so many
+
+12
+00:00:32,238 --> 00:00:35,839
+unknown unknowns about working in
+
+13
+00:00:34,079 --> 00:00:37,920
+artificial intelligence that he wildly
+
+14
+00:00:35,840 --> 00:00:39,440
+underestimated and probably in those
+
+15
+00:00:37,920 --> 00:00:41,359
+three months they just figured out how
+
+16
+00:00:41,359 --> 00:00:44,719
+and of course we've been working on
+
+17
+00:00:42,640 --> 00:00:47,840
+those problems that they chartered out
+
+18
+00:00:49,359 --> 00:00:53,119
+relationship to this history because
+
+19
+00:00:51,119 --> 00:00:55,519
+very early on in the history of all of
+
+20
+00:00:53,119 --> 00:00:56,959
+ai a lot of the research was focused on
+
+21
+00:00:56,960 --> 00:01:00,960
+originally in the 60s it was done with
+
+22
+00:00:58,878 --> 00:01:02,799
+kind of pattern matching on simple rule
+
+23
+00:01:00,960 --> 00:01:04,400
+sets and things like that you've seen
+
+24
+00:01:02,799 --> 00:01:05,840
+these things in the form of artifacts
+
+25
+00:01:05,840 --> 00:01:10,400
+uh it was oriented towards the things
+
+26
+00:01:10,400 --> 00:01:13,840
+in the 1970s and 80s you get a real
+
+27
+00:01:13,840 --> 00:01:19,439
+linguistically rich logic driven
+
+28
+00:01:15,840 --> 00:01:22,640
+grounded systems or llgs uh this is like
+
+29
+00:01:19,438 --> 00:01:24,239
+a lot of symbolic ai again oriented
+
+30
+00:01:22,640 --> 00:01:27,200
+toward problems of natural language
+
+31
+00:01:24,239 --> 00:01:29,359
+understanding everybody wanted talking
+
+32
+00:01:27,200 --> 00:01:30,719
+robots and this was the path that they
+
+33
+00:01:29,359 --> 00:01:32,000
+were going to take to achieve them
+
+34
+00:01:32,000 --> 00:01:36,719
+as we all know in the mid 1990s in the
+
+35
+00:01:34,560 --> 00:01:39,680
+field you had this revolution of machine
+
+36
+00:01:36,719 --> 00:01:41,759
+learning statistical nlp is on the rise
+
+37
+00:01:39,680 --> 00:01:43,040
+and that led to a decrease a sharp
+
+38
+00:01:43,040 --> 00:01:46,960
+understanding work i think because of
+
+39
+00:01:45,280 --> 00:01:48,879
+the way that people were understanding
+
+40
+00:01:46,959 --> 00:01:50,640
+how to work with these tools and
+
+41
+00:01:48,879 --> 00:01:53,118
+understanding the problems that language
+
+42
+00:01:50,640 --> 00:01:54,640
+posed the field ended up oriented around
+
+43
+00:01:53,118 --> 00:01:56,399
+things that you might think of as like
+
+44
+00:01:54,640 --> 00:01:58,239
+parsing problems much more about
+
+45
+00:01:56,399 --> 00:02:00,879
+structure and much less about
+
+46
+00:01:58,239 --> 00:02:02,798
+communication and as a result all these
+
+47
+00:02:00,879 --> 00:02:05,199
+really exciting problems from earlier
+
+48
+00:02:02,799 --> 00:02:06,719
+eras kind of fell by the wayside as
+
+49
+00:02:05,200 --> 00:02:09,039
+people worried about part of speech
+
+50
+00:02:06,718 --> 00:02:11,519
+tagging and parsing and so forth so that
+
+51
+00:02:09,038 --> 00:02:14,159
+was like a low period for nlu
+
+52
+00:02:14,159 --> 00:02:18,159
+linguistically rich logic driven systems
+
+53
+00:02:16,159 --> 00:02:20,318
+re-emerged but now with learning and
+
+54
+00:02:18,159 --> 00:02:21,840
+that was a golden era of kind of moving
+
+55
+00:02:20,318 --> 00:02:23,919
+us back into problems of natural
+
+56
+00:02:21,840 --> 00:02:25,840
+language understanding starting with
+
+57
+00:02:23,919 --> 00:02:28,318
+some basic applications involving
+
+58
+00:02:28,318 --> 00:02:31,919
+and then of course as you all know
+
+59
+00:02:30,159 --> 00:02:35,120
+probably from the recent history or
+
+60
+00:02:31,919 --> 00:02:37,439
+semi-recent history in the 2010s nlu
+
+61
+00:02:35,120 --> 00:02:39,360
+took center stage in the field that's
+
+62
+00:02:37,439 --> 00:02:41,280
+very exciting right and it's it's sort
+
+63
+00:02:39,360 --> 00:02:42,800
+of aligned with the rise of deep
+
+64
+00:02:41,280 --> 00:02:45,039
+learning as one of the most prevalent
+
+65
+00:02:42,800 --> 00:02:47,200
+set of techniques in the field and as a
+
+66
+00:02:45,039 --> 00:02:48,318
+result logic driven systems fell by the
+
+67
+00:02:48,318 --> 00:02:51,518
+this is exciting for us because of
+
+68
+00:02:49,919 --> 00:02:53,679
+course this is like the history of our
+
+69
+00:02:51,519 --> 00:02:55,360
+course when we first started this our
+
+70
+00:02:53,680 --> 00:02:56,959
+problems the ones we focus on in this
+
+71
+00:02:55,360 --> 00:02:59,040
+class were really not central to the
+
+72
+00:02:56,959 --> 00:03:00,719
+field and now they're the problems that
+
+73
+00:02:59,039 --> 00:03:03,199
+everyone is working on and where all the
+
+74
+00:03:00,719 --> 00:03:05,919
+action is in the scientific aspects of
+
+75
+00:03:05,919 --> 00:03:09,919
+as a result of this this is kind of
+
+76
+00:03:07,439 --> 00:03:11,759
+provocative the linguistically grounded
+
+77
+00:03:09,919 --> 00:03:14,399
+logic driven systems have again kind of
+
+78
+00:03:11,759 --> 00:03:16,399
+fallen by the wayside in favor of very
+
+79
+00:03:14,400 --> 00:03:18,239
+large models that have almost no
+
+80
+00:03:16,400 --> 00:03:20,239
+inductive biases of the sort that you
+
+81
+00:03:20,239 --> 00:03:24,480
+uh what's going to happen in the 2020s
+
+82
+00:03:22,400 --> 00:03:26,080
+i'm not sure you might predict that
+
+83
+00:03:24,479 --> 00:03:28,399
+we've we've seen the last of the
+
+84
+00:03:26,080 --> 00:03:30,560
+linguistically rich logic driven systems
+
+85
+00:03:28,400 --> 00:03:32,480
+but the people might have said similar
+
+86
+00:03:30,560 --> 00:03:34,400
+things in the 1990s and we saw them
+
+87
+00:03:32,479 --> 00:03:36,719
+re-emerge so i think it's hard to
+
+88
+00:03:34,400 --> 00:03:38,319
+predict where the future will go
+
+89
+00:03:36,719 --> 00:03:40,000
+but this is an exciting moment because
+
+90
+00:03:38,318 --> 00:03:41,839
+you can all be part of making that
+
+91
+00:03:41,840 --> 00:03:46,519
+problems for this course and on into
+
+92
+00:03:46,639 --> 00:03:50,000
+let's talk more about some of these
+
+93
+00:03:48,239 --> 00:03:51,840
+really defining moments in this golden
+
+94
+00:03:50,000 --> 00:03:54,318
+age and for me a very important one was
+
+95
+00:03:51,840 --> 00:03:56,878
+when watson ibm watson won jeopardy this
+
+96
+00:03:54,318 --> 00:03:58,238
+was in 2011. seems like a long time ago
+
+97
+00:03:56,878 --> 00:04:00,158
+now and it was a really eye-opening
+
+98
+00:03:58,239 --> 00:04:01,759
+event that you would have a machine
+
+99
+00:04:01,759 --> 00:04:05,359
+beat two jeopardy champions that is what
+
+100
+00:04:03,919 --> 00:04:06,878
+is nominally a kind of question
+
+101
+00:04:06,878 --> 00:04:10,399
+for me an exciting thing about watson
+
+102
+00:04:08,479 --> 00:04:12,560
+was that it was an nlu system but it was
+
+103
+00:04:10,400 --> 00:04:14,319
+also a fully integrated system for doing
+
+104
+00:04:12,560 --> 00:04:16,238
+jeopardy it was excellent at pushing the
+
+105
+00:04:14,318 --> 00:04:17,759
+button and responding to the other
+
+106
+00:04:16,238 --> 00:04:19,918
+things that structure the game of
+
+107
+00:04:17,759 --> 00:04:21,840
+jeopardy but at its heart it was a
+
+108
+00:04:19,918 --> 00:04:24,079
+really outstanding question answering
+
+109
+00:04:21,839 --> 00:04:26,319
+system and it was described as drawing
+
+110
+00:04:24,079 --> 00:04:27,918
+on vast amounts of data and doing all
+
+111
+00:04:26,319 --> 00:04:30,478
+sorts of clever things in terms of
+
+112
+00:04:27,918 --> 00:04:33,198
+parsing and distributional analysis of
+
+113
+00:04:30,478 --> 00:04:35,120
+data to become a really good jeopardy
+
+114
+00:04:33,199 --> 00:04:37,199
+player in this case a world champion
+
+115
+00:04:35,120 --> 00:04:38,879
+jeopardy player and for me it felt
+
+116
+00:04:37,199 --> 00:04:40,960
+different from earlier successes in
+
+117
+00:04:38,879 --> 00:04:43,040
+artificial intelligence which were about
+
+118
+00:04:40,959 --> 00:04:44,959
+much more structured domains like chess
+
+119
+00:04:43,040 --> 00:04:46,879
+playing this was something that seemed
+
+120
+00:04:44,959 --> 00:04:49,279
+to be about communication and language a
+
+121
+00:04:46,879 --> 00:04:51,600
+very human thing and we saw this system
+
+122
+00:04:49,279 --> 00:04:53,599
+becoming a champion at it certainly an
+
+123
+00:04:53,600 --> 00:04:58,000
+and it's kind of really eye-opening to
+
+124
+00:04:55,600 --> 00:05:01,280
+consider that that was in 2011 and by
+
+125
+00:04:58,000 --> 00:05:02,959
+2015 teams of academics like here led by
+
+126
+00:05:01,279 --> 00:05:04,478
+jordan boyd graber who was at the time
+
+127
+00:05:02,959 --> 00:05:07,038
+at the university of colorado as a
+
+128
+00:05:04,478 --> 00:05:09,120
+professor could beat ken jennings that
+
+129
+00:05:07,038 --> 00:05:11,279
+champion that you saw before with a
+
+130
+00:05:09,120 --> 00:05:13,199
+system that fit entirely on the laptop
+
+131
+00:05:11,279 --> 00:05:14,879
+that jordan has there so in just a few
+
+132
+00:05:13,199 --> 00:05:17,439
+years we went from requiring a super
+
+133
+00:05:14,879 --> 00:05:18,639
+computer to beat the world champion to
+
+134
+00:05:17,439 --> 00:05:20,560
+beating the world champion with
+
+135
+00:05:18,639 --> 00:05:22,560
+something that could fit manageably on a
+
+136
+00:05:20,560 --> 00:05:24,639
+laptop and that you all could do
+
+137
+00:05:22,560 --> 00:05:27,280
+exploration of for a final project for
+
+138
+00:05:27,600 --> 00:05:31,680
+and that kind of ushered in the era you
+
+139
+00:05:29,519 --> 00:05:33,439
+know watson was 2011 at right about the
+
+140
+00:05:31,680 --> 00:05:34,478
+same time you started to get things like
+
+141
+00:05:34,478 --> 00:05:38,399
+and the google home device and the
+
+142
+00:05:36,079 --> 00:05:40,079
+amazon echo the more trusting among you
+
+143
+00:05:38,399 --> 00:05:41,918
+might have these devices living in your
+
+144
+00:05:40,079 --> 00:05:44,079
+homes and listening to you all the time
+
+145
+00:05:41,918 --> 00:05:46,639
+and responding to your requests
+
+146
+00:05:44,079 --> 00:05:48,399
+um you know for me one aspect of them
+
+147
+00:05:46,639 --> 00:05:49,600
+that's so so eye-opening is not
+
+148
+00:05:49,600 --> 00:05:54,560
+nlu piece but rather just the fact that
+
+149
+00:05:51,600 --> 00:05:56,879
+they do such outstanding text-to-speech
+
+150
+00:05:54,560 --> 00:05:59,519
+work um you so that they're pretty
+
+151
+00:05:56,879 --> 00:06:01,439
+reliably for many dialects do a good job
+
+152
+00:05:59,519 --> 00:06:02,079
+of taking what you said and transcribing
+
+153
+00:06:02,079 --> 00:06:06,639
+as we'll see a little bit later the nlu
+
+154
+00:06:04,000 --> 00:06:08,399
+part often falls down but there's
+
+155
+00:06:06,639 --> 00:06:10,079
+there's no doubt that these devices are
+
+156
+00:06:08,399 --> 00:06:13,839
+going to become more and more ubiquitous
+
+157
+00:06:10,079 --> 00:06:13,839
+in our lives and that's very exciting
+
+158
+00:06:14,240 --> 00:06:17,680
+here's the promise of these artificial
+
+159
+00:06:15,839 --> 00:06:19,119
+intelligence setting aside the problems
+
+160
+00:06:17,680 --> 00:06:20,959
+that you all encounter if you do use
+
+161
+00:06:19,120 --> 00:06:23,199
+them right the idea is that you could
+
+162
+00:06:20,959 --> 00:06:25,279
+pose a task oriented question like any
+
+163
+00:06:23,199 --> 00:06:27,280
+good burger joints around here that it
+
+164
+00:06:25,279 --> 00:06:29,279
+could say proactively i found a number
+
+165
+00:06:27,279 --> 00:06:31,679
+of burger restaurants near you you could
+
+166
+00:06:29,279 --> 00:06:33,198
+switch your goal what about tacos and at
+
+167
+00:06:31,680 --> 00:06:35,120
+this point it would kind of remember
+
+168
+00:06:33,199 --> 00:06:37,280
+what you were trying to do and it would
+
+169
+00:06:35,120 --> 00:06:39,600
+look for mexican restaurants to kind of
+
+170
+00:06:37,279 --> 00:06:41,279
+anticipate your needs and in that way
+
+171
+00:06:39,600 --> 00:06:43,360
+collaborate with you to solve this
+
+172
+00:06:41,279 --> 00:06:45,439
+problem that's the dream of these things
+
+173
+00:06:43,360 --> 00:06:47,680
+that involve really lots of aspects of
+
+174
+00:06:50,240 --> 00:06:53,598
+another exciting and even more recent
+
+175
+00:06:52,160 --> 00:06:55,439
+development is the kind of text
+
+176
+00:06:53,598 --> 00:06:57,839
+generation that you see from models like
+
+177
+00:06:57,839 --> 00:07:01,679
+15 years ago the things that we see
+
+178
+00:06:59,839 --> 00:07:04,318
+every day would have seemed like science
+
+179
+00:07:01,680 --> 00:07:06,400
+fiction to me even as a practitioner
+
+180
+00:07:04,319 --> 00:07:08,639
+this is an example of somebody having a
+
+181
+00:07:06,399 --> 00:07:11,038
+product that on the back of gbt3 can
+
+182
+00:07:08,639 --> 00:07:12,960
+help you write advertising copy and it
+
+183
+00:07:11,038 --> 00:07:14,800
+does a plausible job of advertising
+
+184
+00:07:12,959 --> 00:07:16,478
+products to specific segments given
+
+185
+00:07:14,800 --> 00:07:17,439
+specific goals that you give in your
+
+186
+00:07:17,439 --> 00:07:21,360
+and here's an example actually from a
+
+187
+00:07:19,680 --> 00:07:24,079
+stanford professor a company that he
+
+188
+00:07:21,360 --> 00:07:26,560
+started where you use gpt3 to help you
+
+189
+00:07:24,079 --> 00:07:29,038
+do writing in a particular style that
+
+190
+00:07:26,560 --> 00:07:31,280
+you choose and it's strikingly good at
+
+191
+00:07:29,038 --> 00:07:33,680
+helping you hone in on a style and kind
+
+192
+00:07:31,279 --> 00:07:34,799
+of say what you take yourself to want to
+
+193
+00:07:34,800 --> 00:07:38,720
+although the sense in which these are
+
+194
+00:07:36,319 --> 00:07:40,479
+things that we are alone want to say as
+
+195
+00:07:38,720 --> 00:07:42,080
+opposed to saying them jointly with
+
+196
+00:07:40,478 --> 00:07:43,598
+these devices that we're collaborating
+
+197
+00:07:42,079 --> 00:07:45,199
+with is something that we're going to
+
+198
+00:07:43,598 --> 00:07:47,759
+really have to think about over the next
+
+199
+00:07:47,759 --> 00:07:51,680
+image captioning this is another really
+
+200
+00:07:49,680 --> 00:07:53,759
+exciting breakthrough area that again
+
+201
+00:07:51,680 --> 00:07:55,680
+seemed like something way beyond what we
+
+202
+00:07:53,759 --> 00:07:57,919
+could achieve 15 years ago and is now
+
+203
+00:07:55,680 --> 00:08:00,560
+kind of routine where you have images
+
+204
+00:07:57,918 --> 00:08:03,120
+like this the image comes in and the
+
+205
+00:08:00,560 --> 00:08:05,199
+system does a plausible job of providing
+
+206
+00:08:03,120 --> 00:08:07,199
+fluent natural language captions for
+
+207
+00:08:05,199 --> 00:08:09,520
+those images a person riding a
+
+208
+00:08:07,199 --> 00:08:11,759
+motorcycle on a dirt road a group of
+
+209
+00:08:09,519 --> 00:08:13,680
+young people playing a game of frisbee a
+
+210
+00:08:11,759 --> 00:08:16,000
+herd of elephants walking across a dry
+
+211
+00:08:13,680 --> 00:08:17,759
+grass these are really good captions for
+
+212
+00:08:16,000 --> 00:08:19,839
+these images things that you would have
+
+213
+00:08:17,759 --> 00:08:22,000
+thought only a human could apply but in
+
+214
+00:08:19,839 --> 00:08:24,239
+this case even relatively early in the
+
+215
+00:08:22,000 --> 00:08:25,839
+history of these these models you have
+
+216
+00:08:28,879 --> 00:08:33,278
+search we should remind ourselves that
+
+217
+00:08:30,879 --> 00:08:34,639
+search has become an application of lots
+
+218
+00:08:33,278 --> 00:08:36,719
+of techniques in natural language
+
+219
+00:08:34,639 --> 00:08:38,319
+understanding when you do a search into
+
+220
+00:08:36,719 --> 00:08:40,399
+google you're not just finding the most
+
+221
+00:08:38,320 --> 00:08:42,959
+relevant documents but rather the most
+
+222
+00:08:40,399 --> 00:08:44,879
+relevant documents as interpreted with
+
+223
+00:08:42,958 --> 00:08:47,199
+your query in the context of things you
+
+224
+00:08:44,879 --> 00:08:49,200
+search for and other things that google
+
+225
+00:08:47,200 --> 00:08:52,000
+knows about things people search for so
+
+226
+00:08:49,200 --> 00:08:54,080
+if you search stars here you'll get a
+
+227
+00:08:52,000 --> 00:08:56,159
+card that kind of anticipates that
+
+228
+00:08:54,080 --> 00:08:59,200
+you're interested in various aspects of
+
+229
+00:08:56,159 --> 00:09:00,719
+the disease sars if you search parasite
+
+230
+00:08:59,200 --> 00:09:02,240
+it will probably anticipate that you
+
+231
+00:09:00,720 --> 00:09:04,320
+want to know about the movie and not
+
+232
+00:09:04,320 --> 00:09:08,240
+depending on your search history and
+
+233
+00:09:06,240 --> 00:09:10,320
+your interests and typical goals and so
+
+234
+00:09:08,240 --> 00:09:13,680
+forth you might see similar behaviors
+
+235
+00:09:10,320 --> 00:09:15,040
+you might see very different behavior
+
+236
+00:09:13,679 --> 00:09:16,958
+and we should remind ourselves that
+
+237
+00:09:15,039 --> 00:09:18,559
+search at this point is again not just
+
+238
+00:09:16,958 --> 00:09:20,958
+searching into a large collection of
+
+239
+00:09:18,559 --> 00:09:22,879
+documents but this kind of agglomeration
+
+240
+00:09:20,958 --> 00:09:24,479
+of services many of which depend on
+
+241
+00:09:22,879 --> 00:09:27,120
+natural language understanding is a kind
+
+242
+00:09:24,480 --> 00:09:28,800
+of first pass where they take your query
+
+243
+00:09:27,120 --> 00:09:31,600
+and do their best to understand what the
+
+244
+00:09:28,799 --> 00:09:33,679
+intent behind the query is and parse it
+
+245
+00:09:31,600 --> 00:09:36,320
+and figure out whether it's a standard
+
+246
+00:09:33,679 --> 00:09:38,799
+search or a request for directions or a
+
+247
+00:09:36,320 --> 00:09:41,519
+request to send a message and so forth
+
+248
+00:09:38,799 --> 00:09:42,958
+and so on in the background there a lot
+
+249
+00:09:41,519 --> 00:09:45,200
+of natural language understanding is
+
+250
+00:09:42,958 --> 00:09:47,199
+happening to figure out how to stitch
+
+251
+00:09:45,200 --> 00:09:48,959
+these services together and anticipate
+
+252
+00:09:48,958 --> 00:09:52,719
+collaborate with you on your goals
+
+253
+00:09:53,440 --> 00:09:57,279
+and we can also think beyond just what's
+
+254
+00:09:55,440 --> 00:09:59,279
+happening in the technological space to
+
+255
+00:09:57,278 --> 00:10:00,720
+what's happening internal to our field
+
+256
+00:10:00,720 --> 00:10:04,399
+benchmarks are big tasks that we all
+
+257
+00:10:02,639 --> 00:10:06,480
+collaborate to try to do really well on
+
+258
+00:10:04,399 --> 00:10:08,958
+with models and innovative ideas and so
+
+259
+00:10:06,480 --> 00:10:11,759
+forth i've got a few classic benchmarks
+
+260
+00:10:08,958 --> 00:10:14,078
+here mnist is for digits glue is a big
+
+261
+00:10:11,759 --> 00:10:16,078
+natural language understanding benchmark
+
+262
+00:10:14,078 --> 00:10:18,719
+imagenet of course is finding things in
+
+263
+00:10:16,078 --> 00:10:20,559
+images squad is question answering and
+
+264
+00:10:20,559 --> 00:10:24,159
+typically speech-to-text transcription
+
+265
+00:10:24,159 --> 00:10:28,240
+along in the spot here along the x-axis
+
+266
+00:10:26,159 --> 00:10:30,480
+i have the year from 2000 or actually
+
+267
+00:10:28,240 --> 00:10:32,799
+the mid-90s up through the present
+
+268
+00:10:30,480 --> 00:10:34,879
+and along the y-axis i have our distance
+
+269
+00:10:32,799 --> 00:10:36,639
+from this black line which is human
+
+270
+00:10:34,879 --> 00:10:38,799
+performance as measured by the people
+
+271
+00:10:38,799 --> 00:10:42,639
+and the striking thing about this plot
+
+272
+00:10:40,480 --> 00:10:43,600
+is that it used to take us a very long
+
+273
+00:10:43,600 --> 00:10:48,399
+to to reach human level performance
+
+274
+00:10:45,839 --> 00:10:50,800
+according to this estimate so for mnist
+
+275
+00:10:48,399 --> 00:10:52,000
+and for switchboard it took more than 15
+
+276
+00:10:52,000 --> 00:10:56,720
+whereas for more recent benchmarks like
+
+277
+00:10:54,000 --> 00:10:58,480
+imagenet and squad and recently glue
+
+278
+00:10:56,720 --> 00:11:01,440
+we're reaching human performance within
+
+279
+00:10:58,480 --> 00:11:02,800
+a year and the striking thing about that
+
+280
+00:11:01,440 --> 00:11:05,519
+is not only is this happening much
+
+281
+00:11:02,799 --> 00:11:08,078
+faster but you might have thought that
+
+282
+00:11:05,519 --> 00:11:10,000
+benchmarks like glue were much more
+
+283
+00:11:08,078 --> 00:11:11,919
+difficult than mnist mnist is just
+
+284
+00:11:10,000 --> 00:11:14,639
+recognizing digits that are written out
+
+285
+00:11:11,919 --> 00:11:17,360
+as images whereas glue is really solving
+
+286
+00:11:14,639 --> 00:11:19,199
+a whole host of what looked like very
+
+287
+00:11:17,360 --> 00:11:21,440
+difficult natural language understanding
+
+288
+00:11:19,200 --> 00:11:23,839
+problems so the fact that we would go
+
+289
+00:11:21,440 --> 00:11:26,480
+from way below human performance to
+
+290
+00:11:23,839 --> 00:11:28,959
+surpassing the superhuman performance in
+
+291
+00:11:26,480 --> 00:11:32,959
+just one year is surely eye-opening and
+
+292
+00:11:28,958 --> 00:11:34,719
+an indication that something has changed
+
+293
+00:11:32,958 --> 00:11:36,239
+let me give you a few examples of this
+
+294
+00:11:34,720 --> 00:11:37,920
+just dive in a little bit so this is the
+
+295
+00:11:36,240 --> 00:11:39,919
+stanford questioning and question
+
+296
+00:11:37,919 --> 00:11:41,199
+answering data set or squad as you saw
+
+297
+00:11:41,200 --> 00:11:44,879
+i'll say a bit more about this task
+
+298
+00:11:42,720 --> 00:11:47,200
+later but you can think of it as just a
+
+299
+00:11:44,879 --> 00:11:48,639
+question answering task and the striking
+
+300
+00:11:47,200 --> 00:11:50,480
+thing about the current leaderboard is
+
+301
+00:11:48,639 --> 00:11:51,679
+that you have to go all the way to place
+
+302
+00:11:51,679 --> 00:11:55,838
+to find a system that is worse than the
+
+303
+00:11:54,078 --> 00:11:58,159
+human performance which they've nicely
+
+304
+00:11:55,839 --> 00:12:00,320
+kept at the top of this leaderboard
+
+305
+00:11:58,159 --> 00:12:03,360
+many many systems are superhuman
+
+306
+00:12:00,320 --> 00:12:05,120
+according to this metric on squad
+
+307
+00:12:03,360 --> 00:12:06,720
+the stanford natural language inference
+
+308
+00:12:05,120 --> 00:12:08,240
+corpus is similar natural language
+
+309
+00:12:06,720 --> 00:12:10,079
+inference is a kind of common sense
+
+310
+00:12:08,240 --> 00:12:12,399
+reasoning task that we're going to study
+
+311
+00:12:10,078 --> 00:12:14,399
+in detail later in the quarter
+
+312
+00:12:14,399 --> 00:12:19,679
+time along the x-axis and the f-1 score
+
+313
+00:12:17,679 --> 00:12:21,759
+or the performance along the y-axis and
+
+314
+00:12:19,679 --> 00:12:24,239
+the red line charts out what we take to
+
+315
+00:12:21,759 --> 00:12:25,759
+be the human estimate of performance on
+
+316
+00:12:25,759 --> 00:12:28,958
+and if you just look at systems over
+
+317
+00:12:27,360 --> 00:12:31,759
+time according to the leaderboard you
+
+318
+00:12:28,958 --> 00:12:34,000
+can see the community very rapidly hill
+
+319
+00:12:31,759 --> 00:12:37,759
+climbing toward superhuman performance
+
+320
+00:12:37,759 --> 00:12:41,759
+super human systems when it comes to
+
+321
+00:12:39,679 --> 00:12:43,599
+common sense reasoning with language
+
+322
+00:12:43,600 --> 00:12:48,480
+breakthrough in artificial intelligence
+
+323
+00:12:48,480 --> 00:12:52,240
+i mentioned glue is another benchmark
+
+324
+00:12:50,399 --> 00:12:54,320
+the glue paper is noteworthy because it
+
+325
+00:12:54,320 --> 00:12:58,079
+capability of current transfer learning
+
+326
+00:12:56,240 --> 00:13:00,799
+methods the reason they said that is
+
+327
+00:12:58,078 --> 00:13:02,879
+that at the time 2018 glue looked
+
+328
+00:13:00,799 --> 00:13:05,120
+incredibly ambitious because the idea
+
+329
+00:13:02,879 --> 00:13:08,159
+was to develop systems that could solve
+
+330
+00:13:05,120 --> 00:13:10,159
+not just one task but 10 somewhat
+
+331
+00:13:08,159 --> 00:13:12,000
+different tasks in the space of natural
+
+332
+00:13:12,000 --> 00:13:14,958
+and so they thought they had set up a
+
+333
+00:13:13,278 --> 00:13:17,600
+benchmark that would last a very long
+
+334
+00:13:14,958 --> 00:13:19,919
+time but it took only about a year
+
+335
+00:13:17,600 --> 00:13:22,079
+for systems to surpass their estimate of
+
+336
+00:13:19,919 --> 00:13:23,919
+human performance and the current
+
+337
+00:13:22,078 --> 00:13:26,159
+leaderboard which you see here you have
+
+338
+00:13:26,159 --> 00:13:31,278
+to find the glue human baselines with
+
+339
+00:13:28,399 --> 00:13:34,639
+many systems vastly outperforming that
+
+340
+00:13:31,278 --> 00:13:36,958
+estimate of what humans could do
+
+341
+00:13:34,639 --> 00:13:38,560
+super glue was announced as a successor
+
+342
+00:13:36,958 --> 00:13:39,679
+to glue and meant to be even more
+
+343
+00:13:41,399 --> 00:13:46,720
+2019 i believe i'm missing the date but
+
+344
+00:13:44,799 --> 00:13:48,719
+it took less than a year this happened
+
+345
+00:13:48,720 --> 00:13:52,639
+for a team to beat the human baseline
+
+346
+00:13:51,039 --> 00:13:54,879
+and now we have two systems that are
+
+347
+00:13:52,639 --> 00:13:57,120
+above the level of human performance in
+
+348
+00:13:54,879 --> 00:13:58,639
+an even tighter window i believe than
+
+349
+00:13:57,120 --> 00:14:00,720
+what happened with the glue benchmark
+
+350
+00:13:58,639 --> 00:14:02,399
+and remember super glue was meant to
+
+351
+00:14:00,720 --> 00:14:05,040
+have learned the lessons from glue and
+
+352
+00:14:02,399 --> 00:14:07,440
+pose an even stronger benchmark for the
+
+353
+00:14:05,039 --> 00:14:08,958
+field to try to hill climb on and very
+
+354
+00:14:07,440 --> 00:14:10,959
+quickly we saw this superhuman
+
+355
+00:14:10,958 --> 00:14:13,759
+so what's the takeaway of all this you
+
+356
+00:14:13,759 --> 00:14:17,360
+have a look at nick bostrom's book
+
+357
+00:14:15,360 --> 00:14:19,199
+called super intelligence which tries to
+
+358
+00:14:17,360 --> 00:14:21,519
+imagine in a philosophical sense a
+
+359
+00:14:19,198 --> 00:14:24,078
+future in which we have many systems
+
+360
+00:14:21,519 --> 00:14:25,679
+that are incredible at the task that we
+
+361
+00:14:24,078 --> 00:14:27,759
+have designed them for vastly
+
+362
+00:14:25,679 --> 00:14:30,239
+outstripping what humans can achieve and
+
+363
+00:14:27,759 --> 00:14:32,399
+he imagines this kind of very different
+
+364
+00:14:30,240 --> 00:14:34,560
+reality with lots of unintended side
+
+365
+00:14:32,399 --> 00:14:36,000
+effects and when you look back on the
+
+366
+00:14:34,559 --> 00:14:37,599
+things that i've just highlighted you
+
+367
+00:14:36,000 --> 00:14:39,679
+might think that we're on the verge of
+
+368
+00:14:37,600 --> 00:14:42,000
+seeing exactly that kind of superhuman
+
+369
+00:14:39,679 --> 00:14:44,000
+performance that would be so radically
+
+370
+00:14:42,000 --> 00:14:45,759
+transformative for our society and for
+
+371
+00:14:45,759 --> 00:14:49,838
+that's the sense in which we live
+
+372
+00:14:47,198 --> 00:14:53,278
+possibly scarily in this golden age for
+
+373
+00:14:49,839 --> 00:14:54,800
+natural language understanding
+
+374
+00:14:53,278 --> 00:14:56,639
+i mean this to be an optimistic
+
+375
+00:14:54,799 --> 00:14:58,559
+perspective we should be aware of the
+
+376
+00:14:58,559 --> 00:15:03,198
+and keep in mind that i do think we live
+
+377
+00:15:00,159 --> 00:15:05,439
+in a golden age but at this point i have
+
+378
+00:15:03,198 --> 00:15:07,759
+to step back i have to temper this
+
+379
+00:15:05,440 --> 00:15:09,760
+message somewhat we have to take a peek
+
+380
+00:15:07,759 --> 00:15:12,319
+behind the curtain because although
+
+381
+00:15:09,759 --> 00:15:13,838
+that's a striking number of successes
+
+382
+00:15:12,320 --> 00:15:15,519
+doing things that again i think would
+
+383
+00:15:13,839 --> 00:15:16,560
+have looked like science fiction 20
+
+384
+00:15:16,559 --> 00:15:21,198
+we should be aware that progress seems
+
+385
+00:15:19,120 --> 00:15:23,519
+to be much more limited than those
+
+386
+00:15:21,198 --> 00:15:25,278
+initial results would have suggested
+
+387
+00:15:23,519 --> 00:15:27,839
+i mentioned watson as one of these
+
+388
+00:15:25,278 --> 00:15:29,278
+striking early successes and it did in
+
+389
+00:15:29,278 --> 00:15:32,480
+in a superhuman way at jeopardy for the
+
+390
+00:15:32,480 --> 00:15:36,079
+but watson also does all sorts of
+
+391
+00:15:34,240 --> 00:15:37,919
+strange things that reveal that it does
+
+392
+00:15:36,078 --> 00:15:40,559
+not deeply understand what it's doing
+
+393
+00:15:37,919 --> 00:15:42,399
+here's a wonderful example of that
+
+394
+00:15:40,559 --> 00:15:44,159
+remember that jeopardy does this kind of
+
+395
+00:15:42,399 --> 00:15:46,480
+question answer thing backwards so the
+
+396
+00:15:44,159 --> 00:15:47,838
+prompt from the host was grasshoppers
+
+397
+00:15:47,839 --> 00:15:52,959
+and what watson said was what is kosher
+
+398
+00:15:51,600 --> 00:15:54,800
+you might think that's not something
+
+399
+00:15:52,958 --> 00:15:57,119
+that humans do grasshoppers eat it what
+
+400
+00:15:54,799 --> 00:15:59,439
+is kosher it feels kind of mismatched in
+
+401
+00:15:57,120 --> 00:16:01,519
+many respects what's the origin of this
+
+402
+00:16:01,519 --> 00:16:06,720
+primarily watson was a device for
+
+403
+00:16:03,519 --> 00:16:09,120
+extracting information from wikipedia
+
+404
+00:16:06,720 --> 00:16:12,079
+and a few wikipedia pages have very
+
+405
+00:16:09,120 --> 00:16:14,560
+detailed descriptions of whether various
+
+406
+00:16:12,078 --> 00:16:16,879
+animals including grasshoppers
+
+407
+00:16:14,559 --> 00:16:19,599
+are kosher in the sense of conforming to
+
+408
+00:16:16,879 --> 00:16:22,000
+the laws of the kosher dietary laws
+
+409
+00:16:19,600 --> 00:16:24,159
+and watson had simply mistaken this kind
+
+410
+00:16:22,000 --> 00:16:25,440
+of distributional proximity for a real
+
+411
+00:16:25,440 --> 00:16:29,680
+and thought that kosher was a reasonable
+
+412
+00:16:27,360 --> 00:16:30,480
+answer to grasshoppers eat it i think
+
+413
+00:16:30,480 --> 00:16:34,800
+unhuman certainly and revealing about
+
+414
+00:16:32,799 --> 00:16:36,879
+the kinds of superficial techniques it
+
+415
+00:16:36,879 --> 00:16:40,399
+here's another example that's even more
+
+416
+00:16:38,720 --> 00:16:42,560
+revealing of how superficial the
+
+417
+00:16:40,399 --> 00:16:45,839
+techniques can be so i i painted this
+
+418
+00:16:42,559 --> 00:16:47,758
+picture of before of how we imagine siri
+
+419
+00:16:45,839 --> 00:16:50,000
+will behave anticipating our needs and
+
+420
+00:16:47,759 --> 00:16:51,519
+our goals and responding accordingly
+
+421
+00:16:50,000 --> 00:16:53,519
+this is a very funny scene from the
+
+422
+00:16:51,519 --> 00:16:55,519
+colbert show this is stephen colbert and
+
+423
+00:16:53,519 --> 00:16:57,919
+the premise of this is that he's just
+
+424
+00:16:55,519 --> 00:16:59,919
+gotten his first iphone with siri and
+
+425
+00:16:57,919 --> 00:17:01,759
+he's been playing with it all day and
+
+426
+00:16:59,919 --> 00:17:02,958
+therefore has failed to write the show
+
+427
+00:17:02,958 --> 00:17:07,279
+performing in so he says for the love of
+
+428
+00:17:05,279 --> 00:17:09,599
+god the cameras are on give me something
+
+429
+00:17:07,279 --> 00:17:11,599
+now give me something for the show
+
+430
+00:17:09,599 --> 00:17:15,519
+and siri says what kind of place are you
+
+431
+00:17:11,599 --> 00:17:17,359
+looking for camera stores or churches
+
+432
+00:17:15,519 --> 00:17:19,119
+initially very surprising not something
+
+433
+00:17:17,359 --> 00:17:20,798
+a human would do and then you realize it
+
+434
+00:17:19,119 --> 00:17:23,438
+has again just done some very
+
+435
+00:17:20,798 --> 00:17:25,599
+superficial pattern matching god goes
+
+436
+00:17:23,439 --> 00:17:27,919
+with churches cameras goes with camera
+
+437
+00:17:25,599 --> 00:17:29,918
+stores and there is no sense in which it
+
+438
+00:17:27,919 --> 00:17:32,240
+understands his intentions it has just
+
+439
+00:17:29,919 --> 00:17:34,240
+done some pattern matching in a way that
+
+440
+00:17:32,240 --> 00:17:38,480
+would be very familiar to the designers
+
+441
+00:17:34,240 --> 00:17:40,240
+of eliza way back in the 60s and 70s
+
+442
+00:17:40,240 --> 00:17:43,599
+i don't want to search for anything i
+
+443
+00:17:41,599 --> 00:17:45,918
+want to write the show and in true to
+
+444
+00:17:43,599 --> 00:17:47,359
+form siri says searching the web for
+
+445
+00:17:45,919 --> 00:17:49,919
+search for anything i want to write the
+
+446
+00:17:47,359 --> 00:17:51,599
+shuffle revealing its fallback when it
+
+447
+00:17:49,919 --> 00:17:53,679
+has no idea what has happened in the
+
+448
+00:17:51,599 --> 00:17:56,000
+discourse it just tries to do a web
+
+449
+00:17:53,679 --> 00:17:58,480
+search a simple trick revealing that it
+
+450
+00:17:56,000 --> 00:18:02,480
+doesn't deeply understand goals or plans
+
+451
+00:17:58,480 --> 00:18:02,480
+or intentions or even communicative acts
+
+452
+00:18:03,279 --> 00:18:07,119
+i showed you before that gpt3 can do
+
+453
+00:18:05,359 --> 00:18:08,479
+some striking things if you've gotten to
+
+454
+00:18:07,119 --> 00:18:10,239
+play around with it you've seen that it
+
+455
+00:18:08,480 --> 00:18:12,319
+can indeed be very surprising and
+
+456
+00:18:10,240 --> 00:18:14,640
+delightful but of course it can go
+
+457
+00:18:12,319 --> 00:18:16,480
+horribly wrong this is a very funny text
+
+458
+00:18:14,640 --> 00:18:18,720
+from joe of goldberg he posted this on
+
+459
+00:18:16,480 --> 00:18:20,240
+twitter using when he was experimenting
+
+460
+00:18:20,240 --> 00:18:23,759
+i encourage you to read this one and be
+
+461
+00:18:22,000 --> 00:18:25,440
+distracted you don't need to worry too
+
+462
+00:18:23,759 --> 00:18:27,519
+much about this one on the right this is
+
+463
+00:18:25,440 --> 00:18:29,840
+a case where someone tried to use gpt3
+
+464
+00:18:27,519 --> 00:18:31,759
+to get medical advice and the ultimate
+
+465
+00:18:29,839 --> 00:18:33,599
+response from gpt3 to the question
+
+466
+00:18:31,759 --> 00:18:34,640
+should i kill myself was i think you
+
+467
+00:18:34,640 --> 00:18:38,880
+this is the really dangerous thing the
+
+468
+00:18:36,880 --> 00:18:40,400
+text on the left here is again more
+
+469
+00:18:38,880 --> 00:18:43,440
+innocent and just revealing that
+
+470
+00:18:40,400 --> 00:18:44,960
+although gbt3 has a way of mimicking
+
+471
+00:18:43,440 --> 00:18:46,798
+the kinds of things that we say in
+
+472
+00:18:44,960 --> 00:18:49,120
+certain kinds of discourse and it often
+
+473
+00:18:46,798 --> 00:18:50,558
+has a strikingly good ear for the kinds
+
+474
+00:18:50,558 --> 00:18:54,960
+that we use in these different contexts
+
+475
+00:18:52,798 --> 00:18:57,200
+it has no idea what it's talking about
+
+476
+00:18:54,960 --> 00:18:59,440
+so that if you ask it our cat's liquid
+
+477
+00:18:57,200 --> 00:19:02,000
+it gives a response that sounds quite
+
+478
+00:18:59,440 --> 00:19:04,000
+erudite provided that you don't pay any
+
+479
+00:19:02,000 --> 00:19:07,679
+attention to what it's actually saying
+
+480
+00:19:08,839 --> 00:19:12,798
+hilarious i mentioned those image
+
+481
+00:19:10,960 --> 00:19:14,558
+captions before and i tricked you a
+
+482
+00:19:12,798 --> 00:19:16,720
+little bit because i showed you from
+
+483
+00:19:14,558 --> 00:19:18,798
+this paper the ones that they regarded
+
+484
+00:19:16,720 --> 00:19:20,798
+as the best captions for those images
+
+485
+00:19:18,798 --> 00:19:23,279
+but to their credit they provided a lot
+
+486
+00:19:20,798 --> 00:19:25,759
+more examples and as you travel to the
+
+487
+00:19:23,279 --> 00:19:28,240
+right along this diagram you get worse
+
+488
+00:19:25,759 --> 00:19:29,599
+and worse captions and the point again
+
+489
+00:19:28,240 --> 00:19:31,759
+is that by the time you've gotten to
+
+490
+00:19:29,599 --> 00:19:33,759
+this right column over here you have
+
+491
+00:19:31,759 --> 00:19:35,679
+really absurd captions like this one
+
+492
+00:19:33,759 --> 00:19:37,759
+saying a refrigerator filled with lots
+
+493
+00:19:35,679 --> 00:19:39,759
+of food and drinks when this is in fact
+
+494
+00:19:37,759 --> 00:19:40,480
+just a sign with a bunch of stickers on
+
+495
+00:19:40,480 --> 00:19:45,360
+um the striking thing again is that the
+
+496
+00:19:45,359 --> 00:19:48,879
+are not the kinds of mistakes that
+
+497
+00:19:46,640 --> 00:19:51,200
+humans would make and to me they reveal
+
+498
+00:19:48,880 --> 00:19:53,679
+a serious lack of understanding about
+
+499
+00:19:51,200 --> 00:19:55,519
+what the actual task is what you're
+
+500
+00:19:53,679 --> 00:19:57,919
+seeing seep in here is that even the
+
+501
+00:19:55,519 --> 00:20:00,000
+best of our systems are kind of doing a
+
+502
+00:19:57,919 --> 00:20:01,759
+bunch of superficial pattern matching
+
+503
+00:20:00,000 --> 00:20:04,000
+and that leads them to do these very
+
+504
+00:20:01,759 --> 00:20:06,640
+surprising and unhuman hopefully not
+
+505
+00:20:04,000 --> 00:20:09,200
+inhuman but unhuman things with their
+
+506
+00:20:09,200 --> 00:20:12,159
+and then of course we've i've showed you
+
+507
+00:20:10,640 --> 00:20:14,080
+before that search can be quite
+
+508
+00:20:12,159 --> 00:20:15,280
+sophisticated and really do a good job
+
+509
+00:20:15,279 --> 00:20:19,599
+anticipating our intentions and fleshing
+
+510
+00:20:17,440 --> 00:20:21,840
+out what we said to find you know help
+
+511
+00:20:19,599 --> 00:20:23,439
+us achieve our goals but it can go
+
+512
+00:20:21,839 --> 00:20:25,119
+horribly wrong and at this point it
+
+513
+00:20:23,440 --> 00:20:27,440
+doesn't take much searching around with
+
+514
+00:20:25,119 --> 00:20:29,759
+google to see some really surprising
+
+515
+00:20:27,440 --> 00:20:32,000
+things as supposedly curated pieces of
+
+516
+00:20:29,759 --> 00:20:34,558
+information like king of the united
+
+517
+00:20:32,000 --> 00:20:36,159
+states it has this nice box it's making
+
+518
+00:20:34,558 --> 00:20:38,558
+it look like it's some authoritative
+
+519
+00:20:36,159 --> 00:20:40,799
+information but of course it has badly
+
+520
+00:20:38,558 --> 00:20:43,519
+misunderstood the true state of the
+
+521
+00:20:40,798 --> 00:20:45,440
+world the associations in its data are
+
+522
+00:20:43,519 --> 00:20:47,200
+misleading it into giving us the wrong
+
+523
+00:20:45,440 --> 00:20:49,679
+answer here's another example what
+
+524
+00:20:47,200 --> 00:20:51,600
+happened to the dinosaurs again a nicely
+
+525
+00:20:49,679 --> 00:20:53,519
+curated box that looks like an
+
+526
+00:20:51,599 --> 00:20:55,599
+authoritative response to that question
+
+527
+00:20:53,519 --> 00:20:57,279
+but it is in fact anything but an
+
+528
+00:20:55,599 --> 00:21:00,558
+authoritative recounting of what
+
+529
+00:21:01,200 --> 00:21:04,880
+and then we have other charming stories
+
+530
+00:21:03,119 --> 00:21:07,038
+that again reveal how superficial this
+
+531
+00:21:04,880 --> 00:21:09,520
+can be this is from a headline from a
+
+532
+00:21:07,038 --> 00:21:11,839
+few years ago does anne hathaway news
+
+533
+00:21:09,519 --> 00:21:14,240
+drive berkshire hathaway stock this was
+
+534
+00:21:11,839 --> 00:21:16,399
+just an article observing that every
+
+535
+00:21:14,240 --> 00:21:18,480
+time anne hathaway has a movie come out
+
+536
+00:21:16,400 --> 00:21:20,159
+and people like the movie it causes a
+
+537
+00:21:18,480 --> 00:21:22,319
+little bump in the berkshire hathaway
+
+538
+00:21:20,159 --> 00:21:24,559
+stock revealing that the systems are
+
+539
+00:21:22,319 --> 00:21:26,720
+just keying in on keywords and typically
+
+540
+00:21:24,558 --> 00:21:28,558
+not attending to the actual context of
+
+541
+00:21:26,720 --> 00:21:30,159
+the mentions of these things and
+
+542
+00:21:30,159 --> 00:21:34,640
+they're building on what is essentially
+
+543
+00:21:34,640 --> 00:21:38,480
+this is a more extreme case here the
+
+544
+00:21:38,480 --> 00:21:44,000
+in 2008 when a newspaper accidentally
+
+545
+00:21:40,880 --> 00:21:46,080
+republished a 2002 bankruptcy story
+
+546
+00:21:44,000 --> 00:21:48,480
+automated trading systems reacted in
+
+547
+00:21:46,079 --> 00:21:50,639
+seconds and one billion dollars in
+
+548
+00:21:48,480 --> 00:21:52,720
+market value evaporated within 12
+
+549
+00:21:50,640 --> 00:21:55,038
+minutes you can see that sharp drop off
+
+550
+00:21:52,720 --> 00:21:57,120
+here luckily people intervened in the
+
+551
+00:21:55,038 --> 00:21:58,879
+market more or less recovered
+
+552
+00:21:57,119 --> 00:22:00,879
+but the important thing here again is
+
+553
+00:21:58,880 --> 00:22:02,960
+just that in the tending to superficial
+
+554
+00:22:00,880 --> 00:22:04,240
+things about the text these systems are
+
+555
+00:22:04,240 --> 00:22:08,240
+they miss context they don't bring any
+
+556
+00:22:06,720 --> 00:22:10,240
+kind of human level understanding of
+
+557
+00:22:08,240 --> 00:22:12,159
+what's likely to be true and false and
+
+558
+00:22:10,240 --> 00:22:14,480
+therefore they act in very surprising
+
+559
+00:22:12,159 --> 00:22:16,159
+ways and in the context of a large
+
+560
+00:22:14,480 --> 00:22:17,839
+system with lots of moving pieces
+
+561
+00:22:16,159 --> 00:22:19,840
+interacting with other artificial
+
+562
+00:22:17,839 --> 00:22:22,079
+intelligence systems you get these
+
+563
+00:22:22,079 --> 00:22:26,000
+that we could help correct if we just
+
+564
+00:22:23,919 --> 00:22:28,400
+did a better job designing systems that
+
+565
+00:22:26,000 --> 00:22:30,240
+could attend to context and have a more
+
+566
+00:22:28,400 --> 00:22:33,679
+human-like understanding of what the
+
+567
+00:22:34,159 --> 00:22:37,919
+and we're all of course very worried
+
+568
+00:22:36,159 --> 00:22:40,559
+about the way these systems which are
+
+569
+00:22:37,919 --> 00:22:43,038
+just trained on potentially biased data
+
+570
+00:22:40,558 --> 00:22:44,720
+might cause us to perpetuate biases so
+
+571
+00:22:43,038 --> 00:22:46,960
+that not only are we reflecting
+
+572
+00:22:44,720 --> 00:22:49,200
+problematic aspects of our society but
+
+573
+00:22:46,960 --> 00:22:50,000
+also amplifying those biases and in that
+
+574
+00:22:50,000 --> 00:22:53,440
+far from achieving a social good we
+
+575
+00:22:51,679 --> 00:22:55,360
+would actually be contributing to some
+
+576
+00:22:53,440 --> 00:22:57,519
+pernicious things that already exist in
+
+577
+00:22:55,359 --> 00:22:59,519
+our society and the field is really
+
+578
+00:22:57,519 --> 00:23:02,400
+struggling to come to grips with that
+
+579
+00:23:02,558 --> 00:23:05,678
+and i also wanted to just dive in a
+
+580
+00:23:03,919 --> 00:23:07,440
+little bit and think about the low-level
+
+581
+00:23:05,679 --> 00:23:10,080
+stuff so kind of benchmarks that we've
+
+582
+00:23:07,440 --> 00:23:12,080
+set for ourselves and i pointed out that
+
+583
+00:23:10,079 --> 00:23:13,839
+progress on these benchmarks seems to be
+
+584
+00:23:12,079 --> 00:23:15,839
+faster than ever right we're getting to
+
+585
+00:23:13,839 --> 00:23:18,000
+pass super heat we're getting to super
+
+586
+00:23:15,839 --> 00:23:19,678
+human performance more quickly than we
+
+587
+00:23:19,679 --> 00:23:24,798
+uh the speed up is remarkable however
+
+588
+00:23:22,558 --> 00:23:27,200
+we should be very careful not to mistake
+
+589
+00:23:24,798 --> 00:23:28,879
+those advances for any kind of claim
+
+590
+00:23:27,200 --> 00:23:31,440
+about what these systems can do with
+
+591
+00:23:28,880 --> 00:23:33,280
+respect to the very human capability of
+
+592
+00:23:31,440 --> 00:23:35,519
+something like answering questions or
+
+593
+00:23:35,519 --> 00:23:38,639
+and one very powerful thing that's
+
+594
+00:23:37,038 --> 00:23:40,720
+happened in the field that we're going
+
+595
+00:23:38,640 --> 00:23:43,200
+to talk a lot about this quarter is
+
+596
+00:23:40,720 --> 00:23:45,038
+so-called adversarial testing where we
+
+597
+00:23:43,200 --> 00:23:47,519
+try to probe our systems with examples
+
+598
+00:23:45,038 --> 00:23:49,679
+that don't fool humans but cause these
+
+599
+00:23:49,679 --> 00:23:53,679
+so let's look at one of those cases in a
+
+600
+00:23:51,440 --> 00:23:55,200
+little bit of detail this is from squad
+
+601
+00:23:53,679 --> 00:23:57,600
+the way squad is structured is that
+
+602
+00:23:55,200 --> 00:23:59,519
+you're given a passage like this and a
+
+603
+00:23:59,519 --> 00:24:02,879
+and the goal of the system is to come up
+
+604
+00:24:01,200 --> 00:24:04,798
+with an answer where you have a
+
+605
+00:24:02,880 --> 00:24:06,559
+guarantee that the answer is a literal
+
+606
+00:24:06,558 --> 00:24:09,759
+so here you have a passage about
+
+607
+00:24:07,919 --> 00:24:11,600
+football and the question what is the
+
+608
+00:24:09,759 --> 00:24:14,319
+name of the quarterback who was 38 in
+
+609
+00:24:11,599 --> 00:24:15,678
+super bowl 33 and the answer is john
+
+610
+00:24:15,679 --> 00:24:19,679
+but jia and lang gia and lang from
+
+611
+00:24:17,919 --> 00:24:21,840
+stanford what they observed is that you
+
+612
+00:24:19,679 --> 00:24:23,840
+could very easily fool these systems if
+
+613
+00:24:21,839 --> 00:24:26,158
+you simply appended to that original
+
+614
+00:24:23,839 --> 00:24:28,158
+passage a misleading sentence like
+
+615
+00:24:26,159 --> 00:24:31,360
+quarterback leland stanford had jersey
+
+616
+00:24:31,359 --> 00:24:35,439
+humans were not misled they very easily
+
+617
+00:24:33,440 --> 00:24:36,960
+read past the distracting information
+
+618
+00:24:35,440 --> 00:24:39,919
+and continued to provide the correct
+
+619
+00:24:36,960 --> 00:24:42,640
+answer however the even the very best
+
+620
+00:24:39,919 --> 00:24:44,400
+systems would reliably be distracted by
+
+621
+00:24:42,640 --> 00:24:46,080
+that new information and respond with
+
+622
+00:24:47,359 --> 00:24:51,278
+and you might think ah well this is
+
+623
+00:24:49,679 --> 00:24:53,278
+straightforward they've already charted
+
+624
+00:24:51,278 --> 00:24:56,079
+a path to the solution because we should
+
+625
+00:24:53,278 --> 00:24:57,359
+then just train our systems on data
+
+626
+00:24:56,079 --> 00:24:59,199
+where they have these misleading
+
+627
+00:25:00,400 --> 00:25:04,880
+adversarial problem and you know back be
+
+628
+00:25:02,640 --> 00:25:06,640
+back up to doing what humans can do
+
+629
+00:25:04,880 --> 00:25:08,559
+but yeah and lang anticipated that
+
+630
+00:25:06,640 --> 00:25:10,000
+response what happens if you prepend the
+
+631
+00:25:10,000 --> 00:25:13,119
+even when they're trained on the
+
+632
+00:25:11,200 --> 00:25:15,679
+augmented data with the sentences
+
+633
+00:25:13,119 --> 00:25:18,000
+appended to the end systems get misled
+
+634
+00:25:15,679 --> 00:25:19,679
+by the prepended examples in this case
+
+635
+00:25:18,000 --> 00:25:22,000
+and you can just go back and forth like
+
+636
+00:25:19,679 --> 00:25:23,919
+this train on the prepended examples
+
+637
+00:25:22,000 --> 00:25:25,919
+well then an adversary can insert a
+
+638
+00:25:23,919 --> 00:25:28,559
+sentence in the middle and again trick
+
+639
+00:25:25,919 --> 00:25:30,480
+the system and so forth and so on
+
+640
+00:25:28,558 --> 00:25:32,079
+right so this is a worrisome fact again
+
+641
+00:25:32,079 --> 00:25:36,240
+we might think we've got a system that
+
+642
+00:25:33,919 --> 00:25:38,080
+truly understands but actually we have a
+
+643
+00:25:36,240 --> 00:25:42,000
+system that is just benefiting from a
+
+644
+00:25:42,000 --> 00:25:44,960
+another striking thing i want to point
+
+645
+00:25:43,519 --> 00:25:46,558
+out about the way this adversarial
+
+646
+00:25:44,960 --> 00:25:48,400
+testing played out which we should have
+
+647
+00:25:46,558 --> 00:25:50,879
+in mind as we think about results like
+
+648
+00:25:48,400 --> 00:25:52,720
+this so this is the original system on
+
+649
+00:25:52,720 --> 00:25:58,319
+adversaries and they and the you know um
+
+650
+00:25:56,079 --> 00:26:00,558
+percy young has this um system called
+
+651
+00:25:58,319 --> 00:26:02,319
+coda lab where he possesses all the
+
+652
+00:26:00,558 --> 00:26:04,558
+systems that enter into the squad
+
+653
+00:26:02,319 --> 00:26:06,399
+competition which made it possible for
+
+654
+00:26:04,558 --> 00:26:08,558
+him and his students to rerun all those
+
+655
+00:26:06,400 --> 00:26:10,320
+systems and see how they did on this
+
+656
+00:26:08,558 --> 00:26:12,639
+adversarial data set that they had
+
+657
+00:26:10,319 --> 00:26:14,798
+created you can see that all the systems
+
+658
+00:26:12,640 --> 00:26:17,759
+really plummet in their performance from
+
+659
+00:26:14,798 --> 00:26:19,359
+a high of 81 you drop down to about 40.
+
+660
+00:26:17,759 --> 00:26:21,119
+maybe that's kind of expected but
+
+661
+00:26:19,359 --> 00:26:23,359
+another really eye-opening thing about
+
+662
+00:26:21,119 --> 00:26:25,519
+the result they have is that the rank of
+
+663
+00:26:23,359 --> 00:26:27,359
+the systems changed really dramatically
+
+664
+00:26:25,519 --> 00:26:29,918
+dramatically right so the first the
+
+665
+00:26:27,359 --> 00:26:32,879
+original top-ranked system went to five
+
+666
+00:26:29,919 --> 00:26:34,880
+two to ten three to twelve as we did
+
+667
+00:26:32,880 --> 00:26:37,120
+this adversarial thing we didn't see a
+
+668
+00:26:34,880 --> 00:26:39,440
+uniform drop with the best system still
+
+669
+00:26:37,119 --> 00:26:41,678
+being the best but really shuffling of
+
+670
+00:26:39,440 --> 00:26:43,600
+this leaderboard again revealing that i
+
+671
+00:26:41,679 --> 00:26:46,159
+think the best systems were kind of over
+
+672
+00:26:43,599 --> 00:26:48,480
+fit and benefiting from relatively low
+
+673
+00:26:46,159 --> 00:26:50,400
+level facts about the data set and not
+
+674
+00:26:48,480 --> 00:26:52,079
+really transformatively different when
+
+675
+00:26:50,400 --> 00:26:54,559
+it comes to being able to answer
+
+676
+00:26:56,000 --> 00:26:59,359
+the history of natural language
+
+677
+00:26:57,839 --> 00:27:01,119
+in natural language inference problems
+
+678
+00:26:59,359 --> 00:27:03,038
+is very similar as i said we're going to
+
+679
+00:27:01,119 --> 00:27:05,199
+look at this problem in a lot of detail
+
+680
+00:27:03,038 --> 00:27:07,278
+later in the course here just a few very
+
+681
+00:27:05,200 --> 00:27:08,880
+simple nli examples you've got a premise
+
+682
+00:27:08,880 --> 00:27:13,039
+hypothesis a turtle moved and you have
+
+683
+00:27:11,359 --> 00:27:14,719
+one of three relations that can hold
+
+684
+00:27:13,038 --> 00:27:17,038
+between those sentences so a turtle
+
+685
+00:27:17,038 --> 00:27:20,720
+every reptile danced is neutral with
+
+686
+00:27:19,119 --> 00:27:22,319
+respect to a turtle eight that can be
+
+687
+00:27:20,720 --> 00:27:24,640
+true or false independently of each
+
+688
+00:27:22,319 --> 00:27:26,158
+other and some turtles walk contradicts
+
+689
+00:27:26,159 --> 00:27:29,840
+this is typical kind of nli data the
+
+690
+00:27:28,000 --> 00:27:31,599
+actual corpus sentences tend to be more
+
+691
+00:27:29,839 --> 00:27:33,278
+complicated and involve more nuanced
+
+692
+00:27:31,599 --> 00:27:35,678
+judgments but that's a framing of the
+
+693
+00:27:33,278 --> 00:27:38,079
+task it's a three-way classification
+
+694
+00:27:35,679 --> 00:27:40,960
+problem with these these labels and the
+
+695
+00:27:38,079 --> 00:27:42,720
+inputs are pairs of sentences like this
+
+696
+00:27:40,960 --> 00:27:45,038
+and as i showed you before for one of
+
+697
+00:27:42,720 --> 00:27:47,038
+the large benchmarks the stanford uh
+
+698
+00:27:45,038 --> 00:27:50,879
+natural language inference corpus we
+
+699
+00:27:47,038 --> 00:27:53,200
+reached superhuman performance in 2019
+
+700
+00:27:50,880 --> 00:27:55,278
+but those same systems really struggle
+
+701
+00:27:53,200 --> 00:27:57,519
+with simple adversarial attacks this is
+
+702
+00:27:55,278 --> 00:28:00,159
+a lovely paper called breaking nli from
+
+703
+00:27:57,519 --> 00:28:01,839
+glockner at all what they did is fix a
+
+704
+00:28:00,159 --> 00:28:03,360
+premise like a little girl kneeling in
+
+705
+00:28:03,359 --> 00:28:08,479
+the original corpus example was that
+
+706
+00:28:05,359 --> 00:28:10,479
+that entails a little girl is very sad
+
+707
+00:28:08,480 --> 00:28:12,159
+and they just had an expectation that
+
+708
+00:28:10,480 --> 00:28:14,000
+you know sort of adversarially but this
+
+709
+00:28:12,159 --> 00:28:16,399
+is a very friendly adversary if i just
+
+710
+00:28:14,000 --> 00:28:18,319
+replace sad with unhappy i should
+
+711
+00:28:16,398 --> 00:28:19,599
+continue to see the entailment relation
+
+712
+00:28:19,599 --> 00:28:23,599
+substituted one word for it's sort of
+
+713
+00:28:23,599 --> 00:28:27,278
+but what they actually saw is that
+
+714
+00:28:25,200 --> 00:28:29,038
+systems very reliably flip this to the
+
+715
+00:28:29,038 --> 00:28:33,359
+probably because they are keying into
+
+716
+00:28:31,200 --> 00:28:35,360
+the fact that this is a negation and
+
+717
+00:28:33,359 --> 00:28:37,199
+they over fit on the idea that the
+
+718
+00:28:35,359 --> 00:28:39,839
+presence of negation is a signal that
+
+719
+00:28:37,200 --> 00:28:41,360
+you're in the contradiction relationship
+
+720
+00:28:39,839 --> 00:28:43,439
+so that's a sort of distressing thing
+
+721
+00:28:41,359 --> 00:28:45,359
+again humans don't make these mistakes
+
+722
+00:28:43,440 --> 00:28:47,440
+but systems are very prone to them let
+
+723
+00:28:45,359 --> 00:28:49,678
+me show you one more this is a slightly
+
+724
+00:28:47,440 --> 00:28:51,440
+different adversarial attack in this
+
+725
+00:28:49,679 --> 00:28:53,840
+case we're going to modify the premise
+
+726
+00:28:51,440 --> 00:28:55,679
+so the original training example was a
+
+727
+00:28:53,839 --> 00:28:56,720
+woman is pulling a child on a sled in
+
+728
+00:28:56,720 --> 00:28:59,919
+that entails a child is sitting on a
+
+729
+00:28:59,919 --> 00:29:03,360
+that's pretty clear for their
+
+730
+00:29:01,440 --> 00:29:04,960
+adversarial attack they just swapped the
+
+731
+00:29:03,359 --> 00:29:07,278
+subject and the object so the new
+
+732
+00:29:04,960 --> 00:29:08,720
+premise is a child is pulling a woman on
+
+733
+00:29:08,720 --> 00:29:12,399
+we would expect that to lead to the
+
+734
+00:29:10,640 --> 00:29:14,080
+neutral label for this particular
+
+735
+00:29:14,079 --> 00:29:18,398
+but what need all observe is that the
+
+736
+00:29:15,839 --> 00:29:20,319
+systems are kind of invariant under this
+
+737
+00:29:18,398 --> 00:29:22,079
+changing of the word order they continue
+
+738
+00:29:22,079 --> 00:29:25,839
+revealing that they don't really know
+
+739
+00:29:23,919 --> 00:29:27,919
+what the subject and the object were in
+
+740
+00:29:25,839 --> 00:29:29,839
+the original example they have kind of
+
+741
+00:29:27,919 --> 00:29:32,320
+done something much fuzzier with the set
+
+742
+00:29:29,839 --> 00:29:34,319
+of words that are in that premise
+
+743
+00:29:32,319 --> 00:29:36,558
+remember these are at the time the very
+
+744
+00:29:34,319 --> 00:29:38,639
+best systems for solving these problems
+
+745
+00:29:36,558 --> 00:29:42,720
+these are very simple kind of friendly
+
+746
+00:29:38,640 --> 00:29:42,720
+adversaries that they're stumbling with
+
+747
+00:29:43,038 --> 00:29:45,679
+so this could lead you to have two
+
+748
+00:29:44,319 --> 00:29:47,918
+perspectives i showed you the nick
+
+749
+00:29:45,679 --> 00:29:50,159
+bostrom one before where we worry about
+
+750
+00:29:47,919 --> 00:29:51,759
+super intelligent systems but on the
+
+751
+00:29:50,159 --> 00:29:53,360
+other hand we might be living in a world
+
+752
+00:29:51,759 --> 00:29:55,200
+that's more like the one presented in
+
+753
+00:29:53,359 --> 00:29:57,678
+this lovely book from a roboticist a
+
+754
+00:29:55,200 --> 00:30:00,159
+practitioner daniel h wilson called how
+
+755
+00:29:57,679 --> 00:30:02,559
+to survive a robot uprising where he
+
+756
+00:30:00,159 --> 00:30:04,480
+gives all sorts of practical advice like
+
+757
+00:30:02,558 --> 00:30:06,960
+wear clothing that will fool the vision
+
+758
+00:30:04,480 --> 00:30:10,000
+system of the robot or walk up some
+
+759
+00:30:06,960 --> 00:30:12,558
+stairs or drench everything in water
+
+760
+00:30:10,000 --> 00:30:14,079
+very simple adversarial attacks that
+
+761
+00:30:12,558 --> 00:30:16,480
+reveal that these robots are not
+
+762
+00:30:14,079 --> 00:30:17,918
+creatures which we should be fearful of
+
+763
+00:30:16,480 --> 00:30:19,759
+and i feel like i've just shown you a
+
+764
+00:30:17,919 --> 00:30:22,080
+bunch of examples that are the the
+
+765
+00:30:19,759 --> 00:30:23,440
+analogues of wearing misleading clothing
+
+766
+00:30:22,079 --> 00:30:25,278
+in the space of natural language
+
+767
+00:30:23,440 --> 00:30:27,679
+processing revealing that our systems
+
+768
+00:30:25,278 --> 00:30:29,839
+are not super human understanders or
+
+769
+00:30:27,679 --> 00:30:32,080
+communicators or anything like that but
+
+770
+00:30:32,079 --> 00:30:38,079
+fairly superficial pattern measures
+
+771
+00:30:36,000 --> 00:30:40,000
+why is this all so difficult it's hard
+
+772
+00:30:38,079 --> 00:30:41,359
+to articulate precisely what is so
+
+773
+00:30:40,000 --> 00:30:43,759
+challenging because this is probably
+
+774
+00:30:41,359 --> 00:30:45,759
+deeply embedded in the whole human
+
+775
+00:30:43,759 --> 00:30:47,599
+experience but i think there are some
+
+776
+00:30:45,759 --> 00:30:49,200
+pretty straightforward superficial
+
+777
+00:30:47,599 --> 00:30:51,439
+things i can show you to just make a
+
+778
+00:30:49,200 --> 00:30:52,798
+live for you how hard even the simplest
+
+779
+00:30:52,798 --> 00:30:56,798
+so here i've got a an imagined dialogue
+
+780
+00:30:54,960 --> 00:30:57,600
+of the sort you hope siri would do well
+
+781
+00:30:57,599 --> 00:31:00,240
+whereas black panther playing in
+
+782
+00:31:00,240 --> 00:31:03,519
+black panther is playing at the century
+
+783
+00:31:03,519 --> 00:31:07,440
+when is it playing there it's playing at
+
+784
+00:31:07,440 --> 00:31:11,120
+okay i'd like one adult and two children
+
+785
+00:31:09,519 --> 00:31:12,159
+for the first show how much would that
+
+786
+00:31:12,159 --> 00:31:16,320
+it seems like the most mundane sort of
+
+787
+00:31:14,159 --> 00:31:18,480
+interaction you would not expect a human
+
+788
+00:31:16,319 --> 00:31:19,678
+to have any problem with any of these
+
+789
+00:31:19,679 --> 00:31:23,759
+but think about how much interesting
+
+790
+00:31:22,319 --> 00:31:25,678
+stuff is happening in this little
+
+791
+00:31:25,679 --> 00:31:30,000
+domain knowledge that tells us that this
+
+792
+00:31:27,759 --> 00:31:31,679
+is a place where movies might play and
+
+793
+00:31:30,000 --> 00:31:33,519
+that this is the name of a movie that's
+
+794
+00:31:33,519 --> 00:31:37,038
+then we have anaphora from the third
+
+795
+00:31:35,440 --> 00:31:39,120
+utterance to the first when is it
+
+796
+00:31:37,038 --> 00:31:40,158
+playing there fine i guess also into the
+
+797
+00:31:40,159 --> 00:31:44,240
+where these pronouns you need to figure
+
+798
+00:31:41,759 --> 00:31:46,079
+out what they refer to in the discourse
+
+799
+00:31:44,240 --> 00:31:48,000
+then you get the sequence of responses
+
+800
+00:31:46,079 --> 00:31:50,158
+again with some anaphora back to earlier
+
+801
+00:31:48,000 --> 00:31:52,480
+utterances and then something really
+
+802
+00:31:50,159 --> 00:31:54,240
+complicated happens here but like one
+
+803
+00:31:52,480 --> 00:31:55,120
+adult the two children for the first
+
+804
+00:31:55,119 --> 00:31:59,119
+first show refers back to the sequence
+
+805
+00:31:57,200 --> 00:32:01,519
+of things that was mentioned here very
+
+806
+00:31:59,119 --> 00:32:03,678
+difficult one adult and two children is
+
+807
+00:32:01,519 --> 00:32:05,519
+not a request for human beings although
+
+808
+00:32:03,679 --> 00:32:07,919
+that's what the forums would look like
+
+809
+00:32:05,519 --> 00:32:10,399
+but rather our request for tickets so
+
+810
+00:32:07,919 --> 00:32:12,240
+somehow in the context of this discord
+
+811
+00:32:10,398 --> 00:32:14,479
+one adult and two children is referring
+
+812
+00:32:14,480 --> 00:32:18,240
+how much would that cost that is a kind
+
+813
+00:32:16,480 --> 00:32:20,640
+of complicated event description
+
+814
+00:32:18,240 --> 00:32:23,038
+referring to a hypothetical event
+
+815
+00:32:20,640 --> 00:32:25,200
+of buying some tickets for a particular
+
+816
+00:32:23,038 --> 00:32:27,919
+show that's the reference of this that
+
+817
+00:32:25,200 --> 00:32:29,360
+here highly abstract very difficult of
+
+818
+00:32:27,919 --> 00:32:31,840
+the level of resolving it in the
+
+819
+00:32:29,359 --> 00:32:34,000
+discourse and then figuring out what its
+
+820
+00:32:34,000 --> 00:32:37,759
+and this is for the most mundane sort of
+
+821
+00:32:35,839 --> 00:32:40,240
+interaction to say nothing of the
+
+822
+00:32:37,759 --> 00:32:42,240
+complicated things that for example you
+
+823
+00:32:40,240 --> 00:32:44,319
+and i will do when we discuss this
+
+824
+00:32:42,240 --> 00:32:45,759
+material in just a few minutes
+
+825
+00:32:44,319 --> 00:32:48,558
+so i think this is why we're actually
+
+826
+00:32:45,759 --> 00:32:51,119
+quite far from the super intelligence
+
+827
+00:32:48,558 --> 00:32:52,960
+that bostrom was worried about
+
+828
+00:32:51,119 --> 00:32:55,038
+here's our perspective as i said this is
+
+829
+00:32:52,960 --> 00:32:57,759
+the most exciting moment ever in history
+
+830
+00:32:55,038 --> 00:32:59,599
+for doing nlu why because there's
+
+831
+00:32:57,759 --> 00:33:01,599
+incredible interest in the problems
+
+832
+00:32:59,599 --> 00:33:03,918
+because we are making incredibly fast
+
+833
+00:33:01,599 --> 00:33:05,439
+progress and doing things and solving
+
+834
+00:33:03,919 --> 00:33:07,360
+problems that we never could have even
+
+835
+00:33:07,359 --> 00:33:11,119
+on the other hand you do not have the
+
+836
+00:33:09,200 --> 00:33:14,480
+misfortune of having joined the field at
+
+837
+00:33:11,119 --> 00:33:16,239
+its very end the big problems remain to
+
+838
+00:33:16,240 --> 00:33:20,399
+yeah so there's a resurgence of interest
+
+839
+00:33:18,000 --> 00:33:22,480
+and explosion of products the systems
+
+840
+00:33:20,398 --> 00:33:24,798
+are impressive but their weaknesses make
+
+841
+00:33:22,480 --> 00:33:26,480
+themselves quickly apparent and when we
+
+842
+00:33:24,798 --> 00:33:28,158
+observe those weaknesses it's an
+
+843
+00:33:26,480 --> 00:33:30,240
+opportunity for us to figure out what
+
+844
+00:33:28,159 --> 00:33:32,320
+the problem is and that could lead to
+
+845
+00:33:32,319 --> 00:33:36,639
+and you all are now joining us on this
+
+846
+00:33:34,319 --> 00:33:38,480
+journey if you haven't begun it already
+
+847
+00:33:36,640 --> 00:33:40,720
+and for your projects you'll make some
+
+848
+00:33:38,480 --> 00:33:42,319
+progress along the path of helping us
+
+849
+00:33:40,720 --> 00:33:44,000
+through these very difficult problems
+
+850
+00:33:44,000 --> 00:33:48,000
+even in the presence of all these
+
+851
+00:33:50,240 --> 00:33:53,839
+breakthroughs lie in the future
+
+852
+00:33:55,919 --> 00:33:58,880
+now let me switch gears a little bit and
+
+853
+00:33:57,519 --> 00:34:00,880
+talk about the things that we'll
+
+854
+00:33:58,880 --> 00:34:02,720
+actually be doing in this course to help
+
+855
+00:34:00,880 --> 00:34:03,840
+set you on this journey that we're all
+
+856
+00:34:03,839 --> 00:34:07,918
+so we'll talk about the assignments the
+
+857
+00:34:07,919 --> 00:34:12,000
+the high-level summary here our topics
+
+858
+00:34:10,398 --> 00:34:14,239
+are listed on the left you can also see
+
+859
+00:34:14,239 --> 00:34:18,319
+the one thing that i really do like
+
+860
+00:34:15,838 --> 00:34:20,320
+about this particular plan is that it
+
+861
+00:34:18,320 --> 00:34:22,800
+gives you exposure to a lot of different
+
+862
+00:34:20,320 --> 00:34:24,800
+problems in the fields and also helps
+
+863
+00:34:22,800 --> 00:34:26,480
+you with some tools and techniques that
+
+864
+00:34:24,800 --> 00:34:28,639
+will be really useful no matter what
+
+865
+00:34:26,480 --> 00:34:30,240
+problem you undertake for your final
+
+866
+00:34:30,239 --> 00:34:33,039
+the same thing goes for the assignments
+
+867
+00:34:31,760 --> 00:34:34,960
+we're going to have three assignments
+
+868
+00:34:33,039 --> 00:34:37,279
+each with an associated bake off which
+
+869
+00:34:34,960 --> 00:34:38,320
+is a kind of competition around data
+
+870
+00:34:38,320 --> 00:34:42,159
+relatedness cross-domain sentiment
+
+871
+00:34:42,159 --> 00:34:46,639
+descriptions this is a kind of grounded
+
+872
+00:34:44,320 --> 00:34:48,320
+language understanding problem again i
+
+873
+00:34:46,639 --> 00:34:50,000
+think those are good choices because
+
+874
+00:34:48,320 --> 00:34:52,399
+they expose you to a lot of different
+
+875
+00:34:50,000 --> 00:34:54,800
+kinds of systems techniques model
+
+876
+00:34:54,800 --> 00:34:58,320
+that should set you up really nicely to
+
+877
+00:34:56,639 --> 00:35:00,559
+do a final project which has three
+
+878
+00:34:58,320 --> 00:35:02,559
+components a literature review an
+
+879
+00:35:00,559 --> 00:35:05,119
+experimental protocol and then the final
+
+880
+00:35:02,559 --> 00:35:06,719
+paper itself our time for this quarter
+
+881
+00:35:06,719 --> 00:35:09,759
+um so we'll have to make really good use
+
+882
+00:35:08,480 --> 00:35:11,760
+of the time but i think we have a
+
+883
+00:35:09,760 --> 00:35:13,520
+schedule that will allow you to
+
+884
+00:35:11,760 --> 00:35:15,680
+meaningfully invest in this in this
+
+885
+00:35:13,519 --> 00:35:17,280
+preliminary work and still provide you
+
+886
+00:35:15,679 --> 00:35:19,358
+with some space to do these final
+
+887
+00:35:19,358 --> 00:35:22,159
+let's talk about the assignments and
+
+888
+00:35:20,639 --> 00:35:23,440
+bake offs themselves so there are three
+
+889
+00:35:23,440 --> 00:35:27,200
+each assignment culminates in a bake-off
+
+890
+00:35:25,358 --> 00:35:28,960
+which is an informal competition in
+
+891
+00:35:27,199 --> 00:35:30,399
+which you enter an original model the
+
+892
+00:35:30,400 --> 00:35:33,838
+is part of the assignment you do
+
+893
+00:35:32,320 --> 00:35:35,440
+something that you think will be fun or
+
+894
+00:35:33,838 --> 00:35:37,279
+interesting and then the bake off
+
+895
+00:35:35,440 --> 00:35:39,920
+essentially involves using that system
+
+896
+00:35:37,280 --> 00:35:41,760
+to make predictions on a held out test
+
+897
+00:35:41,760 --> 00:35:45,040
+the assignments ask you to build these
+
+898
+00:35:43,199 --> 00:35:47,358
+baseline systems and then design your
+
+899
+00:35:47,358 --> 00:35:50,319
+practically speaking the way it works is
+
+900
+00:35:48,800 --> 00:35:52,000
+that the assignments earn you 9 of the
+
+901
+00:35:50,320 --> 00:35:53,680
+10 points and then you earn your
+
+902
+00:35:52,000 --> 00:35:55,679
+additional point by entering your system
+
+903
+00:35:55,679 --> 00:35:59,679
+and the winning bank offs can receive
+
+904
+00:35:57,199 --> 00:36:01,358
+some extra credit the rationale for all
+
+905
+00:35:59,679 --> 00:36:03,440
+of this of course is that we want to
+
+906
+00:36:01,358 --> 00:36:05,279
+exemplify the best practices for doing
+
+907
+00:36:06,639 --> 00:36:11,440
+incrementally build up a project with
+
+908
+00:36:09,199 --> 00:36:14,239
+baselines and then finally an original
+
+909
+00:36:11,440 --> 00:36:16,079
+system and i should say it should be
+
+910
+00:36:14,239 --> 00:36:18,559
+possible and it's actually pretty common
+
+911
+00:36:16,079 --> 00:36:20,000
+for people to take original systems that
+
+912
+00:36:18,559 --> 00:36:22,320
+they developed as part of one of these
+
+913
+00:36:20,000 --> 00:36:24,480
+assignments and use them for their final
+
+914
+00:36:22,320 --> 00:36:26,800
+project each one of the assignments is
+
+915
+00:36:24,480 --> 00:36:28,639
+set up specifically to make that kind of
+
+916
+00:36:26,800 --> 00:36:31,200
+thing possible and productive and
+
+917
+00:36:31,199 --> 00:36:33,838
+let me show you briefly what the
+
+918
+00:36:32,480 --> 00:36:36,000
+bake-offs are going to be like so the
+
+919
+00:36:33,838 --> 00:36:38,000
+first one is word relatedness the focus
+
+920
+00:36:36,000 --> 00:36:40,239
+of that unit is on developing vector
+
+921
+00:36:38,000 --> 00:36:42,800
+representations of words you're going to
+
+922
+00:36:40,239 --> 00:36:45,039
+start probably with big count matrices
+
+923
+00:36:42,800 --> 00:36:47,039
+like the one you see here this is a word
+
+924
+00:36:45,039 --> 00:36:48,559
+by word matrix where all these cells
+
+925
+00:36:47,039 --> 00:36:50,800
+give the number of times that these
+
+926
+00:36:48,559 --> 00:36:52,559
+words or in this case emoticons
+
+927
+00:36:50,800 --> 00:36:54,480
+co-occurred with each other in a very
+
+928
+00:36:54,480 --> 00:36:57,920
+the striking thing about this unit is
+
+929
+00:36:56,239 --> 00:37:00,719
+that there is a lot of information about
+
+930
+00:36:57,920 --> 00:37:02,800
+meaning embedded in these large spaces
+
+931
+00:37:00,719 --> 00:37:04,799
+you will bend and twist and massage
+
+932
+00:37:02,800 --> 00:37:06,560
+these spaces and maybe bring in your own
+
+933
+00:37:06,559 --> 00:37:11,358
+representations you've downloaded from
+
+934
+00:37:08,239 --> 00:37:13,679
+the web and you will use them to solve a
+
+935
+00:37:11,358 --> 00:37:14,880
+word relatedness problem so basically
+
+936
+00:37:14,880 --> 00:37:19,838
+pairs of words like this with a score
+
+937
+00:37:17,358 --> 00:37:22,239
+and you will develop a system that can
+
+938
+00:37:19,838 --> 00:37:23,759
+make predictions about new pairs and the
+
+939
+00:37:22,239 --> 00:37:26,000
+idea is to come up with scores that
+
+940
+00:37:23,760 --> 00:37:27,839
+correlate with the held out scores that
+
+941
+00:37:26,000 --> 00:37:29,679
+we have not distributed of course as
+
+942
+00:37:27,838 --> 00:37:31,199
+part of the test set you'll be you'll
+
+943
+00:37:29,679 --> 00:37:33,118
+upload your entry and we'll give you a
+
+944
+00:37:31,199 --> 00:37:35,838
+score and then we'll look at what worked
+
+945
+00:37:33,119 --> 00:37:37,280
+and what didn't across all the systems
+
+946
+00:37:35,838 --> 00:37:38,799
+and the techniques that we'll explore
+
+947
+00:37:37,280 --> 00:37:41,440
+are many right so we'll talk about
+
+948
+00:37:38,800 --> 00:37:42,960
+re-weighting dimensionality reduction
+
+949
+00:37:41,440 --> 00:37:44,480
+vector comparison you'll have an
+
+950
+00:37:42,960 --> 00:37:46,400
+opportunity if you wish this is a brand
+
+951
+00:37:44,480 --> 00:37:48,079
+new addition to the course to bring in
+
+952
+00:37:48,079 --> 00:37:51,760
+um so there's lots of inspiring things
+
+953
+00:37:50,239 --> 00:37:55,598
+to try building on the latest stuff
+
+954
+00:37:51,760 --> 00:37:55,599
+that's happening in this space
+
+955
+00:37:55,679 --> 00:37:59,358
+the second bake off is called cross
+
+956
+00:37:57,679 --> 00:38:01,118
+domain sentiment analysis this is a
+
+957
+00:37:59,358 --> 00:38:02,880
+brand new bake off i'm very excited to
+
+958
+00:38:01,119 --> 00:38:04,160
+see how this goes here's how this is
+
+959
+00:38:02,880 --> 00:38:06,559
+going to work we want to be a little bit
+
+960
+00:38:04,159 --> 00:38:08,559
+adversarial with your system so there
+
+961
+00:38:06,559 --> 00:38:10,480
+are two data sets involved the stanford
+
+962
+00:38:08,559 --> 00:38:12,159
+sentiment tree bank which is movie
+
+963
+00:38:10,480 --> 00:38:14,480
+review sentences and we're going to deal
+
+964
+00:38:12,159 --> 00:38:16,879
+with it in its ternary formulation so it
+
+965
+00:38:14,480 --> 00:38:18,800
+has positive negative and neutral labels
+
+966
+00:38:18,800 --> 00:38:22,240
+alongside that i'm going to introduce a
+
+967
+00:38:22,239 --> 00:38:27,598
+dev test split previously unreleased
+
+968
+00:38:25,039 --> 00:38:28,960
+which is sentences from the restaurant
+
+969
+00:38:28,960 --> 00:38:32,320
+has the same kind of labels but of
+
+970
+00:38:30,960 --> 00:38:34,320
+course it's very different from the
+
+971
+00:38:36,320 --> 00:38:40,000
+so for the bake off you'll have the sst3
+
+972
+00:38:38,559 --> 00:38:41,759
+train set we're going to we're going to
+
+973
+00:38:40,000 --> 00:38:43,760
+give that to you and you are welcome to
+
+974
+00:38:41,760 --> 00:38:45,359
+introduce any other data you would like
+
+975
+00:38:43,760 --> 00:38:47,520
+to introduce as part of this training
+
+976
+00:38:47,519 --> 00:38:52,079
+we're also distributing for this take
+
+977
+00:38:49,280 --> 00:38:54,640
+off two dev sets the sst3 dev set which
+
+978
+00:38:52,079 --> 00:38:56,960
+is public already and this brand new one
+
+979
+00:38:56,960 --> 00:39:00,400
+and you can introduce other development
+
+980
+00:38:58,639 --> 00:39:01,358
+sets if you want as part of tuning your
+
+981
+00:39:01,358 --> 00:39:05,358
+and then the bake off will be conducted
+
+982
+00:39:03,039 --> 00:39:08,320
+as the best that people can do jointly
+
+983
+00:39:05,358 --> 00:39:10,960
+on the ssd3 and this new test set which
+
+984
+00:39:08,320 --> 00:39:13,280
+is again held out the idea here is that
+
+985
+00:39:10,960 --> 00:39:15,280
+you'll not only be doing a really great
+
+986
+00:39:13,280 --> 00:39:17,280
+kind of project in a classification
+
+987
+00:39:17,280 --> 00:39:22,000
+but also pushing your systems to adapt
+
+988
+00:39:19,679 --> 00:39:23,919
+into new domains from the ones that they
+
+989
+00:39:22,000 --> 00:39:26,320
+were trained on although of course part
+
+990
+00:39:23,920 --> 00:39:28,320
+of that could be training in clever ways
+
+991
+00:39:26,320 --> 00:39:30,400
+that actually does help that that do
+
+992
+00:39:28,320 --> 00:39:33,280
+help you anticipate what's in this
+
+993
+00:39:33,280 --> 00:39:37,359
+and then the third bake off is a natural
+
+994
+00:39:35,519 --> 00:39:39,039
+language generation test but it's a
+
+995
+00:39:37,358 --> 00:39:40,559
+grounded natural language generation
+
+996
+00:39:40,559 --> 00:39:44,880
+bake off you'll be given color context
+
+997
+00:39:42,639 --> 00:39:47,358
+like three patches like this and one of
+
+998
+00:39:44,880 --> 00:39:49,119
+them that is designated as the target
+
+999
+00:39:47,358 --> 00:39:50,880
+for the training data we had people
+
+1000
+00:39:49,119 --> 00:39:53,200
+describe the target color in this
+
+1001
+00:39:50,880 --> 00:39:55,440
+context and your task is to develop a
+
+1002
+00:39:53,199 --> 00:39:57,759
+system that can perform that same task
+
+1003
+00:39:55,440 --> 00:39:58,639
+produce natural language utterances like
+
+1004
+00:39:58,639 --> 00:40:01,920
+i think this is a really cool problem
+
+1005
+00:40:00,320 --> 00:40:03,359
+because it's grounded outside of
+
+1006
+00:40:01,920 --> 00:40:04,960
+something that involves language right
+
+1007
+00:40:03,358 --> 00:40:07,679
+you're grounded in a color patch it's
+
+1008
+00:40:04,960 --> 00:40:09,920
+just a numerical representation
+
+1009
+00:40:07,679 --> 00:40:12,000
+and it's also highly context dependent
+
+1010
+00:40:09,920 --> 00:40:13,838
+in that the choices people make for
+
+1011
+00:40:12,000 --> 00:40:15,119
+their utterances are dependent not only
+
+1012
+00:40:15,119 --> 00:40:18,720
+the color they need to describe but the
+
+1013
+00:40:16,639 --> 00:40:20,719
+target in the context of these other two
+
+1014
+00:40:18,719 --> 00:40:22,799
+colors and you can see that in these
+
+1015
+00:40:20,719 --> 00:40:24,480
+descriptions this one is easy so the
+
+1016
+00:40:22,800 --> 00:40:26,720
+person just said blue but in this case
+
+1017
+00:40:24,480 --> 00:40:28,800
+since there are two blues they said the
+
+1018
+00:40:26,719 --> 00:40:30,959
+darker blue one kind of keying into the
+
+1019
+00:40:28,800 --> 00:40:32,000
+fact that the context contains two blue
+
+1020
+00:40:32,000 --> 00:40:36,079
+this is an even more extreme case of
+
+1021
+00:40:33,519 --> 00:40:37,920
+that dull pink not the super bright one
+
+1022
+00:40:36,079 --> 00:40:40,318
+implicit reference is not only to the
+
+1023
+00:40:37,920 --> 00:40:43,039
+target but also to other colors that are
+
+1024
+00:40:43,039 --> 00:40:46,559
+and then the final two are really
+
+1025
+00:40:44,239 --> 00:40:48,639
+extreme cases of this where for one in
+
+1026
+00:40:46,559 --> 00:40:50,880
+the same color you know in terms of its
+
+1027
+00:40:48,639 --> 00:40:53,279
+color representation this person said
+
+1028
+00:40:50,880 --> 00:40:55,200
+purple and this person said blue in
+
+1029
+00:40:53,280 --> 00:40:56,240
+virtue of the fact that the distractors
+
+1030
+00:40:56,239 --> 00:41:00,239
+so we have this kind of controlled
+
+1031
+00:40:58,000 --> 00:41:02,719
+natural language generation task that we
+
+1032
+00:41:00,239 --> 00:41:04,719
+can see is highly dependent on the
+
+1033
+00:41:02,719 --> 00:41:06,559
+particular context that p that are p
+
+1034
+00:41:06,559 --> 00:41:09,440
+and again this will follow the same path
+
+1035
+00:41:08,079 --> 00:41:11,119
+here i'm going to give you a whole the
+
+1036
+00:41:09,440 --> 00:41:13,599
+whole model architecture as a kind of
+
+1037
+00:41:11,119 --> 00:41:15,519
+default it's an encoder decoder
+
+1038
+00:41:13,599 --> 00:41:17,440
+architecture where you'll have a machine
+
+1039
+00:41:15,519 --> 00:41:19,039
+learning system that consumes color
+
+1040
+00:41:19,039 --> 00:41:22,800
+and then transfers that into a decoding
+
+1041
+00:41:21,199 --> 00:41:25,039
+phase where it tries to produce an
+
+1042
+00:41:22,800 --> 00:41:26,480
+utterance so here you've consumed a
+
+1043
+00:41:25,039 --> 00:41:28,559
+bunch of colors and produced the
+
+1044
+00:41:28,559 --> 00:41:32,239
+but of course you'll be able to explore
+
+1045
+00:41:30,239 --> 00:41:34,318
+many variants of this architecture and
+
+1046
+00:41:32,239 --> 00:41:35,519
+really explore different things that are
+
+1047
+00:41:35,519 --> 00:41:39,199
+representation and natural language
+
+1048
+00:41:39,199 --> 00:41:42,239
+and again as a bake off it will work the
+
+1049
+00:41:42,239 --> 00:41:44,799
+development on training data that we
+
+1050
+00:41:44,800 --> 00:41:48,640
+and then you'll be evaluated on the held
+
+1051
+00:41:46,639 --> 00:41:50,000
+out test set that was produced in the
+
+1052
+00:41:50,000 --> 00:41:54,719
+but involves entirely new colors and
+
+1053
+00:41:55,599 --> 00:41:59,920
+quick note on the original systems as i
+
+1054
+00:41:58,079 --> 00:42:01,599
+said before the original system is kind
+
+1055
+00:41:59,920 --> 00:42:03,519
+of a central piece of each one of the
+
+1056
+00:42:01,599 --> 00:42:05,760
+assignments the homeworks really
+
+1057
+00:42:03,519 --> 00:42:08,000
+culminate in this original system and
+
+1058
+00:42:05,760 --> 00:42:10,000
+that becomes your bake off entry
+
+1059
+00:42:08,000 --> 00:42:11,599
+um in terms of grading it this is kind
+
+1060
+00:42:10,000 --> 00:42:13,440
+of hard because we want you to be
+
+1061
+00:42:11,599 --> 00:42:15,039
+creative and try lots of things so the
+
+1062
+00:42:13,440 --> 00:42:17,440
+way we're going to value these entries
+
+1063
+00:42:15,039 --> 00:42:19,199
+is any system that performs extremely
+
+1064
+00:42:17,440 --> 00:42:20,079
+well on the bake off will be given full
+
+1065
+00:42:20,079 --> 00:42:24,400
+even symbols that have systems that are
+
+1066
+00:42:21,838 --> 00:42:26,159
+very simple right we can argue with
+
+1067
+00:42:24,400 --> 00:42:28,639
+success according to the criteria that
+
+1068
+00:42:26,159 --> 00:42:30,318
+we've set up so if the simplest possible
+
+1069
+00:42:28,639 --> 00:42:32,318
+approach to one of these bake offs turns
+
+1070
+00:42:30,318 --> 00:42:34,719
+out to be astoundingly good and you had
+
+1071
+00:42:32,318 --> 00:42:36,480
+to do almost no work to succeed you of
+
+1072
+00:42:36,480 --> 00:42:40,318
+but that's not the only thing we value
+
+1073
+00:42:38,480 --> 00:42:42,880
+right so systems that are creative and
+
+1074
+00:42:40,318 --> 00:42:44,639
+well motivated will be given full credit
+
+1075
+00:42:42,880 --> 00:42:46,640
+even if they don't perform well on the
+
+1076
+00:42:44,639 --> 00:42:48,639
+big off data this is meant to be an
+
+1077
+00:42:46,639 --> 00:42:51,440
+explicit encouragement for you to try
+
+1078
+00:42:48,639 --> 00:42:53,440
+new things to be bold and be creative
+
+1079
+00:42:51,440 --> 00:42:55,358
+even if it doesn't numerically lead to
+
+1080
+00:42:53,440 --> 00:42:57,920
+the best results in fact some of the
+
+1081
+00:42:55,358 --> 00:42:59,679
+most inspiring things we've seen and
+
+1082
+00:42:57,920 --> 00:43:01,680
+insightful things we've seen as part of
+
+1083
+00:42:59,679 --> 00:43:03,759
+these bake-offs have been systems that
+
+1084
+00:43:01,679 --> 00:43:05,598
+didn't perform at the top of the heap
+
+1085
+00:43:03,760 --> 00:43:08,400
+but harbored some really interesting
+
+1086
+00:43:05,599 --> 00:43:10,318
+insight that we could build on
+
+1087
+00:43:08,400 --> 00:43:12,480
+right and then of course systems that
+
+1088
+00:43:10,318 --> 00:43:14,079
+really are minimal you do if you do very
+
+1089
+00:43:12,480 --> 00:43:16,000
+little and you don't do especially well
+
+1090
+00:43:14,079 --> 00:43:18,720
+at the bake off we'll receive less
+
+1091
+00:43:16,000 --> 00:43:20,239
+credit um the specific criteria will
+
+1092
+00:43:18,719 --> 00:43:22,480
+depend on the nature of the assignment
+
+1093
+00:43:20,239 --> 00:43:24,959
+and so forth we'll try to justify that
+
+1094
+00:43:22,480 --> 00:43:27,679
+for you this is the more subjective part
+
+1095
+00:43:24,960 --> 00:43:29,679
+i think one and two really encode the
+
+1096
+00:43:27,679 --> 00:43:31,838
+positive part of the kind of values that
+
+1097
+00:43:29,679 --> 00:43:35,358
+we're trying to convey to you as part of
+
+1098
+00:43:31,838 --> 00:43:35,358
+these original system entries
+
+1099
+00:43:36,159 --> 00:43:40,078
+and then you'll have project work this
+
+1100
+00:43:38,000 --> 00:43:42,318
+occupies the entire second half of the
+
+1101
+00:43:42,318 --> 00:43:46,159
+at that point the lectures the notebooks
+
+1102
+00:43:44,480 --> 00:43:48,480
+the readings and so forth are really
+
+1103
+00:43:46,159 --> 00:43:50,000
+focused on things like methods metrics
+
+1104
+00:43:50,000 --> 00:43:54,480
+error analysis model introspection and
+
+1105
+00:43:52,400 --> 00:43:57,119
+other things that will help you enrich
+
+1106
+00:43:57,119 --> 00:44:00,640
+the assignments are all project related
+
+1107
+00:43:59,039 --> 00:44:02,318
+um they're the literature view the
+
+1108
+00:44:00,639 --> 00:44:04,480
+experimental protocol and the final
+
+1109
+00:44:02,318 --> 00:44:06,239
+paper unfortunately in many years we've
+
+1110
+00:44:04,480 --> 00:44:08,318
+had a video presentation which has
+
+1111
+00:44:06,239 --> 00:44:10,078
+always been really rewarding but i feel
+
+1112
+00:44:08,318 --> 00:44:11,759
+like given the compressed time schedule
+
+1113
+00:44:10,079 --> 00:44:12,720
+that we're on we just don't have time
+
+1114
+00:44:12,719 --> 00:44:17,679
+for even short videos we're going to
+
+1115
+00:44:14,400 --> 00:44:19,838
+focus on these three crucial components
+
+1116
+00:44:17,679 --> 00:44:21,519
+uh and if for exceptional final projects
+
+1117
+00:44:19,838 --> 00:44:22,960
+from past years that we've selected you
+
+1118
+00:44:21,519 --> 00:44:24,960
+could follow this link it's access
+
+1119
+00:44:22,960 --> 00:44:26,400
+restricted but if you're enrolled in the
+
+1120
+00:44:24,960 --> 00:44:28,318
+course you should be able to follow the
+
+1121
+00:44:26,400 --> 00:44:30,079
+link and see some of some examples and
+
+1122
+00:44:28,318 --> 00:44:32,639
+there's a lot more gardens on final
+
+1123
+00:44:30,079 --> 00:44:35,839
+projects in our course repository i have
+
+1124
+00:44:32,639 --> 00:44:38,078
+a very long write-up of faqs and other
+
+1125
+00:44:35,838 --> 00:44:40,559
+guidance about publishing in the field
+
+1126
+00:44:38,079 --> 00:44:42,400
+and writing for this class and i have
+
+1127
+00:44:40,559 --> 00:44:44,799
+what what is now a really inspiringly
+
+1128
+00:44:42,400 --> 00:44:46,400
+long list of published papers that have
+
+1129
+00:44:44,800 --> 00:44:48,079
+grown out of work people have done for
+
+1130
+00:44:46,400 --> 00:44:50,160
+this course so you can check that all
+
+1131
+00:44:48,079 --> 00:44:52,480
+out here final words here by way of
+
+1132
+00:44:50,159 --> 00:44:54,639
+wrapping up as i said this is the most
+
+1133
+00:44:52,480 --> 00:44:55,920
+most exciting moment ever in history for
+
+1134
+00:44:55,920 --> 00:44:59,119
+this course will give you hands-on
+
+1135
+00:44:57,599 --> 00:45:00,960
+experience with a wide range of
+
+1136
+00:44:59,119 --> 00:45:02,480
+challenging problems i emphasize the
+
+1137
+00:45:00,960 --> 00:45:03,519
+hands-on thing i think this is so
+
+1138
+00:45:03,519 --> 00:45:06,159
+if you want to acquire a new skill like
+
+1139
+00:45:06,159 --> 00:45:09,679
+it's all well and good to watch other
+
+1140
+00:45:07,679 --> 00:45:12,159
+people doing it but the way you really
+
+1141
+00:45:09,679 --> 00:45:14,559
+acquire the skill is by having hands-on
+
+1142
+00:45:12,159 --> 00:45:16,480
+experiences yourself so everything about
+
+1143
+00:45:14,559 --> 00:45:18,239
+the requirements and the materials is
+
+1144
+00:45:16,480 --> 00:45:19,440
+pushing you to have those hands-on
+
+1145
+00:45:19,440 --> 00:45:24,159
+and become expert at that very
+
+1146
+00:45:24,159 --> 00:45:27,279
+for the final project a mentor for the
+
+1147
+00:45:25,920 --> 00:45:28,960
+teaching team will guide you through
+
+1148
+00:45:28,960 --> 00:45:32,639
+we'll be there to help you and make
+
+1149
+00:45:31,039 --> 00:45:34,239
+choices and set the scope for the
+
+1150
+00:45:32,639 --> 00:45:36,960
+project and maybe push it towards
+
+1151
+00:45:34,239 --> 00:45:38,879
+something that you could one day publish
+
+1152
+00:45:36,960 --> 00:45:42,000
+there are many examples of successful
+
+1153
+00:45:38,880 --> 00:45:44,079
+publications deriving from this course
+
+1154
+00:45:42,000 --> 00:45:46,159
+our central goal fundamentally though is
+
+1155
+00:45:44,079 --> 00:45:48,960
+to make you the best that is most
+
+1156
+00:45:46,159 --> 00:45:51,519
+insightful and responsible nlu
+
+1157
+00:45:48,960 --> 00:45:53,838
+practitioner and researcher wherever you
+
+1158
+00:45:51,519 --> 00:45:56,400
+go next into academia or just into other
+
+1159
+00:45:53,838 --> 00:45:57,759
+classes or on into industry to leverage
+
+1160
+00:45:57,760 --> 00:46:01,760
+we want to make you as i said the most
+
+1161
+00:45:59,440 --> 00:46:05,000
+insightful and responsible practitioner
+

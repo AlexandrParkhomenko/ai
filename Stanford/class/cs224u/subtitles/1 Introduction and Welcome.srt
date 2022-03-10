@@ -1,0 +1,336 @@
+1
+00:00:03,439 --> 00:00:06,960
+Hi I'm Chris Potts I'm a professor in
+
+2
+00:00:05,278 --> 00:00:08,800
+linguistics at stanford with a courtesy
+
+3
+00:00:06,960 --> 00:00:10,400
+appointment in computer science and i'm
+
+4
+00:00:08,800 --> 00:00:12,000
+the director of stanford center for the
+
+5
+00:00:10,400 --> 00:00:13,919
+study of language and information which
+
+6
+00:00:12,000 --> 00:00:15,919
+is an interdisciplinary research center
+
+7
+00:00:13,919 --> 00:00:17,759
+focused on logic language decision
+
+8
+00:00:15,919 --> 00:00:19,039
+making human sentence processing and
+
+9
+00:00:19,039 --> 00:00:22,400
+my undergraduate and graduate degrees
+
+10
+00:00:20,719 --> 00:00:24,399
+are all in linguistics the work i did
+
+11
+00:00:24,399 --> 00:00:28,000
+linguistic pragmatics which is the study
+
+12
+00:00:26,239 --> 00:00:29,759
+of how language use is shaped by the
+
+13
+00:00:28,000 --> 00:00:30,480
+physical and social context that we're
+
+14
+00:00:30,480 --> 00:00:33,359
+at a certain point i went looking for
+
+15
+00:00:31,839 --> 00:00:35,520
+new ways to support those theories
+
+16
+00:00:33,359 --> 00:00:36,799
+quantitatively and that began my journey
+
+17
+00:00:35,520 --> 00:00:38,960
+into the world of natural language
+
+18
+00:00:36,799 --> 00:00:40,399
+processing i now think of myself as
+
+19
+00:00:38,960 --> 00:00:42,239
+being on a mission to help with the
+
+20
+00:00:40,399 --> 00:00:44,879
+sharing of ideas back and forth between
+
+21
+00:00:42,238 --> 00:00:46,718
+linguistics and nlp i've taught natural
+
+22
+00:00:44,878 --> 00:00:49,359
+language understanding nine times at
+
+23
+00:00:46,719 --> 00:00:51,280
+stanford with my first year in 2012. in
+
+24
+00:00:49,359 --> 00:00:53,439
+2012 we were just beginning to see how
+
+25
+00:00:51,280 --> 00:00:55,679
+nlu was going to revolutionize the field
+
+26
+00:00:53,439 --> 00:00:58,159
+and reshape the technology landscape
+
+27
+00:00:55,679 --> 00:01:00,320
+ibm's watson had recently won jeopardy
+
+28
+00:00:58,159 --> 00:01:01,759
+apple siri was new and the other tech
+
+29
+00:01:00,320 --> 00:01:03,600
+giants were on the verge of launching
+
+30
+00:01:01,759 --> 00:01:05,280
+their own intelligent assistance so
+
+31
+00:01:03,600 --> 00:01:07,280
+there was a widespread perception that
+
+32
+00:01:05,280 --> 00:01:09,519
+nlu was poised to have a transformative
+
+33
+00:01:07,280 --> 00:01:12,000
+impact on the world and that perception
+
+34
+00:01:09,519 --> 00:01:13,759
+was certainly correct since then nlu has
+
+35
+00:01:12,000 --> 00:01:15,438
+only become more central to the field of
+
+36
+00:01:15,438 --> 00:01:19,359
+intelligence more generally and the
+
+37
+00:01:17,200 --> 00:01:21,359
+progress in the field has been amazing
+
+38
+00:01:19,359 --> 00:01:23,519
+we have more large nou data sets than
+
+39
+00:01:21,359 --> 00:01:25,519
+ever before and the level of innovation
+
+40
+00:01:23,519 --> 00:01:26,879
+in modeling and model analysis is just
+
+41
+00:01:26,879 --> 00:01:30,399
+as a result we can tackle more ambitious
+
+42
+00:01:28,799 --> 00:01:32,159
+problems than ever and there are
+
+43
+00:01:30,400 --> 00:01:34,478
+opportunities to find lots of creative
+
+44
+00:01:32,159 --> 00:01:37,600
+new ways to apply nlu to technology
+
+45
+00:01:34,478 --> 00:01:39,359
+development and scientific inquiry
+
+46
+00:01:37,599 --> 00:01:40,879
+so it's certainly an exciting moment to
+
+47
+00:01:39,359 --> 00:01:42,560
+welcome you to this course it's an
+
+48
+00:01:40,879 --> 00:01:44,719
+adapted version of the course we teach
+
+49
+00:01:42,560 --> 00:01:46,640
+on campus the course begins by covering
+
+50
+00:01:44,719 --> 00:01:48,798
+a wide range of models for distributed
+
+51
+00:01:46,640 --> 00:01:50,560
+word representations from there we
+
+52
+00:01:48,799 --> 00:01:53,200
+branch out into a series of important
+
+53
+00:01:50,560 --> 00:01:54,960
+nlu topics including relation extraction
+
+54
+00:01:53,200 --> 00:01:56,960
+natural language inference and grounded
+
+55
+00:01:54,959 --> 00:01:58,478
+language understanding we've chosen
+
+56
+00:01:56,959 --> 00:02:00,158
+these topics because they allow us to
+
+57
+00:01:58,478 --> 00:02:02,239
+highlight many of the central concepts
+
+58
+00:02:00,159 --> 00:02:03,840
+in nlu which you can then apply more
+
+59
+00:02:03,840 --> 00:02:07,280
+one of the special aspects of this
+
+60
+00:02:05,438 --> 00:02:09,038
+course is that it's project oriented and
+
+61
+00:02:07,280 --> 00:02:11,360
+with luck the project that you develop
+
+62
+00:02:09,038 --> 00:02:13,279
+will become a professional asset for you
+
+63
+00:02:11,360 --> 00:02:15,280
+we aim to help you design and conduct a
+
+64
+00:02:13,280 --> 00:02:16,640
+successful research project in the field
+
+65
+00:02:15,280 --> 00:02:18,959
+and we have an accomplished teaching
+
+66
+00:02:16,639 --> 00:02:20,399
+team to help you with this process
+
+67
+00:02:18,959 --> 00:02:22,000
+even the regular assignments are
+
+68
+00:02:20,400 --> 00:02:24,080
+oriented toward building original
+
+69
+00:02:22,000 --> 00:02:26,159
+projects each assignment is grounded in
+
+70
+00:02:24,080 --> 00:02:27,920
+a specific topic area and they all have
+
+71
+00:02:26,159 --> 00:02:30,079
+a common rhythm in that they ask you to
+
+72
+00:02:27,919 --> 00:02:31,759
+build up some baseline systems and then
+
+73
+00:02:30,080 --> 00:02:34,319
+develop your own original system for
+
+74
+00:02:34,318 --> 00:02:37,679
+you'll enter each one of these systems
+
+75
+00:02:36,000 --> 00:02:39,360
+into what we call a bake off which is an
+
+76
+00:02:37,680 --> 00:02:40,879
+informal competition around data and
+
+77
+00:02:39,360 --> 00:02:42,560
+modeling and the teaching team will
+
+78
+00:02:40,878 --> 00:02:44,719
+reflect the insights we gain from these
+
+79
+00:02:42,560 --> 00:02:46,560
+bake off entries back to the whole class
+
+80
+00:02:44,719 --> 00:02:48,800
+it's also common for bake off entries to
+
+81
+00:02:46,560 --> 00:02:50,159
+grow into final projects we hope that
+
+82
+00:02:48,800 --> 00:02:52,080
+all this work spurs you to think
+
+83
+00:02:50,159 --> 00:02:54,799
+creatively and to hone your practical
+
+84
+00:02:52,080 --> 00:02:58,760
+and theoretical skills in nlu so without
+

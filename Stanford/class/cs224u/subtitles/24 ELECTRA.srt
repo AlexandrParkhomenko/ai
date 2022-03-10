@@ -1,0 +1,886 @@
+1
+00:00:00,000 --> 00:00:04,258
+
+
+2
+00:00:04,258 --> 00:00:05,800
+CHRISTOPHER POTTS:
+Welcome, everyone.
+
+3
+00:00:05,800 --> 00:00:07,830
+This is part 5 in our
+series on contextual word
+
+4
+00:00:07,830 --> 00:00:08,740
+representations.
+
+5
+00:00:08,740 --> 00:00:10,823
+We're going to be talking
+about the ELECTRA model.
+
+6
+00:00:10,823 --> 00:00:13,140
+ELECTRA stands for efficiently
+learning an encoder that
+
+7
+00:00:13,140 --> 00:00:15,310
+classifies token
+replacements accurately,
+
+8
+00:00:15,310 --> 00:00:18,030
+which is a helpfully descriptive
+breakdown of a colorfully
+
+9
+00:00:18,030 --> 00:00:19,950
+named model.
+
+10
+00:00:19,950 --> 00:00:22,080
+Recall that I finished
+the BERT screencast
+
+11
+00:00:22,080 --> 00:00:25,320
+by identifying some known
+limitations of the BERT model.
+
+12
+00:00:25,320 --> 00:00:28,150
+ELECTRA is really keying
+into 2 and 3 in that list.
+
+13
+00:00:28,150 --> 00:00:30,870
+So the second one identified
+by the BERT authors
+
+14
+00:00:30,870 --> 00:00:32,820
+is just that of
+the MLM objective,
+
+15
+00:00:32,820 --> 00:00:35,730
+they say we're creating a
+mismatch between pre-training
+
+16
+00:00:35,730 --> 00:00:39,030
+and fine-tuning since the MASK
+token that we use is never
+
+17
+00:00:39,030 --> 00:00:40,230
+seen during fine-tuning.
+
+18
+00:00:40,230 --> 00:00:42,360
+So ideally for the
+model we fine-tune,
+
+19
+00:00:42,360 --> 00:00:45,670
+we would make no
+use of a MASK token.
+
+20
+00:00:45,670 --> 00:00:48,730
+Devlin et al also observed
+of the MLM objective
+
+21
+00:00:48,730 --> 00:00:50,410
+that it has a downside.
+
+22
+00:00:50,410 --> 00:00:53,350
+We make predictions
+about only 15%
+
+23
+00:00:53,350 --> 00:00:55,745
+of the tokens in each batch.
+
+24
+00:00:55,745 --> 00:00:58,120
+We have an intuition that
+that's a pretty inefficient use
+
+25
+00:00:58,120 --> 00:00:59,650
+of the data we have
+available to us.
+
+26
+00:00:59,650 --> 00:01:01,510
+Ideally, we would
+make more predictions,
+
+27
+00:01:01,510 --> 00:01:05,417
+and ELECTRA seeks to make good
+on that intuition as well.
+
+28
+00:01:05,417 --> 00:01:07,250
+So let's dive into the
+core model structure.
+
+29
+00:01:07,250 --> 00:01:08,700
+Here we'll use a simple example.
+
+30
+00:01:08,700 --> 00:01:10,970
+We have an input
+token sequence x.
+
+31
+00:01:10,970 --> 00:01:12,860
+The chef cooked the meal.
+
+32
+00:01:12,860 --> 00:01:16,790
+And as usual with BERT, we can
+MASK out some of those tokens,
+
+33
+00:01:16,790 --> 00:01:19,070
+and then have a BERT
+or BERT-like model
+
+34
+00:01:19,070 --> 00:01:21,080
+try to reconstruct
+those MASK tokens.
+
+35
+00:01:21,080 --> 00:01:23,360
+However, we're going to
+do that with a twist.
+
+36
+00:01:23,360 --> 00:01:26,900
+Instead of always trying to
+learn the actual input token,
+
+37
+00:01:26,900 --> 00:01:30,470
+we're going to sample tokens
+proportional to the generator
+
+38
+00:01:30,470 --> 00:01:34,460
+probabilities so that sometimes
+the actual token will be input
+
+39
+00:01:34,460 --> 00:01:36,230
+as with the case
+with "the" here.
+
+40
+00:01:36,230 --> 00:01:38,270
+And sometimes it will
+be some other token,
+
+41
+00:01:38,270 --> 00:01:41,720
+as the case with "cook" going
+to "ate" in this position.
+
+42
+00:01:41,720 --> 00:01:44,690
+Now the job of ELECTRA,
+the discriminator here,
+
+43
+00:01:44,690 --> 00:01:46,970
+is to figure out
+which of those tokens
+
+44
+00:01:46,970 --> 00:01:48,980
+were in the original
+input sequence
+
+45
+00:01:48,980 --> 00:01:50,420
+and which have been replaced.
+
+46
+00:01:50,420 --> 00:01:52,280
+So that's a binary
+prediction task,
+
+47
+00:01:52,280 --> 00:01:54,890
+and we can make it about all
+of the tokens in our input
+
+48
+00:01:54,890 --> 00:01:57,470
+sequence if we choose to.
+
+49
+00:01:57,470 --> 00:02:01,790
+Actual loss for ELECTRA is
+the sum of the generator loss
+
+50
+00:02:01,790 --> 00:02:03,740
+and a weighted version
+of the ELECTRA, that
+
+51
+00:02:03,740 --> 00:02:05,840
+is the discriminator loss.
+
+52
+00:02:05,840 --> 00:02:08,360
+However, that's kind of
+masking an important asymmetry
+
+53
+00:02:08,360 --> 00:02:09,750
+in this model here.
+
+54
+00:02:09,750 --> 00:02:11,450
+Once we have trained
+the generator,
+
+55
+00:02:11,450 --> 00:02:14,510
+we can let it fall away and
+do all of our fine-tuning
+
+56
+00:02:14,510 --> 00:02:15,590
+on the discriminator.
+
+57
+00:02:15,590 --> 00:02:17,810
+That is on the
+ELECTRA itself, which
+
+58
+00:02:17,810 --> 00:02:19,910
+means that we'll be
+fine-tuning a model that never
+
+59
+00:02:19,910 --> 00:02:21,890
+saw any of those MASK tokens.
+
+60
+00:02:21,890 --> 00:02:24,240
+So we address that first
+limitation of BERT.
+
+61
+00:02:24,240 --> 00:02:26,840
+And we're also going to make
+a prediction with ELECTRA
+
+62
+00:02:26,840 --> 00:02:29,060
+about every single one of
+the input tokens, which
+
+63
+00:02:29,060 --> 00:02:34,432
+means that we're making more
+use of the available data.
+
+64
+00:02:34,432 --> 00:02:36,390
+One thing I really like
+about the ELECTRA paper
+
+65
+00:02:36,390 --> 00:02:38,880
+is that it offers a really
+rich set of analyses
+
+66
+00:02:38,880 --> 00:02:41,708
+of the efficiency of the model
+and of its optimal design.
+
+67
+00:02:41,708 --> 00:02:44,250
+So I'm going to highlight some
+of those results here starting
+
+68
+00:02:44,250 --> 00:02:46,020
+with this
+generator/discriminator
+
+69
+00:02:46,020 --> 00:02:47,730
+relationship results.
+
+70
+00:02:47,730 --> 00:02:49,830
+So the authors observe
+that where the generator
+
+71
+00:02:49,830 --> 00:02:52,450
+and discriminator
+are the same size,
+
+72
+00:02:52,450 --> 00:02:54,990
+they can share all their
+transformer parameters.
+
+73
+00:02:54,990 --> 00:02:57,600
+They can kind of be
+one model in essence.
+
+74
+00:02:57,600 --> 00:03:00,210
+And they find that more
+sharing is indeed better, which
+
+75
+00:03:00,210 --> 00:03:01,630
+is encouraging.
+
+76
+00:03:01,630 --> 00:03:04,860
+However, they also observed
+that the best results
+
+77
+00:03:04,860 --> 00:03:07,500
+come from having a
+generator that is small
+
+78
+00:03:07,500 --> 00:03:09,470
+compared to the discriminator.
+
+79
+00:03:09,470 --> 00:03:11,830
+And this plot kind of
+summarizes the evidence there.
+
+80
+00:03:11,830 --> 00:03:14,402
+So we have our GLUE
+score as the goal posts
+
+81
+00:03:14,402 --> 00:03:16,360
+that we're going to use
+to assess these models.
+
+82
+00:03:16,360 --> 00:03:18,030
+That's along the y-axis.
+
+83
+00:03:18,030 --> 00:03:21,000
+Along the x-axis, we
+have the generator size.
+
+84
+00:03:21,000 --> 00:03:22,980
+And then they've
+plotted out a few sizes
+
+85
+00:03:22,980 --> 00:03:23,900
+for the discriminator.
+
+86
+00:03:23,900 --> 00:03:25,650
+And I think what you
+can see quite clearly
+
+87
+00:03:25,650 --> 00:03:29,340
+is that, in general, you get
+the best results on GLUE where
+
+88
+00:03:29,340 --> 00:03:31,350
+the discriminator is
+two to three times
+
+89
+00:03:31,350 --> 00:03:33,300
+larger than the generator.
+
+90
+00:03:33,300 --> 00:03:35,710
+And that's true even for this
+very small model in green
+
+91
+00:03:35,710 --> 00:03:36,210
+down here.
+
+92
+00:03:36,210 --> 00:03:38,220
+The results are
+overall not very good,
+
+93
+00:03:38,220 --> 00:03:40,020
+but we see that
+same relationship
+
+94
+00:03:40,020 --> 00:03:41,700
+where the optimal
+discriminator is
+
+95
+00:03:41,700 --> 00:03:45,535
+at size 256 and the
+generator at size 64.
+
+96
+00:03:45,535 --> 00:03:47,160
+That's where we reach
+our peak results.
+
+97
+00:03:47,160 --> 00:03:50,097
+And it's kind of comparable to
+this very large model in blue
+
+98
+00:03:50,097 --> 00:03:51,930
+where our optimal size
+for the discriminator
+
+99
+00:03:51,930 --> 00:03:57,810
+is 768 compared to
+256 for the generator.
+
+100
+00:03:57,810 --> 00:04:00,090
+They also do a bunch of
+really interesting efficiency
+
+101
+00:04:00,090 --> 00:04:00,702
+analyses.
+
+102
+00:04:00,702 --> 00:04:02,160
+One thing I like
+about the paper is
+
+103
+00:04:02,160 --> 00:04:04,860
+that it's kind of oriented
+toward figuring out
+
+104
+00:04:04,860 --> 00:04:07,500
+how we can train these models
+more efficiently with fewer
+
+105
+00:04:07,500 --> 00:04:09,060
+compute resources.
+
+106
+00:04:09,060 --> 00:04:11,250
+And this is a kind of
+summary of central evidence
+
+107
+00:04:11,250 --> 00:04:14,650
+that they offer that ELECTRA
+can be an efficient model.
+
+108
+00:04:14,650 --> 00:04:16,529
+So again we're going
+to use along the y-axis
+
+109
+00:04:16,529 --> 00:04:18,800
+the GLUE score as
+our goal posts.
+
+110
+00:04:18,800 --> 00:04:21,269
+Along the x-axis, here we
+have pre-training FLOPs.
+
+111
+00:04:21,269 --> 00:04:23,370
+So this would be the number
+of compute operations
+
+112
+00:04:23,370 --> 00:04:25,920
+that you need to
+pre-train the model.
+
+113
+00:04:25,920 --> 00:04:27,840
+In blue, along the
+top here, is ELECTRA.
+
+114
+00:04:27,840 --> 00:04:29,610
+It's the very best model.
+
+115
+00:04:29,610 --> 00:04:33,030
+In orange, just below it,
+is adversarial ELECTRA,
+
+116
+00:04:33,030 --> 00:04:35,970
+which is an interesting approach
+to ELECTRA where we essentially
+
+117
+00:04:35,970 --> 00:04:38,910
+train the generator to try
+to fool the discriminator as
+
+118
+00:04:38,910 --> 00:04:41,880
+opposed to having the two
+cooperate as in core ELECTRA,
+
+119
+00:04:41,880 --> 00:04:43,627
+and that turns out
+to be pretty good.
+
+120
+00:04:43,627 --> 00:04:45,710
+And also these green lines
+are really interesting.
+
+121
+00:04:45,710 --> 00:04:49,470
+So two-stage ELECTRA is where
+I start by training just
+
+122
+00:04:49,470 --> 00:04:51,030
+against the BERT objectives.
+
+123
+00:04:51,030 --> 00:04:52,980
+And at a certain
+point, switch over
+
+124
+00:04:52,980 --> 00:04:54,640
+to training the
+ELECTRA objective.
+
+125
+00:04:54,640 --> 00:04:57,240
+And you can see that even that
+is better than just continuing
+
+126
+00:04:57,240 --> 00:04:59,670
+on with BERT all the
+way up to the maximum
+
+127
+00:04:59,670 --> 00:05:01,050
+for our compute budget here.
+
+128
+00:05:01,050 --> 00:05:03,860
+
+
+129
+00:05:03,860 --> 00:05:07,200
+The paper also explores a bunch
+of variations on the ELECTRA
+
+130
+00:05:07,200 --> 00:05:08,400
+objective itself.
+
+131
+00:05:08,400 --> 00:05:10,730
+So I presented to
+you full ELECTRA.
+
+132
+00:05:10,730 --> 00:05:12,500
+And it's full
+ELECTRA in the sense
+
+133
+00:05:12,500 --> 00:05:13,940
+that over here on
+the right we're
+
+134
+00:05:13,940 --> 00:05:15,830
+making predictions
+about every single one
+
+135
+00:05:15,830 --> 00:05:18,110
+of the tokens in the input.
+
+136
+00:05:18,110 --> 00:05:21,080
+We could also explore something
+that was analogous to BERT.
+
+137
+00:05:21,080 --> 00:05:24,860
+ELECTRA 15% would be the case
+where we make predictions
+
+138
+00:05:24,860 --> 00:05:28,400
+only about tokens that were
+way back here in the input
+
+139
+00:05:28,400 --> 00:05:31,658
+x-masked actually masked out.
+
+140
+00:05:31,658 --> 00:05:33,700
+Another variant that the
+team considered actually
+
+141
+00:05:33,700 --> 00:05:35,020
+relates to how we train BERT.
+
+142
+00:05:35,020 --> 00:05:37,960
+So recall that for BERT
+we train both by masking
+
+143
+00:05:37,960 --> 00:05:41,050
+and by replacing some
+tokens with other randomly
+
+144
+00:05:41,050 --> 00:05:42,280
+chosen tokens.
+
+145
+00:05:42,280 --> 00:05:44,350
+And we could try training
+the generator just
+
+146
+00:05:44,350 --> 00:05:46,900
+with that approach, which
+would eliminate the MASK
+
+147
+00:05:46,900 --> 00:05:47,860
+token entirely.
+
+148
+00:05:47,860 --> 00:05:49,240
+So that's this
+area here where we
+
+149
+00:05:49,240 --> 00:05:52,690
+have no masking on x-masked
+but rather just randomly
+
+150
+00:05:52,690 --> 00:05:56,590
+replace tokens from
+the actual vocabulary.
+
+151
+00:05:56,590 --> 00:05:59,590
+And then finally all tokens
+MLM would adopt some ideas
+
+152
+00:05:59,590 --> 00:06:01,820
+from ELECTRA into
+the BERT model.
+
+153
+00:06:01,820 --> 00:06:03,430
+So recall that for
+the MLM object,
+
+154
+00:06:03,430 --> 00:06:06,190
+we essentially turned it off
+for tokens that weren't masked.
+
+155
+00:06:06,190 --> 00:06:08,120
+But there's no principal
+reason why we're doing that.
+
+156
+00:06:08,120 --> 00:06:09,537
+We could, of course,
+have the loss
+
+157
+00:06:09,537 --> 00:06:12,820
+apply to every single one of
+the tokens in the input stream.
+
+158
+00:06:12,820 --> 00:06:17,063
+And that gives us all tokens
+MLM on the generator side.
+
+159
+00:06:17,063 --> 00:06:18,980
+And the central finding
+of the paper I suppose
+
+160
+00:06:18,980 --> 00:06:21,410
+is that ELECTRA is the best
+of all of these models.
+
+161
+00:06:21,410 --> 00:06:22,870
+You also have a
+really good model
+
+162
+00:06:22,870 --> 00:06:25,660
+if you do all-tokens MLM, which
+is something that might inform
+
+163
+00:06:25,660 --> 00:06:28,270
+development on the BERT
+side, in addition to
+
+164
+00:06:28,270 --> 00:06:30,520
+BERT in the context of ELECTRA.
+
+165
+00:06:30,520 --> 00:06:32,200
+Replace MLM is less good.
+
+166
+00:06:32,200 --> 00:06:35,340
+And ELECTRA 15% kind of down
+there at the bottom there.
+
+167
+00:06:35,340 --> 00:06:37,540
+BERT, I think this is
+kind of showing us that we
+
+168
+00:06:37,540 --> 00:06:38,870
+should make more predictions.
+
+169
+00:06:38,870 --> 00:06:40,705
+That was a guiding
+intuition for ELECTRA.
+
+170
+00:06:40,705 --> 00:06:44,450
+And it seems to be borne
+out by these results.
+
+171
+00:06:44,450 --> 00:06:46,578
+And finally, as is
+common in the space,
+
+172
+00:06:46,578 --> 00:06:48,245
+the ELECTRA team did
+some model releases
+
+173
+00:06:48,245 --> 00:06:51,110
+of pre-trained parameters
+that you can make use of.
+
+174
+00:06:51,110 --> 00:06:52,892
+They did ELECTRA base
+and ELECTRA large,
+
+175
+00:06:52,892 --> 00:06:55,100
+which is kind of comparable
+to the corresponding BERT
+
+176
+00:06:55,100 --> 00:06:55,875
+releases.
+
+177
+00:06:55,875 --> 00:06:57,250
+I think an
+interesting thing they
+
+178
+00:06:57,250 --> 00:07:00,680
+did is also released this
+ELECTRA small model which
+
+179
+00:07:00,680 --> 00:07:03,890
+is designed to quickly be
+trained on a single GPU,
+
+180
+00:07:03,890 --> 00:07:06,980
+again tying into the idea
+that we ought to be thinking
+
+181
+00:07:06,980 --> 00:07:10,310
+about how we can train models
+like this when we have highly
+
+182
+00:07:10,310 --> 00:07:12,210
+constrained compute resources.
+
+183
+00:07:12,210 --> 00:07:14,960
+ELECTRA was keyed into that
+idea from the very beginning.
+
+184
+00:07:14,960 --> 00:07:18,880
+I think the small model shows
+that it can be productive.
+
+185
+00:07:18,880 --> 00:07:22,000
+
+

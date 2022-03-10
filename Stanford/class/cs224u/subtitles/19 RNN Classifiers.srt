@@ -1,0 +1,1112 @@
+1
+00:00:00,000 --> 00:00:03,920
+
+
+2
+00:00:03,920 --> 00:00:05,670
+CHRISTOPHER POTTS:
+Welcome back, everyone.
+
+3
+00:00:05,670 --> 00:00:07,940
+This is part 8 in our series
+on supervised sentiment
+
+4
+00:00:07,940 --> 00:00:10,590
+analysis, the final
+screencast in the series.
+
+5
+00:00:10,590 --> 00:00:13,220
+We're going to be talking about
+recurrent neural network or RNA
+
+6
+00:00:13,220 --> 00:00:14,180
+classifiers.
+
+7
+00:00:14,180 --> 00:00:16,100
+I suppose this is
+officially our first step
+
+8
+00:00:16,100 --> 00:00:19,640
+into the world of deep learning
+for sentiment analysis.
+
+9
+00:00:19,640 --> 00:00:21,980
+This slide gives an
+overview of the model.
+
+10
+00:00:21,980 --> 00:00:23,620
+Let's work through
+it in some detail.
+
+11
+00:00:23,620 --> 00:00:26,210
+So we've got a single
+example with three tokens,
+
+12
+00:00:26,210 --> 00:00:27,200
+"the Rock rules."
+
+13
+00:00:27,200 --> 00:00:29,870
+These models are prepared for
+variable length sequences.
+
+14
+00:00:29,870 --> 00:00:33,440
+But this example happens
+to have like three.
+
+15
+00:00:33,440 --> 00:00:35,510
+And the first step to
+get this model started
+
+16
+00:00:35,510 --> 00:00:36,308
+is a familiar one.
+
+17
+00:00:36,308 --> 00:00:38,600
+We're going to look up each
+one of those tokens in what
+
+18
+00:00:38,600 --> 00:00:41,670
+is presumably a fixed
+embedding space here.
+
+19
+00:00:41,670 --> 00:00:45,200
+So for each token, we'll
+get a vector representation.
+
+20
+00:00:45,200 --> 00:00:46,640
+The next step is
+that we have some
+
+21
+00:00:46,640 --> 00:00:49,820
+learned parameters,
+a weight matrix, wxh.
+
+22
+00:00:49,820 --> 00:00:52,790
+And the subscript indicates that
+we're going from the inputs x
+
+23
+00:00:52,790 --> 00:00:54,650
+into the hidden layer h.
+
+24
+00:00:54,650 --> 00:00:57,050
+So that's a first transformation
+and that weight matrix
+
+25
+00:00:57,050 --> 00:01:00,350
+is used at each one
+of these time steps.
+
+26
+00:01:00,350 --> 00:01:02,090
+There is a second
+learned weight matrix
+
+27
+00:01:02,090 --> 00:01:04,280
+which I've called
+whh to indicate
+
+28
+00:01:04,280 --> 00:01:07,370
+that we are now traveling
+through the hidden layer.
+
+29
+00:01:07,370 --> 00:01:09,060
+And so we start at
+some initial state
+
+30
+00:01:09,060 --> 00:01:12,350
+h0, which could be an all 0 or
+a randomly initialized vector,
+
+31
+00:01:12,350 --> 00:01:16,040
+or a vector coming from some
+other component in the model.
+
+32
+00:01:16,040 --> 00:01:17,858
+And that representation
+is combined
+
+33
+00:01:17,858 --> 00:01:20,150
+with the representation that
+we derive going vertically
+
+34
+00:01:20,150 --> 00:01:23,300
+up from the embedding, usually
+in some additive fashion
+
+35
+00:01:23,300 --> 00:01:26,300
+to create this
+hidden state here h1.
+
+36
+00:01:26,300 --> 00:01:28,850
+And those parameters
+whh are used again
+
+37
+00:01:28,850 --> 00:01:30,810
+at each one of these time steps.
+
+38
+00:01:30,810 --> 00:01:33,650
+So that we have two learned
+weight matrices as part
+
+39
+00:01:33,650 --> 00:01:35,588
+of the core structure
+of this model,
+
+40
+00:01:35,588 --> 00:01:37,130
+the one that takes
+us from embeddings
+
+41
+00:01:37,130 --> 00:01:38,810
+into the hidden
+layer and the one
+
+42
+00:01:38,810 --> 00:01:40,790
+that travels us across
+the hidden layer.
+
+43
+00:01:40,790 --> 00:01:42,710
+And again, those are
+typically combined
+
+44
+00:01:42,710 --> 00:01:44,330
+in some additive
+fashion to create
+
+45
+00:01:44,330 --> 00:01:47,090
+these internal hidden
+representations.
+
+46
+00:01:47,090 --> 00:01:49,640
+Now we can do anything we want
+with those internal hidden
+
+47
+00:01:49,640 --> 00:01:50,960
+representations.
+
+48
+00:01:50,960 --> 00:01:53,030
+When we use RNNs
+as classifiers, we
+
+49
+00:01:53,030 --> 00:01:55,520
+do what is arguably the
+simplest thing, which
+
+50
+00:01:55,520 --> 00:01:59,900
+is take the final representation
+and use that as the input
+
+51
+00:01:59,900 --> 00:02:02,300
+to a standard
+softmax classifier.
+
+52
+00:02:02,300 --> 00:02:05,120
+So from the point of view
+of h3 going to y here,
+
+53
+00:02:05,120 --> 00:02:08,220
+we just have a learned weight
+matrix for the classifier,
+
+54
+00:02:08,220 --> 00:02:09,919
+maybe also a bias term.
+
+55
+00:02:09,919 --> 00:02:12,403
+But from this point here, this
+is really just a classifier
+
+56
+00:02:12,403 --> 00:02:13,820
+of the sort we've
+been studying up
+
+57
+00:02:13,820 --> 00:02:16,067
+until this point in the unit.
+
+58
+00:02:16,067 --> 00:02:17,900
+But of course, we could
+elaborate this model
+
+59
+00:02:17,900 --> 00:02:19,080
+in all sorts of ways.
+
+60
+00:02:19,080 --> 00:02:20,330
+It could run bidirectionally.
+
+61
+00:02:20,330 --> 00:02:23,120
+We could make more full
+use of the different hidden
+
+62
+00:02:23,120 --> 00:02:24,200
+representations here.
+
+63
+00:02:24,200 --> 00:02:27,110
+But in the simplest
+mode, our RNN classifiers
+
+64
+00:02:27,110 --> 00:02:29,420
+will just derive
+hidden representations
+
+65
+00:02:29,420 --> 00:02:31,280
+at each time step
+and use the final one
+
+66
+00:02:31,280 --> 00:02:32,903
+as the input to a classifier.
+
+67
+00:02:32,903 --> 00:02:34,820
+Couple of things I would
+say about this first,
+
+68
+00:02:34,820 --> 00:02:35,570
+if you would like.
+
+69
+00:02:35,570 --> 00:02:38,540
+A further layer of detail on
+how these models are structured
+
+70
+00:02:38,540 --> 00:02:42,230
+and optimized, I encourage
+you to look at this pure NumPy
+
+71
+00:02:42,230 --> 00:02:45,080
+reference implementation
+of an RNN classifier
+
+72
+00:02:45,080 --> 00:02:47,370
+that is included in our
+course code distribution.
+
+73
+00:02:47,370 --> 00:02:48,830
+I think that's a
+great way to get
+
+74
+00:02:48,830 --> 00:02:53,000
+a feel for the recursive
+process of computing
+
+75
+00:02:53,000 --> 00:02:56,030
+through full sequences and then
+having the error signals back
+
+76
+00:02:56,030 --> 00:02:59,030
+propagate through to
+update the weight matrix.
+
+77
+00:02:59,030 --> 00:03:02,060
+But for now, I think
+just understanding
+
+78
+00:03:02,060 --> 00:03:06,500
+the core structure of
+this model is sufficient.
+
+79
+00:03:06,500 --> 00:03:08,840
+I just want to remind you
+from the previous screencast,
+
+80
+00:03:08,840 --> 00:03:11,510
+that we're very close to
+the idea of distributed
+
+81
+00:03:11,510 --> 00:03:14,630
+representations of features
+that I introduced before.
+
+82
+00:03:14,630 --> 00:03:16,520
+Recall that for this
+mode, what we do
+
+83
+00:03:16,520 --> 00:03:18,680
+is look up each token
+in an embedding space,
+
+84
+00:03:18,680 --> 00:03:20,660
+just as we do for the RNN.
+
+85
+00:03:20,660 --> 00:03:23,420
+But instead of learning
+some complicated combination
+
+86
+00:03:23,420 --> 00:03:25,880
+function with a bunch
+of learned parameters,
+
+87
+00:03:25,880 --> 00:03:28,400
+we simply combine them
+via sum or average.
+
+88
+00:03:28,400 --> 00:03:29,520
+And that's the basis.
+
+89
+00:03:29,520 --> 00:03:32,060
+That's the input to
+the classifier here.
+
+90
+00:03:32,060 --> 00:03:34,700
+The RNN can be considered an
+elaboration of that because
+
+91
+00:03:34,700 --> 00:03:36,590
+instead of assuming
+that these vectors here
+
+92
+00:03:36,590 --> 00:03:39,410
+will be combined in some
+simple way like sum or mean,
+
+93
+00:03:39,410 --> 00:03:42,500
+we now have really
+vast capacity to learn
+
+94
+00:03:42,500 --> 00:03:44,930
+a much more complicated
+way of combining them
+
+95
+00:03:44,930 --> 00:03:47,450
+that is optimal with
+respect to the classifier
+
+96
+00:03:47,450 --> 00:03:49,100
+that we're trying to fit.
+
+97
+00:03:49,100 --> 00:03:51,320
+But fundamentally, these
+are very similar ideas.
+
+98
+00:03:51,320 --> 00:03:54,390
+And if it happened that sum
+or mean as in this picture
+
+99
+00:03:54,390 --> 00:03:57,140
+was exactly the right function
+to learn for your data,
+
+100
+00:03:57,140 --> 00:04:00,110
+then the RNN would certainly
+have the capacity to do that.
+
+101
+00:04:00,110 --> 00:04:02,600
+We just tend to favor the
+RNN because it can learn,
+
+102
+00:04:02,600 --> 00:04:06,140
+of course, a much wider range
+of complicated custom functions
+
+103
+00:04:06,140 --> 00:04:10,850
+that are particular to the
+problem that you've posed.
+
+104
+00:04:10,850 --> 00:04:13,580
+Now so far, we've been
+operating in a mode which
+
+105
+00:04:13,580 --> 00:04:16,166
+I've called standard RNN
+data set preparation.
+
+106
+00:04:16,166 --> 00:04:18,208
+Let's linger over that in
+a little bit of detail.
+
+107
+00:04:18,209 --> 00:04:20,750
+Suppose that we have
+two examples containing
+
+108
+00:04:20,750 --> 00:04:23,060
+the tokens a, b, a and b, c.
+
+109
+00:04:23,060 --> 00:04:25,800
+Those are our two raw inputs.
+
+110
+00:04:25,800 --> 00:04:27,380
+The first step in
+the standard mode
+
+111
+00:04:27,380 --> 00:04:31,790
+is to look up each one of
+those in some list of indices.
+
+112
+00:04:31,790 --> 00:04:35,300
+And then those indices are
+keyed into an embedding space.
+
+113
+00:04:35,300 --> 00:04:38,150
+And those finally give us
+the vector representations
+
+114
+00:04:38,150 --> 00:04:39,480
+of each examples.
+
+115
+00:04:39,480 --> 00:04:42,380
+So that really and truly,
+the inputs of the RNN
+
+116
+00:04:42,380 --> 00:04:44,060
+is a list of vectors.
+
+117
+00:04:44,060 --> 00:04:46,580
+It's just that we typically
+obtain those vectors
+
+118
+00:04:46,580 --> 00:04:49,370
+by looking them up in a
+fixed embedding space.
+
+119
+00:04:49,370 --> 00:04:51,650
+And so for example,
+since a occurs twice
+
+120
+00:04:51,650 --> 00:04:53,840
+in this first example,
+it is literally
+
+121
+00:04:53,840 --> 00:04:57,410
+repeated as the first
+and third vectors here.
+
+122
+00:04:57,410 --> 00:04:59,870
+Now I think you can see
+latent in this picture
+
+123
+00:04:59,870 --> 00:05:01,610
+the possibility
+that we might drop
+
+124
+00:05:01,610 --> 00:05:04,310
+the embedding space and
+instead just directly
+
+125
+00:05:04,310 --> 00:05:05,870
+input lists of vectors.
+
+126
+00:05:05,870 --> 00:05:07,820
+And that is one way
+that we will explore
+
+127
+00:05:07,820 --> 00:05:11,420
+later on in the quarter of using
+contextual models like BERT.
+
+128
+00:05:11,420 --> 00:05:13,970
+We would simply look
+up entire token streams
+
+129
+00:05:13,970 --> 00:05:17,780
+and get back lists of vectors
+and use those as fixed inputs
+
+130
+00:05:17,780 --> 00:05:19,520
+to a model like an RNN.
+
+131
+00:05:19,520 --> 00:05:23,210
+And that's a first step toward
+fine-tuning models like BERT
+
+132
+00:05:23,210 --> 00:05:26,670
+on problems like the ones
+we've posed in this unit.
+
+133
+00:05:26,670 --> 00:05:29,510
+So have that idea in
+mind as we talk next
+
+134
+00:05:29,510 --> 00:05:32,900
+about fine-tuning strategies.
+
+135
+00:05:32,900 --> 00:05:34,610
+Now another practical note.
+
+136
+00:05:34,610 --> 00:05:36,830
+What I've shown you so
+far is what you would
+
+137
+00:05:36,830 --> 00:05:39,680
+call a simple vanilla RNN.
+
+138
+00:05:39,680 --> 00:05:42,830
+LSTMs, Long Short
+Term Memory networks
+
+139
+00:05:42,830 --> 00:05:44,330
+are much more powerful models.
+
+140
+00:05:44,330 --> 00:05:47,060
+And we'll kind of default to
+them when we do experiments.
+
+141
+00:05:47,060 --> 00:05:49,250
+The fundamental issue
+is that plain RNNs
+
+142
+00:05:49,250 --> 00:05:52,340
+tend to perform poorly
+with very long sequences.
+
+143
+00:05:52,340 --> 00:05:54,710
+You get that error signal
+from the classifier
+
+144
+00:05:54,710 --> 00:05:56,180
+there at the final token.
+
+145
+00:05:56,180 --> 00:05:59,090
+But now information has to
+flow all the way back down
+
+146
+00:05:59,090 --> 00:05:59,940
+through the network.
+
+147
+00:05:59,940 --> 00:06:01,760
+Could be a very long sequence.
+
+148
+00:06:01,760 --> 00:06:03,950
+And the result is
+that the information
+
+149
+00:06:03,950 --> 00:06:08,180
+coming from that error signal
+is often lost or distorted.
+
+150
+00:06:08,180 --> 00:06:11,540
+Now LSTM cells are a prominent
+response to this problem.
+
+151
+00:06:11,540 --> 00:06:15,320
+They introduce mechanisms that
+control the flow of information
+
+152
+00:06:15,320 --> 00:06:17,750
+and help you avoid the
+problems of optimization
+
+153
+00:06:17,750 --> 00:06:19,965
+that arise for regular RNNs.
+
+154
+00:06:19,965 --> 00:06:21,590
+Now I'm not going to
+take the time here
+
+155
+00:06:21,590 --> 00:06:23,900
+to review this
+mechanism in detail.
+
+156
+00:06:23,900 --> 00:06:26,390
+I would instead recommend
+these two excellent blog
+
+157
+00:06:26,390 --> 00:06:28,910
+posts that have great
+diagrams and really
+
+158
+00:06:28,910 --> 00:06:30,730
+detailed discussions.
+
+159
+00:06:30,730 --> 00:06:32,360
+They can do a much
+better job than I
+
+160
+00:06:32,360 --> 00:06:35,600
+can at really conveying the
+intuitions visually and also
+
+161
+00:06:35,600 --> 00:06:36,500
+with math.
+
+162
+00:06:36,500 --> 00:06:38,480
+And I think you could
+pick one or both
+
+163
+00:06:38,480 --> 00:06:41,960
+and really pretty quickly gain a
+deep understanding of precisely
+
+164
+00:06:41,960 --> 00:06:45,752
+how LSTM cells are functioning.
+
+165
+00:06:45,752 --> 00:06:47,210
+The final thing
+here is just a code
+
+166
+00:06:47,210 --> 00:06:48,950
+snippet to show
+you how easy it is
+
+167
+00:06:48,950 --> 00:06:51,140
+to use our course
+code repository
+
+168
+00:06:51,140 --> 00:06:52,670
+to fit models like this.
+
+169
+00:06:52,670 --> 00:06:54,530
+In the context of
+sentiment analysis,
+
+170
+00:06:54,530 --> 00:06:57,450
+you can again make use
+of this sst library.
+
+171
+00:06:57,450 --> 00:06:58,850
+And what I've done
+here is a kind
+
+172
+00:06:58,850 --> 00:07:00,650
+of complicated
+version showing you
+
+173
+00:07:00,650 --> 00:07:02,040
+a bunch of different features.
+
+174
+00:07:02,040 --> 00:07:05,090
+So in cell 2, you can
+see that I'm going
+
+175
+00:07:05,090 --> 00:07:06,650
+to have a pointer to GloVe.
+
+176
+00:07:06,650 --> 00:07:09,710
+And I'm going to create
+a GloVe lookup using
+
+177
+00:07:09,710 --> 00:07:12,950
+the 50 dimensional vectors
+just to keep things simple.
+
+178
+00:07:12,950 --> 00:07:14,930
+The feature function
+for this model
+
+179
+00:07:14,930 --> 00:07:17,660
+is not one that returns
+count dictionaries.
+
+180
+00:07:17,660 --> 00:07:19,790
+It's important for the
+structure of the model
+
+181
+00:07:19,790 --> 00:07:23,060
+we're going to use that you
+input raw sequences of tokens.
+
+182
+00:07:23,060 --> 00:07:25,820
+So all we're doing here is
+down casing the sequence
+
+183
+00:07:25,820 --> 00:07:27,530
+and then splitting
+on whitespace.
+
+184
+00:07:27,530 --> 00:07:30,093
+Of course, you could do
+something more sophisticated.
+
+185
+00:07:30,093 --> 00:07:32,510
+The idea, though, is that you
+want to align with the GloVe
+
+186
+00:07:32,510 --> 00:07:33,800
+vocabulary.
+
+187
+00:07:33,800 --> 00:07:36,090
+Our model wrapper is
+doing a few things.
+
+188
+00:07:36,090 --> 00:07:38,990
+It's creating a vocabulary
+and loading it and embedding
+
+189
+00:07:38,990 --> 00:07:40,640
+using this GloVe space.
+
+190
+00:07:40,640 --> 00:07:43,287
+That'll be the initial
+embedding for our model.
+
+191
+00:07:43,287 --> 00:07:44,870
+And if you leave
+this step out, you'll
+
+192
+00:07:44,870 --> 00:07:47,120
+have a randomly
+initialized embedding space
+
+193
+00:07:47,120 --> 00:07:48,840
+which might be fine as well.
+
+194
+00:07:48,840 --> 00:07:51,590
+But presumably GloVe
+will give us a step up.
+
+195
+00:07:51,590 --> 00:07:54,175
+And then we set up the
+Torch RNN classifier.
+
+196
+00:07:54,175 --> 00:07:55,550
+And what I've done
+here is expose
+
+197
+00:07:55,550 --> 00:07:58,338
+a lot of the different keyword
+arguments, not all of them.
+
+198
+00:07:58,338 --> 00:08:00,380
+There are lots of knobs
+that you can fiddle with,
+
+199
+00:08:00,380 --> 00:08:02,695
+as is typical for
+deep learning models.
+
+200
+00:08:02,695 --> 00:08:04,070
+Maybe the one I
+would call out is
+
+201
+00:08:04,070 --> 00:08:05,660
+that we are using
+that fixed embedding
+
+202
+00:08:05,660 --> 00:08:07,070
+that we got from GloVe.
+
+203
+00:08:07,070 --> 00:08:09,260
+And I have set
+early_stopping equals true,
+
+204
+00:08:09,260 --> 00:08:12,230
+which might help you efficiently
+optimize these models.
+
+205
+00:08:12,230 --> 00:08:13,730
+Otherwise, you'll
+have to figure out
+
+206
+00:08:13,730 --> 00:08:16,490
+how many iterations you
+actually want it to run for.
+
+207
+00:08:16,490 --> 00:08:19,640
+And you might run it for much
+too long or much less time
+
+208
+00:08:19,640 --> 00:08:21,680
+than is needed to
+get an optimal model.
+
+209
+00:08:21,680 --> 00:08:23,570
+The early stopping
+options, and there
+
+210
+00:08:23,570 --> 00:08:25,940
+are a few other parameters
+involved in that,
+
+211
+00:08:25,940 --> 00:08:27,770
+might help you
+optimize these models
+
+212
+00:08:27,770 --> 00:08:29,940
+efficiently and effectively.
+
+213
+00:08:29,940 --> 00:08:31,940
+In the end though, having
+set up all that stuff,
+
+214
+00:08:31,940 --> 00:08:35,070
+you call fit as usual and
+return the trained model.
+
+215
+00:08:35,070 --> 00:08:38,058
+And in that context, you can
+simply use sst.experiment
+
+216
+00:08:38,058 --> 00:08:40,908
+with these previous components
+to conduct experiments
+
+217
+00:08:40,909 --> 00:08:44,179
+with RNNs, just as you did
+for simpler linear models
+
+218
+00:08:44,179 --> 00:08:45,610
+as in previous screencasts.
+
+219
+00:08:45,610 --> 00:08:48,443
+The one change which
+will be familiar
+
+220
+00:08:48,443 --> 00:08:50,360
+from the previous
+screencast, is that you need
+
+221
+00:08:50,360 --> 00:08:52,550
+to set vectorize equals false.
+
+222
+00:08:52,550 --> 00:08:55,220
+And that is important
+because, again, we're
+
+223
+00:08:55,220 --> 00:08:57,247
+going to let the model
+process these examples.
+
+224
+00:08:57,247 --> 00:08:59,330
+We don't want to pipe
+everything through some kind
+
+225
+00:08:59,330 --> 00:09:00,800
+of DictVectorizer.
+
+226
+00:09:00,800 --> 00:09:03,020
+That's strictly for
+handbuilt feature functions
+
+227
+00:09:03,020 --> 00:09:04,610
+and sparse linear models.
+
+228
+00:09:04,610 --> 00:09:06,110
+Here in the land
+of deep learning,
+
+229
+00:09:06,110 --> 00:09:07,760
+vectorize equals false.
+
+230
+00:09:07,760 --> 00:09:09,710
+And we'll use the
+components of the model
+
+231
+00:09:09,710 --> 00:09:13,840
+to represent each example
+as I discussed before.
+
+232
+00:09:13,840 --> 00:09:18,000
+
+

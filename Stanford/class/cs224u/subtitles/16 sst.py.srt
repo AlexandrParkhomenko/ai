@@ -1,0 +1,1387 @@
+1
+00:00:00,000 --> 00:00:04,862
+
+
+2
+00:00:04,862 --> 00:00:06,320
+CHRISTOPHER POTTS:
+Hello, everyone.
+
+3
+00:00:06,320 --> 00:00:08,690
+Welcome to part 5 in our
+series on supervised sentiment
+
+4
+00:00:08,690 --> 00:00:09,320
+analysis.
+
+5
+00:00:09,320 --> 00:00:12,590
+The focus of this screencast
+is on the module sst.py,
+
+6
+00:00:12,590 --> 00:00:15,890
+which is included in the
+course code distribution.
+
+7
+00:00:15,890 --> 00:00:17,300
+It contains a
+bunch of tools that
+
+8
+00:00:17,300 --> 00:00:19,130
+will let you work
+fluidly, I hope,
+
+9
+00:00:19,130 --> 00:00:20,960
+with the Stanford
+Sentiment Treebank
+
+10
+00:00:20,960 --> 00:00:24,140
+and conduct a lot of
+experiments in service
+
+11
+00:00:24,140 --> 00:00:26,960
+of completing the homework and
+also doing an original system
+
+12
+00:00:26,960 --> 00:00:28,520
+entry for the bake off.
+
+13
+00:00:28,520 --> 00:00:31,063
+Let's say that my goals for
+the screencast are two-fold.
+
+14
+00:00:31,063 --> 00:00:33,480
+First, I do just want to get
+you acquainted with this code
+
+15
+00:00:33,480 --> 00:00:36,737
+so that you can work with it on
+the assignment in the bake off.
+
+16
+00:00:36,737 --> 00:00:39,320
+And in addition, I'd guess I'd
+like to convey to you some best
+
+17
+00:00:39,320 --> 00:00:41,810
+practices around
+setting up a code
+
+18
+00:00:41,810 --> 00:00:44,270
+infrastructure for
+a project, say,
+
+19
+00:00:44,270 --> 00:00:46,370
+that will let you run
+a lot of experiments
+
+20
+00:00:46,370 --> 00:00:48,290
+and really explore
+the space of ideas
+
+21
+00:00:48,290 --> 00:00:50,900
+that you have without
+introducing a lot of bugs
+
+22
+00:00:50,900 --> 00:00:53,420
+or writing a lot of extra code.
+
+23
+00:00:53,420 --> 00:00:54,150
+So let's begin.
+
+24
+00:00:54,150 --> 00:00:55,940
+We'll start with these
+reader functions.
+
+25
+00:00:55,940 --> 00:00:57,410
+At the top in the
+first cell here,
+
+26
+00:00:57,410 --> 00:00:59,300
+I just load in not
+only OS so that we
+
+27
+00:00:59,300 --> 00:01:01,400
+can find our files,
+but also sst which
+
+28
+00:01:01,400 --> 00:01:03,320
+is the module of interest.
+
+29
+00:01:03,320 --> 00:01:06,200
+We set up this variable here
+that's a pointer to where
+
+30
+00:01:06,200 --> 00:01:08,210
+the data set itself lives.
+
+31
+00:01:08,210 --> 00:01:10,760
+And then this function,
+sst.train_reader,
+
+32
+00:01:10,760 --> 00:01:14,270
+will let you load in a Pandas
+data frame that contains
+
+33
+00:01:14,270 --> 00:01:16,100
+the train set for the sst.
+
+34
+00:01:16,100 --> 00:01:18,410
+You'll notice that there
+are two optional keywords,
+
+35
+00:01:18,410 --> 00:01:20,900
+include_subtrees and dedup.
+
+36
+00:01:20,900 --> 00:01:22,790
+Dedup will remove
+repeated examples,
+
+37
+00:01:22,790 --> 00:01:24,620
+and include_subtrees
+is a flag that
+
+38
+00:01:24,620 --> 00:01:26,930
+will let you include
+or exclude all
+
+39
+00:01:26,930 --> 00:01:29,330
+of the subtrees that
+the sst contains.
+
+40
+00:01:29,330 --> 00:01:32,300
+By default, we'll include
+just the full examples.
+
+41
+00:01:32,300 --> 00:01:35,150
+But if you said, include
+subtrees equals true,
+
+42
+00:01:35,150 --> 00:01:37,220
+you get a much
+larger data set as we
+
+43
+00:01:37,220 --> 00:01:41,030
+discussed in the screencast
+on the sst itself.
+
+44
+00:01:41,030 --> 00:01:44,220
+In cell 4 here, I'm just giving
+you a look at one random record
+
+45
+00:01:44,220 --> 00:01:44,720
+from this.
+
+46
+00:01:44,720 --> 00:01:47,107
+So remember, it is
+a PANDAS data frame.
+
+47
+00:01:47,107 --> 00:01:49,190
+But we can get it as a
+dictionary for a little bit
+
+48
+00:01:49,190 --> 00:01:50,480
+of an easier look.
+
+49
+00:01:50,480 --> 00:01:52,070
+We've got an example ID.
+
+50
+00:01:52,070 --> 00:01:54,470
+We have the text of the
+sentence, the label,
+
+51
+00:01:54,470 --> 00:01:56,780
+which is either negative,
+positive, or neutral.
+
+52
+00:01:56,780 --> 00:01:59,300
+And then is_subtree is
+a flag on whether or not
+
+53
+00:01:59,300 --> 00:02:03,050
+it's a full root level example
+or a subconstituent of such
+
+54
+00:02:03,050 --> 00:02:04,732
+an example.
+
+55
+00:02:04,732 --> 00:02:06,440
+Since we have loaded
+this in with include
+
+56
+00:02:06,440 --> 00:02:09,538
+subtrees equals false, we get
+this distribution of labels
+
+57
+00:02:09,538 --> 00:02:10,038
+here.
+
+58
+00:02:10,038 --> 00:02:13,670
+This is just a distribution of
+labels on the full examples.
+
+59
+00:02:13,670 --> 00:02:15,360
+But of course, as we
+change these flags,
+
+60
+00:02:15,360 --> 00:02:18,050
+we get very different
+counts down here.
+
+61
+00:02:18,050 --> 00:02:20,930
+And then something comparable
+happens with the dev reader--
+
+62
+00:02:20,930 --> 00:02:25,160
+dev_df from sst.dev_reader, with
+a pointer to the home directory
+
+63
+00:02:25,160 --> 00:02:26,930
+for the data as before.
+
+64
+00:02:26,930 --> 00:02:28,490
+And here, the
+subtree distinction
+
+65
+00:02:28,490 --> 00:02:31,160
+and the dedup distinction,
+those are much less important
+
+66
+00:02:31,160 --> 00:02:34,460
+because these data sets consist
+just of root level examples.
+
+67
+00:02:34,460 --> 00:02:37,190
+And there are very few,
+if any, duplicate examples
+
+68
+00:02:37,190 --> 00:02:38,120
+in those data sets.
+
+69
+00:02:38,120 --> 00:02:41,030
+
+
+70
+00:02:41,030 --> 00:02:42,620
+Now let's turn to
+feature functions.
+
+71
+00:02:42,620 --> 00:02:44,690
+We'll begin to build up
+a framework for doing
+
+72
+00:02:44,690 --> 00:02:46,950
+supervised sentiment analysis.
+
+73
+00:02:46,950 --> 00:02:48,950
+And the starting point
+here is what I've
+
+74
+00:02:48,950 --> 00:02:50,450
+called the feature function.
+
+75
+00:02:50,450 --> 00:02:52,070
+It's given in two, unigrams_phi.
+
+76
+00:02:52,070 --> 00:02:54,860
+It takes in a text
+that is a string.
+
+77
+00:02:54,860 --> 00:02:58,340
+And what it does is return a
+dictionary that is essentially
+
+78
+00:02:58,340 --> 00:03:01,910
+a count dictionary over
+the unigrams in that string
+
+79
+00:03:01,910 --> 00:03:05,210
+as given by this very simple
+tokenization scheme, which
+
+80
+00:03:05,210 --> 00:03:08,060
+just down cases all
+of the tokens and then
+
+81
+00:03:08,060 --> 00:03:09,950
+splits on whitespace.
+
+82
+00:03:09,950 --> 00:03:12,740
+So as an example text, if I
+have "NLU is enlightening,"
+
+83
+00:03:12,740 --> 00:03:14,870
+space, and then an
+exclamation mark,
+
+84
+00:03:14,870 --> 00:03:18,350
+and I call the feature
+function on that string,
+
+85
+00:03:18,350 --> 00:03:20,133
+I get this count
+dictionary here,
+
+86
+00:03:20,133 --> 00:03:21,800
+which is just giving
+the number of times
+
+87
+00:03:21,800 --> 00:03:24,260
+each token appears
+in that string
+
+88
+00:03:24,260 --> 00:03:26,242
+according to the
+feature function.
+
+89
+00:03:26,242 --> 00:03:27,950
+I'd say it's really
+important when you're
+
+90
+00:03:27,950 --> 00:03:30,350
+working with the standard
+version of this framework
+
+91
+00:03:30,350 --> 00:03:32,840
+doing handbuilt feature
+functions, that you just
+
+92
+00:03:32,840 --> 00:03:35,750
+abide by the contract that
+all of these feature functions
+
+93
+00:03:35,750 --> 00:03:39,260
+take in strings and
+return dictionaries,
+
+94
+00:03:39,260 --> 00:03:41,150
+mappings strings
+to their counts.
+
+95
+00:03:41,150 --> 00:03:44,300
+Or if you want to, they're
+Bools or floats or something
+
+96
+00:03:44,300 --> 00:03:48,840
+that we can make use of when
+we're doing featurization.
+
+97
+00:03:48,840 --> 00:03:51,180
+The next step here is what
+I've called a model wrapper.
+
+98
+00:03:51,180 --> 00:03:53,230
+And this is going to look
+a little bit trivial here.
+
+99
+00:03:53,230 --> 00:03:55,647
+But as you'll see as we move
+through more advanced methods
+
+100
+00:03:55,647 --> 00:03:57,840
+in this unit, especially
+the next screencast,
+
+101
+00:03:57,840 --> 00:04:00,150
+it's really nice to
+have these wrappers
+
+102
+00:04:00,150 --> 00:04:04,267
+around the normal, essentially
+the fit function down here.
+
+103
+00:04:04,267 --> 00:04:06,600
+So I'm going to make use of
+a scikit linear model called
+
+104
+00:04:06,600 --> 00:04:08,267
+LogisticRegression,
+a very standard sort
+
+105
+00:04:08,267 --> 00:04:10,800
+of cross-entropy classifier.
+
+106
+00:04:10,800 --> 00:04:13,350
+I've called my function
+fit_softmax_classifier.
+
+107
+00:04:13,350 --> 00:04:17,190
+And it takes in a supervised
+data set, so a feature matrix
+
+108
+00:04:17,190 --> 00:04:19,350
+and a list of labels.
+
+109
+00:04:19,350 --> 00:04:21,165
+And I set up my model down here.
+
+110
+00:04:21,165 --> 00:04:23,040
+And I've used some of
+the keyword parameters.
+
+111
+00:04:23,040 --> 00:04:25,500
+There are many more
+for the scikit model.
+
+112
+00:04:25,500 --> 00:04:28,320
+And then the crucial thing
+is that I call fit and return
+
+113
+00:04:28,320 --> 00:04:30,900
+the model, which is now
+a trained model, trained
+
+114
+00:04:30,900 --> 00:04:33,030
+on this data set xy.
+
+115
+00:04:33,030 --> 00:04:35,610
+It might look like all I've
+done is called fit on a model
+
+116
+00:04:35,610 --> 00:04:36,270
+that I set up.
+
+117
+00:04:36,270 --> 00:04:39,270
+But as you'll see, it's nice
+to have a wrapper function so
+
+118
+00:04:39,270 --> 00:04:42,090
+that we can potentially
+do a lot more as part
+
+119
+00:04:42,090 --> 00:04:45,838
+of this particular step in
+our experimental workflow.
+
+120
+00:04:45,838 --> 00:04:47,880
+So now let's just bring
+all those things together
+
+121
+00:04:47,880 --> 00:04:50,500
+into what is called
+sst.experiment,
+
+122
+00:04:50,500 --> 00:04:53,310
+which is like one-stop shopping
+for a complete experiment
+
+123
+00:04:53,310 --> 00:04:55,620
+in supervised
+sentiment analysis.
+
+124
+00:04:55,620 --> 00:04:57,420
+So we load in these
+two libraries.
+
+125
+00:04:57,420 --> 00:05:02,710
+We get a pointer to our dataset,
+and then call sst.experiment.
+
+126
+00:05:02,710 --> 00:05:05,185
+The first argument
+is the dataset
+
+127
+00:05:05,185 --> 00:05:06,310
+that it will be trained on.
+
+128
+00:05:06,310 --> 00:05:08,730
+So that's like
+train_df from before.
+
+129
+00:05:08,730 --> 00:05:11,580
+We have a feature function
+and a model wrapper.
+
+130
+00:05:11,580 --> 00:05:13,390
+And then these other
+things are optional.
+
+131
+00:05:13,390 --> 00:05:16,140
+So if I leave
+assess_dataframes as none,
+
+132
+00:05:16,140 --> 00:05:18,810
+then it will do a random
+split on this train reader
+
+133
+00:05:18,810 --> 00:05:20,490
+according to train size.
+
+134
+00:05:20,490 --> 00:05:23,290
+If you do specify some data
+frames here, a list of them,
+
+135
+00:05:23,290 --> 00:05:26,280
+then each one will be used
+as a separate evaluation
+
+136
+00:05:26,280 --> 00:05:29,740
+against the model that you
+train on this original data.
+
+137
+00:05:29,740 --> 00:05:31,980
+You can set the score
+function if you want.
+
+138
+00:05:31,980 --> 00:05:34,048
+Our default is macro F1.
+
+139
+00:05:34,048 --> 00:05:36,090
+And then we'll return to
+these two options later.
+
+140
+00:05:36,090 --> 00:05:38,548
+Verbose is just whether you
+want to print some information.
+
+141
+00:05:38,548 --> 00:05:41,520
+And Vectorize is an option
+that you can turn on and off.
+
+142
+00:05:41,520 --> 00:05:43,590
+And you'll probably
+turn it off when
+
+143
+00:05:43,590 --> 00:05:45,600
+you do deep learning
+experiments, which we'll
+
+144
+00:05:45,600 --> 00:05:47,880
+talk about later in the unit.
+
+145
+00:05:47,880 --> 00:05:50,070
+The result of all that
+is a bunch of information
+
+146
+00:05:50,070 --> 00:05:52,350
+about your experiments
+stored in this variable.
+
+147
+00:05:52,350 --> 00:05:54,510
+And because we had
+verbose equals true,
+
+148
+00:05:54,510 --> 00:05:56,580
+you're going to report here.
+
+149
+00:05:56,580 --> 00:05:58,590
+And this is just a
+first chance to call out
+
+150
+00:05:58,590 --> 00:06:01,260
+that throughout this
+course, essentially, when
+
+151
+00:06:01,260 --> 00:06:04,620
+we do classifier experiments,
+our primary metric is
+
+152
+00:06:04,620 --> 00:06:07,440
+going to be the macro
+average F1 score.
+
+153
+00:06:07,440 --> 00:06:09,750
+This is useful for us
+because it gives equal weight
+
+154
+00:06:09,750 --> 00:06:14,160
+to all the classes in our data,
+regardless of their size, which
+
+155
+00:06:14,160 --> 00:06:16,500
+is typically reflecting
+our value that we care even
+
+156
+00:06:16,500 --> 00:06:17,610
+about small classes.
+
+157
+00:06:17,610 --> 00:06:20,820
+We want to do well even on
+the rare events in our space.
+
+158
+00:06:20,820 --> 00:06:23,220
+And it's also perfectly
+balancing precision and recall
+
+159
+00:06:23,220 --> 00:06:25,440
+which is like a
+good null hypothesis
+
+160
+00:06:25,440 --> 00:06:28,500
+if we're not told ahead of
+time based on some other goal
+
+161
+00:06:28,500 --> 00:06:31,410
+whether we should favor
+precision or recall.
+
+162
+00:06:31,410 --> 00:06:33,750
+So that all leads us to
+kind of favor as a default
+
+163
+00:06:33,750 --> 00:06:36,210
+this macro average F1
+score as an assessment
+
+164
+00:06:36,210 --> 00:06:37,680
+of how the model fit.
+
+165
+00:06:37,680 --> 00:06:41,360
+And here we've gotten 51.3.
+
+166
+00:06:41,360 --> 00:06:44,540
+The return value of
+sst.experiment, as I said,
+
+167
+00:06:44,540 --> 00:06:45,410
+is a dictionary.
+
+168
+00:06:45,410 --> 00:06:48,710
+And it should package up for you
+all the objects and information
+
+169
+00:06:48,710 --> 00:06:51,740
+you would need to test the
+model, assess the model,
+
+170
+00:06:51,740 --> 00:06:53,840
+and do all kinds of
+deep error analysis.
+
+171
+00:06:53,840 --> 00:06:56,540
+That is the philosophy here
+that you should, if possible,
+
+172
+00:06:56,540 --> 00:06:59,270
+capture as much information as
+you can about the experiment
+
+173
+00:06:59,270 --> 00:07:01,370
+that you ran in the
+service of being
+
+174
+00:07:01,370 --> 00:07:04,767
+able to do subsequent downstream
+analysis of what happened.
+
+175
+00:07:04,767 --> 00:07:06,350
+And so here I'm just
+giving an example
+
+176
+00:07:06,350 --> 00:07:09,470
+that we've got the model, the
+feature function, the train
+
+177
+00:07:09,470 --> 00:07:11,690
+dataset, whenever our
+assess datasets were used.
+
+178
+00:07:11,690 --> 00:07:13,820
+And if that was a random
+split of the train data,
+
+179
+00:07:13,820 --> 00:07:16,460
+that will be reflected
+in these two variables.
+
+180
+00:07:16,460 --> 00:07:17,960
+The set of predictions
+that you made
+
+181
+00:07:17,960 --> 00:07:20,150
+about each one of
+the assess datasets,
+
+182
+00:07:20,150 --> 00:07:23,390
+the metrics you chose, and
+the scores that you got.
+
+183
+00:07:23,390 --> 00:07:26,120
+And then if you do dive in,
+like if you look at train set,
+
+184
+00:07:26,120 --> 00:07:27,720
+it's a standard data set.
+
+185
+00:07:27,720 --> 00:07:29,780
+x is your feature space.
+
+186
+00:07:29,780 --> 00:07:31,100
+y is your labels.
+
+187
+00:07:31,100 --> 00:07:33,060
+Vectorizer is something
+that I'll return to.
+
+188
+00:07:33,060 --> 00:07:35,780
+That's an important part about
+how the internal workings
+
+189
+00:07:35,780 --> 00:07:37,790
+of sst.experiment function.
+
+190
+00:07:37,790 --> 00:07:39,680
+And then you have the
+raw examples in case
+
+191
+00:07:39,680 --> 00:07:42,470
+you need to do some really
+serious human level error
+
+192
+00:07:42,470 --> 00:07:45,950
+analysis of the examples as
+distinct from how they're
+
+193
+00:07:45,950 --> 00:07:50,120
+represented in
+this feature space.
+
+194
+00:07:50,120 --> 00:07:52,480
+So here is just a slide that
+brings all of those pieces
+
+195
+00:07:52,480 --> 00:07:53,030
+together.
+
+196
+00:07:53,030 --> 00:07:56,170
+This is one-stop shopping
+for an entire experiment.
+
+197
+00:07:56,170 --> 00:07:57,490
+We loaded all our libraries.
+
+198
+00:07:57,490 --> 00:07:59,380
+We have our pointer to the data.
+
+199
+00:07:59,380 --> 00:08:02,200
+And then the ingredients are
+really a feature function
+
+200
+00:08:02,200 --> 00:08:03,760
+and a model wrapper.
+
+201
+00:08:03,760 --> 00:08:06,370
+And that's all you need
+in our default setting.
+
+202
+00:08:06,370 --> 00:08:09,070
+Point it to the train data
+and it will do its job
+
+203
+00:08:09,070 --> 00:08:11,750
+and record all you would
+want for this experiment,
+
+204
+00:08:11,750 --> 00:08:16,060
+I hope, in this
+experiment variable here.
+
+205
+00:08:16,060 --> 00:08:16,990
+There's a final piece.
+
+206
+00:08:16,990 --> 00:08:19,210
+I want to return to
+that vectorizer variable
+
+207
+00:08:19,210 --> 00:08:22,778
+that you saw in the return
+values for sst.experiment.
+
+208
+00:08:22,778 --> 00:08:24,820
+And that is making use of
+what in scikit-learn is
+
+209
+00:08:24,820 --> 00:08:27,100
+called the DictVectorizer.
+
+210
+00:08:27,100 --> 00:08:29,480
+And this is really nice
+convenience function
+
+211
+00:08:29,480 --> 00:08:33,250
+for translating from human
+representations of your data
+
+212
+00:08:33,250 --> 00:08:36,159
+into representations that
+machine learning models like
+
+213
+00:08:36,159 --> 00:08:37,360
+to consume.
+
+214
+00:08:37,360 --> 00:08:39,320
+So let me just walk
+through this example here.
+
+215
+00:08:39,320 --> 00:08:43,090
+I've loaded the DictVectorizer,
+and I've got my train features
+
+216
+00:08:43,090 --> 00:08:44,950
+here in the mode that
+I just showed you
+
+217
+00:08:44,950 --> 00:08:48,610
+where here we have two examples
+and each one is represented
+
+218
+00:08:48,610 --> 00:08:51,130
+by our feature function
+as a dictionary
+
+219
+00:08:51,130 --> 00:08:54,520
+that maps like words
+into their counts.
+
+220
+00:08:54,520 --> 00:08:56,020
+It could be more
+flexible than that,
+
+221
+00:08:56,020 --> 00:08:59,290
+but that's like the most
+basic case that we consider.
+
+222
+00:08:59,290 --> 00:09:04,720
+And I set up my vectorizer in
+3, and then I call fit_transform
+
+223
+00:09:04,720 --> 00:09:06,970
+on this list of dictionaries.
+
+224
+00:09:06,970 --> 00:09:10,420
+And the result here,
+x_train, is a matrix,
+
+225
+00:09:10,420 --> 00:09:12,700
+where each of the
+columns corresponds
+
+226
+00:09:12,700 --> 00:09:16,930
+to the keys in the dictionary
+representing a unique feature.
+
+227
+00:09:16,930 --> 00:09:20,240
+And the values are, of
+course, stored in that column.
+
+228
+00:09:20,240 --> 00:09:22,240
+So this feature
+space here has been
+
+229
+00:09:22,240 --> 00:09:27,190
+turned into a matrix that
+has two examples, 0 and 1.
+
+230
+00:09:27,190 --> 00:09:29,470
+There are a total of
+three features represented
+
+231
+00:09:29,470 --> 00:09:32,710
+across our two
+examples, A, B, and C.
+
+232
+00:09:32,710 --> 00:09:34,710
+And you can see that the
+counts are stored here.
+
+233
+00:09:34,710 --> 00:09:41,170
+So example 0 has 1 for A
+and 1 for B and 0 for C.
+
+234
+00:09:41,170 --> 00:09:47,170
+And example 1 has 0 for
+A, 1 for B, and 2 for C.
+
+235
+00:09:47,170 --> 00:09:49,180
+So that's recorded
+in the columns here.
+
+236
+00:09:49,180 --> 00:09:52,420
+You can, of course,
+undertake this step by hand.
+
+237
+00:09:52,420 --> 00:09:54,520
+But it's a kind of
+error-prone step.
+
+238
+00:09:54,520 --> 00:09:56,830
+And I'm just encouraging
+you to use DictVectorizer
+
+239
+00:09:56,830 --> 00:09:59,350
+to handle it all and
+essentially map you
+
+240
+00:09:59,350 --> 00:10:02,600
+from this, which is pretty
+human interpretable, into this,
+
+241
+00:10:02,600 --> 00:10:06,100
+which is something your
+models like to consume.
+
+242
+00:10:06,100 --> 00:10:08,860
+There's a second
+advantage here, which
+
+243
+00:10:08,860 --> 00:10:11,140
+is that if you use
+a DictVectorizer
+
+244
+00:10:11,140 --> 00:10:14,260
+and you need to now do
+something at test time,
+
+245
+00:10:14,260 --> 00:10:16,000
+you can easily use
+your vectorizer
+
+246
+00:10:16,000 --> 00:10:18,250
+to create feature spaces
+that are harmonized
+
+247
+00:10:18,250 --> 00:10:19,540
+with what you saw in training.
+
+248
+00:10:19,540 --> 00:10:22,150
+So as an example,
+if my test features
+
+249
+00:10:22,150 --> 00:10:26,050
+are another pair of examples
+with a different character,
+
+250
+00:10:26,050 --> 00:10:29,590
+then I can call transform
+on the original trained
+
+251
+00:10:29,590 --> 00:10:31,090
+vectorizer from up here.
+
+252
+00:10:31,090 --> 00:10:34,983
+And it will translate that
+list of features into a matrix.
+
+253
+00:10:34,983 --> 00:10:37,150
+Now, the important thing
+about what's happening here
+
+254
+00:10:37,150 --> 00:10:38,980
+is that it's going
+to package the test
+
+255
+00:10:38,980 --> 00:10:41,370
+features into the
+original training space
+
+256
+00:10:41,370 --> 00:10:43,120
+because, of course,
+those are the features
+
+257
+00:10:43,120 --> 00:10:44,737
+that your model recognizes.
+
+258
+00:10:44,737 --> 00:10:46,570
+Those are the features
+that you have weights
+
+259
+00:10:46,570 --> 00:10:48,190
+for if you've trained a model.
+
+260
+00:10:48,190 --> 00:10:50,920
+So it's important to call
+transform at this space.
+
+261
+00:10:50,920 --> 00:10:52,960
+And as an indication of
+one of the things that's
+
+262
+00:10:52,960 --> 00:10:55,930
+going to happen here is notice
+that in the test features,
+
+263
+00:10:55,930 --> 00:10:59,080
+my second example has
+a brand new feature D.
+
+264
+00:10:59,080 --> 00:11:01,870
+But D is not represented
+in the training space.
+
+265
+00:11:01,870 --> 00:11:03,130
+We have no weights for it.
+
+266
+00:11:03,130 --> 00:11:07,040
+It's simply not part of that
+original training data set.
+
+267
+00:11:07,040 --> 00:11:09,460
+And so the result is that
+when we call transform,
+
+268
+00:11:09,460 --> 00:11:12,310
+that feature is
+simply elided, which
+
+269
+00:11:12,310 --> 00:11:14,470
+is the desired behavior
+as we're translating
+
+270
+00:11:14,470 --> 00:11:16,480
+from training into testing.
+
+271
+00:11:16,480 --> 00:11:18,970
+And notice that the
+DictVectorizer has simply
+
+272
+00:11:18,970 --> 00:11:21,850
+handled that seamlessly
+for you, provided
+
+273
+00:11:21,850 --> 00:11:23,890
+that you remember
+at the second stage
+
+274
+00:11:23,890 --> 00:11:25,570
+not to call fit_transform.
+
+275
+00:11:25,570 --> 00:11:28,360
+That's the number one
+gotcha for this interface
+
+276
+00:11:28,360 --> 00:11:31,180
+is that if you call
+fit_transform a second time,
+
+277
+00:11:31,180 --> 00:11:32,800
+it will simply
+change the feature
+
+278
+00:11:32,800 --> 00:11:35,650
+space into the one that is
+represented in your test
+
+279
+00:11:35,650 --> 00:11:36,430
+features.
+
+280
+00:11:36,430 --> 00:11:38,300
+And then everything
+will fall apart.
+
+281
+00:11:38,300 --> 00:11:40,600
+And your model, as
+trained from before,
+
+282
+00:11:40,600 --> 00:11:43,450
+will be unable to consume
+these new matrices
+
+283
+00:11:43,450 --> 00:11:44,590
+that you've created.
+
+284
+00:11:44,590 --> 00:11:47,410
+But provided you remember that
+the rhythm is fit_transform
+
+285
+00:11:47,410 --> 00:11:50,830
+and then transform, this
+should be really a nice set
+
+286
+00:11:50,830 --> 00:11:51,590
+of interfaces.
+
+287
+00:11:51,590 --> 00:11:54,100
+And of course, this
+is what sst.experiment
+
+288
+00:11:54,100 --> 00:11:58,290
+is doing by default
+under the hood for you.
+
+289
+00:11:58,290 --> 00:12:02,000
+
+

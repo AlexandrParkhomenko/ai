@@ -1,0 +1,741 @@
+1
+00:00:00,000 --> 00:00:04,360
+
+
+2
+00:00:04,360 --> 00:00:06,110
+CHRISTOPHER POTTS:
+Welcome back, everyone.
+
+3
+00:00:06,110 --> 00:00:08,193
+This is part four in our
+series on Contextual Word
+
+4
+00:00:08,193 --> 00:00:09,160
+Representations.
+
+5
+00:00:09,160 --> 00:00:11,920
+We are going to be talking
+about a robustly optimized BERT
+
+6
+00:00:11,920 --> 00:00:13,330
+approach a.k.a.
+
+7
+00:00:13,330 --> 00:00:15,160
+RoBERTa.
+
+8
+00:00:15,160 --> 00:00:17,740
+So recall that I finished the
+BERT screencast by listing out
+
+9
+00:00:17,740 --> 00:00:20,680
+some known limitations of
+the BERT model, most of which
+
+10
+00:00:20,680 --> 00:00:23,780
+were identified by the original
+BERT authors themselves.
+
+11
+00:00:23,780 --> 00:00:26,140
+And top of the list
+was simply that,
+
+12
+00:00:26,140 --> 00:00:27,730
+although the original
+BERT paper does
+
+13
+00:00:27,730 --> 00:00:30,760
+a good job of exploring
+ablations of their system
+
+14
+00:00:30,760 --> 00:00:32,770
+and different
+optimization choices.
+
+15
+00:00:32,770 --> 00:00:35,920
+There's a very large landscape
+of ideas here, and most of it
+
+16
+00:00:35,920 --> 00:00:38,890
+was left unexplored
+in the original paper.
+
+17
+00:00:38,890 --> 00:00:40,660
+Essentially, what
+the RoBERTa team did
+
+18
+00:00:40,660 --> 00:00:42,880
+is explore more
+widely in this space.
+
+19
+00:00:42,880 --> 00:00:46,848
+That is the robustly
+optimized part of RoBERTa.
+
+20
+00:00:46,848 --> 00:00:48,390
+So what I've done
+for this slide here
+
+21
+00:00:48,390 --> 00:00:50,730
+is list out what I take to
+be the central differences
+
+22
+00:00:50,730 --> 00:00:52,052
+between BERT and RoBERTa.
+
+23
+00:00:52,052 --> 00:00:54,510
+And I'll follow this up with
+some evidence from the RoBERTa
+
+24
+00:00:54,510 --> 00:00:55,620
+paper in a second.
+
+25
+00:00:55,620 --> 00:00:58,740
+But first let's go through the
+central differences beginning
+
+26
+00:00:58,740 --> 00:01:02,100
+with this question of static
+versus dynamic masking.
+
+27
+00:01:02,100 --> 00:01:04,440
+So for the original
+BERT paper what they did
+
+28
+00:01:04,440 --> 00:01:06,354
+is create four copies
+of their dataset,
+
+29
+00:01:06,354 --> 00:01:08,880
+each with different masking.
+
+30
+00:01:08,880 --> 00:01:11,580
+And then those four copies
+were used repeatedly
+
+31
+00:01:11,580 --> 00:01:13,860
+through epochs of training.
+
+32
+00:01:13,860 --> 00:01:15,360
+The RoBERTa team
+had the intuition
+
+33
+00:01:15,360 --> 00:01:17,400
+that it would be useful
+to inject some diversity
+
+34
+00:01:17,400 --> 00:01:18,970
+into this training process.
+
+35
+00:01:18,970 --> 00:01:21,990
+So they went to the other
+extreme, dynamic masking.
+
+36
+00:01:21,990 --> 00:01:24,450
+Every single example when
+it's presented to the model
+
+37
+00:01:24,450 --> 00:01:26,800
+is masked a potentially
+different way,
+
+38
+00:01:26,800 --> 00:01:29,980
+via some random function.
+
+39
+00:01:29,980 --> 00:01:31,730
+There are also differences
+in how examples
+
+40
+00:01:31,730 --> 00:01:33,050
+are presented to the models.
+
+41
+00:01:33,050 --> 00:01:36,380
+So BERT presented two
+concatenated document segments.
+
+42
+00:01:36,380 --> 00:01:39,290
+This was crucial to its next
+sentence prediction task.
+
+43
+00:01:39,290 --> 00:01:40,790
+Whereas for RoBERTa
+we're just going
+
+44
+00:01:40,790 --> 00:01:42,710
+to have sentence
+sequences, that is
+
+45
+00:01:42,710 --> 00:01:46,850
+pairs, that may even
+span document boundaries.
+
+46
+00:01:46,850 --> 00:01:50,000
+Relatedly whereas BERT had,
+as one of its central pieces,
+
+47
+00:01:50,000 --> 00:01:52,970
+this next sentence
+prediction task.
+
+48
+00:01:52,970 --> 00:01:56,000
+RoBERTa simply drops that as
+part of the objective here.
+
+49
+00:01:56,000 --> 00:01:58,460
+That simplifies the
+presentation of examples
+
+50
+00:01:58,460 --> 00:02:00,890
+and also simplifies
+the modeling objective.
+
+51
+00:02:00,890 --> 00:02:04,280
+Now, RoBERTa is simply using
+a masked language modeling
+
+52
+00:02:04,280 --> 00:02:04,910
+objective.
+
+53
+00:02:04,910 --> 00:02:07,750
+
+
+54
+00:02:07,750 --> 00:02:10,240
+There are also changes to the
+size of the training batches.
+
+55
+00:02:10,240 --> 00:02:13,510
+So for BERT that batch
+size was 256 examples.
+
+56
+00:02:13,510 --> 00:02:16,803
+RoBERTa cranked out
+all the way up to 2000.
+
+57
+00:02:16,803 --> 00:02:18,970
+There are differences when
+it comes to tokenization.
+
+58
+00:02:18,970 --> 00:02:21,910
+So as we've seen BERT used this
+very interesting word piece
+
+59
+00:02:21,910 --> 00:02:25,150
+tokenization approach which
+mixes some sub-word pieces
+
+60
+00:02:25,150 --> 00:02:26,980
+with some whole words.
+
+61
+00:02:26,980 --> 00:02:30,310
+RoBERTa simplified that down to
+just character-level byte-pair
+
+62
+00:02:30,310 --> 00:02:34,000
+encoding which I think leads
+to many more word pieces
+
+63
+00:02:34,000 --> 00:02:36,780
+intuitively.
+
+64
+00:02:36,780 --> 00:02:39,840
+There are also differences
+in how the model was trained.
+
+65
+00:02:39,840 --> 00:02:43,510
+So BERT trained on a substantial
+corpus, the BooksCorpus
+
+66
+00:02:43,510 --> 00:02:46,350
+plus English Wikipedia,
+is a lot of data indeed.
+
+67
+00:02:46,350 --> 00:02:48,540
+RoBERTa again cranked
+that up even further,
+
+68
+00:02:48,540 --> 00:02:51,900
+they trained on the
+BooksCorpus, the CC-News corpus,
+
+69
+00:02:51,900 --> 00:02:54,390
+the OpenWebText
+corpus and the Stories
+
+70
+00:02:54,390 --> 00:02:59,612
+corpus, a substantial increase
+in the amount of training data.
+
+71
+00:02:59,612 --> 00:03:02,070
+There are also differences in
+the number of training steps,
+
+72
+00:03:02,070 --> 00:03:03,237
+and there's a subtlety here.
+
+73
+00:03:03,237 --> 00:03:05,340
+So for the BERT model,
+it was originally
+
+74
+00:03:05,340 --> 00:03:07,500
+trained on 1 million steps.
+
+75
+00:03:07,500 --> 00:03:10,590
+The RoBERTa model was
+trained on 500,000 steps.
+
+76
+00:03:10,590 --> 00:03:13,500
+Which sounds like fewer
+steps, but overall this
+
+77
+00:03:13,500 --> 00:03:16,290
+is substantially more
+training, in virtue of the fact
+
+78
+00:03:16,290 --> 00:03:20,400
+that the training batch sizes
+are so much larger for RoBERTa
+
+79
+00:03:20,400 --> 00:03:23,250
+than they are for BERT.
+
+80
+00:03:23,250 --> 00:03:24,940
+And finally, the
+original BERT authors
+
+81
+00:03:24,940 --> 00:03:26,940
+had an intuition that
+would be useful in getting
+
+82
+00:03:26,940 --> 00:03:29,580
+the optimization process
+going, to train just
+
+83
+00:03:29,580 --> 00:03:31,500
+on short sequences first.
+
+84
+00:03:31,500 --> 00:03:33,235
+The RoBERTa team
+dropped that idea,
+
+85
+00:03:33,235 --> 00:03:34,860
+and they train on
+full length sequences
+
+86
+00:03:34,860 --> 00:03:37,818
+throughout the life
+cycle of optimization.
+
+87
+00:03:37,818 --> 00:03:39,360
+There are some
+additional differences
+
+88
+00:03:39,360 --> 00:03:41,910
+related to the optimizer
+and the data presentation.
+
+89
+00:03:41,910 --> 00:03:43,410
+I'm going to set
+those aside, if you
+
+90
+00:03:43,410 --> 00:03:46,590
+want the details I refer to
+section 3.1 of the RoBERTa
+
+91
+00:03:46,590 --> 00:03:47,672
+paper.
+
+92
+00:03:47,672 --> 00:03:49,380
+So let's look at a
+little bit of evidence
+
+93
+00:03:49,380 --> 00:03:51,300
+for these various
+choices, starting
+
+94
+00:03:51,300 --> 00:03:54,253
+with that question of dynamic
+versus static masking.
+
+95
+00:03:54,253 --> 00:03:56,920
+So this is the primary evidence,
+they're using three benchmarks.
+
+96
+00:03:56,920 --> 00:04:00,450
+SQuAD, MNLI and
+SST-2, and you can
+
+97
+00:04:00,450 --> 00:04:03,360
+see that more or less across
+the board dynamic masking
+
+98
+00:04:03,360 --> 00:04:04,110
+is better.
+
+99
+00:04:04,110 --> 00:04:07,200
+Not by a lot, but
+dynamic masking also
+
+100
+00:04:07,200 --> 00:04:10,770
+has going for this intuition
+that BERT is kind of data
+
+101
+00:04:10,770 --> 00:04:13,990
+inefficient, we can only mask
+out a small number of tokens.
+
+102
+00:04:13,990 --> 00:04:16,170
+And it seems like it ought
+to be useful to inject
+
+103
+00:04:16,170 --> 00:04:18,959
+a lot of diversity into that, so
+that a lot of different tokens
+
+104
+00:04:18,959 --> 00:04:21,757
+get masked, as we go through
+the training process.
+
+105
+00:04:21,757 --> 00:04:24,090
+But the choice is of course,
+supported numerically here,
+
+106
+00:04:24,090 --> 00:04:25,892
+I think pretty substantially.
+
+107
+00:04:25,892 --> 00:04:28,630
+
+
+108
+00:04:28,630 --> 00:04:30,670
+This slide table here
+summarizes the choice
+
+109
+00:04:30,670 --> 00:04:32,800
+about how to present the
+examples to the model.
+
+110
+00:04:32,800 --> 00:04:36,310
+And this is also a little
+bit subtle, so numerically
+
+111
+00:04:36,310 --> 00:04:38,290
+the DOC-SENTENCES
+approach was best.
+
+112
+00:04:38,290 --> 00:04:41,230
+And this was an approach where
+they just took contiguous
+
+113
+00:04:41,230 --> 00:04:44,590
+sentences from within documents
+and treated a document boundary
+
+114
+00:04:44,590 --> 00:04:46,420
+as a kind of hard boundary.
+
+115
+00:04:46,420 --> 00:04:48,040
+That's numerically
+better, according
+
+116
+00:04:48,040 --> 00:04:49,450
+to the benchmark results.
+
+117
+00:04:49,450 --> 00:04:52,150
+But they actually decided to
+go with the FULL-SENTENCES
+
+118
+00:04:52,150 --> 00:04:52,700
+approach.
+
+119
+00:04:52,700 --> 00:04:55,660
+And the reason for that is,
+in not respecting document
+
+120
+00:04:55,660 --> 00:04:58,810
+boundaries, it is easier
+to create lots of batches
+
+121
+00:04:58,810 --> 00:05:00,650
+of exactly the same size.
+
+122
+00:05:00,650 --> 00:05:02,170
+Which leads to
+all sorts of gains
+
+123
+00:05:02,170 --> 00:05:05,180
+when you think about optimizing
+a large model like this.
+
+124
+00:05:05,180 --> 00:05:08,140
+So basically, they decided
+that those gains offset
+
+125
+00:05:08,140 --> 00:05:11,560
+the slightly lower performance
+of FULL-SENTENCES as
+
+126
+00:05:11,560 --> 00:05:13,420
+compared to
+DOC-SENTENCES, and that's
+
+127
+00:05:13,420 --> 00:05:17,510
+why this became their
+central approach.
+
+128
+00:05:17,510 --> 00:05:20,410
+Here's the summary of
+evidence for choosing 2K
+
+129
+00:05:20,410 --> 00:05:21,280
+as the batch size.
+
+130
+00:05:21,280 --> 00:05:24,640
+You can see that they chose 256,
+which was the BERT original.
+
+131
+00:05:24,640 --> 00:05:28,120
+2K and 8K and 2K looks
+like the sweet spot
+
+132
+00:05:28,120 --> 00:05:30,490
+according to MLNI, SST-2.
+
+133
+00:05:30,490 --> 00:05:32,350
+And this kind of
+pseudo perplexity
+
+134
+00:05:32,350 --> 00:05:35,060
+value that you get out of
+bidirectional models like BERT
+
+135
+00:05:35,060 --> 00:05:35,910
+and RoBERTa.
+
+136
+00:05:35,910 --> 00:05:37,690
+So that's a clear argument.
+
+137
+00:05:37,690 --> 00:05:40,300
+And then finally, when we come
+to just the amount of training
+
+138
+00:05:40,300 --> 00:05:41,650
+that we do.
+
+139
+00:05:41,650 --> 00:05:44,290
+The lesson here apparently
+is more is better.
+
+140
+00:05:44,290 --> 00:05:46,540
+On the top of this table
+here we have some comparisons
+
+141
+00:05:46,540 --> 00:05:50,027
+within the RoBERTa model,
+pointing to 500K as the best.
+
+142
+00:05:50,027 --> 00:05:51,610
+And I would just
+remind you that, that
+
+143
+00:05:51,610 --> 00:05:54,160
+is overall substantially
+more training.
+
+144
+00:05:54,160 --> 00:05:56,110
+Than was done in 1
+million steps with BERT,
+
+145
+00:05:56,110 --> 00:05:59,470
+in virtue of the fact that
+our batch sizes for RoBERTa
+
+146
+00:05:59,470 --> 00:06:02,560
+are so much larger.
+
+147
+00:06:02,560 --> 00:06:06,010
+In closing, I just want to say
+that RoBERTa too only explored
+
+148
+00:06:06,010 --> 00:06:08,620
+a small part of the
+potential design choices
+
+149
+00:06:08,620 --> 00:06:11,620
+that we could make in
+this large landscape.
+
+150
+00:06:11,620 --> 00:06:13,960
+If you would like to hear
+even more about what we know
+
+151
+00:06:13,960 --> 00:06:16,870
+and what we think we know about
+models like BERT and RoBERTa,
+
+152
+00:06:16,870 --> 00:06:20,510
+I highly recommend this paper
+called The Primer in BERTology,
+
+153
+00:06:20,510 --> 00:06:22,630
+which has lots of
+additional wisdom,
+
+154
+00:06:22,630 --> 00:06:26,340
+and insights, and ideas
+about these models.
+
+155
+00:06:26,340 --> 00:06:31,000
+
+

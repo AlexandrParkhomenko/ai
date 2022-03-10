@@ -1,0 +1,1651 @@
+1
+00:00:00,000 --> 00:00:04,375
+
+
+2
+00:00:04,375 --> 00:00:05,500
+SPEAKER 1 : Hello everyone.
+
+3
+00:00:05,500 --> 00:00:07,720
+This video is an
+overview of homework 2,
+
+4
+00:00:07,720 --> 00:00:09,908
+which is on supervised
+sentiment analysis.
+
+5
+00:00:09,908 --> 00:00:11,950
+And I would actually think
+of it as an experiment
+
+6
+00:00:11,950 --> 00:00:14,177
+in cross domain
+sentiment analysis.
+
+7
+00:00:14,177 --> 00:00:15,760
+Let's just walk
+through this notebook,
+
+8
+00:00:15,760 --> 00:00:18,040
+and I'll try to give you
+a feel for the problem
+
+9
+00:00:18,040 --> 00:00:19,870
+and our thinking behind it.
+
+10
+00:00:19,870 --> 00:00:22,900
+So the plot is the
+usual one, we're
+
+11
+00:00:22,900 --> 00:00:26,170
+going to introduce a
+task and associated data.
+
+12
+00:00:26,170 --> 00:00:27,970
+And help you with
+setting up some baselines
+
+13
+00:00:27,970 --> 00:00:29,560
+and doing error analysis.
+
+14
+00:00:29,560 --> 00:00:32,110
+And that's all will lead into
+these homework questions, which
+
+15
+00:00:32,110 --> 00:00:35,290
+are meant to help you explore
+the data in meaningful ways.
+
+16
+00:00:35,290 --> 00:00:37,450
+And also set up some
+additional baselines
+
+17
+00:00:37,450 --> 00:00:40,900
+that might inform ultimately
+your original system,
+
+18
+00:00:40,900 --> 00:00:44,540
+which you then enter
+into the bakeoff Best
+
+19
+00:00:44,540 --> 00:00:46,070
+overview we're doing ternary.
+
+20
+00:00:46,070 --> 00:00:48,510
+That is positive, negative,
+neutral sentiment analysis,
+
+21
+00:00:48,510 --> 00:00:50,760
+and we're going to be
+dealing with two data sets.
+
+22
+00:00:50,760 --> 00:00:54,410
+The Stanford sentiment treebank,
+and a brand new assessment data
+
+23
+00:00:54,410 --> 00:00:57,140
+set that is a dev test
+split of sentences
+
+24
+00:00:57,140 --> 00:00:59,150
+drawn from restaurant reviews.
+
+25
+00:00:59,150 --> 00:01:02,030
+We're giving you for
+training the SST train set,
+
+26
+00:01:02,030 --> 00:01:05,990
+and asking you to evaluate
+on the SST data test.
+
+27
+00:01:05,990 --> 00:01:08,570
+And also on this new data test
+with the restaurant reviews.
+
+28
+00:01:08,570 --> 00:01:11,090
+And that's the cross
+domain aspect of this.
+
+29
+00:01:11,090 --> 00:01:13,010
+You're completely
+unconstrained about what
+
+30
+00:01:13,010 --> 00:01:15,740
+you do, in terms of bringing
+in new data for training
+
+31
+00:01:15,740 --> 00:01:17,600
+and doing things in development.
+
+32
+00:01:17,600 --> 00:01:19,250
+The one constraint
+that we really
+
+33
+00:01:19,250 --> 00:01:21,990
+need to firmly impose
+here is that, of course,
+
+34
+00:01:21,990 --> 00:01:25,250
+the SST3 test set is
+a public test set.
+
+35
+00:01:25,250 --> 00:01:27,450
+It's actually included in
+your data distribution.
+
+36
+00:01:27,450 --> 00:01:30,560
+So that other notebooks can
+run some baseline systems
+
+37
+00:01:30,560 --> 00:01:32,420
+and compare against
+the literature.
+
+38
+00:01:32,420 --> 00:01:36,230
+But that test that is completely
+off limits during development.
+
+39
+00:01:36,230 --> 00:01:39,080
+It's really important that you
+do all your development just
+
+40
+00:01:39,080 --> 00:01:40,190
+on the dev splits.
+
+41
+00:01:40,190 --> 00:01:43,400
+And completely ignore the fact
+that you have a label version
+
+42
+00:01:43,400 --> 00:01:46,130
+to the SST3 test set.
+
+43
+00:01:46,130 --> 00:01:49,310
+And as I say here, much of
+the scientific integrity
+
+44
+00:01:49,310 --> 00:01:51,800
+of our field depends
+on people adhering
+
+45
+00:01:51,800 --> 00:01:54,950
+to this honor code that is
+doing no development on what
+
+46
+00:01:54,950 --> 00:01:55,970
+is test data.
+
+47
+00:01:55,970 --> 00:01:58,220
+Because test data is
+our own only chance
+
+48
+00:01:58,220 --> 00:02:00,170
+to get a really
+clear look at how
+
+49
+00:02:00,170 --> 00:02:02,540
+our systems are
+generalizing to new examples
+
+50
+00:02:02,540 --> 00:02:03,670
+and new experiences.
+
+51
+00:02:03,670 --> 00:02:06,700
+So please keep that in mind
+
+52
+00:02:06,700 --> 00:02:09,020
+The rationale behind this
+assignment of course,
+
+53
+00:02:09,020 --> 00:02:12,610
+is to help you get familiar
+or re familiarize yourself
+
+54
+00:02:12,610 --> 00:02:15,460
+with core concepts and
+supervise sentiment analysis.
+
+55
+00:02:15,460 --> 00:02:18,250
+And the associated life
+cycle of developing systems
+
+56
+00:02:18,250 --> 00:02:18,910
+in this space.
+
+57
+00:02:18,910 --> 00:02:21,340
+Which involves writing
+feature functions,
+
+58
+00:02:21,340 --> 00:02:25,330
+trying out model architectures,
+hyper parameter tuning.
+
+59
+00:02:25,330 --> 00:02:27,310
+And also possibly
+doing some comparisons
+
+60
+00:02:27,310 --> 00:02:29,350
+of models using
+statistical tests
+
+61
+00:02:29,350 --> 00:02:31,750
+to try to get a sense for
+how much meaningful progress
+
+62
+00:02:31,750 --> 00:02:35,520
+you're making as you iterate
+on your system design.
+
+63
+00:02:35,520 --> 00:02:37,960
+And we're also trying to
+push here in this notebook,
+
+64
+00:02:37,960 --> 00:02:40,870
+that error analysis
+can be a powerful way
+
+65
+00:02:40,870 --> 00:02:43,420
+to help you find
+problems in your system
+
+66
+00:02:43,420 --> 00:02:45,727
+and then address them.
+
+67
+00:02:45,727 --> 00:02:48,310
+One more methodological note,
+as you'll see from this notebook
+
+68
+00:02:48,310 --> 00:02:50,290
+I'm encouraging you
+to use functionality
+
+69
+00:02:50,290 --> 00:02:53,950
+in this sst.py module, which
+is part of our course code
+
+70
+00:02:53,950 --> 00:02:55,090
+distribution.
+
+71
+00:02:55,090 --> 00:02:57,430
+You're not required to use it.
+
+72
+00:02:57,430 --> 00:02:59,500
+Really, only contract
+we need to have with you
+
+73
+00:02:59,500 --> 00:03:02,260
+is that your original
+system have a predict one
+
+74
+00:03:02,260 --> 00:03:06,060
+method that maps strings to
+predictions very directly.
+
+75
+00:03:06,060 --> 00:03:07,810
+But other than that,
+you're unconstrained.
+
+76
+00:03:07,810 --> 00:03:10,390
+I do want to say, though,
+that I think SST. experiment
+
+77
+00:03:10,390 --> 00:03:14,110
+is a flexible framework for
+doing lots of experiments
+
+78
+00:03:14,110 --> 00:03:16,510
+without writing a lot
+of boilerplate code.
+
+79
+00:03:16,510 --> 00:03:18,760
+So it should, if
+you get used to it,
+
+80
+00:03:18,760 --> 00:03:21,040
+be a powerful basis
+for you for doing
+
+81
+00:03:21,040 --> 00:03:23,650
+a lot of experiments, which
+I think is crucial to success
+
+82
+00:03:23,650 --> 00:03:26,200
+here.
+
+83
+00:03:26,200 --> 00:03:29,080
+We do some set up by loading
+a bunch of libraries,
+
+84
+00:03:29,080 --> 00:03:31,280
+and get a pointer to the data.
+
+85
+00:03:31,280 --> 00:03:33,470
+And that brings us to
+the training set here.
+
+86
+00:03:33,470 --> 00:03:35,800
+So this is going to load
+independent data frame.
+
+87
+00:03:35,800 --> 00:03:39,250
+You can see that we've
+got about 8,500 examples.
+
+88
+00:03:39,250 --> 00:03:41,885
+Do review the notebook
+covering this data set here.
+
+89
+00:03:41,885 --> 00:03:44,260
+There are a bunch of other
+options for this train reader.
+
+90
+00:03:44,260 --> 00:03:46,840
+In particular, you can decide
+whether to keep or remove
+
+91
+00:03:46,840 --> 00:03:48,940
+duplicates, and
+you can also decide
+
+92
+00:03:48,940 --> 00:03:51,220
+whether you want to train
+on the label subtree
+
+93
+00:03:51,220 --> 00:03:52,420
+that the SST contains.
+
+94
+00:03:52,420 --> 00:03:55,360
+Which vastly increases the
+amount of training data
+
+95
+00:03:55,360 --> 00:03:56,350
+you have.
+
+96
+00:03:56,350 --> 00:03:58,250
+Which will be very
+compute intensive,
+
+97
+00:03:58,250 --> 00:04:00,190
+but it could be very productive.
+
+98
+00:04:00,190 --> 00:04:03,490
+It is also a point
+to say again, that
+
+99
+00:04:03,490 --> 00:04:06,070
+are free to bring in
+other training sets.
+
+100
+00:04:06,070 --> 00:04:08,830
+And in fact, it might be
+very productive to bring
+
+101
+00:04:08,830 --> 00:04:12,670
+in the dinaset data set which
+is covered in our screen test
+
+102
+00:04:12,670 --> 00:04:14,500
+through this unit.
+
+103
+00:04:14,500 --> 00:04:16,959
+That data set has
+a lot of sentences
+
+104
+00:04:16,959 --> 00:04:18,579
+from restaurant reviews.
+
+105
+00:04:18,579 --> 00:04:21,490
+And it was also labeled in
+exactly the same way, using
+
+106
+00:04:21,490 --> 00:04:24,700
+the same protocols as we're used
+for creating the development
+
+107
+00:04:24,700 --> 00:04:26,510
+set of restaurant
+reviews for this unit.
+
+108
+00:04:26,510 --> 00:04:28,180
+Which is importantly
+different, I
+
+109
+00:04:28,180 --> 00:04:32,320
+think, from the protocols
+that were used for the SST.
+
+110
+00:04:32,320 --> 00:04:34,240
+So, bringing in
+more training data
+
+111
+00:04:34,240 --> 00:04:36,820
+could help you not only with
+the cross domain problem,
+
+112
+00:04:36,820 --> 00:04:38,800
+but also with the
+kind of label shift
+
+113
+00:04:38,800 --> 00:04:41,200
+that has probably
+happened between SST
+
+114
+00:04:41,200 --> 00:04:46,170
+and these new development data
+sets that we're introducing.
+
+115
+00:04:46,170 --> 00:04:47,850
+That does bring me
+to the dev sets here.
+
+116
+00:04:47,850 --> 00:04:50,420
+So we have SST dev, that's
+also PEMDAS data frame
+
+117
+00:04:50,420 --> 00:04:53,250
+as well as this new bakeoff
+data of restaurant reviews.
+
+118
+00:04:53,250 --> 00:04:54,800
+Also PEMDAS data
+frame and here you
+
+119
+00:04:54,800 --> 00:04:57,530
+can see just three
+randomly chosen examples.
+
+120
+00:04:57,530 --> 00:05:00,320
+Example ID, the text
+of the sentence,
+
+121
+00:05:00,320 --> 00:05:03,350
+a label which is either
+positive, negative, or neutral.
+
+122
+00:05:03,350 --> 00:05:05,030
+And that is subtree
+is always zero
+
+123
+00:05:05,030 --> 00:05:08,720
+because these assessment data
+sets have only four examples.
+
+124
+00:05:08,720 --> 00:05:13,280
+No labeled subtrees the
+way the SST train set does.
+
+125
+00:05:13,280 --> 00:05:15,380
+We can get a look at
+the label distribution.
+
+126
+00:05:15,380 --> 00:05:17,963
+And I'll just mention that the
+label distribution for the test
+
+127
+00:05:17,963 --> 00:05:19,358
+set is very similar.
+
+128
+00:05:19,358 --> 00:05:20,900
+It has one noteworthy
+property, which
+
+129
+00:05:20,900 --> 00:05:22,340
+is that it's highly skewed.
+
+130
+00:05:22,340 --> 00:05:24,230
+A lot of neutral
+examples which I think
+
+131
+00:05:24,230 --> 00:05:27,123
+is realistic for actual
+data even review data,
+
+132
+00:05:27,123 --> 00:05:29,540
+and then there is a skewed
+toward positivity with negative
+
+133
+00:05:29,540 --> 00:05:30,230
+the smallest.
+
+134
+00:05:30,230 --> 00:05:32,150
+And this kind of label
+imbalance, I think
+
+135
+00:05:32,150 --> 00:05:34,940
+is severe enough, that it might
+impact optimization choices
+
+136
+00:05:34,940 --> 00:05:37,420
+that you make.
+
+137
+00:05:37,420 --> 00:05:40,685
+This next section here just
+sets up a softmax baseline.
+
+138
+00:05:40,685 --> 00:05:42,310
+We use a undergrounds
+feature function.
+
+139
+00:05:42,310 --> 00:05:45,130
+This couldn't be simpler we're
+just splitting on whitespace
+
+140
+00:05:45,130 --> 00:05:46,870
+and counting the
+resulting tokens.
+
+141
+00:05:46,870 --> 00:05:48,550
+And then we have this
+very thin wrapper
+
+142
+00:05:48,550 --> 00:05:50,290
+around logistic regression.
+
+143
+00:05:50,290 --> 00:05:53,320
+And those are the two pieces
+that come together to run here
+
+144
+00:05:53,320 --> 00:05:55,570
+and that's SST Experiment.
+
+145
+00:05:55,570 --> 00:05:58,000
+A lot of information about
+your experiment is stored
+
+146
+00:05:58,000 --> 00:06:00,100
+in this variable and
+what's being printed out
+
+147
+00:06:00,100 --> 00:06:02,780
+is just a summary
+classification report.
+
+148
+00:06:02,780 --> 00:06:05,620
+We have SST dev and bakeoff
+dev as our two assessment
+
+149
+00:06:05,620 --> 00:06:06,675
+data frames.
+
+150
+00:06:06,675 --> 00:06:08,050
+The results for
+each one of those
+
+151
+00:06:08,050 --> 00:06:09,700
+are printed separately here.
+
+152
+00:06:09,700 --> 00:06:12,550
+And then our bakeoff
+metric is this mean
+
+153
+00:06:12,550 --> 00:06:15,850
+of the macro average F1 scores
+across the two data sets.
+
+154
+00:06:15,850 --> 00:06:18,670
+Exactly these two but of
+course, at the bake off time
+
+155
+00:06:18,670 --> 00:06:21,310
+we'll be using the test sets.
+
+156
+00:06:21,310 --> 00:06:24,010
+So you might be guided in sort
+of hill climb on this number
+
+157
+00:06:24,010 --> 00:06:26,710
+here while also attending
+to these two numbers, which
+
+158
+00:06:26,710 --> 00:06:28,220
+are contributing to it.
+
+159
+00:06:28,220 --> 00:06:30,820
+So for example, you can
+see here that as expected
+
+160
+00:06:30,820 --> 00:06:32,950
+since we trained on the SST.
+
+161
+00:06:32,950 --> 00:06:35,170
+We're doing better
+on the SST dev
+
+162
+00:06:35,170 --> 00:06:38,460
+by far than we are on
+the new bakeoff data.
+
+163
+00:06:38,460 --> 00:06:41,240
+
+
+164
+00:06:41,240 --> 00:06:44,480
+The next section here just shows
+you another kind of baseline
+
+165
+00:06:44,480 --> 00:06:47,930
+and this is a deep learning
+baseline in RNNClassifier.
+
+166
+00:06:47,930 --> 00:06:50,030
+Our future function
+is very simple here
+
+167
+00:06:50,030 --> 00:06:51,500
+because we just
+put on whitespace
+
+168
+00:06:51,500 --> 00:06:54,980
+and we rely on the RNN itself
+to do all the featurization,
+
+169
+00:06:54,980 --> 00:06:57,470
+which is like an embedding
+look up and then processing
+
+170
+00:06:57,470 --> 00:06:58,603
+the example.
+
+171
+00:06:58,603 --> 00:06:59,520
+So that's very simple.
+
+172
+00:06:59,520 --> 00:07:01,500
+And then the wrapper is
+also very simple here.
+
+173
+00:07:01,500 --> 00:07:02,875
+We're going to
+set the vocabulary
+
+174
+00:07:02,875 --> 00:07:06,380
+for the model, the main counter
+two, that seems productive.
+
+175
+00:07:06,380 --> 00:07:07,880
+And then finally
+run the experiment.
+
+176
+00:07:07,880 --> 00:07:10,520
+And the one thing that's
+important here the one change,
+
+177
+00:07:10,520 --> 00:07:13,040
+is that you set vectorized
+equals false here.
+
+178
+00:07:13,040 --> 00:07:14,840
+Unlike in the
+previous baseline, we
+
+179
+00:07:14,840 --> 00:07:17,780
+are not using cycler
+dict vectorized
+
+180
+00:07:17,780 --> 00:07:21,230
+to process count dictionaries to
+get us from features to feature
+
+181
+00:07:21,230 --> 00:07:22,700
+matrices.
+
+182
+00:07:22,700 --> 00:07:24,890
+Here we are feeding
+our examples directly
+
+183
+00:07:24,890 --> 00:07:25,940
+through into the model.
+
+184
+00:07:25,940 --> 00:07:29,930
+Our model expects token streams
+with no messing about and so
+
+185
+00:07:29,930 --> 00:07:32,115
+vectorized false would give
+them a pass through all
+
+186
+00:07:32,115 --> 00:07:32,990
+the way to the model.
+
+187
+00:07:32,990 --> 00:07:36,018
+So remember that otherwise
+this will all fall apart.
+
+188
+00:07:36,018 --> 00:07:38,060
+But other than that, it's
+exactly the same setup.
+
+189
+00:07:38,060 --> 00:07:39,260
+Let's run it here.
+
+190
+00:07:39,260 --> 00:07:40,960
+I've got some timing
+information we're
+
+191
+00:07:40,960 --> 00:07:42,710
+going to fast forward
+to this because this
+
+192
+00:07:42,710 --> 00:07:44,120
+takes a little bit of time.
+
+193
+00:07:44,120 --> 00:07:45,830
+But you'll see a report
+and I'm currently
+
+194
+00:07:45,830 --> 00:07:48,330
+on just a very
+old CPU based Mac.
+
+195
+00:07:48,330 --> 00:07:51,710
+So, this will give you a sense
+for the cost of development
+
+196
+00:07:51,710 --> 00:07:52,500
+for deep learning.
+
+197
+00:07:52,500 --> 00:07:53,090
+In this space.
+
+198
+00:07:53,090 --> 00:08:03,010
+
+
+199
+00:08:03,010 --> 00:08:05,500
+All right, our models at
+least stopping criterion
+
+200
+00:08:05,500 --> 00:08:10,445
+was met after 49 epochs, and
+here's our look at the results.
+
+201
+00:08:10,445 --> 00:08:12,070
+Which are kind of
+comparable to what we
+
+202
+00:08:12,070 --> 00:08:15,060
+saw with the softmax baseline.
+
+203
+00:08:15,060 --> 00:08:16,560
+All right, and that
+brings us to RNN
+
+204
+00:08:16,560 --> 00:08:18,990
+analysis, which can be an
+important step in improving
+
+205
+00:08:18,990 --> 00:08:19,620
+your system.
+
+206
+00:08:19,620 --> 00:08:21,000
+I've written a
+few functions that
+
+207
+00:08:21,000 --> 00:08:24,150
+make use of all the information
+that is encoded in the return
+
+208
+00:08:24,150 --> 00:08:25,710
+values for SST experiment.
+
+209
+00:08:25,710 --> 00:08:27,490
+Which I hope package
+together everything
+
+210
+00:08:27,490 --> 00:08:30,750
+you need to do RNN analysis,
+reproduce your results,
+
+211
+00:08:30,750 --> 00:08:33,900
+and make use of your model
+and downstream experiments.
+
+212
+00:08:33,900 --> 00:08:37,590
+Here we're going to use
+this function find errors.
+
+213
+00:08:37,590 --> 00:08:40,289
+I've done a little bit of
+pre-processing of the errors
+
+214
+00:08:40,289 --> 00:08:42,390
+that were found and
+packaged them together.
+
+215
+00:08:42,390 --> 00:08:44,490
+And then this cell
+here is just an example
+
+216
+00:08:44,490 --> 00:08:46,570
+of the kind of things
+that you might do.
+
+217
+00:08:46,570 --> 00:08:48,900
+Here we're looking at cases
+where the softmax model is
+
+218
+00:08:48,900 --> 00:08:51,870
+correct, the RNN was incorrect
+and the correct label
+
+219
+00:08:51,870 --> 00:08:52,770
+is positive.
+
+220
+00:08:52,770 --> 00:08:55,440
+You could of course fiddle
+with those parameters here.
+
+221
+00:08:55,440 --> 00:08:58,020
+We've got 168 examples
+going into that class
+
+222
+00:08:58,020 --> 00:09:00,360
+and then we can look at a
+sample of the actual text that
+
+223
+00:09:00,360 --> 00:09:02,602
+fall into that group,
+as a way of figuring out
+
+224
+00:09:02,602 --> 00:09:04,560
+how these models differ
+and maybe improving one
+
+225
+00:09:04,560 --> 00:09:06,705
+or both of them.
+
+226
+00:09:06,705 --> 00:09:08,580
+And that brings us to
+the homework questions.
+
+227
+00:09:08,580 --> 00:09:11,130
+And again, these are meant
+to help you explore the data
+
+228
+00:09:11,130 --> 00:09:13,340
+and set up some additional
+baselines that inform
+
+229
+00:09:13,340 --> 00:09:14,825
+original system development.
+
+230
+00:09:14,825 --> 00:09:16,950
+We're going to start with
+one that's data oriented.
+
+231
+00:09:16,950 --> 00:09:18,960
+I've called this token
+level differences.
+
+232
+00:09:18,960 --> 00:09:22,230
+What I'm trying to do is
+raise to your awareness
+
+233
+00:09:22,230 --> 00:09:26,190
+the fact that the SST data and
+the new restaurant review data
+
+234
+00:09:26,190 --> 00:09:27,990
+are just encoded
+in different ways
+
+235
+00:09:27,990 --> 00:09:29,340
+at the level of tokenization.
+
+236
+00:09:29,340 --> 00:09:31,710
+This is mainly the results
+of the SST being kind
+
+237
+00:09:31,710 --> 00:09:34,300
+of the result of a
+historical process,
+
+238
+00:09:34,300 --> 00:09:37,260
+beginning with pengelley
+2005 and going on
+
+239
+00:09:37,260 --> 00:09:39,025
+through the SST project itself.
+
+240
+00:09:39,025 --> 00:09:40,650
+So there are some
+funny things about it
+
+241
+00:09:40,650 --> 00:09:43,710
+that I think could certainly
+affect any kind of transfer
+
+242
+00:09:43,710 --> 00:09:45,340
+from one domain to the other.
+
+243
+00:09:45,340 --> 00:09:48,090
+And since you are
+training on SST data,
+
+244
+00:09:48,090 --> 00:09:51,360
+it's important to be aware of
+how it might be idiosyncratic.
+
+245
+00:09:51,360 --> 00:09:54,210
+So that happens here, you write
+this function get token counts
+
+246
+00:09:54,210 --> 00:09:57,330
+and as usual you have a
+test, you pass the test,
+
+247
+00:09:57,330 --> 00:09:58,350
+you're in good shape.
+
+248
+00:09:58,350 --> 00:10:01,400
+
+
+249
+00:10:01,400 --> 00:10:03,590
+Next question relates
+to the cross domain
+
+250
+00:10:03,590 --> 00:10:06,620
+nature of our problem training
+on some of the bakeoff data.
+
+251
+00:10:06,620 --> 00:10:10,010
+In the standard paradigm,
+you are training on SST,
+
+252
+00:10:10,010 --> 00:10:13,220
+evaluating on SST and also
+this new bakeoff data center
+
+253
+00:10:13,220 --> 00:10:14,990
+restaurant review sentences.
+
+254
+00:10:14,990 --> 00:10:17,420
+What would happen if you
+augmented your training
+
+255
+00:10:17,420 --> 00:10:20,340
+set with a little bit of
+data from the development
+
+256
+00:10:20,340 --> 00:10:21,993
+of restaurant review sentences?
+
+257
+00:10:21,993 --> 00:10:23,660
+You might have a hunch
+that that's going
+
+258
+00:10:23,660 --> 00:10:25,460
+to improve system performance.
+
+259
+00:10:25,460 --> 00:10:27,500
+And this question
+here simply asks
+
+260
+00:10:27,500 --> 00:10:31,693
+you to run such an experiment
+as usually you have a test.
+
+261
+00:10:31,693 --> 00:10:33,110
+I think you will
+find that this is
+
+262
+00:10:33,110 --> 00:10:35,600
+very productive in helping
+your system get traction
+
+263
+00:10:35,600 --> 00:10:36,770
+on the new data.
+
+264
+00:10:36,770 --> 00:10:38,360
+And that should be
+a clue as how to do
+
+265
+00:10:38,360 --> 00:10:43,030
+a really good job in the bakeoff
+with your original system.
+
+266
+00:10:43,030 --> 00:10:45,430
+This next question here is
+about, future representation.
+
+267
+00:10:45,430 --> 00:10:47,530
+A more powerful vector
+averaging baseline.
+
+268
+00:10:47,530 --> 00:10:49,840
+This is a step
+toward deep learning.
+
+269
+00:10:49,840 --> 00:10:52,630
+It builds on this section
+of a notebook here,
+
+270
+00:10:52,630 --> 00:10:54,400
+where essentially
+we average together
+
+271
+00:10:54,400 --> 00:10:57,580
+vector representations of words
+to represent each example.
+
+272
+00:10:57,580 --> 00:11:00,280
+And those are the input to
+a simple logistic regression
+
+273
+00:11:00,280 --> 00:11:01,780
+classifier.
+
+274
+00:11:01,780 --> 00:11:03,550
+So those are nice low
+dimensional models
+
+275
+00:11:03,550 --> 00:11:05,530
+that tend to be quite powerful.
+
+276
+00:11:05,530 --> 00:11:08,260
+This question is asking you to
+replace the logistic regression
+
+277
+00:11:08,260 --> 00:11:10,180
+with a shallow
+neural classifier.
+
+278
+00:11:10,180 --> 00:11:12,220
+So maybe the more
+powerful part here.
+
+279
+00:11:12,220 --> 00:11:14,710
+And also to explore a wide
+range of hyper parameters
+
+280
+00:11:14,710 --> 00:11:17,290
+to that model to get a
+sense for which settings
+
+281
+00:11:17,290 --> 00:11:20,330
+are best for our problem.
+
+282
+00:11:20,330 --> 00:11:22,100
+And that brings us
+to BERT encoding.
+
+283
+00:11:22,100 --> 00:11:23,900
+And this is like
+one step further
+
+284
+00:11:23,900 --> 00:11:26,210
+down the line toward deep
+learning and fine tuning.
+
+285
+00:11:26,210 --> 00:11:29,600
+This question is simply asking
+you to encode your examples
+
+286
+00:11:29,600 --> 00:11:30,440
+using BERT.
+
+287
+00:11:30,440 --> 00:11:32,870
+In particular, taking the
+summary representation
+
+288
+00:11:32,870 --> 00:11:35,930
+above the class token,
+the. final output there
+
+289
+00:11:35,930 --> 00:11:38,420
+as your summary representation
+of the entire example.
+
+290
+00:11:38,420 --> 00:11:40,310
+And those become
+presumably the inputs
+
+291
+00:11:40,310 --> 00:11:43,730
+to some downstream classifier
+or potentially a fine tuning
+
+292
+00:11:43,730 --> 00:11:45,050
+process.
+
+293
+00:11:45,050 --> 00:11:47,180
+The idea that this is
+like one step better
+
+294
+00:11:47,180 --> 00:11:49,660
+than the vector averaging
+that we just looked at.
+
+295
+00:11:49,660 --> 00:11:52,160
+You do not need to conduct
+an experiment with SST,
+
+296
+00:11:52,160 --> 00:11:55,640
+you're simply implementing
+this feature function here.
+
+297
+00:11:55,640 --> 00:11:58,070
+But since SST experiment
+does make it really easy
+
+298
+00:11:58,070 --> 00:12:00,410
+to run experiments once
+you've implemented the feature
+
+299
+00:12:00,410 --> 00:12:03,470
+function, I would encourage
+you to choose some classifier
+
+300
+00:12:03,470 --> 00:12:05,870
+model, and see how
+well this does.
+
+301
+00:12:05,870 --> 00:12:08,255
+But as usual, you have a
+test and the test is just
+
+302
+00:12:08,255 --> 00:12:09,380
+about the feature function.
+
+303
+00:12:09,380 --> 00:12:11,840
+And it will make sure you're
+using all of these values
+
+304
+00:12:11,840 --> 00:12:12,920
+correctly.
+
+305
+00:12:12,920 --> 00:12:14,820
+And that brings us to
+the original system.
+
+306
+00:12:14,820 --> 00:12:17,360
+And I just want to remind you
+that you are unconstrained
+
+307
+00:12:17,360 --> 00:12:20,240
+except for the fact that you
+cannot make any use of the SST
+
+308
+00:12:20,240 --> 00:12:22,310
+test set during development.
+
+309
+00:12:22,310 --> 00:12:23,930
+The labels for that
+are off limits.
+
+310
+00:12:23,930 --> 00:12:25,400
+But everything
+else is fair game.
+
+311
+00:12:25,400 --> 00:12:28,770
+Bringing new training data,
+try new model architectures.
+
+312
+00:12:28,770 --> 00:12:30,800
+And so forth and so on.
+
+313
+00:12:30,800 --> 00:12:32,720
+We've given a few
+ideas here but this
+
+314
+00:12:32,720 --> 00:12:34,970
+is by no means meant
+to be restrictive.
+
+315
+00:12:34,970 --> 00:12:38,150
+It's just meant to get the
+creative juices flowing.
+
+316
+00:12:38,150 --> 00:12:41,060
+Other than that, this is the
+same procedure as homework 1,
+
+317
+00:12:41,060 --> 00:12:43,580
+we want a description of your
+system to inform the teaching
+
+318
+00:12:43,580 --> 00:12:45,890
+team about what worked
+and what didn't.
+
+319
+00:12:45,890 --> 00:12:49,100
+And it would be great if you
+reported your pick score, which
+
+320
+00:12:49,100 --> 00:12:51,890
+is the macro average
+of the two F1 macros
+
+321
+00:12:51,890 --> 00:12:54,530
+F1 scores for our two
+data sets but it's
+
+322
+00:12:54,530 --> 00:12:56,903
+on the development set there.
+
+323
+00:12:56,903 --> 00:12:58,320
+And that brings
+us to the bakeoff.
+
+324
+00:12:58,320 --> 00:13:00,740
+And again, the bakeoff
+procedure is familiar.
+
+325
+00:13:00,740 --> 00:13:03,020
+The one piece here,
+the crucial piece
+
+326
+00:13:03,020 --> 00:13:06,410
+is that you write up a function,
+of predict one function that
+
+327
+00:13:06,410 --> 00:13:09,620
+maps the text directly
+to a prediction using
+
+328
+00:13:09,620 --> 00:13:11,520
+your original system.
+
+329
+00:13:11,520 --> 00:13:14,330
+I've given two
+examples here, yours
+
+330
+00:13:14,330 --> 00:13:17,210
+might be simpler depending on
+whether or not you use the SST
+
+331
+00:13:17,210 --> 00:13:19,787
+experiment framework or not.
+
+332
+00:13:19,787 --> 00:13:22,370
+But that all comes together here
+with great bakeoff submission
+
+333
+00:13:22,370 --> 00:13:24,440
+where you input that function.
+
+334
+00:13:24,440 --> 00:13:26,060
+won't need to change
+this output file.
+
+335
+00:13:26,060 --> 00:13:28,393
+And you can see that this
+function here loads in our two
+
+336
+00:13:28,393 --> 00:13:30,170
+test sets which are unlabeled.
+
+337
+00:13:30,170 --> 00:13:32,600
+And uses your
+predict one function
+
+338
+00:13:32,600 --> 00:13:34,670
+on all of those examples here.
+
+339
+00:13:34,670 --> 00:13:38,270
+And then writes a file which you
+then upload to the auto grader
+
+340
+00:13:38,270 --> 00:13:39,350
+to Gradescope.
+
+341
+00:13:39,350 --> 00:13:40,650
+That happens here.
+
+342
+00:13:40,650 --> 00:13:44,120
+So I just want to reiterate
+that in all senses,
+
+343
+00:13:44,120 --> 00:13:47,000
+the test data labels are
+completely off limits to us.
+
+344
+00:13:47,000 --> 00:13:50,000
+All the development conceptual
+and otherwise should
+
+345
+00:13:50,000 --> 00:13:52,840
+happen on the development data.
+
+346
+00:13:52,840 --> 00:13:56,000
+
+
