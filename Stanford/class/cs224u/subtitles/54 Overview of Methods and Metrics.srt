@@ -1,0 +1,532 @@
+1
+00:00:00,000 --> 00:00:04,788
+
+
+2
+00:00:04,788 --> 00:00:06,080
+CHRIS POTTS: Welcome, everyone.
+
+3
+00:00:06,080 --> 00:00:07,830
+This is the first
+screencast in our series
+
+4
+00:00:07,830 --> 00:00:09,082
+on methods and metrics.
+
+5
+00:00:09,082 --> 00:00:11,290
+Fundamentally, what we're
+trying to do with this unit
+
+6
+00:00:11,290 --> 00:00:13,060
+is give you help
+with your projects,
+
+7
+00:00:13,060 --> 00:00:16,870
+and specifically give you help
+with the experimental aspects
+
+8
+00:00:16,870 --> 00:00:17,670
+of your projects.
+
+9
+00:00:17,670 --> 00:00:19,420
+And so the kind of
+highlight topics for us
+
+10
+00:00:19,420 --> 00:00:22,120
+will be around things
+like managing your dataset
+
+11
+00:00:22,120 --> 00:00:25,390
+for the purposes of conducting
+experiments; establishing
+
+12
+00:00:25,390 --> 00:00:28,390
+baseline systems;
+and in turn, doing
+
+13
+00:00:28,390 --> 00:00:30,520
+model comparisons
+between baselines
+
+14
+00:00:30,520 --> 00:00:33,250
+and an original system, or
+between an original system
+
+15
+00:00:33,250 --> 00:00:36,407
+and published results in the
+literature, and so forth.
+
+16
+00:00:36,407 --> 00:00:37,990
+And relatedly, we're
+going to give you
+
+17
+00:00:37,990 --> 00:00:40,795
+some advice on how to optimize
+your models effectively.
+
+18
+00:00:40,795 --> 00:00:42,670
+Those are kind of the
+highlight topics there.
+
+19
+00:00:42,670 --> 00:00:44,128
+And I would say
+that all of this is
+
+20
+00:00:44,128 --> 00:00:48,040
+kind of oriented toward the more
+abstract topic of helping you
+
+21
+00:00:48,040 --> 00:00:51,100
+navigate tricky situations
+that arise as you conduct
+
+22
+00:00:51,100 --> 00:00:52,510
+experiments in NLP.
+
+23
+00:00:52,510 --> 00:00:54,910
+And as you'll see very often,
+these tricky situations
+
+24
+00:00:54,910 --> 00:00:58,060
+arise because we encounter
+limitations in the data that's
+
+25
+00:00:58,060 --> 00:01:01,270
+available to us, or we're
+just fundamentally constrained
+
+26
+00:01:01,270 --> 00:01:03,610
+in terms of computing resources.
+
+27
+00:01:03,610 --> 00:01:06,010
+And that leads us to have
+to make some compromises
+
+28
+00:01:06,010 --> 00:01:09,280
+in the ideal experimental
+protocol that we would use.
+
+29
+00:01:09,280 --> 00:01:11,200
+These things are inevitable,
+and the idea here
+
+30
+00:01:11,200 --> 00:01:13,825
+is that we're going to equip you
+with some tools and techniques
+
+31
+00:01:13,825 --> 00:01:15,400
+for thinking about
+the trade-offs
+
+32
+00:01:15,400 --> 00:01:19,720
+in making your way through all
+of these tricky situations.
+
+33
+00:01:19,720 --> 00:01:21,490
+There are a bunch of
+associated materials
+
+34
+00:01:21,490 --> 00:01:22,710
+for these screencasts.
+
+35
+00:01:22,710 --> 00:01:24,688
+We have a whole notebook
+that's on metrics.
+
+36
+00:01:24,688 --> 00:01:26,980
+I'm going to offer some
+screencasts that just highlight
+
+37
+00:01:26,980 --> 00:01:30,400
+a few of the metrics that are
+discussed in that notebook.
+
+38
+00:01:30,400 --> 00:01:32,320
+But it's meant as a
+resource, the notebook
+
+39
+00:01:32,320 --> 00:01:34,833
+itself, so that you could
+pursue other avenues.
+
+40
+00:01:34,833 --> 00:01:36,250
+And overall, what
+I'm trying to do
+
+41
+00:01:36,250 --> 00:01:39,160
+is give you a framework for
+thinking about what metrics
+
+42
+00:01:39,160 --> 00:01:42,370
+encode in terms of their
+values, what bounds they have,
+
+43
+00:01:42,370 --> 00:01:46,180
+and where they can be
+applied and misapplied.
+
+44
+00:01:46,180 --> 00:01:49,030
+Scikit-learn implements
+essentially all of the metrics
+
+45
+00:01:49,030 --> 00:01:50,950
+that we'll be discussing.
+
+46
+00:01:50,950 --> 00:01:52,360
+And to their
+credit, they've done
+
+47
+00:01:52,360 --> 00:01:54,880
+a wonderful job of offering
+rich documentation that
+
+48
+00:01:54,880 --> 00:01:58,000
+will again, help you not only
+understand what the metrics do,
+
+49
+00:01:58,000 --> 00:02:01,300
+but also where and how they
+can be effectively applied.
+
+50
+00:02:01,300 --> 00:02:02,800
+And then there is
+an entire notebook
+
+51
+00:02:02,800 --> 00:02:05,500
+that's on methods, especially
+experimental methods,
+
+52
+00:02:05,500 --> 00:02:07,870
+and that covers a lot
+of the tricky situations
+
+53
+00:02:07,870 --> 00:02:10,360
+that I just described
+in terms of setting up
+
+54
+00:02:10,360 --> 00:02:12,670
+experiments and thinking
+about trade-offs,
+
+55
+00:02:12,670 --> 00:02:15,340
+and then following through on
+model evaluation and so forth.
+
+56
+00:02:15,340 --> 00:02:17,110
+And that notebook is
+nice as a supplement
+
+57
+00:02:17,110 --> 00:02:20,080
+to these screencasts, because
+it embeds a bunch of code that
+
+58
+00:02:20,080 --> 00:02:22,360
+can help you run hands-on
+experiments to get
+
+59
+00:02:22,360 --> 00:02:24,820
+a feel for the core concepts.
+
+60
+00:02:24,820 --> 00:02:26,030
+And we have two readings.
+
+61
+00:02:26,030 --> 00:02:28,660
+Resnik and Lin 2010 is
+a wonderful overview
+
+62
+00:02:28,660 --> 00:02:31,810
+of experimental evaluations
+in the context of NLP.
+
+63
+00:02:31,810 --> 00:02:34,813
+And Smith 2011, Appendix
+B is a compendium
+
+64
+00:02:34,813 --> 00:02:37,480
+of different metrics, so another
+good resource for you if you're
+
+65
+00:02:37,480 --> 00:02:40,850
+unsure about how a metric
+works, or what its bounds are,
+
+66
+00:02:40,850 --> 00:02:43,900
+or how it's calculated,
+and things like that.
+
+67
+00:02:43,900 --> 00:02:46,420
+The final thing I want
+to say for this overview
+
+68
+00:02:46,420 --> 00:02:48,220
+relates specifically
+to the projects
+
+69
+00:02:48,220 --> 00:02:49,660
+that you'll be pursuing.
+
+70
+00:02:49,660 --> 00:02:51,760
+And the bottom line for
+us is that we will never
+
+71
+00:02:51,760 --> 00:02:56,050
+evaluate a project based on
+how good the results are.
+
+72
+00:02:56,050 --> 00:02:59,830
+Now, we acknowledge that in the
+field and throughout science,
+
+73
+00:02:59,830 --> 00:03:02,140
+publication venues
+do this because they
+
+74
+00:03:02,140 --> 00:03:04,840
+have additional constraints
+on space nominally,
+
+75
+00:03:04,840 --> 00:03:07,570
+and that leads them-- as a
+cultural fact about the way
+
+76
+00:03:07,570 --> 00:03:09,730
+science works-- to
+favor positive evidence
+
+77
+00:03:09,730 --> 00:03:12,640
+for new developments
+over negative results.
+
+78
+00:03:12,640 --> 00:03:15,130
+I frankly think this is
+unfortunate and exerts
+
+79
+00:03:15,130 --> 00:03:18,460
+a kind of distorting influence
+on the set of publications
+
+80
+00:03:18,460 --> 00:03:21,220
+that we all get to study,
+but nonetheless, that's
+
+81
+00:03:21,220 --> 00:03:23,410
+the way the world
+works at present.
+
+82
+00:03:23,410 --> 00:03:25,240
+In the context of this
+course, we are not
+
+83
+00:03:25,240 --> 00:03:26,680
+subject to that constraint.
+
+84
+00:03:26,680 --> 00:03:29,420
+So we can do the right and
+good thing scientifically,
+
+85
+00:03:29,420 --> 00:03:32,350
+evaluating positive
+results, negative results,
+
+86
+00:03:32,350 --> 00:03:35,270
+and everything in between.
+
+87
+00:03:35,270 --> 00:03:37,150
+So I repeat our core value here.
+
+88
+00:03:37,150 --> 00:03:38,920
+We will never evaluate
+a project based
+
+89
+00:03:38,920 --> 00:03:40,150
+on how good the results are.
+
+90
+00:03:40,150 --> 00:03:42,460
+Instead, we're going to
+evaluate your project
+
+91
+00:03:42,460 --> 00:03:45,880
+on the appropriateness of
+the metrics that you choose;
+
+92
+00:03:45,880 --> 00:03:49,180
+the strength of your methods;
+and really fundamentally here,
+
+93
+00:03:49,180 --> 00:03:50,860
+the extent to
+which your paper is
+
+94
+00:03:50,860 --> 00:03:54,338
+open and clear-sighted about
+the limits of its findings.
+
+95
+00:03:54,338 --> 00:03:56,380
+So you'll notice that,
+given this framework here,
+
+96
+00:03:56,380 --> 00:03:58,510
+you could report
+state-of-the-art results,
+
+97
+00:03:58,510 --> 00:04:01,940
+world record-breaking results
+on a task, but nonetheless,
+
+98
+00:04:01,940 --> 00:04:04,930
+not succeed with a project if
+it fails on all of these things
+
+99
+00:04:04,930 --> 00:04:06,670
+that we've listed
+under our true values.
+
+100
+00:04:06,670 --> 00:04:10,060
+And conversely, you
+might have a hypothesis
+
+101
+00:04:10,060 --> 00:04:13,030
+that turns out to be a
+miserable failure in terms
+
+102
+00:04:13,030 --> 00:04:15,730
+of the performance metrics
+that you're able to report.
+
+103
+00:04:15,730 --> 00:04:17,800
+But that could lead to
+an outstanding grade
+
+104
+00:04:17,800 --> 00:04:19,899
+in the context of this
+course, provided that you
+
+105
+00:04:19,899 --> 00:04:21,399
+do all of these things.
+
+106
+00:04:21,399 --> 00:04:24,550
+And that would be under the
+heading of a negative result
+
+107
+00:04:24,550 --> 00:04:27,580
+but nonetheless, teaches us
+something really fundamental
+
+108
+00:04:27,580 --> 00:04:31,210
+and important about NLP, and
+therefore pushes the field
+
+109
+00:04:31,210 --> 00:04:32,760
+forward.
+
+110
+00:04:32,760 --> 00:04:37,000
+
+

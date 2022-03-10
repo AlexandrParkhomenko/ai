@@ -1,0 +1,1015 @@
+1
+00:00:00,000 --> 00:00:04,468
+
+
+2
+00:00:04,468 --> 00:00:06,010
+CHRISTOPHER POTTS:
+Welcome, everyone.
+
+3
+00:00:06,010 --> 00:00:07,760
+This is the first
+screencast in our series
+
+4
+00:00:07,760 --> 00:00:08,973
+on Analysis Methods in NLP.
+
+5
+00:00:08,973 --> 00:00:10,890
+This is one of my favorite
+units in the course
+
+6
+00:00:10,890 --> 00:00:13,110
+because it's directly
+oriented toward helping you
+
+7
+00:00:13,110 --> 00:00:15,720
+do even better final projects.
+
+8
+00:00:15,720 --> 00:00:17,880
+Now there's a lot we could
+discuss under the rubric
+
+9
+00:00:17,880 --> 00:00:19,500
+of analysis methods in NLP.
+
+10
+00:00:19,500 --> 00:00:21,228
+I've chosen four things.
+
+11
+00:00:21,228 --> 00:00:22,770
+The first two, fall
+under the heading
+
+12
+00:00:22,770 --> 00:00:24,390
+of behavioral evaluations.
+
+13
+00:00:24,390 --> 00:00:26,280
+We'll talk about
+adversarial testing, which
+
+14
+00:00:26,280 --> 00:00:28,500
+is a very flexible
+way for you to expose
+
+15
+00:00:28,500 --> 00:00:30,960
+that your system might
+have some weaknesses
+
+16
+00:00:30,960 --> 00:00:34,230
+or fail to capture some
+linguistic phenomenon in a very
+
+17
+00:00:34,230 --> 00:00:36,100
+systematic way.
+
+18
+00:00:36,100 --> 00:00:38,490
+And then at this point, we
+also have the opportunity
+
+19
+00:00:38,490 --> 00:00:41,070
+for a number of tasks to
+do adversarial training
+
+20
+00:00:41,070 --> 00:00:43,800
+and testing, and these
+would be large dataset that
+
+21
+00:00:43,800 --> 00:00:45,990
+are full of examples
+that we know
+
+22
+00:00:45,990 --> 00:00:48,290
+are difficult for present
+day architectures.
+
+23
+00:00:48,290 --> 00:00:50,820
+So for every architecture
+you're exploring,
+
+24
+00:00:50,820 --> 00:00:54,630
+this would be a chance to really
+stress test that architecture.
+
+25
+00:00:54,630 --> 00:00:57,090
+And then we're going to move
+beyond behavioral evaluations
+
+26
+00:00:57,090 --> 00:00:59,820
+to talk about what I've called
+structural evaluation methods.
+
+27
+00:00:59,820 --> 00:01:02,435
+And these include probing
+and feature attribution.
+
+28
+00:01:02,435 --> 00:01:03,810
+And these are
+techniques that you
+
+29
+00:01:03,810 --> 00:01:05,640
+could use to peer
+inside your system
+
+30
+00:01:05,640 --> 00:01:08,760
+and gain an understanding of
+what its hidden representations
+
+31
+00:01:08,760 --> 00:01:11,670
+are like, and how those
+representations are impacting
+
+32
+00:01:11,670 --> 00:01:14,700
+the model's predictions.
+
+33
+00:01:14,700 --> 00:01:16,620
+The motivations
+for this are many.
+
+34
+00:01:16,620 --> 00:01:18,210
+Here are just a
+few high-level ones
+
+35
+00:01:18,210 --> 00:01:20,140
+that are kind of
+oriented toward projects.
+
+36
+00:01:20,140 --> 00:01:21,682
+The first, is just
+that we might want
+
+37
+00:01:21,682 --> 00:01:24,210
+to find the limits of the
+system that you're developing.
+
+38
+00:01:24,210 --> 00:01:26,790
+All our systems have
+limitations and finding
+
+39
+00:01:26,790 --> 00:01:29,730
+them is always
+scientifically useful.
+
+40
+00:01:29,730 --> 00:01:31,620
+We might just also
+want to understand
+
+41
+00:01:31,620 --> 00:01:33,000
+your system's behavior better.
+
+42
+00:01:33,000 --> 00:01:35,160
+What are its internal
+representations like,
+
+43
+00:01:35,160 --> 00:01:37,500
+and how are they feeding
+into its final predictions
+
+44
+00:01:37,500 --> 00:01:38,730
+and its overall behaviors?
+
+45
+00:01:38,730 --> 00:01:41,040
+That's also just
+incredibly rewarding.
+
+46
+00:01:41,040 --> 00:01:42,990
+And both of these things
+might feed into just
+
+47
+00:01:42,990 --> 00:01:44,670
+achieving more robust systems.
+
+48
+00:01:44,670 --> 00:01:47,940
+To the extent that we can
+find weaknesses and understand
+
+49
+00:01:47,940 --> 00:01:50,280
+behaviors, we can
+possibly take steps
+
+50
+00:01:50,280 --> 00:01:53,570
+toward building even
+more robust systems.
+
+51
+00:01:53,570 --> 00:01:55,325
+And as I said, all
+of this is oriented
+
+52
+00:01:55,325 --> 00:01:56,450
+toward your final projects.
+
+53
+00:01:56,450 --> 00:01:58,160
+The techniques that
+we're discussing
+
+54
+00:01:58,160 --> 00:02:01,070
+are powerful and easy ways
+to improve the analysis
+
+55
+00:02:01,070 --> 00:02:02,430
+section of a paper.
+
+56
+00:02:02,430 --> 00:02:04,310
+Analysis sections
+are important, but it
+
+57
+00:02:04,310 --> 00:02:05,720
+can be difficult to write them.
+
+58
+00:02:05,720 --> 00:02:08,449
+It feels very open ended
+and often very unstructured.
+
+59
+00:02:08,449 --> 00:02:10,729
+People talk in general
+ways about doing
+
+60
+00:02:10,729 --> 00:02:12,440
+error analysis and
+so forth, but it
+
+61
+00:02:12,440 --> 00:02:15,470
+can be hard to pinpoint exactly
+what would be productive.
+
+62
+00:02:15,470 --> 00:02:17,960
+I think the methods that
+we're talking about here
+
+63
+00:02:17,960 --> 00:02:20,750
+are very generally
+applicable and can
+
+64
+00:02:20,750 --> 00:02:24,110
+lead to really productive
+and rich analysis sections.
+
+65
+00:02:24,110 --> 00:02:25,733
+Let's begin with
+adversarial testing,
+
+66
+00:02:25,733 --> 00:02:27,650
+this is a mode that we've
+talked about before.
+
+67
+00:02:27,650 --> 00:02:30,350
+The examples on this slide are
+from this now classic paper
+
+68
+00:02:30,350 --> 00:02:33,770
+Glockner et al., 2018,
+called "Breaking NLI."
+
+69
+00:02:33,770 --> 00:02:36,270
+And what they did is only
+really mildly adversarial.
+
+70
+00:02:36,270 --> 00:02:37,520
+It's just kind of a challenge.
+
+71
+00:02:37,520 --> 00:02:41,090
+And it exposes some lack of
+systematicity in certain NLI
+
+72
+00:02:41,090 --> 00:02:41,820
+models.
+
+73
+00:02:41,820 --> 00:02:43,020
+So here's what they did.
+
+74
+00:02:43,020 --> 00:02:45,680
+They began from SNLI
+examples like, "a little girl
+
+75
+00:02:45,680 --> 00:02:48,080
+is kneeling in the
+dirt crying" entails
+
+76
+00:02:48,080 --> 00:02:49,850
+"a little girl is very sad."
+
+77
+00:02:49,850 --> 00:02:51,920
+And they simply use
+lexical resources
+
+78
+00:02:51,920 --> 00:02:53,990
+to change the
+hypothesis by one word.
+
+79
+00:02:53,990 --> 00:02:57,350
+So that it now reads, "a
+little girl is very unhappy."
+
+80
+00:02:57,350 --> 00:03:00,260
+We would expect a system
+that truly understood
+
+81
+00:03:00,260 --> 00:03:02,330
+the reasoning involved
+in these examples
+
+82
+00:03:02,330 --> 00:03:05,180
+to continue to predict
+entail in the second case
+
+83
+00:03:05,180 --> 00:03:07,580
+because these examples
+are roughly synonymous.
+
+84
+00:03:07,580 --> 00:03:09,860
+But what they found, is that
+systems would often start
+
+85
+00:03:09,860 --> 00:03:11,540
+to predict
+contradiction, possibly
+
+86
+00:03:11,540 --> 00:03:14,120
+because of the negation
+that occurs here.
+
+87
+00:03:14,120 --> 00:03:15,800
+The second example is similar.
+
+88
+00:03:15,800 --> 00:03:18,650
+We begin from the SNLI
+example, "an elderly couple
+
+89
+00:03:18,650 --> 00:03:21,200
+are sitting outside a
+restaurant enjoying wine"
+
+90
+00:03:21,200 --> 00:03:23,300
+entails "a couple
+drinking wine."
+
+91
+00:03:23,300 --> 00:03:26,090
+And here they just
+changed wine to champagne.
+
+92
+00:03:26,090 --> 00:03:27,890
+What we would expect
+is that a system that
+
+93
+00:03:27,890 --> 00:03:30,440
+knew about these lexical
+items and their relations,
+
+94
+00:03:30,440 --> 00:03:33,450
+would flip to predicting
+neutral in this case.
+
+95
+00:03:33,450 --> 00:03:35,270
+But as you might
+imagine, systems
+
+96
+00:03:35,270 --> 00:03:37,370
+continue to predict
+entails because they
+
+97
+00:03:37,370 --> 00:03:40,160
+have only a very fuzzy
+understanding of how
+
+98
+00:03:40,160 --> 00:03:44,590
+wine and champagne are
+related to each other.
+
+99
+00:03:44,590 --> 00:03:47,760
+Here is the results table, and
+recall this is a 2018 paper.
+
+100
+00:03:47,760 --> 00:03:49,500
+And what they're
+mainly testing here,
+
+101
+00:03:49,500 --> 00:03:51,960
+are models that we might
+regard as precursors
+
+102
+00:03:51,960 --> 00:03:54,720
+to the transformers that
+we've been so focused on.
+
+103
+00:03:54,720 --> 00:03:56,110
+And the picture is very clear.
+
+104
+00:03:56,110 --> 00:04:00,000
+These models do well on the
+SNLI test set, mid-to-high 80s,
+
+105
+00:04:00,000 --> 00:04:03,030
+but their performance plummets
+on this new adversarial test
+
+106
+00:04:03,030 --> 00:04:03,960
+set.
+
+107
+00:04:03,960 --> 00:04:06,810
+There are two exceptions down
+here, this WordNet baseline
+
+108
+00:04:06,810 --> 00:04:08,010
+and the KIM architecture.
+
+109
+00:04:08,010 --> 00:04:10,980
+But it's important to note
+that these models effectively
+
+110
+00:04:10,980 --> 00:04:13,390
+had access directly
+in the case of WordNet
+
+111
+00:04:13,390 --> 00:04:15,240
+and indirectly in
+the case of KIM,
+
+112
+00:04:15,240 --> 00:04:17,250
+to a lexical resource
+that was used
+
+113
+00:04:17,250 --> 00:04:19,480
+to create the adversarial test.
+
+114
+00:04:19,480 --> 00:04:22,240
+And so they don't see such a
+large performance drop here.
+
+115
+00:04:22,240 --> 00:04:24,450
+But even still, all
+of these numbers
+
+116
+00:04:24,450 --> 00:04:26,800
+are kind of modest
+at this point.
+
+117
+00:04:26,800 --> 00:04:29,182
+And I told you that this
+was an interesting story.
+
+118
+00:04:29,182 --> 00:04:30,390
+Here's the interesting twist.
+
+119
+00:04:30,390 --> 00:04:35,100
+At this point in 2021, you can
+simply download RoBERTA-MNLI--
+
+120
+00:04:35,100 --> 00:04:38,670
+that's the RoBERTA parameters
+fine-tuned on the MultiNLI data
+
+121
+00:04:38,670 --> 00:04:39,660
+set--
+
+122
+00:04:39,660 --> 00:04:41,400
+and run this adversarial test.
+
+123
+00:04:41,400 --> 00:04:44,610
+And what you find is that
+model does astoundingly well
+
+124
+00:04:44,610 --> 00:04:46,390
+on the Breaking NLI data set.
+
+125
+00:04:46,390 --> 00:04:48,270
+I would focus on
+these two f1-scores
+
+126
+00:04:48,270 --> 00:04:50,970
+here for the two classes where
+we have a lot of support,
+
+127
+00:04:50,970 --> 00:04:52,500
+contradiction and entailment.
+
+128
+00:04:52,500 --> 00:04:55,360
+The numbers are above 90
+as is the accuracy here,
+
+129
+00:04:55,360 --> 00:04:57,600
+which is directly
+comparable to the numbers
+
+130
+00:04:57,600 --> 00:04:59,430
+that Glockner et al. reported.
+
+131
+00:04:59,430 --> 00:05:01,170
+An amazing
+accomplishment-- recall
+
+132
+00:05:01,170 --> 00:05:04,350
+that the original examples
+from the adversarial test
+
+133
+00:05:04,350 --> 00:05:06,810
+are from SNLI,
+this is multi-NLI.
+
+134
+00:05:06,810 --> 00:05:08,580
+It was not developed
+specifically
+
+135
+00:05:08,580 --> 00:05:10,200
+to solve this adversarial test.
+
+136
+00:05:10,200 --> 00:05:12,360
+And nonetheless, it
+looks like RoBERTA
+
+137
+00:05:12,360 --> 00:05:16,470
+has systematic knowledge of
+the lexical relations involved
+
+138
+00:05:16,470 --> 00:05:19,710
+and required to solve
+this adversarial test--
+
+139
+00:05:19,710 --> 00:05:23,330
+so possibly a mark
+of real progress.
+
+140
+00:05:23,330 --> 00:05:25,670
+As I said, you can also,
+for selective tests,
+
+141
+00:05:25,670 --> 00:05:27,860
+move into the mode of
+doing adversarial training
+
+142
+00:05:27,860 --> 00:05:29,270
+and testing.
+
+143
+00:05:29,270 --> 00:05:31,730
+Here are the cases I know where
+the dataset is large enough
+
+144
+00:05:31,730 --> 00:05:34,820
+to support training
+and testing on examples
+
+145
+00:05:34,820 --> 00:05:37,730
+that were created via
+some adversarial dynamic--
+
+146
+00:05:37,730 --> 00:05:40,310
+common sense reasoning,
+natural language inference,
+
+147
+00:05:40,310 --> 00:05:42,860
+question answering,
+sentiment and hate speech.
+
+148
+00:05:42,860 --> 00:05:45,650
+And as I said, this is a
+really exciting opportunity
+
+149
+00:05:45,650 --> 00:05:48,050
+to see just how
+robust your system is
+
+150
+00:05:48,050 --> 00:05:50,090
+when exposed to
+examples that we know
+
+151
+00:05:50,090 --> 00:05:52,040
+are difficult for
+modern architectures,
+
+152
+00:05:52,040 --> 00:05:56,090
+because that's how these
+datasets were designed.
+
+153
+00:05:56,090 --> 00:05:58,010
+Now let's move into the
+more behavioral mode.
+
+154
+00:05:58,010 --> 00:06:00,620
+We'll start with probing of
+internal representations.
+
+155
+00:06:00,620 --> 00:06:02,840
+Probes are little
+supervised models typically,
+
+156
+00:06:02,840 --> 00:06:05,480
+that you fit on the
+internal representations
+
+157
+00:06:05,480 --> 00:06:08,690
+of your model of
+interest to expose
+
+158
+00:06:08,690 --> 00:06:10,640
+what those hidden
+representations latently
+
+159
+00:06:10,640 --> 00:06:11,540
+encode.
+
+160
+00:06:11,540 --> 00:06:15,200
+This is from a classic paper
+by Ian Tenney et al., 2019.
+
+161
+00:06:15,200 --> 00:06:17,390
+And what we have
+along the x-axis
+
+162
+00:06:17,390 --> 00:06:19,610
+is the BERT layers, starting
+from the embedding layer
+
+163
+00:06:19,610 --> 00:06:20,970
+and going to 24.
+
+164
+00:06:20,970 --> 00:06:23,510
+This is BERT large, so
+there are 24 layers.
+
+165
+00:06:23,510 --> 00:06:25,010
+And the picture
+is quite striking.
+
+166
+00:06:25,010 --> 00:06:27,240
+As you start from the
+top here and move down,
+
+167
+00:06:27,240 --> 00:06:30,110
+you can see that as we move
+from more syntactic things, up
+
+168
+00:06:30,110 --> 00:06:32,510
+into more discourse-y
+semantic content,
+
+169
+00:06:32,510 --> 00:06:36,080
+like co-ref and
+relation extraction,
+
+170
+00:06:36,080 --> 00:06:39,050
+you find that the higher
+layers of the BERT model
+
+171
+00:06:39,050 --> 00:06:41,090
+are encoding that
+information latently.
+
+172
+00:06:41,090 --> 00:06:44,360
+That's what these probing
+results reveal in this picture.
+
+173
+00:06:44,360 --> 00:06:48,170
+Quite striking look at what
+the pretraining process
+
+174
+00:06:48,170 --> 00:06:51,290
+in this case, of BERT,
+is learning latently
+
+175
+00:06:51,290 --> 00:06:55,210
+about the structures
+of language.
+
+176
+00:06:55,210 --> 00:06:57,590
+And then we'll finally talk
+about feature attribution,
+
+177
+00:06:57,590 --> 00:07:00,400
+which is one step further in
+this more introspective mode,
+
+178
+00:07:00,400 --> 00:07:02,350
+because here as
+you'll see, I think
+
+179
+00:07:02,350 --> 00:07:06,430
+we can get a really deep picture
+at how individual features
+
+180
+00:07:06,430 --> 00:07:09,430
+and representations
+are directly related
+
+181
+00:07:09,430 --> 00:07:10,997
+to the model's predictions.
+
+182
+00:07:10,997 --> 00:07:13,330
+And what I've done here, is
+use the Integrated Gradients
+
+183
+00:07:13,330 --> 00:07:15,610
+model, which is the model
+that we'll focus on.
+
+184
+00:07:15,610 --> 00:07:17,480
+I ran it on a sentiment model.
+
+185
+00:07:17,480 --> 00:07:19,480
+And you can see here,
+we have the true label,
+
+186
+00:07:19,480 --> 00:07:21,550
+the predicted model
+with the probability,
+
+187
+00:07:21,550 --> 00:07:23,620
+and then we have word
+level importances,
+
+188
+00:07:23,620 --> 00:07:26,410
+as measured by Integrated
+Gradients, where blue means
+
+189
+00:07:26,410 --> 00:07:28,960
+it's a bias toward
+positive predictions,
+
+190
+00:07:28,960 --> 00:07:32,470
+and red means it's a bias
+toward negative predictions.
+
+191
+00:07:32,470 --> 00:07:34,720
+And I've picked an example
+that I think kind of stress
+
+192
+00:07:34,720 --> 00:07:35,600
+tests the model.
+
+193
+00:07:35,600 --> 00:07:38,020
+It's a little bit adversarial
+because it's-- all these
+
+194
+00:07:38,020 --> 00:07:41,710
+examples involve mean
+in the sense of good,
+
+195
+00:07:41,710 --> 00:07:45,250
+as in a mean apple pie, meaning
+a delicious or a good one.
+
+196
+00:07:45,250 --> 00:07:47,740
+And you can see that by and
+large, this model's predictions
+
+197
+00:07:47,740 --> 00:07:48,820
+are pretty systematic.
+
+198
+00:07:48,820 --> 00:07:52,360
+It's mostly predicting positive
+for variants, like "they sell,"
+
+199
+00:07:52,360 --> 00:07:55,180
+"they make," "he makes,"
+although this last one,
+
+200
+00:07:55,180 --> 00:07:57,280
+"he sells," might worry
+us a little bit because it
+
+201
+00:07:57,280 --> 00:08:00,370
+has flipped to negative, despite
+the changes to the example
+
+202
+00:08:00,370 --> 00:08:02,950
+being truly incidental.
+
+203
+00:08:02,950 --> 00:08:05,950
+And this might point to a way in
+which the model does or doesn't
+
+204
+00:08:05,950 --> 00:08:08,530
+have knowledge of how
+the individual components
+
+205
+00:08:08,530 --> 00:08:11,050
+of these examples should
+be predict-- should
+
+206
+00:08:11,050 --> 00:08:12,790
+be feeding into the
+final predictions
+
+207
+00:08:12,790 --> 00:08:13,817
+that the model makes.
+
+208
+00:08:13,817 --> 00:08:15,400
+I think that's a
+wonderful opportunity
+
+209
+00:08:15,400 --> 00:08:17,800
+to get a sense for how
+robust the model is actually
+
+210
+00:08:17,800 --> 00:08:21,900
+going to be to variations,
+like the one that you see here.
+
+211
+00:08:21,900 --> 00:08:26,000
+
+

@@ -1,0 +1,1904 @@
+1
+00:00:00,000 --> 00:00:06,060
+
+
+2
+00:00:06,060 --> 00:00:08,220
+Welcome, everyone, to
+the first screencast
+
+3
+00:00:08,220 --> 00:00:11,710
+in our NLU and information
+retrieval series.
+
+4
+00:00:11,710 --> 00:00:15,310
+The goal of this introductory
+screencast is twofold.
+
+5
+00:00:15,310 --> 00:00:18,180
+I will first
+introduce the IR area.
+
+6
+00:00:18,180 --> 00:00:21,720
+Then I will discuss ways
+in which NLU and IR can
+
+7
+00:00:21,720 --> 00:00:25,170
+interact productively and
+focus on how retrieval
+
+8
+00:00:25,170 --> 00:00:28,680
+can be an effective component
+in defining our NLU tasks
+
+9
+00:00:28,680 --> 00:00:32,509
+and building our NLU systems.
+
+10
+00:00:32,509 --> 00:00:36,160
+So what is information
+retrieval or IR?
+
+11
+00:00:36,160 --> 00:00:38,650
+To a first approximation,
+this is the field
+
+12
+00:00:38,650 --> 00:00:41,060
+concerned with search.
+
+13
+00:00:41,060 --> 00:00:44,780
+The first example that typically
+comes to mind is web search.
+
+14
+00:00:44,780 --> 00:00:46,700
+But as we'll see
+today, this field
+
+15
+00:00:46,700 --> 00:00:50,660
+extends richly beyond web search
+and has strong connections
+
+16
+00:00:50,660 --> 00:00:51,800
+to our work with NLU.
+
+17
+00:00:51,800 --> 00:00:54,700
+
+
+18
+00:00:54,700 --> 00:00:58,940
+Let's now attempt to
+define IR more formally.
+
+19
+00:00:58,940 --> 00:01:01,370
+Here is a simplified
+version of the definition
+
+20
+00:01:01,370 --> 00:01:05,540
+used by the Introduction to
+IR book by Manning et al.
+
+21
+00:01:05,540 --> 00:01:10,400
+They define IR as the process of
+finding material that fulfills
+
+22
+00:01:10,400 --> 00:01:13,640
+an information need from
+within a large collection
+
+23
+00:01:13,640 --> 00:01:16,780
+of unstructured documents.
+
+24
+00:01:16,780 --> 00:01:21,070
+Let's unpack this definition.
+
+25
+00:01:21,070 --> 00:01:24,180
+Starting on the
+left-hand side here,
+
+26
+00:01:24,180 --> 00:01:26,940
+the definition says that we're
+concerned with finding material
+
+27
+00:01:26,940 --> 00:01:28,300
+from a large collection.
+
+28
+00:01:28,300 --> 00:01:33,270
+In other words, large scale
+search is at the essence of IR.
+
+29
+00:01:33,270 --> 00:01:35,130
+On the right-hand
+side, the definition
+
+30
+00:01:35,130 --> 00:01:39,210
+restricts this to unstructured
+documents, basically items
+
+31
+00:01:39,210 --> 00:01:42,000
+like text, media,
+and products, ones
+
+32
+00:01:42,000 --> 00:01:44,310
+that lack the clear
+cut structure of things
+
+33
+00:01:44,310 --> 00:01:47,070
+like database tables or graphs.
+
+34
+00:01:47,070 --> 00:01:50,670
+Structure-based search or
+structure-based traversal
+
+35
+00:01:50,670 --> 00:01:53,940
+of graphs and databases are
+not typically considered
+
+36
+00:01:53,940 --> 00:01:57,120
+IR problems for our purposes,
+although, of course,
+
+37
+00:01:57,120 --> 00:02:00,730
+they're interesting
+on their own right.
+
+38
+00:02:00,730 --> 00:02:02,710
+This leads us to
+the term that was
+
+39
+00:02:02,710 --> 00:02:08,000
+at the center of our definition,
+namely the information need.
+
+40
+00:02:08,000 --> 00:02:10,460
+It is difficult to think
+of IR without thinking
+
+41
+00:02:10,460 --> 00:02:13,520
+of the user at the
+center of the system.
+
+42
+00:02:13,520 --> 00:02:17,030
+And the information need
+is what the user has in
+
+43
+00:02:17,030 --> 00:02:22,040
+mind to solve a task or
+otherwise learn or reach
+
+44
+00:02:22,040 --> 00:02:24,230
+the material that
+they are looking for.
+
+45
+00:02:24,230 --> 00:02:28,250
+The goal of a search system is
+first to identify and fulfill
+
+46
+00:02:28,250 --> 00:02:30,410
+the user's information need.
+
+47
+00:02:30,410 --> 00:02:32,600
+So whatever we
+retrieve is only going
+
+48
+00:02:32,600 --> 00:02:34,790
+to be considered
+relevant to the extent
+
+49
+00:02:34,790 --> 00:02:37,850
+that it advances this goal.
+
+50
+00:02:37,850 --> 00:02:40,730
+In most IR tasks, the
+user would explicitly
+
+51
+00:02:40,730 --> 00:02:44,180
+provide us with a query that
+summarizes and expresses
+
+52
+00:02:44,180 --> 00:02:46,140
+their information need.
+
+53
+00:02:46,140 --> 00:02:49,140
+It is very important to note
+that this query may contain
+
+54
+00:02:49,140 --> 00:02:52,380
+ambiguity, may miss
+some important details,
+
+55
+00:02:52,380 --> 00:02:54,970
+or might even sometimes
+ask the wrong question.
+
+56
+00:02:54,970 --> 00:02:56,620
+And that's completely normal.
+
+57
+00:02:56,620 --> 00:02:59,640
+The user may not even be
+sure what precisely they're
+
+58
+00:02:59,640 --> 00:03:00,700
+looking for.
+
+59
+00:03:00,700 --> 00:03:02,610
+That's why they're
+searching for something.
+
+60
+00:03:02,610 --> 00:03:05,460
+And so, we must rely on
+our knowledge of the task
+
+61
+00:03:05,460 --> 00:03:09,120
+and whatever we know about the
+user within the constraints
+
+62
+00:03:09,120 --> 00:03:13,580
+of our application in
+order to solve IR problems.
+
+63
+00:03:13,580 --> 00:03:16,670
+
+
+64
+00:03:16,670 --> 00:03:21,090
+The second thing is that typical
+information needs vary by task.
+
+65
+00:03:21,090 --> 00:03:24,680
+And so the typical
+information need that we have
+
+66
+00:03:24,680 --> 00:03:27,290
+and how to best interpret
+and deal with that,
+
+67
+00:03:27,290 --> 00:03:28,970
+these are factors
+that vary greatly
+
+68
+00:03:28,970 --> 00:03:32,200
+by task and by
+collection type in IR.
+
+69
+00:03:32,200 --> 00:03:35,140
+I'll take it you've already
+made the connection between IR
+
+70
+00:03:35,140 --> 00:03:37,900
+and searching the web,
+searching your email,
+
+71
+00:03:37,900 --> 00:03:42,070
+and also finding files in your
+desktop buried in deep folders
+
+72
+00:03:42,070 --> 00:03:43,240
+or something.
+
+73
+00:03:43,240 --> 00:03:48,140
+But there are plenty of other IR
+tasks where search is crucial.
+
+74
+00:03:48,140 --> 00:03:50,130
+For instance, you
+might want to find
+
+75
+00:03:50,130 --> 00:03:53,820
+recent papers related to the
+BERT paper by Devlin et al.
+
+76
+00:03:53,820 --> 00:03:57,208
+Of course, this is
+not the best example
+
+77
+00:03:57,208 --> 00:03:59,000
+because there are many,
+many papers related
+
+78
+00:03:59,000 --> 00:04:00,410
+to BERT these days.
+
+79
+00:04:00,410 --> 00:04:02,780
+But in any case, in
+this case, your query
+
+80
+00:04:02,780 --> 00:04:04,910
+might be the full text
+of the BERT paper,
+
+81
+00:04:04,910 --> 00:04:07,250
+and the system might
+try to search the ACL
+
+82
+00:04:07,250 --> 00:04:09,410
+anthology and the
+computational language
+
+83
+00:04:09,410 --> 00:04:13,850
+section of archives for some
+of their papers to BERT.
+
+84
+00:04:13,850 --> 00:04:17,149
+Recommendation is
+another key IR topic.
+
+85
+00:04:17,149 --> 00:04:19,730
+In recommendation, we still
+seek relevant material
+
+86
+00:04:19,730 --> 00:04:22,430
+from a large collection
+of unstructured items,
+
+87
+00:04:22,430 --> 00:04:26,030
+but, in this case, the
+user has no explicit query.
+
+88
+00:04:26,030 --> 00:04:28,730
+And instead, the
+previous interactions
+
+89
+00:04:28,730 --> 00:04:33,430
+enabled the recommendation
+system to suggest the matches.
+
+90
+00:04:33,430 --> 00:04:37,540
+Patent search is
+yet another IR task.
+
+91
+00:04:37,540 --> 00:04:40,120
+And unlike the others
+we've mentioned so far,
+
+92
+00:04:40,120 --> 00:04:43,180
+it's often used by experts,
+not by average users,
+
+93
+00:04:43,180 --> 00:04:46,690
+and it has very strong
+emphasis on hierarchy.
+
+94
+00:04:46,690 --> 00:04:48,850
+So unlike the average
+web query where
+
+95
+00:04:48,850 --> 00:04:52,810
+you might be completely content
+with one very good match
+
+96
+00:04:52,810 --> 00:04:55,030
+at the top, patent
+search may need
+
+97
+00:04:55,030 --> 00:04:58,090
+to find every relevant patent
+to a query or something that
+
+98
+00:04:58,090 --> 00:05:01,410
+approximates that.
+
+99
+00:05:01,410 --> 00:05:04,680
+Lastly, even buying a new
+laptop can be an IR problem.
+
+100
+00:05:04,680 --> 00:05:09,040
+And in particular, a
+conversation of an IR problem.
+
+101
+00:05:09,040 --> 00:05:11,740
+Here, the system may go
+in a back and forth style
+
+102
+00:05:11,740 --> 00:05:13,900
+between searching
+for relevant products
+
+103
+00:05:13,900 --> 00:05:17,110
+and asking the user for their
+preferences about cost, screen
+
+104
+00:05:17,110 --> 00:05:20,380
+quality, and storage,
+and other factors
+
+105
+00:05:20,380 --> 00:05:22,600
+on online e-commerce platforms.
+
+106
+00:05:22,600 --> 00:05:28,010
+
+
+107
+00:05:28,010 --> 00:05:30,110
+Having looked at all
+of these IR tasks,
+
+108
+00:05:30,110 --> 00:05:33,050
+it's important to keep in
+mind that each of those tasks
+
+109
+00:05:33,050 --> 00:05:35,580
+poses its own unique challenges.
+
+110
+00:05:35,580 --> 00:05:37,790
+So even though we're always
+interested in relevance
+
+111
+00:05:37,790 --> 00:05:42,050
+and in finding relevant
+items, each of those tasks
+
+112
+00:05:42,050 --> 00:05:47,910
+has its own challenges
+and its own components.
+
+113
+00:05:47,910 --> 00:05:50,160
+To underscore this,
+let's use web search
+
+114
+00:05:50,160 --> 00:05:52,170
+as a frame of reference.
+
+115
+00:05:52,170 --> 00:05:55,260
+While standard web search might
+pose considerable challenge
+
+116
+00:05:55,260 --> 00:05:57,990
+when it comes to the massive
+scale involved in terms
+
+117
+00:05:57,990 --> 00:06:01,440
+of documents and also
+queries, even something
+
+118
+00:06:01,440 --> 00:06:04,350
+as seemingly mundane as
+searching for conversations
+
+119
+00:06:04,350 --> 00:06:07,440
+on your Slack
+workspace often lacks
+
+120
+00:06:07,440 --> 00:06:09,510
+key features that
+makes web search
+
+121
+00:06:09,510 --> 00:06:11,820
+tractable in the
+first place and makes
+
+122
+00:06:11,820 --> 00:06:16,040
+it work the way it does
+in the first place.
+
+123
+00:06:16,040 --> 00:06:20,750
+For one, so many web searches
+ask frequently searched or head
+
+124
+00:06:20,750 --> 00:06:21,860
+queries.
+
+125
+00:06:21,860 --> 00:06:24,560
+The sheer popularity
+of head queries
+
+126
+00:06:24,560 --> 00:06:29,735
+makes them an easy target
+for large search engines.
+
+127
+00:06:29,735 --> 00:06:32,360
+Of course, there's always a long
+tail of various search queries
+
+128
+00:06:32,360 --> 00:06:34,880
+that still pose considerable
+challenge, especially
+
+129
+00:06:34,880 --> 00:06:36,890
+in highly technical
+domains, but it still
+
+130
+00:06:36,890 --> 00:06:40,250
+stands that, in a
+domain like web search,
+
+131
+00:06:40,250 --> 00:06:44,420
+solving the head queries
+gets you a very big part,
+
+132
+00:06:44,420 --> 00:06:49,620
+a very big share of
+answering most user queries.
+
+133
+00:06:49,620 --> 00:06:50,880
+There's another factor.
+
+134
+00:06:50,880 --> 00:06:54,720
+Web search enjoys highly
+redundant documents
+
+135
+00:06:54,720 --> 00:06:57,030
+out there that
+address common topics,
+
+136
+00:06:57,030 --> 00:07:00,900
+where each document is written
+in a slightly different way.
+
+137
+00:07:00,900 --> 00:07:04,340
+This often shifts the search
+problem into a precision one--
+
+138
+00:07:04,340 --> 00:07:06,680
+basically finding some
+documents, at least
+
+139
+00:07:06,680 --> 00:07:09,650
+one, that definitely match
+the query, as opposed
+
+140
+00:07:09,650 --> 00:07:10,820
+to a recall one--
+
+141
+00:07:10,820 --> 00:07:12,890
+finding every document
+that matches the query
+
+142
+00:07:12,890 --> 00:07:16,510
+because there's already
+too many of them.
+
+143
+00:07:16,510 --> 00:07:18,040
+Clearly, this is
+not always the case
+
+144
+00:07:18,040 --> 00:07:21,040
+if you're looking for a very
+specific item in your Slack
+
+145
+00:07:21,040 --> 00:07:23,710
+conversation and history.
+
+146
+00:07:23,710 --> 00:07:27,200
+Yet another factor in web search
+is the rich link structure
+
+147
+00:07:27,200 --> 00:07:32,410
+that links between existing
+related web pages, which
+
+148
+00:07:32,410 --> 00:07:36,740
+again introduces more hierarchy
+and might make this task more
+
+149
+00:07:36,740 --> 00:07:38,720
+tractable in practice.
+
+150
+00:07:38,720 --> 00:07:42,370
+The idea here is definitely
+not that web search is easy
+
+151
+00:07:42,370 --> 00:07:43,600
+because it's not easy.
+
+152
+00:07:43,600 --> 00:07:46,600
+But the different tasks
+pose different challenges
+
+153
+00:07:46,600 --> 00:07:49,680
+for our IR systems.
+
+154
+00:07:49,680 --> 00:07:51,960
+So that is IR.
+
+155
+00:07:51,960 --> 00:07:55,530
+Where does our work
+on NLU fit in IR?
+
+156
+00:07:55,530 --> 00:07:58,140
+Well, of course,
+queries and documents
+
+157
+00:07:58,140 --> 00:08:02,010
+are often expressed in natural
+language, a decent part.
+
+158
+00:08:02,010 --> 00:08:05,670
+So we naturally want to
+understand a query's meaning
+
+159
+00:08:05,670 --> 00:08:09,420
+and its intent and understand
+the document's contents
+
+160
+00:08:09,420 --> 00:08:12,600
+and their topics to be able
+to effectively match queries
+
+161
+00:08:12,600 --> 00:08:14,870
+to documents.
+
+162
+00:08:14,870 --> 00:08:18,290
+This form of
+understanding is critical,
+
+163
+00:08:18,290 --> 00:08:21,290
+although you can go pretty
+far for many IR tasks
+
+164
+00:08:21,290 --> 00:08:25,570
+with intelligently matching
+terms at a lexical level.
+
+165
+00:08:25,570 --> 00:08:28,750
+The vocabulary mismatch problem
+makes this quite unattractive
+
+166
+00:08:28,750 --> 00:08:30,600
+in practice.
+
+167
+00:08:30,600 --> 00:08:33,419
+To explain, vocabulary
+mismatch happens
+
+168
+00:08:33,419 --> 00:08:36,690
+when queries and documents
+use different terms
+
+169
+00:08:36,690 --> 00:08:39,260
+to refer to the same thing.
+
+170
+00:08:39,260 --> 00:08:41,740
+So I have here on the
+slide an example query
+
+171
+00:08:41,740 --> 00:08:45,200
+that shows this
+happening in practice.
+
+172
+00:08:45,200 --> 00:08:47,440
+So the question
+is, or the query is
+
+173
+00:08:47,440 --> 00:08:50,950
+what compounds protect
+the digestive system
+
+174
+00:08:50,950 --> 00:08:52,600
+against viruses?
+
+175
+00:08:52,600 --> 00:08:54,880
+And the snippet that we
+are interested in finding
+
+176
+00:08:54,880 --> 00:08:58,570
+says in the stomach
+gastric acid and proteases
+
+177
+00:08:58,570 --> 00:09:01,090
+serve as powerful
+chemical defenses
+
+178
+00:09:01,090 --> 00:09:03,130
+against ingested pathogens.
+
+179
+00:09:03,130 --> 00:09:06,090
+You can see that the
+passage that we found here
+
+180
+00:09:06,090 --> 00:09:09,700
+uses pathogens instead
+of viruses, which
+
+181
+00:09:09,700 --> 00:09:12,310
+is a bit more general,
+stomach instead
+
+182
+00:09:12,310 --> 00:09:15,040
+of the digestive system,
+which is a bit more specific,
+
+183
+00:09:15,040 --> 00:09:17,860
+and chemical instead
+of compound, defenses
+
+184
+00:09:17,860 --> 00:09:18,970
+instead of protect.
+
+185
+00:09:18,970 --> 00:09:21,730
+But it's pretty clear that it
+still answers the same question
+
+186
+00:09:21,730 --> 00:09:24,370
+and answers it
+very well, in fact.
+
+187
+00:09:24,370 --> 00:09:27,810
+So, where does NLU fit in IR?
+
+188
+00:09:27,810 --> 00:09:32,730
+I guess a nice quote here
+is Jimmy Lin's statement.
+
+189
+00:09:32,730 --> 00:09:37,260
+Jimmy Lin is an IR researcher
+who says IR makes NLP useful
+
+190
+00:09:37,260 --> 00:09:40,270
+and NLP makes IR interesting.
+
+191
+00:09:40,270 --> 00:09:43,320
+Of course, we do think
+NLP is useful anyway,
+
+192
+00:09:43,320 --> 00:09:45,520
+and also IR is
+interesting anyway.
+
+193
+00:09:45,520 --> 00:09:47,590
+So I added more
+between brackets here,
+
+194
+00:09:47,590 --> 00:09:49,300
+but we do get Jimmy's point.
+
+195
+00:09:49,300 --> 00:09:52,520
+
+
+196
+00:09:52,520 --> 00:09:54,110
+OK.
+
+197
+00:09:54,110 --> 00:09:57,260
+Onto our more central
+question, where does IR
+
+198
+00:09:57,260 --> 00:10:03,030
+fit into our study of NLU,
+and how can IR serve us?
+
+199
+00:10:03,030 --> 00:10:04,560
+In thinking about
+this, I believe
+
+200
+00:10:04,560 --> 00:10:07,860
+it's helpful to appreciate
+that as our models become
+
+201
+00:10:07,860 --> 00:10:12,270
+more advanced in NLU, they
+too, like humans, start
+
+202
+00:10:12,270 --> 00:10:17,680
+to have complete information
+needs in solving their tasks.
+
+203
+00:10:17,680 --> 00:10:21,310
+More concretely, retrieval can
+contribute to our NLU tasks
+
+204
+00:10:21,310 --> 00:10:24,700
+and systems in
+three exciting ways.
+
+205
+00:10:24,700 --> 00:10:27,700
+First, retrieval
+provides a rich source
+
+206
+00:10:27,700 --> 00:10:31,330
+for creating challenging and
+realistic NLU tasks, ones
+
+207
+00:10:31,330 --> 00:10:35,590
+where finding information from
+a large corpus is essential.
+
+208
+00:10:35,590 --> 00:10:37,840
+We will look closely at
+this bullet in the remainder
+
+209
+00:10:37,840 --> 00:10:39,370
+of these slides.
+
+210
+00:10:39,370 --> 00:10:42,580
+Second, retrieval
+offers a powerful tool
+
+211
+00:10:42,580 --> 00:10:46,930
+to make NLU models for existing
+tasks more accurate and more
+
+212
+00:10:46,930 --> 00:10:47,740
+effective.
+
+213
+00:10:47,740 --> 00:10:50,365
+We'll touch upon this today, but
+we'll discuss it in more depth
+
+214
+00:10:50,365 --> 00:10:51,500
+later.
+
+215
+00:10:51,500 --> 00:10:54,140
+Third, retrieval
+can often lend us
+
+216
+00:10:54,140 --> 00:10:57,590
+a nice framework for evaluating
+NLU systems whenever the output
+
+217
+00:10:57,590 --> 00:11:00,410
+domain is large,
+just like in search
+
+218
+00:11:00,410 --> 00:11:03,470
+or whenever low
+latency is important,
+
+219
+00:11:03,470 --> 00:11:06,500
+which are key
+characteristics in IR.
+
+220
+00:11:06,500 --> 00:11:10,760
+We will expand on this in
+a later screencast as well.
+
+221
+00:11:10,760 --> 00:11:12,470
+In the remainder
+of the screencast,
+
+222
+00:11:12,470 --> 00:11:14,120
+we'll explore how
+retrieval allows
+
+223
+00:11:14,120 --> 00:11:16,700
+us to pose very challenging
+and very realistic
+
+224
+00:11:16,700 --> 00:11:19,950
+open-domain NLU tasks.
+
+225
+00:11:19,950 --> 00:11:23,670
+Chris has briefly introduced
+SQuAD before in the overview
+
+226
+00:11:23,670 --> 00:11:24,780
+lecture.
+
+227
+00:11:24,780 --> 00:11:27,660
+To remind you of this
+question answering task,
+
+228
+00:11:27,660 --> 00:11:29,730
+the input that we
+are given in SquAD
+
+229
+00:11:29,730 --> 00:11:33,570
+is a context message which
+was obtained from Wikipedia
+
+230
+00:11:33,570 --> 00:11:36,540
+and a question that tests
+our model's understanding
+
+231
+00:11:36,540 --> 00:11:38,740
+of this one passage.
+
+232
+00:11:38,740 --> 00:11:41,250
+This is an interesting
+task on its own right, one
+
+233
+00:11:41,250 --> 00:11:44,550
+that has enjoyed tons of work
+and lots of recent progress
+
+234
+00:11:44,550 --> 00:11:46,080
+due to pre-trained
+language models.
+
+235
+00:11:46,080 --> 00:11:49,950
+
+
+236
+00:11:49,950 --> 00:11:53,670
+But with retrieval in mind,
+we can move from standard QA
+
+237
+00:11:53,670 --> 00:11:57,300
+like SQuAD to open-domain
+question answering.
+
+238
+00:11:57,300 --> 00:12:00,120
+Specifically, in open-domain
+question answering,
+
+239
+00:12:00,120 --> 00:12:02,700
+we can ask what if
+we want to answer
+
+240
+00:12:02,700 --> 00:12:06,130
+the same kinds of factoid
+questions as SQuAD
+
+241
+00:12:06,130 --> 00:12:10,630
+or other types of questions
+but without the perhaps
+
+242
+00:12:10,630 --> 00:12:13,960
+unrealistic hint of receiving
+the particular passage
+
+243
+00:12:13,960 --> 00:12:18,090
+in Wikipedia that already
+contains the answer?
+
+244
+00:12:18,090 --> 00:12:21,480
+In this case, you can take all
+of the English Wikipedia, just
+
+245
+00:12:21,480 --> 00:12:23,430
+as an example, as our context.
+
+246
+00:12:23,430 --> 00:12:25,860
+And then again, pose
+the same question
+
+247
+00:12:25,860 --> 00:12:29,160
+as SQuAD over all of
+Wikipedia and build
+
+248
+00:12:29,160 --> 00:12:31,650
+models that can answer
+these open questions
+
+249
+00:12:31,650 --> 00:12:34,950
+over large corpora.
+
+250
+00:12:34,950 --> 00:12:38,640
+So how would we
+answer such questions?
+
+251
+00:12:38,640 --> 00:12:41,640
+The literature, in
+particular, a nice EMNLP 2020
+
+252
+00:12:41,640 --> 00:12:45,030
+paper by Roberts et al.,
+introduces a nice analogy
+
+253
+00:12:45,030 --> 00:12:47,160
+for how we might attempt
+to tackle this task
+
+254
+00:12:47,160 --> 00:12:48,960
+and how we could think about it.
+
+255
+00:12:48,960 --> 00:12:53,460
+The first, perhaps more familiar
+and perhaps simpler solution,
+
+256
+00:12:53,460 --> 00:12:57,740
+is to pose the question to
+one of our usual transformers,
+
+257
+00:12:57,740 --> 00:13:00,500
+and specifically to
+generate a sequence
+
+258
+00:13:00,500 --> 00:13:06,470
+to sequence model, something
+like T5, GPT-2 or GPT-3.
+
+259
+00:13:06,470 --> 00:13:08,630
+In this case, we're
+relying on the knowledge
+
+260
+00:13:08,630 --> 00:13:12,750
+stored internally and implicitly
+in the model parameters.
+
+261
+00:13:12,750 --> 00:13:14,480
+So the model
+memorizes these facts
+
+262
+00:13:14,480 --> 00:13:18,680
+just like you would do when
+you enter a closed book exam.
+
+263
+00:13:18,680 --> 00:13:22,880
+Often, this knowledge is
+memorized the same way language
+
+264
+00:13:22,880 --> 00:13:26,660
+is learned as a result of
+language model pre-training
+
+265
+00:13:26,660 --> 00:13:27,980
+or other similar tasks.
+
+266
+00:13:27,980 --> 00:13:30,570
+
+
+267
+00:13:30,570 --> 00:13:34,140
+Closed book approaches to these
+characteristically open-domain
+
+268
+00:13:34,140 --> 00:13:38,010
+problems offer a
+particularly consistent way
+
+269
+00:13:38,010 --> 00:13:39,690
+of improving quality
+and coverage.
+
+270
+00:13:39,690 --> 00:13:42,870
+Well, just take a model,
+train a larger version of it
+
+271
+00:13:42,870 --> 00:13:46,950
+on more data and hope that
+that includes more knowledge
+
+272
+00:13:46,950 --> 00:13:51,640
+and gives you more
+accurate results.
+
+273
+00:13:51,640 --> 00:13:53,890
+As an alternative
+to this, you could
+
+274
+00:13:53,890 --> 00:13:56,770
+think about open book approaches
+to open-domain question
+
+275
+00:13:56,770 --> 00:13:58,160
+answering.
+
+276
+00:13:58,160 --> 00:14:01,360
+So there's the analogy of
+doing an open book exam, which
+
+277
+00:14:01,360 --> 00:14:04,930
+tests not really your memory
+but your awareness of where
+
+278
+00:14:04,930 --> 00:14:07,930
+to look for answers and
+how to use them quickly
+
+279
+00:14:07,930 --> 00:14:10,400
+and productively.
+
+280
+00:14:10,400 --> 00:14:13,310
+In this case, we will
+build what are typically
+
+281
+00:14:13,310 --> 00:14:16,980
+called retrieve-and-read
+architectures.
+
+282
+00:14:16,980 --> 00:14:20,400
+As shown at the bottom of the
+slide, we take the question
+
+283
+00:14:20,400 --> 00:14:23,340
+and first feed it to
+a retrieval model.
+
+284
+00:14:23,340 --> 00:14:25,770
+The retriever searches
+our collection of facts,
+
+285
+00:14:25,770 --> 00:14:28,530
+in this case, Wikipedia
+as an example,
+
+286
+00:14:28,530 --> 00:14:31,650
+and extracts a bunch of
+passages or other contexts
+
+287
+00:14:31,650 --> 00:14:35,680
+that seem useful in trying to
+answer the original question.
+
+288
+00:14:35,680 --> 00:14:39,010
+These passages are then
+fed to a downstream reader.
+
+289
+00:14:39,010 --> 00:14:41,890
+So that could just be a
+small BERT-like model,
+
+290
+00:14:41,890 --> 00:14:46,100
+which studies these passages to
+answer the original question.
+
+291
+00:14:46,100 --> 00:14:48,530
+In this pipeline,
+we've essentially
+
+292
+00:14:48,530 --> 00:14:50,780
+relied on this new
+retrieval component
+
+293
+00:14:50,780 --> 00:14:53,750
+to reduce the original
+open-domain question answering
+
+294
+00:14:53,750 --> 00:14:57,550
+problem to a much smaller scale
+standard question answering
+
+295
+00:14:57,550 --> 00:15:00,070
+task, where the
+downstream model sees
+
+296
+00:15:00,070 --> 00:15:03,230
+a question and the relevant
+passages or a few passages
+
+297
+00:15:03,230 --> 00:15:05,830
+before extracting
+a short answer.
+
+298
+00:15:05,830 --> 00:15:10,120
+
+
+299
+00:15:10,120 --> 00:15:13,360
+Importantly, you could say that
+the reader in this architecture
+
+300
+00:15:13,360 --> 00:15:16,240
+is a user that has
+an information need.
+
+301
+00:15:16,240 --> 00:15:20,440
+And it's the retriever's task
+to satisfy this need accurately
+
+302
+00:15:20,440 --> 00:15:23,560
+and efficiently.
+
+303
+00:15:23,560 --> 00:15:26,050
+We will study various methods
+for building retrievers
+
+304
+00:15:26,050 --> 00:15:28,030
+in the subsequent
+screencasts and look
+
+305
+00:15:28,030 --> 00:15:31,690
+at how these retrievers interact
+with downstream readers.
+
+306
+00:15:31,690 --> 00:15:34,270
+But for now, let's
+just explore some
+
+307
+00:15:34,270 --> 00:15:36,760
+of the higher-level
+differences between open book
+
+308
+00:15:36,760 --> 00:15:41,070
+and closed book solutions
+to open-domain problems.
+
+309
+00:15:41,070 --> 00:15:43,680
+Our open book
+solutions often get
+
+310
+00:15:43,680 --> 00:15:47,670
+to be much smaller while
+being very accurate still.
+
+311
+00:15:47,670 --> 00:15:49,950
+The reason is that we
+have decoupled knowledge
+
+312
+00:15:49,950 --> 00:15:54,180
+from reasoning and stored the
+knowledge outside the model.
+
+313
+00:15:54,180 --> 00:15:56,130
+Thus the model
+itself does not need
+
+314
+00:15:56,130 --> 00:15:58,920
+to store all of these facts
+inside its parameters,
+
+315
+00:15:58,920 --> 00:16:01,530
+and it gets to be much
+smaller as a result.
+
+316
+00:16:01,530 --> 00:16:04,380
+As we will see later, this
+has great implications
+
+317
+00:16:04,380 --> 00:16:07,120
+for efficiency.
+
+318
+00:16:07,120 --> 00:16:10,500
+Moreover, the knowledge can
+be easily updated by modifying
+
+319
+00:16:10,500 --> 00:16:14,050
+the collection as the facts
+in Wikipedia, for example,
+
+320
+00:16:14,050 --> 00:16:15,730
+evolve over time.
+
+321
+00:16:15,730 --> 00:16:17,560
+Or alternatively,
+suppose that you
+
+322
+00:16:17,560 --> 00:16:20,920
+want to switch from answering
+questions over Wikipedia
+
+323
+00:16:20,920 --> 00:16:23,650
+to posing questions
+over the NLP literature
+
+324
+00:16:23,650 --> 00:16:26,590
+or perhaps posing questions
+over the documentation
+
+325
+00:16:26,590 --> 00:16:29,020
+of your favorite
+software library.
+
+326
+00:16:29,020 --> 00:16:31,990
+You can often do that
+by simply swapping
+
+327
+00:16:31,990 --> 00:16:33,910
+the collection with
+a new one and keeping
+
+328
+00:16:33,910 --> 00:16:38,590
+the question-answering model
+as is to answer questions
+
+329
+00:16:38,590 --> 00:16:41,090
+in this new domain.
+
+330
+00:16:41,090 --> 00:16:44,270
+Lastly, because we can see
+the actual documents that
+
+331
+00:16:44,270 --> 00:16:47,570
+are retrieved and the documents
+that are read by the reader
+
+332
+00:16:47,570 --> 00:16:50,450
+to extract answers, we are
+often better positioned
+
+333
+00:16:50,450 --> 00:16:53,660
+to explain how these
+models know some facts
+
+334
+00:16:53,660 --> 00:16:56,670
+or why they make
+particular mistakes.
+
+335
+00:16:56,670 --> 00:16:58,958
+On the downside,
+though, all of a sudden,
+
+336
+00:16:58,958 --> 00:17:00,750
+we now need to worry
+about the interactions
+
+337
+00:17:00,750 --> 00:17:05,118
+between two components, the
+retriever and the reader.
+
+338
+00:17:05,118 --> 00:17:08,328
+But I hope that the
+subsequent set of screencasts
+
+339
+00:17:08,329 --> 00:17:11,150
+will convince you that
+working with retrievers in NLU
+
+340
+00:17:11,150 --> 00:17:14,760
+is very rewarding.
+
+341
+00:17:14,760 --> 00:17:16,650
+All of this
+discussion so far has
+
+342
+00:17:16,650 --> 00:17:19,560
+been in the context of
+open-domain question answering.
+
+343
+00:17:19,560 --> 00:17:21,569
+But there are many
+other NLU tasks
+
+344
+00:17:21,569 --> 00:17:24,660
+that either inherently subsume
+retrieval or at least can
+
+345
+00:17:24,660 --> 00:17:26,608
+directly benefit
+from interacting
+
+346
+00:17:26,608 --> 00:17:31,010
+with a large collection
+of relevant facts.
+
+347
+00:17:31,010 --> 00:17:35,780
+One of those is claim
+verification or fact-checking.
+
+348
+00:17:35,780 --> 00:17:39,170
+Here, the model receives
+as input, a disputed claim,
+
+349
+00:17:39,170 --> 00:17:42,770
+and its goal is to verify
+or refute this claim
+
+350
+00:17:42,770 --> 00:17:47,540
+and to return documents
+that justify its decision.
+
+351
+00:17:47,540 --> 00:17:49,670
+Two other tasks
+are query focused
+
+352
+00:17:49,670 --> 00:17:52,550
+summarization and
+informative dialogue,
+
+353
+00:17:52,550 --> 00:17:55,280
+where we might also work with
+a large collection of facts,
+
+354
+00:17:55,280 --> 00:17:59,660
+and given a topic or in the
+context of a conversation,
+
+355
+00:17:59,660 --> 00:18:03,050
+generate a useful summary of
+the resources about that topic,
+
+356
+00:18:03,050 --> 00:18:05,750
+perhaps as part of a
+conversation with the user
+
+357
+00:18:05,750 --> 00:18:09,000
+interested to learn
+about the new topic.
+
+358
+00:18:09,000 --> 00:18:11,180
+Lastly, entity
+linking is the task
+
+359
+00:18:11,180 --> 00:18:15,270
+that can be posed over a large
+textual knowledge base as well.
+
+360
+00:18:15,270 --> 00:18:17,400
+Given an utterance that
+refers to any number
+
+361
+00:18:17,400 --> 00:18:20,370
+of ambiguous entities
+or events, we
+
+362
+00:18:20,370 --> 00:18:23,400
+should resolve this
+ambiguity and map dimensions
+
+363
+00:18:23,400 --> 00:18:26,250
+of these entities to
+their descriptions
+
+364
+00:18:26,250 --> 00:18:28,650
+in a large knowledge
+base like Wikipedia.
+
+365
+00:18:28,650 --> 00:18:32,970
+So that would be a
+form of entity linking.
+
+366
+00:18:32,970 --> 00:18:36,120
+KILT or Knowledge
+Intensive Language Tasks
+
+367
+00:18:36,120 --> 00:18:38,670
+is a recent effort
+aimed at collecting
+
+368
+00:18:38,670 --> 00:18:42,270
+a number of different datasets
+for retrieval based NLP.
+
+369
+00:18:42,270 --> 00:18:45,150
+Incidentally, all of
+these tasks in KILT
+
+370
+00:18:45,150 --> 00:18:47,580
+explicitly have a
+knowledge component,
+
+371
+00:18:47,580 --> 00:18:50,100
+like answering a question
+or verifying a claim.
+
+372
+00:18:50,100 --> 00:18:53,660
+
+
+373
+00:18:53,660 --> 00:18:55,790
+An open question in
+this exciting area
+
+374
+00:18:55,790 --> 00:18:59,210
+is whether retrieval can improve
+performance for standard NLU
+
+375
+00:18:59,210 --> 00:19:02,930
+tasks as well, ones where
+the knowledge challenge is
+
+376
+00:19:02,930 --> 00:19:04,550
+less explicit.
+
+377
+00:19:04,550 --> 00:19:07,850
+Think, for example, sentiment
+analysis, natural language
+
+378
+00:19:07,850 --> 00:19:12,530
+inference, or any of the other
+tasks we've studied so far.
+
+379
+00:19:12,530 --> 00:19:14,370
+Well, this remains
+an open question.
+
+380
+00:19:14,370 --> 00:19:16,280
+But I think that accurate
+knowledge matters
+
+381
+00:19:16,280 --> 00:19:19,590
+for most, if not all,
+of our language tasks.
+
+382
+00:19:19,590 --> 00:19:21,600
+And that converting
+many of these tasks
+
+383
+00:19:21,600 --> 00:19:26,310
+to an open book format or
+bring your own book approach
+
+384
+00:19:26,310 --> 00:19:29,115
+may be a promising way to
+tackle these tasks in practice.
+
+385
+00:19:29,115 --> 00:19:31,730
+
+
+386
+00:19:31,730 --> 00:19:33,200
+In the remainder
+of this unit, we
+
+387
+00:19:33,200 --> 00:19:35,750
+will dig deeper into
+traditional methods and metrics
+
+388
+00:19:35,750 --> 00:19:39,680
+for information retrieval and
+then explore recent advances
+
+389
+00:19:39,680 --> 00:19:43,490
+in neural IR, which will make
+a lot of use of our NLU models
+
+390
+00:19:43,490 --> 00:19:47,280
+like BERT in new
+and creative ways.
+
+391
+00:19:47,280 --> 00:19:49,730
+And then, we will finally
+discuss open-domain question
+
+392
+00:19:49,730 --> 00:19:53,660
+answering in more depth as one
+of the most mature applications
+
+393
+00:19:53,660 --> 00:19:56,260
+of NLU plus IR.
+
+394
+00:19:56,260 --> 00:20:02,000
+
+

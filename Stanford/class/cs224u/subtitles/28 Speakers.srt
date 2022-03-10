@@ -1,0 +1,957 @@
+1
+00:00:00,000 --> 00:00:04,228
+
+
+2
+00:00:04,228 --> 00:00:05,770
+CHRISTOPHER POTTS:
+Welcome, everyone.
+
+3
+00:00:05,770 --> 00:00:07,895
+This is part two in our
+series on grounded language
+
+4
+00:00:07,895 --> 00:00:08,830
+understanding.
+
+5
+00:00:08,830 --> 00:00:11,520
+Our task for this unit is
+essentially a natural language
+
+6
+00:00:11,520 --> 00:00:12,810
+generation task.
+
+7
+00:00:12,810 --> 00:00:14,670
+And I've called those
+speakers, the idea
+
+8
+00:00:14,670 --> 00:00:16,442
+is that speakers go
+from the world, that
+
+9
+00:00:16,442 --> 00:00:18,150
+is some non-linguistic
+thing that they're
+
+10
+00:00:18,150 --> 00:00:20,850
+trying to communicate
+about, into language.
+
+11
+00:00:20,850 --> 00:00:24,390
+Those are really the central
+agents that will be explored.
+
+12
+00:00:24,390 --> 00:00:26,640
+To ground all this, we're
+going to have a simple task.
+
+13
+00:00:26,640 --> 00:00:29,057
+I'm going to start with the
+most basic version of the task
+
+14
+00:00:29,057 --> 00:00:31,770
+that we'll ultimately tackle
+in our assignment and bake-off.
+
+15
+00:00:31,770 --> 00:00:34,090
+And that is color reference.
+
+16
+00:00:34,090 --> 00:00:37,320
+So these are examples taken from
+a corpus that was originally
+
+17
+00:00:37,320 --> 00:00:40,260
+collected by Randall
+Munroe of XKCD fame,
+
+18
+00:00:40,260 --> 00:00:44,280
+and processed into an NLP task
+by McMahan and Stone 2015.
+
+19
+00:00:44,280 --> 00:00:45,935
+And it's a simple
+formulation in that
+
+20
+00:00:45,935 --> 00:00:48,060
+the state of the world we
+want to communicate about
+
+21
+00:00:48,060 --> 00:00:49,530
+is a color patch.
+
+22
+00:00:49,530 --> 00:00:51,652
+And the task is simply
+to produce descriptions
+
+23
+00:00:51,652 --> 00:00:52,610
+of those color patches.
+
+24
+00:00:52,610 --> 00:00:54,210
+Now I've given
+some examples here.
+
+25
+00:00:54,210 --> 00:00:56,520
+And you can see that they
+range from simple one word
+
+26
+00:00:56,520 --> 00:00:59,550
+descriptions, all
+the way up to things
+
+27
+00:00:59,550 --> 00:01:01,845
+that are kind of complicated
+both cognitively and
+
+28
+00:01:01,845 --> 00:01:03,720
+linguistically, and I
+think point to the idea
+
+29
+00:01:03,720 --> 00:01:06,810
+that even though this is a
+simple and constrained domain,
+
+30
+00:01:06,810 --> 00:01:11,820
+it's a pretty cognitively and
+linguistically interesting one.
+
+31
+00:01:11,820 --> 00:01:14,990
+So our speakers, at least
+our baseline speakers,
+
+32
+00:01:14,990 --> 00:01:18,380
+are standard versions of
+encoder decoder models.
+
+33
+00:01:18,380 --> 00:01:20,810
+We're going to have for this
+initial formulation a very
+
+34
+00:01:20,810 --> 00:01:21,740
+simple encoder.
+
+35
+00:01:21,740 --> 00:01:23,210
+The task of the
+encoder is simply
+
+36
+00:01:23,210 --> 00:01:25,640
+to take a color
+representation, which
+
+37
+00:01:25,640 --> 00:01:29,360
+is going to be a list of floats
+embedded in some embedding
+
+38
+00:01:29,360 --> 00:01:32,810
+space, and then learn some
+hidden representation for that
+
+39
+00:01:32,810 --> 00:01:33,350
+color.
+
+40
+00:01:33,350 --> 00:01:34,850
+And that's all that
+needs to happen.
+
+41
+00:01:34,850 --> 00:01:36,500
+So it's just one step.
+
+42
+00:01:36,500 --> 00:01:38,910
+The decoder is where the
+speaking part happens.
+
+43
+00:01:38,910 --> 00:01:42,020
+So the initial token produced
+by the decoder, by the speaker,
+
+44
+00:01:42,020 --> 00:01:44,180
+is always the start
+token which is looked up
+
+45
+00:01:44,180 --> 00:01:46,010
+in an embedding space.
+
+46
+00:01:46,010 --> 00:01:48,230
+And then we get our first
+decoder hidden state,
+
+47
+00:01:48,230 --> 00:01:51,738
+which is created from
+the color representation
+
+48
+00:01:51,738 --> 00:01:53,780
+of the initial hidden
+state in the sequence we're
+
+49
+00:01:53,780 --> 00:01:55,823
+going to build, together
+with an embedding.
+
+50
+00:01:55,823 --> 00:01:57,740
+And both of those have
+weight transformations.
+
+51
+00:01:57,740 --> 00:01:59,750
+And it's an additive
+combination of them
+
+52
+00:01:59,750 --> 00:02:03,100
+that delivers this
+value h1 here.
+
+53
+00:02:03,100 --> 00:02:04,810
+Then we use some
+softmax parameters
+
+54
+00:02:04,810 --> 00:02:06,740
+to make a prediction
+about the next token.
+
+55
+00:02:06,740 --> 00:02:08,770
+Here we've predicted "dark."
+
+56
+00:02:08,770 --> 00:02:11,680
+And we get our error signal
+by comparing that prediction
+
+57
+00:02:11,680 --> 00:02:14,390
+with the actual token that
+occurred in our training data.
+
+58
+00:02:14,390 --> 00:02:16,030
+In this case, it was
+the word "light."
+
+59
+00:02:16,030 --> 00:02:17,530
+So since we made a
+wrong prediction,
+
+60
+00:02:17,530 --> 00:02:20,830
+we're going to get a substantive
+error signal that will then,
+
+61
+00:02:20,830 --> 00:02:22,510
+we hope, update the
+weight parameters
+
+62
+00:02:22,510 --> 00:02:24,160
+throughout this
+model in a way that
+
+63
+00:02:24,160 --> 00:02:27,570
+leads them to produce better
+generations the next time.
+
+64
+00:02:27,570 --> 00:02:29,700
+In a little more detail,
+just as a reminder.
+
+65
+00:02:29,700 --> 00:02:31,810
+So we have an embedding
+for that start token,
+
+66
+00:02:31,810 --> 00:02:33,690
+and indeed for all tokens.
+
+67
+00:02:33,690 --> 00:02:37,140
+The hidden state is derived
+from the embedding via a weight
+
+68
+00:02:37,140 --> 00:02:40,170
+transformation, and the
+color representation, which
+
+69
+00:02:40,170 --> 00:02:43,200
+is state h0 in the recurrence
+that we're building.
+
+70
+00:02:43,200 --> 00:02:44,610
+And that too has
+a transformation
+
+71
+00:02:44,610 --> 00:02:47,340
+applied to it, to travel
+through the hidden layer.
+
+72
+00:02:47,340 --> 00:02:48,840
+That gives us the state H1.
+
+73
+00:02:48,840 --> 00:02:50,790
+And then we have
+softmax parameters
+
+74
+00:02:50,790 --> 00:02:53,970
+on top of that h1 that
+make a prediction.
+
+75
+00:02:53,970 --> 00:02:55,890
+The prediction that they
+make is a prediction
+
+76
+00:02:55,890 --> 00:02:58,080
+over the entire vocabulary.
+
+77
+00:02:58,080 --> 00:03:00,120
+And the probability
+of the actual token
+
+78
+00:03:00,120 --> 00:03:01,290
+gives us our error signals.
+
+79
+00:03:01,290 --> 00:03:03,332
+So the probability of
+"light" is the error signal
+
+80
+00:03:03,332 --> 00:03:07,370
+that we'll use here to
+update the model parameters.
+
+81
+00:03:07,370 --> 00:03:09,680
+And then we begin with
+the next timestep.
+
+82
+00:03:09,680 --> 00:03:11,373
+I've called this
+teacher forcing,
+
+83
+00:03:11,373 --> 00:03:13,790
+because in the standard mode,
+which is the teacher forcing
+
+84
+00:03:13,790 --> 00:03:17,600
+mode, even though we
+predicted 'dark' at timestep 1
+
+85
+00:03:17,600 --> 00:03:19,850
+we're going to have
+as our second token,
+
+86
+00:03:19,850 --> 00:03:23,390
+the token "light" which is the
+actual token in the underlying
+
+87
+00:03:23,390 --> 00:03:24,020
+training data.
+
+88
+00:03:24,020 --> 00:03:26,550
+And we'll proceed as though
+we did not make a mistake.
+
+89
+00:03:26,550 --> 00:03:28,370
+So again, we do an
+embedding look up,
+
+90
+00:03:28,370 --> 00:03:30,860
+we get our second hidden
+state for the decoder, that's
+
+91
+00:03:30,860 --> 00:03:33,320
+a combination of
+the embedding x 37
+
+92
+00:03:33,320 --> 00:03:35,980
+and the previous student state,
+and we make another prediction.
+
+93
+00:03:35,980 --> 00:03:37,730
+And in this case, our
+prediction is "blue"
+
+94
+00:03:37,730 --> 00:03:39,290
+and that's the actual token.
+
+95
+00:03:39,290 --> 00:03:41,000
+And life is good
+for a little bit.
+
+96
+00:03:41,000 --> 00:03:43,400
+And then we proceed
+with a third timestep.
+
+97
+00:03:43,400 --> 00:03:46,710
+The actual token is "blue" h3.
+
+98
+00:03:46,710 --> 00:03:47,860
+We predict "green."
+
+99
+00:03:47,860 --> 00:03:49,610
+And in this case, we
+should have predicted
+
+100
+00:03:49,610 --> 00:03:51,530
+the stop token which
+would cause us to stop
+
+101
+00:03:51,530 --> 00:03:52,990
+processing the sequence.
+
+102
+00:03:52,990 --> 00:03:55,490
+We're just going to get an error
+signal as we steadily would
+
+103
+00:03:55,490 --> 00:03:57,920
+and propagate that back down
+through the model in hopes
+
+104
+00:03:57,920 --> 00:04:00,110
+that the next time,
+when we want to stop,
+
+105
+00:04:00,110 --> 00:04:05,040
+we'll actually produce this stop
+token that I've given up here.
+
+106
+00:04:05,040 --> 00:04:08,060
+At prediction time, of course
+the sequence is not given.
+
+107
+00:04:08,060 --> 00:04:10,558
+That doesn't change the
+encoder because the color
+
+108
+00:04:10,558 --> 00:04:12,350
+representation is part
+of the model inputs.
+
+109
+00:04:12,350 --> 00:04:13,910
+So then we have
+to decode and just
+
+110
+00:04:13,910 --> 00:04:15,940
+describe without any feedback.
+
+111
+00:04:15,940 --> 00:04:19,519
+So we proceed as we did before
+and we predict "dark" here.
+
+112
+00:04:19,519 --> 00:04:22,542
+And then "dark" has to become
+the token at the next timestep
+
+113
+00:04:22,542 --> 00:04:24,500
+because we don't know
+what the ground truth is.
+
+114
+00:04:24,500 --> 00:04:27,200
+And we proceed as
+before and say "blue."
+
+115
+00:04:27,200 --> 00:04:29,270
+And then that becomes
+the third time step,
+
+116
+00:04:29,270 --> 00:04:31,550
+and with luck, there
+in that third position,
+
+117
+00:04:31,550 --> 00:04:33,170
+we predict the stop token.
+
+118
+00:04:33,170 --> 00:04:36,770
+And the decoding
+process is completed.
+
+119
+00:04:36,770 --> 00:04:38,503
+That is the fundamental model.
+
+120
+00:04:38,503 --> 00:04:39,920
+Even though it's
+simple, it admits
+
+121
+00:04:39,920 --> 00:04:41,930
+of many interesting
+modifications.
+
+122
+00:04:41,930 --> 00:04:44,070
+Let me just mention
+a few of them.
+
+123
+00:04:44,070 --> 00:04:46,022
+First, the encoder and
+the decoder, of course,
+
+124
+00:04:46,022 --> 00:04:47,480
+could have many
+more hidden layers.
+
+125
+00:04:47,480 --> 00:04:48,680
+Mine just had one.
+
+126
+00:04:48,680 --> 00:04:50,750
+But they could be
+very deep networks.
+
+127
+00:04:50,750 --> 00:04:52,940
+We would expect that
+the layer counts
+
+128
+00:04:52,940 --> 00:04:54,780
+for the encoder and
+the decoder match
+
+129
+00:04:54,780 --> 00:04:57,650
+so that you have this even
+handoff from encoder to decoder
+
+130
+00:04:57,650 --> 00:04:59,570
+across all the hidden layers.
+
+131
+00:04:59,570 --> 00:05:01,160
+But even that's not
+a hard constraint.
+
+132
+00:05:01,160 --> 00:05:03,692
+I can imagine that some
+pooling or copying could
+
+133
+00:05:03,692 --> 00:05:05,900
+accommodate different numbers
+of layers and these two
+
+134
+00:05:05,900 --> 00:05:08,430
+components.
+
+135
+00:05:08,430 --> 00:05:10,520
+It's very common at
+present for researchers
+
+136
+00:05:10,520 --> 00:05:13,305
+to tie the embedding and
+classifier parameters, right?
+
+137
+00:05:13,305 --> 00:05:14,930
+The embedding gives
+us a representation
+
+138
+00:05:14,930 --> 00:05:16,490
+for every vocabulary item.
+
+139
+00:05:16,490 --> 00:05:18,530
+And the transpose
+of that can serve
+
+140
+00:05:18,530 --> 00:05:22,760
+as the set of parameters
+for a softmax classifier
+
+141
+00:05:22,760 --> 00:05:24,530
+when we predict tokens.
+
+142
+00:05:24,530 --> 00:05:27,410
+And tying those weights seems
+to be very productive in terms
+
+143
+00:05:27,410 --> 00:05:29,380
+of optimization effectiveness.
+
+144
+00:05:29,380 --> 00:05:31,280
+So you might consider that.
+
+145
+00:05:31,280 --> 00:05:33,140
+And finally, during
+training, we might
+
+146
+00:05:33,140 --> 00:05:35,150
+drop that teacher
+forcing assumption,
+
+147
+00:05:35,150 --> 00:05:37,940
+which would mean that in a
+small percentage of cases,
+
+148
+00:05:37,940 --> 00:05:41,300
+we would allow the model to just
+proceed as though its predicted
+
+149
+00:05:41,300 --> 00:05:44,150
+token was the correct token
+for the next time step,
+
+150
+00:05:44,150 --> 00:05:47,165
+even if that was a faulty
+assumption, on the idea
+
+151
+00:05:47,165 --> 00:05:49,820
+that that might help the
+model explore a wider
+
+152
+00:05:49,820 --> 00:05:53,240
+range of the space
+and inject generations
+
+153
+00:05:53,240 --> 00:05:55,395
+with some helpful diversity.
+
+154
+00:05:55,395 --> 00:05:57,020
+And then there's one
+other modification
+
+155
+00:05:57,020 --> 00:05:58,040
+that I want to
+mention, because you'll
+
+156
+00:05:58,040 --> 00:05:59,900
+see this as part of the
+homework and the system
+
+157
+00:05:59,900 --> 00:06:00,858
+that you're developing.
+
+158
+00:06:00,858 --> 00:06:02,810
+So we found that
+in Monroe et al.
+
+159
+00:06:02,810 --> 00:06:06,230
+2016, it was helpful
+to remind the decoder
+
+160
+00:06:06,230 --> 00:06:08,450
+at each one of its
+timesteps about what
+
+161
+00:06:08,450 --> 00:06:09,780
+it was trying to describe.
+
+162
+00:06:09,780 --> 00:06:13,040
+So in more detail, we had
+HSV color representations
+
+163
+00:06:13,040 --> 00:06:13,860
+as our inputs.
+
+164
+00:06:13,860 --> 00:06:16,460
+We did a Fourier transform
+to get an embedding.
+
+165
+00:06:16,460 --> 00:06:18,830
+And that was processed
+into a hidden state.
+
+166
+00:06:18,830 --> 00:06:20,960
+And then during
+decoding, we appended
+
+167
+00:06:20,960 --> 00:06:24,230
+to each one of the embeddings
+the Fourier transformation
+
+168
+00:06:24,230 --> 00:06:27,350
+representation of the color
+as a kind of informal reminder
+
+169
+00:06:27,350 --> 00:06:30,440
+at each timestep about what
+the input was actually like,
+
+170
+00:06:30,440 --> 00:06:33,110
+on the assumption that for
+long sequences where we get all
+
+171
+00:06:33,110 --> 00:06:35,030
+the way down to the
+end, the model might
+
+172
+00:06:35,030 --> 00:06:37,640
+have a hazy memory of what
+it's trying to describe.
+
+173
+00:06:37,640 --> 00:06:40,898
+And this functions as a kind
+of reminder at that point.
+
+174
+00:06:40,898 --> 00:06:42,440
+And that proved to
+be very effective,
+
+175
+00:06:42,440 --> 00:06:45,850
+and I'll encourage you to
+explore that in the homework.
+
+176
+00:06:45,850 --> 00:06:48,100
+And then I hope you can see
+that even though this task
+
+177
+00:06:48,100 --> 00:06:51,457
+formulation is simple, it's
+an instance of a wide range
+
+178
+00:06:51,457 --> 00:06:54,040
+of tasks that we might explore
+under the heading of grounding.
+
+179
+00:06:54,040 --> 00:06:56,020
+After all, for
+grounding in this sense,
+
+180
+00:06:56,020 --> 00:06:59,260
+we just need some non-linguistic
+representation coming in,
+
+181
+00:06:59,260 --> 00:07:01,840
+and the ideas that will
+generate language in response
+
+182
+00:07:01,840 --> 00:07:03,170
+to that input.
+
+183
+00:07:03,170 --> 00:07:05,650
+So image captioning is
+an instance of this.
+
+184
+00:07:05,650 --> 00:07:08,260
+Scene description, of
+course, is another instance.
+
+185
+00:07:08,260 --> 00:07:10,810
+Visual question answering
+is a slight modification
+
+186
+00:07:10,810 --> 00:07:12,850
+where the input is
+not just an image,
+
+187
+00:07:12,850 --> 00:07:14,740
+but also a question
+text and the idea
+
+188
+00:07:14,740 --> 00:07:17,050
+is that you want to produce
+an answer to that question
+
+189
+00:07:17,050 --> 00:07:19,420
+relative to the image input.
+
+190
+00:07:19,420 --> 00:07:21,850
+And then instruction giving
+would be a more general form
+
+191
+00:07:21,850 --> 00:07:24,190
+where the input is some
+kind of state description
+
+192
+00:07:24,190 --> 00:07:26,950
+and the idea is that we want to
+offer a complicated instruction
+
+193
+00:07:26,950 --> 00:07:28,147
+on that basis.
+
+194
+00:07:28,147 --> 00:07:29,980
+And I think we can think
+of many others that
+
+195
+00:07:29,980 --> 00:07:32,050
+would fit into this
+mold and benefit
+
+196
+00:07:32,050 --> 00:07:34,400
+not only from the encoder
+decoder architecture,
+
+197
+00:07:34,400 --> 00:07:37,270
+but also from
+conceptualization explicitly
+
+198
+00:07:37,270 --> 00:07:40,890
+as grounded natural
+language generation tasks.
+
+199
+00:07:40,890 --> 00:07:45,000
+
+

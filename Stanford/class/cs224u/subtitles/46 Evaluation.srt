@@ -1,0 +1,1035 @@
+1
+00:00:00,000 --> 00:00:04,920
+
+
+2
+00:00:04,920 --> 00:00:06,900
+BILL MACCARTNEY: Last
+time I introduced
+
+3
+00:00:06,900 --> 00:00:10,020
+the task of relation
+extraction, I
+
+4
+00:00:10,020 --> 00:00:13,860
+described the corpus and the
+KB that we're going to use.
+
+5
+00:00:13,860 --> 00:00:16,770
+And I proposed a
+precise formulation
+
+6
+00:00:16,770 --> 00:00:19,090
+of our prediction problem.
+
+7
+00:00:19,090 --> 00:00:22,230
+So now, let's talk about how
+we're going to measure success
+
+8
+00:00:22,230 --> 00:00:23,650
+on this problem.
+
+9
+00:00:23,650 --> 00:00:26,940
+We need to define a
+quantitative evaluation that
+
+10
+00:00:26,940 --> 00:00:31,572
+can drive a process of
+iterative development.
+
+11
+00:00:31,572 --> 00:00:33,780
+In this section, I'm going
+to first make a connection
+
+12
+00:00:33,780 --> 00:00:35,880
+to the software
+engineering principle
+
+13
+00:00:35,880 --> 00:00:38,370
+of test-driven development.
+
+14
+00:00:38,370 --> 00:00:40,560
+Then I'm going to
+explain how we'll
+
+15
+00:00:40,560 --> 00:00:44,070
+split our data into training
+and evaluation data.
+
+16
+00:00:44,070 --> 00:00:48,090
+I'll do a brief refresher
+on precision, recall,
+
+17
+00:00:48,090 --> 00:00:50,040
+and F-measure.
+
+18
+00:00:50,040 --> 00:00:52,500
+And I'll review the distinction
+between micro-averaging
+
+19
+00:00:52,500 --> 00:00:54,180
+and macro-averaging.
+
+20
+00:00:54,180 --> 00:00:55,903
+And by the end, we'll
+know exactly how
+
+21
+00:00:55,903 --> 00:00:57,195
+we're going to measure success.
+
+22
+00:00:57,195 --> 00:01:00,050
+
+
+23
+00:01:00,050 --> 00:01:02,640
+When you start working on a
+new machine learning problem,
+
+24
+00:01:02,640 --> 00:01:07,620
+it's very tempting to jump in
+and start building models right
+
+25
+00:01:07,620 --> 00:01:08,120
+away.
+
+26
+00:01:08,120 --> 00:01:10,490
+Because you're
+bursting with ideas,
+
+27
+00:01:10,490 --> 00:01:12,740
+and you can't wait
+to get started.
+
+28
+00:01:12,740 --> 00:01:14,720
+But whoa, Nelly.
+
+29
+00:01:14,720 --> 00:01:18,410
+That's like driving
+cross-country without a map.
+
+30
+00:01:18,410 --> 00:01:20,690
+There's going to be lots
+of forks in the road,
+
+31
+00:01:20,690 --> 00:01:23,250
+and you won't know
+which way to go.
+
+32
+00:01:23,250 --> 00:01:25,490
+There's a better way.
+
+33
+00:01:25,490 --> 00:01:29,210
+In software engineering, we
+use test-driven development.
+
+34
+00:01:29,210 --> 00:01:33,620
+First, write the tests,
+and then write code
+
+35
+00:01:33,620 --> 00:01:37,070
+and iterate until
+it passes the tests.
+
+36
+00:01:37,070 --> 00:01:40,100
+In model engineering, we
+can use a similar paradigm.
+
+37
+00:01:40,100 --> 00:01:43,310
+First, implement a
+quantitative evaluation.
+
+38
+00:01:43,310 --> 00:01:47,720
+Specify your evaluation dataset,
+choose your evaluation metric,
+
+39
+00:01:47,720 --> 00:01:53,000
+build a test harness that takes
+a model and generates a score.
+
+40
+00:01:53,000 --> 00:01:55,310
+Then when you start
+building models,
+
+41
+00:01:55,310 --> 00:01:57,500
+you can hill-climb
+on this score.
+
+42
+00:01:57,500 --> 00:01:59,330
+And at those forks
+in the road where
+
+43
+00:01:59,330 --> 00:02:01,910
+you could do it this
+way or that way,
+
+44
+00:02:01,910 --> 00:02:05,210
+your quantitative evaluation
+will tell you which way to go.
+
+45
+00:02:05,210 --> 00:02:08,092
+
+
+46
+00:02:08,092 --> 00:02:09,800
+Now, whenever we build
+a model from data,
+
+47
+00:02:09,800 --> 00:02:12,530
+it's good practice
+to partition the data
+
+48
+00:02:12,530 --> 00:02:17,390
+into multiple splits, minimally,
+a training split and a test
+
+49
+00:02:17,390 --> 00:02:19,010
+split.
+
+50
+00:02:19,010 --> 00:02:20,870
+Actually, here we'll
+go a bit further,
+
+51
+00:02:20,870 --> 00:02:23,240
+and we'll define
+multiple splits.
+
+52
+00:02:23,240 --> 00:02:28,370
+First, we'll have a tiny split
+with just 1% of the data.
+
+53
+00:02:28,370 --> 00:02:30,890
+Having a tiny split
+is super useful,
+
+54
+00:02:30,890 --> 00:02:34,040
+and I encourage you to adopt
+this practice whenever you
+
+55
+00:02:34,040 --> 00:02:36,020
+take on our prediction problem.
+
+56
+00:02:36,020 --> 00:02:38,240
+During the early
+stages of development,
+
+57
+00:02:38,240 --> 00:02:42,110
+you can use the tiny split
+as training data or test
+
+58
+00:02:42,110 --> 00:02:44,780
+data or both, and
+your experiments
+
+59
+00:02:44,780 --> 00:02:47,460
+will run super fast.
+
+60
+00:02:47,460 --> 00:02:49,970
+Of course, your
+quantitative evaluations
+
+61
+00:02:49,970 --> 00:02:52,190
+will be pretty much
+meaningless, but it's
+
+62
+00:02:52,190 --> 00:02:57,180
+a great way to quickly flush
+out any bugs in your setup.
+
+63
+00:02:57,180 --> 00:03:00,310
+Then we'll have the train
+split with 74% of the data.
+
+64
+00:03:00,310 --> 00:03:04,020
+This is the data that we'll
+usually use for model training.
+
+65
+00:03:04,020 --> 00:03:08,050
+Then the dev split,
+with 25% of the data.
+
+66
+00:03:08,050 --> 00:03:11,655
+We'll use this as test data
+for intermediate evaluations
+
+67
+00:03:11,655 --> 00:03:13,947
+during the development.
+
+68
+00:03:13,947 --> 00:03:16,530
+And for the bake-off, we're also
+going to have a separate test
+
+69
+00:03:16,530 --> 00:03:18,940
+split, but you won't
+have access to it,
+
+70
+00:03:18,940 --> 00:03:22,210
+so we won't talk about it here.
+
+71
+00:03:22,210 --> 00:03:23,470
+There's one complication.
+
+72
+00:03:23,470 --> 00:03:27,520
+We need to split both
+the corpus and the KB.
+
+73
+00:03:27,520 --> 00:03:30,730
+We want each relation to
+appear in both the training
+
+74
+00:03:30,730 --> 00:03:34,180
+data and the test data so that
+we can assess how well we've
+
+75
+00:03:34,180 --> 00:03:39,020
+learned how each relation is
+expressed in natural language.
+
+76
+00:03:39,020 --> 00:03:42,640
+But ideally, we'd like to
+have any given entity appear
+
+77
+00:03:42,640 --> 00:03:44,510
+in only one split.
+
+78
+00:03:44,510 --> 00:03:47,320
+Otherwise, we might be leaking
+information from the training
+
+79
+00:03:47,320 --> 00:03:50,970
+data into the test data.
+
+80
+00:03:50,970 --> 00:03:53,010
+In an ideal world,
+each split would
+
+81
+00:03:53,010 --> 00:03:56,670
+have its own hermetically
+sealed universe of entities,
+
+82
+00:03:56,670 --> 00:03:59,940
+and both the corpus and
+the KB, for that split,
+
+83
+00:03:59,940 --> 00:04:02,290
+would refer only
+to those entities.
+
+84
+00:04:02,290 --> 00:04:05,400
+So for example, you might have a
+new world corpus whose examples
+
+85
+00:04:05,400 --> 00:04:08,580
+mention only new world
+entities like Elon Musk
+
+86
+00:04:08,580 --> 00:04:13,380
+and Bill Gates and Steve Jobs,
+and a new world KB, which
+
+87
+00:04:13,380 --> 00:04:18,410
+contains only triples about
+the same new world entities,
+
+88
+00:04:18,410 --> 00:04:21,260
+and then an old world
+corpus that talks
+
+89
+00:04:21,260 --> 00:04:23,570
+about Daniel Ek and
+Jack Ma and Pony
+
+90
+00:04:23,570 --> 00:04:28,540
+Ma and a corresponding
+old world KB.
+
+91
+00:04:28,540 --> 00:04:30,160
+If we had this, then
+we could achieve
+
+92
+00:04:30,160 --> 00:04:34,480
+a really clean separation
+between train and test data
+
+93
+00:04:34,480 --> 00:04:38,590
+with no overlap in entities.
+
+94
+00:04:38,590 --> 00:04:41,080
+But in practice, the world
+is strongly entangled,
+
+95
+00:04:41,080 --> 00:04:44,120
+and this ideal is
+hard to achieve.
+
+96
+00:04:44,120 --> 00:04:47,440
+So instead, we're going
+to approximate the ideal.
+
+97
+00:04:47,440 --> 00:04:49,270
+I think I won't
+dwell on the details,
+
+98
+00:04:49,270 --> 00:04:51,190
+but we've written
+the code for you
+
+99
+00:04:51,190 --> 00:04:54,230
+to achieve a good enough split.
+
+100
+00:04:54,230 --> 00:04:56,180
+In particular, the
+dataset class provides
+
+101
+00:04:56,180 --> 00:04:58,580
+a method called
+build_splits which
+
+102
+00:04:58,580 --> 00:05:04,940
+lets you specify split names and
+proportions and a random seed.
+
+103
+00:05:04,940 --> 00:05:10,310
+And it just returns a map from
+split names to datasets each
+
+104
+00:05:10,310 --> 00:05:14,400
+containing a corpus and a KB.
+
+105
+00:05:14,400 --> 00:05:15,890
+So now that we
+have our splits, we
+
+106
+00:05:15,890 --> 00:05:18,500
+need to choose an
+evaluation metric.
+
+107
+00:05:18,500 --> 00:05:21,770
+We've formulated our problem
+as binary classification,
+
+108
+00:05:21,770 --> 00:05:24,230
+and the standard metrics
+for binary classification
+
+109
+00:05:24,230 --> 00:05:26,360
+are precision and recall.
+
+110
+00:05:26,360 --> 00:05:30,800
+So here's an example where we
+have 100 problem instances.
+
+111
+00:05:30,800 --> 00:05:34,310
+The rows of this table
+represent the actual labels.
+
+112
+00:05:34,310 --> 00:05:38,730
+88 are labeled false, and
+only 12 are labeled true.
+
+113
+00:05:38,730 --> 00:05:41,760
+So this is a skewed
+distribution.
+
+114
+00:05:41,760 --> 00:05:44,450
+The columns of this table
+represent the labels
+
+115
+00:05:44,450 --> 00:05:46,110
+predicted by our model.
+
+116
+00:05:46,110 --> 00:05:50,930
+So 95 are predicted to
+be false and 5 true.
+
+117
+00:05:50,930 --> 00:05:55,250
+Now, there are 89 instances
+where the predicted label
+
+118
+00:05:55,250 --> 00:05:57,440
+agrees with the actual label.
+
+119
+00:05:57,440 --> 00:06:01,640
+So the accuracy of
+this model is 89%.
+
+120
+00:06:01,640 --> 00:06:04,640
+But accuracy is not a
+great evaluation metric,
+
+121
+00:06:04,640 --> 00:06:08,180
+especially when you have a
+skewed distribution like this
+
+122
+00:06:08,180 --> 00:06:11,630
+because even a model
+that ignores the data
+
+123
+00:06:11,630 --> 00:06:15,530
+and always guesses false
+can get 88% accuracy
+
+124
+00:06:15,530 --> 00:06:18,950
+just by always guessing false.
+
+125
+00:06:18,950 --> 00:06:22,370
+So instead of accuracy,
+we look at precision,
+
+126
+00:06:22,370 --> 00:06:26,300
+which says of the instances
+that are predicted to be true,
+
+127
+00:06:26,300 --> 00:06:29,150
+what proportion
+are actually true?
+
+128
+00:06:29,150 --> 00:06:32,600
+And recall, which says
+of the instances which
+
+129
+00:06:32,600 --> 00:06:34,610
+are actually true,
+what proportion
+
+130
+00:06:34,610 --> 00:06:37,823
+are predicted to be true?
+
+131
+00:06:37,823 --> 00:06:38,490
+So that's great.
+
+132
+00:06:38,490 --> 00:06:43,060
+Precision and recall
+are really useful.
+
+133
+00:06:43,060 --> 00:06:48,220
+But having two evaluation
+metrics is often inconvenient.
+
+134
+00:06:48,220 --> 00:06:50,950
+If we're considering a
+change to our model which
+
+135
+00:06:50,950 --> 00:06:56,840
+improves precision but degrades
+recall, should we take it?
+
+136
+00:06:56,840 --> 00:06:59,790
+In order to drive an
+iterative development process,
+
+137
+00:06:59,790 --> 00:07:06,518
+it's useful to have a single
+metric on which to hill-climb.
+
+138
+00:07:06,518 --> 00:07:08,560
+So for binary classification,
+the standard answer
+
+139
+00:07:08,560 --> 00:07:11,500
+is the F1 score,
+which is the harmonic
+
+140
+00:07:11,500 --> 00:07:14,950
+mean of precision and recall.
+
+141
+00:07:14,950 --> 00:07:18,910
+The harmonic mean is the
+reciprocal of the arithmetic
+
+142
+00:07:18,910 --> 00:07:22,180
+mean, the average
+of the reciprocals,
+
+143
+00:07:22,180 --> 00:07:26,230
+and it's always less
+than the arithmetic mean.
+
+144
+00:07:26,230 --> 00:07:28,630
+It's pessimistic in a
+sense that it's always
+
+145
+00:07:28,630 --> 00:07:30,890
+closer to the lower number.
+
+146
+00:07:30,890 --> 00:07:35,140
+So the arithmetic mean of
+60% and 25% is-- sorry,
+
+147
+00:07:35,140 --> 00:07:41,540
+the harmonic mean of
+60% and 25% is 35.3%.
+
+148
+00:07:41,540 --> 00:07:44,810
+Now, the F1 score
+gives equal weight
+
+149
+00:07:44,810 --> 00:07:47,210
+to the precision and recall.
+
+150
+00:07:47,210 --> 00:07:49,350
+But depending on
+the application,
+
+151
+00:07:49,350 --> 00:07:52,970
+they might not be
+of equal importance.
+
+152
+00:07:52,970 --> 00:07:55,430
+In relation
+extraction, we probably
+
+153
+00:07:55,430 --> 00:07:59,570
+care more about
+precision than recall,
+
+154
+00:07:59,570 --> 00:08:03,590
+and that's because adding
+an invalid triple to the KB
+
+155
+00:08:03,590 --> 00:08:10,250
+is more harmful than
+failing to add a valid one.
+
+156
+00:08:10,250 --> 00:08:12,220
+So instead, we could
+use the F-measure, which
+
+157
+00:08:12,220 --> 00:08:13,900
+is a generalization of F1.
+
+158
+00:08:13,900 --> 00:08:17,950
+It's a weighted harmonic
+mean of precision and recall.
+
+159
+00:08:17,950 --> 00:08:22,210
+And this parameter beta controls
+how much more importance
+
+160
+00:08:22,210 --> 00:08:26,725
+you place on recall
+than on precision.
+
+161
+00:08:26,725 --> 00:08:28,600
+So let's say that in a
+particular evaluation,
+
+162
+00:08:28,600 --> 00:08:34,690
+you have high precision,
+80%, and low recall, 20%.
+
+163
+00:08:34,690 --> 00:08:39,220
+The F1 score gives equal
+weight to precision and recall,
+
+164
+00:08:39,220 --> 00:08:42,039
+so its value is 32%.
+
+165
+00:08:42,039 --> 00:08:46,240
+If we set beta
+equal to 0.5, we're
+
+166
+00:08:46,240 --> 00:08:51,710
+giving more weight to
+precision, so the value is 50%.
+
+167
+00:08:51,710 --> 00:08:55,690
+If we set beta equal to 2, we're
+giving more weight to recall,
+
+168
+00:08:55,690 --> 00:08:59,730
+so the value is 23.5%.
+
+169
+00:08:59,730 --> 00:09:01,620
+In relation
+extraction, precision
+
+170
+00:09:01,620 --> 00:09:05,760
+is more important than
+recall, so let's go with F 0.5
+
+171
+00:09:05,760 --> 00:09:08,010
+as our evaluation metric.
+
+172
+00:09:08,010 --> 00:09:11,070
+OK, another issue that comes
+up in evaluation scenarios
+
+173
+00:09:11,070 --> 00:09:13,830
+like this is whether
+to use micro-averaging
+
+174
+00:09:13,830 --> 00:09:15,840
+or macro-averaging.
+
+175
+00:09:15,840 --> 00:09:19,620
+We're going to compute
+precision, recall, and F score
+
+176
+00:09:19,620 --> 00:09:22,260
+separately for each relation.
+
+177
+00:09:22,260 --> 00:09:25,260
+But in order to drive
+iterative development,
+
+178
+00:09:25,260 --> 00:09:28,680
+we'd like to have summary
+metrics, which aggregate
+
+179
+00:09:28,680 --> 00:09:30,870
+across all of the relations.
+
+180
+00:09:30,870 --> 00:09:32,790
+And there are two
+possible ways to do this.
+
+181
+00:09:32,790 --> 00:09:34,920
+Micro-averaging
+gives equal weight
+
+182
+00:09:34,920 --> 00:09:38,160
+to each problem
+instance, which means
+
+183
+00:09:38,160 --> 00:09:42,990
+that it gives more weight to
+relations with more instances.
+
+184
+00:09:42,990 --> 00:09:46,920
+Macro-averaging just gives
+equal weight to each relation.
+
+185
+00:09:46,920 --> 00:09:48,825
+So let me show you an
+illustration of this.
+
+186
+00:09:48,825 --> 00:09:52,020
+This is an artificial example
+where I have just three
+
+187
+00:09:52,020 --> 00:09:55,200
+relations, and the
+contains relation
+
+188
+00:09:55,200 --> 00:10:00,370
+has 10 times as many instances
+as the other two relations.
+
+189
+00:10:00,370 --> 00:10:03,580
+It also has the highest F score.
+
+190
+00:10:03,580 --> 00:10:07,150
+When I compute the micro-average
+and the macro-average,
+
+191
+00:10:07,150 --> 00:10:10,120
+well, the micro-average
+gives equal weight
+
+192
+00:10:10,120 --> 00:10:13,240
+to each problem instance,
+so it gives a lot
+
+193
+00:10:13,240 --> 00:10:15,730
+more weight to the
+contains relation,
+
+194
+00:10:15,730 --> 00:10:18,100
+and the result is that
+the micro-average F
+
+195
+00:10:18,100 --> 00:10:22,210
+score is very close to
+the F score for contains.
+
+196
+00:10:22,210 --> 00:10:26,320
+Whereas the macro-average gives
+equal weight to each relation,
+
+197
+00:10:26,320 --> 00:10:31,930
+and so it's just right in
+the middle of this range.
+
+198
+00:10:31,930 --> 00:10:34,990
+The micro-averaged F
+score is probably not
+
+199
+00:10:34,990 --> 00:10:40,030
+what we want because the number
+of instances per relation
+
+200
+00:10:40,030 --> 00:10:44,260
+is kind of an accident of our
+data collection methodology.
+
+201
+00:10:44,260 --> 00:10:48,070
+And it's not like we believe
+that the contains relation is
+
+202
+00:10:48,070 --> 00:10:50,620
+more important than
+the other relations.
+
+203
+00:10:50,620 --> 00:10:53,110
+It just happens to be
+more numerous in the data
+
+204
+00:10:53,110 --> 00:10:54,950
+that we collected.
+
+205
+00:10:54,950 --> 00:10:56,980
+So we're going to
+use macro-averaging
+
+206
+00:10:56,980 --> 00:10:59,770
+so that we don't
+overweight large relations.
+
+207
+00:10:59,770 --> 00:11:02,980
+
+
+208
+00:11:02,980 --> 00:11:05,370
+So if you put it all
+together, the bottom line
+
+209
+00:11:05,370 --> 00:11:07,950
+is that with every
+evaluation, we're
+
+210
+00:11:07,950 --> 00:11:11,400
+going to report lots of
+metrics, but there's one metric
+
+211
+00:11:11,400 --> 00:11:13,080
+that we're going to focus on.
+
+212
+00:11:13,080 --> 00:11:15,300
+And this will be
+our figure of merit.
+
+213
+00:11:15,300 --> 00:11:18,690
+It's the one number that we're
+going to be hill-climbing on,
+
+214
+00:11:18,690 --> 00:11:21,420
+and we're choosing, as
+our figure of merit,
+
+215
+00:11:21,420 --> 00:11:25,820
+the macro-averaged F 0.5 score.
+
+216
+00:11:25,820 --> 00:11:30,000
+
+

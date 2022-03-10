@@ -1,0 +1,678 @@
+1
+00:00:00,000 --> 00:00:05,880
+
+
+2
+00:00:05,880 --> 00:00:07,130
+OMAR KHATTAB: Hello, everyone.
+
+3
+00:00:07,130 --> 00:00:09,700
+Welcome to part 3 of the series.
+
+4
+00:00:09,700 --> 00:00:12,700
+This screencast will be
+the first of two or three
+
+5
+00:00:12,700 --> 00:00:14,290
+on neural IR.
+
+6
+00:00:14,290 --> 00:00:18,340
+And in it, we'll be exploring
+the inputs, outputs, training
+
+7
+00:00:18,340 --> 00:00:20,830
+and inference in the
+context of neural IR.
+
+8
+00:00:20,830 --> 00:00:24,770
+
+
+9
+00:00:24,770 --> 00:00:27,380
+Let's quickly start with
+a reminder of our setup
+
+10
+00:00:27,380 --> 00:00:29,830
+from the previous screencast.
+
+11
+00:00:29,830 --> 00:00:34,210
+Offline, we're given a large
+corpus of text documents.
+
+12
+00:00:34,210 --> 00:00:39,640
+We will pre-process and index
+this corpus for fast retrieval.
+
+13
+00:00:39,640 --> 00:00:43,660
+Online, we're giving a query
+that we want to answer.
+
+14
+00:00:43,660 --> 00:00:47,410
+Our output will be a list of the
+Top-K most relevant documents
+
+15
+00:00:47,410 --> 00:00:48,130
+for this query.
+
+16
+00:00:48,130 --> 00:00:51,616
+
+
+17
+00:00:51,616 --> 00:00:54,170
+In the classical
+IR screencast, we
+
+18
+00:00:54,170 --> 00:00:59,510
+discussed BM25 as a strong
+term-matching retrieval model.
+
+19
+00:00:59,510 --> 00:01:02,840
+So should we just use BM25?
+
+20
+00:01:02,840 --> 00:01:05,810
+The short answer
+is that we could.
+
+21
+00:01:05,810 --> 00:01:08,630
+But if our interest is
+getting the highest quality
+
+22
+00:01:08,630 --> 00:01:13,040
+that we can, then we should
+probably be using neural IR.
+
+23
+00:01:13,040 --> 00:01:17,330
+As we will see, neural IR makes
+a lot of use of our NLU work
+
+24
+00:01:17,330 --> 00:01:21,700
+in creative and
+interesting ways.
+
+25
+00:01:21,700 --> 00:01:25,270
+The long answer to whether
+we should be using BM25
+
+26
+00:01:25,270 --> 00:01:26,620
+is that it depends.
+
+27
+00:01:26,620 --> 00:01:31,510
+Among other factors, it
+depends on our budget.
+
+28
+00:01:31,510 --> 00:01:35,230
+Each IR model poses a different
+efficiency-effectiveness
+
+29
+00:01:35,230 --> 00:01:37,220
+tradeoff.
+
+30
+00:01:37,220 --> 00:01:40,610
+In many cases, we're interested
+in maximizing effectiveness,
+
+31
+00:01:40,610 --> 00:01:45,870
+maximizing quality, as long
+as efficiency is acceptable.
+
+32
+00:01:45,870 --> 00:01:50,160
+Let's begin to explore this
+on the MS MARCO collection
+
+33
+00:01:50,160 --> 00:01:54,500
+that we introduced in
+the previous screencast.
+
+34
+00:01:54,500 --> 00:01:57,020
+Here we'll be
+measuring effectiveness
+
+35
+00:01:57,020 --> 00:02:00,320
+using the mean reciprocal
+rank at cut-off 10.
+
+36
+00:02:00,320 --> 00:02:02,660
+And we will measure
+efficiency, and in particular,
+
+37
+00:02:02,660 --> 00:02:05,427
+latency using milliseconds.
+
+38
+00:02:05,427 --> 00:02:08,169
+
+
+39
+00:02:08,169 --> 00:02:11,720
+This figure here shows
+BM25 retrieval using
+
+40
+00:02:11,720 --> 00:02:15,310
+the popular toolkit called
+Ansereni as one data
+
+41
+00:02:15,310 --> 00:02:18,640
+point within a wide
+range of MRR values
+
+42
+00:02:18,640 --> 00:02:20,560
+and latency possibilities.
+
+43
+00:02:20,560 --> 00:02:24,550
+
+
+44
+00:02:24,550 --> 00:02:27,850
+Just as a reminder,
+lower latency is better.
+
+45
+00:02:27,850 --> 00:02:33,260
+And the latency here is
+shown on a logarithmic scale.
+
+46
+00:02:33,260 --> 00:02:37,430
+And higher MRR is also better.
+
+47
+00:02:37,430 --> 00:02:42,370
+The higher our MRR is, the
+better the model's quality.
+
+48
+00:02:42,370 --> 00:02:47,200
+So what else could exist in
+this large empty space for now?
+
+49
+00:02:47,200 --> 00:02:50,110
+We're going to see
+this space fill up
+
+50
+00:02:50,110 --> 00:02:53,110
+with many different neural IR
+models over the next couple
+
+51
+00:02:53,110 --> 00:02:55,340
+of screencasts.
+
+52
+00:02:55,340 --> 00:02:57,710
+And the central
+question now and then
+
+53
+00:02:57,710 --> 00:03:01,220
+will generally be, how
+can we improve our MRR@10
+
+54
+00:03:01,220 --> 00:03:03,500
+or whatever effectiveness
+metric we choose
+
+55
+00:03:03,500 --> 00:03:07,200
+to work with, possibly at the
+expense of increasing latency
+
+56
+00:03:07,200 --> 00:03:07,700
+a bit?
+
+57
+00:03:07,700 --> 00:03:11,320
+
+
+58
+00:03:11,320 --> 00:03:13,990
+OK, so let's
+actually take a look
+
+59
+00:03:13,990 --> 00:03:17,650
+at how neural IR models
+will work, specifically
+
+60
+00:03:17,650 --> 00:03:21,100
+at their input and
+output behavior.
+
+61
+00:03:21,100 --> 00:03:23,440
+For the purposes of
+this short screencast,
+
+62
+00:03:23,440 --> 00:03:27,520
+we'll treat the neural
+ranker as a black box.
+
+63
+00:03:27,520 --> 00:03:29,340
+We will consider
+various implementations
+
+64
+00:03:29,340 --> 00:03:34,700
+for this black box function
+in the next screencast.
+
+65
+00:03:34,700 --> 00:03:38,510
+We will feed this
+neural IR black box
+
+66
+00:03:38,510 --> 00:03:40,310
+a query and a document.
+
+67
+00:03:40,310 --> 00:03:42,900
+And the model will do its
+thing and return to us
+
+68
+00:03:42,900 --> 00:03:47,630
+a single score that estimates
+the relevance of this query
+
+69
+00:03:47,630 --> 00:03:50,490
+to that document.
+
+70
+00:03:50,490 --> 00:03:53,040
+For the same query, we
+will repeat this process
+
+71
+00:03:53,040 --> 00:03:55,900
+for every document
+that we want to score.
+
+72
+00:03:55,900 --> 00:03:58,360
+And we will finally sort
+all of these documents
+
+73
+00:03:58,360 --> 00:04:00,990
+by decreasing relevance score.
+
+74
+00:04:00,990 --> 00:04:03,520
+And that will give us the
+Top-K list of results.
+
+75
+00:04:03,520 --> 00:04:06,830
+
+
+76
+00:04:06,830 --> 00:04:09,750
+So far, this sounds
+simple enough.
+
+77
+00:04:09,750 --> 00:04:14,750
+But how should we train this
+neural model for ranking?
+
+78
+00:04:14,750 --> 00:04:17,899
+This might not be super obvious,
+but one pretty effective choice
+
+79
+00:04:17,899 --> 00:04:20,360
+is simply two-way
+classification,
+
+80
+00:04:20,360 --> 00:04:22,880
+pair-wise classification.
+
+81
+00:04:22,880 --> 00:04:26,480
+Here, each training
+example will be a triple.
+
+82
+00:04:26,480 --> 00:04:28,730
+Specifically, each
+training instance
+
+83
+00:04:28,730 --> 00:04:32,690
+will contain a query, a
+relevant or positive document,
+
+84
+00:04:32,690 --> 00:04:36,880
+and an irrelevant
+document, or a negative.
+
+85
+00:04:36,880 --> 00:04:39,190
+In the forward pass
+during training,
+
+86
+00:04:39,190 --> 00:04:42,690
+we'll feed the model the query
+and the positive document.
+
+87
+00:04:42,690 --> 00:04:45,780
+And separately, we'll feed the
+query and the negative document
+
+88
+00:04:45,780 --> 00:04:49,190
+to the neural ranker.
+
+89
+00:04:49,190 --> 00:04:52,040
+And we optimize the
+entire neural network end
+
+90
+00:04:52,040 --> 00:04:55,550
+to end with gradient descent,
+using simple classification
+
+91
+00:04:55,550 --> 00:04:57,330
+loss--
+
+92
+00:04:57,330 --> 00:05:02,210
+written in this case,
+CrossEntropy Loss with softmax.
+
+93
+00:05:02,210 --> 00:05:05,750
+The goal here is to maximize the
+score of the positive document,
+
+94
+00:05:05,750 --> 00:05:08,353
+and to minimize
+the score assigned
+
+95
+00:05:08,353 --> 00:05:09,395
+to the negative document.
+
+96
+00:05:09,395 --> 00:05:12,070
+
+
+97
+00:05:12,070 --> 00:05:15,280
+Recall that we can get
+positives for each query
+
+98
+00:05:15,280 --> 00:05:16,990
+from our relevance assessments.
+
+99
+00:05:16,990 --> 00:05:20,620
+And that every document that
+was not labeled as positive
+
+100
+00:05:20,620 --> 00:05:23,350
+can often be treated as
+an implicit negative.
+
+101
+00:05:23,350 --> 00:05:26,560
+So we could use this
+in generating triples
+
+102
+00:05:26,560 --> 00:05:30,460
+for 2-way classification
+training for our neural ranker.
+
+103
+00:05:30,460 --> 00:05:33,750
+
+
+104
+00:05:33,750 --> 00:05:36,420
+Once our neural ranker
+is trained, inference
+
+105
+00:05:36,420 --> 00:05:40,170
+or actually conducting
+the ranking is very easy.
+
+106
+00:05:40,170 --> 00:05:42,750
+Given a query, we'll
+just pick each document,
+
+107
+00:05:42,750 --> 00:05:45,990
+pass the query and the document
+through the neural network,
+
+108
+00:05:45,990 --> 00:05:49,780
+get a score, and then we'll
+sort all the documents by score.
+
+109
+00:05:49,780 --> 00:05:52,540
+And this will give us the
+Top-K list of documents.
+
+110
+00:05:52,540 --> 00:05:58,650
+However, there is just a
+small yet very major problem.
+
+111
+00:05:58,650 --> 00:06:00,610
+Collections often have
+many millions, if not
+
+112
+00:06:00,610 --> 00:06:02,330
+billions of documents.
+
+113
+00:06:02,330 --> 00:06:05,200
+Even if our model is so
+fast that it processes
+
+114
+00:06:05,200 --> 00:06:07,660
+each document in
+one microsecond, one
+
+115
+00:06:07,660 --> 00:06:10,090
+millionth of a
+second, it would still
+
+116
+00:06:10,090 --> 00:06:15,070
+require nine seconds per query
+for a dataset like MS MARCO
+
+117
+00:06:15,070 --> 00:06:17,110
+with nine million
+messages, which
+
+118
+00:06:17,110 --> 00:06:22,500
+is way too slow for most
+practical applications.
+
+119
+00:06:22,500 --> 00:06:25,590
+To deal with this in practice,
+neural IR models are often used
+
+120
+00:06:25,590 --> 00:06:27,180
+as re-rankers--
+
+121
+00:06:27,180 --> 00:06:30,090
+models that rescore
+only the Top-K documents
+
+122
+00:06:30,090 --> 00:06:35,080
+obtained by another model to
+improve the final ranking.
+
+123
+00:06:35,080 --> 00:06:37,300
+One of the most common
+pipeline designs
+
+124
+00:06:37,300 --> 00:06:42,310
+is to re-rank the top 1,000
+documents obtained by BM25.
+
+125
+00:06:42,310 --> 00:06:45,820
+This can be great because
+it cuts down the work
+
+126
+00:06:45,820 --> 00:06:49,690
+for a collection with 10 million
+passages by a factor of 10,000,
+
+127
+00:06:49,690 --> 00:06:51,730
+because we only need
+to rank 1,000 documents
+
+128
+00:06:51,730 --> 00:06:53,580
+with the neural model.
+
+129
+00:06:53,580 --> 00:06:56,700
+But it also introduces an
+artificial ceiling on recall,
+
+130
+00:06:56,700 --> 00:06:59,290
+it limits recall in
+an artificial way.
+
+131
+00:06:59,290 --> 00:07:02,670
+Since now, all of the
+relevant documents that BM25,
+
+132
+00:07:02,670 --> 00:07:07,410
+our first stage ranker, fails
+to retrieve cannot possibly be
+
+133
+00:07:07,410 --> 00:07:10,500
+ranked highly by our
+shiny new IR ranker.
+
+134
+00:07:10,500 --> 00:07:14,290
+
+
+135
+00:07:14,290 --> 00:07:16,760
+So, can we do better?
+
+136
+00:07:16,760 --> 00:07:18,520
+It turns out that
+the answer is yes.
+
+137
+00:07:18,520 --> 00:07:22,180
+We'll discuss the notion of
+end to end retrieval later,
+
+138
+00:07:22,180 --> 00:07:24,910
+where our neural model will
+be able to quickly conduct
+
+139
+00:07:24,910 --> 00:07:27,760
+the search by itself over
+the entire collection
+
+140
+00:07:27,760 --> 00:07:29,500
+without a re-ranking pipeline.
+
+141
+00:07:29,500 --> 00:07:32,620
+But first, we'll discuss a
+number of neural re-rankers
+
+142
+00:07:32,620 --> 00:07:36,210
+in detail in the
+next screencast.
+
+143
+00:07:36,210 --> 00:07:41,000
+
+

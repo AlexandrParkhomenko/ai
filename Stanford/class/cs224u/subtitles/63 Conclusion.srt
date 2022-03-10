@@ -1,0 +1,116 @@
+1
+00:00:02,370 --> 00:00:06,535
+Hello. We hope you found this course to be enjoyable and rewarding.
+
+2
+00:00:06,535 --> 00:00:07,870
+Now that we're wrapping up,
+
+3
+00:00:07,870 --> 00:00:10,090
+your thoughts might be turning to how you can build on what
+
+4
+00:00:10,090 --> 00:00:12,415
+you've learned to conduct original research,
+
+5
+00:00:12,415 --> 00:00:13,930
+to develop new technologies,
+
+6
+00:00:13,930 --> 00:00:14,940
+and so much more.
+
+7
+00:00:14,940 --> 00:00:17,905
+The material should position you really well to do this.
+
+8
+00:00:17,905 --> 00:00:20,800
+The models for word representations that we discussed are
+
+9
+00:00:20,800 --> 00:00:23,890
+likely to be valuable components for any task you take on.
+
+10
+00:00:23,890 --> 00:00:28,285
+Our relation extraction unit focused on powerful techniques for distant supervision,
+
+11
+00:00:28,285 --> 00:00:31,330
+which is a really common mode for applied problems.
+
+12
+00:00:31,330 --> 00:00:33,310
+And the natural language inference unit is
+
+13
+00:00:33,310 --> 00:00:35,860
+representative of the kind of opportunities and
+
+14
+00:00:35,860 --> 00:00:40,840
+challenges one faces when building deep learning systems with really large data sets.
+
+15
+00:00:40,840 --> 00:00:42,640
+And of course, the other lectures highlight
+
+16
+00:00:42,640 --> 00:00:45,200
+more diverse application areas and help reveal
+
+17
+00:00:45,200 --> 00:00:48,110
+how even complex cutting edge models are actually
+
+18
+00:00:48,110 --> 00:00:51,230
+usually made up of familiar modular components.
+
+19
+00:00:51,230 --> 00:00:54,185
+And of course, by now you've done a lot of work with our notebooks,
+
+20
+00:00:54,185 --> 00:00:57,680
+you've designed three original systems and entered them into bake-offs,
+
+21
+00:00:57,680 --> 00:00:59,570
+and you've completed an original project.
+
+22
+00:00:59,570 --> 00:01:02,345
+This is an unusually high level of hands-on work,
+
+23
+00:01:02,345 --> 00:01:06,695
+and the practical skills you've acquired should serve you well in many domains.
+
+24
+00:01:06,695 --> 00:01:09,590
+The field of NLU continues to progress rapidly,
+
+25
+00:01:09,590 --> 00:01:11,390
+and you're now extremely well-positioned to
+
+26
+00:01:11,390 --> 00:01:13,895
+follow those changes and even help to shape them.
+
+27
+00:01:13,895 --> 00:01:16,130
+For our part, we'll continue to update and improve
+
+28
+00:01:16,130 --> 00:01:18,635
+our NLU course materials, and share them widely.
+
+29
+00:01:18,635 --> 00:01:22,260
+And we hope to see you in a future Stanford class soon.
+

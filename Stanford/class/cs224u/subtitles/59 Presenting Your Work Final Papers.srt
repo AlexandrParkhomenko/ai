@@ -1,0 +1,1104 @@
+1
+00:00:00,000 --> 00:00:04,422
+
+
+2
+00:00:04,422 --> 00:00:05,880
+CHRISTOPHER POTTS:
+Hello, everyone.
+
+3
+00:00:05,880 --> 00:00:07,760
+Welcome to the first
+screencast in our series
+
+4
+00:00:07,760 --> 00:00:09,420
+on presenting your research.
+
+5
+00:00:09,420 --> 00:00:11,030
+The purpose of this
+series is really
+
+6
+00:00:11,030 --> 00:00:12,860
+to help you do
+outstanding scholarship
+
+7
+00:00:12,860 --> 00:00:14,180
+in the field of NLP.
+
+8
+00:00:14,180 --> 00:00:16,549
+And I'm also going to try
+to demystify publishing
+
+9
+00:00:16,549 --> 00:00:18,650
+in the field of NLP.
+
+10
+00:00:18,650 --> 00:00:21,050
+To kick it off, I'd like to
+focus on the final papers
+
+11
+00:00:21,050 --> 00:00:23,810
+that you're writing
+specifically for this course.
+
+12
+00:00:23,810 --> 00:00:25,310
+Here are some practical details.
+
+13
+00:00:25,310 --> 00:00:27,350
+These links take you
+to essential things
+
+14
+00:00:27,350 --> 00:00:31,040
+about writing final papers,
+specifically for CS224U.
+
+15
+00:00:31,040 --> 00:00:33,050
+The first link is possibly
+the most important.
+
+16
+00:00:33,050 --> 00:00:35,180
+That just enumerates
+the requirements
+
+17
+00:00:35,180 --> 00:00:36,530
+for the final paper.
+
+18
+00:00:36,530 --> 00:00:39,140
+Please do review it to make sure
+that you don't get points off
+
+19
+00:00:39,140 --> 00:00:40,682
+for something small
+that could easily
+
+20
+00:00:40,682 --> 00:00:42,920
+have been corrected just
+because you didn't conform
+
+21
+00:00:42,920 --> 00:00:44,527
+to our requirements.
+
+22
+00:00:44,527 --> 00:00:46,610
+The next two links are
+much more about helping you
+
+23
+00:00:46,610 --> 00:00:47,735
+with the substance of this.
+
+24
+00:00:47,735 --> 00:00:51,200
+So the projects file has lots
+of frequently asked questions
+
+25
+00:00:51,200 --> 00:00:52,910
+and other information
+about writing
+
+26
+00:00:52,910 --> 00:00:54,600
+final papers for this course.
+
+27
+00:00:54,600 --> 00:00:57,590
+And it also expands out to
+publishing in the field of NLP.
+
+28
+00:00:57,590 --> 00:00:59,810
+So it has a lot of
+useful resources
+
+29
+00:00:59,810 --> 00:01:01,580
+when it comes to
+trying to report out
+
+30
+00:01:01,580 --> 00:01:03,482
+your research to the community.
+
+31
+00:01:03,482 --> 00:01:04,940
+And then this third
+link here links
+
+32
+00:01:04,940 --> 00:01:07,440
+to some excellent
+past final projects.
+
+33
+00:01:07,440 --> 00:01:10,220
+Many of them became publications
+typically after a bunch
+
+34
+00:01:10,220 --> 00:01:12,570
+of additional work after
+the end of the quarter,
+
+35
+00:01:12,570 --> 00:01:15,140
+but it is exciting that a
+lot of these really excellent
+
+36
+00:01:15,140 --> 00:01:18,000
+published papers
+began in this course.
+
+37
+00:01:18,000 --> 00:01:21,080
+It's very inspiring.
+
+38
+00:01:21,080 --> 00:01:23,000
+For your projects, I
+just want to review
+
+39
+00:01:23,000 --> 00:01:25,070
+a really important point
+for me that concerns
+
+40
+00:01:25,070 --> 00:01:26,520
+how we'll evaluate your work.
+
+41
+00:01:26,520 --> 00:01:29,450
+This is from the methods
+unit for the course,
+
+42
+00:01:29,450 --> 00:01:32,240
+but I want to repeat it
+here just to emphasize it.
+
+43
+00:01:32,240 --> 00:01:35,030
+We will never evaluate
+a project based
+
+44
+00:01:35,030 --> 00:01:37,710
+on how good the results are.
+
+45
+00:01:37,710 --> 00:01:39,870
+We do recognize
+that in our field,
+
+46
+00:01:39,870 --> 00:01:42,330
+as in all scientific
+fields, publications
+
+47
+00:01:42,330 --> 00:01:45,300
+tend to do this because they
+have additional constraints
+
+48
+00:01:45,300 --> 00:01:46,320
+on space.
+
+49
+00:01:46,320 --> 00:01:49,260
+And that leads them,
+as a cultural fact,
+
+50
+00:01:49,260 --> 00:01:51,630
+to favor positive evidence
+for new developments
+
+51
+00:01:51,630 --> 00:01:53,400
+over negative results.
+
+52
+00:01:53,400 --> 00:01:56,800
+But we, of course, are not
+subject to such constraints.
+
+53
+00:01:56,800 --> 00:01:58,440
+So we can do the
+right and good thing
+
+54
+00:01:58,440 --> 00:02:01,230
+scientifically of
+valuing positive results,
+
+55
+00:02:01,230 --> 00:02:04,440
+negative results, and
+everything in between.
+
+56
+00:02:04,440 --> 00:02:07,530
+This has real consequences for
+how we do evaluation, right?
+
+57
+00:02:07,530 --> 00:02:09,360
+We're going to evaluate
+your project based
+
+58
+00:02:09,360 --> 00:02:12,330
+on the appropriateness of
+the metrics that you chose,
+
+59
+00:02:12,330 --> 00:02:14,610
+the strength of the
+methods that you used,
+
+60
+00:02:14,610 --> 00:02:17,280
+and maybe most
+importantly, the extent
+
+61
+00:02:17,280 --> 00:02:19,380
+to which your paper
+is open and clear
+
+62
+00:02:19,380 --> 00:02:22,650
+sighted about the
+limitations of its findings.
+
+63
+00:02:22,650 --> 00:02:25,590
+Those are the things that really
+matter for us scientifically.
+
+64
+00:02:25,590 --> 00:02:27,552
+And it is a consequence
+of this policy
+
+65
+00:02:27,552 --> 00:02:29,260
+that you could have
+a paper that reported
+
+66
+00:02:29,260 --> 00:02:30,940
+state of the art results.
+
+67
+00:02:30,940 --> 00:02:33,570
+But if it's just not a
+clear and substantive paper,
+
+68
+00:02:33,570 --> 00:02:36,570
+it might not get very
+good marks from us.
+
+69
+00:02:36,570 --> 00:02:40,230
+And conversely, if all of
+your hypotheses fell apart
+
+70
+00:02:40,230 --> 00:02:42,540
+and it turned out that all
+your evidence pointed away
+
+71
+00:02:42,540 --> 00:02:45,000
+from them as being true,
+but you nonetheless
+
+72
+00:02:45,000 --> 00:02:47,340
+wrote a paper that was
+clear about those findings
+
+73
+00:02:47,340 --> 00:02:50,100
+and helped push the field
+forward by steering us away
+
+74
+00:02:50,100 --> 00:02:53,610
+from those hypotheses, that, of
+course, could earn top marks.
+
+75
+00:02:53,610 --> 00:02:56,220
+And we'd be very happy to
+help you report those results
+
+76
+00:02:56,220 --> 00:02:58,020
+out to the rest of the field.
+
+77
+00:02:58,020 --> 00:03:00,540
+Because it is important
+for us to know
+
+78
+00:03:00,540 --> 00:03:02,850
+about these negative
+findings so that we
+
+79
+00:03:02,850 --> 00:03:07,750
+know where to invest
+our energy as scholars.
+
+80
+00:03:07,750 --> 00:03:09,970
+Here's a detail that's
+from the requirements
+
+81
+00:03:09,970 --> 00:03:10,870
+for the final paper.
+
+82
+00:03:10,870 --> 00:03:13,900
+This is the
+authorship statement.
+
+83
+00:03:13,900 --> 00:03:16,450
+This is just a section
+where you explain
+
+84
+00:03:16,450 --> 00:03:19,480
+how the individual authors
+from your team and anyone
+
+85
+00:03:19,480 --> 00:03:23,390
+else who helped out contributed
+to the final project.
+
+86
+00:03:23,390 --> 00:03:26,175
+You're free to say whatever
+you like in these sections.
+
+87
+00:03:26,175 --> 00:03:27,550
+If you would like
+a model, here's
+
+88
+00:03:27,550 --> 00:03:30,550
+a link to the PNAS guidelines,
+which give some details
+
+89
+00:03:30,550 --> 00:03:33,490
+and kind of typical statements.
+
+90
+00:03:33,490 --> 00:03:35,710
+The rationale is
+really just that we
+
+91
+00:03:35,710 --> 00:03:37,180
+think this is an
+important aspect
+
+92
+00:03:37,180 --> 00:03:38,680
+of such scholarship in general.
+
+93
+00:03:38,680 --> 00:03:41,320
+And it's not yet pervasive
+in the field of NLP,
+
+94
+00:03:41,320 --> 00:03:43,392
+whereas it is in other fields.
+
+95
+00:03:43,392 --> 00:03:45,850
+But we would like it to be more
+widespread, because it just
+
+96
+00:03:45,850 --> 00:03:48,850
+seems like a healthy
+form of disclosure.
+
+97
+00:03:48,850 --> 00:03:50,050
+That's the real rationale.
+
+98
+00:03:50,050 --> 00:03:53,510
+I want to emphasize that
+only in really extreme cases
+
+99
+00:03:53,510 --> 00:03:56,200
+and after discussion with
+all the team members would
+
+100
+00:03:56,200 --> 00:03:58,900
+we consider giving
+separate grades to the team
+
+101
+00:03:58,900 --> 00:04:01,270
+based on what was
+in the statement.
+
+102
+00:04:01,270 --> 00:04:03,440
+This is really not the intent.
+
+103
+00:04:03,440 --> 00:04:05,170
+The intent rather
+is this rationale
+
+104
+00:04:05,170 --> 00:04:08,510
+of just disclosing who did
+what as part of the project.
+
+105
+00:04:08,510 --> 00:04:10,780
+It's really not
+about evaluation.
+
+106
+00:04:10,780 --> 00:04:12,340
+I also want to
+emphasize that we have
+
+107
+00:04:12,340 --> 00:04:15,520
+a policy on multiple
+submissions for this course.
+
+108
+00:04:15,520 --> 00:04:17,140
+It's nuanced and subjective.
+
+109
+00:04:17,140 --> 00:04:19,540
+Here's a link to it.
+
+110
+00:04:19,540 --> 00:04:21,920
+And here are some notes,
+kind of rationale for this.
+
+111
+00:04:21,920 --> 00:04:25,360
+So first, the policy mirrors the
+policy on multiple submissions
+
+112
+00:04:25,360 --> 00:04:26,800
+to conferences, right?
+
+113
+00:04:26,800 --> 00:04:28,750
+You can't take the same
+paper and submit it
+
+114
+00:04:28,750 --> 00:04:31,810
+to two different venues
+with minor modifications
+
+115
+00:04:31,810 --> 00:04:34,570
+and expect to get two
+publications out of it.
+
+116
+00:04:34,570 --> 00:04:36,070
+And the same thing
+holds for us when
+
+117
+00:04:36,070 --> 00:04:40,090
+we think about requirements for
+final papers for this course.
+
+118
+00:04:40,090 --> 00:04:42,760
+This is designed to ensure
+that your project is
+
+119
+00:04:42,760 --> 00:04:45,340
+a substantial new effort.
+
+120
+00:04:45,340 --> 00:04:47,620
+This does mean that
+you can't merely
+
+121
+00:04:47,620 --> 00:04:49,510
+submit an incremental
+advancement
+
+122
+00:04:49,510 --> 00:04:51,370
+over another project
+that you did.
+
+123
+00:04:51,370 --> 00:04:53,590
+We are trying to push
+back against the pattern
+
+124
+00:04:53,590 --> 00:04:57,190
+where people would take final
+projects from previous courses,
+
+125
+00:04:57,190 --> 00:04:59,740
+add a couple of new
+models, and submit
+
+126
+00:04:59,740 --> 00:05:01,690
+those as entirely new papers.
+
+127
+00:05:01,690 --> 00:05:04,720
+That's just unfair to the people
+who are starting from scratch.
+
+128
+00:05:04,720 --> 00:05:06,280
+And it's really not
+the sort of work
+
+129
+00:05:06,280 --> 00:05:10,000
+that we would say is up to
+the level of a final project
+
+130
+00:05:10,000 --> 00:05:12,630
+for a course like this.
+
+131
+00:05:12,630 --> 00:05:15,570
+Other courses might have
+different policies at Stanford,
+
+132
+00:05:15,570 --> 00:05:17,550
+but that fact alone
+is not going to lead
+
+133
+00:05:17,550 --> 00:05:18,720
+us to change our policy.
+
+134
+00:05:18,720 --> 00:05:21,330
+Because we do think
+that this is equitable
+
+135
+00:05:21,330 --> 00:05:24,540
+and also reflecting values
+that are pervasive in our field
+
+136
+00:05:24,540 --> 00:05:29,160
+as you can see from the policies
+on submission to conferences.
+
+137
+00:05:29,160 --> 00:05:31,890
+If any of these policies
+seem relevant to your work,
+
+138
+00:05:31,890 --> 00:05:34,740
+for example, if you are taking
+a previous course project
+
+139
+00:05:34,740 --> 00:05:38,010
+and developing it in lots
+of fresh and new ways,
+
+140
+00:05:38,010 --> 00:05:39,720
+start the discussion
+with your mentor
+
+141
+00:05:39,720 --> 00:05:41,280
+as early as possible
+to make sure
+
+142
+00:05:41,280 --> 00:05:43,590
+that they're in the loop
+about what you're doing.
+
+143
+00:05:43,590 --> 00:05:46,920
+We don't want any surprises
+when you submit your final paper
+
+144
+00:05:46,920 --> 00:05:49,660
+or after that when it
+comes to this policy.
+
+145
+00:05:49,660 --> 00:05:51,840
+So just make sure
+everyone is in the know,
+
+146
+00:05:51,840 --> 00:05:55,420
+and I predict that
+things will go fine.
+
+147
+00:05:55,420 --> 00:05:58,060
+To close, a brief note
+about impact statements.
+
+148
+00:05:58,060 --> 00:06:00,670
+For now, an impact statement
+is an optional section
+
+149
+00:06:00,670 --> 00:06:01,690
+for your final paper.
+
+150
+00:06:01,690 --> 00:06:03,360
+Absolutely not required.
+
+151
+00:06:03,360 --> 00:06:05,110
+But this has been on
+my mind a lot lately,
+
+152
+00:06:05,110 --> 00:06:07,152
+and I think it's really
+healthy that the field is
+
+153
+00:06:07,152 --> 00:06:10,115
+moving toward having authors
+include impact statements.
+
+154
+00:06:10,115 --> 00:06:11,740
+And so I thought I
+would exhort you all
+
+155
+00:06:11,740 --> 00:06:14,490
+to consider having that as part
+of your final paper as well.
+
+156
+00:06:14,490 --> 00:06:16,660
+It does not count against
+your length limits,
+
+157
+00:06:16,660 --> 00:06:19,510
+and it's up to you exactly
+what you would disclose
+
+158
+00:06:19,510 --> 00:06:20,793
+as part of the statement.
+
+159
+00:06:20,793 --> 00:06:22,960
+Here are some examples of
+things that might include.
+
+160
+00:06:22,960 --> 00:06:26,290
+You could try to enumerate
+both the benefits and the risks
+
+161
+00:06:26,290 --> 00:06:30,670
+of your research to individuals,
+to society, to the world.
+
+162
+00:06:30,670 --> 00:06:33,670
+Specifically for the risk, you
+could talk about costs, again,
+
+163
+00:06:33,670 --> 00:06:36,610
+to the participants, to
+society, to the planet,
+
+164
+00:06:36,610 --> 00:06:38,620
+where, for example,
+participant costs would
+
+165
+00:06:38,620 --> 00:06:41,110
+be if you had human
+annotators doing
+
+166
+00:06:41,110 --> 00:06:45,730
+a really difficult or kind of
+negative annotation project.
+
+167
+00:06:45,730 --> 00:06:48,130
+You might mention that
+they paid a certain cost
+
+168
+00:06:48,130 --> 00:06:50,710
+and think about whether
+the costs were worthwhile.
+
+169
+00:06:50,710 --> 00:06:52,690
+You could also think
+about costs to society,
+
+170
+00:06:52,690 --> 00:06:54,160
+and that would
+really probably turn
+
+171
+00:06:54,160 --> 00:06:57,250
+on sort of misapplication
+of your ideas
+
+172
+00:06:57,250 --> 00:07:00,040
+in ways that might have
+more harm than good.
+
+173
+00:07:00,040 --> 00:07:02,810
+And, of course, if you trained
+a really large language model
+
+174
+00:07:02,810 --> 00:07:04,660
+or did really a
+lot of experiments,
+
+175
+00:07:04,660 --> 00:07:07,030
+you could think about the
+cost to the planet in terms
+
+176
+00:07:07,030 --> 00:07:09,640
+of energy expenditures,
+and so forth.
+
+177
+00:07:09,640 --> 00:07:13,570
+Just by way of getting us
+all to think about the fact
+
+178
+00:07:13,570 --> 00:07:15,353
+that our research
+does have costs
+
+179
+00:07:15,353 --> 00:07:17,770
+and that we should all the
+time be thinking about the cost
+
+180
+00:07:17,770 --> 00:07:21,040
+benefit analysis when it
+comes to the work that we do.
+
+181
+00:07:21,040 --> 00:07:23,620
+And these disclosures are
+part of helping us all
+
+182
+00:07:23,620 --> 00:07:25,668
+have that in mind.
+
+183
+00:07:25,668 --> 00:07:27,710
+And finally, I think it
+might be really inspiring
+
+184
+00:07:27,710 --> 00:07:30,920
+for you to think about
+responsible use of your data
+
+185
+00:07:30,920 --> 00:07:32,180
+models and findings.
+
+186
+00:07:32,180 --> 00:07:33,890
+Never mind really evil actors.
+
+187
+00:07:33,890 --> 00:07:36,260
+There are likely to be
+people out there who
+
+188
+00:07:36,260 --> 00:07:38,840
+are well-meaning and would
+like to apply your ideas,
+
+189
+00:07:38,840 --> 00:07:41,120
+but they might be
+unsure of the limits.
+
+190
+00:07:41,120 --> 00:07:44,390
+Unsure of precisely how
+to do that responsibly.
+
+191
+00:07:44,390 --> 00:07:48,350
+So guidance that you could offer
+about where your ideas work
+
+192
+00:07:48,350 --> 00:07:51,082
+and where they don't, or
+where your data are relevant
+
+193
+00:07:51,082 --> 00:07:52,790
+and where they're
+irrelevant could really
+
+194
+00:07:52,790 --> 00:07:54,890
+help someone who is
+trying to just make
+
+195
+00:07:54,890 --> 00:07:56,840
+responsible use of your ideas.
+
+196
+00:07:56,840 --> 00:08:00,050
+You could think about them as
+part of crafting this impact
+
+197
+00:08:00,050 --> 00:08:02,100
+statement.
+
+198
+00:08:02,100 --> 00:08:04,410
+For other resources, I
+think it's really great
+
+199
+00:08:04,410 --> 00:08:07,480
+to go through the exercise of
+doing a data sheet and a model
+
+200
+00:08:07,480 --> 00:08:07,980
+card.
+
+201
+00:08:07,980 --> 00:08:10,050
+A data sheet is a
+disclosure about a data
+
+202
+00:08:10,050 --> 00:08:11,730
+set that you created or used.
+
+203
+00:08:11,730 --> 00:08:14,908
+And a model card is a
+similar unstructured document
+
+204
+00:08:14,908 --> 00:08:16,950
+for models that you've
+developed and released out
+
+205
+00:08:16,950 --> 00:08:18,900
+into the world.
+
+206
+00:08:18,900 --> 00:08:20,923
+They're both pretty
+long documents.
+
+207
+00:08:20,923 --> 00:08:22,590
+So it's a lot of work
+to do one in full,
+
+208
+00:08:22,590 --> 00:08:24,360
+but it's very
+rewarding in the sense
+
+209
+00:08:24,360 --> 00:08:27,960
+that it helps you confront
+some hard truths about the work
+
+210
+00:08:27,960 --> 00:08:31,290
+that you did and articulate
+the limits of the work
+
+211
+00:08:31,290 --> 00:08:32,169
+that you did.
+
+212
+00:08:32,169 --> 00:08:34,875
+All these things are really
+helpful for your scholarship.
+
+213
+00:08:34,875 --> 00:08:36,750
+And, of course, these
+things are helpful when
+
+214
+00:08:36,750 --> 00:08:39,600
+it comes to other people
+consuming your ideas.
+
+215
+00:08:39,600 --> 00:08:40,980
+So that's highly encouraged.
+
+216
+00:08:40,980 --> 00:08:42,630
+And you could take
+bits and pieces
+
+217
+00:08:42,630 --> 00:08:44,790
+from those structured
+documents and have them
+
+218
+00:08:44,790 --> 00:08:48,432
+in for maybe a shorter impact
+statement that you wrote.
+
+219
+00:08:48,432 --> 00:08:49,890
+And for even more
+guidance on this,
+
+220
+00:08:49,890 --> 00:08:52,542
+you could check out this survey
+of NeurlPS impact statements.
+
+221
+00:08:52,542 --> 00:08:54,750
+It has a lot of information
+about the kinds of things
+
+222
+00:08:54,750 --> 00:08:56,940
+people are disclosing
+in these statements.
+
+223
+00:08:56,940 --> 00:08:59,245
+And that too could
+help you kind of figure
+
+224
+00:08:59,245 --> 00:09:00,870
+out what you want to
+say and what might
+
+225
+00:09:00,870 --> 00:09:03,670
+be relevant to your audience.
+
+226
+00:09:03,670 --> 00:09:05,620
+So again, this is
+entirely optional,
+
+227
+00:09:05,620 --> 00:09:08,400
+but I hope this is inspiring
+and interesting for you
+
+228
+00:09:08,400 --> 00:09:11,490
+as a new dimension when it
+comes to reporting on the work
+
+229
+00:09:11,490 --> 00:09:13,280
+that you did.
+
+230
+00:09:13,280 --> 00:09:17,000
+
+
