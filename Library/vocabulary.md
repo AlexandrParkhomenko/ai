@@ -98,6 +98,7 @@ cal Semantic | COALS | Коррелированый Аналог Вхожден�
 | Probability Density Function            | PDF         |                                                    |              |
 | Probability Mass Function               | PMF         |                                                    |              |
 | Pseudolikelihood | PL | псевдоправдоподобие | ПП |
+| Rational Spech Act | RSA |  |  |
 | Reinforcement Learning                  | RL          |                                                    |              |
 | Relational Graph Convolution Network | RGCN | реляционная графовая сверточная сеть | РГСС |
 | Relational Probabilistic Graphical Model | RPGM | реляционная вероятностная графовая модель | РВГМ |
