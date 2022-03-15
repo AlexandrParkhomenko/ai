@@ -22,7 +22,7 @@
 cal Semantic | COALS | Коррелированый Аналог Вхождения в Векторной Семантике | КАВВС* |
 | Cumulative Distribution Function        | CDF         |                                                    |              |
 | denoising Entity Autoencoder | dEA |  шумоподавляющий Автоэнкодер Сущностей | щАС* | 
-| Discounted Cumulative Gain | DCG | совокупный выигрыш со скидкой |  |
+| Discounted Cumulative Gain, Metric | DCG | совокупный выигрыш со скидкой |  |
 | Decision Diagram | DD | диаграмма решений | ДГР |
 | Decision Tree | DTD | дерево решений | ДР |
 | Decentralized Partially Observable Markov Decision Process | Dec-POMDP | децентрализованный частично наблюдаемый марковский процесс принятия решений | |
@@ -67,6 +67,7 @@ cal Semantic | COALS | Коррелированый Аналог Вхожден�
 | Limited Memory Influence Diagram | LIMID | диаграмма влияния с ограниченной памятью | ДВОП |
 | Linear Logistic Classifier              | LLC         |                                                    |              |
 | Latent Semantic Analysis | LSA |  |  |
+| (Mean) Average Precision, Metric | MAP | средняя точност |  |
 | Markov Blanket | MB | марковское ограждение | МО |
 | Markov Chain | MC | марковская цепь | МЦ |
 | Markov Decision Process | MDP | марковский процесс принятия решений | МППР |
