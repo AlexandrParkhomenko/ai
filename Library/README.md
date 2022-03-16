@@ -854,3 +854,4 @@
 - [Deep Learning with Label Noise](https://github.com/gorkemalgan/deep_learning_with_noisy_labels_literature) Noisy marks in the data degrade the DeepNN result. Decision.
 - [Uncertainty Quantification in Deep Learning](https://github.com/ahmedmalaa/deep-learning-uncertainty)
 - [NeurIPS Proceedings](https://proceedings.neurips.cc/)
+- [Awesome Detection Transformer](https://github.com/IDEACVR/awesome-detection-transformer)
