@@ -1,4 +1,5 @@
 # AG TECH: 100+
+![](https://github.com/AlexandrParkhomenko/ai/raw/main/Stanford/workera/IoT/Agtech-Market-Map-V32.png)
 
 ## Next gen farms
 - https://boweryfarming.com/
