@@ -51,52 +51,19 @@
 ## Robotics and drones
 ## Sensors
 - https://centaur.ag/
-- 
-- 
-- 
-- 
-- 
-- 
-- 
-- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+- https://slantrange.com/
+- https://grownetics.co/
+- https://motorleaf.com/
+- https://pycno.co -
+- https://spensatech.com/
+- https://www.amber.ag
+- https://www.acuitykp.com
+- https://www.farmobile.com/
+- https://www.fieldin.com/
+- https://saturas-ag.com/
+- https://www.farmersedge.ca
+- https://www.arable.com/
+- https://smartyields.com/
+- http://fluxiot.com/
+- https://semios.com/
+- https://sencrop.com
