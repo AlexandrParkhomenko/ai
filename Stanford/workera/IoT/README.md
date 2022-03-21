@@ -45,10 +45,48 @@
 - https://www.ec2ce.com/berriainfoen/
 
 ## Animal data
+- https://www.qscoutlab.com/ advannced animal diagnostics
+- https://www.cowlar.com/
+- https://www.lucibv.com/ mastiline
+- https://www.moocall.com
+- https://www.stellapps.com/
+- https://www.connecterra.io/
+
 ## Marketplaces
+
+
 ## Smart irrigation
+- https://www.flowius.com/
+- https://sprinkl.com/
+- https://cropx.com/
+- https://www.hydropoint.com
+- tevatronic.net redirect
+- https://hortau.com/
+- https://www.smartfarm.ag/
+- https://agmonitor.com/ formerly PowWow
+- https://aquaspy.com/
+
 ## Plant data/analysis
+- https://www.cibotechnologies.com/
+- https://tracegenomics.com/ ml
+- https://bensonhill.com/
+
+Over human history, out of about 30 000 edible plant species, 6 000 – 7 000 species have been cultivated for food. Yet, today we only grow approximately 170 crops on a commercially significant scale. Even more surprising, we depend highly on only about 30 of them to provide us with calories and nutrients that we need every day. More than 40 percent of our daily calories come from three staple crops: rice, wheat and maize!
+
 ## Robotics and drones
+- mavrx.co not found
+- https://farm.bot/ https://github.com/FarmBot
+- airwood.in
+- https://innovation.mit.edu/pathway-post/raptor-maps/
+- https://www.harvestcroorobotics.com/
+- https://bluerivertechnology.com/
+- http://www.skysquirrelstudio.com/news
+- https://skycision.herokuapp.com/
+- https://www.le-robotics.co.uk/
+- https://resson.com/
+- https://waxinvest.com/projects/abundant-robots/
+- https://www.ceresimaging.net/
+
 ## Sensors
 - https://centaur.ag/
 - https://slantrange.com/
