@@ -192,18 +192,20 @@ Paths:
 </pre>
    
 ### 3. Analytical ability
-   
+<pre>
    you might have heard of consulting style questions
    возможно, вы слышали о вопросах в стиле консультирования
-   
+</pre>
+
 ### 4. Prioritization
-   
+
+<pre>
    A really core part of the product manager job is prioritization.
    По-настоящему ключевой частью работы менеджера по продукту является расстановка приоритетов.
    
    You know things like how to do estimations of impact, estimations of cost, basic math around things like return on investment, and then making sure that you're applying that in a consistent and coherent way to produce something.
    Вы знаете такие вещи, как оценка воздействия, оценка затрат, базовые математические операции, связанные с такими вещами, как окупаемость инвестиций, а затем убедитесь, что вы применяете это последовательным и последовательным образом для производства чего-либо.
-   
+</pre>   
    
   - https://www.youtube.com/watch?v=IH1HkueGWzc
   - https://www.youtube.com/watch?v=CeTaOM-5on8
