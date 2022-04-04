@@ -1,5 +1,8 @@
 ## 1. Core principles
 <pre>
+turn to a spec sheet into reality.
+превратить спецификацию в реальность.
+
 the very persistent challenges
 очень постоянные проблемы
 
@@ -77,3 +80,109 @@ We differentiate between principles and responsibilities.
 ![*](https://github.com/AlexandrParkhomenko/ai/raw/main/Stanford/workera/online.stanford.edu/PM/get-stuff-done.png)
 <pre>
 3. Get stuff done
+</pre>
+<pre>
+4. product life cycle
+</pre>
+
+## Career
+
+Paths:
+
+1. The first path looks like a **structured training program**.
+   Первый путь выглядит как структурированная программа обучения
+ 
+   APM or associate product manager program
+
+   They recruit people either out of undergrad, out of graduate school, out of business school, or out of a number of different places.
+   Они набирают людей либо из бакалавриата, либо из аспирантуры, из бизнес-школы, либо из множества разных мест.
+
+2. 15-25% PMs. I use **founder** in the broadest sense of the word here. 
+   Здесь я использую основателя в самом широком смысле этого слова.
+   
+   It doesn't necessarily need to mean founder in the Silicon Valley classic sense of I started a business, I raised a bunch of venture capital. 
+   Это не обязательно должно означать основателя в классическом смысле Силиконовой долины: я начал бизнес, я привлек кучу венчурного капитала.
+   
+   It can mean almost anybody who started or run a small business or a growing business.
+   Это может означать почти любого, кто начал или руководил малым бизнесом или растущим бизнесом.
+   
+   that some of those skills translate very well into product management.
+   что некоторые из этих навыков очень хорошо применимы в управлении продуктом.
+   
+3. Get lucky
+
+    Getting lucky really means that somebody gives you a break and they make a bet on you.
+    Быть удачливым на самом деле означает, что кто-то дает вам передышку и делает на вас ставку.
+    
+   "I've worked with you, I'm willing to put some of my credibility on the line and really back you here."
+   «Я работал с вами, я готов поставить на карту часть своего авторитета и действительно поддержать вас здесь».
+ 
+ ### What do companies look for in new product managers
+
+   be intellectually honest about what you know and what you don't know.
+   будьте интеллектуально честны в том, что вы знаете и чего вы не знаете.
+
+  - Curiosity
+  - Intelligence
+  - Analytical ability
+  - Domain expertise
+  - Potential
+ 
+ ## Interview
+ 
+ Most product manager interview questions come from a relatively small set of topics.
+ Большинство вопросов на собеседовании с менеджером по продукту относятся к относительно небольшому набору тем.
+ 
+ 1. Product intuition
+    
+   "Tell me about your favorite product. Now let's assume that you are in charge of it, how would you make it better? What would you do?"
+   «Расскажите о своем любимом продукте. Теперь давайте предположим, что вы отвечаете за него, как бы вы сделали его лучше? Что бы вы сделали?»
+    
+   "How do we design a kitchen for someone who only has to use one hand 
+   or 
+   how do we make sure that as I'd take product A and move into another country, what are some of the things or considerations you might have?"
+   
+   «Как спроектировать кухню для человека, которому приходится пользоваться только одной рукой?
+   или
+   как мы можем убедиться, что если я возьму продукт А и перееду в другую страну, какие вещи или соображения могут возникнуть у вас?»
+   
+2. Design
+   
+   Product management and design are different disciplines for sure.
+   Управление продуктом и дизайн, безусловно, разные дисциплины.
+   
+   a key tenet of good design is deeply understanding the customer,
+   ключевым принципом хорошего дизайна является глубокое понимание клиента,
+   
+   it's not about Photoshop or figma, it's about construct.
+   дело не в фотошопе или фигме, дело в конструктиве.
+   
+   ﻿Are you able construct something at wireframe level of fidelity that deeply thinks through all of the decisions you have just to make to construct something that somebody would actually use?
+   ﻿Можете ли вы сконструировать что-то с точностью до каркаса, которое глубоко продумывает все решения, которые вам нужно просто принять, чтобы построить что-то, что кто-то действительно будет использовать? 
+   
+3. Technical ability   
+   
+   This one is fairly hit or miss in that,
+   Этот довольно попал или промахнулся в этом,
+   
+   some companies sure all of their product managers actually have computer science degrees
+   некоторые компании уверены, что все их менеджеры по продуктам действительно имеют степень в области компьютерных наук
+   
+   other do very little technical screening for product management at all,
+   другие вообще проводят очень мало технического скрининга для управления продуктом,
+   
+   If you're not able to be credible in front of those people, you're going to have a very difficult time commanding respect and may end being a real leader of that team.
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+  - https://www.youtube.com/watch?v=IH1HkueGWzc
+  - https://www.youtube.com/watch?v=CeTaOM-5on8
+  
