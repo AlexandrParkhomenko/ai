@@ -1,3 +1,6 @@
+# Product Management
+Anand Subramani
+
 ## 1. Core principles
 <pre>
 turn to a spec sheet into reality.
@@ -81,6 +84,7 @@ We differentiate between principles and responsibilities.
 <pre>
 3. Get stuff done
 </pre>
+![*](https://github.com/AlexandrParkhomenko/ai/raw/main/Stanford/workera/online.stanford.edu/PM/cycle.png)
 <pre>
 4. product life cycle
 </pre>
@@ -89,6 +93,7 @@ We differentiate between principles and responsibilities.
 
 Paths:
 
+<pre>
 1. The first path looks like a **structured training program**.
    Первый путь выглядит как структурированная программа обучения
  
@@ -96,7 +101,8 @@ Paths:
 
    They recruit people either out of undergrad, out of graduate school, out of business school, or out of a number of different places.
    Они набирают людей либо из бакалавриата, либо из аспирантуры, из бизнес-школы, либо из множества разных мест.
-
+</pre>
+<pre>
 2. 15-25% PMs. I use **founder** in the broadest sense of the word here. 
    Здесь я использую основателя в самом широком смысле этого слова.
    
@@ -108,19 +114,22 @@ Paths:
    
    that some of those skills translate very well into product management.
    что некоторые из этих навыков очень хорошо применимы в управлении продуктом.
-   
-3. Get lucky
+</pre>
+<pre>   
+3. **Get lucky**
 
     Getting lucky really means that somebody gives you a break and they make a bet on you.
     Быть удачливым на самом деле означает, что кто-то дает вам передышку и делает на вас ставку.
     
    "I've worked with you, I'm willing to put some of my credibility on the line and really back you here."
    «Я работал с вами, я готов поставить на карту часть своего авторитета и действительно поддержать вас здесь».
- 
+</pre>
  ### What do companies look for in new product managers
 
+<pre>
    be intellectually honest about what you know and what you don't know.
    будьте интеллектуально честны в том, что вы знаете и чего вы не знаете.
+</pre>
 
   - Curiosity
   - Intelligence
@@ -129,12 +138,15 @@ Paths:
   - Potential
  
  ## Interview
- 
+
+<pre>
  Most product manager interview questions come from a relatively small set of topics.
  Большинство вопросов на собеседовании с менеджером по продукту относятся к относительно небольшому набору тем.
- 
- 1. Product intuition
-    
+</pre>
+
+### 1. Product intuition
+
+<pre>    
    "Tell me about your favorite product. Now let's assume that you are in charge of it, how would you make it better? What would you do?"
    «Расскажите о своем любимом продукте. Теперь давайте предположим, что вы отвечаете за него, как бы вы сделали его лучше? Что бы вы сделали?»
     
@@ -145,9 +157,11 @@ Paths:
    «Как спроектировать кухню для человека, которому приходится пользоваться только одной рукой?
    или
    как мы можем убедиться, что если я возьму продукт А и перееду в другую страну, какие вещи или соображения могут возникнуть у вас?»
+</pre>
    
-2. Design
-   
+### 2. Design
+
+<pre>
    Product management and design are different disciplines for sure.
    Управление продуктом и дизайн, безусловно, разные дисциплины.
    
@@ -159,9 +173,11 @@ Paths:
    
    ﻿Are you able construct something at wireframe level of fidelity that deeply thinks through all of the decisions you have just to make to construct something that somebody would actually use?
    ﻿Можете ли вы сконструировать что-то с точностью до каркаса, которое глубоко продумывает все решения, которые вам нужно просто принять, чтобы построить что-то, что кто-то действительно будет использовать? 
-   
-3. Technical ability   
-   
+</pre>
+
+### 3. Technical ability   
+
+<pre>
    This one is fairly hit or miss in that,
    Этот довольно попал или промахнулся в этом,
    
@@ -172,12 +188,15 @@ Paths:
    другие вообще проводят очень мало технического скрининга для управления продуктом,
    
    If you're not able to be credible in front of those people, you're going to have a very difficult time commanding respect and may end being a real leader of that team.
+   Если вы не сможете заслужить доверие этих людей, вам будет очень трудно завоевать уважение, и вы можете перестать быть настоящим лидером этой команды.
+</pre>
    
+### 3. Analytical ability
    
+   you might have heard of consulting style questions
+   возможно, вы слышали о вопросах в стиле консультирования
    
-   
-   
-   
+### 4. Prioritization
    
    
    
