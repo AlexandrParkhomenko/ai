@@ -148,7 +148,7 @@ progress in the field has been amazing
 
 38
 00:01:19,359 --> 00:01:23,519
-we have more large nou data sets than
+we have more large NLU data sets than
 
 39
 00:01:21,359 --> 00:01:25,519
@@ -156,7 +156,7 @@ ever before and the level of innovation
 
 40
 00:01:23,519 --> 00:01:26,879
-in modeling and model analysis is just
+in modeling and model analysis is just astounding.
 
 41
 00:01:26,879 --> 00:01:30,399
