@@ -1,0 +1,1206 @@
+1
+00:00:00,000 --> 00:00:05,100
+
+
+2
+00:00:05,100 --> 00:00:07,740
+BILL MACCARTNEY: Our topic
+for today and Wednesday
+
+3
+00:00:07,740 --> 00:00:09,660
+is relation extraction.
+
+4
+00:00:09,660 --> 00:00:12,210
+And this is an
+exciting topic both
+
+5
+00:00:12,210 --> 00:00:16,170
+because it's a great
+arena to explore
+
+6
+00:00:16,170 --> 00:00:19,840
+a variety of NLU and
+machine learning techniques.
+
+7
+00:00:19,840 --> 00:00:23,250
+And because it has so many
+real world applications
+
+8
+00:00:23,250 --> 00:00:26,260
+as we'll see in a moment.
+
+9
+00:00:26,260 --> 00:00:28,800
+So here's an overview of
+the next two lectures.
+
+10
+00:00:28,800 --> 00:00:31,320
+I'm going to start by
+describing the task of relation
+
+11
+00:00:31,320 --> 00:00:34,330
+extraction, what it
+is, why it matters,
+
+12
+00:00:34,330 --> 00:00:36,660
+and how we might approach it.
+
+13
+00:00:36,660 --> 00:00:38,940
+Then I'll describe
+the data resources
+
+14
+00:00:38,940 --> 00:00:42,190
+we'll need to make
+headway on the problem.
+
+15
+00:00:42,190 --> 00:00:45,060
+Next, I'll provide a
+more precise formulation
+
+16
+00:00:45,060 --> 00:00:47,080
+of the prediction problem
+that we're taking on
+
+17
+00:00:47,080 --> 00:00:52,440
+and I'll propose a strategy
+for quantitative evaluation.
+
+18
+00:00:52,440 --> 00:00:55,530
+Then we'll establish some
+lower bounds on performance
+
+19
+00:00:55,530 --> 00:00:59,740
+by evaluating some very simple
+approaches to this problem.
+
+20
+00:00:59,740 --> 00:01:02,100
+And finally, will point
+toward some directions
+
+21
+00:01:02,100 --> 00:01:03,360
+for future exploration.
+
+22
+00:01:03,360 --> 00:01:06,150
+
+
+23
+00:01:06,150 --> 00:01:08,250
+In the first section,
+I'll start by defining
+
+24
+00:01:08,250 --> 00:01:11,160
+the task of relation
+extraction, then
+
+25
+00:01:11,160 --> 00:01:13,140
+I'll try to provide
+some motivation for why
+
+26
+00:01:13,140 --> 00:01:15,960
+it's an important
+and exciting problem.
+
+27
+00:01:15,960 --> 00:01:19,410
+I'll describe both the vision
+that originally inspired
+
+28
+00:01:19,410 --> 00:01:22,350
+research in this
+area and a range
+
+29
+00:01:22,350 --> 00:01:24,060
+of current practical
+applications
+
+30
+00:01:24,060 --> 00:01:27,030
+for relation extraction.
+
+31
+00:01:27,030 --> 00:01:29,520
+Then I'll describe
+three paradigms
+
+32
+00:01:29,520 --> 00:01:34,590
+that correspond to three stages
+in the evolution of approaches
+
+33
+00:01:34,590 --> 00:01:36,450
+to relation extraction.
+
+34
+00:01:36,450 --> 00:01:40,980
+Hand-built patterns, which were
+dominant in the '80s and '90s.
+
+35
+00:01:40,980 --> 00:01:44,760
+Supervised learning, which
+became dominant in the 2000s.
+
+36
+00:01:44,760 --> 00:01:49,560
+And distant supervision, which
+has dominated since about 2010
+
+37
+00:01:49,560 --> 00:01:52,350
+and will be our main focus.
+
+38
+00:01:52,350 --> 00:01:55,270
+So let's dive in.
+
+39
+00:01:55,270 --> 00:01:57,330
+So the task of
+relation extraction
+
+40
+00:01:57,330 --> 00:02:02,010
+is about extracting structured
+knowledge from natural language
+
+41
+00:02:02,010 --> 00:02:03,240
+text.
+
+42
+00:02:03,240 --> 00:02:06,640
+We want to be able to start
+from a document like this.
+
+43
+00:02:06,640 --> 00:02:10,800
+This could be a new
+story or a web page.
+
+44
+00:02:10,800 --> 00:02:14,820
+And extract relational
+triples like founders, PayPal,
+
+45
+00:02:14,820 --> 00:02:20,530
+Elon Musk, and founders,
+SpaceX, Elon Musk.
+
+46
+00:02:20,530 --> 00:02:23,320
+Next, we find this
+document and we
+
+47
+00:02:23,320 --> 00:02:25,960
+want to be able to
+extract, has_spouse,
+
+48
+00:02:25,960 --> 00:02:30,280
+Elon Musk, Talulah Riley.
+
+49
+00:02:30,280 --> 00:02:33,820
+We keep reading
+another document and we
+
+50
+00:02:33,820 --> 00:02:39,970
+want to extract worked_at,
+Elon Musk, Tesla Motors.
+
+51
+00:02:39,970 --> 00:02:42,370
+If we can accumulate
+a large knowledge
+
+52
+00:02:42,370 --> 00:02:45,190
+base of relational
+triples, we can use it
+
+53
+00:02:45,190 --> 00:02:49,750
+to power question answering
+and other applications.
+
+54
+00:02:49,750 --> 00:02:51,550
+Building a knowledge
+base like this
+
+55
+00:02:51,550 --> 00:02:55,540
+manually is slow and expensive.
+
+56
+00:02:55,540 --> 00:02:58,210
+But much of the knowledge
+that we'd like to capture
+
+57
+00:02:58,210 --> 00:03:02,480
+is already expressed in
+abundant text on the web.
+
+58
+00:03:02,480 --> 00:03:04,480
+So the aim of
+relation extraction
+
+59
+00:03:04,480 --> 00:03:07,360
+is to accelerate knowledge
+base construction
+
+60
+00:03:07,360 --> 00:03:11,470
+by extracting relational triples
+from natural language text.
+
+61
+00:03:11,470 --> 00:03:14,600
+
+
+62
+00:03:14,600 --> 00:03:16,510
+Here's a nice
+articulation of the vision
+
+63
+00:03:16,510 --> 00:03:17,860
+for relation extraction.
+
+64
+00:03:17,860 --> 00:03:19,630
+This is from Tom
+Mitchell, who is
+
+65
+00:03:19,630 --> 00:03:24,580
+the former chair of the machine
+learning department at CMU.
+
+66
+00:03:24,580 --> 00:03:27,490
+He's also the author of
+one of the first textbooks
+
+67
+00:03:27,490 --> 00:03:29,290
+on machine learning.
+
+68
+00:03:29,290 --> 00:03:31,540
+By the way, he was
+also the PhD advisor
+
+69
+00:03:31,540 --> 00:03:35,890
+of Sebastian Thrun
+and Oren Etzioni.
+
+70
+00:03:35,890 --> 00:03:38,590
+He wrote this piece
+in 2005 describing
+
+71
+00:03:38,590 --> 00:03:41,260
+a vision for machine reading.
+
+72
+00:03:41,260 --> 00:03:44,710
+And he offered to bet a
+lobster dinner that by 2015, we
+
+73
+00:03:44,710 --> 00:03:47,290
+will have a computer program
+capable of automatically
+
+74
+00:03:47,290 --> 00:03:50,860
+reading at least 80% of the
+factual content on the web,
+
+75
+00:03:50,860 --> 00:03:54,340
+and placing those facts in
+a structured knowledge base.
+
+76
+00:03:54,340 --> 00:03:57,520
+I think we've come pretty
+close to achieving that goal.
+
+77
+00:03:57,520 --> 00:04:00,400
+And this is exactly the goal
+that relation extraction
+
+78
+00:04:00,400 --> 00:04:03,340
+aims at to extract
+structure knowledge
+
+79
+00:04:03,340 --> 00:04:04,675
+from unstructured text.
+
+80
+00:04:04,675 --> 00:04:07,400
+
+
+81
+00:04:07,400 --> 00:04:09,860
+One of the things that
+makes relation extraction
+
+82
+00:04:09,860 --> 00:04:12,650
+an exciting topic
+is the abundance
+
+83
+00:04:12,650 --> 00:04:15,020
+of real world applications.
+
+84
+00:04:15,020 --> 00:04:17,510
+For example, nowadays
+intelligent assistants
+
+85
+00:04:17,510 --> 00:04:21,260
+like Siri or Google can answer
+lots of factual questions
+
+86
+00:04:21,260 --> 00:04:24,230
+like who sang "Love Train?"
+
+87
+00:04:24,230 --> 00:04:27,830
+To do this, they rely on
+knowledge bases or KB's
+
+88
+00:04:27,830 --> 00:04:29,990
+containing thousands
+of relations,
+
+89
+00:04:29,990 --> 00:04:34,142
+millions of entities and
+billions of individual facts.
+
+90
+00:04:34,142 --> 00:04:35,600
+There are many
+different strategies
+
+91
+00:04:35,600 --> 00:04:38,720
+for building and maintaining
+and extending these KB's,
+
+92
+00:04:38,720 --> 00:04:41,150
+but considering how
+enormous they are
+
+93
+00:04:41,150 --> 00:04:44,990
+and how quickly the world
+is creating new facts.
+
+94
+00:04:44,990 --> 00:04:48,710
+It's a process that you want to
+automate as much as possible.
+
+95
+00:04:48,710 --> 00:04:51,800
+So more and more relation
+extraction from the web
+
+96
+00:04:51,800 --> 00:04:57,260
+is hugely strategic for Apple
+and Google and other companies.
+
+97
+00:04:57,260 --> 00:05:02,360
+In fact in 2017, Apple spent
+$200 million to acquire
+
+98
+00:05:02,360 --> 00:05:05,660
+a startup called Lattice, which
+was co-founded by Stanford
+
+99
+00:05:05,660 --> 00:05:08,690
+Professor Chris Ré, whom
+some of you may know,
+
+100
+00:05:08,690 --> 00:05:10,040
+specifically for this purpose.
+
+101
+00:05:10,040 --> 00:05:13,260
+
+
+102
+00:05:13,260 --> 00:05:15,680
+Another example is
+building ontologies.
+
+103
+00:05:15,680 --> 00:05:17,750
+If you're running
+an app store, you're
+
+104
+00:05:17,750 --> 00:05:20,480
+going to need a
+taxonomy of categories
+
+105
+00:05:20,480 --> 00:05:25,550
+of apps, and which apps
+belong to which categories.
+
+106
+00:05:25,550 --> 00:05:28,100
+One category of
+apps is video games.
+
+107
+00:05:28,100 --> 00:05:30,470
+But if you're a gamer,
+you know that there
+
+108
+00:05:30,470 --> 00:05:35,075
+are subcategories and sub,
+subcategories and sub,
+
+109
+00:05:35,075 --> 00:05:38,120
+sub subcategories
+of video games.
+
+110
+00:05:38,120 --> 00:05:43,290
+And new ones keep appearing
+and new games appear every day.
+
+111
+00:05:43,290 --> 00:05:46,808
+How are you going to keep
+your ontology up to date?
+
+112
+00:05:46,808 --> 00:05:48,350
+Well, there's a lot
+of people writing
+
+113
+00:05:48,350 --> 00:05:50,240
+about video games on the web.
+
+114
+00:05:50,240 --> 00:05:53,300
+So maybe relation
+extraction can help.
+
+115
+00:05:53,300 --> 00:05:56,180
+The relation between a
+category and a subcategory,
+
+116
+00:05:56,180 --> 00:06:00,320
+or between a category and
+an instance of the category
+
+117
+00:06:00,320 --> 00:06:03,500
+can be a target for
+relation extraction.
+
+118
+00:06:03,500 --> 00:06:06,350
+And similarly, you can imagine
+using relation extraction
+
+119
+00:06:06,350 --> 00:06:10,490
+to help build or maintain
+ontologies of car
+
+120
+00:06:10,490 --> 00:06:13,955
+parts or companies or viruses.
+
+121
+00:06:13,955 --> 00:06:17,090
+
+
+122
+00:06:17,090 --> 00:06:19,680
+Another example comes
+from bioinformatics.
+
+123
+00:06:19,680 --> 00:06:21,380
+So every year,
+there are thousands
+
+124
+00:06:21,380 --> 00:06:23,300
+of new research
+articles describing
+
+125
+00:06:23,300 --> 00:06:25,710
+gene regulatory networks.
+
+126
+00:06:25,710 --> 00:06:28,880
+If we can apply relation
+extraction to these articles
+
+127
+00:06:28,880 --> 00:06:33,290
+to populate a database of
+gene regulation relationships,
+
+128
+00:06:33,290 --> 00:06:35,750
+then we can begin
+to apply existing,
+
+129
+00:06:35,750 --> 00:06:38,510
+well understood data
+mining techniques.
+
+130
+00:06:38,510 --> 00:06:41,660
+We can look for
+statistical correlations
+
+131
+00:06:41,660 --> 00:06:46,550
+or apply clever graph algorithms
+to activation networks.
+
+132
+00:06:46,550 --> 00:06:48,188
+The sky's the limit.
+
+133
+00:06:48,188 --> 00:06:49,730
+We've turned something
+that a machine
+
+134
+00:06:49,730 --> 00:06:55,475
+can't understand into something
+that a machine can understand.
+
+135
+00:06:55,475 --> 00:06:57,600
+So let's turn to the question
+of how you'd actually
+
+136
+00:06:57,600 --> 00:06:59,760
+solve this problem.
+
+137
+00:06:59,760 --> 00:07:03,330
+The most obvious way to start
+is to write down a few patterns
+
+138
+00:07:03,330 --> 00:07:05,400
+which express each relation.
+
+139
+00:07:05,400 --> 00:07:07,620
+So for example, if we
+want to find new instances
+
+140
+00:07:07,620 --> 00:07:09,390
+of the founders relation.
+
+141
+00:07:09,390 --> 00:07:13,080
+So we can use patterns like
+X is the founder of Y or X,
+
+142
+00:07:13,080 --> 00:07:17,460
+who founded Y or Y
+was founded by X.
+
+143
+00:07:17,460 --> 00:07:20,070
+And then if we search
+a large corpus,
+
+144
+00:07:20,070 --> 00:07:24,930
+we may find sentences like
+these that match these patterns
+
+145
+00:07:24,930 --> 00:07:31,700
+and allow us to extract the fact
+that Elon Musk founded SpaceX.
+
+146
+00:07:31,700 --> 00:07:34,760
+So this seems promising
+and, in fact, this
+
+147
+00:07:34,760 --> 00:07:37,760
+was the dominant paradigm
+in relation extraction
+
+148
+00:07:37,760 --> 00:07:40,220
+in the early days.
+
+149
+00:07:40,220 --> 00:07:43,380
+But this approach
+is really limited.
+
+150
+00:07:43,380 --> 00:07:45,890
+The central challenge
+of relation extraction
+
+151
+00:07:45,890 --> 00:07:49,310
+is the fantastic
+diversity of language.
+
+152
+00:07:49,310 --> 00:07:54,380
+The multitude of possible ways
+to express a given relation.
+
+153
+00:07:54,380 --> 00:07:56,600
+For example, each
+of these sentences
+
+154
+00:07:56,600 --> 00:08:01,080
+also expresses the fact that
+Elon Musk founded SpaceX.
+
+155
+00:08:01,080 --> 00:08:02,840
+But in these
+examples, the patterns
+
+156
+00:08:02,840 --> 00:08:05,930
+which connect Elon
+Musk with SpaceX
+
+157
+00:08:05,930 --> 00:08:10,190
+are not ones that we could
+have easily anticipated.
+
+158
+00:08:10,190 --> 00:08:13,550
+They might be ones that
+will never recur again.
+
+159
+00:08:13,550 --> 00:08:16,250
+So to do relation
+extraction effectively,
+
+160
+00:08:16,250 --> 00:08:18,640
+we need to go beyond
+hand-built patterns.
+
+161
+00:08:18,640 --> 00:08:21,900
+
+
+162
+00:08:21,900 --> 00:08:23,580
+So around the turn
+of the century,
+
+163
+00:08:23,580 --> 00:08:27,090
+the machine learning revolution
+came to the field of NLP
+
+164
+00:08:27,090 --> 00:08:30,150
+and people began to try
+a new approach, namely
+
+165
+00:08:30,150 --> 00:08:31,930
+supervised learning.
+
+166
+00:08:31,930 --> 00:08:35,020
+So you start by
+labeling your examples.
+
+167
+00:08:35,020 --> 00:08:39,570
+So these three examples
+are positive instances
+
+168
+00:08:39,570 --> 00:08:42,210
+of the founders relation.
+
+169
+00:08:42,210 --> 00:08:43,739
+So these are the
+positive examples.
+
+170
+00:08:43,739 --> 00:08:47,140
+
+
+171
+00:08:47,140 --> 00:08:52,635
+And these two are
+negative examples.
+
+172
+00:08:52,635 --> 00:08:54,260
+Now that we have
+labeled training data,
+
+173
+00:08:54,260 --> 00:08:56,980
+we can train a model.
+
+174
+00:08:56,980 --> 00:08:59,620
+And it could be a
+simple linear model that
+
+175
+00:08:59,620 --> 00:09:02,770
+uses a bag of words
+representation
+
+176
+00:09:02,770 --> 00:09:05,590
+and assigns higher weights
+to words like founder
+
+177
+00:09:05,590 --> 00:09:09,340
+and established that are likely
+to indicate the founder's
+
+178
+00:09:09,340 --> 00:09:13,240
+relation, or it could be
+something more complicated.
+
+179
+00:09:13,240 --> 00:09:16,870
+In any case, this was a
+hugely successful idea.
+
+180
+00:09:16,870 --> 00:09:18,850
+Even simple machine
+learning models
+
+181
+00:09:18,850 --> 00:09:21,610
+are far better at
+generalizing to new data
+
+182
+00:09:21,610 --> 00:09:23,650
+than static patterns.
+
+183
+00:09:23,650 --> 00:09:27,700
+But there's a big
+problem, manually labeling
+
+184
+00:09:27,700 --> 00:09:32,200
+training examples is
+laborious and time consuming
+
+185
+00:09:32,200 --> 00:09:34,060
+and expensive.
+
+186
+00:09:34,060 --> 00:09:36,610
+And as a consequence,
+the largest
+
+187
+00:09:36,610 --> 00:09:40,240
+labeled data sets that
+were produced had only tens
+
+188
+00:09:40,240 --> 00:09:45,840
+of thousands of examples, which
+by modern standards seems puny.
+
+189
+00:09:45,840 --> 00:09:48,630
+If we want to apply modern
+machine learning techniques,
+
+190
+00:09:48,630 --> 00:09:49,830
+we need a lot more data.
+
+191
+00:09:49,830 --> 00:09:53,860
+We need a way to leverage vastly
+greater quantities of training
+
+192
+00:09:53,860 --> 00:09:54,360
+data.
+
+193
+00:09:54,360 --> 00:09:57,040
+
+
+194
+00:09:57,040 --> 00:10:00,220
+The answer appeared
+around 2010 with an idea
+
+195
+00:10:00,220 --> 00:10:05,620
+called distant supervision,
+and this is a really big idea.
+
+196
+00:10:05,620 --> 00:10:09,040
+Instead of manually labeling
+individual examples,
+
+197
+00:10:09,040 --> 00:10:10,840
+we're going to
+automatically derive
+
+198
+00:10:10,840 --> 00:10:13,970
+the labels from an
+existing knowledge base.
+
+199
+00:10:13,970 --> 00:10:16,270
+So let's say we
+already have a KB that
+
+200
+00:10:16,270 --> 00:10:19,330
+contains many examples
+of the founders relation.
+
+201
+00:10:19,330 --> 00:10:23,080
+So we've got SpaceX and Elon
+Musk, Apple, and Steve Jobs
+
+202
+00:10:23,080 --> 00:10:25,270
+and so on.
+
+203
+00:10:25,270 --> 00:10:27,840
+And let's say we have
+a large corpus of text.
+
+204
+00:10:27,840 --> 00:10:32,310
+It can be unlabeled text,
+raw text, which means
+
+205
+00:10:32,310 --> 00:10:34,200
+that it can be truly enormous.
+
+206
+00:10:34,200 --> 00:10:37,170
+It can be the whole web.
+
+207
+00:10:37,170 --> 00:10:41,190
+What we're going to do is,
+we're going to simply assume
+
+208
+00:10:41,190 --> 00:10:44,160
+that every sentence which
+contains a pair of entities
+
+209
+00:10:44,160 --> 00:10:48,840
+which are related in the KB
+like Elon Musk and SpaceX
+
+210
+00:10:48,840 --> 00:10:53,350
+is a positive example
+for that relation.
+
+211
+00:10:53,350 --> 00:10:56,440
+And we're going to assume that
+every sentence which contains
+
+212
+00:10:56,440 --> 00:10:59,500
+a pair of entities that
+are unrelated in a KB
+
+213
+00:10:59,500 --> 00:11:03,430
+like Elon Musk and Apple
+is a negative example.
+
+214
+00:11:03,430 --> 00:11:06,070
+
+
+215
+00:11:06,070 --> 00:11:07,570
+Genius.
+
+216
+00:11:07,570 --> 00:11:10,510
+This gives us a way to generate
+massive quantities of training
+
+217
+00:11:10,510 --> 00:11:13,660
+data practically free.
+
+218
+00:11:13,660 --> 00:11:17,350
+However, you might have some
+doubts about the validity
+
+219
+00:11:17,350 --> 00:11:18,575
+of those assumptions.
+
+220
+00:11:18,575 --> 00:11:19,450
+So hold that thought.
+
+221
+00:11:19,450 --> 00:11:23,060
+
+
+222
+00:11:23,060 --> 00:11:25,130
+Distant supervision is
+a really powerful idea,
+
+223
+00:11:25,130 --> 00:11:28,920
+but it has two
+important limitations.
+
+224
+00:11:28,920 --> 00:11:31,850
+The first is a consequence
+of making the unreliable
+
+225
+00:11:31,850 --> 00:11:37,490
+assumption that all sentences
+where related entities co-occur
+
+226
+00:11:37,490 --> 00:11:40,190
+actually express that relation.
+
+227
+00:11:40,190 --> 00:11:42,470
+Inevitably, some of them don't.
+
+228
+00:11:42,470 --> 00:11:46,610
+Like this example, we labeled
+it as a positive example
+
+229
+00:11:46,610 --> 00:11:49,010
+for the founder's
+relation, but it doesn't
+
+230
+00:11:49,010 --> 00:11:50,540
+express that relation at all.
+
+231
+00:11:50,540 --> 00:11:54,530
+This doesn't say that Elon
+Musk is a founder of SpaceX.
+
+232
+00:11:54,530 --> 00:12:00,200
+So this label is a lie,
+a dirty, dirty lie.
+
+233
+00:12:00,200 --> 00:12:02,720
+Making this
+assumption blindly has
+
+234
+00:12:02,720 --> 00:12:07,560
+the effect of introducing
+noise into our training data.
+
+235
+00:12:07,560 --> 00:12:11,420
+Distant supervision is effective
+in spite of this problem,
+
+236
+00:12:11,420 --> 00:12:13,760
+because it makes it
+possible to leverage
+
+237
+00:12:13,760 --> 00:12:16,730
+vastly greater quantities
+of training data.
+
+238
+00:12:16,730 --> 00:12:20,420
+And the benefit of
+more data outweighs
+
+239
+00:12:20,420 --> 00:12:24,400
+the harm of noisier data.
+
+240
+00:12:24,400 --> 00:12:27,190
+By the way, I feel like
+I've waited my whole life
+
+241
+00:12:27,190 --> 00:12:31,600
+for the right opportunity
+to use the Pinocchio emoji.
+
+242
+00:12:31,600 --> 00:12:37,620
+The day finally came
+and it feels good.
+
+243
+00:12:37,620 --> 00:12:41,790
+The second limitation is
+that we need an existing KB
+
+244
+00:12:41,790 --> 00:12:43,140
+to start from.
+
+245
+00:12:43,140 --> 00:12:45,750
+We can only train
+a model to extract
+
+246
+00:12:45,750 --> 00:12:48,210
+new instances of the
+founder's relation,
+
+247
+00:12:48,210 --> 00:12:50,910
+if we already have many
+instances of the founder's
+
+248
+00:12:50,910 --> 00:12:52,050
+relation.
+
+249
+00:12:52,050 --> 00:12:54,300
+So while distant
+supervision is a great way
+
+250
+00:12:54,300 --> 00:12:56,940
+to extend an
+existing KB, it's not
+
+251
+00:12:56,940 --> 00:12:59,100
+useful for creating
+a KB containing
+
+252
+00:12:59,100 --> 00:13:01,580
+new relations from scratch.
+
+253
+00:13:01,580 --> 00:13:06,000
+
+

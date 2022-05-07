@@ -1,0 +1,1552 @@
+1
+00:00:00,000 --> 00:00:05,490
+
+
+2
+00:00:05,490 --> 00:00:08,130
+BILL MACCARTNEY: It's good
+methodological practice
+
+3
+00:00:08,130 --> 00:00:11,700
+whenever you're starting to
+build new models to start
+
+4
+00:00:11,700 --> 00:00:15,210
+by evaluating very simple
+models, which establish
+
+5
+00:00:15,210 --> 00:00:17,912
+baselines to which
+you can then compare
+
+6
+00:00:17,912 --> 00:00:19,620
+the more sophisticated
+models that you're
+
+7
+00:00:19,620 --> 00:00:21,333
+going to build later on.
+
+8
+00:00:21,333 --> 00:00:23,250
+So to do that, we're
+going to start by looking
+
+9
+00:00:23,250 --> 00:00:24,780
+at three simple models.
+
+10
+00:00:24,780 --> 00:00:28,800
+A random guesser, a very simple
+phrase matching strategy,
+
+11
+00:00:28,800 --> 00:00:30,660
+and then, our first
+machine learning
+
+12
+00:00:30,660 --> 00:00:36,160
+based approach, which will be a
+simple bag-of-words classifier.
+
+13
+00:00:36,160 --> 00:00:38,560
+Just about the
+simplest possible model
+
+14
+00:00:38,560 --> 00:00:42,040
+is one that doesn't
+even look at the input,
+
+15
+00:00:42,040 --> 00:00:43,900
+but just flips a coin.
+
+16
+00:00:43,900 --> 00:00:45,640
+And I strongly
+encourage you, whenever
+
+17
+00:00:45,640 --> 00:00:47,320
+you're embarking
+on a model building
+
+18
+00:00:47,320 --> 00:00:51,370
+adventure in your final
+project, wherever, you start
+
+19
+00:00:51,370 --> 00:00:53,380
+by evaluating a random guesser.
+
+20
+00:00:53,380 --> 00:00:55,510
+It's a snap to implement.
+
+21
+00:00:55,510 --> 00:00:58,780
+It can help to work out the
+kinks in your test harness.
+
+22
+00:00:58,780 --> 00:01:02,830
+And it's often very informative
+to put a floor under what
+
+23
+00:01:02,830 --> 00:01:05,110
+good scores look like.
+
+24
+00:01:05,110 --> 00:01:08,080
+Now, we've written an
+evaluation method for you.
+
+25
+00:01:08,080 --> 00:01:11,740
+It's in the RelExt module and
+it's just called evaluate.
+
+26
+00:01:11,740 --> 00:01:16,540
+You invoke it with your
+splits, your classifier,
+
+27
+00:01:16,540 --> 00:01:19,840
+and the name of the split
+that you want to evaluate on,
+
+28
+00:01:19,840 --> 00:01:23,640
+which defaults to dev.
+
+29
+00:01:23,640 --> 00:01:25,350
+When we evaluate
+our random guesser,
+
+30
+00:01:25,350 --> 00:01:27,070
+we have some
+interesting results,
+
+31
+00:01:27,070 --> 00:01:32,040
+so we have results separated
+for each of the relations.
+
+32
+00:01:32,040 --> 00:01:37,210
+And for each one, we have
+precision recall, F-score.
+
+33
+00:01:37,210 --> 00:01:40,560
+Remember, that's F0.5, which
+gives more weight to precision
+
+34
+00:01:40,560 --> 00:01:42,210
+than to recall.
+
+35
+00:01:42,210 --> 00:01:45,390
+We have the support, which
+is the number of instances
+
+36
+00:01:45,390 --> 00:01:48,000
+whose actual label is true.
+
+37
+00:01:48,000 --> 00:01:52,920
+And we have size, which is just
+the total number of instances.
+
+38
+00:01:52,920 --> 00:01:58,500
+We find that recall is
+generally right around 0.5.
+
+39
+00:01:58,500 --> 00:02:00,390
+And this makes
+sense, because recall
+
+40
+00:02:00,390 --> 00:02:04,230
+says of the instances
+which are actually true,
+
+41
+00:02:04,230 --> 00:02:06,900
+what proportion do
+we predict true?
+
+42
+00:02:06,900 --> 00:02:09,030
+Well, we predict true
+about half the time
+
+43
+00:02:09,030 --> 00:02:11,910
+because we're just
+flipping a coin.
+
+44
+00:02:11,910 --> 00:02:16,650
+Precision on the other hand,
+is generally quite poor,
+
+45
+00:02:16,650 --> 00:02:19,290
+because precision
+says of the instances
+
+46
+00:02:19,290 --> 00:02:22,290
+where we predict true
+which are basically
+
+47
+00:02:22,290 --> 00:02:25,110
+a random sample, because
+we're just flipping a coin.
+
+48
+00:02:25,110 --> 00:02:27,700
+How many are actually true?
+
+49
+00:02:27,700 --> 00:02:29,370
+Well, relatively few.
+
+50
+00:02:29,370 --> 00:02:31,470
+And actually, you can
+tell that by looking
+
+51
+00:02:31,470 --> 00:02:34,140
+at the ratio between
+support and size.
+
+52
+00:02:34,140 --> 00:02:36,780
+The ratio between
+support and size
+
+53
+00:02:36,780 --> 00:02:40,180
+is how many of the
+instances are actually true.
+
+54
+00:02:40,180 --> 00:02:44,190
+So when we're tossing
+a coin, the precision
+
+55
+00:02:44,190 --> 00:02:48,135
+should be right around the
+ratio between support and size.
+
+56
+00:02:48,135 --> 00:02:50,950
+
+
+57
+00:02:50,950 --> 00:02:52,930
+Our F-score is also
+generally poor,
+
+58
+00:02:52,930 --> 00:02:56,510
+it stays close to
+precision, for two reasons.
+
+59
+00:02:56,510 --> 00:02:58,900
+Number one, because
+the harmonics--
+
+60
+00:02:58,900 --> 00:03:02,140
+the harmonic mean stays
+closer to the lower number,
+
+61
+00:03:02,140 --> 00:03:05,500
+and number 2, because
+we're using F0.5,
+
+62
+00:03:05,500 --> 00:03:10,320
+which gives more weight to
+precision than to recall.
+
+63
+00:03:10,320 --> 00:03:15,870
+And the bottom line our
+macro-average F-score is 9.7%,
+
+64
+00:03:15,870 --> 00:03:18,480
+so that's the number to beat.
+
+65
+00:03:18,480 --> 00:03:24,780
+It's a pretty low bar, but this
+is a random guesser, after all.
+
+66
+00:03:24,780 --> 00:03:25,280
+OK.
+
+67
+00:03:25,280 --> 00:03:26,947
+So let's look at
+another approach, which
+
+68
+00:03:26,947 --> 00:03:29,720
+is very simple, but smarter
+than random guessing.
+
+69
+00:03:29,720 --> 00:03:32,360
+And it's a simple pattern
+matching strategy.
+
+70
+00:03:32,360 --> 00:03:35,600
+And the idea is
+for each relation,
+
+71
+00:03:35,600 --> 00:03:39,230
+let's go through the
+corpus and find the most
+
+72
+00:03:39,230 --> 00:03:43,070
+common phrases that
+connect to entities
+
+73
+00:03:43,070 --> 00:03:44,660
+that stand in that relation.
+
+74
+00:03:44,660 --> 00:03:48,140
+The most common middles,
+in our terminology.
+
+75
+00:03:48,140 --> 00:03:50,630
+So here's some code
+that does that.
+
+76
+00:03:50,630 --> 00:03:54,650
+I won't go through it in
+detail, but one thing to note
+
+77
+00:03:54,650 --> 00:03:59,060
+is that it counts separately
+the middles that connect subject
+
+78
+00:03:59,060 --> 00:04:00,330
+with object.
+
+79
+00:04:00,330 --> 00:04:03,090
+So here, it gets
+all the examples
+
+80
+00:04:03,090 --> 00:04:06,890
+and counts the middles.
+
+81
+00:04:06,890 --> 00:04:08,780
+It tallies up the middles.
+
+82
+00:04:08,780 --> 00:04:12,110
+And it does that separately
+from the examples that
+
+83
+00:04:12,110 --> 00:04:14,510
+connect object with subject.
+
+84
+00:04:14,510 --> 00:04:19,490
+And it stores them in separate
+dictionaries under the keys
+
+85
+00:04:19,490 --> 00:04:21,420
+forward and reverse.
+
+86
+00:04:21,420 --> 00:04:23,360
+So we're going to
+have forward middles
+
+87
+00:04:23,360 --> 00:04:26,060
+and reverse middles
+stored separately, stored
+
+88
+00:04:26,060 --> 00:04:30,400
+and counted separately.
+
+89
+00:04:30,400 --> 00:04:32,710
+If we run that code,
+here's what we get.
+
+90
+00:04:32,710 --> 00:04:33,850
+I'm showing results.
+
+91
+00:04:33,850 --> 00:04:36,310
+I'm only going to show
+results for 3 of the relations
+
+92
+00:04:36,310 --> 00:04:38,800
+here, not all 16.
+
+93
+00:04:38,800 --> 00:04:41,050
+All 16 are in the
+Python notebook
+
+94
+00:04:41,050 --> 00:04:42,460
+if you want to take a look.
+
+95
+00:04:42,460 --> 00:04:43,877
+But even from this
+sample, there's
+
+96
+00:04:43,877 --> 00:04:46,030
+a few things that jump out.
+
+97
+00:04:46,030 --> 00:04:48,520
+First, some of the
+most frequent middles
+
+98
+00:04:48,520 --> 00:04:51,590
+are really natural
+and intuitive.
+
+99
+00:04:51,590 --> 00:04:56,710
+For example, comma, "starring"
+indicates a reverse film
+
+100
+00:04:56,710 --> 00:04:59,440
+performance relation.
+
+101
+00:04:59,440 --> 00:05:01,870
+So that would be one
+where the film comes first
+
+102
+00:05:01,870 --> 00:05:04,918
+and the actor comes second.
+
+103
+00:05:04,918 --> 00:05:06,460
+And I think that
+makes perfect sense.
+
+104
+00:05:06,460 --> 00:05:12,040
+Star Wars, comma,
+"starring" Mark Hamill.
+
+105
+00:05:12,040 --> 00:05:17,170
+Similarly, comma, "son of"
+indicates a forward parents
+
+106
+00:05:17,170 --> 00:05:18,200
+relation.
+
+107
+00:05:18,200 --> 00:05:21,550
+So this would be one
+where the son comes first.
+
+108
+00:05:21,550 --> 00:05:26,690
+The child comes first and
+the parent comes second.
+
+109
+00:05:26,690 --> 00:05:29,530
+So those are extremely
+intuitive and it's reassuring
+
+110
+00:05:29,530 --> 00:05:35,870
+to see them near the top of the
+list of most common middles.
+
+111
+00:05:35,870 --> 00:05:39,530
+Another observation is
+that punctuation and stop
+
+112
+00:05:39,530 --> 00:05:45,780
+words, like comma and
+"and" are extremely common.
+
+113
+00:05:45,780 --> 00:05:48,480
+Unlike some other
+NLP applications,
+
+114
+00:05:48,480 --> 00:05:50,880
+it's probably a bad idea
+to throw these away.
+
+115
+00:05:50,880 --> 00:05:54,840
+They carry lots of
+useful information.
+
+116
+00:05:54,840 --> 00:05:57,060
+On the other hand,
+punctuation and stop words
+
+117
+00:05:57,060 --> 00:05:59,770
+tend to be highly ambiguous.
+
+118
+00:05:59,770 --> 00:06:02,550
+For example, if you look
+across the full range of all 16
+
+119
+00:06:02,550 --> 00:06:05,550
+relations, you'll
+see that a bare comma
+
+120
+00:06:05,550 --> 00:06:09,570
+is a likely middle for almost
+every relation in at least
+
+121
+00:06:09,570 --> 00:06:10,930
+one direction.
+
+122
+00:06:10,930 --> 00:06:13,740
+So that comma does very
+often indicate a relation,
+
+123
+00:06:13,740 --> 00:06:18,440
+but it's a really
+ambiguous indicator.
+
+124
+00:06:18,440 --> 00:06:18,940
+OK.
+
+125
+00:06:18,940 --> 00:06:20,982
+Now that we've identified
+the most common middles
+
+126
+00:06:20,982 --> 00:06:23,260
+for each relation, it's
+straightforward to build
+
+127
+00:06:23,260 --> 00:06:26,590
+a classifier based on that
+information, a classifier that
+
+128
+00:06:26,590 --> 00:06:31,090
+predicts true for a candidate
+KB triple, just in case
+
+129
+00:06:31,090 --> 00:06:35,080
+the two entities in the triple
+appear in the corpus connected
+
+130
+00:06:35,080 --> 00:06:37,900
+by one of the phrases
+that we just discovered.
+
+131
+00:06:37,900 --> 00:06:39,470
+I don't show the
+code for that here,
+
+132
+00:06:39,470 --> 00:06:43,390
+but it's in the Python
+notebook for this unit.
+
+133
+00:06:43,390 --> 00:06:45,310
+And when we evaluate
+this approach,
+
+134
+00:06:45,310 --> 00:06:48,310
+we see some really
+interesting results.
+
+135
+00:06:48,310 --> 00:06:52,570
+First, recall is much
+worse across the board.
+
+136
+00:06:52,570 --> 00:06:55,540
+And that makes sense
+because we're no longer just
+
+137
+00:06:55,540 --> 00:06:56,860
+guessing randomly.
+
+138
+00:06:56,860 --> 00:07:00,400
+Before, we were saying
+true half the time.
+
+139
+00:07:00,400 --> 00:07:02,680
+Now, we're going to be a lot
+more selective about what
+
+140
+00:07:02,680 --> 00:07:04,570
+we say true to.
+
+141
+00:07:04,570 --> 00:07:09,790
+But precision and F-score
+have improved dramatically
+
+142
+00:07:09,790 --> 00:07:11,950
+for several
+relations, especially
+
+143
+00:07:11,950 --> 00:07:18,730
+for adjoins and author and
+has_sibling and has_spouse.
+
+144
+00:07:18,730 --> 00:07:20,500
+Then again, there are
+many other relations
+
+145
+00:07:20,500 --> 00:07:25,000
+where precision and F-score
+are still quite poor, including
+
+146
+00:07:25,000 --> 00:07:27,772
+this one genre where
+we get straight zeros
+
+147
+00:07:27,772 --> 00:07:28,480
+across the board.
+
+148
+00:07:28,480 --> 00:07:31,240
+I'm not quite sure
+what happened there.
+
+149
+00:07:31,240 --> 00:07:34,180
+But it indicates
+that although things
+
+150
+00:07:34,180 --> 00:07:37,000
+have improved a
+lot in some places,
+
+151
+00:07:37,000 --> 00:07:39,940
+they're still rather
+poor in others.
+
+152
+00:07:39,940 --> 00:07:43,660
+And our macro-average F-score
+has improved only modestly,
+
+153
+00:07:43,660 --> 00:07:48,208
+so it improved
+from 9.7% to 11.1%.
+
+154
+00:07:48,208 --> 00:07:49,750
+We're heading in
+the right direction,
+
+155
+00:07:49,750 --> 00:07:53,470
+but you'd have to say that's
+still pretty unimpressive.
+
+156
+00:07:53,470 --> 00:07:55,660
+To make significant
+gains, we're going
+
+157
+00:07:55,660 --> 00:07:59,760
+to need to apply
+machine learning.
+
+158
+00:07:59,760 --> 00:08:01,080
+So let's get started on that.
+
+159
+00:08:01,080 --> 00:08:03,690
+We're going to build a very
+simple classifier using
+
+160
+00:08:03,690 --> 00:08:06,600
+an approach that should
+be familiar from our look
+
+161
+00:08:06,600 --> 00:08:09,730
+at sentiment analysis last week.
+
+162
+00:08:09,730 --> 00:08:12,840
+And we're going to start that
+by defining a very simple
+
+163
+00:08:12,840 --> 00:08:15,400
+bag-of-words feature function.
+
+164
+00:08:15,400 --> 00:08:18,510
+So here's the code
+for that, and let
+
+165
+00:08:18,510 --> 00:08:20,100
+me briefly walk you through it.
+
+166
+00:08:20,100 --> 00:08:24,660
+What we're going to do is to get
+the features for a KB triple.
+
+167
+00:08:24,660 --> 00:08:26,850
+That's the kbt here.
+
+168
+00:08:26,850 --> 00:08:30,990
+We're going to find all of
+the corpus examples containing
+
+169
+00:08:30,990 --> 00:08:33,840
+the two entities in the
+KB triple, the subject
+
+170
+00:08:33,840 --> 00:08:34,980
+and the object.
+
+171
+00:08:34,980 --> 00:08:39,058
+And note that we do that in both
+directions, subject and object,
+
+172
+00:08:39,058 --> 00:08:42,349
+and then, also
+object and subject.
+
+173
+00:08:42,350 --> 00:08:45,990
+For each example, we
+look at the middle.
+
+174
+00:08:45,990 --> 00:08:47,850
+We break it into words.
+
+175
+00:08:47,850 --> 00:08:51,490
+And then, we count
+up all the words.
+
+176
+00:08:51,490 --> 00:08:53,390
+So a couple of
+things to note here.
+
+177
+00:08:53,390 --> 00:08:57,160
+One is that the feature
+representation for one KB
+
+178
+00:08:57,160 --> 00:09:02,200
+triple can be derived
+from many corpus examples.
+
+179
+00:09:02,200 --> 00:09:06,040
+And this is the point that I
+was trying to make last time,
+
+180
+00:09:06,040 --> 00:09:10,480
+that we're using the
+corpus to generate features
+
+181
+00:09:10,480 --> 00:09:13,240
+for a candidate KB triple.
+
+182
+00:09:13,240 --> 00:09:16,510
+And the role of the corpus
+is to provide the feature
+
+183
+00:09:16,510 --> 00:09:17,830
+representation.
+
+184
+00:09:17,830 --> 00:09:19,780
+And the feature
+representation for a KB
+
+185
+00:09:19,780 --> 00:09:23,470
+triple will be based
+on all of the examples
+
+186
+00:09:23,470 --> 00:09:26,953
+in the corpus that contain
+those two entities.
+
+187
+00:09:26,953 --> 00:09:28,370
+The other observation
+to make here
+
+188
+00:09:28,370 --> 00:09:31,220
+is that we make no
+distinction between what
+
+189
+00:09:31,220 --> 00:09:34,280
+you might call forward examples,
+which have subject first
+
+190
+00:09:34,280 --> 00:09:37,640
+and then object, and reverse
+examples, which have object
+
+191
+00:09:37,640 --> 00:09:38,750
+and then subject.
+
+192
+00:09:38,750 --> 00:09:40,580
+We're lumping them all together.
+
+193
+00:09:40,580 --> 00:09:44,120
+The words that come from
+the middles of examples
+
+194
+00:09:44,120 --> 00:09:47,240
+in either direction
+all get lumped together
+
+195
+00:09:47,240 --> 00:09:49,172
+into one feature counter.
+
+196
+00:09:49,172 --> 00:09:51,380
+And you might have qualms
+about whether that's really
+
+197
+00:09:51,380 --> 00:09:52,460
+the smartest thing to do.
+
+198
+00:09:52,460 --> 00:09:55,910
+
+
+199
+00:09:55,910 --> 00:09:59,100
+So let's get a sense of what
+this looks like in action.
+
+200
+00:09:59,100 --> 00:10:04,648
+First, let's print out the
+very first KB triple in our KB.
+
+201
+00:10:04,648 --> 00:10:06,190
+We actually looked
+at this last time.
+
+202
+00:10:06,190 --> 00:10:09,046
+It's a KB triple that says--
+
+203
+00:10:09,046 --> 00:10:12,358
+that contains relation, holds
+between Brickfields and Kuala
+
+204
+00:10:12,358 --> 00:10:13,650
+Lumpur Sentral railway station.
+
+205
+00:10:13,650 --> 00:10:17,860
+
+
+206
+00:10:17,860 --> 00:10:21,340
+And now, let's look
+up the first example
+
+207
+00:10:21,340 --> 00:10:22,630
+containing these two entities.
+
+208
+00:10:22,630 --> 00:10:24,963
+I'm just going to look them
+up in the forward direction,
+
+209
+00:10:24,963 --> 00:10:28,360
+subject and object, and
+get all the examples.
+
+210
+00:10:28,360 --> 00:10:31,210
+I look at the first one, and let
+me just point out the middle.
+
+211
+00:10:31,210 --> 00:10:33,730
+The middle says, "It was just
+a quick 10-minute walk to."
+
+212
+00:10:33,730 --> 00:10:35,855
+So I guess the full example
+probably said something
+
+213
+00:10:35,855 --> 00:10:38,680
+like, "From
+Brickfields, it was just
+
+214
+00:10:38,680 --> 00:10:41,650
+a quick 10-minute walk to
+Kuala Lumpur Sentral railway
+
+215
+00:10:41,650 --> 00:10:42,978
+station."
+
+216
+00:10:42,978 --> 00:10:44,020
+And maybe there was more.
+
+217
+00:10:44,020 --> 00:10:47,140
+
+
+218
+00:10:47,140 --> 00:10:51,610
+Now, let's run our
+featurizer on this KB triple
+
+219
+00:10:51,610 --> 00:10:54,320
+and see what features we get.
+
+220
+00:10:54,320 --> 00:10:57,640
+So we get a counter that
+contains "It was just
+
+221
+00:10:57,640 --> 00:11:01,660
+a quick 10-minute
+walk to the--" So it
+
+222
+00:11:01,660 --> 00:11:04,300
+looks like it's counted up the
+words in that middle, which
+
+223
+00:11:04,300 --> 00:11:07,073
+is just what we expected.
+
+224
+00:11:07,073 --> 00:11:09,490
+But if you look closely, there's
+something unexpected here
+
+225
+00:11:09,490 --> 00:11:12,820
+because the word "two"
+has a count of 2,
+
+226
+00:11:12,820 --> 00:11:16,510
+even though it appears
+only once in that middle.
+
+227
+00:11:16,510 --> 00:11:18,850
+And also, the word
+"the" has a count of 1,
+
+228
+00:11:18,850 --> 00:11:22,940
+even though it didn't appear
+in that middle at all.
+
+229
+00:11:22,940 --> 00:11:24,980
+So where did those come from?
+
+230
+00:11:24,980 --> 00:11:27,820
+Well, remember that the
+featurizer counts words
+
+231
+00:11:27,820 --> 00:11:31,960
+from the middles of all examples
+containing those entities
+
+232
+00:11:31,960 --> 00:11:33,920
+in either direction.
+
+233
+00:11:33,920 --> 00:11:36,130
+And it turns out that
+the corpus contains
+
+234
+00:11:36,130 --> 00:11:39,100
+another example containing
+those two entities
+
+235
+00:11:39,100 --> 00:11:41,890
+and that other example has--
+
+236
+00:11:41,890 --> 00:11:44,560
+there's just one other
+example, but that other example
+
+237
+00:11:44,560 --> 00:11:47,080
+has middle "to the."
+
+238
+00:11:47,080 --> 00:11:50,570
+And so, that's where
+these counts come from.
+
+239
+00:11:50,570 --> 00:11:51,342
+So all is well.
+
+240
+00:11:51,342 --> 00:11:52,300
+We did the right thing.
+
+241
+00:11:52,300 --> 00:11:55,080
+
+
+242
+00:11:55,080 --> 00:11:55,620
+OK.
+
+243
+00:11:55,620 --> 00:11:58,070
+We have our simple
+bag-of-words featurizer.
+
+244
+00:11:58,070 --> 00:12:02,190
+Now, we need a way to train
+models to make predictions
+
+245
+00:12:02,190 --> 00:12:04,860
+and to evaluate the results.
+
+246
+00:12:04,860 --> 00:12:08,830
+The RelExt module contains
+functions for each of those.
+
+247
+00:12:08,830 --> 00:12:11,040
+And so, I just want to
+give you a quick tour
+
+248
+00:12:11,040 --> 00:12:13,840
+of what those functions are.
+
+249
+00:12:13,840 --> 00:12:17,530
+But you'll definitely want
+to go read the code for this,
+
+250
+00:12:17,530 --> 00:12:20,970
+so that you're more familiar
+with how it can be used.
+
+251
+00:12:20,970 --> 00:12:24,380
+And a lot of this code appears
+in a file called RelExt,
+
+252
+00:12:24,380 --> 00:12:28,110
+rel_ext.py.
+
+253
+00:12:28,110 --> 00:12:32,670
+So we'll start with a
+function called train models.
+
+254
+00:12:32,670 --> 00:12:35,580
+This takes as arguments
+the dictionary of data
+
+255
+00:12:35,580 --> 00:12:38,130
+splits, a list of featurizers.
+
+256
+00:12:38,130 --> 00:12:39,900
+And here, we have
+a list consisting
+
+257
+00:12:39,900 --> 00:12:43,050
+of just our simple
+bag-of-words featurizer.
+
+258
+00:12:43,050 --> 00:12:45,600
+The name of the split
+on which to train,
+
+259
+00:12:45,600 --> 00:12:47,910
+which defaults to train.
+
+260
+00:12:47,910 --> 00:12:57,180
+And a model factory, which
+is a function that returns
+
+261
+00:12:57,180 --> 00:13:02,106
+a classifier and it's--
+
+262
+00:13:02,106 --> 00:13:05,730
+sorry, a function which
+initializes an Sk classifier.
+
+263
+00:13:05,730 --> 00:13:08,760
+And by default, it's a
+logistic regression classifier,
+
+264
+00:13:08,760 --> 00:13:10,020
+as shown here.
+
+265
+00:13:10,020 --> 00:13:14,580
+But you could easily substitute
+this with some other Sklearn
+
+266
+00:13:14,580 --> 00:13:16,620
+classifier.
+
+267
+00:13:16,620 --> 00:13:20,070
+It returns this thing
+called train_result
+
+268
+00:13:20,070 --> 00:13:24,570
+which is a dictionary holding
+the featurizers, the vectorizer
+
+269
+00:13:24,570 --> 00:13:26,760
+that was used to generate
+the training matrix,
+
+270
+00:13:26,760 --> 00:13:30,090
+and most importantly, a
+dictionary holding the trained
+
+271
+00:13:30,090 --> 00:13:32,700
+models, one per relation.
+
+272
+00:13:32,700 --> 00:13:38,450
+So it's a dictionary which maps
+from relation names to models.
+
+273
+00:13:38,450 --> 00:13:40,760
+So that's train models.
+
+274
+00:13:40,760 --> 00:13:44,630
+Next comes predict,
+this is a function
+
+275
+00:13:44,630 --> 00:13:47,660
+that takes his arguments a
+dictionary of data splits.
+
+276
+00:13:47,660 --> 00:13:53,528
+The output of train models,
+that train results thing,
+
+277
+00:13:53,528 --> 00:13:55,820
+and the name of the split on
+which to make predictions.
+
+278
+00:13:55,820 --> 00:13:58,040
+And by default that's dev.
+
+279
+00:13:58,040 --> 00:14:00,710
+And it returns two
+parallel dictionaries,
+
+280
+00:14:00,710 --> 00:14:03,950
+one holds the predictions
+grouped by relation
+
+281
+00:14:03,950 --> 00:14:06,455
+and the other holds the true
+labels grouped by relation.
+
+282
+00:14:06,455 --> 00:14:09,550
+
+
+283
+00:14:09,550 --> 00:14:13,220
+And our third building block
+is evaluate predictions.
+
+284
+00:14:13,220 --> 00:14:16,660
+So this is a function that
+takes as arguments the two
+
+285
+00:14:16,660 --> 00:14:19,000
+parallel dictionaries
+of predictions
+
+286
+00:14:19,000 --> 00:14:22,520
+and true labels
+produced by predict,
+
+287
+00:14:22,520 --> 00:14:25,970
+and it prints evaluation
+metrics for each relation,
+
+288
+00:14:25,970 --> 00:14:28,970
+like we saw earlier.
+
+289
+00:14:28,970 --> 00:14:30,680
+Now, before we dwell
+on these results,
+
+290
+00:14:30,680 --> 00:14:35,100
+I want to show one
+more function, which is
+
+291
+00:14:35,100 --> 00:14:37,290
+a function called experiment.
+
+292
+00:14:37,290 --> 00:14:40,892
+And experiment simply chains
+together the three functions
+
+293
+00:14:40,892 --> 00:14:41,850
+that I just showed you.
+
+294
+00:14:41,850 --> 00:14:46,350
+It chains together training,
+prediction, and evaluation.
+
+295
+00:14:46,350 --> 00:14:50,350
+So that's very convenient for
+running end to end experiments.
+
+296
+00:14:50,350 --> 00:14:52,807
+I haven't shown all
+the parameters here,
+
+297
+00:14:52,807 --> 00:14:54,390
+but if you go look
+at the source code,
+
+298
+00:14:54,390 --> 00:14:55,765
+you'll see that
+it actually takes
+
+299
+00:14:55,765 --> 00:14:57,670
+a lot of optional parameters.
+
+300
+00:14:57,670 --> 00:15:01,723
+And those parameters let you
+specify everything about how
+
+301
+00:15:01,723 --> 00:15:02,640
+to run the experiment.
+
+302
+00:15:02,640 --> 00:15:05,490
+It lets you specify your
+featurizers, your model
+
+303
+00:15:05,490 --> 00:15:10,260
+factory, which splits to
+train and test on, and more.
+
+304
+00:15:10,260 --> 00:15:14,130
+So for example, earlier, I
+mentioned that the tiny split
+
+305
+00:15:14,130 --> 00:15:17,190
+is really useful for running
+fast experiments to work out
+
+306
+00:15:17,190 --> 00:15:18,360
+the kinks.
+
+307
+00:15:18,360 --> 00:15:20,850
+If you wanted to do
+that, it's very easy
+
+308
+00:15:20,850 --> 00:15:22,950
+using the experiment
+function just
+
+309
+00:15:22,950 --> 00:15:25,620
+to set the training
+split and the test split
+
+310
+00:15:25,620 --> 00:15:28,680
+to tiny to run a very
+quick experiment.
+
+311
+00:15:28,680 --> 00:15:31,780
+
+
+312
+00:15:31,780 --> 00:15:34,120
+Now, here are the
+results of evaluating
+
+313
+00:15:34,120 --> 00:15:38,530
+our simple bag-of-words
+logistic regression classifier.
+
+314
+00:15:38,530 --> 00:15:43,060
+And let's take a closer look,
+because this is quite stunning.
+
+315
+00:15:43,060 --> 00:15:45,430
+Even though this is
+just about the simplest
+
+316
+00:15:45,430 --> 00:15:49,360
+possible classifier,
+we've achieved huge gains
+
+317
+00:15:49,360 --> 00:15:51,650
+over the phrase
+matching approach.
+
+318
+00:15:51,650 --> 00:15:53,200
+The first thing
+that jumps out is
+
+319
+00:15:53,200 --> 00:16:00,370
+that our macro-averaged F-score
+has jumped from 11.1 to 56.7.
+
+320
+00:16:00,370 --> 00:16:02,980
+And we see big
+gains in precision
+
+321
+00:16:02,980 --> 00:16:07,540
+for almost every single
+relation and correspondingly,
+
+322
+00:16:07,540 --> 00:16:11,240
+big gains in F-score.
+
+323
+00:16:11,240 --> 00:16:14,040
+On the other hand, there's still
+plenty of room for improvement.
+
+324
+00:16:14,040 --> 00:16:18,290
+I mean this is much, much
+more impressive than where
+
+325
+00:16:18,290 --> 00:16:22,020
+we were before, but we're
+very far from perfection.
+
+326
+00:16:22,020 --> 00:16:25,130
+There's abundant
+headroom and opportunity
+
+327
+00:16:25,130 --> 00:16:27,400
+to continue to improve.
+
+328
+00:16:27,400 --> 00:16:32,000
+
+

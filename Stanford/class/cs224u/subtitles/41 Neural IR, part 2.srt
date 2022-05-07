@@ -1,0 +1,889 @@
+1
+00:00:00,000 --> 00:00:05,740
+
+
+2
+00:00:05,740 --> 00:00:06,990
+OMAR KHATTAB: Hello, everyone.
+
+3
+00:00:06,990 --> 00:00:11,060
+Welcome to part 4 of our
+series on NLU and IR.
+
+4
+00:00:11,060 --> 00:00:13,190
+This screencast will be
+the second among three
+
+5
+00:00:13,190 --> 00:00:16,358
+of our videos on neural
+information retrieval.
+
+6
+00:00:16,358 --> 00:00:19,170
+
+
+7
+00:00:19,170 --> 00:00:22,530
+Just to recap, this is the
+functional view of neural IR
+
+8
+00:00:22,530 --> 00:00:25,370
+that we left in the
+previous screencast.
+
+9
+00:00:25,370 --> 00:00:28,100
+Our model will take a
+query, and a document,
+
+10
+00:00:28,100 --> 00:00:30,530
+and will then
+output a score that
+
+11
+00:00:30,530 --> 00:00:34,490
+will estimate the relevance
+of this document to the query.
+
+12
+00:00:34,490 --> 00:00:37,820
+We will sort the documents
+by the decreasing score
+
+13
+00:00:37,820 --> 00:00:38,900
+to get the top K results.
+
+14
+00:00:38,900 --> 00:00:41,450
+
+
+15
+00:00:41,450 --> 00:00:44,810
+Let's begin with a
+very effective paradigm
+
+16
+00:00:44,810 --> 00:00:49,060
+for building neural
+IR models, namely
+
+17
+00:00:49,060 --> 00:00:50,637
+query-document interaction.
+
+18
+00:00:50,637 --> 00:00:53,440
+
+
+19
+00:00:53,440 --> 00:00:57,180
+So given a query and a
+document we'll tokenize them.
+
+20
+00:00:57,180 --> 00:00:59,100
+Then we'll embed
+the tokens of each
+
+21
+00:00:59,100 --> 00:01:02,990
+into a static vector
+representation.
+
+22
+00:01:02,990 --> 00:01:06,100
+So these could be GloVe
+vectors, for example,
+
+23
+00:01:06,100 --> 00:01:11,200
+or the initial
+representations of BERT.
+
+24
+00:01:11,200 --> 00:01:14,190
+We'll then build what is called
+a query document interaction
+
+25
+00:01:14,190 --> 00:01:15,180
+matrix.
+
+26
+00:01:15,180 --> 00:01:19,800
+This is typically nothing but
+a matrix of cosine similarities
+
+27
+00:01:19,800 --> 00:01:24,342
+between each pair of
+words across the query
+
+28
+00:01:24,342 --> 00:01:25,050
+and the document.
+
+29
+00:01:25,050 --> 00:01:28,710
+
+
+30
+00:01:28,710 --> 00:01:30,790
+Now that we have
+this matrix, we just
+
+31
+00:01:30,790 --> 00:01:33,070
+need to reduce it to
+a single score that
+
+32
+00:01:33,070 --> 00:01:38,390
+estimates the relevance of
+our document to this query.
+
+33
+00:01:38,390 --> 00:01:40,130
+To do this, we'll
+just learn a bunch
+
+34
+00:01:40,130 --> 00:01:43,310
+of neural layers like
+convolutional or linear layers
+
+35
+00:01:43,310 --> 00:01:48,130
+with pooling until we end
+up with a single score
+
+36
+00:01:48,130 --> 00:01:49,600
+for this query-document pair.
+
+37
+00:01:49,600 --> 00:01:52,860
+
+
+38
+00:01:52,860 --> 00:01:56,850
+Many IR models out there fall
+in this category, especially
+
+39
+00:01:56,850 --> 00:02:00,480
+ones that were introduced
+between 2016 through 2018
+
+40
+00:02:00,480 --> 00:02:04,560
+or 2019.
+
+41
+00:02:04,560 --> 00:02:07,790
+With enough training
+data, query-document human
+
+42
+00:02:07,790 --> 00:02:11,480
+interaction models can achieve
+considerably better quality
+
+43
+00:02:11,480 --> 00:02:14,270
+than Bag-of-Words
+models like BM 25.
+
+44
+00:02:14,270 --> 00:02:17,630
+And they can actually do that
+at a reasonable increase,
+
+45
+00:02:17,630 --> 00:02:19,790
+moderate increase in
+computational cost.
+
+46
+00:02:19,790 --> 00:02:23,260
+
+
+47
+00:02:23,260 --> 00:02:26,370
+So as discussed in the
+previous screencasts,
+
+48
+00:02:26,370 --> 00:02:29,460
+these models are typically
+used as the last stage
+
+49
+00:02:29,460 --> 00:02:31,320
+of every ranking pipeline.
+
+50
+00:02:31,320 --> 00:02:34,650
+And in particular,
+in this figure
+
+51
+00:02:34,650 --> 00:02:36,540
+here, they're used to
+re-rank the top 1,000
+
+52
+00:02:36,540 --> 00:02:39,480
+messages retrieved by BM25.
+
+53
+00:02:39,480 --> 00:02:43,170
+And this is done to make sure
+that the latency is acceptable
+
+54
+00:02:43,170 --> 00:02:46,530
+while still improving
+the MRR and the quality
+
+55
+00:02:46,530 --> 00:02:48,486
+over BM25 retrieval.
+
+56
+00:02:48,486 --> 00:02:55,940
+
+
+57
+00:02:55,940 --> 00:02:59,420
+More recently, in
+2019, the IR community
+
+58
+00:02:59,420 --> 00:03:02,710
+discovered the power
+of BERT for ranking.
+
+59
+00:03:02,710 --> 00:03:06,880
+Functionally, this is very
+similar to the paradigm
+
+60
+00:03:06,880 --> 00:03:10,070
+that we just saw with
+query-document interactions.
+
+61
+00:03:10,070 --> 00:03:12,190
+So here, we're going
+to feed BERT the query
+
+62
+00:03:12,190 --> 00:03:15,370
+and the document as one
+sequence with two segments.
+
+63
+00:03:15,370 --> 00:03:18,370
+One segment for the query and
+one segment for the document as
+
+64
+00:03:18,370 --> 00:03:19,710
+shown.
+
+65
+00:03:19,710 --> 00:03:22,850
+We'll run this through
+all the layers of BERT.
+
+66
+00:03:22,850 --> 00:03:26,600
+And we'll finally extract the
+class token embedding from BERT
+
+67
+00:03:26,600 --> 00:03:29,780
+and reduce it to a single score
+through a final linear head
+
+68
+00:03:29,780 --> 00:03:32,350
+on top of BERT.
+
+69
+00:03:32,350 --> 00:03:35,440
+As you can probably tell, this
+is nothing but a standard BERT
+
+70
+00:03:35,440 --> 00:03:37,330
+classifier, where
+we're going to take
+
+71
+00:03:37,330 --> 00:03:40,540
+the scores or the
+confidence that's
+
+72
+00:03:40,540 --> 00:03:42,250
+the output of the
+classifier and use it
+
+73
+00:03:42,250 --> 00:03:44,790
+for ranking our passages.
+
+74
+00:03:44,790 --> 00:03:47,160
+And like any other
+task with BERT,
+
+75
+00:03:47,160 --> 00:03:49,710
+we should first
+fine-tune this BERT model
+
+76
+00:03:49,710 --> 00:03:55,000
+with appropriate training data
+before we use it for our task.
+
+77
+00:03:55,000 --> 00:03:57,460
+We've discussed how
+to train our models
+
+78
+00:03:57,460 --> 00:04:01,000
+in the previous screencasts,
+so refer to that if you'd like.
+
+79
+00:04:01,000 --> 00:04:03,860
+
+
+80
+00:04:03,860 --> 00:04:06,340
+So this really simple
+model on top of BERT
+
+81
+00:04:06,340 --> 00:04:09,310
+was the foundation for
+tremendous progress in search
+
+82
+00:04:09,310 --> 00:04:12,110
+over the past two years.
+
+83
+00:04:12,110 --> 00:04:15,470
+And in particular,
+it's worth mentioning
+
+84
+00:04:15,470 --> 00:04:17,190
+the first public
+instance of this,
+
+85
+00:04:17,190 --> 00:04:21,320
+which was in January of 2019
+on the MS MARCO Passage Ranking
+
+86
+00:04:21,320 --> 00:04:22,760
+task.
+
+87
+00:04:22,760 --> 00:04:26,900
+Here, Nogueira and Cho made a
+simple BERT-based submission
+
+88
+00:04:26,900 --> 00:04:30,470
+to the leaderboard of MS
+MARCO that demonstrated
+
+89
+00:04:30,470 --> 00:04:33,680
+dramatic gains over the previous
+state of the art submitted
+
+90
+00:04:33,680 --> 00:04:36,150
+just a few days prior.
+
+91
+00:04:36,150 --> 00:04:38,820
+By October of 2019,
+almost exactly one year
+
+92
+00:04:38,820 --> 00:04:41,310
+after BERT originally
+came out, Google
+
+93
+00:04:41,310 --> 00:04:44,160
+had publicly discussed
+the use of BERT in search.
+
+94
+00:04:44,160 --> 00:04:48,090
+And Bing followed soon after
+in November of the same year.
+
+95
+00:04:48,090 --> 00:04:54,240
+
+
+96
+00:04:54,240 --> 00:04:57,090
+But the story is actually
+a bit more complicated.
+
+97
+00:04:57,090 --> 00:04:59,400
+These very large
+gains in quality
+
+98
+00:04:59,400 --> 00:05:03,180
+came at a drastic increase
+in computational cost,
+
+99
+00:05:03,180 --> 00:05:06,200
+which dictates
+latency, and which
+
+100
+00:05:06,200 --> 00:05:09,353
+is very important for user
+experience in search tasks
+
+101
+00:05:09,353 --> 00:05:10,520
+as we have discussed before.
+
+102
+00:05:10,520 --> 00:05:13,230
+
+
+103
+00:05:13,230 --> 00:05:17,390
+So over a simple query
+document interaction
+
+104
+00:05:17,390 --> 00:05:22,640
+models like Duet or ConvKNRM,
+Nogueira and Cho's BERT models
+
+105
+00:05:22,640 --> 00:05:27,770
+increase MRR by over 8 points
+but also increase latency
+
+106
+00:05:27,770 --> 00:05:31,230
+to multiple seconds per query.
+
+107
+00:05:31,230 --> 00:05:36,780
+And so here it is natural for us
+to ask ourselves the question,
+
+108
+00:05:36,780 --> 00:05:42,760
+if we could achieve high
+MRR and low latency at once.
+
+109
+00:05:42,760 --> 00:05:44,860
+And it turns out that
+the answer is yes,
+
+110
+00:05:44,860 --> 00:05:47,405
+but it will take a lot
+of progress to get there.
+
+111
+00:05:47,405 --> 00:05:49,780
+And we'll try to cover that
+in the rest of the screencast
+
+112
+00:05:49,780 --> 00:05:50,860
+in the next one.
+
+113
+00:05:50,860 --> 00:05:54,450
+So let's get started with that.
+
+114
+00:05:54,450 --> 00:05:57,420
+So to seek better trade offs
+between quality and latency,
+
+115
+00:05:57,420 --> 00:05:59,840
+which is our goal,
+let's think about why
+
+116
+00:05:59,840 --> 00:06:02,180
+BERT rankers are so slow.
+
+117
+00:06:02,180 --> 00:06:04,070
+Our first observation
+here will be
+
+118
+00:06:04,070 --> 00:06:06,230
+that BERT rankers
+are quite redundant
+
+119
+00:06:06,230 --> 00:06:08,600
+in their computations.
+
+120
+00:06:08,600 --> 00:06:11,930
+If you think about
+what BERT rankers do,
+
+121
+00:06:11,930 --> 00:06:15,560
+they need to compute a
+contextualized representation
+
+122
+00:06:15,560 --> 00:06:18,140
+of the query for each
+document that we rank.
+
+123
+00:06:18,140 --> 00:06:21,860
+So that's 1,000 times
+for 1,000 documents.
+
+124
+00:06:21,860 --> 00:06:24,230
+And they also must
+encode each document
+
+125
+00:06:24,230 --> 00:06:26,783
+for every single
+query that comes along
+
+126
+00:06:26,783 --> 00:06:28,325
+that needs a score
+for that document.
+
+127
+00:06:28,325 --> 00:06:30,830
+
+
+128
+00:06:30,830 --> 00:06:34,670
+Of course, we have the documents
+in our collections in advance,
+
+129
+00:06:34,670 --> 00:06:36,590
+and we can do as
+much preprocessing
+
+130
+00:06:36,590 --> 00:06:40,650
+as we want on them offline
+before we get any queries.
+
+131
+00:06:40,650 --> 00:06:43,430
+So the question becomes,
+can we somehow precompute
+
+132
+00:06:43,430 --> 00:06:45,380
+some form of document
+representations
+
+133
+00:06:45,380 --> 00:06:48,500
+in advance once and for all
+using these powerful models
+
+134
+00:06:48,500 --> 00:06:51,650
+that we have like BERT, and
+store these representations
+
+135
+00:06:51,650 --> 00:06:54,890
+or cache them somewhere so
+we can just use them quickly
+
+136
+00:06:54,890 --> 00:06:57,510
+every time we have
+a query to answer?
+
+137
+00:06:57,510 --> 00:06:59,000
+This will be our
+guiding question
+
+138
+00:06:59,000 --> 00:07:03,700
+for the remainder of this
+and the next screencasts.
+
+139
+00:07:03,700 --> 00:07:07,210
+Of course, it is not actually
+obvious yet, at least,
+
+140
+00:07:07,210 --> 00:07:09,850
+if we can pre-compute such
+representations in advance
+
+141
+00:07:09,850 --> 00:07:13,910
+without much loss in quality
+for all we know so far,
+
+142
+00:07:13,910 --> 00:07:16,900
+there might be a lot
+of empirical value
+
+143
+00:07:16,900 --> 00:07:19,810
+in jointly representing
+queries and documents at once.
+
+144
+00:07:19,810 --> 00:07:22,470
+
+
+145
+00:07:22,470 --> 00:07:26,070
+But we'll put this
+hypothesis to the test.
+
+146
+00:07:26,070 --> 00:07:29,130
+The first approach to tame the
+computational latency of BERT
+
+147
+00:07:29,130 --> 00:07:32,680
+for IR is learning term weights.
+
+148
+00:07:32,680 --> 00:07:37,150
+The key observation here is that
+Bag-of-Words models like BM25,
+
+149
+00:07:37,150 --> 00:07:39,340
+it composed the score
+of every document
+
+150
+00:07:39,340 --> 00:07:41,890
+into a summation of
+term document weights,
+
+151
+00:07:41,890 --> 00:07:44,210
+and maybe, we can do the same.
+
+152
+00:07:44,210 --> 00:07:46,750
+So can we learn these
+term weights with BERT
+
+153
+00:07:46,750 --> 00:07:48,570
+in particular?
+
+154
+00:07:48,570 --> 00:07:51,690
+A simple way to do this
+would be to tokenize
+
+155
+00:07:51,690 --> 00:07:53,900
+a query and the document.
+
+156
+00:07:53,900 --> 00:07:58,770
+Feed BERT, only the
+document, and use
+
+157
+00:07:58,770 --> 00:08:02,530
+a linear layer to project
+each token in the document
+
+158
+00:08:02,530 --> 00:08:05,740
+into a single numeric score.
+
+159
+00:08:05,740 --> 00:08:08,590
+The idea here is that we
+can save these document term
+
+160
+00:08:08,590 --> 00:08:10,750
+weights to the inverted
+index just like we
+
+161
+00:08:10,750 --> 00:08:15,940
+did with BM25 and classical IR
+and quickly look up these term
+
+162
+00:08:15,940 --> 00:08:18,830
+weights when answering a query.
+
+163
+00:08:18,830 --> 00:08:21,640
+This makes sure we do not
+need to use BERT at all when
+
+164
+00:08:21,640 --> 00:08:28,050
+answering a query as we just
+shifted all of our BERT work
+
+165
+00:08:28,050 --> 00:08:29,940
+offline to the indexing stage.
+
+166
+00:08:29,940 --> 00:08:34,039
+
+
+167
+00:08:34,039 --> 00:08:35,539
+So this can be really great.
+
+168
+00:08:35,539 --> 00:08:38,330
+We now get to use BERT to
+learn much stronger term
+
+169
+00:08:38,330 --> 00:08:39,080
+weights than BM25.
+
+170
+00:08:39,080 --> 00:08:41,900
+
+
+171
+00:08:41,900 --> 00:08:45,170
+And DeepCT and doc2query
+are two major models
+
+172
+00:08:45,170 --> 00:08:47,850
+under this efficient paradigm.
+
+173
+00:08:47,850 --> 00:08:50,760
+As the figure shows
+at the bottom,
+
+174
+00:08:50,760 --> 00:08:53,910
+they indeed greatly
+outperform BM25 and MRR,
+
+175
+00:08:53,910 --> 00:08:55,680
+but actually, they
+have comparable latency
+
+176
+00:08:55,680 --> 00:08:57,510
+because we're still
+using an inverted index
+
+177
+00:08:57,510 --> 00:08:59,690
+to do that retrieval.
+
+178
+00:08:59,690 --> 00:09:02,960
+However, the downside
+is that our query
+
+179
+00:09:02,960 --> 00:09:05,330
+is back to being a
+Bag-of-Words, and we
+
+180
+00:09:05,330 --> 00:09:08,570
+lose any deeper understanding
+of our queries beyond that.
+
+181
+00:09:08,570 --> 00:09:11,300
+
+
+182
+00:09:11,300 --> 00:09:14,500
+So our central question
+remains whether we can jointly
+
+183
+00:09:14,500 --> 00:09:18,500
+achieve high MRR and
+low computational cost.
+
+184
+00:09:18,500 --> 00:09:20,890
+And as we said before,
+the answer is yes.
+
+185
+00:09:20,890 --> 00:09:24,550
+And to do this, we'll discuss
+in the next screencast
+
+186
+00:09:24,550 --> 00:09:27,580
+two very exciting paradigms
+of neural IR models
+
+187
+00:09:27,580 --> 00:09:30,450
+that get us close to this goal.
+
+188
+00:09:30,450 --> 00:09:35,254
+
+

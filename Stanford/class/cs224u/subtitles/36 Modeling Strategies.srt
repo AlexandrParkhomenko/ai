@@ -1,0 +1,1546 @@
+1
+00:00:00,000 --> 00:00:04,348
+
+
+2
+00:00:04,348 --> 00:00:05,640
+CHRIS POTTS: Welcome, everyone.
+
+3
+00:00:05,640 --> 00:00:08,000
+This is part 4 in our series
+on Natural Language Inference.
+
+4
+00:00:08,000 --> 00:00:10,380
+We're going to be talking about
+different modeling strategies.
+
+5
+00:00:10,380 --> 00:00:12,590
+You might think of this
+screencast as a companion
+
+6
+00:00:12,590 --> 00:00:14,810
+to the associated
+notebook that explores
+
+7
+00:00:14,810 --> 00:00:16,490
+a lot of different
+modeling ideas
+
+8
+00:00:16,490 --> 00:00:18,710
+and suggests some architectural
+variations that you
+
+9
+00:00:18,710 --> 00:00:20,555
+might explore yourself.
+
+10
+00:00:20,555 --> 00:00:23,180
+I thought we would start by just
+considering hand-built feature
+
+11
+00:00:23,180 --> 00:00:26,420
+functions because they can still
+be quite powerful for the NLI
+
+12
+00:00:26,420 --> 00:00:27,600
+problem.
+
+13
+00:00:27,600 --> 00:00:29,810
+So some standard
+hand-built feature ideas
+
+14
+00:00:29,810 --> 00:00:32,150
+include, as a kind
+of baseline, word
+
+15
+00:00:32,150 --> 00:00:34,670
+overlap between the
+premise and hypothesis.
+
+16
+00:00:34,670 --> 00:00:38,600
+This is giving you a kind of
+pretty small feature space,
+
+17
+00:00:38,600 --> 00:00:41,600
+essentially measuring how the
+premise and hypothesis are
+
+18
+00:00:41,600 --> 00:00:43,150
+alike.
+
+19
+00:00:43,150 --> 00:00:44,740
+If you want to
+step it up a level,
+
+20
+00:00:44,740 --> 00:00:47,200
+you could consider the word
+cross-product features,
+
+21
+00:00:47,200 --> 00:00:49,720
+which you just consider
+as its feature space
+
+22
+00:00:49,720 --> 00:00:52,300
+every pairing of a word
+in the premise and a word
+
+23
+00:00:52,300 --> 00:00:53,720
+in the hypothesis.
+
+24
+00:00:53,720 --> 00:00:56,290
+This will give you a
+massive feature space.
+
+25
+00:00:56,290 --> 00:00:57,220
+Very large.
+
+26
+00:00:57,220 --> 00:00:59,648
+Very sparse, but the
+intuition behind it
+
+27
+00:00:59,648 --> 00:01:01,690
+might be that you're
+allowing your model a chance
+
+28
+00:01:01,690 --> 00:01:04,900
+to discover points of
+alignment, and disalignment
+
+29
+00:01:04,900 --> 00:01:07,150
+between the premise
+and the hypothesis.
+
+30
+00:01:07,150 --> 00:01:09,680
+And so that could
+be very powerful.
+
+31
+00:01:09,680 --> 00:01:12,490
+You might also consider
+additional WordNet relations,
+
+32
+00:01:12,490 --> 00:01:13,900
+bringing those in.
+
+33
+00:01:13,900 --> 00:01:15,490
+These would be things
+like entailment,
+
+34
+00:01:15,490 --> 00:01:18,400
+and contradiction,
+antonomy, synonymy.
+
+35
+00:01:18,400 --> 00:01:20,230
+And those of course,
+could be nicely keyed
+
+36
+00:01:20,230 --> 00:01:23,970
+into the underlying
+logic of the NLI problem.
+
+37
+00:01:23,970 --> 00:01:26,880
+Edit distance is another
+common feature and just
+
+38
+00:01:26,880 --> 00:01:29,790
+a raw float valued between
+premise and hypothesis
+
+39
+00:01:29,790 --> 00:01:33,930
+as a kind of high level way
+of comparing those two texts.
+
+40
+00:01:33,930 --> 00:01:36,660
+Word differences might
+be a nice juxtaposition
+
+41
+00:01:36,660 --> 00:01:37,627
+with word overlap.
+
+42
+00:01:37,627 --> 00:01:39,210
+You could be considering
+ways in which
+
+43
+00:01:39,210 --> 00:01:41,460
+the premise and the
+hypothesis contrast
+
+44
+00:01:41,460 --> 00:01:44,170
+with each other in
+that feature space.
+
+45
+00:01:44,170 --> 00:01:46,660
+And we have had also moved
+to alignment-based features.
+
+46
+00:01:46,660 --> 00:01:48,250
+I mentioned that
+word cross-product
+
+47
+00:01:48,250 --> 00:01:50,800
+is kind of an attempt
+to have the model learn
+
+48
+00:01:50,800 --> 00:01:53,410
+points of alignment between
+the premise and hypothesis.
+
+49
+00:01:53,410 --> 00:01:55,960
+But of course, we can also
+do some things kind of
+
+50
+00:01:55,960 --> 00:01:58,600
+even before we begin to
+learn feature rates, trying
+
+51
+00:01:58,600 --> 00:02:00,490
+to figure out which
+pieces in the premise
+
+52
+00:02:00,490 --> 00:02:04,060
+correspond to which
+pieces in the hypothesis.
+
+53
+00:02:04,060 --> 00:02:05,380
+We could consider negation.
+
+54
+00:02:05,380 --> 00:02:08,110
+We've seen of course that that's
+an important indicator function
+
+55
+00:02:08,110 --> 00:02:10,000
+in a lot of NLI data sets.
+
+56
+00:02:10,000 --> 00:02:11,900
+There's a powerful
+intuition behind that,
+
+57
+00:02:11,900 --> 00:02:14,025
+especially as it pertains
+to contradiction.
+
+58
+00:02:14,025 --> 00:02:16,150
+And so maybe, we would
+write some feature functions
+
+59
+00:02:16,150 --> 00:02:18,550
+that were explicitly
+keyed in to the presence
+
+60
+00:02:18,550 --> 00:02:20,800
+or absence of negation
+in various spots
+
+61
+00:02:20,800 --> 00:02:23,590
+in the premise and hypothesis.
+
+62
+00:02:23,590 --> 00:02:25,570
+And we can also step
+that up a level as well
+
+63
+00:02:25,570 --> 00:02:27,790
+and consider, more
+generally, all kinds
+
+64
+00:02:27,790 --> 00:02:30,220
+of different interesting
+quantifier relationships that
+
+65
+00:02:30,220 --> 00:02:34,000
+would hold possibly at the level
+of an alignment as in item 6
+
+66
+00:02:34,000 --> 00:02:36,520
+here between the
+premise and hypothesis.
+
+67
+00:02:36,520 --> 00:02:40,420
+And this is kind of keyed into
+the underlying logic of the NLI
+
+68
+00:02:40,420 --> 00:02:41,830
+problem.
+
+69
+00:02:41,830 --> 00:02:43,990
+And then finally, named
+entity recognition.
+
+70
+00:02:43,990 --> 00:02:45,850
+We've seen that
+these features might
+
+71
+00:02:45,850 --> 00:02:47,650
+be important in
+figuring out which
+
+72
+00:02:47,650 --> 00:02:50,930
+entities co-refer across
+the premise and hypotheses.
+
+73
+00:02:50,930 --> 00:02:53,710
+And so having some devices
+for figuring that out
+
+74
+00:02:53,710 --> 00:02:56,830
+could be useful as a kind
+of low level grounding
+
+75
+00:02:56,830 --> 00:02:57,610
+for your system.
+
+76
+00:02:57,610 --> 00:03:00,830
+
+
+77
+00:03:00,830 --> 00:03:02,710
+Now let's move
+into a mode that's
+
+78
+00:03:02,710 --> 00:03:05,980
+more like the deep learning
+mode because as we saw earlier
+
+79
+00:03:05,980 --> 00:03:08,530
+in this screencast series,
+these models have proven that
+
+80
+00:03:08,530 --> 00:03:11,680
+at this point to be the most
+powerful models for the NLI
+
+81
+00:03:11,680 --> 00:03:12,230
+problem.
+
+82
+00:03:12,230 --> 00:03:14,890
+So it's productive to think also
+about different deep learning
+
+83
+00:03:14,890 --> 00:03:15,608
+architectures.
+
+84
+00:03:15,608 --> 00:03:17,650
+And I'd like to start with
+what I've called here,
+
+85
+00:03:17,650 --> 00:03:19,450
+sentence encoding models.
+
+86
+00:03:19,450 --> 00:03:21,430
+And the most basic
+form of that would
+
+87
+00:03:21,430 --> 00:03:24,250
+return to the idea of
+distributed representations
+
+88
+00:03:24,250 --> 00:03:25,600
+as features.
+
+89
+00:03:25,600 --> 00:03:29,110
+So the idea here is that we
+have in this diagram the premise
+
+90
+00:03:29,110 --> 00:03:30,590
+and the hypothesis.
+
+91
+00:03:30,590 --> 00:03:32,300
+So the premise is,
+"Every dog danced,"
+
+92
+00:03:32,300 --> 00:03:35,140
+then the hypothesis is,
+"Every poodle moved."
+
+93
+00:03:35,140 --> 00:03:37,990
+And our approach using
+distributed representations,
+
+94
+00:03:37,990 --> 00:03:39,910
+the simplest one,
+would be that we're
+
+95
+00:03:39,910 --> 00:03:41,890
+going to simply look
+up all of those words
+
+96
+00:03:41,890 --> 00:03:44,560
+in some fixed embedding space,
+which would be like a GloVe
+
+97
+00:03:44,560 --> 00:03:46,503
+embedding space, for example.
+
+98
+00:03:46,503 --> 00:03:47,920
+And then we're
+going to separately
+
+99
+00:03:47,920 --> 00:03:50,950
+encode the premise and
+hypothesis by, for example,
+
+100
+00:03:50,950 --> 00:03:54,130
+doing the sum or
+average of the vectors
+
+101
+00:03:54,130 --> 00:03:55,720
+in each of those two texts.
+
+102
+00:03:55,720 --> 00:03:59,200
+And so that gives us
+a vector xp and xh.
+
+103
+00:03:59,200 --> 00:04:01,690
+And then we might
+concatenate those two
+
+104
+00:04:01,690 --> 00:04:03,940
+or do something, some
+other kind of comparison
+
+105
+00:04:03,940 --> 00:04:06,820
+like difference,
+or max, or mean,
+
+106
+00:04:06,820 --> 00:04:08,440
+to get a single
+fixed dimensional
+
+107
+00:04:08,440 --> 00:04:11,890
+representation x that is
+then the input to a kind of,
+
+108
+00:04:11,890 --> 00:04:14,620
+could be a simple
+softmax classifier.
+
+109
+00:04:14,620 --> 00:04:17,350
+So all we've done here
+is take our old approach
+
+110
+00:04:17,350 --> 00:04:19,990
+using distributed
+representations as features
+
+111
+00:04:19,990 --> 00:04:21,970
+and move it into
+the NLI problem,
+
+112
+00:04:21,970 --> 00:04:24,460
+where we have both the
+premise and hypothesis.
+
+113
+00:04:24,460 --> 00:04:26,500
+And I've called this a
+sentence encoding model
+
+114
+00:04:26,500 --> 00:04:29,473
+because we are separately
+encoding the two sentences.
+
+115
+00:04:29,473 --> 00:04:31,390
+And then the model is
+going to learn, we hope,
+
+116
+00:04:31,390 --> 00:04:36,270
+something about how those
+two representations interact.
+
+117
+00:04:36,270 --> 00:04:39,270
+On this slide and the next,
+I've given a complete recipe
+
+118
+00:04:39,270 --> 00:04:41,760
+for doing exactly
+what I just described.
+
+119
+00:04:41,760 --> 00:04:43,260
+I'm not going to
+linger over it here
+
+120
+00:04:43,260 --> 00:04:44,718
+because it's also
+in the notebooks.
+
+121
+00:04:44,718 --> 00:04:47,100
+And it just shows you how
+using our course code--
+
+122
+00:04:47,100 --> 00:04:50,070
+it can be relatively easy
+to set up models like this.
+
+123
+00:04:50,070 --> 00:04:52,860
+Most of the code is devoted
+to doing the low level
+
+124
+00:04:52,860 --> 00:04:58,880
+processing of the words
+into their embedding space.
+
+125
+00:04:58,880 --> 00:05:00,988
+Here's the rationale for
+sentence-encoding models.
+
+126
+00:05:00,988 --> 00:05:02,780
+I think this is kind
+of interesting, right?
+
+127
+00:05:02,780 --> 00:05:05,210
+We might want to encode
+the premise and hypothesis
+
+128
+00:05:05,210 --> 00:05:08,030
+separately in order to
+give the model a chance
+
+129
+00:05:08,030 --> 00:05:13,130
+to find rich abstract
+relationships between them.
+
+130
+00:05:13,130 --> 00:05:16,250
+The sentence encoding approach
+might also facilitate transfer
+
+131
+00:05:16,250 --> 00:05:18,320
+to other kinds of tasks,
+right, to the extent
+
+132
+00:05:18,320 --> 00:05:20,750
+that we are separately
+encoding the two sentences.
+
+133
+00:05:20,750 --> 00:05:23,480
+We might have sentence
+level representations
+
+134
+00:05:23,480 --> 00:05:25,370
+that are useful
+even for problems
+
+135
+00:05:25,370 --> 00:05:28,490
+that don't fit into the
+specific NLI mode of having
+
+136
+00:05:28,490 --> 00:05:30,860
+a single premise and
+a single hypothesis
+
+137
+00:05:30,860 --> 00:05:32,185
+for the sake of classification.
+
+138
+00:05:32,185 --> 00:05:33,560
+And that can be
+an important part
+
+139
+00:05:33,560 --> 00:05:36,410
+of that vision from
+Dagan et al that NLI
+
+140
+00:05:36,410 --> 00:05:40,010
+is a kind of source of
+effective pretraining for more
+
+141
+00:05:40,010 --> 00:05:42,680
+general problems.
+
+142
+00:05:42,680 --> 00:05:44,588
+Let's move to a
+more complex model.
+
+143
+00:05:44,588 --> 00:05:46,880
+We'll follow the same narrative
+that we've used before.
+
+144
+00:05:46,880 --> 00:05:48,608
+We just had that
+simple fixed model
+
+145
+00:05:48,608 --> 00:05:50,150
+that was going to
+combine the premise
+
+146
+00:05:50,150 --> 00:05:52,490
+and hypothesis via
+some fixed function,
+
+147
+00:05:52,490 --> 00:05:55,412
+like sum, or average, or max.
+
+148
+00:05:55,412 --> 00:05:56,870
+Here, we're going
+to have functions
+
+149
+00:05:56,870 --> 00:05:59,180
+that learn about how those
+interactions should happen,
+
+150
+00:05:59,180 --> 00:06:01,850
+but we're going to follow
+the sentence encoding mode.
+
+151
+00:06:01,850 --> 00:06:03,200
+So I have our same example.
+
+152
+00:06:03,200 --> 00:06:05,600
+"Every dog danced," and,
+"Every poodle moved."
+
+153
+00:06:05,600 --> 00:06:07,520
+And the idea is that
+each one of those
+
+154
+00:06:07,520 --> 00:06:10,730
+is processed by its own,
+separate recurrent neural
+
+155
+00:06:10,730 --> 00:06:11,270
+network.
+
+156
+00:06:11,270 --> 00:06:14,330
+And I've indicated in green that
+although these two models would
+
+157
+00:06:14,330 --> 00:06:16,730
+have the same structure,
+these are different parameters
+
+158
+00:06:16,730 --> 00:06:19,230
+for the premise and hypothesis.
+
+159
+00:06:19,230 --> 00:06:22,190
+So they function separately and
+then in the simplest approach,
+
+160
+00:06:22,190 --> 00:06:25,310
+we would take the final hidden
+representation from each
+
+161
+00:06:25,310 --> 00:06:27,410
+of those and combine
+them somehow,
+
+162
+00:06:27,410 --> 00:06:29,300
+probably would be
+a concatenation.
+
+163
+00:06:29,300 --> 00:06:31,910
+And that would be the input
+to the final classifier
+
+164
+00:06:31,910 --> 00:06:36,330
+layer or layers that actually
+learn the NLI problem.
+
+165
+00:06:36,330 --> 00:06:38,600
+So it's a sentence-encoding
+approach in the sense
+
+166
+00:06:38,600 --> 00:06:42,410
+that h3 and hd are taken to
+be kind of separate summary
+
+167
+00:06:42,410 --> 00:06:45,930
+representations of the premise
+and hypothesis respectively.
+
+168
+00:06:45,930 --> 00:06:48,470
+And we have a vision that
+those representations
+
+169
+00:06:48,470 --> 00:06:51,320
+might be independently useful
+even outside of the NLI
+
+170
+00:06:51,320 --> 00:06:53,440
+context.
+
+171
+00:06:53,440 --> 00:06:58,690
+Now, in the associated
+notebook, nli_02_models,
+
+172
+00:06:58,690 --> 00:07:01,150
+there are a bunch of different
+implementations including
+
+173
+00:07:01,150 --> 00:07:06,010
+a full PyTorch implementation
+using R PyTorch based classes
+
+174
+00:07:06,010 --> 00:07:08,110
+of the sentence-encoding
+RNN approach
+
+175
+00:07:08,110 --> 00:07:09,467
+that I just described to you.
+
+176
+00:07:09,467 --> 00:07:11,800
+And I thought I would just
+briefly give you a high level
+
+177
+00:07:11,800 --> 00:07:15,237
+overview of how that
+modeling approach works
+
+178
+00:07:15,237 --> 00:07:17,320
+because they're actually
+just a few moving pieces.
+
+179
+00:07:17,320 --> 00:07:20,780
+And the rest is kind of low
+level implementation details.
+
+180
+00:07:20,780 --> 00:07:22,390
+So the first thing
+that you need to do
+
+181
+00:07:22,390 --> 00:07:27,100
+is modify the dataset class
+so that conceptually, it
+
+182
+00:07:27,100 --> 00:07:30,130
+is going to create lists
+of pairs of examples
+
+183
+00:07:30,130 --> 00:07:32,830
+with their lengths and
+their associated labels.
+
+184
+00:07:32,830 --> 00:07:34,960
+By default, the underlying
+code that we're using
+
+185
+00:07:34,960 --> 00:07:38,590
+expects one sequence of tokens,
+one length, and one label.
+
+186
+00:07:38,590 --> 00:07:40,270
+And here, we just
+need to raise that
+
+187
+00:07:40,270 --> 00:07:42,220
+up so that we have two
+as you can see here.
+
+188
+00:07:42,220 --> 00:07:43,180
+Every dog danced.
+
+189
+00:07:43,180 --> 00:07:44,230
+Every poodle moved.
+
+190
+00:07:44,230 --> 00:07:47,470
+Both happened to have length 3,
+and their label is entailment.
+
+191
+00:07:47,470 --> 00:07:49,630
+So we make some changes
+to the dataset class
+
+192
+00:07:49,630 --> 00:07:53,970
+to accommodate that change
+in format, essentially.
+
+193
+00:07:53,970 --> 00:07:59,790
+Then the core model for this
+is conceptually just two RNNs.
+
+194
+00:07:59,790 --> 00:08:02,220
+And the forward method
+is just essentially,
+
+195
+00:08:02,220 --> 00:08:05,040
+bringing those two pieces
+together and feeding them
+
+196
+00:08:05,040 --> 00:08:07,110
+to the subsequent
+classifier layers.
+
+197
+00:08:07,110 --> 00:08:08,890
+And so that's very
+conceptually natural,
+
+198
+00:08:08,890 --> 00:08:11,700
+and it's just down to having
+two separate RNNs that you
+
+199
+00:08:11,700 --> 00:08:14,400
+implement using the raw
+materials that are already
+
+200
+00:08:14,400 --> 00:08:16,200
+there in the code.
+
+201
+00:08:16,200 --> 00:08:19,550
+And then finally for the actual
+interface, the TorchRNNSentence
+
+202
+00:08:19,550 --> 00:08:22,230
+EncoderClassifier,
+this is basically
+
+203
+00:08:22,230 --> 00:08:25,020
+unchanged with the
+one modification
+
+204
+00:08:25,020 --> 00:08:27,110
+that you need to change
+the predict problem
+
+205
+00:08:27,110 --> 00:08:29,640
+method, the fundamental
+method for prediction,
+
+206
+00:08:29,640 --> 00:08:32,370
+because it too needs to deal
+with this different dataset
+
+207
+00:08:32,370 --> 00:08:34,501
+format that we've
+established up here.
+
+208
+00:08:34,501 --> 00:08:36,459
+And that is, again, a
+kind of low level change.
+
+209
+00:08:36,460 --> 00:08:37,918
+And so what I hope
+you're seeing is
+
+210
+00:08:37,918 --> 00:08:42,240
+that the first and third steps
+are kind of managing the data.
+
+211
+00:08:42,240 --> 00:08:44,159
+And the middle step is
+the one that actually
+
+212
+00:08:44,159 --> 00:08:46,320
+modifies the computation graph.
+
+213
+00:08:46,320 --> 00:08:48,900
+But that step is very intuitive
+because we're basically,
+
+214
+00:08:48,900 --> 00:08:50,130
+just reflecting encode--
+
+215
+00:08:50,130 --> 00:08:52,890
+our idea that we have
+separate RNNs for the premise
+
+216
+00:08:52,890 --> 00:08:55,853
+and hypothesis.
+
+217
+00:08:55,853 --> 00:08:57,520
+And then finally, I
+just want to mention
+
+218
+00:08:57,520 --> 00:08:59,270
+that a common approach
+you see, especially
+
+219
+00:08:59,270 --> 00:09:03,100
+in the early literature, is a
+sentence-encoding TreeNN that
+
+220
+00:09:03,100 --> 00:09:06,340
+has exactly the same intuition
+behind it as the RNNs
+
+221
+00:09:06,340 --> 00:09:09,850
+that we just looked at, except
+that the premise and hypothesis
+
+222
+00:09:09,850 --> 00:09:14,290
+are processed by tree structured
+recursive neural networks.
+
+223
+00:09:14,290 --> 00:09:16,690
+And since the
+underlying dataset often
+
+224
+00:09:16,690 --> 00:09:20,140
+have full parse representations,
+this is an avenue
+
+225
+00:09:20,140 --> 00:09:22,130
+that you could explore.
+
+226
+00:09:22,130 --> 00:09:24,130
+It can be tricky to
+implement these efficiently,
+
+227
+00:09:24,130 --> 00:09:26,890
+but conceptually, it's a kind
+of very natural thing, where
+
+228
+00:09:26,890 --> 00:09:29,290
+you just repeatedly
+have a dense layer
+
+229
+00:09:29,290 --> 00:09:31,510
+at every one of the
+constituent nodes
+
+230
+00:09:31,510 --> 00:09:35,770
+on up to a final
+representation here, pb and pd.
+
+231
+00:09:35,770 --> 00:09:38,080
+That is then then fed
+into the classifier layer
+
+232
+00:09:38,080 --> 00:09:43,017
+in just the way we've done
+for the previous models.
+
+233
+00:09:43,017 --> 00:09:45,350
+So those are the sentence
+including RNNs, now let's move
+
+234
+00:09:45,350 --> 00:09:46,280
+to a different vision.
+
+235
+00:09:46,280 --> 00:09:47,780
+And I've called
+these change models
+
+236
+00:09:47,780 --> 00:09:50,300
+because they're going
+to just mush together
+
+237
+00:09:50,300 --> 00:09:53,270
+the premise and hypothesis, as
+opposed to separately encoding
+
+238
+00:09:53,270 --> 00:09:54,170
+the two.
+
+239
+00:09:54,170 --> 00:09:57,710
+Of course, the simplest thing
+we could do in the chain mode
+
+240
+00:09:57,710 --> 00:09:59,960
+would be to essentially
+ignore the fact that we
+
+241
+00:09:59,960 --> 00:10:02,960
+have two text, the
+premise and hypothesis
+
+242
+00:10:02,960 --> 00:10:05,300
+and just feed them in
+as one long sequence
+
+243
+00:10:05,300 --> 00:10:08,090
+into a standard
+recurrent neural network.
+
+244
+00:10:08,090 --> 00:10:09,860
+And since that
+involves no changes
+
+245
+00:10:09,860 --> 00:10:12,950
+to any of the code we've been
+using for RNN classifiers,
+
+246
+00:10:12,950 --> 00:10:15,200
+it seems like a pretty
+natural baseline.
+
+247
+00:10:15,200 --> 00:10:18,260
+And so that's depicted
+here and actually this
+
+248
+00:10:18,260 --> 00:10:20,570
+can be surprisingly
+effective, all right?
+
+249
+00:10:20,570 --> 00:10:22,360
+The rationale for doing this?
+
+250
+00:10:22,360 --> 00:10:26,750
+In this context here, you could
+say that the premise is simply
+
+251
+00:10:26,750 --> 00:10:29,902
+establishing context for
+processing the hypothesis.
+
+252
+00:10:29,902 --> 00:10:31,610
+And that seems like
+a very natural notion
+
+253
+00:10:31,610 --> 00:10:35,215
+of conditioning on one text
+as you process the second one.
+
+254
+00:10:35,215 --> 00:10:37,340
+And correspondingly, at
+the level of human language
+
+255
+00:10:37,340 --> 00:10:39,710
+processing, this might actually
+correspond to something
+
+256
+00:10:39,710 --> 00:10:43,190
+that we do as we read through
+a premise hypothesis text,
+
+257
+00:10:43,190 --> 00:10:46,470
+and figure out what
+the relationship is.
+
+258
+00:10:46,470 --> 00:10:48,990
+And here's a simple
+recipe for doing this.
+
+259
+00:10:48,990 --> 00:10:51,540
+The one change from the diagram
+that you might think about
+
+260
+00:10:51,540 --> 00:10:54,510
+is that I did when
+representing the examples here.
+
+261
+00:10:54,510 --> 00:10:57,090
+Flatten them, out
+of course, but also,
+
+262
+00:10:57,090 --> 00:10:58,380
+insert this boundary marker.
+
+263
+00:10:58,380 --> 00:10:59,797
+That would at least
+give the model
+
+264
+00:10:59,797 --> 00:11:01,950
+a chance to learn that
+there was a separation
+
+265
+00:11:01,950 --> 00:11:04,380
+happening, some kind of
+transition between the premise
+
+266
+00:11:04,380 --> 00:11:05,818
+and hypothesis.
+
+267
+00:11:05,818 --> 00:11:07,860
+But that's at just the
+level of feature causation
+
+268
+00:11:07,860 --> 00:11:09,090
+and in terms of modeling.
+
+269
+00:11:09,090 --> 00:11:11,040
+You hardly need to make
+any changes in order
+
+270
+00:11:11,040 --> 00:11:14,590
+to run this kind of experiment.
+
+271
+00:11:14,590 --> 00:11:16,600
+We can also think
+about a modification
+
+272
+00:11:16,600 --> 00:11:19,030
+that would bring together
+sentence encoding with chains.
+
+273
+00:11:19,030 --> 00:11:22,850
+And this would be where we have
+two sets of RNN parameters--
+
+274
+00:11:22,850 --> 00:11:24,850
+one for the premise and
+one for the hypothesis.
+
+275
+00:11:24,850 --> 00:11:26,530
+But we nonetheless
+chain them together
+
+276
+00:11:26,530 --> 00:11:28,360
+instead of separately
+encoding them.
+
+277
+00:11:28,360 --> 00:11:32,080
+So as before, I have a
+premise RNN in green.
+
+278
+00:11:32,080 --> 00:11:34,930
+I have a hypothesis
+RNN in purple.
+
+279
+00:11:34,930 --> 00:11:38,170
+They have the same structure but
+different learned parameters.
+
+280
+00:11:38,170 --> 00:11:41,050
+And the handoff is essentially,
+that the initial hidden
+
+281
+00:11:41,050 --> 00:11:42,790
+state for the hypothesis--
+
+282
+00:11:42,790 --> 00:11:45,310
+is the final output
+state for the premise.
+
+283
+00:11:45,310 --> 00:11:47,350
+And then that way, you
+get a seamless transition
+
+284
+00:11:47,350 --> 00:11:49,120
+between these two models.
+
+285
+00:11:49,120 --> 00:11:51,100
+And this would allow
+the models in space
+
+286
+00:11:51,100 --> 00:11:54,730
+to learn that premise,
+tokens, and premise sequences,
+
+287
+00:11:54,730 --> 00:11:56,380
+have a different
+status than those
+
+288
+00:11:56,380 --> 00:11:59,850
+that appear in the hypothesis.
+
+289
+00:11:59,850 --> 00:12:01,470
+And let me just
+close by mentioning
+
+290
+00:12:01,470 --> 00:12:04,690
+a few other strategies because
+this is by no means exhaustive,
+
+291
+00:12:04,690 --> 00:12:07,830
+but it's kind of interesting at
+the high level of architecture
+
+292
+00:12:07,830 --> 00:12:12,090
+thinking about sentence encoding
+versus these chained models.
+
+293
+00:12:12,090 --> 00:12:14,690
+So first, the
+TorchRNN Classifier
+
+294
+00:12:14,690 --> 00:12:17,420
+feeds its hidden state directly
+to the classifier layer.
+
+295
+00:12:17,420 --> 00:12:20,540
+But we have options like
+bidirectional equals true,
+
+296
+00:12:20,540 --> 00:12:23,630
+which would use as the summary
+representation-- both the final
+
+297
+00:12:23,630 --> 00:12:26,480
+and the initial hidden states,
+essentially, and feed those
+
+298
+00:12:26,480 --> 00:12:27,470
+into the classifier.
+
+299
+00:12:27,470 --> 00:12:30,710
+So it's a different notion
+of sentence encoding
+
+300
+00:12:30,710 --> 00:12:33,340
+or of sequence encoding.
+
+301
+00:12:33,340 --> 00:12:34,540
+And other ideas here, right?
+
+302
+00:12:34,540 --> 00:12:36,370
+So we could, instead
+of restricting,
+
+303
+00:12:36,370 --> 00:12:38,950
+just to one or a few
+of the final states
+
+304
+00:12:38,950 --> 00:12:41,530
+do some kind of pooling
+with max or mean across all
+
+305
+00:12:41,530 --> 00:12:43,270
+of the output states.
+
+306
+00:12:43,270 --> 00:12:44,860
+And different
+pooling options can
+
+307
+00:12:44,860 --> 00:12:46,360
+be combined with
+different versions
+
+308
+00:12:46,360 --> 00:12:49,918
+of these models, either
+sentence encoding or chained.
+
+309
+00:12:49,918 --> 00:12:52,210
+We could also, of course,
+have additional hidden layers
+
+310
+00:12:52,210 --> 00:12:55,360
+between the classifier
+layer and the embedding.
+
+311
+00:12:55,360 --> 00:12:57,580
+I've shown you just one
+for the sake of simplicity,
+
+312
+00:12:57,580 --> 00:13:00,460
+but deeper might be better
+especially for the very large
+
+313
+00:13:00,460 --> 00:13:02,600
+NLI datasets that we have.
+
+314
+00:13:02,600 --> 00:13:04,780
+And finally, an important
+source of innovation
+
+315
+00:13:04,780 --> 00:13:07,240
+in this and many other
+spaces is the idea
+
+316
+00:13:07,240 --> 00:13:09,795
+of adding attention
+mechanisms to these models.
+
+317
+00:13:09,795 --> 00:13:11,170
+And that's such
+an important idea
+
+318
+00:13:11,170 --> 00:13:13,690
+that I'm going to save it
+for the next screencast
+
+319
+00:13:13,690 --> 00:13:15,520
+in the series.
+
+320
+00:13:15,520 --> 00:13:20,000
+
+

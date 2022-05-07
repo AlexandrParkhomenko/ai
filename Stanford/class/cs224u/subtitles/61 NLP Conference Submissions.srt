@@ -1,0 +1,2418 @@
+1
+00:00:00,000 --> 00:00:04,628
+
+
+2
+00:00:04,628 --> 00:00:05,920
+CHRIS POTTS: Welcome, everyone.
+
+3
+00:00:05,920 --> 00:00:08,430
+This is part three in our series
+on presenting your research.
+
+4
+00:00:08,430 --> 00:00:10,080
+We're going to be talking
+about the sometimes
+
+5
+00:00:10,080 --> 00:00:11,670
+thrilling and
+sometimes agonizing
+
+6
+00:00:11,670 --> 00:00:15,030
+process of submitting your
+work for publication at an NLP
+
+7
+00:00:15,030 --> 00:00:16,685
+conference.
+
+8
+00:00:16,685 --> 00:00:18,060
+To start, I want
+to review what's
+
+9
+00:00:18,060 --> 00:00:22,080
+known as the anonymity
+period for ACL conferences.
+
+10
+00:00:22,080 --> 00:00:25,470
+All of the ACL conferences that
+have adopted a uniform policy
+
+11
+00:00:25,470 --> 00:00:28,860
+that submitted papers cannot be
+uploaded to repositories like
+
+12
+00:00:28,860 --> 00:00:32,159
+arXiv or made public in other
+ways starting one month from
+
+13
+00:00:32,159 --> 00:00:34,620
+the submission deadline and
+extending through the time when
+
+14
+00:00:34,620 --> 00:00:36,360
+decisions go out.
+
+15
+00:00:36,360 --> 00:00:39,570
+So you should be aware of this,
+and for specific conferences,
+
+16
+00:00:39,570 --> 00:00:41,910
+check their sites
+for the precise date
+
+17
+00:00:41,910 --> 00:00:43,690
+when the embargo
+goes into effect
+
+18
+00:00:43,690 --> 00:00:46,380
+so that you're sure you're
+playing by the rules.
+
+19
+00:00:46,380 --> 00:00:48,270
+The rationale of the
+policy is an attempt
+
+20
+00:00:48,270 --> 00:00:51,120
+to balance the benefits of
+free and fast distribution
+
+21
+00:00:51,120 --> 00:00:54,370
+of new ideas against the
+benefits of double blind peer
+
+22
+00:00:54,370 --> 00:00:54,870
+review.
+
+23
+00:00:54,870 --> 00:00:58,590
+The idea is that we want to
+avoid corrupting reviewers just
+
+24
+00:00:58,590 --> 00:01:00,570
+at the moment that
+they sit down to begin
+
+25
+00:01:00,570 --> 00:01:03,450
+their work of reviewing
+by having them see
+
+26
+00:01:03,450 --> 00:01:06,380
+on arXiv or via Twitter an
+announcement about the paper
+
+27
+00:01:06,380 --> 00:01:08,880
+they're reviewing that reveals
+the authors, and the origins,
+
+28
+00:01:08,880 --> 00:01:11,910
+and so forth, because we know
+that that public announcement
+
+29
+00:01:11,910 --> 00:01:15,220
+would influence their
+decision-making process.
+
+30
+00:01:15,220 --> 00:01:19,500
+So to preserve that balance
+against free dissemination
+
+31
+00:01:19,500 --> 00:01:22,200
+of ideas, we have
+this embargo period
+
+32
+00:01:22,200 --> 00:01:26,210
+around the period where we
+know reviewing will happen.
+
+33
+00:01:26,210 --> 00:01:28,040
+For more on the policy
+and its rationale,
+
+34
+00:01:28,040 --> 00:01:29,482
+you can follow this link here.
+
+35
+00:01:29,482 --> 00:01:31,190
+But I would say that,
+fundamentally, it's
+
+36
+00:01:31,190 --> 00:01:33,380
+an attempt to balance
+these two pressures,
+
+37
+00:01:33,380 --> 00:01:36,760
+the kind of pragmatic
+approach to balancing them.
+
+38
+00:01:36,760 --> 00:01:39,940
+OK, now let's dive into the
+actual process of submitting
+
+39
+00:01:39,940 --> 00:01:42,430
+work for publication and having
+it go through review at one
+
+40
+00:01:42,430 --> 00:01:43,430
+of these conferences.
+
+41
+00:01:43,430 --> 00:01:45,940
+So to start, let's suppose
+you've submitted your paper.
+
+42
+00:01:45,940 --> 00:01:49,180
+When you do that, you'll
+select some area keywords
+
+43
+00:01:49,180 --> 00:01:52,820
+that will help determine which
+committee gets your paper.
+
+44
+00:01:52,820 --> 00:01:54,880
+This is already a
+really important step.
+
+45
+00:01:54,880 --> 00:01:57,400
+You'll be choosing from
+a bunch of keywords that
+
+46
+00:01:57,400 --> 00:01:59,392
+signal different areas of NLP.
+
+47
+00:01:59,392 --> 00:02:00,850
+And what you're
+doing at that point
+
+48
+00:02:00,850 --> 00:02:03,280
+is probably routing your
+paper to certain sets
+
+49
+00:02:03,280 --> 00:02:06,910
+of reviewers and certain
+area chairs and so forth.
+
+50
+00:02:06,910 --> 00:02:08,620
+And in doing that,
+you're creating
+
+51
+00:02:08,620 --> 00:02:10,990
+expectations about the
+kind of contribution
+
+52
+00:02:10,990 --> 00:02:12,260
+that you're making.
+
+53
+00:02:12,260 --> 00:02:14,230
+So if you're unsure
+about this process,
+
+54
+00:02:14,230 --> 00:02:16,840
+I would encourage you to
+recruit an expert in the NLP
+
+55
+00:02:16,840 --> 00:02:20,350
+reviewing process to help you
+make these keyword selections.
+
+56
+00:02:20,350 --> 00:02:22,790
+Here's an example of how
+this could be important.
+
+57
+00:02:22,790 --> 00:02:24,670
+Suppose that your
+paper is fundamentally
+
+58
+00:02:24,670 --> 00:02:26,800
+a new machine
+learning contribution
+
+59
+00:02:26,800 --> 00:02:28,570
+but it reports some
+experiments that
+
+60
+00:02:28,570 --> 00:02:31,870
+involve kind of topics in
+computational social science,
+
+61
+00:02:31,870 --> 00:02:33,880
+it might be really
+a mistake to choose
+
+62
+00:02:33,880 --> 00:02:37,630
+the computational social
+science keyword at this point,
+
+63
+00:02:37,630 --> 00:02:41,530
+because if your paper
+ends up with reviewers who
+
+64
+00:02:41,530 --> 00:02:43,210
+have expectations
+that you'll be making
+
+65
+00:02:43,210 --> 00:02:46,330
+some new and fundamental
+contribution to that area
+
+66
+00:02:46,330 --> 00:02:49,570
+and what they're looking at is
+a machine learning contribution,
+
+67
+00:02:49,570 --> 00:02:52,060
+that mismatch in
+their expectations
+
+68
+00:02:52,060 --> 00:02:53,980
+might lead them to have
+a negative perception
+
+69
+00:02:53,980 --> 00:02:54,970
+of the work.
+
+70
+00:02:54,970 --> 00:02:56,890
+And the reverse of
+course, holds as well.
+
+71
+00:02:56,890 --> 00:03:00,340
+If you have a fundamentally new
+computational social sciences
+
+72
+00:03:00,340 --> 00:03:02,650
+contribution but it
+incidentally makes
+
+73
+00:03:02,650 --> 00:03:04,420
+use of some machine
+learning apparatus,
+
+74
+00:03:04,420 --> 00:03:06,970
+I think it would be a mistake
+to choose machine learning
+
+75
+00:03:06,970 --> 00:03:09,730
+as a keyword, precisely
+because of that mismatch
+
+76
+00:03:09,730 --> 00:03:12,700
+in expectations that would
+result in reviewers' minds
+
+77
+00:03:12,700 --> 00:03:15,410
+when they sat down and
+started reviewing your paper.
+
+78
+00:03:15,410 --> 00:03:18,040
+So think strategically
+about this stage.
+
+79
+00:03:18,040 --> 00:03:20,770
+You can see why it's important
+at this next stage here.
+
+80
+00:03:20,770 --> 00:03:23,200
+Reviewers when they
+begin their work,
+
+81
+00:03:23,200 --> 00:03:25,450
+they're going to first
+scan a long list of titles
+
+82
+00:03:25,450 --> 00:03:28,023
+and abstracts, and they'll
+make bids on which ones
+
+83
+00:03:28,023 --> 00:03:28,690
+they want to do.
+
+84
+00:03:28,690 --> 00:03:31,270
+At this point they signal
+yes or maybe or no,
+
+85
+00:03:31,270 --> 00:03:33,550
+or maybe they indicate
+a conflict of interest,
+
+86
+00:03:33,550 --> 00:03:36,250
+indicating that they can't
+review the paper at all.
+
+87
+00:03:36,250 --> 00:03:39,580
+When they do this, the title
+is probably the primary factor
+
+88
+00:03:39,580 --> 00:03:41,020
+in bidding decisions.
+
+89
+00:03:41,020 --> 00:03:43,822
+They probably have access to
+the abstract at this stage,
+
+90
+00:03:43,822 --> 00:03:45,280
+but they might be
+looking at a list
+
+91
+00:03:45,280 --> 00:03:47,835
+of over 200 different
+contributions,
+
+92
+00:03:47,835 --> 00:03:49,460
+and it's probably
+just too much to ask,
+
+93
+00:03:49,460 --> 00:03:52,070
+that they would read all of
+these abstracts at this stage.
+
+94
+00:03:52,070 --> 00:03:54,040
+So they're probably
+scanning the title
+
+95
+00:03:54,040 --> 00:03:56,890
+and using that as an indication
+about what kind of bids
+
+96
+00:03:56,890 --> 00:03:57,710
+they want to make.
+
+97
+00:03:57,710 --> 00:03:59,710
+So again, you might
+think strategically
+
+98
+00:03:59,710 --> 00:04:01,690
+about your title
+and the role it will
+
+99
+00:04:01,690 --> 00:04:05,890
+play at this early
+stage in the process.
+
+100
+00:04:05,890 --> 00:04:09,250
+After that, the program chairs
+assign reviewers their papers
+
+101
+00:04:09,250 --> 00:04:11,290
+partly based on the
+bidding or maybe
+
+102
+00:04:11,290 --> 00:04:13,730
+partly based on other
+considerations of workloads
+
+103
+00:04:13,730 --> 00:04:14,720
+and so forth.
+
+104
+00:04:14,720 --> 00:04:17,320
+We don't know precisely how
+that process will happen,
+
+105
+00:04:17,320 --> 00:04:21,010
+but by some mechanism your
+paper will be assigned probably
+
+106
+00:04:21,010 --> 00:04:23,950
+three different reviewers.
+
+107
+00:04:23,950 --> 00:04:27,040
+Reviewers read the papers, write
+comments and supply ratings
+
+108
+00:04:27,040 --> 00:04:29,350
+over the course of a few months.
+
+109
+00:04:29,350 --> 00:04:32,020
+At the very end of that
+process, authors are typically
+
+110
+00:04:32,020 --> 00:04:35,260
+allowed to respond
+briefly to the reviews,
+
+111
+00:04:35,260 --> 00:04:37,720
+and then the program
+chair or the area chair
+
+112
+00:04:37,720 --> 00:04:39,550
+might seek to stimulate
+some discussion
+
+113
+00:04:39,550 --> 00:04:42,670
+among the reviewers about
+conflicts between their reviews
+
+114
+00:04:42,670 --> 00:04:44,890
+or maybe places where
+the author responds,
+
+115
+00:04:44,890 --> 00:04:46,420
+and says the reviewers
+are incorrect
+
+116
+00:04:46,420 --> 00:04:48,070
+or misguided or something.
+
+117
+00:04:48,070 --> 00:04:51,760
+We hope that that's a lively and
+rich discussion about the paper
+
+118
+00:04:51,760 --> 00:04:53,680
+that's led by open-minded
+people who are just
+
+119
+00:04:53,680 --> 00:04:56,170
+trying to arrive at the
+best possible recommendation
+
+120
+00:04:56,170 --> 00:04:57,460
+for your paper.
+
+121
+00:04:57,460 --> 00:05:01,330
+That's what we hope at
+this stage in the process.
+
+122
+00:05:01,330 --> 00:05:03,670
+And finally, at the very
+end, the program committee
+
+123
+00:05:03,670 --> 00:05:06,910
+is going to do some magic to
+arrive at the final program
+
+124
+00:05:06,910 --> 00:05:08,720
+based on all of this input.
+
+125
+00:05:08,720 --> 00:05:11,950
+Of course, their reviews and
+ratings will be a major factor,
+
+126
+00:05:11,950 --> 00:05:13,602
+but there might be
+other considerations
+
+127
+00:05:13,602 --> 00:05:15,310
+that they bring in at
+this stage in terms
+
+128
+00:05:15,310 --> 00:05:18,160
+of constructing a diverse
+and interesting program
+
+129
+00:05:18,160 --> 00:05:19,870
+for their conference.
+
+130
+00:05:19,870 --> 00:05:22,030
+At this stage, you
+might get a meta review
+
+131
+00:05:22,030 --> 00:05:24,760
+that provides some insight
+into the final decision making
+
+132
+00:05:24,760 --> 00:05:27,130
+process, although those
+vary in the amount
+
+133
+00:05:27,130 --> 00:05:30,340
+that they actually illuminate
+the behind-the-scenes process
+
+134
+00:05:30,340 --> 00:05:32,380
+that led to the particular
+recommendation that
+
+135
+00:05:32,380 --> 00:05:34,780
+was made by the
+reviewers and area chair.
+
+136
+00:05:34,780 --> 00:05:37,400
+
+
+137
+00:05:37,400 --> 00:05:40,340
+In terms of the work that the
+actual reviewers are doing,
+
+138
+00:05:40,340 --> 00:05:42,500
+I would say that the
+current ACL set up
+
+139
+00:05:42,500 --> 00:05:46,130
+is oriented around structured
+text for the reviews as opposed
+
+140
+00:05:46,130 --> 00:05:50,120
+to providing a lot of
+metadata via ratings.
+
+141
+00:05:50,120 --> 00:05:52,940
+So first, they'll probably
+be asked to just indicate
+
+142
+00:05:52,940 --> 00:05:55,940
+what the paper is about,
+what contributions it makes,
+
+143
+00:05:55,940 --> 00:05:58,180
+and what its main strengths
+and weaknesses are.
+
+144
+00:05:58,180 --> 00:05:59,930
+This is a kind of check
+that they actually
+
+145
+00:05:59,930 --> 00:06:02,660
+understand what's in the paper
+and can articulate what's
+
+146
+00:06:02,660 --> 00:06:05,090
+in the paper, and it
+gives the first indication
+
+147
+00:06:05,090 --> 00:06:07,040
+of their assessment.
+
+148
+00:06:07,040 --> 00:06:11,100
+Next you have reasons to
+accept and reasons to reject.
+
+149
+00:06:11,100 --> 00:06:13,440
+Then there could be a section
+for additional questions
+
+150
+00:06:13,440 --> 00:06:15,780
+and feedback for the authors.
+
+151
+00:06:15,780 --> 00:06:19,080
+Maybe the reviewers can indicate
+missing references and maybe
+
+152
+00:06:19,080 --> 00:06:21,240
+also a catchall
+section for typos,
+
+153
+00:06:21,240 --> 00:06:25,000
+grammar, style, and presentation
+improvements and so forth.
+
+154
+00:06:25,000 --> 00:06:27,420
+But of course, you get two
+really important ratings--
+
+155
+00:06:27,420 --> 00:06:30,720
+the overall recommendation
+and maybe an assessment
+
+156
+00:06:30,720 --> 00:06:34,270
+of the reviewer's confidence
+in their overall evaluation.
+
+157
+00:06:34,270 --> 00:06:36,020
+And then finally, there
+could be a section
+
+158
+00:06:36,020 --> 00:06:38,300
+for confidential information
+that the reviewers want
+
+159
+00:06:38,300 --> 00:06:41,615
+to communicate directly
+to the program committee.
+
+160
+00:06:41,615 --> 00:06:43,490
+That would be hidden
+from the authors as well
+
+161
+00:06:43,490 --> 00:06:45,450
+as the other reviewers.
+
+162
+00:06:45,450 --> 00:06:47,960
+So stepping back, the
+most important pieces
+
+163
+00:06:47,960 --> 00:06:50,270
+of this reviewing
+form are obviously
+
+164
+00:06:50,270 --> 00:06:52,550
+the overall recommendation
+must be balanced
+
+165
+00:06:52,550 --> 00:06:55,850
+against reviewer confidence
+and the reasons to accept
+
+166
+00:06:55,850 --> 00:06:56,870
+and reasons to reject.
+
+167
+00:06:56,870 --> 00:07:00,660
+You can count on the two texts
+that they supply under 2 and 3
+
+168
+00:07:00,660 --> 00:07:04,760
+here as being really important
+to shaping the discussion that
+
+169
+00:07:04,760 --> 00:07:07,220
+happens and the overall
+recommendation that gets made.
+
+170
+00:07:07,220 --> 00:07:10,270
+
+
+171
+00:07:10,270 --> 00:07:11,950
+There's an author
+response period
+
+172
+00:07:11,950 --> 00:07:14,510
+for at least the
+major ACL conferences.
+
+173
+00:07:14,510 --> 00:07:16,180
+This is a chance for
+authors to submit
+
+174
+00:07:16,180 --> 00:07:18,940
+short responses to the reviews.
+
+175
+00:07:18,940 --> 00:07:22,370
+This is a rather uncertain
+business along many dimensions,
+
+176
+00:07:22,370 --> 00:07:24,970
+so let me just
+offer some thoughts.
+
+177
+00:07:24,970 --> 00:07:28,000
+First, many people are
+cynical about author responses
+
+178
+00:07:28,000 --> 00:07:30,670
+since they've observed
+that reviewers rarely
+
+179
+00:07:30,670 --> 00:07:32,680
+change their scores
+afterwards, and I
+
+180
+00:07:32,680 --> 00:07:35,220
+think that is an
+important consideration.
+
+181
+00:07:35,220 --> 00:07:38,110
+However, it might just
+be bad signaling not
+
+182
+00:07:38,110 --> 00:07:39,590
+to submit a response at all.
+
+183
+00:07:39,590 --> 00:07:43,180
+It could incidentally indicate
+to the program committee
+
+184
+00:07:43,180 --> 00:07:46,190
+that you've kind of silently
+opted out of the process,
+
+185
+00:07:46,190 --> 00:07:48,520
+so its mere absence
+could reduce your chances
+
+186
+00:07:48,520 --> 00:07:51,050
+of getting accepted I believe.
+
+187
+00:07:51,050 --> 00:07:54,440
+More positively, for conferences
+that have area chairs,
+
+188
+00:07:54,440 --> 00:07:58,310
+and I believe all of the current
+major ACL conferences do,
+
+189
+00:07:58,310 --> 00:08:00,350
+the author response could
+be really important.
+
+190
+00:08:00,350 --> 00:08:02,360
+An area chair is
+someone who's tasked
+
+191
+00:08:02,360 --> 00:08:04,580
+with stimulating
+discussion and writing
+
+192
+00:08:04,580 --> 00:08:08,210
+meta reviews for a small number
+of papers-- maybe 5 to 20
+
+193
+00:08:08,210 --> 00:08:10,460
+depending on the
+conference volume.
+
+194
+00:08:10,460 --> 00:08:12,920
+And for those people,
+the author response
+
+195
+00:08:12,920 --> 00:08:14,810
+might have a major impact.
+
+196
+00:08:14,810 --> 00:08:17,090
+I played the role of
+area chair many times,
+
+197
+00:08:17,090 --> 00:08:19,760
+and the author responses
+are always valuable to me.
+
+198
+00:08:19,760 --> 00:08:22,190
+It's another text
+alongside the reviews
+
+199
+00:08:22,190 --> 00:08:24,530
+that the reviewers
+provided, and it
+
+200
+00:08:24,530 --> 00:08:28,010
+helps me understand places
+of conflict, places where
+
+201
+00:08:28,010 --> 00:08:31,340
+the authors differ in their
+perspective from the reviewers
+
+202
+00:08:31,340 --> 00:08:31,970
+and so forth.
+
+203
+00:08:31,970 --> 00:08:35,030
+It is always extremely
+valuable evidence to me,
+
+204
+00:08:35,030 --> 00:08:37,400
+and I think that holds
+for many area chairs.
+
+205
+00:08:37,400 --> 00:08:39,530
+And for this reason
+alone, you might
+
+206
+00:08:39,530 --> 00:08:41,390
+think about submitting
+a detailed author
+
+207
+00:08:41,390 --> 00:08:44,000
+response with these
+area chairs in mind
+
+208
+00:08:44,000 --> 00:08:47,420
+as your primary readers.
+
+209
+00:08:47,420 --> 00:08:49,460
+NLP conferences,
+for better or worse,
+
+210
+00:08:49,460 --> 00:08:51,890
+have very complex rules
+about what you can and can't
+
+211
+00:08:51,890 --> 00:08:54,570
+say in these author responses.
+
+212
+00:08:54,570 --> 00:08:56,780
+Sometimes you can't
+report any new results.
+
+213
+00:08:56,780 --> 00:08:59,180
+Sometimes you have to be very
+circumspect about what kind
+
+214
+00:08:59,180 --> 00:09:01,190
+of results you
+have and so forth.
+
+215
+00:09:01,190 --> 00:09:02,690
+If you have questions
+about what you
+
+216
+00:09:02,690 --> 00:09:04,820
+can do in a particular
+case, seek out
+
+217
+00:09:04,820 --> 00:09:07,280
+an expert at Stanford
+for advice on how
+
+218
+00:09:07,280 --> 00:09:10,220
+to interpret the precise
+rules and what kind of leeway
+
+219
+00:09:10,220 --> 00:09:13,495
+you actually have in saying what
+you think is important to say.
+
+220
+00:09:13,495 --> 00:09:14,870
+I think all of
+these restrictions
+
+221
+00:09:14,870 --> 00:09:16,130
+are kind of unfortunate.
+
+222
+00:09:16,130 --> 00:09:17,690
+When I play the
+role of area chair
+
+223
+00:09:17,690 --> 00:09:20,390
+and as reviewer, I would
+simply like to have access
+
+224
+00:09:20,390 --> 00:09:23,700
+to all the information
+that I can possibly obtain,
+
+225
+00:09:23,700 --> 00:09:26,930
+and so I would like these
+author responses to be offering
+
+226
+00:09:26,930 --> 00:09:29,370
+as much information as
+they feel is important,
+
+227
+00:09:29,370 --> 00:09:31,730
+and then I can use that to
+balance all the evidence
+
+228
+00:09:31,730 --> 00:09:33,920
+to make a final recommendation.
+
+229
+00:09:33,920 --> 00:09:35,690
+So it's unfortunate
+from my perspective
+
+230
+00:09:35,690 --> 00:09:38,330
+that these have restrictions at
+all, but they're often there,
+
+231
+00:09:38,330 --> 00:09:42,370
+and it's important to figure
+out how to navigate them.
+
+232
+00:09:42,370 --> 00:09:46,577
+When you construct an author
+response, always be polite.
+
+233
+00:09:46,577 --> 00:09:48,160
+You can be firm and
+direct, but you'll
+
+234
+00:09:48,160 --> 00:09:50,260
+want to do that
+strategically to signal
+
+235
+00:09:50,260 --> 00:09:53,020
+what you feel most strongly
+about, but fundamentally,
+
+236
+00:09:53,020 --> 00:09:55,420
+you should never say
+things like this--
+
+237
+00:09:55,420 --> 00:09:57,340
+"Your inattentiveness
+is embarrassing.
+
+238
+00:09:57,340 --> 00:10:00,070
+Section 6 does what
+you say we didn't do."
+
+239
+00:10:00,070 --> 00:10:02,500
+You might privately say
+that to your co-authors
+
+240
+00:10:02,500 --> 00:10:04,810
+as a kind of cathartic
+act of venting
+
+241
+00:10:04,810 --> 00:10:07,930
+about how bad your reviews
+were, but you should never
+
+242
+00:10:07,930 --> 00:10:09,790
+put it in an author response.
+
+243
+00:10:09,790 --> 00:10:12,730
+Rather, you should do things
+that are more like, "Thank you.
+
+244
+00:10:12,730 --> 00:10:15,290
+The information you're
+requesting is in section 6.
+
+245
+00:10:15,290 --> 00:10:17,998
+We will make this more
+prominent in our revision."
+
+246
+00:10:17,998 --> 00:10:19,540
+Fundamentally here,
+I think it's just
+
+247
+00:10:19,540 --> 00:10:22,210
+important to be polite in
+these professional contexts,
+
+248
+00:10:22,210 --> 00:10:24,130
+and it's a way to
+remind yourself
+
+249
+00:10:24,130 --> 00:10:27,850
+that these reviewers did make
+an investment of their own time
+
+250
+00:10:27,850 --> 00:10:29,950
+and intellectual
+energy into your work,
+
+251
+00:10:29,950 --> 00:10:32,955
+and we want to be respectful
+and aware of that investment
+
+252
+00:10:32,955 --> 00:10:33,580
+that they made.
+
+253
+00:10:33,580 --> 00:10:37,030
+
+
+254
+00:10:37,030 --> 00:10:38,710
+Presentation types and venues.
+
+255
+00:10:38,710 --> 00:10:39,710
+There are lots of them.
+
+256
+00:10:39,710 --> 00:10:41,627
+So first, there's the
+fundamental distinction.
+
+257
+00:10:41,627 --> 00:10:43,900
+You might have either oral
+presentations or poster
+
+258
+00:10:43,900 --> 00:10:46,270
+presentations and
+crosscutting that, you
+
+259
+00:10:46,270 --> 00:10:48,550
+might think about
+submitting to a workshop
+
+260
+00:10:48,550 --> 00:10:50,352
+or to a main conference.
+
+261
+00:10:50,352 --> 00:10:52,810
+And here's a whole bunch of
+venues, and what I've done here
+
+262
+00:10:52,810 --> 00:10:55,520
+is kind of organized
+this in a soft way.
+
+263
+00:10:55,520 --> 00:10:59,260
+So on the left here, I have
+NLP conferences and workshops.
+
+264
+00:10:59,260 --> 00:11:02,530
+I've put what we consider
+the most prestigious three
+
+265
+00:11:02,530 --> 00:11:03,340
+at the top here--
+
+266
+00:11:03,340 --> 00:11:07,300
+ACL, NAACL, and EMNLP, and
+then some other large ones
+
+267
+00:11:07,300 --> 00:11:08,590
+just below that.
+
+268
+00:11:08,590 --> 00:11:10,600
+Of course, the prestige
+order could really
+
+269
+00:11:10,600 --> 00:11:13,760
+change here, so who knows what
+the next year's will bring.
+
+270
+00:11:13,760 --> 00:11:16,792
+For example, the Asia
+ACL is brand new,
+
+271
+00:11:16,792 --> 00:11:18,250
+and of course, the
+number of people
+
+272
+00:11:18,250 --> 00:11:21,340
+doing outstanding work in
+our area throughout Asia
+
+273
+00:11:21,340 --> 00:11:23,440
+is enormous, and so
+it's very easy for me
+
+274
+00:11:23,440 --> 00:11:26,627
+to imagine that AACL becomes
+at least as prominent,
+
+275
+00:11:26,627 --> 00:11:28,960
+maybe even more prominent,
+than some of these other ones
+
+276
+00:11:28,960 --> 00:11:31,180
+up here over the next few years.
+
+277
+00:11:31,180 --> 00:11:34,510
+Then we have some smaller and
+older conferences down here,
+
+278
+00:11:34,510 --> 00:11:37,150
+and then of course, at the
+bottom, I've put workshops.
+
+279
+00:11:37,150 --> 00:11:40,330
+All of these major conferences
+have workshop series attached
+
+280
+00:11:40,330 --> 00:11:44,260
+to them, and workshops can be
+a great initial outlet for work
+
+281
+00:11:44,260 --> 00:11:46,767
+you do, especially for
+a course like this.
+
+282
+00:11:46,767 --> 00:11:48,850
+So I would encourage you
+for the major conferences
+
+283
+00:11:48,850 --> 00:11:51,200
+to scan their
+program of workshops,
+
+284
+00:11:51,200 --> 00:11:52,900
+and if you find one
+that's topically
+
+285
+00:11:52,900 --> 00:11:54,400
+aligned with what
+you're working on,
+
+286
+00:11:54,400 --> 00:11:56,680
+consider submitting
+to the workshop.
+
+287
+00:11:56,680 --> 00:11:58,720
+It will probably be
+less competitive,
+
+288
+00:11:58,720 --> 00:12:00,470
+so you have better
+chances of getting in,
+
+289
+00:12:00,470 --> 00:12:02,260
+but I would say the
+more important thing
+
+290
+00:12:02,260 --> 00:12:04,720
+is that it's a chance for
+you to actually connect
+
+291
+00:12:04,720 --> 00:12:07,510
+with a community of people
+who are working on precisely
+
+292
+00:12:07,510 --> 00:12:09,100
+the topic that
+you're working on,
+
+293
+00:12:09,100 --> 00:12:12,850
+and that can be intellectually
+really exciting.
+
+294
+00:12:12,850 --> 00:12:15,520
+In the middle here, I have
+some conferences that kind of
+
+295
+00:12:15,520 --> 00:12:20,170
+run the spectrum from
+linguistics through the world
+
+296
+00:12:20,170 --> 00:12:23,740
+wide web, through knowledge
+graphs and kind of more core
+
+297
+00:12:23,740 --> 00:12:26,800
+topics in the artificial
+intelligence generally,
+
+298
+00:12:26,800 --> 00:12:28,810
+and those can be really
+good outlets for work
+
+299
+00:12:28,810 --> 00:12:30,617
+that has an NLP aspect to it.
+
+300
+00:12:30,617 --> 00:12:32,200
+And then over here
+on the right, these
+
+301
+00:12:32,200 --> 00:12:34,810
+are very prestigious machine
+learning conferences,
+
+302
+00:12:34,810 --> 00:12:36,340
+and it's kind of the same story.
+
+303
+00:12:36,340 --> 00:12:38,140
+All of these
+conferences here are
+
+304
+00:12:38,140 --> 00:12:41,678
+welcoming a work that involves
+natural language processing,
+
+305
+00:12:41,678 --> 00:12:43,720
+but you might just have
+to think about how you're
+
+306
+00:12:43,720 --> 00:12:46,960
+going to precisely connect
+with these specific audiences
+
+307
+00:12:46,960 --> 00:12:48,220
+and their specific concerns.
+
+308
+00:12:48,220 --> 00:12:51,220
+
+
+309
+00:12:51,220 --> 00:12:55,740
+Here's my personal assessment
+of NLP reviewing at present.
+
+310
+00:12:55,740 --> 00:12:58,440
+First, I think the focus
+on conference papers
+
+311
+00:12:58,440 --> 00:13:02,100
+as opposed to journals has
+been really good for NLP.
+
+312
+00:13:02,100 --> 00:13:06,700
+It fits with and encourages the
+very rapid pace of our field,
+
+313
+00:13:06,700 --> 00:13:11,170
+and I think we all benefit
+from that rapid pace overall.
+
+314
+00:13:11,170 --> 00:13:13,570
+Before about 2010, the
+reviewing in the field
+
+315
+00:13:13,570 --> 00:13:16,030
+was admirably good and
+rigorous in comparison
+
+316
+00:13:16,030 --> 00:13:16,780
+with other fields.
+
+317
+00:13:16,780 --> 00:13:20,230
+It really was impressive
+how many deep and insightful
+
+318
+00:13:20,230 --> 00:13:22,240
+reviews you would get
+when you submitted
+
+319
+00:13:22,240 --> 00:13:25,320
+to one of the main
+conferences in the field.
+
+320
+00:13:25,320 --> 00:13:28,860
+Lately though, the explosive
+growth of the field
+
+321
+00:13:28,860 --> 00:13:32,490
+has, I think by consensus,
+reduced the general quality
+
+322
+00:13:32,490 --> 00:13:35,453
+of reviewing, and the field
+is still grappling with this.
+
+323
+00:13:35,453 --> 00:13:36,870
+Of course, there
+was always a kind
+
+324
+00:13:36,870 --> 00:13:39,408
+of lottery aspect to whether
+your paper would be accepted,
+
+325
+00:13:39,408 --> 00:13:40,950
+and you should keep
+in mind that luck
+
+326
+00:13:40,950 --> 00:13:45,330
+is a real element in publication
+and throughout science.
+
+327
+00:13:45,330 --> 00:13:47,820
+But that lottery aspect
+has gotten more amplified
+
+328
+00:13:47,820 --> 00:13:50,010
+as the field has
+grown, and that's
+
+329
+00:13:50,010 --> 00:13:51,690
+affecting the main
+conferences in ways
+
+330
+00:13:51,690 --> 00:13:53,400
+that we all have to figure out.
+
+331
+00:13:53,400 --> 00:13:55,350
+But again, this
+is kind of useful.
+
+332
+00:13:55,350 --> 00:13:58,230
+Keep in mind that a rejection
+does not necessarily
+
+333
+00:13:58,230 --> 00:14:00,410
+mean that your work
+was of low quality.
+
+334
+00:14:00,410 --> 00:14:02,670
+It could mean that you
+just had really bad luck
+
+335
+00:14:02,670 --> 00:14:06,950
+throughout a kind of
+chaotic reviewing process.
+
+336
+00:14:06,950 --> 00:14:08,450
+I also want to say
+that I think it's
+
+337
+00:14:08,450 --> 00:14:12,008
+unhealthy to force every paper
+to be four or eight pages.
+
+338
+00:14:12,008 --> 00:14:13,550
+The reason that
+happens is that there
+
+339
+00:14:13,550 --> 00:14:16,190
+are two kinds of submissions
+typically-- a short paper which
+
+340
+00:14:16,190 --> 00:14:19,550
+has max length four, and a
+long paper which has max length
+
+341
+00:14:19,550 --> 00:14:21,920
+eight, and we all,
+as submitters to one
+
+342
+00:14:21,920 --> 00:14:23,820
+or another of those
+tracks, feel a kind
+
+343
+00:14:23,820 --> 00:14:27,390
+of signaling pressure to
+maximize the available space.
+
+344
+00:14:27,390 --> 00:14:30,410
+So there are no six page
+papers in the field,
+
+345
+00:14:30,410 --> 00:14:32,900
+and there is really no
+room to have papers that
+
+346
+00:14:32,900 --> 00:14:34,460
+are longer than eight pages.
+
+347
+00:14:34,460 --> 00:14:36,500
+And that's unfortunate,
+because sometimes you
+
+348
+00:14:36,500 --> 00:14:39,020
+just need a different
+length than one of these
+
+349
+00:14:39,020 --> 00:14:42,178
+to express your ideas in
+the best possible way.
+
+350
+00:14:42,178 --> 00:14:43,220
+So that's been unhealthy.
+
+351
+00:14:43,220 --> 00:14:45,740
+I will say, though, that
+this is alleviated somewhat
+
+352
+00:14:45,740 --> 00:14:49,040
+by the increased use of
+appendices and supplementary
+
+353
+00:14:49,040 --> 00:14:51,955
+materials to express a lot
+of details that don't need
+
+354
+00:14:51,955 --> 00:14:53,330
+to be part of the
+main narrative,
+
+355
+00:14:53,330 --> 00:14:55,850
+and that is in effect
+here a back door
+
+356
+00:14:55,850 --> 00:14:59,980
+allowing papers to be
+of more variable length.
+
+357
+00:14:59,980 --> 00:15:02,890
+The biggest failing to
+my mind of the conference
+
+358
+00:15:02,890 --> 00:15:06,162
+reviewing process is that
+there's no revise and resubmit.
+
+359
+00:15:06,162 --> 00:15:07,870
+That's the standard
+we get from journals.
+
+360
+00:15:07,870 --> 00:15:10,840
+There's no chance for authors
+to appeal to an editor
+
+361
+00:15:10,840 --> 00:15:13,000
+and interact with
+an editor in a way
+
+362
+00:15:13,000 --> 00:15:15,460
+that you get from really
+top quality journals.
+
+363
+00:15:15,460 --> 00:15:18,350
+And that just introduces
+inefficiency into the system,
+
+364
+00:15:18,350 --> 00:15:21,430
+and it's a missed opportunity
+for intellectual engagement
+
+365
+00:15:21,430 --> 00:15:24,075
+that could really
+benefit the world.
+
+366
+00:15:24,075 --> 00:15:25,700
+I do want to say,
+though, there's hope.
+
+367
+00:15:25,700 --> 00:15:27,920
+The Transactions
+of the ACL or TACL
+
+368
+00:15:27,920 --> 00:15:30,860
+is a journal that follows
+the standard ACL conference
+
+369
+00:15:30,860 --> 00:15:34,760
+model fairly closely but allows
+for journal-style interaction
+
+370
+00:15:34,760 --> 00:15:35,930
+with an editor.
+
+371
+00:15:35,930 --> 00:15:38,600
+I'm conflicted here, because
+I've been a TACL action
+
+372
+00:15:38,600 --> 00:15:40,100
+editor for a very
+long time, but I
+
+373
+00:15:40,100 --> 00:15:43,070
+do that work because I
+think TACL is wonderful.
+
+374
+00:15:43,070 --> 00:15:45,980
+It's allowing for the
+best aspects of our field
+
+375
+00:15:45,980 --> 00:15:49,100
+in terms of fast pace,
+while also introducing
+
+376
+00:15:49,100 --> 00:15:53,210
+some healthy aspects of the
+journal reviewing process.
+
+377
+00:15:53,210 --> 00:15:55,960
+TACL papers are a little
+bit longer at ten pages,
+
+378
+00:15:55,960 --> 00:15:58,370
+so there's still some of
+this problematic influence
+
+379
+00:15:58,370 --> 00:16:01,847
+under four here, but at
+least they are a bit longer.
+
+380
+00:16:01,847 --> 00:16:04,430
+And overall, I think it's just
+a healthier rhythm for thinking
+
+381
+00:16:04,430 --> 00:16:07,670
+about evaluating work in
+these scientific contexts,
+
+382
+00:16:07,670 --> 00:16:12,760
+so think about TACL as an
+outlet for your work as well.
+
+383
+00:16:12,760 --> 00:16:15,180
+Let's focus on two
+more specific topics
+
+384
+00:16:15,180 --> 00:16:16,830
+here and starting with titles.
+
+385
+00:16:16,830 --> 00:16:19,560
+And as I said before, a title
+is an important ingredient
+
+386
+00:16:19,560 --> 00:16:22,860
+in the fate of your paper
+in conference reviewing.
+
+387
+00:16:22,860 --> 00:16:24,750
+Jokey titles can
+be risky, and I've
+
+388
+00:16:24,750 --> 00:16:28,415
+linked to some evidence for
+that down here at this paper.
+
+389
+00:16:28,415 --> 00:16:29,790
+More importantly,
+you might think
+
+390
+00:16:29,790 --> 00:16:33,570
+that it's important-- calibrate
+the scope of your contribution
+
+391
+00:16:33,570 --> 00:16:34,740
+in your title.
+
+392
+00:16:34,740 --> 00:16:37,020
+It's a very common
+complaint from reviewers
+
+393
+00:16:37,020 --> 00:16:39,870
+that the title is an overreach--
+that it claims a broader
+
+394
+00:16:39,870 --> 00:16:42,870
+spectrum of the scientific
+space than the paper actually
+
+395
+00:16:42,870 --> 00:16:45,000
+delivers on, and you
+want to avoid that
+
+396
+00:16:45,000 --> 00:16:50,470
+by getting a tight alignment
+between title and paper.
+
+397
+00:16:50,470 --> 00:16:53,380
+And then also consider
+the kinds of reviewers
+
+398
+00:16:53,380 --> 00:16:55,840
+you're likely to attract
+during that bidding process.
+
+399
+00:16:55,840 --> 00:16:57,430
+The choices you
+make in your title
+
+400
+00:16:57,430 --> 00:16:59,480
+will definitely
+influence that process,
+
+401
+00:16:59,480 --> 00:17:01,330
+and so you can again
+think strategically
+
+402
+00:17:01,330 --> 00:17:04,118
+about who you want to pull
+in as a reviewer because
+
+403
+00:17:04,118 --> 00:17:08,649
+of their interest and
+expertise and so forth.
+
+404
+00:17:08,650 --> 00:17:10,240
+I would also say
+that it's worthwhile
+
+405
+00:17:10,240 --> 00:17:12,760
+avoiding special fonts and
+formatting if possible,
+
+406
+00:17:12,760 --> 00:17:15,550
+just because it makes it harder
+to consistently reproduce
+
+407
+00:17:15,550 --> 00:17:16,690
+your title.
+
+408
+00:17:16,690 --> 00:17:19,839
+That said, I am kind
+of charmed by the move
+
+409
+00:17:19,839 --> 00:17:22,490
+to have emoji in
+titles recently.
+
+410
+00:17:22,490 --> 00:17:24,848
+Jokey is risky,
+but this can be fun
+
+411
+00:17:24,848 --> 00:17:26,709
+and make your paper
+a bit memorable,
+
+412
+00:17:26,710 --> 00:17:28,630
+even if it is harder
+to copy and paste
+
+413
+00:17:28,630 --> 00:17:32,220
+the title in various contexts.
+
+414
+00:17:32,220 --> 00:17:35,190
+Abstracts-- abstracts are
+also incredibly important,
+
+415
+00:17:35,190 --> 00:17:37,320
+because after the
+title, they will
+
+416
+00:17:37,320 --> 00:17:39,990
+create this first and
+lasting impression.
+
+417
+00:17:39,990 --> 00:17:42,360
+So here's a suggestion about
+how to think about writing
+
+418
+00:17:42,360 --> 00:17:44,970
+abstracts-- the difficult form.
+
+419
+00:17:44,970 --> 00:17:47,490
+First, have your opening
+be a broad overview--
+
+420
+00:17:47,490 --> 00:17:51,160
+a glimpse of the central
+problem in its context.
+
+421
+00:17:51,160 --> 00:17:53,550
+Next, the middle takes
+concepts mentioned
+
+422
+00:17:53,550 --> 00:17:55,890
+in the opening and
+elaborates upon them,
+
+423
+00:17:55,890 --> 00:17:58,350
+probably by connecting
+with specific experiments
+
+424
+00:17:58,350 --> 00:18:00,370
+and results from your paper.
+
+425
+00:18:00,370 --> 00:18:01,950
+And then finally,
+at the very end,
+
+426
+00:18:01,950 --> 00:18:05,070
+establish links between
+your proposal and broader
+
+427
+00:18:05,070 --> 00:18:08,190
+theoretical concerns so that
+the reviewer on finishing
+
+428
+00:18:08,190 --> 00:18:10,330
+this abstract has an
+answer to the question,
+
+429
+00:18:10,330 --> 00:18:13,410
+"Does the abstract offer
+a substantial and original
+
+430
+00:18:13,410 --> 00:18:14,980
+proposal?"
+
+431
+00:18:14,980 --> 00:18:19,080
+So in a little more detail,
+here's a kind of meta abstract.
+
+432
+00:18:19,080 --> 00:18:22,020
+"This opening sentence
+situates you, dear reader.
+
+433
+00:18:22,020 --> 00:18:25,020
+Our approach seeks to address
+the following central issue."
+
+434
+00:18:25,020 --> 00:18:26,280
+You spell it out.
+
+435
+00:18:26,280 --> 00:18:28,180
+"The techniques we
+use are as follows."
+
+436
+00:18:28,180 --> 00:18:29,470
+And you spell it out.
+
+437
+00:18:29,470 --> 00:18:32,352
+"Our experiments are
+these--" Details.
+
+438
+00:18:32,352 --> 00:18:33,810
+And then finally,
+"Overall, we find
+
+439
+00:18:33,810 --> 00:18:36,090
+that our approach has
+the following properties,
+
+440
+00:18:36,090 --> 00:18:37,900
+and the significance
+of this is--"
+
+441
+00:18:37,900 --> 00:18:39,960
+And if you just fill in
+all those ellipsis dots,
+
+442
+00:18:39,960 --> 00:18:43,110
+I think you're pretty close
+to an effective abstract,
+
+443
+00:18:43,110 --> 00:18:44,970
+and that's at least a
+starting point for you
+
+444
+00:18:44,970 --> 00:18:48,120
+when you think about maybe
+being more creative and fitting
+
+445
+00:18:48,120 --> 00:18:52,400
+this better to the
+specifics of your ideas.
+
+446
+00:18:52,400 --> 00:18:54,560
+Style sheets-- this is
+small but important.
+
+447
+00:18:54,560 --> 00:18:58,130
+This is the way that you could
+avoid the dreaded desk reject.
+
+448
+00:18:58,130 --> 00:19:00,140
+Pay close attention
+to the details
+
+449
+00:19:00,140 --> 00:19:02,030
+of the style sheet
+for your conference
+
+450
+00:19:02,030 --> 00:19:04,370
+and any other requirements
+included in the call
+
+451
+00:19:04,370 --> 00:19:04,970
+for papers.
+
+452
+00:19:04,970 --> 00:19:08,450
+It is worth your while to
+read those documents carefully
+
+453
+00:19:08,450 --> 00:19:10,730
+and make sure you've
+checked all the boxes.
+
+454
+00:19:10,730 --> 00:19:15,020
+In NLP, infractions are the
+most likely cause of the dreaded
+
+455
+00:19:15,020 --> 00:19:17,810
+desk reject-- that is
+rejection without review, which
+
+456
+00:19:17,810 --> 00:19:20,420
+is of course so disheartening,
+because you made
+
+457
+00:19:20,420 --> 00:19:22,520
+a big push to get
+your paper submitted,
+
+458
+00:19:22,520 --> 00:19:24,260
+and then shortly
+thereafter you get
+
+459
+00:19:24,260 --> 00:19:27,320
+this desk reject in the mail,
+and there's no recourse.
+
+460
+00:19:27,320 --> 00:19:29,690
+That's pretty much the end
+of the process for you,
+
+461
+00:19:29,690 --> 00:19:31,730
+and you can avoid
+it by just attending
+
+462
+00:19:31,730 --> 00:19:33,395
+to what they've
+said in their style
+
+463
+00:19:33,395 --> 00:19:36,690
+sheets and other guidelines.
+
+464
+00:19:36,690 --> 00:19:39,120
+And then finally, we
+have this charming notion
+
+465
+00:19:39,120 --> 00:19:40,980
+of a camera-ready version.
+
+466
+00:19:40,980 --> 00:19:43,200
+This refers to
+old-fashioned technology
+
+467
+00:19:43,200 --> 00:19:44,880
+for publishing papers
+where you actually
+
+468
+00:19:44,880 --> 00:19:46,920
+needed to take
+pictures of documents
+
+469
+00:19:46,920 --> 00:19:48,240
+in order to publish them.
+
+470
+00:19:48,240 --> 00:19:52,020
+Those days are long gone,
+but the terminology remains.
+
+471
+00:19:52,020 --> 00:19:54,150
+For most NLP conferences,
+as part of this
+
+472
+00:19:54,150 --> 00:19:56,930
+you get an additional
+page upon acceptance.
+
+473
+00:19:56,930 --> 00:20:00,133
+This is presumably to respond
+to requests made by reviewers.
+
+474
+00:20:00,133 --> 00:20:02,550
+Although in practice, you're
+free to use the space however
+
+475
+00:20:02,550 --> 00:20:03,630
+you like.
+
+476
+00:20:03,630 --> 00:20:06,930
+In general, we find that
+the extra page is mainly
+
+477
+00:20:06,930 --> 00:20:11,520
+used for fixing passages that we
+made overly terse at reviewing
+
+478
+00:20:11,520 --> 00:20:14,070
+time in order to get
+into the page limits,
+
+479
+00:20:14,070 --> 00:20:15,750
+and now, we're kind
+of unpacking them
+
+480
+00:20:15,750 --> 00:20:17,020
+to make them more readable.
+
+481
+00:20:17,020 --> 00:20:19,350
+And this is obviously
+an inefficient process,
+
+482
+00:20:19,350 --> 00:20:23,100
+but it's the reality at present.
+
+483
+00:20:23,100 --> 00:20:26,130
+You could, of course,
+use your additional page
+
+484
+00:20:26,130 --> 00:20:28,350
+to improve your results
+in all sorts of ways.
+
+485
+00:20:28,350 --> 00:20:29,980
+It's entirely up to you.
+
+486
+00:20:29,980 --> 00:20:34,320
+But a word of caution here, if
+you have very substantially new
+
+487
+00:20:34,320 --> 00:20:37,050
+ideas and results,
+it might be better
+
+488
+00:20:37,050 --> 00:20:40,587
+for you to save those for a
+follow up paper as opposed
+
+489
+00:20:40,587 --> 00:20:43,170
+to trying to pack them into work
+that's already been accepted,
+
+490
+00:20:43,170 --> 00:20:44,220
+right?
+
+491
+00:20:44,220 --> 00:20:46,170
+Instead of just making
+more work for yourself
+
+492
+00:20:46,170 --> 00:20:47,940
+as part of this
+first contribution,
+
+493
+00:20:47,940 --> 00:20:50,400
+it might be that you're
+on the exciting path
+
+494
+00:20:50,400 --> 00:20:52,650
+toward a follow-up
+contribution that's
+
+495
+00:20:52,650 --> 00:20:55,110
+going to be its
+entirely own new paper.
+
+496
+00:20:55,110 --> 00:20:58,200
+So think about that and
+balance these pressures.
+
+497
+00:20:58,200 --> 00:21:02,270
+And then good luck with your
+camera-ready submissions.
+
+498
+00:21:02,270 --> 00:21:06,000
+
+

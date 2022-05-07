@@ -1,0 +1,1309 @@
+1
+00:00:00,000 --> 00:00:04,807
+
+
+2
+00:00:04,807 --> 00:00:06,390
+BILL AMCCARTNEY: So
+I now want to turn
+
+3
+00:00:06,390 --> 00:00:09,360
+to the question of how to
+formulate our prediction
+
+4
+00:00:09,360 --> 00:00:12,330
+problem precisely.
+
+5
+00:00:12,330 --> 00:00:15,540
+I want to be precise about
+how we're defining the inputs
+
+6
+00:00:15,540 --> 00:00:19,380
+and outputs of our
+predictions, and that, in turn,
+
+7
+00:00:19,380 --> 00:00:21,000
+is going to have
+consequences for how
+
+8
+00:00:21,000 --> 00:00:25,620
+we join the corpus and
+the KB, how we construct
+
+9
+00:00:25,620 --> 00:00:28,950
+negative examples for
+our learning algorithms,
+
+10
+00:00:28,950 --> 00:00:34,140
+and how we handle
+multi-label classification.
+
+11
+00:00:34,140 --> 00:00:38,250
+So first what is the input
+to our prediction problem?
+
+12
+00:00:38,250 --> 00:00:40,740
+In the supervised
+learning paradigm,
+
+13
+00:00:40,740 --> 00:00:44,190
+the input is a pair
+of entity mentions
+
+14
+00:00:44,190 --> 00:00:47,070
+in the context of a
+specific sentence.
+
+15
+00:00:47,070 --> 00:00:49,680
+We're trying to
+label a sentence just
+
+16
+00:00:49,680 --> 00:00:55,040
+like we do in part of speech
+tagging or sentiment analysis.
+
+17
+00:00:55,040 --> 00:00:57,590
+But in the distance
+supervision paradigm,
+
+18
+00:00:57,590 --> 00:00:59,640
+we'll do things differently.
+
+19
+00:00:59,640 --> 00:01:04,700
+The input will be a pair of
+entities full stop, independent
+
+20
+00:01:04,700 --> 00:01:07,250
+of any specific context.
+
+21
+00:01:07,250 --> 00:01:10,160
+We're trying to determine the
+relation between this entity
+
+22
+00:01:10,160 --> 00:01:14,360
+and that entity, and that's it.
+
+23
+00:01:14,360 --> 00:01:15,860
+The other question
+I want to look at
+
+24
+00:01:15,860 --> 00:01:18,620
+is, what's the output of
+the prediction problem?
+
+25
+00:01:18,620 --> 00:01:22,190
+Are we trying to assign
+a pair of entities
+
+26
+00:01:22,190 --> 00:01:24,410
+to a single relation?
+
+27
+00:01:24,410 --> 00:01:27,380
+That's called multi-class
+classification.
+
+28
+00:01:27,380 --> 00:01:29,570
+Or are we trying to
+assign a pair of entities
+
+29
+00:01:29,570 --> 00:01:31,280
+to multiple relations?
+
+30
+00:01:31,280 --> 00:01:33,890
+That's called multi-label
+classification,
+
+31
+00:01:33,890 --> 00:01:36,600
+and it's a different beast.
+
+32
+00:01:36,600 --> 00:01:38,050
+So over the next
+couple of slides,
+
+33
+00:01:38,050 --> 00:01:42,045
+I want to explore the
+consequences of these choices.
+
+34
+00:01:42,045 --> 00:01:43,620
+The difference
+between these two ways
+
+35
+00:01:43,620 --> 00:01:46,380
+of thinking about the input
+becomes really important
+
+36
+00:01:46,380 --> 00:01:48,360
+when we talk about
+how we're going
+
+37
+00:01:48,360 --> 00:01:51,630
+to join the corpus and the KB.
+
+38
+00:01:51,630 --> 00:01:54,180
+In order to leverage the
+distance supervision paradigm,
+
+39
+00:01:54,180 --> 00:01:55,920
+we need to connect those two.
+
+40
+00:01:55,920 --> 00:01:59,250
+We need to connect information
+in the corpus with information
+
+41
+00:01:59,250 --> 00:02:00,390
+in the KB.
+
+42
+00:02:00,390 --> 00:02:02,040
+And there's two
+different possibilities
+
+43
+00:02:02,040 --> 00:02:04,920
+depending on how we
+formulate the prediction
+
+44
+00:02:04,920 --> 00:02:07,440
+problem, depending
+on how we define
+
+45
+00:02:07,440 --> 00:02:09,570
+the input to the problem.
+
+46
+00:02:09,570 --> 00:02:14,400
+If our problem is to classify
+a pair of entity mentions
+
+47
+00:02:14,400 --> 00:02:19,860
+in a specific example in the
+corpus, in a specific sentence,
+
+48
+00:02:19,860 --> 00:02:23,760
+then we can use the KB
+to provide the label,
+
+49
+00:02:23,760 --> 00:02:25,420
+and this is what it looks like.
+
+50
+00:02:25,420 --> 00:02:28,290
+We have a corpus
+example like this.
+
+51
+00:02:28,290 --> 00:02:32,040
+We're trying to label
+this specific example.
+
+52
+00:02:32,040 --> 00:02:35,850
+And to do it, we can check to
+see if these two entities are
+
+53
+00:02:35,850 --> 00:02:38,220
+related in the KB.
+
+54
+00:02:38,220 --> 00:02:39,600
+Yep, they are.
+
+55
+00:02:39,600 --> 00:02:45,270
+And we can use that to generate
+a label for this example.
+
+56
+00:02:45,270 --> 00:02:49,770
+Labeling specific examples
+is how the fully supervised
+
+57
+00:02:49,770 --> 00:02:52,080
+paradigm works.
+
+58
+00:02:52,080 --> 00:02:54,510
+So it's an obvious way
+to think about leveraging
+
+59
+00:02:54,510 --> 00:02:57,710
+distance supervision as well.
+
+60
+00:02:57,710 --> 00:03:00,620
+It can be made to work,
+but it's not actually
+
+61
+00:03:00,620 --> 00:03:02,330
+the preferred approach.
+
+62
+00:03:02,330 --> 00:03:04,430
+If we do it this way,
+we'll be doing things
+
+63
+00:03:04,430 --> 00:03:09,170
+exactly as they're done in
+the supervised paradigm.
+
+64
+00:03:09,170 --> 00:03:11,810
+It does work, but
+it's not the best way
+
+65
+00:03:11,810 --> 00:03:15,080
+to take advantage
+of the opportunity
+
+66
+00:03:15,080 --> 00:03:18,290
+that distance
+supervision creates.
+
+67
+00:03:18,290 --> 00:03:20,000
+There's another way
+of doing things,
+
+68
+00:03:20,000 --> 00:03:23,330
+and the other way is
+where, instead, we
+
+69
+00:03:23,330 --> 00:03:28,350
+define our problem as
+classifying a pair of entities.
+
+70
+00:03:28,350 --> 00:03:31,130
+Not entity mentions in a
+specific sentence, but just
+
+71
+00:03:31,130 --> 00:03:32,120
+entities.
+
+72
+00:03:32,120 --> 00:03:37,580
+Elon_Musk and Tesla, period,
+apart from any sentence.
+
+73
+00:03:37,580 --> 00:03:41,630
+And if that's how we define
+the input to our problem,
+
+74
+00:03:41,630 --> 00:03:44,990
+then we can use the
+corpus to provide
+
+75
+00:03:44,990 --> 00:03:47,540
+a feature
+representation that will
+
+76
+00:03:47,540 --> 00:03:50,310
+be the input to the prediction.
+
+77
+00:03:50,310 --> 00:03:54,800
+So if we have an entity pair
+like Elon_Musk and SpaceX
+
+78
+00:03:54,800 --> 00:04:00,740
+that we're considering adding
+to a relation in the KB,
+
+79
+00:04:00,740 --> 00:04:04,700
+we can find all sentences
+in the corpus containing
+
+80
+00:04:04,700 --> 00:04:07,880
+this pair of
+entities, and then we
+
+81
+00:04:07,880 --> 00:04:11,270
+can use all of those sentences
+to generate a feature
+
+82
+00:04:11,270 --> 00:04:14,510
+representation for this pair.
+
+83
+00:04:14,510 --> 00:04:16,445
+So in this example,
+and I'm imagining--
+
+84
+00:04:16,445 --> 00:04:18,070
+it doesn't have to
+be this way, but I'm
+
+85
+00:04:18,070 --> 00:04:21,100
+imagining that we're using a
+simple bag of words feature
+
+86
+00:04:21,100 --> 00:04:23,140
+representation.
+
+87
+00:04:23,140 --> 00:04:26,320
+The bag of words has come
+from the middle, that
+
+88
+00:04:26,320 --> 00:04:29,040
+is, the phrase
+between the two entity
+
+89
+00:04:29,040 --> 00:04:31,360
+mentions, the blue phrases here.
+
+90
+00:04:31,360 --> 00:04:34,420
+And all I've done is
+counted up the words
+
+91
+00:04:34,420 --> 00:04:39,010
+in all of these blue
+phrases across all
+
+92
+00:04:39,010 --> 00:04:41,470
+of the examples in
+the corpus where
+
+93
+00:04:41,470 --> 00:04:42,745
+these two entities co-occur.
+
+94
+00:04:42,745 --> 00:04:48,090
+
+
+95
+00:04:48,090 --> 00:04:48,590
+Yeah.
+
+96
+00:04:48,590 --> 00:04:53,330
+Well, you can see here
+in the token counts
+
+97
+00:04:53,330 --> 00:04:58,290
+that they include tokens
+from the various examples.
+
+98
+00:04:58,290 --> 00:05:00,740
+All of these
+examples together are
+
+99
+00:05:00,740 --> 00:05:04,280
+used to generate a single
+feature representation.
+
+100
+00:05:04,280 --> 00:05:08,510
+This is a feature
+representation for this pair,
+
+101
+00:05:08,510 --> 00:05:12,296
+and it's this feature
+representation
+
+102
+00:05:12,296 --> 00:05:16,070
+that my learned model
+will use to make
+
+103
+00:05:16,070 --> 00:05:19,490
+a prediction about this pair.
+
+104
+00:05:19,490 --> 00:05:22,300
+So this is a very interesting
+way of reversing things.
+
+105
+00:05:22,300 --> 00:05:26,950
+Instead of using the
+KB to generate a label
+
+106
+00:05:26,950 --> 00:05:31,675
+to make a prediction about
+a specific pair of entity
+
+107
+00:05:31,675 --> 00:05:35,480
+mentions in a specific sentence,
+I'm turning things around.
+
+108
+00:05:35,480 --> 00:05:39,910
+I'm using the corpus to generate
+a feature representation that I
+
+109
+00:05:39,910 --> 00:05:43,540
+will use to make a
+prediction about an entity
+
+110
+00:05:43,540 --> 00:05:47,290
+pair in abstraction,
+an entity pair
+
+111
+00:05:47,290 --> 00:05:50,590
+considered just as
+a pair of entities.
+
+112
+00:05:50,590 --> 00:05:53,158
+Just one more thought on this.
+
+113
+00:05:53,158 --> 00:05:55,630
+This is still kind of
+about the topic of joining
+
+114
+00:05:55,630 --> 00:05:57,160
+the corpus and the KB.
+
+115
+00:05:57,160 --> 00:05:59,410
+We've created a
+data set class which
+
+116
+00:05:59,410 --> 00:06:03,630
+does that, which combines
+a corpus and a KB.
+
+117
+00:06:03,630 --> 00:06:05,230
+Just kind of staples
+them together
+
+118
+00:06:05,230 --> 00:06:08,230
+and provides a variety
+of convenience methods
+
+119
+00:06:08,230 --> 00:06:09,370
+for the dataset.
+
+120
+00:06:09,370 --> 00:06:10,900
+And one of those
+convenience methods
+
+121
+00:06:10,900 --> 00:06:13,480
+is this one,
+count_examples, which
+
+122
+00:06:13,480 --> 00:06:17,260
+shows, for each relation,
+how many examples we have
+
+123
+00:06:17,260 --> 00:06:20,620
+in a corpus, how many
+triples we have in a KB,
+
+124
+00:06:20,620 --> 00:06:25,660
+and the ratio, so
+the total number
+
+125
+00:06:25,660 --> 00:06:30,070
+of examples, the average
+number of examples per triple.
+
+126
+00:06:30,070 --> 00:06:33,220
+For most relations, the
+total number of examples
+
+127
+00:06:33,220 --> 00:06:37,090
+is fairly large, so we can
+be optimistic about learning
+
+128
+00:06:37,090 --> 00:06:40,930
+which linguistic patterns
+express a given relation.
+
+129
+00:06:40,930 --> 00:06:46,870
+I mean, even the smallest one
+has at least 1,500 examples.
+
+130
+00:06:46,870 --> 00:06:51,920
+That's not really
+industrial grade data,
+
+131
+00:06:51,920 --> 00:06:54,850
+but it's certainly enough
+for the kind of exploration
+
+132
+00:06:54,850 --> 00:06:56,600
+that we're doing here.
+
+133
+00:06:56,600 --> 00:07:00,310
+However, for individual entity
+pairs, the number of examples
+
+134
+00:07:00,310 --> 00:07:01,730
+is often quite low.
+
+135
+00:07:01,730 --> 00:07:03,790
+So some of these
+relations are betwee--
+
+136
+00:07:03,790 --> 00:07:09,130
+some of these ratios
+are between 1 and 2.
+
+137
+00:07:09,130 --> 00:07:13,420
+Of course, more data would
+be better, much better,
+
+138
+00:07:13,420 --> 00:07:16,480
+but more data could
+quickly become
+
+139
+00:07:16,480 --> 00:07:19,480
+unwieldy to work with in a
+notebook like this, especially
+
+140
+00:07:19,480 --> 00:07:22,720
+if you're running on
+an ordinary laptop.
+
+141
+00:07:22,720 --> 00:07:25,510
+And this data is going to be
+enough to allow us to have
+
+142
+00:07:25,510 --> 00:07:29,500
+a fruitful investigation.
+
+143
+00:07:29,500 --> 00:07:31,640
+First, I want to talk
+about negative examples.
+
+144
+00:07:31,640 --> 00:07:34,600
+So by joining the
+corpus to the KB,
+
+145
+00:07:34,600 --> 00:07:39,640
+we can get lots of positive
+examples for each relation,
+
+146
+00:07:39,640 --> 00:07:44,860
+but we can't train a classifier
+on positive examples alone.
+
+147
+00:07:44,860 --> 00:07:47,110
+We're also going to need
+some negative examples,
+
+148
+00:07:47,110 --> 00:07:48,910
+negative instances.
+
+149
+00:07:48,910 --> 00:07:54,020
+So that is entity pairs that
+don't belong to any relation.
+
+150
+00:07:54,020 --> 00:07:56,540
+We can find such
+pairs by searching
+
+151
+00:07:56,540 --> 00:07:59,240
+the corpus for
+examples which contain
+
+152
+00:07:59,240 --> 00:08:03,740
+two entities which don't belong
+to any relation in the KB.
+
+153
+00:08:03,740 --> 00:08:05,690
+So we wrote some
+code to do this,
+
+154
+00:08:05,690 --> 00:08:09,560
+and there's a method on
+the dataset class called
+
+155
+00:08:09,560 --> 00:08:11,940
+find_unrelated_pairs.
+
+156
+00:08:11,940 --> 00:08:14,270
+And when we run it, wow.
+
+157
+00:08:14,270 --> 00:08:20,870
+It found almost 250,000
+unrelated pairs,
+
+158
+00:08:20,870 --> 00:08:27,290
+so 250,000 negative instances
+for our prediction problem.
+
+159
+00:08:27,290 --> 00:08:30,920
+And that's way more than the
+number of positive instances.
+
+160
+00:08:30,920 --> 00:08:35,299
+If you remember, the
+KB has 46,000 triples.
+
+161
+00:08:35,299 --> 00:08:38,630
+Each of those is basically
+a positive instance.
+
+162
+00:08:38,630 --> 00:08:42,950
+It's something that we know is
+definitely a positive example
+
+163
+00:08:42,950 --> 00:08:44,360
+of the relation.
+
+164
+00:08:44,360 --> 00:08:47,660
+Here, we have 250,000
+negative examples.
+
+165
+00:08:47,660 --> 00:08:51,320
+It's so many more that
+when we train models,
+
+166
+00:08:51,320 --> 00:08:54,440
+we'll wind up downsampling
+the negative instances
+
+167
+00:08:54,440 --> 00:08:56,240
+substantially so that
+we have a somewhat
+
+168
+00:08:56,240 --> 00:09:00,440
+more balanced distribution.
+
+169
+00:09:00,440 --> 00:09:02,600
+A reminder, though.
+
+170
+00:09:02,600 --> 00:09:07,310
+Some of these supposedly
+negative instances
+
+171
+00:09:07,310 --> 00:09:10,130
+may be false negatives.
+
+172
+00:09:10,130 --> 00:09:15,200
+They may be entity pairs that
+don't appear to be related,
+
+173
+00:09:15,200 --> 00:09:18,320
+but in the real
+world, actually are.
+
+174
+00:09:18,320 --> 00:09:20,850
+Our KB is not complete.
+
+175
+00:09:20,850 --> 00:09:24,060
+A pair of entities might
+be related in real life,
+
+176
+00:09:24,060 --> 00:09:27,110
+even if they don't
+appear together in a KB.
+
+177
+00:09:27,110 --> 00:09:30,210
+And as I said earlier, after
+all, that's the whole point.
+
+178
+00:09:30,210 --> 00:09:33,620
+That's the whole reason we're
+doing relation extraction is
+
+179
+00:09:33,620 --> 00:09:37,370
+to find things that
+are true in real life
+
+180
+00:09:37,370 --> 00:09:40,850
+and true according to some text
+that somebody wrote, but aren't
+
+181
+00:09:40,850 --> 00:09:42,040
+yet in our KB.
+
+182
+00:09:42,040 --> 00:09:44,990
+
+
+183
+00:09:44,990 --> 00:09:47,780
+OK, now I'm going to
+come to the question that
+
+184
+00:09:47,780 --> 00:09:53,510
+was asked about pairs that
+belong to multiple relations.
+
+185
+00:09:53,510 --> 00:09:57,680
+And this is related to the
+question of the outputs
+
+186
+00:09:57,680 --> 00:09:59,930
+of our prediction problem.
+
+187
+00:09:59,930 --> 00:10:04,580
+We wrote some code to check
+the KB for entity pairs
+
+188
+00:10:04,580 --> 00:10:07,100
+that belong to more
+than one relation.
+
+189
+00:10:07,100 --> 00:10:10,580
+So that's this method
+count_relation_combinations.
+
+190
+00:10:10,580 --> 00:10:13,760
+And it turns out, this is
+a really common phenomenon
+
+191
+00:10:13,760 --> 00:10:14,420
+in the KB.
+
+192
+00:10:14,420 --> 00:10:19,100
+There are lots of pairs that
+belong to multiple relations.
+
+193
+00:10:19,100 --> 00:10:22,040
+For example, I won't even
+mention the most common one,
+
+194
+00:10:22,040 --> 00:10:28,130
+but there are 143 people in
+the KB whose place of birth
+
+195
+00:10:28,130 --> 00:10:31,040
+is the same as their
+place of death.
+
+196
+00:10:31,040 --> 00:10:33,710
+And actually, that's
+not that surprising.
+
+197
+00:10:33,710 --> 00:10:36,660
+That makes perfect sense.
+
+198
+00:10:36,660 --> 00:10:40,520
+It even turns out that there's
+no fewer than seven people who
+
+199
+00:10:40,520 --> 00:10:43,100
+married a sibling.
+
+200
+00:10:43,100 --> 00:10:46,340
+Well, since lots of
+entity pairs belong
+
+201
+00:10:46,340 --> 00:10:49,910
+to more than one
+relation, we probably
+
+202
+00:10:49,910 --> 00:10:54,180
+don't want to be forced to
+predict a single relation.
+
+203
+00:10:54,180 --> 00:10:56,450
+So this suggests
+formulating our problem
+
+204
+00:10:56,450 --> 00:10:59,390
+as multi-label classification.
+
+205
+00:10:59,390 --> 00:11:03,560
+We want our models to be able
+to predict multiple relations
+
+206
+00:11:03,560 --> 00:11:05,630
+for any given entity pair.
+
+207
+00:11:05,630 --> 00:11:08,317
+
+
+208
+00:11:08,317 --> 00:11:09,900
+There are a number
+of ways to approach
+
+209
+00:11:09,900 --> 00:11:13,110
+multi-label classification,
+but the most obvious
+
+210
+00:11:13,110 --> 00:11:15,750
+is the binary
+relevance method, which
+
+211
+00:11:15,750 --> 00:11:21,180
+just factors multi-label
+classification over n labels
+
+212
+00:11:21,180 --> 00:11:24,480
+into n independent
+binary classification
+
+213
+00:11:24,480 --> 00:11:26,920
+problems, one for each label.
+
+214
+00:11:26,920 --> 00:11:29,940
+So if you have a pair
+like Pericles and Athens,
+
+215
+00:11:29,940 --> 00:11:32,880
+you want to be able to
+predict any combination
+
+216
+00:11:32,880 --> 00:11:34,290
+of these labels.
+
+217
+00:11:34,290 --> 00:11:39,090
+You just train a separate model,
+a separate binary classifier,
+
+218
+00:11:39,090 --> 00:11:42,630
+for each of the
+labels independently.
+
+219
+00:11:42,630 --> 00:11:46,260
+Each of them generates a
+prediction independently.
+
+220
+00:11:46,260 --> 00:11:48,630
+And in this example,
+we've predicted
+
+221
+00:11:48,630 --> 00:11:50,910
+that the place of
+birth relation applies,
+
+222
+00:11:50,910 --> 00:11:53,520
+the place of death
+relation applies, but not
+
+223
+00:11:53,520 --> 00:11:57,300
+the has_sibling relation.
+
+224
+00:11:57,300 --> 00:12:00,863
+A disadvantage of this
+approach is that it fails to--
+
+225
+00:12:00,863 --> 00:12:03,030
+because it treats the binary
+classification problems
+
+226
+00:12:03,030 --> 00:12:05,490
+as independent, it
+fails to exploit
+
+227
+00:12:05,490 --> 00:12:08,220
+correlations between labels.
+
+228
+00:12:08,220 --> 00:12:10,950
+For example, there may
+well be a correlation
+
+229
+00:12:10,950 --> 00:12:14,940
+between the place of birth label
+and the place of death label.
+
+230
+00:12:14,940 --> 00:12:19,260
+And if you already have evidence
+that the place of birth label
+
+231
+00:12:19,260 --> 00:12:24,000
+applies, that might tilt
+you, at least a little bit,
+
+232
+00:12:24,000 --> 00:12:27,680
+toward saying yes
+for place of death.
+
+233
+00:12:27,680 --> 00:12:31,250
+This approach of factoring
+them into independent binary
+
+234
+00:12:31,250 --> 00:12:35,330
+classification problems
+is not able to take
+
+235
+00:12:35,330 --> 00:12:39,480
+advantage of that information.
+
+236
+00:12:39,480 --> 00:12:41,960
+But it has the great
+virtue of simplicity.
+
+237
+00:12:41,960 --> 00:12:45,350
+It's incredibly straightforward,
+incredibly easy to think about
+
+238
+00:12:45,350 --> 00:12:46,820
+and to implement.
+
+239
+00:12:46,820 --> 00:12:49,830
+And it'll suffice
+for our purposes.
+
+240
+00:12:49,830 --> 00:12:54,110
+It's going to make the
+investigation move forward
+
+241
+00:12:54,110 --> 00:12:56,310
+very smoothly.
+
+242
+00:12:56,310 --> 00:12:59,000
+So I want to sum
+up a little bit.
+
+243
+00:12:59,000 --> 00:13:04,850
+We set out to establish
+a precise formulation
+
+244
+00:13:04,850 --> 00:13:06,540
+of our prediction problem.
+
+245
+00:13:06,540 --> 00:13:08,750
+And when we put all
+the pieces together,
+
+246
+00:13:08,750 --> 00:13:11,210
+here's the problem
+formulation we've arrived at.
+
+247
+00:13:11,210 --> 00:13:15,740
+The input to the prediction
+will be an entity pair
+
+248
+00:13:15,740 --> 00:13:18,980
+and a candidate relation.
+
+249
+00:13:18,980 --> 00:13:23,240
+The output will be a Boolean
+indicating whether the entity
+
+250
+00:13:23,240 --> 00:13:26,930
+pair belongs to the relation.
+
+251
+00:13:26,930 --> 00:13:30,430
+Since a KB triple is precisely
+a relation and a pair
+
+252
+00:13:30,430 --> 00:13:32,920
+of entities, we could
+say equivalently
+
+253
+00:13:32,920 --> 00:13:35,800
+that our prediction
+problem amounts to binary
+
+254
+00:13:35,800 --> 00:13:38,500
+classification of KB triples.
+
+255
+00:13:38,500 --> 00:13:40,960
+Given a candidate KB
+triple like worked_at,
+
+256
+00:13:40,960 --> 00:13:45,597
+Elon_Musk, SpaceX, do we
+predict that it's valid?
+
+257
+00:13:45,597 --> 00:13:47,680
+This is really nice because
+it's a very simple way
+
+258
+00:13:47,680 --> 00:13:51,400
+of thinking about what
+problem we're taking on.
+
+259
+00:13:51,400 --> 00:13:54,610
+We have a bunch of
+positive examples,
+
+260
+00:13:54,610 --> 00:13:56,680
+which come from our KB.
+
+261
+00:13:56,680 --> 00:14:00,580
+We have a bunch of negative
+examples, which we synthesize
+
+262
+00:14:00,580 --> 00:14:04,450
+from the corpus using pairs
+which co-occur in the corpus
+
+263
+00:14:04,450 --> 00:14:06,670
+but don't occur in the KB.
+
+264
+00:14:06,670 --> 00:14:11,110
+Now we have lots of data
+consisting of candidate KB
+
+265
+00:14:11,110 --> 00:14:15,670
+triples, including positive
+examples and negative examples.
+
+266
+00:14:15,670 --> 00:14:20,920
+We can use that data both for
+training and for evaluation.
+
+267
+00:14:20,920 --> 00:14:23,140
+And once we've
+trained a model to do
+
+268
+00:14:23,140 --> 00:14:25,510
+this binary
+classification, we can now
+
+269
+00:14:25,510 --> 00:14:29,350
+consider novel KB triples
+which don't appear anywhere
+
+270
+00:14:29,350 --> 00:14:31,870
+in our data, and ask
+whether the model will
+
+271
+00:14:31,870 --> 00:14:33,460
+predict them to be true.
+
+272
+00:14:33,460 --> 00:14:37,390
+And by doing that, we may
+discover new relations that
+
+273
+00:14:37,390 --> 00:14:40,810
+are not currently
+part of the KB that
+
+274
+00:14:40,810 --> 00:14:43,710
+could be candidates for adding.
+
+275
+00:14:43,710 --> 00:14:48,000
+
+

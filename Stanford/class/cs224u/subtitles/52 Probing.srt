@@ -1,0 +1,1313 @@
+1
+00:00:00,000 --> 00:00:04,468
+
+
+2
+00:00:04,468 --> 00:00:06,010
+CHRISTOPHER POTTS:
+Welcome, everyone.
+
+3
+00:00:06,010 --> 00:00:08,613
+This is part 4 in our series
+on analysis methods in NLP.
+
+4
+00:00:08,613 --> 00:00:10,280
+We're going to be
+talking about probing.
+
+5
+00:00:10,280 --> 00:00:13,110
+This is the first of the two
+structural evaluation methods
+
+6
+00:00:13,110 --> 00:00:14,520
+that we're going to consider.
+
+7
+00:00:14,520 --> 00:00:16,980
+It's time to get really
+introspective about what
+
+8
+00:00:16,980 --> 00:00:19,070
+our models are doing.
+
+9
+00:00:19,070 --> 00:00:21,160
+Here's an overview
+of the probing idea.
+
+10
+00:00:21,160 --> 00:00:25,150
+The core thing is that we're
+going to use supervised models,
+
+11
+00:00:25,150 --> 00:00:27,760
+those are the probe
+models, to determine
+
+12
+00:00:27,760 --> 00:00:31,060
+what's latently encoded in
+the hidden representations
+
+13
+00:00:31,060 --> 00:00:33,590
+of our target models.
+
+14
+00:00:33,590 --> 00:00:36,740
+This is often applied in the
+context of BERTology, which
+
+15
+00:00:36,740 --> 00:00:39,710
+should be like, I have BERT
+as a pre-trained artifact
+
+16
+00:00:39,710 --> 00:00:41,750
+and I would like to
+understand the nature
+
+17
+00:00:41,750 --> 00:00:43,220
+of its hidden representations.
+
+18
+00:00:43,220 --> 00:00:44,990
+What do they latently encode?
+
+19
+00:00:44,990 --> 00:00:49,350
+And for that you might
+use probe models.
+
+20
+00:00:49,350 --> 00:00:51,270
+Probing, as you will
+see, can be a source
+
+21
+00:00:51,270 --> 00:00:53,650
+of really valuable and
+interesting insights,
+
+22
+00:00:53,650 --> 00:00:57,180
+but we do need to proceed with
+caution on two major issues
+
+23
+00:00:57,180 --> 00:00:57,850
+here.
+
+24
+00:00:57,850 --> 00:01:00,690
+First, a very
+powerful probe model
+
+25
+00:01:00,690 --> 00:01:03,060
+since it is a
+supervised model might
+
+26
+00:01:03,060 --> 00:01:05,160
+lead you to see things
+that aren't really
+
+27
+00:01:05,160 --> 00:01:07,500
+in your target model,
+but rather just things
+
+28
+00:01:07,500 --> 00:01:09,600
+that your probe
+model has learned.
+
+29
+00:01:09,600 --> 00:01:13,560
+And you might, therefore,
+overdiagnose latent information
+
+30
+00:01:13,560 --> 00:01:15,690
+in your target model
+when, in fact, it's
+
+31
+00:01:15,690 --> 00:01:17,090
+all being stored in the probe.
+
+32
+00:01:17,090 --> 00:01:19,740
+And I'm going to offer you
+a technique for navigating
+
+33
+00:01:19,740 --> 00:01:21,630
+around that issue.
+
+34
+00:01:21,630 --> 00:01:24,360
+And the second one is that
+probes cannot tell us about
+
+35
+00:01:24,360 --> 00:01:27,930
+whether the information that
+we identify has any causal
+
+36
+00:01:27,930 --> 00:01:30,090
+relationship with the
+target model's behavior.
+
+37
+00:01:30,090 --> 00:01:32,460
+It will be very tempting
+for you to say, Oh,
+
+38
+00:01:32,460 --> 00:01:36,600
+I have discovered that this
+representation layer includes
+
+39
+00:01:36,600 --> 00:01:38,253
+part of speech information.
+
+40
+00:01:38,253 --> 00:01:40,920
+And you might therefore conclude
+that part of speech information
+
+41
+00:01:40,920 --> 00:01:43,680
+is important for whatever
+task you have set,
+
+42
+00:01:43,680 --> 00:01:46,020
+but we can't actually
+make that inference.
+
+43
+00:01:46,020 --> 00:01:48,240
+It could be that the part
+of speech information
+
+44
+00:01:48,240 --> 00:01:51,090
+is simply latently
+encoded, but not actually
+
+45
+00:01:51,090 --> 00:01:57,310
+especially relevant to your
+model's input/output behavior.
+
+46
+00:01:57,310 --> 00:01:58,840
+Final section of
+the slide show, I'm
+
+47
+00:01:58,840 --> 00:02:02,020
+going to just talk briefly
+about unsupervised probes, which
+
+48
+00:02:02,020 --> 00:02:04,493
+seek to address this first
+problem here that the probe
+
+49
+00:02:04,493 --> 00:02:06,160
+model might actually
+be the thing that's
+
+50
+00:02:06,160 --> 00:02:08,380
+encoding all of this
+information that we
+
+51
+00:02:08,380 --> 00:02:10,180
+claimed to have discovered.
+
+52
+00:02:10,180 --> 00:02:13,150
+And then when we talk about
+future attribution methods,
+
+53
+00:02:13,150 --> 00:02:15,160
+we'll get closer to
+being able to address
+
+54
+00:02:15,160 --> 00:02:18,210
+some of these causal questions.
+
+55
+00:02:18,210 --> 00:02:20,550
+Let's begin with the
+core method for probing.
+
+56
+00:02:20,550 --> 00:02:23,850
+And just because this is a
+typical framing of these ideas,
+
+57
+00:02:23,850 --> 00:02:26,040
+I've got depicted here what
+you might think of as a,
+
+58
+00:02:26,040 --> 00:02:28,320
+kind of, generic
+transformer-based model, where
+
+59
+00:02:28,320 --> 00:02:31,320
+we have three layers
+with all of these blocks.
+
+60
+00:02:31,320 --> 00:02:33,360
+These maybe are the
+output representations
+
+61
+00:02:33,360 --> 00:02:35,310
+from each of the
+transformer blocks.
+
+62
+00:02:35,310 --> 00:02:38,610
+And you can see that I've got an
+input sequence coming in here.
+
+63
+00:02:38,610 --> 00:02:40,260
+And the idea would
+be that we could
+
+64
+00:02:40,260 --> 00:02:42,480
+pick some hidden
+representation in this model,
+
+65
+00:02:42,480 --> 00:02:44,310
+like this middle one, h here.
+
+66
+00:02:44,310 --> 00:02:47,730
+And decide that we're going
+to fit a small linear model
+
+67
+00:02:47,730 --> 00:02:50,460
+presumably on that
+hidden representation,
+
+68
+00:02:50,460 --> 00:02:52,380
+and see whether
+we can figure out
+
+69
+00:02:52,380 --> 00:02:54,180
+whether that
+representation encodes
+
+70
+00:02:54,180 --> 00:02:57,218
+some information about some
+task that we care about.
+
+71
+00:02:57,218 --> 00:02:59,010
+So for example, if you
+wanted to figure out
+
+72
+00:02:59,010 --> 00:03:01,380
+whether sentiment or
+lexical entailment
+
+73
+00:03:01,380 --> 00:03:04,140
+was encoded at that point,
+you'd need a labeled data set
+
+74
+00:03:04,140 --> 00:03:06,120
+for sentiment or entailment.
+
+75
+00:03:06,120 --> 00:03:07,830
+And then you would
+fit the probe model
+
+76
+00:03:07,830 --> 00:03:09,480
+on this representation
+and use that
+
+77
+00:03:09,480 --> 00:03:12,930
+to determine the extent to which
+that information is encoded
+
+78
+00:03:12,930 --> 00:03:14,160
+there.
+
+79
+00:03:14,160 --> 00:03:15,862
+This depiction is a
+little bit poetical.
+
+80
+00:03:15,862 --> 00:03:17,820
+So it's worth just walking
+through mechanically
+
+81
+00:03:17,820 --> 00:03:19,350
+what you'd actually be doing.
+
+82
+00:03:19,350 --> 00:03:22,650
+You would use this BERT model
+and process different examples,
+
+83
+00:03:22,650 --> 00:03:24,210
+like for the sequence here.
+
+84
+00:03:24,210 --> 00:03:26,070
+And get an output
+representation,
+
+85
+00:03:26,070 --> 00:03:28,680
+which should be paired
+with some task label.
+
+86
+00:03:28,680 --> 00:03:31,260
+And you would repeatedly do
+that for different inputs.
+
+87
+00:03:31,260 --> 00:03:34,020
+You're essentially
+using this BERT model
+
+88
+00:03:34,020 --> 00:03:36,660
+as an engine for
+creating representations
+
+89
+00:03:36,660 --> 00:03:39,210
+that will become your
+feature representation matrix
+
+90
+00:03:39,210 --> 00:03:41,910
+x paired with your labels y.
+
+91
+00:03:41,910 --> 00:03:43,590
+And it is this
+model that will be
+
+92
+00:03:43,590 --> 00:03:47,130
+the basis for your linear probe
+model, this small linear model
+
+93
+00:03:47,130 --> 00:03:49,110
+as I've identified in here.
+
+94
+00:03:49,110 --> 00:03:50,820
+So you're kind of
+using BERT as an engine
+
+95
+00:03:50,820 --> 00:03:52,740
+to create a data
+set that is then
+
+96
+00:03:52,740 --> 00:03:55,063
+the input to a supervised
+learning problem.
+
+97
+00:03:55,063 --> 00:03:56,730
+Another perspective
+would be that you're
+
+98
+00:03:56,730 --> 00:04:00,480
+kind of using frozen BERT
+parameters in this case,
+
+99
+00:04:00,480 --> 00:04:02,260
+and fitting a model
+on top of them.
+
+100
+00:04:02,260 --> 00:04:04,830
+It's just that instead of
+picking an output point,
+
+101
+00:04:04,830 --> 00:04:09,728
+you've picked possibly one of
+the internal representations.
+
+102
+00:04:09,728 --> 00:04:10,770
+And this is very general.
+
+103
+00:04:10,770 --> 00:04:12,877
+And in fact, most
+often, when you
+
+104
+00:04:12,877 --> 00:04:14,460
+read without quotes
+in the literature,
+
+105
+00:04:14,460 --> 00:04:15,960
+they're actually
+sequence problems
+
+106
+00:04:15,960 --> 00:04:19,529
+like part of speech tagging
+or named entity recognition.
+
+107
+00:04:19,529 --> 00:04:22,019
+And therefore, you might
+use an entire layer or even
+
+108
+00:04:22,019 --> 00:04:27,130
+a set of layers as the
+basis for your probe model.
+
+109
+00:04:27,130 --> 00:04:29,470
+Now you can hear in
+my description there,
+
+110
+00:04:29,470 --> 00:04:31,990
+that there is a interesting
+judgment call that you're
+
+111
+00:04:31,990 --> 00:04:35,230
+making about whether you are
+probing or simply learning
+
+112
+00:04:35,230 --> 00:04:36,190
+a new model, right?
+
+113
+00:04:36,190 --> 00:04:39,130
+Probes, in the sense that
+I just presented them,
+
+114
+00:04:39,130 --> 00:04:41,200
+are supervised
+models whose inputs
+
+115
+00:04:41,200 --> 00:04:43,810
+are frozen parameters of the
+models that we're probing,
+
+116
+00:04:43,810 --> 00:04:45,520
+our target models, right?
+
+117
+00:04:45,520 --> 00:04:47,470
+This is hard to
+distinguish from simply
+
+118
+00:04:47,470 --> 00:04:49,720
+fitting a supervised
+model as usual
+
+119
+00:04:49,720 --> 00:04:53,590
+with some particular
+choice of featurization.
+
+120
+00:04:53,590 --> 00:04:56,020
+As a result of this,
+it is essentially
+
+121
+00:04:56,020 --> 00:04:58,060
+a foregone conclusion
+that at least some
+
+122
+00:04:58,060 --> 00:05:01,510
+of the information that
+we identify with our probe
+
+123
+00:05:01,510 --> 00:05:03,920
+is actually stored in the
+probe model parameters
+
+124
+00:05:03,920 --> 00:05:07,240
+and it's just that we provided
+useful input features that
+
+125
+00:05:07,240 --> 00:05:09,410
+allow this probe
+to be successful.
+
+126
+00:05:09,410 --> 00:05:12,190
+And that's the sense in
+which the inputs are latently
+
+127
+00:05:12,190 --> 00:05:13,590
+encoding this information.
+
+128
+00:05:13,590 --> 00:05:15,340
+But with the probe,
+we have not determined
+
+129
+00:05:15,340 --> 00:05:17,590
+that it is truly latently
+there, but rather
+
+130
+00:05:17,590 --> 00:05:20,620
+that it's a stepping-- a
+stepping stone toward a model
+
+131
+00:05:20,620 --> 00:05:22,540
+that could be
+successful at this as
+
+132
+00:05:22,540 --> 00:05:25,040
+conceived of as a
+supervised learning task.
+
+133
+00:05:25,040 --> 00:05:27,460
+So those are important
+distinctions to keep in mind.
+
+134
+00:05:27,460 --> 00:05:30,460
+As a result of this,
+more powerful probes,
+
+135
+00:05:30,460 --> 00:05:34,330
+like deep neural networks,
+might find more information
+
+136
+00:05:34,330 --> 00:05:35,590
+than simple linear models.
+
+137
+00:05:35,590 --> 00:05:37,960
+But that's not because
+they're able to tease out
+
+138
+00:05:37,960 --> 00:05:41,480
+more information from the
+representations themselves,
+
+139
+00:05:41,480 --> 00:05:43,660
+but rather because
+the probe model now
+
+140
+00:05:43,660 --> 00:05:46,840
+has so much more capacity
+for storing information
+
+141
+00:05:46,840 --> 00:05:49,360
+about the task that
+you're probing for.
+
+142
+00:05:49,360 --> 00:05:51,610
+So there are a bunch of
+different judgment calls here.
+
+143
+00:05:51,610 --> 00:05:54,640
+And that's difficult. But
+a very productive entry
+
+144
+00:05:54,640 --> 00:05:56,560
+into this space is this
+really lovely paper
+
+145
+00:05:56,560 --> 00:05:58,540
+from Hewitt and
+Liang 2019, where
+
+146
+00:05:58,540 --> 00:06:01,300
+they introduce the
+notion of a control task
+
+147
+00:06:01,300 --> 00:06:04,420
+and the corresponding
+metric of probe selectivity.
+
+148
+00:06:04,420 --> 00:06:05,320
+So here's the idea.
+
+149
+00:06:05,320 --> 00:06:08,560
+A control task will
+be some random task
+
+150
+00:06:08,560 --> 00:06:11,830
+with the same input/output
+structure as the target task
+
+151
+00:06:11,830 --> 00:06:14,260
+that we want to use
+for our probing.
+
+152
+00:06:14,260 --> 00:06:16,880
+Like for example, for
+word-sense classification,
+
+153
+00:06:16,880 --> 00:06:20,020
+you might have words assigned
+random fixed words senses
+
+154
+00:06:20,020 --> 00:06:21,970
+independent of their context.
+
+155
+00:06:21,970 --> 00:06:23,560
+Or for part of speech
+tagging, instead
+
+156
+00:06:23,560 --> 00:06:25,570
+of using the actual
+part of speech tags,
+
+157
+00:06:25,570 --> 00:06:27,700
+you might randomly
+assigned words
+
+158
+00:06:27,700 --> 00:06:31,060
+to fixed tags from
+the same tag space.
+
+159
+00:06:31,060 --> 00:06:33,700
+Or for parsing, it gets a
+little bit more nuanced,
+
+160
+00:06:33,700 --> 00:06:36,670
+but you might have some
+edge assignment strategies
+
+161
+00:06:36,670 --> 00:06:40,540
+that you use semirandomly to
+link different pairs of words
+
+162
+00:06:40,540 --> 00:06:42,650
+into a kind of pseudo-parse.
+
+163
+00:06:42,650 --> 00:06:44,320
+And that would serve
+as a control task
+
+164
+00:06:44,320 --> 00:06:48,190
+for trying to surface latent
+actual parsing information.
+
+165
+00:06:48,190 --> 00:06:49,450
+So those are control tasks.
+
+166
+00:06:49,450 --> 00:06:52,540
+And then selectivity is
+simply the difference
+
+167
+00:06:52,540 --> 00:06:55,180
+between your probe
+performance on the task
+
+168
+00:06:55,180 --> 00:06:58,990
+and your identical probe model
+structure on these control
+
+169
+00:06:58,990 --> 00:07:00,580
+tasks.
+
+170
+00:07:00,580 --> 00:07:03,430
+And Hewitt and Liang used this
+to tease out what, I think,
+
+171
+00:07:03,430 --> 00:07:05,230
+is a pretty clear
+intuition, which
+
+172
+00:07:05,230 --> 00:07:07,570
+is that as you get
+more powerful probes,
+
+173
+00:07:07,570 --> 00:07:09,460
+they simply become
+less selective.
+
+174
+00:07:09,460 --> 00:07:14,090
+So along the x-axis here,
+we have MLP hidden units.
+
+175
+00:07:14,090 --> 00:07:16,300
+So we have model complexity
+from left to right,
+
+176
+00:07:16,300 --> 00:07:18,640
+where we have very
+complicated, powerful models
+
+177
+00:07:18,640 --> 00:07:20,140
+at the right-hand side.
+
+178
+00:07:20,140 --> 00:07:22,180
+And here we have accuracy.
+
+179
+00:07:22,180 --> 00:07:25,390
+And we're measuring
+our control task in red
+
+180
+00:07:25,390 --> 00:07:28,720
+and our actual probe task
+in this light blue here.
+
+181
+00:07:28,720 --> 00:07:32,060
+And selectivity is the
+difference between those two.
+
+182
+00:07:32,060 --> 00:07:35,200
+So you can see, for example,
+that the very weak models,
+
+183
+00:07:35,200 --> 00:07:39,190
+the ones with two hidden units
+have very high selectivity.
+
+184
+00:07:39,190 --> 00:07:42,220
+Whereas by the time I have
+this very powerful NLP
+
+185
+00:07:42,220 --> 00:07:44,350
+with lots of hidden
+units, selectivity
+
+186
+00:07:44,350 --> 00:07:45,700
+has gone almost to 0.
+
+187
+00:07:45,700 --> 00:07:48,940
+And it's very hard to say that
+you've uncovered any latent
+
+188
+00:07:48,940 --> 00:07:49,570
+information.
+
+189
+00:07:49,570 --> 00:07:54,640
+Because even the control task
+is fully solvable with a model
+
+190
+00:07:54,640 --> 00:07:56,952
+that has this much capacity.
+
+191
+00:07:56,952 --> 00:07:58,660
+So I think what this
+is pushing us toward
+
+192
+00:07:58,660 --> 00:08:02,380
+is always having control
+tasks as part of the picture
+
+193
+00:08:02,380 --> 00:08:04,240
+and always reporting
+selectivity so
+
+194
+00:08:04,240 --> 00:08:07,810
+that we can control for the
+complexity of the probe model
+
+195
+00:08:07,810 --> 00:08:09,620
+itself.
+
+196
+00:08:09,620 --> 00:08:11,590
+That's an important and
+easy, practical step
+
+197
+00:08:11,590 --> 00:08:14,530
+that will give you a clearer
+picture of what you've actually
+
+198
+00:08:14,530 --> 00:08:17,440
+surfaced with your probe.
+
+199
+00:08:17,440 --> 00:08:18,450
+That's the first issue.
+
+200
+00:08:18,450 --> 00:08:20,742
+The second issue is just
+something that you should keep
+
+201
+00:08:20,742 --> 00:08:23,150
+in mind as a theoretical
+fact about probing,
+
+202
+00:08:23,150 --> 00:08:25,030
+which is that it is
+fundamentally limited
+
+203
+00:08:25,030 --> 00:08:28,390
+in the sense that it cannot tell
+you that the information you
+
+204
+00:08:28,390 --> 00:08:31,720
+discover has any causal impact
+on the model's input/output
+
+205
+00:08:31,720 --> 00:08:32,462
+behavior.
+
+206
+00:08:32,462 --> 00:08:33,879
+To illustrate that,
+I'm just going
+
+207
+00:08:33,880 --> 00:08:37,240
+to show you a simple example
+that kind of proves this.
+
+208
+00:08:37,240 --> 00:08:38,620
+So imagine over
+here on the left,
+
+209
+00:08:38,620 --> 00:08:41,770
+I have a simple model that's
+going to take in three integers
+
+210
+00:08:41,770 --> 00:08:42,760
+and sum them.
+
+211
+00:08:42,760 --> 00:08:45,250
+So the output here will be
+the sum of three integers.
+
+212
+00:08:45,250 --> 00:08:48,370
+Like if I put in 1, 2,
+3, it will output 6.
+
+213
+00:08:48,370 --> 00:08:51,190
+And it does that by representing
+each one of those integers
+
+214
+00:08:51,190 --> 00:08:55,090
+as the single-dimensional vector
+that just is that integer.
+
+215
+00:08:55,090 --> 00:08:56,980
+And then we have a whole
+bunch of transformer
+
+216
+00:08:56,980 --> 00:08:59,530
+like model parameters,
+dense connections here
+
+217
+00:08:59,530 --> 00:09:03,130
+that will lead us finally
+to the output layer.
+
+218
+00:09:03,130 --> 00:09:06,570
+So you can easily imagine that
+you probe this position L1 here
+
+219
+00:09:06,570 --> 00:09:11,160
+and you find that it computes x
+plus y, which might be starting
+
+220
+00:09:11,160 --> 00:09:13,290
+to reveal for you that
+there's some kind of tree
+
+221
+00:09:13,290 --> 00:09:15,420
+structure to this model
+even though it was densely
+
+222
+00:09:15,420 --> 00:09:16,060
+connected.
+
+223
+00:09:16,060 --> 00:09:18,870
+It has learned a structured
+solution to the problem.
+
+224
+00:09:18,870 --> 00:09:21,780
+And you might probe L2 and
+find that it computes z.
+
+225
+00:09:21,780 --> 00:09:23,667
+And that would really
+lead you to think
+
+226
+00:09:23,667 --> 00:09:25,500
+that you've got a, kind
+of, interesting tree
+
+227
+00:09:25,500 --> 00:09:29,640
+structure with constituents
+for this addition problem.
+
+228
+00:09:29,640 --> 00:09:31,620
+And that's certainly suggestive.
+
+229
+00:09:31,620 --> 00:09:33,900
+However, here is an
+example of a model that
+
+230
+00:09:33,900 --> 00:09:38,490
+shows that neither L1 nor L2 has
+anything to do with the model's
+
+231
+00:09:38,490 --> 00:09:39,720
+output predictions.
+
+232
+00:09:39,720 --> 00:09:42,240
+It is entirely that
+middle state that
+
+233
+00:09:42,240 --> 00:09:45,030
+tells the complete
+story about the output.
+
+234
+00:09:45,030 --> 00:09:47,530
+I'll leave you to work through
+the details if you choose to,
+
+235
+00:09:47,530 --> 00:09:49,500
+but a shortcut
+way to see that is
+
+236
+00:09:49,500 --> 00:09:52,230
+that the final parameters
+that take us from these output
+
+237
+00:09:52,230 --> 00:09:54,300
+representations
+to the predictions
+
+238
+00:09:54,300 --> 00:09:57,840
+have zeroed out the first
+and third positions,
+
+239
+00:09:57,840 --> 00:09:59,730
+leaving only the
+second one as having
+
+240
+00:09:59,730 --> 00:10:02,490
+any kind of causal efficacy.
+
+241
+00:10:02,490 --> 00:10:04,950
+Even though in this
+model, if you probe,
+
+242
+00:10:04,950 --> 00:10:08,280
+you do indeed find that it
+looks like those representations
+
+243
+00:10:08,280 --> 00:10:11,250
+perfectly encode these
+two pieces of information.
+
+244
+00:10:11,250 --> 00:10:14,550
+That's a dramatic and
+clear, simple illustration
+
+245
+00:10:14,550 --> 00:10:16,410
+of how a probe
+could get divorced
+
+246
+00:10:16,410 --> 00:10:19,800
+from the actual causal
+behavior of the model.
+
+247
+00:10:19,800 --> 00:10:23,210
+Again, something that's
+worth keeping in mind.
+
+248
+00:10:23,210 --> 00:10:24,960
+And finally, to close
+this out, of course,
+
+249
+00:10:24,960 --> 00:10:28,590
+for that first problem about
+distinguishing between probe
+
+250
+00:10:28,590 --> 00:10:31,440
+capacity and actually
+latently encoded
+
+251
+00:10:31,440 --> 00:10:34,260
+information, one
+response to that that's
+
+252
+00:10:34,260 --> 00:10:35,940
+developing in the
+literature now is
+
+253
+00:10:35,940 --> 00:10:38,250
+to develop unsupervised probes.
+
+254
+00:10:38,250 --> 00:10:40,380
+These would be models
+like these that
+
+255
+00:10:40,380 --> 00:10:44,310
+seek to find in actual
+facts about the model
+
+256
+00:10:44,310 --> 00:10:47,490
+with no additional supervision,
+the latent information
+
+257
+00:10:47,490 --> 00:10:48,960
+that we hope to find.
+
+258
+00:10:48,960 --> 00:10:51,120
+And this would come
+from simply doing
+
+259
+00:10:51,120 --> 00:10:53,400
+linear transformations
+of the parameters
+
+260
+00:10:53,400 --> 00:10:55,740
+and measuring distance
+between parameters
+
+261
+00:10:55,740 --> 00:10:58,470
+as a way of getting a sense
+for what's actually there
+
+262
+00:10:58,470 --> 00:11:00,390
+without the
+complications that come
+
+263
+00:11:00,390 --> 00:11:04,060
+from having this additional
+supervised probe model.
+
+264
+00:11:04,060 --> 00:11:06,540
+And finally, for much more
+information about probes,
+
+265
+00:11:06,540 --> 00:11:08,760
+and what we think we've
+learned from them,
+
+266
+00:11:08,760 --> 00:11:10,500
+and what they can
+tell us, I encourage
+
+267
+00:11:10,500 --> 00:11:12,750
+you to check out
+this paper by Rogers
+
+268
+00:11:12,750 --> 00:11:14,990
+et al, a primer on BERTology.
+
+269
+00:11:14,990 --> 00:11:17,730
+It has a large and
+interesting subsection
+
+270
+00:11:17,730 --> 00:11:20,430
+entirely devoted to what
+probes have told us.
+
+271
+00:11:20,430 --> 00:11:24,130
+Certainly worth a look, and a
+great overview of the space.
+
+272
+00:11:24,130 --> 00:11:28,491
+
+

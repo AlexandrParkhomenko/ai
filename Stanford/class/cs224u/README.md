@@ -10,7 +10,7 @@
 - 5 [Matrix Designs](https://www.youtube.com/watch?v=ladnEW0ntEM)
 - 6 [Vector Comparison](https://www.youtube.com/watch?v=eKvbYOc2rOs)
 - 7 [Basic Reweighting](https://www.youtube.com/watch?v=dv559tVBQRk)
-- 8 [Dimensionality Reduction](https://www.youtube.com/watch?v=5Bx5UhrJbJI)
+- 8 [Dimensionality Reduction](https://www.youtube.com/watch?v=5Bx5UhrJbJI) | [GloVe](https://nlp.stanford.edu/projects/glove/)
 - 9 [Retrofitting](https://www.youtube.com/watch?v=2dVdZ4GPQIk)
 - 10 [Static Representations](https://www.youtube.com/watch?v=K7wM6FUV0ds)
 - 11 [Homework 2 - Sentiment Analysis](https://www.youtube.com/watch?v=e5zRhwc-SqI)

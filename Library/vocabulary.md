@@ -1,5 +1,6 @@
 | term                                    | abbrevation | термин                                             | сокращение   |
 | --------------------------------------- | ----------- | -------------------------------------------------- | ------------ |
+| Automatic Content Extraction | ACE | Автоматический экстрактор контента | АЭК | 
 | Algebraic Decision Diagram | ADD | алгебраическая диаграмма решений | АДР |
 | Artificial Neural Networks | ANN | искусственная нейронная сеть | ИНС |
 | Affiliation Graph Model | AGM | Аффилированная графовая модель | АГМ |
@@ -9,6 +10,7 @@
 | Bayesian network Augmented Naive Bayes classifier | BAN | наивный байесовский классификатор, дополненный байесовской сетью | НБКБС |
 | BERT | Bidirectional Encode Representations from Transformers |  |  |
 | BigCLAM | Cluster Affiliation Model for Big Networks |  |  |
+| BIST | Built-in Self Test |  |  |
 | BlackBox | BB | атака с доступом только к входу и выходу модели | ЧЯ* |
 | Breadth-First Search | BFS | поиск в ширину |  |
 | Causal Bayesian Network | CBN | причинно-следственная байесовская сеть | ПСБС |
@@ -17,19 +19,21 @@
 | Conditional Mutual Information | CMI | условная взаимная информация | УВИ |
 | Conditional Probability Table | CPT | таблица условных вероятностей | ТУВ |
 | Conditional Random Field | CRF | условное случайное поле | УСП |
-| Correlated Occurrence Analogue to Lexi-
-cal Semantic | COALS | Коррелированый Аналог Вхождения в Векторной Семантике | КАВВС* |
+| Correlated Occurrence Analogue to Lexical Semantic | COALS | Коррелированый Аналог Вхождения в Векторной Семантике | КАВВС* |
 | Cumulative Distribution Function        | CDF         |                                                    |              |
 | denoising Entity Autoencoder | dEA |  шумоподавляющий Автоэнкодер Сущностей | щАС* | 
+| Discounted Cumulative Gain, Metric | DCG | совокупный выигрыш со скидкой |  |
 | Decision Diagram | DD | диаграмма решений | ДГР |
 | Decision Tree | DTD | дерево решений | ДР |
 | Decentralized Partially Observable Markov Decision Process | Dec-POMDP | децентрализованный частично наблюдаемый марковский процесс принятия решений | |
+| Dense Passage Retriever by Karpukhin | DPR |  |  |
 | Directed Acyclic Graph | DAG | направленный ациклический граф | НАГ |
 | Disjunctive Normal Form | DNF | Дизъюнктивная нормальная форма  | ДНФ |
 | Dynamic Bayesian Network | DBN | динамическая байесовская сеть | ДБС |
 | Dynamic Bayesian Network Classifier | DBNC | классификатор на основе ДБС | КДБС |
 | Dynamic Decision Network | DDN | динамическая сеть принятия решений | ДСР |
 | Earth Mover Distance | EMD | земного движетеля дистанция | ЗДД* |
+| Efficiently Learning an Encoder that Classifies Token Replacement Accurately | ELECTRA | Эффективное обучение кодировщика, который точно классифицирует замену токена |  |
 | Entity - fact about world |  | Сущность - факт о мире |  |
 | Erdős-Rényi model | ER | Модель Эрдёша-Реньи | ЭР |
 | Erdős-Rényi Random Graph | ERRG | Эрдёша-Реньи случайный граф | ЭРСГ |
@@ -44,6 +48,7 @@ cal Semantic | COALS | Коррелированый Аналог Вхожден�
 | Generative Pretrained Decoder | GPT | Генеративные претренированные декодеры | ГПД* |
 | Graph Attention Networks                | GAT         | графовые сети внимания                             |              |
 | Gibbs Random Field | GRM | случайное поле Гиббса | СПГ |
+| Generative Pre-trained Transformer      | GPT         | генеративный предварительно обученный преобразователь | ГПОП      |
 | Graph Convolution Policy Network        | GCPN        |                                                    |              |
 | Graph Convolution Network               | GСN         | графовая сверточная сеть                           | ГСС          |
 | Graph Isomorphism Network               | GIN         | графовая изоморфная сеть                           | ГИС          |
@@ -56,12 +61,14 @@ cal Semantic | COALS | Коррелированый Аналог Вхожден�
 | Inductive Logic Programming | ILP | индуктивное логическое программирование | ИЛП |
 | Influence Diagram | ID | диаграмма влияния | ДВ |
 | Iterative Conditional Modes | ICM | итеративные условные методы (алгоритм) | ИУМ |
+| Information Retrieval | IR |  |  |
 | Knowledge Base | KB | база знаний | БЗ |
 | Knowledge Graph | KG | граф знаний | ГЗ |
 | Law of Large Numbers | LLN | Закон больших чисел | ЗБЧ |
 | Limited Memory Influence Diagram | LIMID | диаграмма влияния с ограниченной памятью | ДВОП |
 | Linear Logistic Classifier              | LLC         |                                                    |              |
 | Latent Semantic Analysis | LSA |  |  |
+| (Mean) Average Precision, Metric | MAP | средняя точност |  |
 | Markov Blanket | MB | марковское ограждение | МО |
 | Markov Chain | MC | марковская цепь | МЦ |
 | Markov Decision Process | MDP | марковский процесс принятия решений | МППР |
@@ -71,6 +78,8 @@ cal Semantic | COALS | Коррелированый Аналог Вхожден�
 | Maximal Ancestral Graph | MAG | максимальный наследственный граф | МНГ |
 | Maximum a Posteriori | MAP | оценка апостериорного максимума | ОАМ |
 | Maximum Mean Discrepancy | MMD | Максимальное среднее расхождение | МСР |
+| Minimum Bayes Risk | MBR | Минимальный байесовский риск | МБР |
+| Mean Reciprocal Rank, Metric | MRR | средний взаимный рейтинг |  |
 | Multi-Headed Attention | MHA | Многоцелевое внимание| МЦВ* |
 | Minimum Description Length | MDL | принцип минимальной длины описания | ПМДО |
 | Model-Agnostic Meta-Learning | MAML | независимое от модели метаобучение | МНМО* |
@@ -95,6 +104,8 @@ cal Semantic | COALS | Коррелированый Аналог Вхожден�
 | Probability Density Function            | PDF         |                                                    |              |
 | Probability Mass Function               | PMF         |                                                    |              |
 | Pseudolikelihood | PL | псевдоправдоподобие | ПП |
+| Rational Spech Act | RSA |  |  |
+| Region Based Convolutional Neural Networks | R-CNN |  |  |
 | Reinforcement Learning                  | RL          |                                                    |              |
 | Relational Graph Convolution Network | RGCN | реляционная графовая сверточная сеть | РГСС |
 | Relational Probabilistic Graphical Model | RPGM | реляционная вероятностная графовая модель | РВГМ |

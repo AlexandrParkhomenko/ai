@@ -1,0 +1,1353 @@
+1
+00:00:00,000 --> 00:00:05,268
+
+
+2
+00:00:05,268 --> 00:00:06,560
+CHRIS POTTS: Welcome, everyone.
+
+3
+00:00:06,560 --> 00:00:08,770
+This is part three in our
+series on methods and metrics.
+
+4
+00:00:08,770 --> 00:00:10,395
+We're going to be
+talking about metrics
+
+5
+00:00:10,395 --> 00:00:13,010
+for assessing natural
+language generation systems.
+
+6
+00:00:13,010 --> 00:00:14,967
+We previously talked
+about classifier metrics,
+
+7
+00:00:14,967 --> 00:00:17,980
+and the issues seem
+relatively straightforward.
+
+8
+00:00:17,980 --> 00:00:20,020
+As you'll see,
+assessment for NLG
+
+9
+00:00:20,020 --> 00:00:22,798
+systems is considerably
+more difficult.
+
+10
+00:00:22,798 --> 00:00:25,090
+Let's actually begin with
+those fundamental challenges.
+
+11
+00:00:25,090 --> 00:00:26,620
+Maybe the most
+fundamental of all
+
+12
+00:00:26,620 --> 00:00:28,330
+is that in natural
+language, there
+
+13
+00:00:28,330 --> 00:00:31,240
+is more than one effective
+way to say most things.
+
+14
+00:00:31,240 --> 00:00:33,190
+The datasets we
+have might have one
+
+15
+00:00:33,190 --> 00:00:36,460
+or a few good examples of
+how something should be said.
+
+16
+00:00:36,460 --> 00:00:38,980
+But that's just a sample of
+the many ways in which we
+
+17
+00:00:38,980 --> 00:00:40,690
+could communicate effectively.
+
+18
+00:00:40,690 --> 00:00:42,970
+And that leaves us with
+fundamental open questions
+
+19
+00:00:42,970 --> 00:00:44,920
+about what comparisons
+we should make
+
+20
+00:00:44,920 --> 00:00:48,280
+and how we should assess
+so-called mistakes.
+
+21
+00:00:48,280 --> 00:00:50,200
+Relatedly, there's
+just an open question
+
+22
+00:00:50,200 --> 00:00:52,000
+of what we're actually
+trying to measure.
+
+23
+00:00:52,000 --> 00:00:53,530
+Is it fluency?
+
+24
+00:00:53,530 --> 00:00:54,820
+Or truthfulness?
+
+25
+00:00:54,820 --> 00:00:56,440
+Or communicative effectiveness?
+
+26
+00:00:56,440 --> 00:00:58,180
+Or some blend of the three?
+
+27
+00:00:58,180 --> 00:00:59,920
+As we think about
+different metrics,
+
+28
+00:00:59,920 --> 00:01:02,110
+we might find that
+they capture one
+
+29
+00:01:02,110 --> 00:01:04,840
+or a few of these and
+completely neglect others
+
+30
+00:01:04,840 --> 00:01:06,940
+and that's sure to
+shape the trajectory
+
+31
+00:01:06,940 --> 00:01:09,260
+of our project and the
+actual goals that we achieve.
+
+32
+00:01:09,260 --> 00:01:11,560
+So we have to be really
+thoughtful about what
+
+33
+00:01:11,560 --> 00:01:15,340
+we're actually trying to
+measure in this space.
+
+34
+00:01:15,340 --> 00:01:16,750
+Let's begin with perplexity.
+
+35
+00:01:16,750 --> 00:01:18,460
+I would say what
+perplexity has going
+
+36
+00:01:18,460 --> 00:01:21,400
+for it is that it is at
+least very tightly knit
+
+37
+00:01:21,400 --> 00:01:23,740
+to the structure of
+many of the models
+
+38
+00:01:23,740 --> 00:01:25,810
+that we work with in NLG.
+
+39
+00:01:25,810 --> 00:01:28,660
+So the core calculation
+is that given
+
+40
+00:01:28,660 --> 00:01:33,880
+some sequence x of length n, and
+a probability distribution p,
+
+41
+00:01:33,880 --> 00:01:36,790
+the perplexity of x relative
+to that distribution
+
+42
+00:01:36,790 --> 00:01:40,120
+is the product of the inverse of
+all the assigned probabilities.
+
+43
+00:01:40,120 --> 00:01:41,980
+And then we take
+an average here.
+
+44
+00:01:41,980 --> 00:01:45,100
+There are many ways to express
+this calculation and many ways
+
+45
+00:01:45,100 --> 00:01:47,770
+to connect with information
+theoretic measures.
+
+46
+00:01:47,770 --> 00:01:50,020
+Let me defer those
+issues for just a second,
+
+47
+00:01:50,020 --> 00:01:53,290
+and I'll try to build up an
+intuition just after getting
+
+48
+00:01:53,290 --> 00:01:55,130
+through the core calculation.
+
+49
+00:01:55,130 --> 00:01:56,050
+So that's perplexity.
+
+50
+00:01:56,050 --> 00:01:58,780
+And then when we do
+token-level perplexity, right,
+
+51
+00:01:58,780 --> 00:02:01,570
+we want to assign perplexity
+to individual examples,
+
+52
+00:02:01,570 --> 00:02:04,330
+we need to normalize by the
+length of those examples.
+
+53
+00:02:04,330 --> 00:02:06,460
+And we do that in
+log space in order
+
+54
+00:02:06,460 --> 00:02:09,070
+to capture the kind of
+geometric mean, which
+
+55
+00:02:09,070 --> 00:02:13,360
+is arguably more appropriate for
+comparing probability values.
+
+56
+00:02:13,360 --> 00:02:15,640
+And then if we
+want the perplexity
+
+57
+00:02:15,640 --> 00:02:19,170
+for an entire corpus, we
+again use a geometric mean
+
+58
+00:02:19,170 --> 00:02:24,010
+of all the token-level
+perplexity predictions.
+
+59
+00:02:24,010 --> 00:02:26,590
+And that gives us a single
+quantity over an entire batch
+
+60
+00:02:26,590 --> 00:02:29,077
+of examples.
+
+61
+00:02:29,077 --> 00:02:30,660
+What are the properties
+of perplexity?
+
+62
+00:02:30,660 --> 00:02:33,270
+Well its bounds are 1 to
+infinity with 1 the best,
+
+63
+00:02:33,270 --> 00:02:35,940
+so we would like to
+minimize perplexity.
+
+64
+00:02:35,940 --> 00:02:38,130
+It is equivalent to
+the exponentiation
+
+65
+00:02:38,130 --> 00:02:39,580
+of the cross-entropy loss.
+
+66
+00:02:39,580 --> 00:02:41,790
+That's the tight
+connection with models
+
+67
+00:02:41,790 --> 00:02:43,410
+that I wanted to call out.
+
+68
+00:02:43,410 --> 00:02:45,060
+We often work with
+language models
+
+69
+00:02:45,060 --> 00:02:46,657
+that use a cross-entropy loss.
+
+70
+00:02:46,657 --> 00:02:48,240
+And you can see that
+they are directly
+
+71
+00:02:48,240 --> 00:02:51,698
+optimizing for a quantity that
+is proportional to perplexity.
+
+72
+00:02:51,698 --> 00:02:53,490
+Now that can be useful
+as a kind of getting
+
+73
+00:02:53,490 --> 00:02:57,960
+a direct insight into the nature
+of your model's predictions.
+
+74
+00:02:57,960 --> 00:02:59,198
+What value does it encode?
+
+75
+00:02:59,198 --> 00:03:00,240
+Well I think it's simple.
+
+76
+00:03:00,240 --> 00:03:02,580
+Does the model assign
+high probability
+
+77
+00:03:02,580 --> 00:03:03,960
+to the input sequences?
+
+78
+00:03:03,960 --> 00:03:05,970
+That is, does it
+assign low perplexity
+
+79
+00:03:05,970 --> 00:03:08,300
+to the input sequences?
+
+80
+00:03:08,300 --> 00:03:10,700
+The weaknesses, there
+are many actually.
+
+81
+00:03:10,700 --> 00:03:13,910
+First, it's heavily dependent
+on the underlying vocabulary.
+
+82
+00:03:13,910 --> 00:03:15,680
+To see that,
+imagine an edge case
+
+83
+00:03:15,680 --> 00:03:18,050
+where we take every
+word in the vocabulary
+
+84
+00:03:18,050 --> 00:03:20,240
+and map it to a
+single UNK token.
+
+85
+00:03:20,240 --> 00:03:23,240
+In that case, we will
+absolutely minimize perplexity,
+
+86
+00:03:23,240 --> 00:03:25,070
+but our system will be useless.
+
+87
+00:03:25,070 --> 00:03:29,060
+In that edge case, you can see
+that I could reduce perplexity
+
+88
+00:03:29,060 --> 00:03:32,133
+simply by changing the
+size of my vocabulary.
+
+89
+00:03:32,133 --> 00:03:33,800
+That's a way that you
+could kind of game
+
+90
+00:03:33,800 --> 00:03:36,110
+this metric inadvertently.
+
+91
+00:03:36,110 --> 00:03:37,790
+As a result of that,
+we can't really
+
+92
+00:03:37,790 --> 00:03:40,160
+make comparisons across
+datasets because of course they
+
+93
+00:03:40,160 --> 00:03:41,960
+could have different
+vocabularies
+
+94
+00:03:41,960 --> 00:03:45,230
+and different intrinsic
+notions of perplexity.
+
+95
+00:03:45,230 --> 00:03:48,410
+And it's also even tricky to
+make comparisons across models.
+
+96
+00:03:48,410 --> 00:03:51,710
+You can see that in my
+first weakness there.
+
+97
+00:03:51,710 --> 00:03:54,860
+If we do compare models,
+we need to fix the data set
+
+98
+00:03:54,860 --> 00:03:57,560
+and make sure that the
+differences between the models
+
+99
+00:03:57,560 --> 00:04:01,130
+are not inherently shaping
+the range of perplexity values
+
+100
+00:04:01,130 --> 00:04:03,540
+that we're likely to see.
+
+101
+00:04:03,540 --> 00:04:05,210
+Let's move on now
+into a family of what
+
+102
+00:04:05,210 --> 00:04:07,250
+you might think of as
+n-gram based methods
+
+103
+00:04:07,250 --> 00:04:09,470
+for assessing NLG
+systems, beginning
+
+104
+00:04:09,470 --> 00:04:11,210
+with the word-error rate.
+
+105
+00:04:11,210 --> 00:04:14,000
+So the fundamental thing
+here will be an edit distance
+
+106
+00:04:14,000 --> 00:04:15,710
+measure.
+
+107
+00:04:15,710 --> 00:04:17,630
+And therefore you can
+see word-error rate
+
+108
+00:04:17,630 --> 00:04:19,760
+as a kind of family
+of measures depending
+
+109
+00:04:19,760 --> 00:04:21,980
+on the choice of the edit
+distance function, which
+
+110
+00:04:21,980 --> 00:04:24,230
+we would just plug in.
+
+111
+00:04:24,230 --> 00:04:26,660
+The word error rate
+is the distance
+
+112
+00:04:26,660 --> 00:04:29,510
+between the actual sequence
+x and some predicted
+
+113
+00:04:29,510 --> 00:04:33,783
+sequence pred normalized by the
+length of the actual sequence.
+
+114
+00:04:33,783 --> 00:04:35,450
+And if we would like
+the word-error rate
+
+115
+00:04:35,450 --> 00:04:38,030
+for an entire corpus,
+it's easy to scale it up,
+
+116
+00:04:38,030 --> 00:04:39,630
+but there's one twist here.
+
+117
+00:04:39,630 --> 00:04:41,300
+The way that's
+standardly calculated
+
+118
+00:04:41,300 --> 00:04:43,550
+is that the numerator
+is the sum of all
+
+119
+00:04:43,550 --> 00:04:47,090
+the distances between the
+actual and predicted sequences.
+
+120
+00:04:47,090 --> 00:04:50,360
+Not normalized as it was up
+here for the word error rate.
+
+121
+00:04:50,360 --> 00:04:52,790
+The normalization that happens
+over the entire corpus,
+
+122
+00:04:52,790 --> 00:04:55,580
+it's the sum of all the
+lengths of the actual strings
+
+123
+00:04:55,580 --> 00:04:56,610
+in the corpus.
+
+124
+00:04:56,610 --> 00:04:58,070
+So we have one
+average as opposed
+
+125
+00:04:58,070 --> 00:05:01,360
+to taking an
+average of averages.
+
+126
+00:05:01,360 --> 00:05:02,950
+The properties of
+the word error rate.
+
+127
+00:05:02,950 --> 00:05:04,810
+Its bounds are 0
+to infinity, and we
+
+128
+00:05:04,810 --> 00:05:07,690
+would like to minimize
+it, so 0 is the best.
+
+129
+00:05:07,690 --> 00:05:10,120
+The value encoded is
+similar to F scores.
+
+130
+00:05:10,120 --> 00:05:11,900
+We would like to
+answer the question,
+
+131
+00:05:11,900 --> 00:05:14,350
+how aligned is the
+predicted sequence
+
+132
+00:05:14,350 --> 00:05:15,700
+with the actual sequence.
+
+133
+00:05:15,700 --> 00:05:18,910
+And I've invoked F scores here
+because if our edit distance
+
+134
+00:05:18,910 --> 00:05:21,580
+measure has notions of
+insertion and deletion,
+
+135
+00:05:21,580 --> 00:05:23,870
+they play roles that are
+analogous to precision
+
+136
+00:05:23,870 --> 00:05:25,900
+and recall.
+
+137
+00:05:25,900 --> 00:05:26,750
+The weaknesses.
+
+138
+00:05:26,750 --> 00:05:29,680
+Well first, we have just
+one reference text here.
+
+139
+00:05:29,680 --> 00:05:33,058
+I called out before that
+there are often many good ways
+
+140
+00:05:33,058 --> 00:05:34,600
+to say something,
+whereas here we can
+
+141
+00:05:34,600 --> 00:05:36,760
+make only a single comparison.
+
+142
+00:05:36,760 --> 00:05:38,860
+And it's also, maybe
+this is more fundamental,
+
+143
+00:05:38,860 --> 00:05:41,150
+word error rate is a
+very syntactic notion.
+
+144
+00:05:41,150 --> 00:05:44,140
+Just consider comparing
+text like, it was good,
+
+145
+00:05:44,140 --> 00:05:46,310
+it was not good,
+and it was great.
+
+146
+00:05:46,310 --> 00:05:48,550
+They're likely to have
+the identical word error
+
+147
+00:05:48,550 --> 00:05:51,640
+rates, even though the first
+two differ dramatically
+
+148
+00:05:51,640 --> 00:05:53,590
+in their meanings and
+the first and the third
+
+149
+00:05:53,590 --> 00:05:55,750
+are actually rather
+similar in their meanings.
+
+150
+00:05:55,750 --> 00:05:57,700
+That semantic
+notion of similarity
+
+151
+00:05:57,700 --> 00:06:02,760
+is unlikely to be reflected
+in the word-error rate.
+
+152
+00:06:02,760 --> 00:06:04,110
+Let's move now to BLEU scores.
+
+153
+00:06:04,110 --> 00:06:06,060
+This is another
+n-gram based metric,
+
+154
+00:06:06,060 --> 00:06:08,340
+but it's going to try to
+address the fact that we want
+
+155
+00:06:08,340 --> 00:06:11,490
+to make comparisons against
+multiple human-created
+
+156
+00:06:11,490 --> 00:06:14,180
+reference texts.
+
+157
+00:06:14,180 --> 00:06:15,770
+It has a notion of
+precision in it,
+
+158
+00:06:15,770 --> 00:06:17,900
+but it's called modified
+n-gram precision.
+
+159
+00:06:17,900 --> 00:06:19,460
+Let me walk you
+through an example
+
+160
+00:06:19,460 --> 00:06:21,185
+and hopefully that
+will motivate.
+
+161
+00:06:21,185 --> 00:06:22,850
+Imagine we have
+the candidate that
+
+162
+00:06:22,850 --> 00:06:25,660
+had just seven instances
+of the word the" in it.
+
+163
+00:06:25,660 --> 00:06:28,700
+And we have two reference texts,
+presumably written by humans.
+
+164
+00:06:28,700 --> 00:06:30,120
+The cat is on the mat.
+
+165
+00:06:30,120 --> 00:06:32,480
+And there is a cat on the mat.
+
+166
+00:06:32,480 --> 00:06:35,740
+The modified precision
+takes for the token "the."
+
+167
+00:06:35,740 --> 00:06:37,700
+The maximum number
+of times that "the"
+
+168
+00:06:37,700 --> 00:06:41,150
+occurs in any reference text,
+and that's 2 with reference 1
+
+169
+00:06:41,150 --> 00:06:42,080
+here.
+
+170
+00:06:42,080 --> 00:06:44,060
+And it divides that
+by the number of times
+
+171
+00:06:44,060 --> 00:06:46,790
+that "the" appears in the
+candidate, which is 7.
+
+172
+00:06:46,790 --> 00:06:50,570
+That would give us 2 over 7
+as the modified n-gram 1-gram
+
+173
+00:06:50,570 --> 00:06:54,070
+precision score
+for this candidate.
+
+174
+00:06:54,070 --> 00:06:55,870
+There's also a
+brevity penalty, which
+
+175
+00:06:55,870 --> 00:06:57,970
+will play the role of
+something like recall
+
+176
+00:06:57,970 --> 00:06:59,440
+in the BLEU scoring.
+
+177
+00:06:59,440 --> 00:07:00,970
+So we have a
+quantity r, which is
+
+178
+00:07:00,970 --> 00:07:03,190
+the sum of all the
+minimal absolute length
+
+179
+00:07:03,190 --> 00:07:05,950
+differences between
+candidates and reference.
+
+180
+00:07:05,950 --> 00:07:09,220
+We have c, which is the total
+length of all the candidates.
+
+181
+00:07:09,220 --> 00:07:11,410
+And then we said that
+the brevity penalty is 1
+
+182
+00:07:11,410 --> 00:07:12,670
+if c is greater than r.
+
+183
+00:07:12,670 --> 00:07:15,100
+Otherwise, it's an
+exponential decay
+
+184
+00:07:15,100 --> 00:07:18,160
+off of the ratio of r and c.
+
+185
+00:07:18,160 --> 00:07:20,725
+And again, that will play
+kind of the notion of recall.
+
+186
+00:07:20,725 --> 00:07:22,100
+And then the BLEU
+score is simply
+
+187
+00:07:22,100 --> 00:07:24,980
+the product of that
+brevity penalty
+
+188
+00:07:24,980 --> 00:07:28,040
+with the sum of the weighted
+modified n-gram precision
+
+189
+00:07:28,040 --> 00:07:31,530
+values for each n-gram
+value n considered.
+
+190
+00:07:31,530 --> 00:07:33,410
+So we probably go 1 through 4.
+
+191
+00:07:33,410 --> 00:07:36,080
+That's a standard set
+of n-grams to consider.
+
+192
+00:07:36,080 --> 00:07:38,720
+We would sum up all of
+those notions of modified
+
+193
+00:07:38,720 --> 00:07:40,760
+n-gram precision for each n.
+
+194
+00:07:40,760 --> 00:07:42,470
+And possibly weight
+them differently
+
+195
+00:07:42,470 --> 00:07:45,680
+depending on how we want
+to value 1-grams, 2-grams,
+
+196
+00:07:45,680 --> 00:07:47,985
+3-grams, and 4-grams.
+
+197
+00:07:47,985 --> 00:07:49,110
+So that's the BLEU scoring.
+
+198
+00:07:49,110 --> 00:07:50,410
+What are its properties?
+
+199
+00:07:50,410 --> 00:07:51,690
+Its bounds are 0 and 1.
+
+200
+00:07:51,690 --> 00:07:52,860
+And 1 is the best.
+
+201
+00:07:52,860 --> 00:07:54,510
+But we have really
+no expectation
+
+202
+00:07:54,510 --> 00:07:56,670
+that any system will
+actually achieve 1
+
+203
+00:07:56,670 --> 00:07:59,730
+because even comparisons
+among human translations
+
+204
+00:07:59,730 --> 00:08:03,980
+or human created text will
+not have a BLEU score of 1.
+
+205
+00:08:03,980 --> 00:08:07,160
+The value encoded is
+an appropriate balance
+
+206
+00:08:07,160 --> 00:08:10,670
+of modified precision and
+recall under the guise
+
+207
+00:08:10,670 --> 00:08:12,770
+of that brevity penalty.
+
+208
+00:08:12,770 --> 00:08:15,560
+It's very similar to the
+word-error rate in that sense,
+
+209
+00:08:15,560 --> 00:08:18,320
+but it seeks to accommodate the
+fact that there are typically
+
+210
+00:08:18,320 --> 00:08:20,940
+multiple suitable outputs
+for a given input.
+
+211
+00:08:20,940 --> 00:08:24,160
+And that's a real
+strength of BLEU score.
+
+212
+00:08:24,160 --> 00:08:25,400
+The weaknesses.
+
+213
+00:08:25,400 --> 00:08:27,490
+Well, this team has argued
+that BLEU scores just
+
+214
+00:08:27,490 --> 00:08:31,580
+fail to correlate with human
+scores for translations.
+
+215
+00:08:31,580 --> 00:08:33,580
+And that's kind of worrying,
+because BLEU scores
+
+216
+00:08:33,580 --> 00:08:37,539
+were originally motivated in the
+context of machine translation.
+
+217
+00:08:37,539 --> 00:08:39,250
+And the issues
+that they identify
+
+218
+00:08:39,250 --> 00:08:42,190
+are like it's very sensitive
+to n-gram order in a way
+
+219
+00:08:42,190 --> 00:08:44,890
+that human intuitions
+are not and it's
+
+220
+00:08:44,890 --> 00:08:47,440
+insensitive to the
+type of the n-grams.
+
+221
+00:08:47,440 --> 00:08:49,450
+So again, just
+consider comparisons
+
+222
+00:08:49,450 --> 00:08:52,930
+like that dog, the
+dog, and that toaster.
+
+223
+00:08:52,930 --> 00:08:56,050
+Those will likely have
+very similar BLEU scores,
+
+224
+00:08:56,050 --> 00:08:58,480
+but that dog and the dog are
+just inherently much more
+
+225
+00:08:58,480 --> 00:09:01,780
+similar than that dog and that
+toaster in virtue of the fact
+
+226
+00:09:01,780 --> 00:09:03,700
+that that and the,
+it's just a difference
+
+227
+00:09:03,700 --> 00:09:05,710
+at the level of
+functional vocabulary,
+
+228
+00:09:05,710 --> 00:09:09,920
+versus dog and toasters, a
+really contentful change.
+
+229
+00:09:09,920 --> 00:09:13,030
+And then as we move into topics
+that are more closely aligned
+
+230
+00:09:13,030 --> 00:09:16,810
+with NLU, could possibly have
+an even more worrying picture.
+
+231
+00:09:16,810 --> 00:09:20,950
+So this team argues that BLEU is
+just a fundamentally incorrect
+
+232
+00:09:20,950 --> 00:09:23,530
+measure for assessing
+dialogue systems.
+
+233
+00:09:23,530 --> 00:09:25,540
+And that could be an
+indicator that it's not
+
+234
+00:09:25,540 --> 00:09:31,780
+going to be appropriate for
+many kinds of NLG tasks in NLU.
+
+235
+00:09:31,780 --> 00:09:34,387
+That's just a sample of
+two n-gram based metrics.
+
+236
+00:09:34,387 --> 00:09:36,220
+I thought I'd mention
+a few more to give you
+
+237
+00:09:36,220 --> 00:09:38,300
+a framework for making
+some comparisons.
+
+238
+00:09:38,300 --> 00:09:39,940
+So I mentioned the
+word-error rate.
+
+239
+00:09:39,940 --> 00:09:41,650
+That's fundamentally
+edit distance
+
+240
+00:09:41,650 --> 00:09:43,870
+from a single reference text.
+
+241
+00:09:43,870 --> 00:09:46,150
+BLEU, as we've seen,
+is modified precision
+
+242
+00:09:46,150 --> 00:09:47,440
+and a brevity penalty.
+
+243
+00:09:47,440 --> 00:09:52,000
+Kind of recall motion comparing
+against many reference texts.
+
+244
+00:09:52,000 --> 00:09:55,390
+ROUGE is a recall
+focused variant of BLEU
+
+245
+00:09:55,390 --> 00:09:59,380
+that's focused on assessing
+summarization systems.
+
+246
+00:09:59,380 --> 00:10:01,390
+METEOR is interestingly
+different,
+
+247
+00:10:01,390 --> 00:10:04,150
+because it's trying to push
+past simple n-gram matching
+
+248
+00:10:04,150 --> 00:10:06,250
+and capture some
+semantic notions.
+
+249
+00:10:06,250 --> 00:10:09,010
+It's a unit gram
+based measure that
+
+250
+00:10:09,010 --> 00:10:12,070
+does an alignment measure
+between not only exact matches
+
+251
+00:10:12,070 --> 00:10:15,640
+of the unit grams, but also stem
+versions and synonyms really
+
+252
+00:10:15,640 --> 00:10:18,850
+trying to bring in
+some semantic aspects.
+
+253
+00:10:18,850 --> 00:10:19,998
+And CIDEr is similar.
+
+254
+00:10:19,998 --> 00:10:22,540
+This is going to be even a more
+semantic notion, because it's
+
+255
+00:10:22,540 --> 00:10:24,970
+going to do its comparisons
+in vector space.
+
+256
+00:10:24,970 --> 00:10:27,370
+It's kind of approximately
+a weighted cosine
+
+257
+00:10:27,370 --> 00:10:30,753
+similarity between
+TF-IDF vectors created
+
+258
+00:10:30,753 --> 00:10:31,420
+from the corpus.
+
+259
+00:10:31,420 --> 00:10:34,310
+
+
+260
+00:10:34,310 --> 00:10:35,900
+Finally, in closing,
+I just wanted
+
+261
+00:10:35,900 --> 00:10:39,230
+to exhort you all to think
+about more communication based
+
+262
+00:10:39,230 --> 00:10:41,510
+metrics in the context of NLU.
+
+263
+00:10:41,510 --> 00:10:44,030
+For NLU, it's worth asking
+whether you can evaluate
+
+264
+00:10:44,030 --> 00:10:46,580
+your system based on how
+well it actually communicates
+
+265
+00:10:46,580 --> 00:10:49,190
+in the context of a real
+world goal as opposed
+
+266
+00:10:49,190 --> 00:10:51,410
+to just comparing
+different strings that
+
+267
+00:10:51,410 --> 00:10:54,020
+are inputs and reference texts.
+
+268
+00:10:54,020 --> 00:10:55,490
+And we've actually
+seen an example
+
+269
+00:10:55,490 --> 00:10:58,760
+of that in our assignment and
+bake off on color reference.
+
+270
+00:10:58,760 --> 00:11:01,100
+We didn't really assess
+how well your system
+
+271
+00:11:01,100 --> 00:11:04,040
+could reproduce the utterances
+that were in the corpus.
+
+272
+00:11:04,040 --> 00:11:07,500
+Rather, our fundamental
+notion was listener accuracy,
+
+273
+00:11:07,500 --> 00:11:09,470
+which was keying into
+a communication goal.
+
+274
+00:11:09,470 --> 00:11:13,610
+How well is your system actually
+able to take messages and use
+
+275
+00:11:13,610 --> 00:11:16,340
+them to figure out what the
+speaker was referring to
+
+276
+00:11:16,340 --> 00:11:18,290
+in a simple color context?
+
+277
+00:11:18,290 --> 00:11:20,168
+And for much more on
+that, and a perspective
+
+278
+00:11:20,168 --> 00:11:21,710
+on a lot of these
+issues, I encourage
+
+279
+00:11:21,710 --> 00:11:24,500
+you to check out this paper
+that was led by Ben Newman.
+
+280
+00:11:24,500 --> 00:11:27,320
+It began as a course
+project for this class
+
+281
+00:11:27,320 --> 00:11:30,700
+and grew into a really
+successful paper.
+
+282
+00:11:30,700 --> 00:11:35,000
+
+

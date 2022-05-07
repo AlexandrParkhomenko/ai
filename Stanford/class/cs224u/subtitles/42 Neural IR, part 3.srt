@@ -1,0 +1,1692 @@
+1
+00:00:00,000 --> 00:00:05,700
+
+
+2
+00:00:05,700 --> 00:00:06,950
+OMAR KHATTAB: Hello, everyone.
+
+3
+00:00:06,950 --> 00:00:10,510
+Welcome to part five of
+our series on NLU and IR.
+
+4
+00:00:10,510 --> 00:00:12,880
+This screencast will be
+the third among three
+
+5
+00:00:12,880 --> 00:00:16,914
+of our videos on neural IR.
+
+6
+00:00:16,914 --> 00:00:20,350
+In the previous screencast we
+discussed learning term weights
+
+7
+00:00:20,350 --> 00:00:23,080
+as a paradigm for building
+neural IR models that are
+
+8
+00:00:23,080 --> 00:00:25,480
+both efficient and effective.
+
+9
+00:00:25,480 --> 00:00:29,290
+We mentioned two such models
+from the IR literature, DeepCT
+
+10
+00:00:29,290 --> 00:00:32,009
+and doc2query.
+
+11
+00:00:32,009 --> 00:00:35,610
+Both of which, despite
+outperforming BM25 in MRR,
+
+12
+00:00:35,610 --> 00:00:39,030
+still left a very large
+margin to the quality
+
+13
+00:00:39,030 --> 00:00:41,620
+that we see with BERT.
+
+14
+00:00:41,620 --> 00:00:43,600
+We asked ourselves
+can we achieve
+
+15
+00:00:43,600 --> 00:00:48,610
+high MRR and low computational
+cost at the same time.
+
+16
+00:00:48,610 --> 00:00:50,610
+Can we do better?
+
+17
+00:00:50,610 --> 00:00:52,710
+To answer this
+question, let us begin
+
+18
+00:00:52,710 --> 00:00:54,750
+exploring more
+expressive paradigms
+
+19
+00:00:54,750 --> 00:00:57,450
+for efficient neural IR.
+
+20
+00:00:57,450 --> 00:01:00,660
+The next paradigm here is
+the representation similarity
+
+21
+00:01:00,660 --> 00:01:03,350
+paradigm.
+
+22
+00:01:03,350 --> 00:01:05,390
+In the representation
+similarity paradigm
+
+23
+00:01:05,390 --> 00:01:08,650
+we begin by tokenizing the
+query and the document.
+
+24
+00:01:08,650 --> 00:01:11,110
+And we feed each of
+them independently
+
+25
+00:01:11,110 --> 00:01:14,620
+through an encoder,
+like BERT, for example.
+
+26
+00:01:14,620 --> 00:01:16,450
+This encoder is
+then used to produce
+
+27
+00:01:16,450 --> 00:01:19,580
+a single-vector
+representation, for the query
+
+28
+00:01:19,580 --> 00:01:22,770
+and for the
+document, separately.
+
+29
+00:01:22,770 --> 00:01:25,200
+So for BERT we could take
+this through the class token,
+
+30
+00:01:25,200 --> 00:01:28,010
+for example and take
+the output embeddings,
+
+31
+00:01:28,010 --> 00:01:32,640
+or we could average all
+the final layer outputs.
+
+32
+00:01:32,640 --> 00:01:35,370
+Once we have those, we finally
+calculate the relevant score
+
+33
+00:01:35,370 --> 00:01:38,010
+of this document to our
+query as a single dot
+
+34
+00:01:38,010 --> 00:01:39,915
+product between two vectors.
+
+35
+00:01:39,915 --> 00:01:44,860
+
+
+36
+00:01:44,860 --> 00:01:48,270
+This paradigm is very
+efficient for retrieval.
+
+37
+00:01:48,270 --> 00:01:50,400
+First each document
+can be represented
+
+38
+00:01:50,400 --> 00:01:53,110
+as a vector offline.
+
+39
+00:01:53,110 --> 00:01:54,910
+And this precomputed
+representation
+
+40
+00:01:54,910 --> 00:02:00,220
+can be stored on disk before we
+even start conducting search.
+
+41
+00:02:00,220 --> 00:02:02,350
+Moreover, the
+similarity computation
+
+42
+00:02:02,350 --> 00:02:03,970
+between a query
+and a document here
+
+43
+00:02:03,970 --> 00:02:06,550
+is very cheap and
+thus very efficient,
+
+44
+00:02:06,550 --> 00:02:08,965
+as it's just a single
+product between two vectors.
+
+45
+00:02:08,965 --> 00:02:12,010
+
+
+46
+00:02:12,010 --> 00:02:15,220
+A very large number of IR models
+are Representations Similarity
+
+47
+00:02:15,220 --> 00:02:16,420
+models.
+
+48
+00:02:16,420 --> 00:02:18,910
+Many of those
+actually precede BERT.
+
+49
+00:02:18,910 --> 00:02:22,252
+Like DSSM and SNRM.
+
+50
+00:02:22,252 --> 00:02:23,710
+But the last year
+and a half, we've
+
+51
+00:02:23,710 --> 00:02:27,860
+seen numerous similarity models
+based on BERT for IR tasks,
+
+52
+00:02:27,860 --> 00:02:34,600
+including SBERT, ORQA, DPR,
+DE-BERT and ANCE, among others.
+
+53
+00:02:34,600 --> 00:02:38,140
+Many of these models were
+actually proposed concurrently
+
+54
+00:02:38,140 --> 00:02:40,630
+with each other, and
+their primary differences
+
+55
+00:02:40,630 --> 00:02:42,580
+lie in the specific
+tasks that each one
+
+56
+00:02:42,580 --> 00:02:46,500
+targets and the supervision
+approach each one suggests.
+
+57
+00:02:46,500 --> 00:02:49,260
+So let us delve deeper
+into a representative
+
+58
+00:02:49,260 --> 00:02:52,860
+in one of the earlier and most
+popular models among those.
+
+59
+00:02:52,860 --> 00:02:54,990
+This is the Dense
+Passage Retriever,
+
+60
+00:02:54,990 --> 00:02:58,290
+or DPR by Karpukhin
+et al., which appeared
+
+61
+00:02:58,290 --> 00:03:01,320
+at EMNLP just a few months ago.
+
+62
+00:03:01,320 --> 00:03:04,190
+DPR encodes each
+passage, or document,
+
+63
+00:03:04,190 --> 00:03:09,920
+as a 768-dimentional vector,
+and similarly for each query.
+
+64
+00:03:09,920 --> 00:03:13,700
+During training DPR
+produces a similarity score
+
+65
+00:03:13,700 --> 00:03:15,625
+between the query and
+the positive passage--
+
+66
+00:03:15,625 --> 00:03:17,000
+so that's the
+relevant passage we
+
+67
+00:03:17,000 --> 00:03:19,370
+wanted to retrieve-- as
+well as between the query
+
+68
+00:03:19,370 --> 00:03:21,170
+and a few negatives.
+
+69
+00:03:21,170 --> 00:03:24,020
+Some of them are sampled
+from the BM25 top-100
+
+70
+00:03:24,020 --> 00:03:26,130
+and others are
+in-batch negatives,
+
+71
+00:03:26,130 --> 00:03:28,460
+which are actually positives,
+but for other queries
+
+72
+00:03:28,460 --> 00:03:31,310
+in the same training batch.
+
+73
+00:03:31,310 --> 00:03:33,980
+Once DPR has all of those
+scores during training,
+
+74
+00:03:33,980 --> 00:03:36,770
+it then optimizes a
+classification loss,
+
+75
+00:03:36,770 --> 00:03:40,925
+Namely N-way classification loss
+with softmax-- cross entropy
+
+76
+00:03:40,925 --> 00:03:44,150
+loss with softmax over the
+scores of one positive and all
+
+77
+00:03:44,150 --> 00:03:47,410
+of these negatives, with
+the target of selecting
+
+78
+00:03:47,410 --> 00:03:51,060
+the positive passage, of course.
+
+79
+00:03:51,060 --> 00:03:53,700
+DPR was not tested on
+the MS MARCO dataset
+
+80
+00:03:53,700 --> 00:03:55,740
+by the original authors.
+
+81
+00:03:55,740 --> 00:03:58,740
+But subsequent work
+by Xiong et al.
+
+82
+00:03:58,740 --> 00:04:04,530
+bests a DPR like retriever on
+MS MARCO and achieves 31% MRR.
+
+83
+00:04:04,530 --> 00:04:08,460
+They also then suggest more
+sophisticated approaches
+
+84
+00:04:08,460 --> 00:04:10,020
+for supervision
+which can increase
+
+85
+00:04:10,020 --> 00:04:12,270
+this MRR by a couple of points.
+
+86
+00:04:12,270 --> 00:04:15,780
+So both of these demonstrate
+considerable progress
+
+87
+00:04:15,780 --> 00:04:18,060
+over the learned
+term weight models
+
+88
+00:04:18,060 --> 00:04:22,060
+that we looked at before,
+like DeepCT or doc2query.
+
+89
+00:04:22,060 --> 00:04:25,300
+But they still substantially
+trail behind BERT's much higher
+
+90
+00:04:25,300 --> 00:04:27,700
+effectiveness.
+
+91
+00:04:27,700 --> 00:04:30,750
+So why is that?
+
+92
+00:04:30,750 --> 00:04:33,000
+As it turns out representation
+similarity models
+
+93
+00:04:33,000 --> 00:04:38,420
+suffer from two major downsides
+when it comes to IR tasks.
+
+94
+00:04:38,420 --> 00:04:42,050
+First, are their
+single-vector representations,
+
+95
+00:04:42,050 --> 00:04:45,680
+which involve cramming each
+query and each document
+
+96
+00:04:45,680 --> 00:04:49,630
+into one rather low
+dimensional vector.
+
+97
+00:04:49,630 --> 00:04:52,330
+Second is their lack of
+fine grained interactions
+
+98
+00:04:52,330 --> 00:04:53,860
+during matching.
+
+99
+00:04:53,860 --> 00:04:56,796
+Representation similarity
+models estimate relevance as one
+
+100
+00:04:56,796 --> 00:04:59,230
+dot product between two vectors.
+
+101
+00:04:59,230 --> 00:05:01,720
+And as they lose the
+term level interactions
+
+102
+00:05:01,720 --> 00:05:04,030
+between the query terms
+and the document terms
+
+103
+00:05:04,030 --> 00:05:07,030
+that we had in query document
+interaction models like BERT--
+
+104
+00:05:07,030 --> 00:05:09,970
+in fact, even simple
+term weighting models
+
+105
+00:05:09,970 --> 00:05:13,930
+like BM25 or DeepCT
+had, by design,
+
+106
+00:05:13,930 --> 00:05:16,120
+some element of term
+level matching there
+
+107
+00:05:16,120 --> 00:05:19,530
+that we lose here.
+
+108
+00:05:19,530 --> 00:05:21,500
+So our next natural
+question then
+
+109
+00:05:21,500 --> 00:05:24,560
+becomes can we obtain
+these efficiency benefits
+
+110
+00:05:24,560 --> 00:05:28,130
+of precomputation that we get
+from representation similarity
+
+111
+00:05:28,130 --> 00:05:31,790
+models while still keeping
+the fine-grained term level
+
+112
+00:05:31,790 --> 00:05:33,590
+interactions that
+we used to have
+
+113
+00:05:33,590 --> 00:05:36,290
+before with a model
+like BERT or DeepCT?
+
+114
+00:05:36,290 --> 00:05:42,200
+
+
+115
+00:05:42,200 --> 00:05:44,540
+Toward answering
+that question, I
+
+116
+00:05:44,540 --> 00:05:46,430
+think it helps to
+review the neural IR
+
+117
+00:05:46,430 --> 00:05:50,440
+paradigms we've seen so far.
+
+118
+00:05:50,440 --> 00:05:54,820
+On the left hand side, we looked
+at the learned term weights
+
+119
+00:05:54,820 --> 00:05:56,200
+paradigm.
+
+120
+00:05:56,200 --> 00:05:59,170
+These models offered independent
+and dependent encoding
+
+121
+00:05:59,170 --> 00:06:01,930
+of queries and documents,
+which was great for efficiency,
+
+122
+00:06:01,930 --> 00:06:04,630
+but they forced us to work
+with a bag of words query
+
+123
+00:06:04,630 --> 00:06:06,880
+that loses all context.
+
+124
+00:06:06,880 --> 00:06:10,740
+And thus were not as competitive
+as we wanted them to be.
+
+125
+00:06:10,740 --> 00:06:13,110
+We then explored the
+representation similarity
+
+126
+00:06:13,110 --> 00:06:16,530
+models, which also allowed us to
+complete independent encodings
+
+127
+00:06:16,530 --> 00:06:18,570
+of queries and documents,
+which again was
+
+128
+00:06:18,570 --> 00:06:22,150
+really useful for efficiency.
+
+129
+00:06:22,150 --> 00:06:25,080
+But this time we were forced
+to work with single vector
+
+130
+00:06:25,080 --> 00:06:28,540
+representations and we lost
+our fine-grained term level
+
+131
+00:06:28,540 --> 00:06:31,150
+interactions, which
+we intuitively
+
+132
+00:06:31,150 --> 00:06:34,840
+believe to be very useful
+for matching in IR tasks.
+
+133
+00:06:34,840 --> 00:06:37,510
+
+
+134
+00:06:37,510 --> 00:06:40,600
+On the right hand side we
+looked initially, actually,
+
+135
+00:06:40,600 --> 00:06:42,550
+at the query document
+interaction models
+
+136
+00:06:42,550 --> 00:06:45,330
+like standard BERT classifiers.
+
+137
+00:06:45,330 --> 00:06:49,500
+These offered very high
+accuracy but were extremely
+
+138
+00:06:49,500 --> 00:06:53,040
+expensive to use because the
+entire computation for one
+
+139
+00:06:53,040 --> 00:06:56,340
+document depended on both
+the query and the document.
+
+140
+00:06:56,340 --> 00:06:58,770
+We simply couldn't
+do any precomputation
+
+141
+00:06:58,770 --> 00:07:02,770
+in this case offline in advance.
+
+142
+00:07:02,770 --> 00:07:06,010
+So can we somehow combine the
+advantages of all these three
+
+143
+00:07:06,010 --> 00:07:09,030
+paradigms at once?
+
+144
+00:07:09,030 --> 00:07:10,890
+Before we answer
+that question there's
+
+145
+00:07:10,890 --> 00:07:14,880
+actually one final feature,
+one final capability
+
+146
+00:07:14,880 --> 00:07:17,910
+of the first two paradigms
+that we should discuss.
+
+147
+00:07:17,910 --> 00:07:20,190
+So query document
+interaction models,
+
+148
+00:07:20,190 --> 00:07:22,350
+which are quite
+expensive, they forced us
+
+149
+00:07:22,350 --> 00:07:24,630
+to use a re-ranking pipeline.
+
+150
+00:07:24,630 --> 00:07:27,420
+This is a pipeline where
+we re-scored the top 1,000
+
+151
+00:07:27,420 --> 00:07:29,520
+documents that we already
+retrieved by BM25.
+
+152
+00:07:29,520 --> 00:07:32,920
+
+
+153
+00:07:32,920 --> 00:07:35,350
+Sometimes that's OK,
+but in many cases
+
+154
+00:07:35,350 --> 00:07:39,160
+this can be a problem
+because it ties our recall
+
+155
+00:07:39,160 --> 00:07:43,180
+to the recall of BM25, which is
+ultimately a model that relies
+
+156
+00:07:43,180 --> 00:07:46,420
+on finding terms that match
+exactly across queries
+
+157
+00:07:46,420 --> 00:07:48,310
+and documents, and
+so it can be quite
+
+158
+00:07:48,310 --> 00:07:50,980
+restrictive in many cases.
+
+159
+00:07:50,980 --> 00:07:54,250
+When recall is an
+important consideration,
+
+160
+00:07:54,250 --> 00:07:57,130
+you often want our neural
+model that we trained
+
+161
+00:07:57,130 --> 00:07:59,920
+to do end to end retrieval.
+
+162
+00:07:59,920 --> 00:08:03,070
+That is, to search quickly
+over all the documents
+
+163
+00:08:03,070 --> 00:08:05,290
+in our collection
+directly without
+
+164
+00:08:05,290 --> 00:08:08,170
+the re-ranking pipeline.
+
+165
+00:08:08,170 --> 00:08:11,290
+Learning term weights and
+representation similarity
+
+166
+00:08:11,290 --> 00:08:14,230
+models that we've looked
+at so far alleviate
+
+167
+00:08:14,230 --> 00:08:17,870
+this constraint and this is
+a big advantage for them.
+
+168
+00:08:17,870 --> 00:08:21,110
+So, specifically, when
+we learn term weights,
+
+169
+00:08:21,110 --> 00:08:23,240
+we can save these weights
+in the inverted index
+
+170
+00:08:23,240 --> 00:08:26,420
+just like with BM25,
+and that allows
+
+171
+00:08:26,420 --> 00:08:30,100
+us to obtain fast retrieval.
+
+172
+00:08:30,100 --> 00:08:32,049
+When we learn vector
+representations,
+
+173
+00:08:32,049 --> 00:08:34,150
+it also turns out
+that we can index
+
+174
+00:08:34,150 --> 00:08:37,720
+these vectors using libraries
+for fast vector similarity
+
+175
+00:08:37,720 --> 00:08:42,140
+search, like FAISS,
+f-a-i- double s.
+
+176
+00:08:42,140 --> 00:08:44,330
+This relies on efficient
+data structures
+
+177
+00:08:44,330 --> 00:08:47,150
+that support pruning,
+which is basically
+
+178
+00:08:47,150 --> 00:08:50,480
+finding the top-K matches,
+say the top 10 or the top 100
+
+179
+00:08:50,480 --> 00:08:54,050
+matches, without having
+to exhaustively enumerate
+
+180
+00:08:54,050 --> 00:08:57,150
+all possible candidates.
+
+181
+00:08:57,150 --> 00:09:00,270
+The details of search with
+these pruning data structures
+
+182
+00:09:00,270 --> 00:09:02,880
+is beyond our scope,
+but it's really useful
+
+183
+00:09:02,880 --> 00:09:05,790
+to be aware of this
+important capability for end
+
+184
+00:09:05,790 --> 00:09:09,440
+to end retrieval.
+
+185
+00:09:09,440 --> 00:09:12,990
+OK, so let's go back to
+our last main question.
+
+186
+00:09:12,990 --> 00:09:14,840
+Can we obtain the
+efficiency benefits
+
+187
+00:09:14,840 --> 00:09:18,590
+of precomputation while still
+having the fine-grained term
+
+188
+00:09:18,590 --> 00:09:22,230
+level interactions
+that we used to have?
+
+189
+00:09:22,230 --> 00:09:24,990
+The neural IR paradigm that
+will allow us to do this
+
+190
+00:09:24,990 --> 00:09:27,600
+is called Late Interaction,
+and this is something
+
+191
+00:09:27,600 --> 00:09:30,100
+that I've worked on
+here at Stanford.
+
+192
+00:09:30,100 --> 00:09:33,800
+So let's build late
+interaction from the ground up.
+
+193
+00:09:33,800 --> 00:09:36,170
+We'll start, as usual
+with tokenization
+
+194
+00:09:36,170 --> 00:09:39,270
+of the query and the document.
+
+195
+00:09:39,270 --> 00:09:41,460
+We'll seek to
+independently encode
+
+196
+00:09:41,460 --> 00:09:44,400
+the query and the document
+but into fine-grained
+
+197
+00:09:44,400 --> 00:09:47,880
+representations this time.
+
+198
+00:09:47,880 --> 00:09:49,830
+So, as you can see on
+the left hand side,
+
+199
+00:09:49,830 --> 00:09:51,230
+this is actually not hard.
+
+200
+00:09:51,230 --> 00:09:55,190
+As it's shown, we can feed
+two copies of BERT, the query,
+
+201
+00:09:55,190 --> 00:09:58,565
+and the document separately, and
+keep all the output embeddings
+
+202
+00:09:58,565 --> 00:10:00,980
+for responding to
+all the tokens as
+
+203
+00:10:00,980 --> 00:10:04,220
+our fine-grained
+representation for the query
+
+204
+00:10:04,220 --> 00:10:06,820
+and for the document.
+
+205
+00:10:06,820 --> 00:10:07,320
+OK.
+
+206
+00:10:07,320 --> 00:10:10,800
+So, we're only going to be
+done here once we actually
+
+207
+00:10:10,800 --> 00:10:12,130
+close this loop.
+
+208
+00:10:12,130 --> 00:10:12,630
+Right?
+
+209
+00:10:12,630 --> 00:10:15,570
+We still need to estimate
+relevance between this query
+
+210
+00:10:15,570 --> 00:10:17,570
+and that document.
+
+211
+00:10:17,570 --> 00:10:19,980
+Essentially we have
+two matrices and we
+
+212
+00:10:19,980 --> 00:10:23,240
+need a notion of similarity
+between these two matrices
+
+213
+00:10:23,240 --> 00:10:25,145
+or these two bags of vectors.
+
+214
+00:10:25,145 --> 00:10:28,190
+
+
+215
+00:10:28,190 --> 00:10:30,830
+However, not every
+approach will suffice.
+
+216
+00:10:30,830 --> 00:10:33,740
+We insist that we get a
+scalable mechanism that
+
+217
+00:10:33,740 --> 00:10:37,340
+allows us to use vector
+similarity search with pruning
+
+218
+00:10:37,340 --> 00:10:40,910
+to conduct end to end
+retrieval in a scalable fashion
+
+219
+00:10:40,910 --> 00:10:44,520
+across the entire collection.
+
+220
+00:10:44,520 --> 00:10:49,080
+In doing this, it turns out
+that a very simple interaction
+
+221
+00:10:49,080 --> 00:10:52,260
+mechanism offers both
+scaling and high quality.
+
+222
+00:10:52,260 --> 00:10:54,830
+
+
+223
+00:10:54,830 --> 00:10:56,290
+So here's what we'll do.
+
+224
+00:10:56,290 --> 00:10:59,800
+For each query embedding,
+as I show here,
+
+225
+00:10:59,800 --> 00:11:02,080
+we compute a maximum
+similarity score
+
+226
+00:11:02,080 --> 00:11:06,290
+across all of the
+document embeddings.
+
+227
+00:11:06,290 --> 00:11:10,430
+So this is just going to be
+a cosine similarity giving us
+
+228
+00:11:10,430 --> 00:11:14,630
+a single partial score
+for this query term, which
+
+229
+00:11:14,630 --> 00:11:17,510
+is the maximum cosine
+similarity across all
+
+230
+00:11:17,510 --> 00:11:19,010
+of the blue embeddings
+in this case.
+
+231
+00:11:19,010 --> 00:11:23,950
+
+
+232
+00:11:23,950 --> 00:11:27,300
+We'll repeat this here for
+all the query embeddings
+
+233
+00:11:27,300 --> 00:11:31,830
+and we'll simply sum all of
+these maximum similarity scores
+
+234
+00:11:31,830 --> 00:11:36,260
+to get our final score
+for this document.
+
+235
+00:11:36,260 --> 00:11:38,440
+So, we will refer to
+this general paradigm
+
+236
+00:11:38,440 --> 00:11:42,790
+here as late interaction, and to
+this specific model shown here
+
+237
+00:11:42,790 --> 00:11:45,540
+on top of BERT as ColBERT.
+
+238
+00:11:45,540 --> 00:11:47,280
+And the intuition is simple.
+
+239
+00:11:47,280 --> 00:11:49,650
+For every term in
+the query, we're
+
+240
+00:11:49,650 --> 00:11:53,190
+just trying to softly
+and contextually locate
+
+241
+00:11:53,190 --> 00:11:56,940
+that term in the document,
+assigning a score to how
+
+242
+00:11:56,940 --> 00:11:58,470
+successful this matching was.
+
+243
+00:11:58,470 --> 00:12:01,120
+
+
+244
+00:12:01,120 --> 00:12:04,360
+Let me illustrate this with a
+real example from the MS MARCO
+
+245
+00:12:04,360 --> 00:12:05,950
+ranking development
+set, and I hope
+
+246
+00:12:05,950 --> 00:12:08,940
+it will be quite
+intuitive once you see it.
+
+247
+00:12:08,940 --> 00:12:11,250
+At the top is a query
+and at the bottom
+
+248
+00:12:11,250 --> 00:12:12,870
+is a portion of
+the correct passage
+
+249
+00:12:12,870 --> 00:12:16,030
+that ColBERT retrieves
+at position one.
+
+250
+00:12:16,030 --> 00:12:19,210
+Because we have the simple
+late interaction mechanism,
+
+251
+00:12:19,210 --> 00:12:21,490
+we can actually
+explore the behavior.
+
+252
+00:12:21,490 --> 00:12:24,550
+And we can see in this
+particular example that ColBERT
+
+253
+00:12:24,550 --> 00:12:29,200
+matches, through maximum
+similarity operators, the word
+
+254
+00:12:29,200 --> 00:12:32,620
+"when" in the question with
+the word "on" in the phrase
+
+255
+00:12:32,620 --> 00:12:37,410
+"on August 8," which is a
+date as we might expect.
+
+256
+00:12:37,410 --> 00:12:39,210
+It matches the
+word "transformers"
+
+257
+00:12:39,210 --> 00:12:41,070
+with the same word
+in the document.
+
+258
+00:12:41,070 --> 00:12:43,560
+It matches "cartoon"
+with "animated."
+
+259
+00:12:43,560 --> 00:12:46,170
+And it matches the individual
+words, "come" and "out,"
+
+260
+00:12:46,170 --> 00:12:49,830
+with the term
+"released" in the phrase
+
+261
+00:12:49,830 --> 00:12:55,140
+"it was released on August
+8th" in the document,
+
+262
+00:12:55,140 --> 00:12:57,300
+as we might intuitively expect.
+
+263
+00:12:57,300 --> 00:12:59,520
+So, we're basically just
+trying to contextually match
+
+264
+00:12:59,520 --> 00:13:02,960
+these query terms
+in the document
+
+265
+00:13:02,960 --> 00:13:06,960
+and assign some matching
+score for each of these terms.
+
+266
+00:13:06,960 --> 00:13:10,100
+So notice here and remember
+that ColBERT represents
+
+267
+00:13:10,100 --> 00:13:13,340
+each document as a dense
+matrix of many vectors
+
+268
+00:13:13,340 --> 00:13:15,770
+and in particular
+one vector per token.
+
+269
+00:13:15,770 --> 00:13:17,660
+And this differs from
+the representation
+
+270
+00:13:17,660 --> 00:13:20,430
+similarity models
+we looked at before,
+
+271
+00:13:20,430 --> 00:13:23,030
+which try to cram each
+document into one vector.
+
+272
+00:13:23,030 --> 00:13:26,510
+And what makes this possible
+is the maximum similarity
+
+273
+00:13:26,510 --> 00:13:31,670
+operators that we have on top
+of these matrix representations.
+
+274
+00:13:31,670 --> 00:13:35,620
+So how well does ColBERT do?
+
+275
+00:13:35,620 --> 00:13:37,420
+And how does it do
+with this gap that we
+
+276
+00:13:37,420 --> 00:13:40,150
+have here between
+efficient models and highly
+
+277
+00:13:40,150 --> 00:13:42,460
+effective ones?
+
+278
+00:13:42,460 --> 00:13:45,310
+Well, by redesigning
+the model architecture
+
+279
+00:13:45,310 --> 00:13:47,620
+and offering a late
+interaction paradigm,
+
+280
+00:13:47,620 --> 00:13:50,710
+ColBERT allows us to achieve
+quality comparative with BERT
+
+281
+00:13:50,710 --> 00:13:52,165
+at a small fraction
+of the costs.
+
+282
+00:13:52,165 --> 00:13:54,700
+
+
+283
+00:13:54,700 --> 00:13:56,900
+Perhaps more
+importantly, ColBERT
+
+284
+00:13:56,900 --> 00:13:59,680
+can scale through the entire
+collection due to pruning
+
+285
+00:13:59,680 --> 00:14:01,570
+with end to end retrieval.
+
+286
+00:14:01,570 --> 00:14:04,600
+All 9 million passages
+here in this case,
+
+287
+00:14:04,600 --> 00:14:08,720
+while maintaining
+subsecond latencies,
+
+288
+00:14:08,720 --> 00:14:10,700
+And thus it allows
+much higher recall
+
+289
+00:14:10,700 --> 00:14:13,070
+than traditional re-ranking
+pipelines permit.
+
+290
+00:14:13,070 --> 00:14:18,170
+
+
+291
+00:14:18,170 --> 00:14:18,820
+All right.
+
+292
+00:14:18,820 --> 00:14:21,970
+So far we've looked at in-domain
+effectiveness evaluations.
+
+293
+00:14:21,970 --> 00:14:25,060
+Basically cases where we
+had training and evaluation
+
+294
+00:14:25,060 --> 00:14:29,940
+data for the IR task at hand,
+which was MS MARCO, so far.
+
+295
+00:14:29,940 --> 00:14:33,450
+But we often want
+to use retrieval
+
+296
+00:14:33,450 --> 00:14:35,040
+in new out-of-domain settings.
+
+297
+00:14:35,040 --> 00:14:38,760
+We just want to throw our search
+engine at a difficult problem
+
+298
+00:14:38,760 --> 00:14:41,490
+without training data,
+without validation data,
+
+299
+00:14:41,490 --> 00:14:44,520
+and see it perform well.
+
+300
+00:14:44,520 --> 00:14:47,620
+We briefly discussed
+BEIR before,
+
+301
+00:14:47,620 --> 00:14:51,420
+which is a recent
+effort to test IR
+
+302
+00:14:51,420 --> 00:14:55,230
+models in a zero-shot setting
+where the models are trained
+
+303
+00:14:55,230 --> 00:14:58,290
+on one IR task and
+then they're fixed,
+
+304
+00:14:58,290 --> 00:15:01,980
+and then they are tested on
+a completely different set
+
+305
+00:15:01,980 --> 00:15:03,390
+of tasks.
+
+306
+00:15:03,390 --> 00:15:08,640
+BEIR includes 17 IR data sets
+and there are nine different IR
+
+307
+00:15:08,640 --> 00:15:12,090
+tasks or scenarios, and
+the authors, Nandan et al.,
+
+308
+00:15:12,090 --> 00:15:14,820
+compared a lot of the IR
+models that we discussed today
+
+309
+00:15:14,820 --> 00:15:17,370
+in a zero-shot manner
+against each other
+
+310
+00:15:17,370 --> 00:15:19,525
+across all of these tasks.
+
+311
+00:15:19,525 --> 00:15:20,400
+So let's take a look.
+
+312
+00:15:20,400 --> 00:15:23,550
+
+
+313
+00:15:23,550 --> 00:15:28,770
+Here we have BM25 results for
+an interaction model, which
+
+314
+00:15:28,770 --> 00:15:31,980
+is in this case ELECTRA, which
+tends to perform slightly
+
+315
+00:15:31,980 --> 00:15:33,690
+better than BERT for ranking.
+
+316
+00:15:33,690 --> 00:15:36,810
+We have two representation
+similarity models, DPR
+
+317
+00:15:36,810 --> 00:15:38,580
+and SBERT.
+
+318
+00:15:38,580 --> 00:15:42,720
+And we have a late interaction
+model, which is ColBERT.
+
+319
+00:15:42,720 --> 00:15:47,670
+The best in each row-- in
+each IR task is shown in bold.
+
+320
+00:15:47,670 --> 00:15:53,340
+And we see that across all tasks
+the strongest model at NDCG@10
+
+321
+00:15:53,340 --> 00:15:55,140
+is always one of
+the three models
+
+322
+00:15:55,140 --> 00:15:57,420
+that involve term level
+interactions, which
+
+323
+00:15:57,420 --> 00:16:01,220
+are ELECTRA, ColBERT, and BM25.
+
+324
+00:16:01,220 --> 00:16:03,890
+Interestingly, the
+single vector approaches,
+
+325
+00:16:03,890 --> 00:16:06,650
+which seemed quite
+promising so far,
+
+326
+00:16:06,650 --> 00:16:11,110
+failed to generalize robustly
+according to these results.
+
+327
+00:16:11,110 --> 00:16:14,360
+Whereas ColBERT, which
+is also a fast model,
+
+328
+00:16:14,360 --> 00:16:17,630
+almost matches the quality of
+the expensive ELECTRA ranker.
+
+329
+00:16:17,630 --> 00:16:20,620
+
+
+330
+00:16:20,620 --> 00:16:23,710
+The results, so far, were
+on the metric NDCG@10,
+
+331
+00:16:23,710 --> 00:16:25,870
+which is a precision
+oriented metric--
+
+332
+00:16:25,870 --> 00:16:27,970
+looks at the top results.
+
+333
+00:16:27,970 --> 00:16:31,300
+But here I have the
+author's results
+
+334
+00:16:31,300 --> 00:16:37,540
+after the task level aggregation
+considering recall at 100.
+
+335
+00:16:37,540 --> 00:16:45,570
+And here, although we see
+that the results are rather
+
+336
+00:16:45,570 --> 00:16:50,190
+similar when we consider
+recall, one major difference
+
+337
+00:16:50,190 --> 00:16:52,680
+is that ColBERT's late
+interaction mechanism, which
+
+338
+00:16:52,680 --> 00:16:56,400
+allows it to conduct end to end
+retrieval with high quality,
+
+339
+00:16:56,400 --> 00:17:01,100
+allows it to achieve the
+strongest recall in this case.
+
+340
+00:17:01,100 --> 00:17:02,650
+And so we can
+conclude, basically,
+
+341
+00:17:02,650 --> 00:17:05,290
+that scalable
+fine-grained interaction
+
+342
+00:17:05,290 --> 00:17:09,700
+is key to robustly high recall.
+
+343
+00:17:09,700 --> 00:17:13,690
+Of course notice that the
+BM25 and ELECTRA recall here
+
+344
+00:17:13,690 --> 00:17:17,440
+is the same since ELECTRA
+just re-scores the top 100,
+
+345
+00:17:17,440 --> 00:17:21,060
+in this case, from BM25.
+
+346
+00:17:21,060 --> 00:17:24,780
+So this concludes our neural
+IR section of the NLU plus IR
+
+347
+00:17:24,780 --> 00:17:26,250
+series.
+
+348
+00:17:26,250 --> 00:17:29,010
+In the next screencast,
+we will discuss
+
+349
+00:17:29,010 --> 00:17:32,340
+how scalability with
+these retriever models
+
+350
+00:17:32,340 --> 00:17:34,840
+can actually drive
+large gains in quality,
+
+351
+00:17:34,840 --> 00:17:37,350
+not just speed,
+which we haven't seen
+
+352
+00:17:37,350 --> 00:17:39,810
+so far except on
+the recall case,
+
+353
+00:17:39,810 --> 00:17:42,120
+and how tuning a
+neural IR model fits
+
+354
+00:17:42,120 --> 00:17:46,230
+into a larger downstream
+open domain NLU task.
+
+355
+00:17:46,230 --> 00:17:57,483
+
+
