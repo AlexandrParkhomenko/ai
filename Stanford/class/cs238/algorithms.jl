@@ -1,12 +1,18 @@
 
 # Mykel J. Kochenderfer, Tim A. Wheeler, Kyle H. Wray (2022) Algorithms for Decision Making
 
+# using IJulia
+
 using LinearAlgebra
 using Distributions
 using LightGraphs
 using JuMP
 using GLPK
 using Ipopt
+
+# using GraphRecipes
+using Plots
+using IterTools
 
 # import IterTools: subsets
 function Base.findmax(f::Function, xs)
@@ -406,7 +412,7 @@ function fit(method::LocalDirectedGraphSearch, vars, D)
     return G
 end
 
-### HERE
+
 function are_markov_equivalent(G, H)
     if nv(G) != nv(H) || ne(G) != ne(H) ||
         !all(has_edge(H, e) ||
@@ -3214,45 +3220,670 @@ function gradient(π::ControllerPolicy, M::ControllerGradient, 𝒫::POMDP)
     return ∂U′∂ψ, ∂U′∂η
 end
 
+# 24 Multiagent Reasoning
+
+struct SimpleGame
+    γ # discount factor
+    ℐ # agents
+    𝒜 # joint action space
+    R # joint reward function
+end
+
+struct SimpleGamePolicy
+    p # dictionary mapping actions to probabilities
+    function SimpleGamePolicy(p::Base.Generator)
+        return SimpleGamePolicy(Dict(p))
+    end
+    function SimpleGamePolicy(p::Dict)
+        vs = collect(values(p))
+        vs ./= sum(vs)
+    return new(Dict(k => v for (k,v) in zip(keys(p), vs)))
+    end
+    SimpleGamePolicy(ai) = new(Dict(ai => 1.0))
+end
+
+(πi::SimpleGamePolicy)(ai) = get(πi.p, ai, 0.0)
+function (πi::SimpleGamePolicy)()
+    D = SetCategorical(collect(keys(πi.p)), collect(values(πi.p)))
+    return rand(D)
+end
+joint(X) = vec(collect(product(X...)))
+joint(π, πi, i) = [i == j ? πi : πj for (j, πj) in enumerate(π)]
+
+function utility(𝒫::SimpleGame, π, i)
+    𝒜, R = 𝒫.𝒜, 𝒫.R
+    p(a) = prod(πj(aj) for (πj, aj) in zip(π, a))
+    return sum(R(a)[i]*p(a) for a in joint(𝒜))
+end
+function best_response(𝒫::SimpleGame, π, i)
+    U(ai) = utility(𝒫, joint(π, SimpleGamePolicy(ai), i), i)
+    ai = argmax(U, 𝒫.𝒜[i])
+    return SimpleGamePolicy(ai)
+end
+
+function softmax_response(𝒫::SimpleGame, π, i, λ)
+    𝒜i = 𝒫.𝒜[i]
+    U(ai) = utility(𝒫, joint(π, SimpleGamePolicy(ai), i), i)
+    return SimpleGamePolicy(ai => exp(λ*U(ai)) for ai in 𝒜i)
+end
+
+struct NashEquilibrium end
+function tensorform(𝒫::SimpleGame)
+    ℐ, 𝒜, R = 𝒫.ℐ, 𝒫.𝒜, 𝒫.R
+    ℐ′ = eachindex(ℐ)
+    𝒜′ = [eachindex(𝒜[i]) for i in ℐ]
+    R′ = [R(a) for a in joint(𝒜)]
+    return ℐ′, 𝒜′, R′
+end
+
+function solve(M::NashEquilibrium, 𝒫::SimpleGame)
+    ℐ, 𝒜, R = tensorform(𝒫)
+    model = Model(Ipopt.Optimizer)
+    @variable(model, U[ℐ])
+    @variable(model, π[i=ℐ, 𝒜[i]] ≥ 0)
+    @NLobjective(model, Min,
+        sum(U[i] - sum(prod(π[j,a[j]] for j in ℐ) * R[y][i]
+            for (y,a) in enumerate(joint(𝒜))) for i in ℐ))
+    @NLconstraint(model, [i=ℐ, ai=𝒜[i]],
+        U[i] ≥ sum(
+            prod(j==i ? (a[j]==ai ? 1.0 : 0.0) : π[j,a[j]] for j in ℐ)
+            * R[y][i] for (y,a) in enumerate(joint(𝒜))))
+    @constraint(model, [i=ℐ], sum(π[i,ai] for ai in 𝒜[i]) == 1)
+    optimize!(model)
+    πi′(i) = SimpleGamePolicy(𝒫.𝒜[i][ai] => value(π[i,ai]) for ai in 𝒜[i])
+    return [πi′(i) for i in ℐ]
+end
+
+mutable struct JointCorrelatedPolicy
+    p # dictionary mapping from joint actions to probabilities
+    JointCorrelatedPolicy(p::Base.Generator) = new(Dict(p))
+end
+(π::JointCorrelatedPolicy)(a) = get(π.p, a, 0.0)
+function (π::JointCorrelatedPolicy)()
+    D = SetCategorical(collect(keys(π.p)), collect(values(π.p)))
+    return rand(D)
+end
+
+struct CorrelatedEquilibrium end
+function solve(M::CorrelatedEquilibrium, 𝒫::SimpleGame)
+    ℐ, 𝒜, R = 𝒫.ℐ, 𝒫.𝒜, 𝒫.R
+    model = Model(Ipopt.Optimizer)
+    @variable(model, π[joint(𝒜)] ≥ 0)
+    @objective(model, Max, sum(sum(π[a]*R(a) for a in joint(𝒜))))
+    @constraint(model, [i=ℐ, ai=𝒜[i], ai′=𝒜[i]],
+        sum(R(a)[i]*π[a] for a in joint(𝒜) if a[i]==ai)
+        ≥ sum(R(joint(a,ai′,i))[i]*π[a] for a in joint(𝒜) if a[i]==ai))
+    @constraint(model, sum(π) == 1)
+    optimize!(model)
+    return JointCorrelatedPolicy(a => value(π[a]) for a in joint(𝒜))
+end
+
+struct IteratedBestResponse
+    k_max # number of iterations
+    π     # initial policy
+end
+function IteratedBestResponse(𝒫::SimpleGame, k_max)
+    π = [SimpleGamePolicy(ai => 1.0 for ai in 𝒜i) for 𝒜i in 𝒫.𝒜]
+    return IteratedBestResponse(k_max, π)
+end
+function solve(M::IteratedBestResponse, 𝒫)
+    π = M.π
+    for k in 1:M.k_max
+        π = [best_response(𝒫, π, i) for i in 𝒫.ℐ]
+    end
+    return π
+end
+
+struct HierarchicalSoftmax
+    λ # precision parameter
+    k # level
+    π # initial policy
+end
+function HierarchicalSoftmax(𝒫::SimpleGame, λ, k)
+    π = [SimpleGamePolicy(ai => 1.0 for ai in 𝒜i) for 𝒜i in 𝒫.𝒜]
+    return HierarchicalSoftmax(λ, k, π)
+end
+
+function solve(M::HierarchicalSoftmax, 𝒫)
+    π = M.π
+    for k in 1:M.k
+        π = [softmax_response(𝒫, π, i, M.λ) for i in 𝒫.ℐ]
+    end
+    return π
+end
+
+function simulate(𝒫::SimpleGame, π, k_max)
+    for k = 1:k_max
+        a = [πi() for πi in π]
+        for πi in π
+            update!(πi, a)
+        end
+    end
+    return π
+end
 
 
 
+mutable struct FictitiousPlay
+    𝒫  # simple game
+    i  # agent index
+    N  # array of action count dictionaries
+    πi # current policy
+end
+function FictitiousPlay(𝒫::SimpleGame, i)
+    N = [Dict(aj => 1 for aj in 𝒫.𝒜[j]) for j in 𝒫.ℐ]
+    πi = SimpleGamePolicy(ai => 1.0 for ai in 𝒫.𝒜[i])
+    return FictitiousPlay(𝒫, i, N, πi)
+end
+
+(πi::FictitiousPlay)() = πi.πi()
+(πi::FictitiousPlay)(ai) = πi.πi(ai)
+function update!(πi::FictitiousPlay, a)
+    N, 𝒫, ℐ, i = πi.N, πi.𝒫, πi.𝒫.ℐ, πi.i
+    for (j, aj) in enumerate(a)
+        N[j][aj] += 1
+    end
+    p(j) = SimpleGamePolicy(aj => u/sum(values(N[j])) for (aj, u) in N[j])
+    π = [p(j) for j in ℐ]
+    πi.πi = best_response(𝒫, π, i)
+end
 
 
+mutable struct GradientAscent
+    𝒫 # simple game
+    i # agent index
+    t # time step
+    πi # current policy
+end
+function GradientAscent(𝒫::SimpleGame, i)
+    uniform() = SimpleGamePolicy(ai => 1.0 for ai in 𝒫.𝒜[i])
+    return GradientAscent(𝒫, i, 1, uniform())
+end
+(πi::GradientAscent)() = πi.πi()
+(πi::GradientAscent)(ai) = πi.πi(ai)
+function update!(πi::GradientAscent, a)
+    𝒫, ℐ, 𝒜i, i, t = πi.𝒫, πi.𝒫.ℐ, πi.𝒫.𝒜[πi.i], πi.i, πi.t
+    jointπ(ai) = [SimpleGamePolicy(j == i ? ai : a[j]) for j in ℐ]
+    r = [utility(𝒫, jointπ(ai), i) for ai in 𝒜i]
+    π′ = [πi.πi(ai) for ai in 𝒜i]
+    π = project_to_simplex(π′ + r / sqrt(t))
+    πi.t = t + 1
+    πi.πi = SimpleGamePolicy(ai => p for (ai, p) in zip(𝒜i, π))
+end
+
+# 25 Sequential Problems
+
+struct MG
+    γ # discount factor
+    ℐ # agents
+    𝒮 # state space
+    𝒜 # joint action space
+    T # transition function
+    R # joint reward function
+end
+
+struct MGPolicy
+    p # dictionary mapping states to simple game policies
+    MGPolicy(p::Base.Generator) = new(Dict(p))
+end
+
+(πi::MGPolicy)(s, ai) = πi.p[s](ai)
+(πi::SimpleGamePolicy)(s, ai) = πi(ai)
+
+probability(𝒫::MG, s, π, a) = prod(πj(s, aj) for (πj, aj) in zip(π, a))
+reward(𝒫::MG, s, π, i) =
+    sum(𝒫.R(s,a)[i]*probability(𝒫,s,π,a) for a in joint(𝒫.𝒜))
+transition(𝒫::MG, s, π, s′) =
+    sum(𝒫.T(s,a,s′)*probability(𝒫,s,π,a) for a in joint(𝒫.𝒜))
+
+function policy_evaluation(𝒫::MG, π, i)
+    𝒮, 𝒜, R, T, γ = 𝒫.𝒮, 𝒫.𝒜, 𝒫.R, 𝒫.T, 𝒫.γ
+    p(s,a) = prod(πj(s, aj) for (πj, aj) in zip(π, a))
+    R′ = [sum(R(s,a)[i]*p(s,a) for a in joint(𝒜)) for s in 𝒮]
+    T′ = [sum(T(s,a,s′)*p(s,a) for a in joint(𝒜)) for s in 𝒮, s′ in 𝒮]
+    return (I - γ*T′)\R′
+end
+
+function best_response(𝒫::MG, π, i)
+    𝒮, 𝒜, R, T, γ = 𝒫.𝒮, 𝒫.𝒜, 𝒫.R, 𝒫.T, 𝒫.γ
+    T′(s,ai,s′) = transition(𝒫, s, joint(π, SimpleGamePolicy(ai), i), s′)
+    R′(s,ai) = reward(𝒫, s, joint(π, SimpleGamePolicy(ai), i), i)
+    πi = solve(MDP(γ, 𝒮, 𝒜[i], T′, R′))
+    return MGPolicy(s => SimpleGamePolicy(πi(s)) for s in 𝒮)
+end
+
+function softmax_response(𝒫::MG, π, i, λ)
+    𝒮, 𝒜, R, T, γ = 𝒫.𝒮, 𝒫.𝒜, 𝒫.R, 𝒫.T, 𝒫.γ
+    T′(s,ai,s′) = transition(𝒫, s, joint(π, SimpleGamePolicy(ai), i), s′)
+    R′(s,ai) = reward(𝒫, s, joint(π, SimpleGamePolicy(ai), i), i)
+    mdp = MDP(γ, 𝒮, joint(𝒜), T′, R′)
+    πi = solve(mdp)
+    Q(s,a) = lookahead(mdp, πi.U, s, a)
+    p(s) = SimpleGamePolicy(a => exp(λ*Q(s,a)) for a in 𝒜[i])
+    return MGPolicy(s => p(s) for s in 𝒮)
+end
 
 
+function tensorform(𝒫::MG)
+    ℐ, 𝒮, 𝒜, R, T = 𝒫.ℐ, 𝒫.𝒮, 𝒫.𝒜, 𝒫.R, 𝒫.T
+    ℐ′ = eachindex(ℐ)
+    𝒮′ = eachindex(𝒮)
+    𝒜′ = [eachindex(𝒜[i]) for i in ℐ]
+    R′ = [R(s,a) for s in 𝒮, a in joint(𝒜)]
+    T′ = [T(s,a,s′) for s in 𝒮, a in joint(𝒜), s′ in 𝒮]
+    return ℐ′, 𝒮′, 𝒜′, R′, T′
+end
+
+function solve(M::NashEquilibrium, 𝒫::MG)
+    ℐ, 𝒮, 𝒜, R, T = tensorform(𝒫)
+    𝒮′, 𝒜′, γ = 𝒫.𝒮, 𝒫.𝒜, 𝒫.γ
+    model = Model(Ipopt.Optimizer)
+    @variable(model, U[ℐ, 𝒮])
+    @variable(model, π[i=ℐ, 𝒮, ai=𝒜[i]] ≥ 0)
+    @NLobjective(model, Min,
+        sum(U[i,s] - sum(prod(π[j,s,a[j]] for j in ℐ)
+            * (R[s,y][i] + γ*sum(T[s,y,s′]*U[i,s′] for s′ in 𝒮))
+            for (y,a) in enumerate(joint(𝒜))) for i in ℐ, s in 𝒮))
+    @NLconstraint(model, [i=ℐ, s=𝒮, ai=𝒜[i]],
+        U[i,s] ≥ sum(
+            prod(j==i ? (a[j]==ai ? 1.0 : 0.0) : π[j,s,a[j]] for j in ℐ)
+            * (R[s,y][i] + γ*sum(T[s,y,s′]*U[i,s′] for s′ in 𝒮))
+            for (y,a) in enumerate(joint(𝒜))))
+    @constraint(model, [i=ℐ, s=𝒮], sum(π[i,s,ai] for ai in 𝒜[i]) == 1)
+    optimize!(model)
+    π′ = value.(π)
+    πi′(i,s) = SimpleGamePolicy(𝒜′[i][ai] => π′[i,s,ai] for ai in 𝒜[i])
+    πi′(i) = MGPolicy(𝒮′[s] => πi′(i,s) for s in 𝒮)
+    return [πi′(i) for i in ℐ]
+end
+
+function randstep(𝒫::MG, s, a)
+    s′ = rand(SetCategorical(𝒫.𝒮, [𝒫.T(s, a, s′) for s′ in 𝒫.𝒮]))
+    r = 𝒫.R(s,a)
+    return s′, r
+end
+function simulate(𝒫::MG, π, k_max, b)
+    s = rand(b)
+    for k = 1:k_max
+        a = Tuple(πi(s)() for πi in π)
+        s′, r = randstep(𝒫, s, a)
+        for πi in π
+            update!(πi, s, a, s′)
+        end
+        s = s′
+    end
+    return π
+end
 
 
+mutable struct MGFictitiousPlay
+    𝒫 # Markov game
+    i # agent index
+    Qi # state-action value estimates
+    Ni # state-action counts
+end
+function MGFictitiousPlay(𝒫::MG, i)
+    ℐ, 𝒮, 𝒜, R = 𝒫.ℐ, 𝒫.𝒮, 𝒫.𝒜, 𝒫.R
+    Qi = Dict((s, a) => R(s, a)[i] for s in 𝒮 for a in joint(𝒜))
+    Ni = Dict((j, s, aj) => 1.0 for j in ℐ for s in 𝒮 for aj in 𝒜[j])
+    return MGFictitiousPlay(𝒫, i, Qi, Ni)
+end
+
+function (πi::MGFictitiousPlay)(s)
+    𝒫, i, Qi = πi.𝒫, πi.i, πi.Qi
+    ℐ, 𝒮, 𝒜, T, R, γ = 𝒫.ℐ, 𝒫.𝒮, 𝒫.𝒜, 𝒫.T, 𝒫.R, 𝒫.γ
+    πi′(i,s) = SimpleGamePolicy(ai => πi.Ni[i,s,ai] for ai in 𝒜[i])
+    πi′(i) = MGPolicy(s => πi′(i,s) for s in 𝒮)
+    π = [πi′(i) for i in ℐ]
+    U(s,π) = sum(πi.Qi[s,a]*probability(𝒫,s,π,a) for a in joint(𝒜))
+    Q(s,π) = reward(𝒫,s,π,i) + γ*sum(transition(𝒫,s,π,s′)*U(s′,π)
+        for s′ in 𝒮)
+    Q(ai) = Q(s, joint(π, SimpleGamePolicy(ai), i))
+    ai = argmax(Q, 𝒫.𝒜[πi.i])
+    return SimpleGamePolicy(ai)
+end
+
+function update!(πi::MGFictitiousPlay, s, a, s′)
+    𝒫, i, Qi = πi.𝒫, πi.i, πi.Qi
+    ℐ, 𝒮, 𝒜, T, R, γ = 𝒫.ℐ, 𝒫.𝒮, 𝒫.𝒜, 𝒫.T, 𝒫.R, 𝒫.γ
+    for (j,aj) in enumerate(a)
+        πi.Ni[j,s,aj] += 1
+    end
+    πi′(i,s) = SimpleGamePolicy(ai => πi.Ni[i,s,ai] for ai in 𝒜[i])
+    πi′(i) = MGPolicy(s => πi′(i,s) for s in 𝒮)
+    π = [πi′(i) for i in ℐ]
+    U(π,s) = sum(πi.Qi[s,a]*probability(𝒫,s,π,a) for a in joint(𝒜))
+    Q(s,a) = R(s,a)[i] + γ*sum(T(s,a,s′)*U(π,s′) for s′ in 𝒮)
+    for a in joint(𝒜)
+        πi.Qi[s,a] = Q(s,a)
+    end
+end
 
 
+mutable struct MGGradientAscent
+    𝒫 # Markov game
+    i # agent index
+    t # time step
+    Qi # state-action value estimates
+    πi # current policy
+end
+function MGGradientAscent(𝒫::MG, i)
+    ℐ, 𝒮, 𝒜 = 𝒫.ℐ, 𝒫.𝒮, 𝒫.𝒜
+    Qi = Dict((s, a) => 0.0 for s in 𝒮, a in joint(𝒜))
+    uniform() = Dict(s => SimpleGamePolicy(ai => 1.0 for ai in 𝒫.𝒜[i])
+        for s in 𝒮)
+    return MGGradientAscent(𝒫, i, 1, Qi, uniform())
+end
+
+function (πi::MGGradientAscent)(s)
+    𝒜i, t = πi.𝒫.𝒜[πi.i], πi.t
+    ϵ = 1 / sqrt(t)
+    πi′(ai) = ϵ/length(𝒜i) + (1-ϵ)*πi.πi[s](ai)
+    return SimpleGamePolicy(ai => πi′(ai) for ai in 𝒜i)
+end
+function update!(πi::MGGradientAscent, s, a, s′)
+    𝒫, i, t, Qi = πi.𝒫, πi.i, πi.t, πi.Qi
+    ℐ, 𝒮, 𝒜i, R, γ = 𝒫.ℐ, 𝒫.𝒮, 𝒫.𝒜[πi.i], 𝒫.R, 𝒫.γ
+    jointπ(ai) = Tuple(j == i ? ai : a[j] for j in ℐ)
+    α = 1 / sqrt(t)
+    Qmax = maximum(Qi[s′, jointπ(ai)] for ai in 𝒜i)
+    πi.Qi[s, a] += α * (R(s, a)[i] + γ * Qmax - Qi[s, a])
+    u = [Qi[s, jointπ(ai)] for ai in 𝒜i]
+    π′ = [πi.πi[s](ai) for ai in 𝒜i]
+    π = project_to_simplex(π′ + u / sqrt(t))
+    πi.t = t + 1
+    πi.πi[s] = SimpleGamePolicy(ai => p for (ai, p) in zip(𝒜i, π))
+end
 
 
+mutable struct NashQLearning
+    𝒫 # Markov game
+    i # agent index
+    Q # state-action value estimates
+    N # history of actions performed
+end
+
+function NashQLearning(𝒫::MG, i)
+    ℐ, 𝒮, 𝒜 = 𝒫.ℐ, 𝒫.𝒮, 𝒫.𝒜
+    Q = Dict((j, s, a) => 0.0 for j in ℐ, s in 𝒮, a in joint(𝒜))
+    N = Dict((s, a) => 1.0 for s in 𝒮, a in joint(𝒜))
+    return NashQLearning(𝒫, i, Q, N)
+end
+
+function (πi::NashQLearning)(s)
+    𝒫, i, Q, N = πi.𝒫, πi.i, πi.Q, πi.N
+    ℐ, 𝒮, 𝒜, 𝒜i, γ = 𝒫.ℐ, 𝒫.𝒮, 𝒫.𝒜, 𝒫.𝒜[πi.i], 𝒫.γ
+    M = NashEquilibrium()
+    𝒢 = SimpleGame(γ, ℐ, 𝒜, a -> [Q[j, s, a] for j in ℐ])
+    π = solve(M, 𝒢)
+    ϵ = 1 / sum(N[s, a] for a in joint(𝒜))
+    πi′(ai) = ϵ/length(𝒜i) + (1-ϵ)*π[i](ai)
+    return SimpleGamePolicy(ai => πi′(ai) for ai in 𝒜i)
+end
+
+function update!(πi::NashQLearning, s, a, s′)
+    𝒫, ℐ, 𝒮, 𝒜, R, γ = πi.𝒫, πi.𝒫.ℐ, πi.𝒫.𝒮, πi.𝒫.𝒜, πi.𝒫.R, πi.𝒫.γ
+    i, Q, N = πi.i, πi.Q, πi.N
+    M = NashEquilibrium()
+    𝒢 = SimpleGame(γ, ℐ, 𝒜, a′ -> [Q[j, s′, a′] for j in ℐ])
+    π = solve(M, 𝒢)
+    πi.N[s, a] += 1
+    α = 1 / sqrt(N[s, a])
+    for j in ℐ
+        πi.Q[j,s,a] += α*(R(s,a)[j] + γ*utility(𝒢,π,j) - Q[j,s,a])
+    end
+end
+
+# 26 State Uncertainty
+
+struct POMG
+    γ # discount factor
+    ℐ # agents
+    𝒮 # state space
+    𝒜 # joint action space
+    𝒪 # joint observation space
+    T # transition function
+    O # joint observation function
+    R # joint reward function
+end
+
+function lookahead(𝒫::POMG, U, s, a)
+    𝒮, 𝒪, T, O, R, γ = 𝒫.𝒮, joint(𝒫.𝒪), 𝒫.T, 𝒫.O, 𝒫.R, 𝒫.γ
+    u′ = sum(T(s,a,s′)*sum(O(a,s′,o)*U(o,s′) for o in 𝒪) for s′ in 𝒮)
+    return R(s,a) + γ*u′
+end
+function evaluate_plan(𝒫::POMG, π, s)
+    a = Tuple(πi() for πi in π)
+    U(o,s′) = evaluate_plan(𝒫, [πi(oi) for (πi, oi) in zip(π,o)], s′)
+    return isempty(first(π).subplans) ? 𝒫.R(s,a) : lookahead(𝒫, U, s, a)
+end
+function utility(𝒫::POMG, b, π)
+    u = [evaluate_plan(𝒫, π, s) for s in 𝒫.𝒮]
+    return sum(bs * us for (bs, us) in zip(b, u))
+end
 
 
+struct POMGNashEquilibrium
+    b # initial belief
+    d # depth of conditional plans
+end
+function create_conditional_plans(𝒫, d)
+    ℐ, 𝒜, 𝒪 = 𝒫.ℐ, 𝒫.𝒜, 𝒫.𝒪
+    Π = [[ConditionalPlan(ai) for ai in 𝒜[i]] for i in ℐ]
+    for t in 1:d
+        Π = expand_conditional_plans(𝒫, Π)
+    end
+    return Π
+end
+
+function expand_conditional_plans(𝒫, Π)
+    ℐ, 𝒜, 𝒪 = 𝒫.ℐ, 𝒫.𝒜, 𝒫.𝒪
+    return [[ConditionalPlan(ai, Dict(oi => πi for oi in 𝒪[i]))
+        for πi in Π[i] for ai in 𝒜[i]] for i in ℐ]
+end
+function solve(M::POMGNashEquilibrium, 𝒫::POMG)
+    ℐ, γ, b, d = 𝒫.ℐ, 𝒫.γ, M.b, M.d
+    Π = create_conditional_plans(𝒫, d)
+    U = Dict(π => utility(𝒫, b, π) for π in joint(Π))
+    𝒢 = SimpleGame(γ, ℐ, Π, π -> U[π])
+    π = solve(NashEquilibrium(), 𝒢)
+    return Tuple(argmax(πi.p) for πi in π)
+end
 
 
+struct POMGDynamicProgramming
+    b # initial belief
+    d # depth of conditional plans
+end
+
+function solve(M::POMGDynamicProgramming, 𝒫::POMG)
+    ℐ, 𝒮, 𝒜, R, γ, b, d = 𝒫.ℐ, 𝒫.𝒮, 𝒫.𝒜, 𝒫.R, 𝒫.γ, M.b, M.d
+    Π = [[ConditionalPlan(ai) for ai in 𝒜[i]] for i in ℐ]
+    for t in 1:d
+        Π = expand_conditional_plans(𝒫, Π)
+        prune_dominated!(Π, 𝒫)
+    end
+    𝒢 = SimpleGame(γ, ℐ, Π, π -> utility(𝒫, b, π))
+    π = solve(NashEquilibrium(), 𝒢)
+    return Tuple(argmax(πi.p) for πi in π)
+end
+
+function prune_dominated!(Π, 𝒫::POMG)
+    done = false
+    while !done
+        done = true
+        for i in shuffle(𝒫.ℐ)
+            for πi in shuffle(Π[i])
+                if length(Π[i]) > 1 && is_dominated(𝒫, Π, i, πi)
+                    filter!(πi′ -> πi′ ≠ πi, Π[i])
+                    done = false
+                    break
+                end
+            end
+        end
+    end
+end
+
+function is_dominated(𝒫::POMG, Π, i, πi)
+    ℐ, 𝒮 = 𝒫.ℐ, 𝒫.𝒮
+    jointΠnoti = joint([Π[j] for j in ℐ if j ≠ i])
+    π(πi′, πnoti) = [j==i ? πi′ : πnoti[j>i ? j-1 : j] for j in ℐ]
+    Ui = Dict((πi′, πnoti, s) => evaluate_plan(𝒫, π(πi′, πnoti), s)[i]
+        for πi′ in Π[i], πnoti in jointΠnoti, s in 𝒮)
+    model = Model(Ipopt.Optimizer)
+    @variable(model, δ)
+    @variable(model, b[jointΠnoti, 𝒮] ≥ 0)
+    @objective(model, Max, δ)
+    @constraint(model, [πi′=Π[i]],
+        sum(b[πnoti, s] * (Ui[πi′, πnoti, s] - Ui[πi, πnoti, s])
+        for πnoti in jointΠnoti for s in 𝒮) ≥ δ)
+    @constraint(model, sum(b) == 1)
+    optimize!(model)
+    return value(δ) ≥ 0
+end
+
+# 27 Collaborative Agents
+
+struct DecPOMDP
+    γ # discount factor
+    ℐ # agents
+    𝒮 # state space
+    𝒜 # joint action space
+    𝒪 # joint observation space
+    T # transition function
+    O # joint observation function
+    R # reward function
+end
+
+struct DecPOMDPDynamicProgramming
+    b # initial belief
+    d # depth of conditional plans
+end
+function solve(M::DecPOMDPDynamicProgramming, 𝒫::DecPOMDP)
+    ℐ, 𝒮, 𝒜, 𝒪, T, O, R, γ = 𝒫.ℐ, 𝒫.𝒮, 𝒫.𝒜, 𝒫.𝒪, 𝒫.T, 𝒫.O, 𝒫.R, 𝒫.γ
+    R′(s, a) = [R(s, a) for i in ℐ]
+    𝒫′ = POMG(γ, ℐ, 𝒮, 𝒜, 𝒪, T, O, R′)
+    M′ = POMGDynamicProgramming(M.b, M.d)
+    return solve(M′, 𝒫′)
+end
 
 
+struct DecPOMDPIteratedBestResponse
+    b # initial belief
+    d # depth of conditional plans
+    k_max # number of iterations
+end
+
+function solve(M::DecPOMDPIteratedBestResponse, 𝒫::DecPOMDP)
+    ℐ, 𝒮, 𝒜, 𝒪, T, O, R, γ = 𝒫.ℐ, 𝒫.𝒮, 𝒫.𝒜, 𝒫.𝒪, 𝒫.T, 𝒫.O, 𝒫.R, 𝒫.γ
+    b, d, k_max = M.b, M.d, M.k_max
+    R′(s, a) = [R(s, a) for i in ℐ]
+    𝒫′ = POMG(γ, ℐ, 𝒮, 𝒜, 𝒪, T, O, R′)
+    Π = create_conditional_plans(𝒫, d)
+    π = [rand(Π[i]) for i in ℐ]
+    for k in 1:k_max
+        for i in shuffle(ℐ)
+            π′(πi) = Tuple(j == i ? πi : π[j] for j in ℐ)
+            Ui(πi) = utility(𝒫′, b, π′(πi))[i]
+            π[i] = argmax(Ui, Π[i])
+        end
+    end
+    return Tuple(π)
+end
 
 
+struct DecPOMDPHeuristicSearch
+    b # initial belief
+    d # depth of conditional plans
+    π_max # number of policies
+end
 
+function solve(M::DecPOMDPHeuristicSearch, 𝒫::DecPOMDP)
+    ℐ, 𝒮, 𝒜, 𝒪, T, O, R, γ = 𝒫.ℐ, 𝒫.𝒮, 𝒫.𝒜, 𝒫.𝒪, 𝒫.T, 𝒫.O, 𝒫.R, 𝒫.γ
+    b, d, π_max = M.b, M.d, M.π_max
+    R′(s, a) = [R(s, a) for i in ℐ]
+    𝒫′ = POMG(γ, ℐ, 𝒮, 𝒜, 𝒪, T, O, R′)
+    Π = [[ConditionalPlan(ai) for ai in 𝒜[i]] for i in ℐ]
+    for t in 1:d
+        allΠ = expand_conditional_plans(𝒫, Π)
+        Π = [[] for i in ℐ]
+        for z in 1:π_max
+            b′ = explore(M, 𝒫, t)
+            π = argmax(π -> first(utility(𝒫′, b′, π)), joint(allΠ))
+            for i in ℐ
+                push!(Π[i], π[i])
+                filter!(πi -> πi != π[i], allΠ[i])
+            end
+        end
+    end
+    return argmax(π -> first(utility(𝒫′, b, π)), joint(Π))
+end
 
+function explore(M::DecPOMDPHeuristicSearch, 𝒫::DecPOMDP, t)
+    ℐ, 𝒮, 𝒜, 𝒪, T, O, R, γ = 𝒫.ℐ, 𝒫.𝒮, 𝒫.𝒜, 𝒫.𝒪, 𝒫.T, 𝒫.O, 𝒫.R, 𝒫.γ
+    b = copy(M.b)
+    b′ = similar(b)
+    s = rand(SetCategorical(𝒮, b))
+    for τ in 1:t
+        a = Tuple(rand(𝒜i) for 𝒜i in 𝒜)
+        s′ = rand(SetCategorical(𝒮, [T(s,a,s′) for s′ in 𝒮]))
+        o = rand(SetCategorical(joint(𝒪), [O(a,s′,o) for o in joint(𝒪)]))
+        for (i′, s′) in enumerate(𝒮)
+            po = O(a, s′, o)
+            b′[i′] = po*sum(T(s,a,s′)*b[i] for (i,s) in enumerate(𝒮))
+        end
+        normalize!(b′, 1)
+        b, s = b′, s′
+    end
+    return b′
+end
 
+struct DecPOMDPNonlinearProgramming
+    b # initial belief
+    ℓ # number of nodes for each agent
+end
+function tensorform(𝒫::DecPOMDP)
+    ℐ, 𝒮, 𝒜, 𝒪, R, T, O = 𝒫.ℐ, 𝒫.𝒮, 𝒫.𝒜, 𝒫.𝒪, 𝒫.R, 𝒫.T, 𝒫.O
+    ℐ′ = eachindex(ℐ)
+    𝒮′ = eachindex(𝒮)
+    𝒜′ = [eachindex(𝒜i) for 𝒜i in 𝒜]
+    𝒪′ = [eachindex(𝒪i) for 𝒪i in 𝒪]
+    R′ = [R(s,a) for s in 𝒮, a in joint(𝒜)]
+    T′ = [T(s,a,s′) for s in 𝒮, a in joint(𝒜), s′ in 𝒮]
+    O′ = [O(a,s′,o) for a in joint(𝒜), s′ in 𝒮, o in joint(𝒪)]
+    return ℐ′, 𝒮′, 𝒜′, 𝒪′, R′, T′, O′
+end
 
+function solve(M::DecPOMDPNonlinearProgramming, 𝒫::DecPOMDP)
+    𝒫, γ, b = 𝒫, 𝒫.γ, M.b
+    ℐ, 𝒮, 𝒜, 𝒪, R, T, O = tensorform(𝒫)
+    X = [collect(1:M.ℓ) for i in ℐ]
+    jointX, joint𝒜, joint𝒪 = joint(X), joint(𝒜), joint(𝒪)
+    x1 = jointX[1]
+    model = Model(Ipopt.Optimizer)
+    @variable(model, U[jointX,𝒮])
+    @variable(model, ψ[i=ℐ,X[i],𝒜[i]] ≥ 0)
+    @variable(model, η[i=ℐ,X[i],𝒜[i],𝒪[i],X[i]] ≥ 0)
+    @objective(model, Max, b⋅U[x1,:])
+    @NLconstraint(model, [x=jointX,s=𝒮],
+        U[x,s] == (sum(prod(ψ[i,x[i],a[i]] for i in ℐ)
+            *(R[s,y] + γ*sum(T[s,y,s′]*sum(O[y,s′,z]
+                *sum(prod(η[i,x[i],a[i],o[i],x′[i]] for i in ℐ)
+                    *U[x′,s′] for x′ in jointX)
+                for (z, o) in enumerate(joint𝒪)) for s′ in 𝒮))
+            for (y, a) in enumerate(joint𝒜))))
+    @constraint(model, [i=ℐ,xi=X[i]],
+        sum(ψ[i,xi,ai] for ai in 𝒜[i]) == 1)
+    @constraint(model, [i=ℐ,xi=X[i],ai=𝒜[i],oi=𝒪[i]],
+        sum(η[i,xi,ai,oi,xi′] for xi′ in X[i]) == 1)
+    optimize!(model)
+    ψ′, η′ = value.(ψ), value.(η)
+    return [ControllerPolicy(𝒫, X[i],
+            Dict((xi,𝒫.𝒜[i][ai]) => ψ′[i,xi,ai]
+                for xi in X[i], ai in 𝒜[i]),
+            Dict((xi,𝒫.𝒜[i][ai],𝒫.𝒪[i][oi],xi′) => η′[i,xi,ai,oi,xi′]
+                for xi in X[i], ai in 𝒜[i], oi in 𝒪[i], xi′ in X[i]))
+        for i in ℐ]
+end
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# EOF
