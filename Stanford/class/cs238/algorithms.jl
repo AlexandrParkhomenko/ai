@@ -5,10 +5,12 @@
 
 using LinearAlgebra
 using Distributions
-using LightGraphs
+# using LightGraphs
+using Graphs
 using JuMP
 using GLPK
 using Ipopt
+import Base.Iterators: product
 
 # using GraphRecipes
 using Plots
@@ -69,10 +71,27 @@ function normalize!(ϕ::Factor)
     return ϕ
 end
 
+# requires convenience functions from appendix G.5
+X = Variable(:x, 2)
+Y = Variable(:y, 2)
+Z = Variable(:z, 2)
+ϕ = Factor([X, Y, Z], FactorTable(
+    (x=1, y=1, z=1) => 0.08, (x=1, y=1, z=2) => 0.31,
+    (x=1, y=2, z=1) => 0.09, (x=1, y=2, z=2) => 0.37,
+    (x=2, y=1, z=1) => 0.01, (x=2, y=1, z=2) => 0.05,
+    (x=2, y=2, z=1) => 0.02, (x=2, y=2, z=2) => 0.07,
+))
+
 struct BayesianNetwork
     vars::Vector{Variable}
     factors::Vector{Factor}
     graph::SimpleDiGraph{Int64}
+end
+
+function probability(bn::BayesianNetwork, assignment)
+    subassignment(ϕ) = select(assignment, variablenames(ϕ))
+    probability(ϕ) = get(ϕ.table, subassignment(ϕ), 0.0)
+    return prod(probability(ϕ) for ϕ in bn.factors)
 end
 
 B = Variable(:b, 2); S = Variable(:s, 2)
@@ -98,12 +117,6 @@ graph = SimpleDiGraph(5)
 add_edge!(graph, 1, 3); add_edge!(graph, 2, 3)
 add_edge!(graph, 3, 4); add_edge!(graph, 3, 5)
 bn = BayesianNetwork(vars, factors, graph)
-
-function probability(bn::BayesianNetwork, assignment)
-    subassignment(ϕ) = select(assignment, variablenames(ϕ))
-    probability(ϕ) = get(ϕ.table, subassignment(ϕ), 0.0)
-    return prod(probability(ϕ) for ϕ in bn.factors)
-end
 
 function Base.:*(ϕ::Factor, ψ::Factor)
     ϕnames = variablenames(ϕ)
@@ -158,8 +171,8 @@ function infer(M::ExactInference, bn, query, evidence)
     ϕ = prod(bn.factors)
     ϕ = condition(ϕ, evidence)
     for name in setdiff(variablenames(ϕ), query)
-    ϕ = marginalize(ϕ, name)
-        end
+        ϕ = marginalize(ϕ, name)
+    end
     return normalize!(ϕ)
 end
 
@@ -297,6 +310,8 @@ function infer(D::MvNormal, query, evidencevars, evidence)
     Σ = A - C * (B \ C')
     return MvNormal(μ, Σ)
 end
+D = MvNormal([0.0,1.0],[3.0 1.0; 1.0 2.0])
+infer(D, [1], [2], [2.0])
 
 function sub2ind(siz, x)
     k = vcat(1, cumprod(siz[1:end - 1]))
@@ -304,7 +319,7 @@ function sub2ind(siz, x)
 end
 function statistics(vars, G, D::Matrix{Int})
     n = size(D, 1)
-    r = [vars[i].m for i in 1:n]
+    r = [vars[i].r for i in 1:n]
     q = [prod([r[j] for j in inneighbors(G, i)]) for i in 1:n]
     M = [zeros(q[i], r[i]) for i in 1:n]
     for o in eachcol(D)
