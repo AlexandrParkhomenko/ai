@@ -63,3 +63,8 @@
 
 ## Vocabulary
 trustworthy - заслуживающий доверия
+catch up - догонять
+beforehand - заранее
+fireside - 
+
+
