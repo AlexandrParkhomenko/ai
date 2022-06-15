@@ -59,6 +59,7 @@
 
 ## Youtube Recomendations
 * [Season 1 Ep.1 Andrej Karpathy on the visionary AI in Tesla's autonomous driving](https://www.youtube.com/watch?v=PlLmdTcsAWU)
+* [Season 2 Ep 23 Twitter Q&A with Geoff Hinton](https://www.youtube.com/watch?v=4Otcau-C_Yc)
 
 ## Vocabulary
 trustworthy - заслуживающий доверия
