@@ -47,6 +47,7 @@
 | Generative Adversarial Networks         | GAN         | генеративные состязательные сети                   |              |
 | Generative Pretrained Decoder | GPT | Генеративные претренированные декодеры | ГПД* |
 | Graph Attention Networks                | GAT         | графовые сети внимания                             |              |
+| Group Distributionally Robust Optimization | group DRO |  |  |
 | Gibbs Random Field | GRM | случайное поле Гиббса | СПГ |
 | Generative Pre-trained Transformer      | GPT         | генеративный предварительно обученный преобразователь | ГПОП      |
 | Graph Convolution Policy Network        | GCPN        |                                                    |              |
