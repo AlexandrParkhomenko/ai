@@ -22,7 +22,8 @@ def trainLoss(w): # x, y
                                           for x, y in trainExamples )
 def gradientTrainLoss(w): # x, y
     return 1.0 / len(trainExamples) * sum(-phi(x)*y 
-                                          if 1 - w.dot(phi(x))*y > 0 else 0
+                                          if 1 - w.dot(phi(x))*y > 0
+                                          else np.zeros(w.shape[0])
                                           for x, y in trainExamples )
 
 ###############################################################################
