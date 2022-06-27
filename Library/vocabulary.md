@@ -16,6 +16,7 @@
 | Causal Bayesian Network | CBN | причинно-следственная байесовская сеть | ПСБС |
 | Central Limit Theorem | CLT | Центральная предельная теорема | ЦПТ |
 | Cross Entropy | CE | перекрёстная энтропия |  |
+| Constraint Satisfaction Problem | CSP | Задача удовлетворения ограничений | Задача УО |
 | Conditional Mutual Information | CMI | условная взаимная информация | УВИ |
 | Conditional Probability Table | CPT | таблица условных вероятностей | ТУВ |
 | Conditional Random Field | CRF | условное случайное поле | УСП |
