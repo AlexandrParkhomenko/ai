@@ -12,6 +12,7 @@
 | BigCLAM | Cluster Affiliation Model for Big Networks |  |  |
 | BIST | Built-in Self Test |  |  |
 | BlackBox | BB | атака с доступом только к входу и выходу модели | ЧЯ* |
+| Boolean satisfiability problem | SAT | Задача выполнимости булевых формул | ВЫП |
 | Breadth-First Search | BFS | поиск в ширину |  |
 | Causal Bayesian Network | CBN | причинно-следственная байесовская сеть | ПСБС |
 | Central Limit Theorem | CLT | Центральная предельная теорема | ЦПТ |
