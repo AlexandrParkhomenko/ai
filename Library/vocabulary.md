@@ -75,6 +75,7 @@
 | (Mean) Average Precision, Metric | MAP | средняя точност |  |
 | Markov Blanket | MB | марковское ограждение | МО |
 | Markov Chain | MC | марковская цепь | МЦ |
+| Markov Chain Monte Carlo | MCMC | марковская цепь Монте-Карло | МЦМК* |
 | Markov Decision Process | MDP | марковский процесс принятия решений | МППР |
 | Markov Logic Network | MLN | марковская логическая сеть | МЛС |
 | Markov Network | MN | марковская сеть | МС |
