@@ -68,6 +68,7 @@
 | Information Retrieval | IR |  |  |
 | Knowledge Base | KB | база знаний | БЗ |
 | Knowledge Graph | KG | граф знаний | ГЗ |
+| Latent Dirichlet Allocation | LDA | cкрытое распределение Дирихле | СРД |
 | Law of Large Numbers | LLN | Закон больших чисел | ЗБЧ |
 | Limited Memory Influence Diagram | LIMID | диаграмма влияния с ограниченной памятью | ДВОП |
 | Linear Logistic Classifier              | LLC         |                                                    |              |
