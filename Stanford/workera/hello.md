@@ -1,5 +1,7 @@
 ### 🎉 Congratulations 🎉
 
+[Accelerating your AI career](https://m.youtube.com/watch?v=D1W0kS40otM)
+
 If you want your model to produce the minimum possible number of false positives, which of the following metrics would you maximize?
 (TP means “True Positive”, FN means “False Negative”, FP means “False Positive”, TN means “True Negative”.)
 
