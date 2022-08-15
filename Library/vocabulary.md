@@ -48,14 +48,15 @@
 | Gated Reccurent Units | GRU | закрытые рекуррентные блоки |  |
 | Generative Adversarial Networks         | GAN         | генеративные состязательные сети                   |              |
 | Generative Pretrained Decoder | GPT | Генеративные претренированные декодеры | ГПД* |
-| Graph Attention Networks                | GAT         | графовые сети внимания                             |              |
-| Group Distributionally Robust Optimization | group DRO |  |  |
-| Gibbs Random Field | GRM | случайное поле Гиббса | СПГ |
 | Generative Pre-trained Transformer      | GPT         | генеративный предварительно обученный преобразователь | ГПОП      |
+| Gibbs Random Field | GRM | случайное поле Гиббса | СПГ |
+| agglomerate, Geoffrey Hinton | GLOM |  |  |
+| Graph Attention Networks                | GAT         | графовые сети внимания                             |              |
 | Graph Convolution Policy Network        | GCPN        |                                                    |              |
 | Graph Convolution Network               | GСN         | графовая сверточная сеть                           | ГСС          |
 | Graph Isomorphism Network               | GIN         | графовая изоморфная сеть                           | ГИС          |
 | Graph Neural Network                    | GNN         | графовая нейронная сеть                            | ГНС          |
+| Group Distributionally Robust Optimization | group DRO |  |  |
 | Hadamard Product, element-wise product | ⊙ | Произведение Адамара | ∘ |
 | HLAI | human-like artificial intelligence |  ЧПИИ | человекоподобный искусственный интеллект |
 | Hyperbolic GNN | HGNN |  |  |
