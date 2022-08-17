@@ -116,6 +116,7 @@
 | Reinforcement Learning                  | RL          |                                                    |              |
 | Relational Graph Convolution Network | RGCN | реляционная графовая сверточная сеть | РГСС |
 | Relational Probabilistic Graphical Model | RPGM | реляционная вероятностная графовая модель | РВГМ |
+| Self-supervised learning | SSL | Самостоятельное обучение |  |
 | Semi-Naïve Bayesian Classifier | SNBC | частично наивный байесовский классификатор | ЧНБК |
 | network Significance Profile | SP | Профиль значимости сети | ПЗ* |
 | Statistical Machine Translation | SMT | Статистический Машинный Перевод | СМП* |
