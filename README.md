@@ -1,5 +1,5 @@
 [![GitHub](https://github.com/AlexandrParkhomenko/ml/blob/main/LicenseStanford.svg)]()
-# AI
+# Stanford University - AI
 Elements of artifical intelligence in [English](https://elt.oup.com/student/englishfile/?cc=ru&selLanguage=ru).
 
 I use:
