@@ -72,7 +72,7 @@
 
    - We could decrease search results of fraud to protect people from obvious scam.
 30. - Complexities in Regulatory Structure. New things.
-    - Sequrities: stock, bond, investment contract
+    - Securities: stock, bond, investment contract
 31. citrus, rights to the profits of the citrus, management contract (Land Sales contract)
 32. - Howey Test whether a transaction qualifies as an "investment contract,"
     - Under the Howey Test, an investment contract exists 
