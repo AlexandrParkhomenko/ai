@@ -3,10 +3,10 @@
 
 course                                            | |  course name                                           | название курса
 ------------------------------------------------  |-| -----------                                            | --------------
-pre  | | [English language](https://elt.oup.com/student/englishfile/?cc=ru&selLanguage=ru)                                            | Английский язык
+[English](https://elt.oup.com/student/englishfile/?cc=ru&selLanguage=ru)  | | English language                                            | Английский язык
 [math51](https://web.stanford.edu/class/math51/)  | | Mathematica                                            | Математика
  [cs103](https://web.stanford.edu/class/cs103/)   | | Mathematical Foundations of Computing                  | Математические основы вычислений
- [cs106a](https://web.stanford.edu/class/cs106a/) | | [Programming Methodologies](https://see.stanford.edu/Course/CS106A/)                              | Методологии программирования
+ [cs106a](https://web.stanford.edu/class/cs106a/) | | [Programming Methodologies](https://see.stanford.edu/Course/CS106A/) | Методологии программирования
 [engr108](https://stanford.edu/class/engr108/)    | | Introduction to Matrix Methods | Введение в матричные методы
  [cs109](https://web.stanford.edu/class/cs109/)   | | Probability for Computer Scientists                    | Вероятность для компьютерных ученых
  [cs124](https://web.stanford.edu/class/cs124/)   |*| From Languages to Information                          | От языков к информации
