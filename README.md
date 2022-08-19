@@ -4,9 +4,9 @@
 course                                            | |  course name                                           | название курса
 ------------------------------------------------  |-| -----------                                            | --------------
 [English](https://elt.oup.com/student/englishfile/?cc=ru&selLanguage=ru)  | | English language                                            | Английский язык
-[math51](https://web.stanford.edu/class/math51/)  | | Mathematica                                            | Математика
+[math51](https://web.stanford.edu/class/math51/)  | | Mathematica                                            | [Математика](https://github.com/AlexandrParkhomenko/ai/tree/main/math51)
  [cs103](https://web.stanford.edu/class/cs103/)   | | Mathematical Foundations of Computing                  | Математические основы вычислений
- [cs106a](https://web.stanford.edu/class/cs106a/) | | [Programming Methodologies](https://see.stanford.edu/Course/CS106A/) | Методологии программирования
+ [cs106a](https://web.stanford.edu/class/cs106a/) | | Programming Methodologies | [Методологии программирования](https://github.com/AlexandrParkhomenko/ai/tree/main/cs106a)
 [engr108](https://stanford.edu/class/engr108/)    | | Introduction to Matrix Methods | Введение в матричные методы
  [cs109](https://web.stanford.edu/class/cs109/)   | | Probability for Computer Scientists                    | Вероятность для компьютерных ученых
  [cs124](https://web.stanford.edu/class/cs124/)   |*| From Languages to Information                          | От языков к информации
@@ -17,18 +17,18 @@ course                                            | |  course name              
  [cs166](https://web.stanford.edu/class/cs166/)   | | Data Structures                                        | Структуры данных
 [stats202](https://stats-202.github.io/)          | | Introduction to statistical / machine learning         | Введение в статистическое / машинное обучение
  [cs205l](https://web.stanford.edu/class/cs205l/) |*| Continuous Mathematical Methods <br>with an Emphasis on Machine Learning | Непрерывные математические методы <br> с упором на машинное обучение
- [cs221](https://web.stanford.edu/class/cs221/)   |*| [Artificial Intelligence: Principles and Techniques](https://www.youtube.com/playlist?list=PLoROMvodv4rO1NB9TD4iUZ3qghGEGtqNX)     | Искусственный интеллект: принципы и методы
- [cs223a](https://web.stanford.edu/class/cs223a/) |*| Introduction to Robotics                               | Введение в робототехнику
- [cs224n](https://web.stanford.edu/class/cs224n/) |*| [Natural Language Processing with Deep Learning](https://www.youtube.com/playlist?list=PLoROMvodv4rOSH4v6133s9LFPRHjEmbm)         | Обработка естественного языка с глубоким обучением
- [cs224u](https://web.stanford.edu/class/cs224u/) |*| Natural Language Understanding                         | Понимание естественного языка
- [cs224w](https://web.stanford.edu/class/cs224w/) |*| Machine Learning with Graphs. <br>Social and Information Network Analysis. | Машинное обучение с графами. <br>Анализ социальных и информационных сетей.
+ [cs221](https://web.stanford.edu/class/cs221/)   |*| Artificial Intelligence: Principles and Techniques     | [Искусственный интеллект: принципы и методы](https://github.com/AlexandrParkhomenko/ai/tree/main/cs221)
+ [cs223a](https://web.stanford.edu/class/cs223a/) |*| Introduction to Robotics                               | [Введение в робототехнику](https://github.com/AlexandrParkhomenko/ai/blob/main/cs223a/README.md)
+ [cs224n](https://web.stanford.edu/class/cs224n/) |*| Natural Language Processing with Deep Learning         | [Обработка естественного языка с глубоким обучением](https://github.com/AlexandrParkhomenko/ai/tree/main/cs224n)
+ [cs224u](https://web.stanford.edu/class/cs224u/) |*| Natural Language Understanding                         | [Понимание естественного языка](https://github.com/AlexandrParkhomenko/ai/tree/main/cs224u)
+ [cs224w](https://web.stanford.edu/class/cs224w/) |*| Machine Learning with Graphs. <br>Social and Information Network Analysis. | [Машинное обучение с графами. <br>Анализ социальных и информационных сетей.](https://github.com/AlexandrParkhomenko/ai/tree/main/cs224w)
  [cs225a](https://web.stanford.edu/class/cs225a/) |*| Experimental Robotics                                  | Экспериментальная робототехника
  [cs228](https://web.stanford.edu/class/cs228/)  | | Probabilistic Graphical Models                         | Вероятностные графические модели
  [cs229](https://web.stanford.edu/class/cs229/)  |*| Machine Learning                                       | Машинное обучение
  [cs230](https://web.stanford.edu/class/cs230/)  |*| Deep Learning                                          | Глубокое обучение
  [cs231a](https://web.stanford.edu/class/cs231a/) |*| Computer Vision: From 3D Reconstruction to Recognition | Компьютерное зрение: от 3D-реконструкции до распознавания
- cs231n[](https://web.stanford.edu/class/cs231n/) |*| Convolutional Neural Networks for Visual Recognition   | Сверточные нейронные сети для визуального распознавания
- [cs234](http://web.stanford.edu/class/cs234/index.html)  |*| [Reinforcement Learning](https://www.youtube.com/watch?v=FgzM3zpZ55o&list=PLoROMvodv4rOSOPzutgyCTapiGlY2Nd8u)              | Обучение с подкреплением
+ cs231n[](https://web.stanford.edu/class/cs231n/) |*| Convolutional Neural Networks for Visual Recognition   | [Сверточные нейронные сети для визуального распознавания](https://github.com/AlexandrParkhomenko/ai/tree/main/cs231n/ru)
+ [cs234](http://web.stanford.edu/class/cs234/index.html)  |*| Reinforcement Learning                        | [Обучение с подкреплением](https://github.com/AlexandrParkhomenko/ai/tree/main/cs234)
  cs236[](https://web.stanford.edu/class/cs236/)  | | Deep Generative Models                                 | Глубокие генеративные модели
  cs237a[](https://web.stanford.edu/class/cs237a/) |*| Principles of Robotic Autonomy                         | Принципы автономности роботов
  [cs238](https://web.stanford.edu/class/cs238/)  |*| Decision Making Under Uncertainty                      | Принятие решений в условиях неопределенности
@@ -40,7 +40,8 @@ course                                            | |  course name              
  [cs331b](https://web.stanford.edu/class/cs331b/) |*| Representation Learning in Computer Vision             | Репрезентативное обучение в компьютерном зрении
  [cs336](https://web.stanford.edu/class/cs336/)  | | Robot Perception and Decision-Making                   | Восприятие робота и принятие решений
  cs372[](https://web.stanford.edu/class/cs372/)  |*| Artificial Intelligence for Disease Diagnosis <br>and Information Recommendations | Искусственный интеллект для диагностики заболеваний <br>и информационных рекомендаций
- cs522[](https://web.stanford.edu/class/cs522/)  |*| [Seminar in Artificial Intelligence in Healthcare](https://www.youtube.com/watch?v=taigNFbAyYY&list=PLYn-ZmPR1DtNQJ-ot-L2V2EgUEH6OH_7w)       | Семинар по искусственному интеллекту в здравоохранении
+ cs521                                           |*| AI Safety Seminar                                      | [Семинар по безопасности ИИ](https://github.com/AlexandrParkhomenko/ai/tree/main/cs521)
+ cs522                                           |*| Seminar in Artificial Intelligence in Healthcare       | [Семинар по искусственному интеллекту в здравоохранении](https://github.com/AlexandrParkhomenko/ai/tree/main/cs522)
  
 <!-- ycs0002 | | [Game Theory II](https://online.stanford.edu/courses/soe-ycs0002-game-theory) | Теория игр
 
