@@ -23,7 +23,7 @@ course                                            | |  course name              
  [cs224u](https://web.stanford.edu/class/cs224u/) |*| Natural Language Understanding                         | [Понимание естественного языка](https://github.com/AlexandrParkhomenko/ai/tree/main/cs224u)
  [cs224w](https://web.stanford.edu/class/cs224w/) |*| Machine Learning with Graphs. <br>Social and Information Network Analysis. | [Машинное обучение с графами. <br>Анализ социальных и информационных сетей.](https://github.com/AlexandrParkhomenko/ai/tree/main/cs224w)
  [cs225a](https://web.stanford.edu/class/cs225a/) |*| Experimental Robotics                                  | Экспериментальная робототехника
- [cs228](https://web.stanford.edu/class/cs228/)  | | Probabilistic Graphical Models                         | Вероятностные графические модели
+ [cs228](https://web.stanford.edu/class/cs228/)  | | Probabilistic Graphical Models                         | [Вероятностные графические модели](https://github.com/AlexandrParkhomenko/ai/tree/main/cs228)
  [cs229](https://web.stanford.edu/class/cs229/)  |*| Machine Learning                                       | Машинное обучение
  [cs230](https://web.stanford.edu/class/cs230/)  |*| Deep Learning                                          | Глубокое обучение
  [cs231a](https://web.stanford.edu/class/cs231a/) |*| Computer Vision: From 3D Reconstruction to Recognition | Компьютерное зрение: от 3D-реконструкции до распознавания
