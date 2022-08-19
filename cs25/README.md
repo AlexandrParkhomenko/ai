@@ -1,4 +1,4 @@
-## Seminar - Transformers United
+## Seminar - [Transformers United](https://www.youtube.com/watch?v=P127jhj-8-Y&list=PLoROMvodv4rNiJRchCzutFw5ItR_Z27CM)
 
 1. [DL Models that have revolutionized NLP, CV, RL](https://youtu.be/P127jhj-8-Y)
 2. [Transformers in Language: The development of GPT Models including GPT3](https://youtu.be/qGkzHFllWDY)
