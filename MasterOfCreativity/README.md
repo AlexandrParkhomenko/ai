@@ -1,0 +1,2 @@
+- https://mastersofcreativity.stanford.edu/archive/whitney-johnson
+- 
