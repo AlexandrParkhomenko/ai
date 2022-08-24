@@ -1,4 +1,5 @@
 Library/researches
+**/*.ipynb_checkpoints/*
 *.zip
 cme193
 math51
