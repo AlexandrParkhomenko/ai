@@ -10,6 +10,7 @@
 | Bayesian network Augmented Naive Bayes classifier | BAN | наивный байесовский классификатор, дополненный байесовской сетью | НБКБС |
 | BERT | Bidirectional Encode Representations from Transformers | представление двунаправленного автокодировщика для трансформеров |  |
 | BigCLAM | Cluster Affiliation Model for Big Networks |  |  |
+| BiT | Big Transfer (Large-scale supervised pre-training) |  |  |
 | BIST | Built-in Self Test |  |  |
 | BlackBox | BB | атака с доступом только к входу и выходу модели | ЧЯ* |
 | Boolean satisfiability problem | SAT | Задача выполнимости булевых формул | ВЫП |
