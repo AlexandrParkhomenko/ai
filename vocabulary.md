@@ -117,6 +117,7 @@
 | Relational Graph Convolution Network | RGCN | реляционная графовая сверточная сеть | РГСС |
 | Relational Probabilistic Graphical Model | RPGM | реляционная вероятностная графовая модель | РВГМ |
 | Self-supervised learning | SSL | Самостоятельное обучение |  |
+| Semi-supervised learning | S<sup>4</sup>L | Полуконтролируемое обучение. |  |
 | Semi-Naïve Bayesian Classifier | SNBC | частично наивный байесовский классификатор | ЧНБК |
 | network Significance Profile | SP | Профиль значимости сети | ПЗ* |
 | Statistical Machine Translation | SMT | Статистический Машинный Перевод | СМП* |
@@ -130,6 +131,7 @@
 | Tree Augmented Naive Bayes classifier | TAN | наивный байесовский классификатор, дополненный деревом | НБКД |
 | t-distributed Stochastic Neighbor Embedding | t-SNE | Стохастическое вложение соседей с t-распределением |  |
 | Variational Auto Encoders | VAE | вариационные автоэнкодеры | ВАЭ* |
+| Visual Transformer | ViT | Визуальный трансформер | ВиT |
 | Weakly Supervised Knowledge-Pretrained Language Model | WKLM | Слабо контролируемая языковая модель с предварительной подготовкой знаний | СПЗЯМ* |
 | WhiteBox | WB | атака при известной информации об обученной модели алгоритма | БЯ* |
 
