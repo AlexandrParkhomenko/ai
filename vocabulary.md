@@ -24,6 +24,7 @@
 | Conditional Random Field | CRF | условное случайное поле | УСП |
 | Correlated Occurrence Analogue to Lexical Semantic | COALS | Коррелированый Аналог Вхождения в Векторной Семантике | КАВВС* |
 | Cumulative Distribution Function        | CDF         |                                                    |              |
+| Continuous Query Language | CQL | Язык непрерывных запросов | ЯНЗ* |
 | denoising Entity Autoencoder | dEA |  шумоподавляющий Автоэнкодер Сущностей | щАС* | 
 | Discounted Cumulative Gain, Metric | DCG | совокупный выигрыш со скидкой |  |
 | Decision Diagram | DD | диаграмма решений | ДГР |
