@@ -89,6 +89,7 @@
 | Maximum Mean Discrepancy | MMD | Максимальное среднее расхождение | МСР |
 | Minimum Bayes Risk | MBR | Минимальный байесовский риск | МБР |
 | Mean Reciprocal Rank, Metric | MRR | средний взаимный рейтинг |  |
+| Mixture of Experts | MoE |  |  |
 | Multi-Headed Attention | MHA | Многоцелевое внимание| МЦВ* |
 | Minimum Description Length | MDL | принцип минимальной длины описания | ПМДО |
 | Model-Agnostic Meta-Learning | MAML | независимое от модели метаобучение | МНМО* |
