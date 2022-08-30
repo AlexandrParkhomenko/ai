@@ -17,12 +17,13 @@
 | Breadth-First Search | BFS | поиск в ширину |  |
 | Causal Bayesian Network | CBN | причинно-следственная байесовская сеть | ПСБС |
 | Central Limit Theorem | CLT | Центральная предельная теорема | ЦПТ |
-| Cross Entropy | CE | перекрёстная энтропия |  |
 | Constraint Satisfaction Problem | CSP | Задача удовлетворения ограничений | Задача УО |
 | Conditional Mutual Information | CMI | условная взаимная информация | УВИ |
 | Conditional Probability Table | CPT | таблица условных вероятностей | ТУВ |
 | Conditional Random Field | CRF | условное случайное поле | УСП |
+| Convolutional Neural Network | CNN | Свёрточная Нейронная Сеть | СНС |
 | Correlated Occurrence Analogue to Lexical Semantic | COALS | Коррелированый Аналог Вхождения в Векторной Семантике | КАВВС* |
+| Cross Entropy | CE | перекрёстная энтропия |  |
 | Cumulative Distribution Function        | CDF         |                                                    |              |
 | Continuous Query Language | CQL | Язык непрерывных запросов | ЯНЗ* |
 | denoising Entity Autoencoder | dEA |  шумоподавляющий Автоэнкодер Сущностей | щАС* | 
@@ -119,6 +120,7 @@
 | Reinforcement Learning                  | RL          |                                                    |              |
 | Relational Graph Convolution Network | RGCN | реляционная графовая сверточная сеть | РГСС |
 | Relational Probabilistic Graphical Model | RPGM | реляционная вероятностная графовая модель | РВГМ |
+| Recurrent neural network | RNN | Рекуррентная нейронная сеть | РНС |
 | Self-supervised learning | SSL | Самостоятельное обучение |  |
 | Semi-supervised learning | S<sup>4</sup>L | Полуконтролируемое обучение. |  |
 | Semi-Naïve Bayesian Classifier | SNBC | частично наивный байесовский классификатор | ЧНБК |
