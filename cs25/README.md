@@ -1,6 +1,9 @@
 ## Seminar - [Transformers United](https://www.youtube.com/watch?v=P127jhj-8-Y&list=PLoROMvodv4rNiJRchCzutFw5ItR_Z27CM)
 
 1. [DL Models that have revolutionized NLP, CV, RL](https://youtu.be/P127jhj-8-Y)
+    - self-attention is an unordered
+    - feed-forward network with nonlinearities
+    - masking
 2. [Transformers in Language: The development of GPT Models including GPT3](https://youtu.be/qGkzHFllWDY)
 3. [Transformers in Vision: Tackling problems in Computer Vision](https://youtu.be/BP5CM0YxbP8)
 4. [Decision Transformer: Reinforcement Learning via Sequence Modeling](https://youtu.be/w4Bw8WYL8Ps)
