@@ -1,6 +1,7 @@
 Library/researches
 **/*.ipynb_checkpoints/*
 *.zip
+*.pdf
 cme193
 math51
 stats202
