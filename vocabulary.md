@@ -121,6 +121,7 @@
 | Relational Graph Convolution Network | RGCN | реляционная графовая сверточная сеть | РГСС |
 | Relational Probabilistic Graphical Model | RPGM | реляционная вероятностная графовая модель | РВГМ |
 | Recurrent neural network | RNN | Рекуррентная нейронная сеть | РНС |
+| Residual sum of squares | RSS | Сумма квадратов разниц |  |
 | Self-supervised learning | SSL | Самостоятельное обучение |  |
 | Semi-supervised learning | S<sup>4</sup>L | Полуконтролируемое обучение. |  |
 | Semi-Naïve Bayesian Classifier | SNBC | частично наивный байесовский классификатор | ЧНБК |
