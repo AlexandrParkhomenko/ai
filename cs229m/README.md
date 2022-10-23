@@ -13,6 +13,7 @@
 - 3.1 [Simple linear regression](https://youtu.be/vCHtY6Me5FI)
 - 3.2 [Hypothesis Testing and Confidence Intervals](https://youtu.be/3GiWpRfkSjc)
 - 3.3 [Multiple Linear Regression](https://youtu.be/o9hoLdylWKo)
+> The only way to find out what will happen when a complex system is disturbed is to disturb the system, not merely to observe it passively.
 - 3.4 [Some important questions](https://youtu.be/50sv4UTjE90)
 - 3.5 [Extensions of the Linear Model](https://youtu.be/dEBQmiXv9fk)
 - 3.R [Regression in R](https://youtu.be/gNZfqHhq_B4)
