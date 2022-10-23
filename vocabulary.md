@@ -70,6 +70,7 @@
 | Influence Diagram | ID | диаграмма влияния | ДВ |
 | Iterative Conditional Modes | ICM | итеративные условные методы (алгоритм) | ИУМ |
 | Information Retrieval | IR |  |  |
+| K-nearest neighbors algorithm | KNN | Метод k-ближайших соседей |  |
 | Knowledge Base | KB | база знаний | БЗ |
 | Knowledge Graph | KG | граф знаний | ГЗ |
 | Latent Dirichlet Allocation | LDA | cкрытое распределение Дирихле | СРД |
