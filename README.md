@@ -1,9 +1,9 @@
 [![GitHub](https://github.com/AlexandrParkhomenko/ml/blob/main/LicenseStanford.svg)]()
 # Stanford University - AI
+<!-- [English](https://elt.oup.com/student/englishfile/?cc=ru&selLanguage=ru)  | | English language                                            | Английский язык -->
 
 course                                            | |  course name                                           | название курса
 ------------------------------------------------  |-| -----------                                            | --------------
-[English](https://elt.oup.com/student/englishfile/?cc=ru&selLanguage=ru)  | | English language                                            | Английский язык
 [math51](https://web.stanford.edu/class/math51/)  | | Mathematica                                            | [Математика](https://github.com/AlexandrParkhomenko/ai/tree/main/math51)
  [cs103](https://web.stanford.edu/class/cs103/)   | | Mathematical Foundations of Computing                  | Математические основы вычислений
  [cs106a](https://web.stanford.edu/class/cs106a/) | | Programming Methodologies | [Методологии программирования](https://github.com/AlexandrParkhomenko/ai/tree/main/cs106a)
