@@ -2,6 +2,7 @@ Library/researches
 **/*.ipynb_checkpoints/*
 *.zip
 *.pdf
+*.mp3
 cme193
 math51
 stats202
@@ -45,6 +46,13 @@ cs331b
 cs336
 cs372
 cs522
+me
+nvidia
 think_smart
+English
+resume
+.tensorflow_datasets
+.Pictures
+.vscode-oss
 .Trash-1000
 +
