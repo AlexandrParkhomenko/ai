@@ -6,13 +6,13 @@ course                                              | |  course name            
 --------------------------------------------------- |-| -----------                                            | --------------
   [math51](https://web.stanford.edu/class/math51/)  | | Mathematica                                            | [Математика](https://github.com/AlexandrParkhomenko/ai/tree/main/math51)
   [cs103 ](https://web.stanford.edu/class/cs103/)   | | Mathematical Foundations of Computing                  | Математические основы вычислений
-  [cs106a](https://web.stanford.edu/class/cs106a/)  | | Programming Methodologies | [Методологии программирования](https://github.com/AlexandrParkhomenko/ai/tree/main/cs106a)
- [engr108](https://stanford.edu/class/engr108/)     | | Introduction to Matrix Methods | Введение в матричные методы
+  [cs106a](https://web.stanford.edu/class/cs106a/)  | | Programming Methodologies                              | [Методологии программирования](https://github.com/AlexandrParkhomenko/ai/tree/main/cs106a)
+ [engr108](https://stanford.edu/class/engr108/)     | | Introduction to Matrix Methods                         | Введение в матричные методы
   [cs109 ](https://web.stanford.edu/class/cs109/)   | | Probability for Computer Scientists                    | Вероятность для компьютерных ученых
   [cs124 ](https://web.stanford.edu/class/cs124/)   |★| From Languages to Information                          | От языков к информации
   [cs129 ](https://web.stanford.edu/class/cs129/)   |★| Applied Machine Learning                               | Прикладное машинное обучение
   [cs145 ](https://cs145-fa20.github.io/)           | | Data Management and Data Systems                       | Управление данными и системы данных
-   cs157 [](https://web.stanford.edu/class/cs157/)   |★| Computational Logic                                    | Вычислительная логика
+   cs157 [](https://web.stanford.edu/class/cs157/)  |★| Computational Logic                                    | Вычислительная логика
   [cs161 ](https://web.stanford.edu/class/cs161/)   | | Design and Analysis of Algorithms                      | Дизайн и анализ алгоритмов
   [cs166 ](https://web.stanford.edu/class/cs166/)   | | Data Structures                                        | Структуры данных
 [stats202](https://stats-202.github.io/)            | | Introduction to statistical / machine learning         | Введение в статистическое / машинное обучение
@@ -25,11 +25,11 @@ course                                              | |  course name            
   [cs225a](https://web.stanford.edu/class/cs225a/)  |★| Experimental Robotics                                  | Экспериментальная робототехника
   [cs228 ](https://web.stanford.edu/class/cs228/)   | | Probabilistic Graphical Models                         | [Вероятностные графические модели](https://github.com/AlexandrParkhomenko/ai/tree/main/cs228)
   [cs229 ](https://web.stanford.edu/class/cs229/)   |★| Machine Learning                                       | Машинное обучение
-[cs229t/m](http://web.stanford.edu/class/stats214/) |★| Statistical Learning Theory                       | [Статистическая теория обучения](https://github.com/AlexandrParkhomenko/ai/tree/main/cs229m)
+[cs229t/m](http://web.stanford.edu/class/stats214/) |★| Statistical Learning Theory                            | [Статистическая теория обучения](https://github.com/AlexandrParkhomenko/ai/tree/main/cs229m)
   [cs230 ](https://web.stanford.edu/class/cs230/)   |★| Deep Learning                                          | Глубокое обучение
   [cs231a](https://web.stanford.edu/class/cs231a/)  |★| Computer Vision: From 3D Reconstruction to Recognition | Компьютерное зрение: от 3D-реконструкции до распознавания
    cs231n[](https://web.stanford.edu/class/cs231n/) |★| Convolutional Neural Networks for Visual Recognition   | [Сверточные нейронные сети для визуального распознавания](https://github.com/AlexandrParkhomenko/ai/tree/main/cs231n/ru)
-  [cs234 ](http://web.stanford.edu/class/cs234/)    |★| Reinforcement Learning                        | [Обучение с подкреплением](https://github.com/AlexandrParkhomenko/ai/tree/main/cs234)
+  [cs234 ](http://web.stanford.edu/class/cs234/)    |★| Reinforcement Learning                                 | [Обучение с подкреплением](https://github.com/AlexandrParkhomenko/ai/tree/main/cs234)
    cs236 [](https://web.stanford.edu/class/cs236/)  | | Deep Generative Models                                 | Глубокие генеративные модели
   cs237a[](https://web.stanford.edu/class/cs237a/)  |★| Principles of Robotic Autonomy                         | Принципы автономности роботов
   [cs238](https://web.stanford.edu/class/cs238/)    |★| Decision Making Under Uncertainty                      | Принятие решений в условиях неопределенности
