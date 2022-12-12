@@ -2,8 +2,6 @@
 
 # Links
 ## Essence of Linear Algebra
-   [The essence of calculus](https://www.youtube.com/watch?v=WUvTyaaNkzM)
-
 1. [Vectors](https://www.youtube.com/watch?v=fNk_zzaMoSs&list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab)
 2. [Linear combinations, span, and basis vectors](https://www.youtube.com/watch?v=k7RM-ot2NWY&list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab&index=2)
 3. [Linear transformations and matrices](https://www.youtube.com/watch?v=kYB8IZa5AuE&list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab&index=3)
@@ -51,5 +49,7 @@
 4. [But what is a Fourier series? From heat flow to drawing with circles](https://www.youtube.com/watch?v=r6sGWTCMz2k&list=PLZHQObOWTQDNPOjrT6KVlfJuKtYTftqH6&index=4)
 5. [e^(iπ) in 3.14 minutes, using dynamics](https://www.youtube.com/watch?v=v0YEaeIClKY&list=PLZHQObOWTQDNPOjrT6KVlfJuKtYTftqH6&index=5)
 6. [How (and why) to raise e to the power of a matrix](https://www.youtube.com/watch?v=O85OWBJ2ayo&list=PLZHQObOWTQDNPOjrT6KVlfJuKtYTftqH6&index=6)
+
+
 
 
