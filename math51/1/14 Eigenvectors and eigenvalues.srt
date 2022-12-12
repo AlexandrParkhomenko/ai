@@ -1,0 +1,1696 @@
+1
+00:00:08,800 --> 00:00:11,800
+do
+
+2
+00:00:19,680 --> 00:00:21,920
+eigenvectors and eigenvalues is one of
+
+3
+00:00:21,920 --> 00:00:23,760
+those topics that a lot of students find
+
+4
+00:00:23,760 --> 00:00:25,920
+particularly unintuitive
+
+5
+00:00:25,920 --> 00:00:27,920
+questions like why are we doing this and
+
+6
+00:00:27,920 --> 00:00:29,679
+what does this actually mean are too
+
+7
+00:00:29,679 --> 00:00:31,519
+often left just floating away in an
+
+8
+00:00:31,519 --> 00:00:33,680
+unanswered sea of computations
+
+9
+00:00:33,680 --> 00:00:35,040
+and as i've put out the videos of this
+
+10
+00:00:35,040 --> 00:00:36,960
+series a lot of you have commented about
+
+11
+00:00:36,960 --> 00:00:38,800
+looking forward to visualizing this
+
+12
+00:00:38,800 --> 00:00:41,360
+topic in particular i suspect that the
+
+13
+00:00:41,360 --> 00:00:43,040
+reason for this is not so much that
+
+14
+00:00:43,040 --> 00:00:44,640
+eigen things are particularly
+
+15
+00:00:44,640 --> 00:00:47,120
+complicated or poorly explained in fact
+
+16
+00:00:47,120 --> 00:00:48,960
+it's comparatively straightforward and i
+
+17
+00:00:48,960 --> 00:00:50,320
+think most books do a fine job
+
+18
+00:00:50,320 --> 00:00:52,960
+explaining it the issue is that it only
+
+19
+00:00:52,960 --> 00:00:55,039
+really makes sense if you have a solid
+
+20
+00:00:55,039 --> 00:00:57,120
+visual understanding for many of the
+
+21
+00:00:57,120 --> 00:00:58,879
+topics that precede it
+
+22
+00:00:58,879 --> 00:01:00,879
+most important here is that you know how
+
+23
+00:01:00,879 --> 00:01:02,879
+to think about matrices as linear
+
+24
+00:01:02,879 --> 00:01:05,119
+transformations but you also need to be
+
+25
+00:01:05,119 --> 00:01:06,159
+comfortable with things like
+
+26
+00:01:06,159 --> 00:01:08,799
+determinants linear systems of equations
+
+27
+00:01:08,799 --> 00:01:10,479
+and change of basis
+
+28
+00:01:10,479 --> 00:01:12,880
+confusion about eigenstuffs usually has
+
+29
+00:01:12,880 --> 00:01:14,960
+more to do with the shaky foundation in
+
+30
+00:01:14,960 --> 00:01:17,119
+one of these topics than it does with
+
+31
+00:01:17,119 --> 00:01:20,159
+eigenvectors and eigenvalues themselves
+
+32
+00:01:20,159 --> 00:01:21,920
+to start consider some linear
+
+33
+00:01:21,920 --> 00:01:23,840
+transformation in two dimensions like
+
+34
+00:01:23,840 --> 00:01:26,240
+the one shown here it moves the basis
+
+35
+00:01:26,240 --> 00:01:29,520
+vector i hat to the coordinates 3 0 and
+
+36
+00:01:29,520 --> 00:01:31,520
+j hat to 1 2
+
+37
+00:01:31,520 --> 00:01:33,360
+so it's represented with a matrix whose
+
+38
+00:01:33,360 --> 00:01:36,400
+columns are 3 0 and 1 2.
+
+39
+00:01:36,400 --> 00:01:38,079
+focus in on what it does to one
+
+40
+00:01:38,079 --> 00:01:40,320
+particular vector and think about the
+
+41
+00:01:40,320 --> 00:01:42,560
+span of that vector the line passing
+
+42
+00:01:42,560 --> 00:01:44,799
+through its origin and its tip
+
+43
+00:01:44,799 --> 00:01:46,479
+most vectors are going to get knocked
+
+44
+00:01:46,479 --> 00:01:48,799
+off their span during the transformation
+
+45
+00:01:48,799 --> 00:01:50,799
+i mean it would seem pretty coincidental
+
+46
+00:01:50,799 --> 00:01:52,720
+if the place where the vector landed
+
+47
+00:01:52,720 --> 00:01:54,799
+also happened to be somewhere on that
+
+48
+00:01:54,799 --> 00:01:57,040
+line
+
+49
+00:01:57,200 --> 00:01:59,439
+but some special vectors do remain on
+
+50
+00:01:59,439 --> 00:02:00,719
+their own span
+
+51
+00:02:00,719 --> 00:02:02,719
+meaning the effect that the matrix has
+
+52
+00:02:02,719 --> 00:02:05,280
+on such a vector is just to stretch it
+
+53
+00:02:05,280 --> 00:02:09,360
+or squish it like a scalar
+
+54
+00:02:09,360 --> 00:02:11,520
+for this specific example the basis
+
+55
+00:02:11,520 --> 00:02:14,879
+vector i-hat is one such special vector
+
+56
+00:02:14,879 --> 00:02:18,080
+the span of i-hat is the x-axis and from
+
+57
+00:02:18,080 --> 00:02:19,680
+the first column of the matrix we can
+
+58
+00:02:19,680 --> 00:02:22,080
+see that i-hat moves over to 3 times
+
+59
+00:02:22,080 --> 00:02:26,000
+itself still on that x-axis
+
+60
+00:02:26,160 --> 00:02:28,319
+what's more because of the way linear
+
+61
+00:02:28,319 --> 00:02:30,879
+transformations work any other vector on
+
+62
+00:02:30,879 --> 00:02:33,360
+the x-axis is also just stretched by a
+
+63
+00:02:33,360 --> 00:02:36,000
+factor of 3 and hence remains on its own
+
+64
+00:02:36,000 --> 00:02:38,319
+span
+
+65
+00:02:38,400 --> 00:02:40,319
+a slightly sneakier vector that remains
+
+66
+00:02:40,319 --> 00:02:41,440
+on its own span during this
+
+67
+00:02:41,440 --> 00:02:44,560
+transformation is negative 1 1.
+
+68
+00:02:44,560 --> 00:02:46,560
+it ends up getting stretched by a factor
+
+69
+00:02:46,560 --> 00:02:48,800
+of 2.
+
+70
+00:02:48,800 --> 00:02:51,280
+and again linearity is going to imply
+
+71
+00:02:51,280 --> 00:02:53,760
+that any other vector on the diagonal
+
+72
+00:02:53,760 --> 00:02:56,080
+line spanned by this guy is just going
+
+73
+00:02:56,080 --> 00:02:59,680
+to get stretched out by a factor of 2.
+
+74
+00:02:59,680 --> 00:03:01,760
+and for this transformation those are
+
+75
+00:03:01,760 --> 00:03:03,440
+all the vectors with this special
+
+76
+00:03:03,440 --> 00:03:05,760
+property of staying on their span those
+
+77
+00:03:05,760 --> 00:03:07,519
+on the x-axis getting stretched out by a
+
+78
+00:03:07,519 --> 00:03:09,920
+factor of 3 and those on this diagonal
+
+79
+00:03:09,920 --> 00:03:12,560
+line getting stretched by a factor of 2.
+
+80
+00:03:12,560 --> 00:03:14,400
+any other vector is going to get rotated
+
+81
+00:03:14,400 --> 00:03:16,159
+somewhat during the transformation
+
+82
+00:03:16,159 --> 00:03:19,840
+knocked off the line that it spans
+
+83
+00:03:22,400 --> 00:03:24,239
+as you might have guessed by now these
+
+84
+00:03:24,239 --> 00:03:25,760
+special vectors are called the
+
+85
+00:03:25,760 --> 00:03:28,720
+eigenvectors of the transformation and
+
+86
+00:03:28,720 --> 00:03:31,360
+each eigenvector has associated with it
+
+87
+00:03:31,360 --> 00:03:33,440
+what's called an eigenvalue which is
+
+88
+00:03:33,440 --> 00:03:35,440
+just the factor by which it's stretched
+
+89
+00:03:35,440 --> 00:03:39,360
+or squished during the transformation
+
+90
+00:03:40,319 --> 00:03:42,000
+of course there's nothing special about
+
+91
+00:03:42,000 --> 00:03:43,920
+stretching versus squishing or the fact
+
+92
+00:03:43,920 --> 00:03:45,360
+that these eigenvalues happen to be
+
+93
+00:03:45,360 --> 00:03:47,440
+positive in another example you could
+
+94
+00:03:47,440 --> 00:03:49,760
+have an eigenvector with eigenvalue
+
+95
+00:03:49,760 --> 00:03:51,760
+negative one-half meaning that the
+
+96
+00:03:51,760 --> 00:03:53,840
+vector gets flipped and squished by a
+
+97
+00:03:53,840 --> 00:03:56,959
+factor of one-half
+
+98
+00:03:57,120 --> 00:03:58,959
+but the important part here is that it
+
+99
+00:03:58,959 --> 00:04:00,879
+stays on the line that it spans out
+
+100
+00:04:00,879 --> 00:04:04,400
+without getting rotated off of it
+
+101
+00:04:04,400 --> 00:04:06,080
+for a glimpse of why this might be a
+
+102
+00:04:06,080 --> 00:04:08,000
+useful thing to think about consider
+
+103
+00:04:08,000 --> 00:04:11,680
+some 3-dimensional rotation
+
+104
+00:04:11,680 --> 00:04:14,159
+if you can find an eigenvector for that
+
+105
+00:04:14,159 --> 00:04:16,399
+rotation a vector that remains on its
+
+106
+00:04:16,399 --> 00:04:17,519
+own span
+
+107
+00:04:17,519 --> 00:04:19,759
+what you have found is the axis of
+
+108
+00:04:19,759 --> 00:04:22,320
+rotation
+
+109
+00:04:22,720 --> 00:04:24,800
+and it's much easier to think about a 3d
+
+110
+00:04:24,800 --> 00:04:26,880
+rotation in terms of some axis of
+
+111
+00:04:26,880 --> 00:04:28,960
+rotation and an angle by which it's
+
+112
+00:04:28,960 --> 00:04:31,280
+rotating rather than thinking about the
+
+113
+00:04:31,280 --> 00:04:34,000
+full 3x3 matrix associated with that
+
+114
+00:04:34,000 --> 00:04:36,720
+transformation
+
+115
+00:04:36,880 --> 00:04:38,080
+in this case by the way the
+
+116
+00:04:38,080 --> 00:04:40,080
+corresponding eigenvalue would have to
+
+117
+00:04:40,080 --> 00:04:42,720
+be 1 since rotations never stretch or
+
+118
+00:04:42,720 --> 00:04:44,479
+squish anything so the length of the
+
+119
+00:04:44,479 --> 00:04:45,810
+vector would remain the same
+
+120
+00:04:45,810 --> 00:04:47,840
+[Music]
+
+121
+00:04:47,840 --> 00:04:49,520
+this pattern shows up a lot in linear
+
+122
+00:04:49,520 --> 00:04:51,840
+algebra with any linear transformation
+
+123
+00:04:51,840 --> 00:04:53,919
+described by a matrix you could
+
+124
+00:04:53,919 --> 00:04:55,759
+understand what it's doing by reading
+
+125
+00:04:55,759 --> 00:04:57,680
+off the columns of this matrix as the
+
+126
+00:04:57,680 --> 00:05:00,160
+landing spots for basis vectors but
+
+127
+00:05:00,160 --> 00:05:02,160
+often a better way to get at the heart
+
+128
+00:05:02,160 --> 00:05:03,680
+of what the linear transformation
+
+129
+00:05:03,680 --> 00:05:04,960
+actually does
+
+130
+00:05:04,960 --> 00:05:06,560
+less dependent on your particular
+
+131
+00:05:06,560 --> 00:05:08,720
+coordinate system is to find the
+
+132
+00:05:08,720 --> 00:05:12,720
+eigenvectors and eigenvalues
+
+133
+00:05:15,520 --> 00:05:17,280
+i won't cover the full details on
+
+134
+00:05:17,280 --> 00:05:19,039
+methods for computing eigenvectors and
+
+135
+00:05:19,039 --> 00:05:21,039
+eigenvalues here but i'll try to give an
+
+136
+00:05:21,039 --> 00:05:23,600
+overview of the computational ideas that
+
+137
+00:05:23,600 --> 00:05:25,360
+are most important for a conceptual
+
+138
+00:05:25,360 --> 00:05:26,960
+understanding
+
+139
+00:05:26,960 --> 00:05:29,039
+symbolically here's what the idea of an
+
+140
+00:05:29,039 --> 00:05:30,880
+eigenvector looks like
+
+141
+00:05:30,880 --> 00:05:32,720
+a is the matrix representing some
+
+142
+00:05:32,720 --> 00:05:36,080
+transformation with v as the eigenvector
+
+143
+00:05:36,080 --> 00:05:38,320
+and lambda is a number namely the
+
+144
+00:05:38,320 --> 00:05:40,479
+corresponding eigenvalue
+
+145
+00:05:40,479 --> 00:05:42,400
+what this expression is saying is that
+
+146
+00:05:42,400 --> 00:05:45,039
+the matrix vector product a times v
+
+147
+00:05:45,039 --> 00:05:47,199
+gives the same result as just scaling
+
+148
+00:05:47,199 --> 00:05:51,199
+the eigenvector v by some value lambda
+
+149
+00:05:51,199 --> 00:05:53,120
+so finding the eigenvectors and their
+
+150
+00:05:53,120 --> 00:05:56,000
+eigenvalues of a matrix a comes down to
+
+151
+00:05:56,000 --> 00:05:58,400
+finding the values of v and lambda that
+
+152
+00:05:58,400 --> 00:06:01,919
+make this expression true
+
+153
+00:06:02,080 --> 00:06:03,440
+it's a little awkward to work with at
+
+154
+00:06:03,440 --> 00:06:05,039
+first because that left hand side
+
+155
+00:06:05,039 --> 00:06:07,199
+represents matrix vector multiplication
+
+156
+00:06:07,199 --> 00:06:09,360
+but the right hand side here is scalar
+
+157
+00:06:09,360 --> 00:06:11,840
+vector multiplication so let's start by
+
+158
+00:06:11,840 --> 00:06:13,919
+rewriting that right hand side as some
+
+159
+00:06:13,919 --> 00:06:16,240
+kind of matrix vector multiplication
+
+160
+00:06:16,240 --> 00:06:18,319
+using a matrix which has the effect of
+
+161
+00:06:18,319 --> 00:06:21,440
+scaling any vector by a factor of lambda
+
+162
+00:06:21,440 --> 00:06:23,360
+the columns of such a matrix will
+
+163
+00:06:23,360 --> 00:06:24,880
+represent what happens to each basis
+
+164
+00:06:24,880 --> 00:06:27,520
+vector and each basis vector is simply
+
+165
+00:06:27,520 --> 00:06:30,080
+multiplied by lambda so this matrix will
+
+166
+00:06:30,080 --> 00:06:32,639
+have the number lambda down the diagonal
+
+167
+00:06:32,639 --> 00:06:36,000
+with zeros everywhere else
+
+168
+00:06:36,000 --> 00:06:37,840
+the common way to write this guy is to
+
+169
+00:06:37,840 --> 00:06:40,160
+factor that lambda out and write it as
+
+170
+00:06:40,160 --> 00:06:42,880
+lambda times i where i is the identity
+
+171
+00:06:42,880 --> 00:06:45,600
+matrix with ones down the diagonal
+
+172
+00:06:45,600 --> 00:06:47,280
+with both sides looking like matrix
+
+173
+00:06:47,280 --> 00:06:49,440
+vector multiplication we can subtract
+
+174
+00:06:49,440 --> 00:06:51,360
+off that right hand side and factor out
+
+175
+00:06:51,360 --> 00:06:53,680
+the v
+
+176
+00:06:54,000 --> 00:06:56,560
+so what we now have is a new matrix a
+
+177
+00:06:56,560 --> 00:06:58,720
+minus lambda times the identity and
+
+178
+00:06:58,720 --> 00:07:01,120
+we're looking for a vector v such that
+
+179
+00:07:01,120 --> 00:07:02,560
+this new matrix
+
+180
+00:07:02,560 --> 00:07:03,680
+times v
+
+181
+00:07:03,680 --> 00:07:06,560
+gives the zero vector
+
+182
+00:07:06,560 --> 00:07:08,960
+now this will always be true if v itself
+
+183
+00:07:08,960 --> 00:07:11,120
+is the zero vector but that's boring
+
+184
+00:07:11,120 --> 00:07:14,240
+what we want is a non-zero eigenvector
+
+185
+00:07:14,240 --> 00:07:16,080
+and if you watch chapter five and six
+
+186
+00:07:16,080 --> 00:07:17,680
+you'll know that the only way it's
+
+187
+00:07:17,680 --> 00:07:19,599
+possible for the product of a matrix
+
+188
+00:07:19,599 --> 00:07:22,560
+with a non-zero vector to become zero
+
+189
+00:07:22,560 --> 00:07:24,880
+is if the transformation associated with
+
+190
+00:07:24,880 --> 00:07:27,440
+that matrix squishes space into a lower
+
+191
+00:07:27,440 --> 00:07:29,599
+dimension
+
+192
+00:07:29,599 --> 00:07:31,919
+and that squishification corresponds to
+
+193
+00:07:31,919 --> 00:07:35,280
+a zero determinant for the matrix
+
+194
+00:07:35,280 --> 00:07:37,360
+to be concrete let's say your matrix a
+
+195
+00:07:37,360 --> 00:07:41,039
+has columns 2 1 and 2 3 and think about
+
+196
+00:07:41,039 --> 00:07:44,000
+subtracting off a variable amount lambda
+
+197
+00:07:44,000 --> 00:07:46,319
+from each diagonal entry
+
+198
+00:07:46,319 --> 00:07:48,800
+now imagine tweaking lambda turning a
+
+199
+00:07:48,800 --> 00:07:50,880
+knob to change its value
+
+200
+00:07:50,880 --> 00:07:53,120
+as that value of lambda changes the
+
+201
+00:07:53,120 --> 00:07:55,440
+matrix itself changes and so the
+
+202
+00:07:55,440 --> 00:07:58,160
+determinant of the matrix changes the
+
+203
+00:07:58,160 --> 00:08:00,800
+goal here is to find a value of lambda
+
+204
+00:08:00,800 --> 00:08:03,199
+that will make this determinant zero
+
+205
+00:08:03,199 --> 00:08:05,280
+meaning the tweaked transformation
+
+206
+00:08:05,280 --> 00:08:08,000
+squishes space into a lower dimension
+
+207
+00:08:08,000 --> 00:08:09,840
+in this case the sweet spot comes when
+
+208
+00:08:09,840 --> 00:08:12,879
+lambda equals one of course if we had
+
+209
+00:08:12,879 --> 00:08:14,639
+chosen some other matrix the eigenvalue
+
+210
+00:08:14,639 --> 00:08:16,560
+might not necessarily be 1 the sweet
+
+211
+00:08:16,560 --> 00:08:18,160
+spot might be hit at some other value of
+
+212
+00:08:18,160 --> 00:08:20,000
+lambda
+
+213
+00:08:20,000 --> 00:08:21,599
+so this is kind of a lot but let's
+
+214
+00:08:21,599 --> 00:08:24,000
+unravel what this is saying when lambda
+
+215
+00:08:24,000 --> 00:08:26,879
+equals 1 the matrix a minus lambda times
+
+216
+00:08:26,879 --> 00:08:30,240
+the identity squishes space onto a line
+
+217
+00:08:30,240 --> 00:08:33,120
+that means there's a non-zero vector v
+
+218
+00:08:33,120 --> 00:08:35,039
+such that a minus lambda times the
+
+219
+00:08:35,039 --> 00:08:37,120
+identity times v
+
+220
+00:08:37,120 --> 00:08:40,399
+equals the zero vector
+
+221
+00:08:40,399 --> 00:08:42,159
+and remember the reason we care about
+
+222
+00:08:42,159 --> 00:08:45,040
+that is because it means a times v
+
+223
+00:08:45,040 --> 00:08:48,640
+equals lambda times v
+
+224
+00:08:49,279 --> 00:08:50,640
+which you can read off as saying that
+
+225
+00:08:50,640 --> 00:08:53,680
+the vector v is an eigenvector of a
+
+226
+00:08:53,680 --> 00:08:56,080
+staying on its own span during the
+
+227
+00:08:56,080 --> 00:08:58,240
+transformation a
+
+228
+00:08:58,240 --> 00:08:59,920
+in this example the corresponding
+
+229
+00:08:59,920 --> 00:09:02,800
+eigenvalue is 1 so v would actually just
+
+230
+00:09:02,800 --> 00:09:05,760
+stay fixed in place
+
+231
+00:09:06,000 --> 00:09:07,360
+pause and ponder if you need to make
+
+232
+00:09:07,360 --> 00:09:08,959
+sure that that line of reasoning feels
+
+233
+00:09:08,959 --> 00:09:11,279
+good
+
+234
+00:09:13,519 --> 00:09:14,880
+this is the kind of thing i mentioned in
+
+235
+00:09:14,880 --> 00:09:16,959
+the introduction if you didn't have a
+
+236
+00:09:16,959 --> 00:09:19,279
+solid grasp of determinants and why they
+
+237
+00:09:19,279 --> 00:09:21,200
+relate to linear systems of equations
+
+238
+00:09:21,200 --> 00:09:23,680
+having non-zero solutions an expression
+
+239
+00:09:23,680 --> 00:09:25,680
+like this would feel completely out of
+
+240
+00:09:25,680 --> 00:09:28,080
+the blue
+
+241
+00:09:28,160 --> 00:09:30,080
+to see this in action let's revisit the
+
+242
+00:09:30,080 --> 00:09:32,080
+example from the start with a matrix
+
+243
+00:09:32,080 --> 00:09:35,360
+whose columns are 3 0 and 1 2.
+
+244
+00:09:35,360 --> 00:09:37,600
+to find if a value lambda is an
+
+245
+00:09:37,600 --> 00:09:39,839
+eigenvalue subtract it from the
+
+246
+00:09:39,839 --> 00:09:42,080
+diagonals of this matrix and compute the
+
+247
+00:09:42,080 --> 00:09:45,080
+determinant
+
+248
+00:09:50,880 --> 00:09:52,720
+doing this we get a certain quadratic
+
+249
+00:09:52,720 --> 00:09:55,360
+polynomial in lambda 3 minus lambda
+
+250
+00:09:55,360 --> 00:09:57,680
+times 2 minus lambda
+
+251
+00:09:57,680 --> 00:10:00,160
+since lambda can only be an eigenvalue
+
+252
+00:10:00,160 --> 00:10:02,720
+if this determinant happens to be 0 you
+
+253
+00:10:02,720 --> 00:10:04,800
+can conclude that the only possible
+
+254
+00:10:04,800 --> 00:10:07,519
+eigenvalues are lambda equals 2 and
+
+255
+00:10:07,519 --> 00:10:09,839
+lambda equals 3.
+
+256
+00:10:09,839 --> 00:10:11,600
+to figure out what the eigenvectors are
+
+257
+00:10:11,600 --> 00:10:12,959
+that actually have one of these
+
+258
+00:10:12,959 --> 00:10:15,760
+eigenvalues say lambda equals 2
+
+259
+00:10:15,760 --> 00:10:17,600
+plug in that value of lambda to the
+
+260
+00:10:17,600 --> 00:10:18,880
+matrix
+
+261
+00:10:18,880 --> 00:10:21,120
+and then solve for which vectors this
+
+262
+00:10:21,120 --> 00:10:24,959
+diagonally altered matrix sends to zero
+
+263
+00:10:24,959 --> 00:10:26,640
+if you computed this the way you would
+
+264
+00:10:26,640 --> 00:10:28,800
+any other linear system you'd see that
+
+265
+00:10:28,800 --> 00:10:31,120
+the solutions are all the vectors on the
+
+266
+00:10:31,120 --> 00:10:35,120
+diagonal line spanned by negative 1 1.
+
+267
+00:10:35,120 --> 00:10:36,880
+this corresponds to the fact that the
+
+268
+00:10:36,880 --> 00:10:40,399
+unaltered matrix 3 0 1 2 has the effect
+
+269
+00:10:40,399 --> 00:10:42,560
+of stretching all those vectors by a
+
+270
+00:10:42,560 --> 00:10:46,040
+factor of 2.
+
+271
+00:10:46,399 --> 00:10:49,040
+now a 2d transformation doesn't have to
+
+272
+00:10:49,040 --> 00:10:51,760
+have eigenvectors for example consider a
+
+273
+00:10:51,760 --> 00:10:54,240
+rotation by 90 degrees this doesn't have
+
+274
+00:10:54,240 --> 00:10:56,560
+any eigenvectors since it rotates every
+
+275
+00:10:56,560 --> 00:11:00,600
+vector off of its own span
+
+276
+00:11:00,880 --> 00:11:02,399
+if you actually try computing the
+
+277
+00:11:02,399 --> 00:11:04,480
+eigenvalues of a rotation like this
+
+278
+00:11:04,480 --> 00:11:06,079
+notice what happens
+
+279
+00:11:06,079 --> 00:11:09,279
+its matrix has columns 0 1 and negative
+
+280
+00:11:09,279 --> 00:11:10,880
+1 0.
+
+281
+00:11:10,880 --> 00:11:12,880
+subtract off lambda from the diagonal
+
+282
+00:11:12,880 --> 00:11:14,480
+elements and look for when the
+
+283
+00:11:14,480 --> 00:11:17,760
+determinant is zero
+
+284
+00:11:18,160 --> 00:11:20,320
+in this case you get the polynomial
+
+285
+00:11:20,320 --> 00:11:22,720
+lambda squared plus one
+
+286
+00:11:22,720 --> 00:11:24,800
+the only roots of that polynomial are
+
+287
+00:11:24,800 --> 00:11:28,720
+the imaginary numbers i and negative i
+
+288
+00:11:28,720 --> 00:11:30,399
+the fact that there are no real number
+
+289
+00:11:30,399 --> 00:11:32,640
+solutions indicates that there are no
+
+290
+00:11:32,640 --> 00:11:35,519
+eigenvectors
+
+291
+00:11:35,680 --> 00:11:37,440
+another pretty interesting example worth
+
+292
+00:11:37,440 --> 00:11:39,279
+holding in the back of your mind is a
+
+293
+00:11:39,279 --> 00:11:40,320
+shear
+
+294
+00:11:40,320 --> 00:11:42,720
+this fixes i-hat in place and moves
+
+295
+00:11:42,720 --> 00:11:46,399
+j-hat 1 over so its matrix has columns 1
+
+296
+00:11:46,399 --> 00:11:48,720
+0 and 1 1.
+
+297
+00:11:48,720 --> 00:11:50,720
+all of the vectors on the x-axis are
+
+298
+00:11:50,720 --> 00:11:53,120
+eigenvectors with eigenvalue 1 since
+
+299
+00:11:53,120 --> 00:11:55,440
+they remain fixed in place
+
+300
+00:11:55,440 --> 00:11:58,560
+in fact these are the only eigenvectors
+
+301
+00:11:58,560 --> 00:12:00,240
+when you subtract off lambda from the
+
+302
+00:12:00,240 --> 00:12:03,279
+diagonals and compute the determinant
+
+303
+00:12:03,279 --> 00:12:08,480
+what you get is 1 minus lambda squared
+
+304
+00:12:09,279 --> 00:12:11,600
+and the only root of this expression is
+
+305
+00:12:11,600 --> 00:12:14,720
+lambda equals one
+
+306
+00:12:14,720 --> 00:12:15,920
+this lines up with what we see
+
+307
+00:12:15,920 --> 00:12:17,440
+geometrically that all of the
+
+308
+00:12:17,440 --> 00:12:20,880
+eigenvectors have eigenvalue one
+
+309
+00:12:20,880 --> 00:12:22,720
+keep in mind though it's also possible
+
+310
+00:12:22,720 --> 00:12:25,680
+to have just one eigenvalue but with
+
+311
+00:12:25,680 --> 00:12:27,120
+more than just a line full of
+
+312
+00:12:27,120 --> 00:12:29,760
+eigenvectors
+
+313
+00:12:29,760 --> 00:12:32,160
+a simple example is a matrix that scales
+
+314
+00:12:32,160 --> 00:12:33,760
+everything by two
+
+315
+00:12:33,760 --> 00:12:36,560
+the only eigenvalue is two but every
+
+316
+00:12:36,560 --> 00:12:38,320
+vector in the plane gets to be an
+
+317
+00:12:38,320 --> 00:12:42,079
+eigenvector with that eigenvalue
+
+318
+00:12:42,079 --> 00:12:43,680
+now is another good time to pause and
+
+319
+00:12:43,680 --> 00:12:45,519
+ponder some of this before i move on to
+
+320
+00:12:45,519 --> 00:12:48,920
+the last topic
+
+321
+00:13:03,680 --> 00:13:05,680
+i want to finish off here with the idea
+
+322
+00:13:05,680 --> 00:13:08,240
+of an eigen basis which relies heavily
+
+323
+00:13:08,240 --> 00:13:11,360
+on ideas from the last video
+
+324
+00:13:11,360 --> 00:13:13,519
+take a look at what happens if our basis
+
+325
+00:13:13,519 --> 00:13:15,519
+vectors just so happen to be
+
+326
+00:13:15,519 --> 00:13:16,959
+eigenvectors
+
+327
+00:13:16,959 --> 00:13:19,279
+for example maybe i-hat is scaled by
+
+328
+00:13:19,279 --> 00:13:23,360
+negative 1 and j-hat is scaled by 2.
+
+329
+00:13:23,360 --> 00:13:24,880
+writing their new coordinates as the
+
+330
+00:13:24,880 --> 00:13:27,279
+columns of a matrix notice that those
+
+331
+00:13:27,279 --> 00:13:30,160
+scalar multiples negative 1 and 2 which
+
+332
+00:13:30,160 --> 00:13:32,800
+are the eigenvalues of i-hat and j-hat
+
+333
+00:13:32,800 --> 00:13:35,519
+sit on the diagonal of our matrix and
+
+334
+00:13:35,519 --> 00:13:38,720
+every other entry is a zero
+
+335
+00:13:38,720 --> 00:13:41,040
+any time a matrix has zeros everywhere
+
+336
+00:13:41,040 --> 00:13:43,200
+other than the diagonal it's called
+
+337
+00:13:43,200 --> 00:13:45,839
+reasonably enough a diagonal matrix and
+
+338
+00:13:45,839 --> 00:13:47,760
+the way to interpret this is that all
+
+339
+00:13:47,760 --> 00:13:50,240
+the basis vectors are eigenvectors with
+
+340
+00:13:50,240 --> 00:13:52,800
+the diagonal entries of this matrix
+
+341
+00:13:52,800 --> 00:13:56,399
+being their eigenvalues
+
+342
+00:13:57,040 --> 00:13:58,240
+there are a lot of things that make
+
+343
+00:13:58,240 --> 00:14:00,560
+diagonal matrices much nicer to work
+
+344
+00:14:00,560 --> 00:14:01,680
+with
+
+345
+00:14:01,680 --> 00:14:03,519
+one big one is that it's easier to
+
+346
+00:14:03,519 --> 00:14:05,680
+compute what will happen if you multiply
+
+347
+00:14:05,680 --> 00:14:07,760
+this matrix by itself a whole bunch of
+
+348
+00:14:07,760 --> 00:14:09,199
+times
+
+349
+00:14:09,199 --> 00:14:11,680
+since all one of these matrices does is
+
+350
+00:14:11,680 --> 00:14:13,360
+scale each basis vector by some
+
+351
+00:14:13,360 --> 00:14:15,920
+eigenvalue applying that matrix many
+
+352
+00:14:15,920 --> 00:14:18,639
+times say 100 times is just going to
+
+353
+00:14:18,639 --> 00:14:21,040
+correspond to scaling each basis vector
+
+354
+00:14:21,040 --> 00:14:23,760
+by the 100th power of the corresponding
+
+355
+00:14:23,760 --> 00:14:25,600
+eigenvalue
+
+356
+00:14:25,600 --> 00:14:27,680
+in contrast try computing the hundredth
+
+357
+00:14:27,680 --> 00:14:30,320
+power of a non-diagonal matrix really
+
+358
+00:14:30,320 --> 00:14:34,399
+try it for a moment it's a nightmare
+
+359
+00:14:36,320 --> 00:14:38,240
+of course you'll rarely be so lucky as
+
+360
+00:14:38,240 --> 00:14:40,320
+to have your basis vectors also be
+
+361
+00:14:40,320 --> 00:14:41,920
+eigenvectors
+
+362
+00:14:41,920 --> 00:14:43,760
+but if your transformation has a lot of
+
+363
+00:14:43,760 --> 00:14:45,600
+eigenvectors like the one from the start
+
+364
+00:14:45,600 --> 00:14:47,760
+of this video enough so that you can
+
+365
+00:14:47,760 --> 00:14:51,040
+choose a set that spans the full space
+
+366
+00:14:51,040 --> 00:14:52,639
+then you could change your coordinate
+
+367
+00:14:52,639 --> 00:14:55,440
+system so that these eigenvectors are
+
+368
+00:14:55,440 --> 00:14:57,279
+your basis vectors
+
+369
+00:14:57,279 --> 00:14:58,800
+i talked about change of basis last
+
+370
+00:14:58,800 --> 00:15:00,639
+video but i'll go through a super quick
+
+371
+00:15:00,639 --> 00:15:02,639
+reminder here of how to express a
+
+372
+00:15:02,639 --> 00:15:04,560
+transformation currently written in our
+
+373
+00:15:04,560 --> 00:15:06,480
+coordinate system into a different
+
+374
+00:15:06,480 --> 00:15:08,240
+system
+
+375
+00:15:08,240 --> 00:15:09,839
+take the coordinates of the vectors that
+
+376
+00:15:09,839 --> 00:15:12,160
+you want to use as a new basis which in
+
+377
+00:15:12,160 --> 00:15:14,320
+this case means our two eigenvectors
+
+378
+00:15:14,320 --> 00:15:16,160
+that make those coordinates the columns
+
+379
+00:15:16,160 --> 00:15:18,880
+of a matrix known as the change of basis
+
+380
+00:15:18,880 --> 00:15:20,079
+matrix
+
+381
+00:15:20,079 --> 00:15:21,680
+when you sandwich the original
+
+382
+00:15:21,680 --> 00:15:23,360
+transformation putting the change of
+
+383
+00:15:23,360 --> 00:15:25,440
+basis matrix on its right and the
+
+384
+00:15:25,440 --> 00:15:27,680
+inverse of the change of basis matrix on
+
+385
+00:15:27,680 --> 00:15:30,560
+its left the result will be a matrix
+
+386
+00:15:30,560 --> 00:15:32,720
+representing that same transformation
+
+387
+00:15:32,720 --> 00:15:34,639
+but from the perspective of the new
+
+388
+00:15:34,639 --> 00:15:37,440
+basis vector's coordinate system
+
+389
+00:15:37,440 --> 00:15:38,800
+the whole point of doing this with
+
+390
+00:15:38,800 --> 00:15:41,680
+eigenvectors is that this new matrix is
+
+391
+00:15:41,680 --> 00:15:44,079
+guaranteed to be diagonal with its
+
+392
+00:15:44,079 --> 00:15:46,079
+corresponding eigenvalues down that
+
+393
+00:15:46,079 --> 00:15:48,320
+diagonal this is because it represents
+
+394
+00:15:48,320 --> 00:15:50,240
+working in a coordinate system where
+
+395
+00:15:50,240 --> 00:15:52,000
+what happens to the basis vectors is
+
+396
+00:15:52,000 --> 00:15:53,519
+that they get scaled during the
+
+397
+00:15:53,519 --> 00:15:55,519
+transformation
+
+398
+00:15:55,519 --> 00:15:57,440
+a set of basis vectors which are also
+
+399
+00:15:57,440 --> 00:15:59,839
+eigenvectors is called again reasonably
+
+400
+00:15:59,839 --> 00:16:02,160
+enough an eigen basis
+
+401
+00:16:02,160 --> 00:16:04,720
+so if for example you needed to compute
+
+402
+00:16:04,720 --> 00:16:07,440
+the 100th power of this matrix it would
+
+403
+00:16:07,440 --> 00:16:09,839
+be much easier to change to an eigen
+
+404
+00:16:09,839 --> 00:16:12,560
+basis compute the 100th power in that
+
+405
+00:16:12,560 --> 00:16:15,199
+system then convert back to our standard
+
+406
+00:16:15,199 --> 00:16:16,480
+system
+
+407
+00:16:16,480 --> 00:16:17,519
+you can't do this with all
+
+408
+00:16:17,519 --> 00:16:20,000
+transformations a shear for example
+
+409
+00:16:20,000 --> 00:16:22,079
+doesn't have enough eigenvectors to span
+
+410
+00:16:22,079 --> 00:16:23,519
+the full space
+
+411
+00:16:23,519 --> 00:16:25,839
+but if you can find an eigen basis it
+
+412
+00:16:25,839 --> 00:16:28,880
+makes matrix operations really lovely
+
+413
+00:16:28,880 --> 00:16:30,240
+for those of you willing to work through
+
+414
+00:16:30,240 --> 00:16:31,759
+a pretty neat puzzle to see what this
+
+415
+00:16:31,759 --> 00:16:33,440
+looks like in action and how it can be
+
+416
+00:16:33,440 --> 00:16:35,360
+used to produce some surprising results
+
+417
+00:16:35,360 --> 00:16:36,880
+i'll leave up a prompt here on the
+
+418
+00:16:36,880 --> 00:16:39,040
+screen it takes a bit of work but i
+
+419
+00:16:39,040 --> 00:16:40,639
+think you'll enjoy it
+
+420
+00:16:40,639 --> 00:16:43,279
+the next and final video of this series
+
+421
+00:16:43,279 --> 00:16:45,680
+is going to be on abstract vector spaces
+
+422
+00:16:45,680 --> 00:16:49,000
+see you then
+
+423
+00:17:04,500 --> 00:17:14,959
+[Music]
+
+424
+00:17:14,959 --> 00:17:17,039
+you
+

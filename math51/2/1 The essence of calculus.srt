@@ -1,0 +1,1704 @@
+1
+00:00:05,940 --> 00:00:13,439
+[Music]
+
+2
+00:00:14,570 --> 00:00:17,240
+hey everyone grant here this is the
+
+3
+00:00:17,240 --> 00:00:18,950
+first video in a series on the essence
+
+4
+00:00:18,950 --> 00:00:20,869
+of calculus and I'll be publishing the
+
+5
+00:00:20,869 --> 00:00:22,700
+following videos once per day for the
+
+6
+00:00:22,700 --> 00:00:25,369
+next 10 days the goal here as the name
+
+7
+00:00:25,369 --> 00:00:27,349
+suggests is to really get the heart of
+
+8
+00:00:27,349 --> 00:00:29,360
+the subject out in one binge washable
+
+9
+00:00:29,360 --> 00:00:31,849
+set but with a topic that's as broad as
+
+10
+00:00:31,849 --> 00:00:33,649
+calculus there's a lot of things that
+
+11
+00:00:33,649 --> 00:00:35,510
+can mean so here's what I have in mind
+
+12
+00:00:35,510 --> 00:00:38,300
+specifically calculus has a lot of rules
+
+13
+00:00:38,300 --> 00:00:40,190
+and formulas which are often presented
+
+14
+00:00:40,190 --> 00:00:42,020
+as things to be memorized
+
+15
+00:00:42,020 --> 00:00:44,540
+lots of derivative formulas the product
+
+16
+00:00:44,540 --> 00:00:46,130
+rule the chain rule implicit
+
+17
+00:00:46,130 --> 00:00:48,440
+differentiation the fact that integrals
+
+18
+00:00:48,440 --> 00:00:50,390
+and derivatives are opposite Taylor
+
+19
+00:00:50,390 --> 00:00:52,250
+series just a lot of things like that
+
+20
+00:00:52,250 --> 00:00:54,530
+and my goal is for you to come away
+
+21
+00:00:54,530 --> 00:00:56,030
+feeling like you could have invented
+
+22
+00:00:56,030 --> 00:00:58,700
+calculus yourself that is cover all
+
+23
+00:00:58,700 --> 00:01:00,770
+those core ideas but in a way that makes
+
+24
+00:01:00,770 --> 00:01:02,660
+clear where they actually come from and
+
+25
+00:01:02,660 --> 00:01:04,578
+what they really mean using an
+
+26
+00:01:04,578 --> 00:01:07,280
+all-around visual approach inventing
+
+27
+00:01:07,280 --> 00:01:09,229
+math is no joke and there is a
+
+28
+00:01:09,229 --> 00:01:10,850
+difference between being told why
+
+29
+00:01:10,850 --> 00:01:13,340
+something's true and actually generating
+
+30
+00:01:13,340 --> 00:01:15,770
+it from scratch but at all points I want
+
+31
+00:01:15,770 --> 00:01:17,540
+you to think to yourself if you were an
+
+32
+00:01:17,540 --> 00:01:19,520
+early mathematician pondering these
+
+33
+00:01:19,520 --> 00:01:21,650
+ideas and drawing out the right diagrams
+
+34
+00:01:21,650 --> 00:01:23,990
+does it feel reasonable that you could
+
+35
+00:01:23,990 --> 00:01:25,310
+have stumbled across these truths
+
+36
+00:01:25,310 --> 00:01:29,090
+yourself in this initial video I want to
+
+37
+00:01:29,090 --> 00:01:30,770
+show how you might stumble into the core
+
+38
+00:01:30,770 --> 00:01:32,570
+ideas of calculus by thinking very
+
+39
+00:01:32,570 --> 00:01:34,700
+deeply about one specific bit of
+
+40
+00:01:34,700 --> 00:01:38,000
+geometry the area of a circle maybe you
+
+41
+00:01:38,000 --> 00:01:39,530
+know that this is pi times its radius
+
+42
+00:01:39,530 --> 00:01:42,290
+squared but why is there a nice way to
+
+43
+00:01:42,290 --> 00:01:43,970
+think about where this formula comes
+
+44
+00:01:43,970 --> 00:01:47,119
+from well contemplating this problem and
+
+45
+00:01:47,119 --> 00:01:49,070
+leaving yourself open to exploring the
+
+46
+00:01:49,070 --> 00:01:51,229
+interesting thoughts that come about can
+
+47
+00:01:51,229 --> 00:01:52,909
+actually lead you to a glimpse of three
+
+48
+00:01:52,909 --> 00:01:55,190
+big ideas in calculus integrals
+
+49
+00:01:55,190 --> 00:01:57,200
+derivatives and the fact that they're
+
+50
+00:01:57,200 --> 00:01:59,650
+opposites
+
+51
+00:01:59,670 --> 00:02:02,010
+but the story starts more simply just
+
+52
+00:02:02,010 --> 00:02:04,470
+you and a circle let's say with radius
+
+53
+00:02:04,470 --> 00:02:06,840
+three you're trying to figure out its
+
+54
+00:02:06,840 --> 00:02:08,729
+area and after going through a lot of
+
+55
+00:02:08,729 --> 00:02:10,800
+paper trying different ways to chop up
+
+56
+00:02:10,800 --> 00:02:12,569
+and rearrange the pieces of that area
+
+57
+00:02:12,569 --> 00:02:14,610
+many of which might lead to their own
+
+58
+00:02:14,610 --> 00:02:17,130
+interesting observations maybe you try
+
+59
+00:02:17,130 --> 00:02:18,990
+out the idea of slicing up the circle
+
+60
+00:02:18,990 --> 00:02:22,410
+into many concentric rings this should
+
+61
+00:02:22,410 --> 00:02:24,270
+seem promising because it respects the
+
+62
+00:02:24,270 --> 00:02:26,610
+symmetry of the circle and map has a
+
+63
+00:02:26,610 --> 00:02:28,650
+tendency to reward you when you respect
+
+64
+00:02:28,650 --> 00:02:30,989
+its symmetries let's take one of those
+
+65
+00:02:30,989 --> 00:02:33,090
+rings which has some inner radius R
+
+66
+00:02:33,090 --> 00:02:37,020
+that's between 0 & 3 if we can find a
+
+67
+00:02:37,020 --> 00:02:38,880
+nice expression for the area of each
+
+68
+00:02:38,880 --> 00:02:40,800
+ring like this one and if we have a nice
+
+69
+00:02:40,800 --> 00:02:42,900
+way to add them all up it might lead us
+
+70
+00:02:42,900 --> 00:02:45,060
+to an understanding of the full circles
+
+71
+00:02:45,060 --> 00:02:47,670
+area maybe you start by imagining
+
+72
+00:02:47,670 --> 00:02:50,040
+straightening out this ring
+
+73
+00:02:50,040 --> 00:02:52,590
+and you could try thinking through
+
+74
+00:02:52,590 --> 00:02:54,750
+exactly what this new shape is and what
+
+75
+00:02:54,750 --> 00:02:56,879
+its area should be but for simplicity
+
+76
+00:02:56,879 --> 00:02:59,219
+let's just approximate it as a rectangle
+
+77
+00:02:59,219 --> 00:03:01,500
+the width of that rectangle is the
+
+78
+00:03:01,500 --> 00:03:03,480
+circumference of the original ring which
+
+79
+00:03:03,480 --> 00:03:06,359
+is two pi times R right I mean that's
+
+80
+00:03:06,359 --> 00:03:09,030
+essentially the definition of pi and its
+
+81
+00:03:09,030 --> 00:03:11,670
+thickness well that depends on how
+
+82
+00:03:11,670 --> 00:03:13,500
+finely you chopped up the circle in the
+
+83
+00:03:13,500 --> 00:03:15,599
+first place which was kind of arbitrary
+
+84
+00:03:15,599 --> 00:03:17,819
+in the spirit of using what will come to
+
+85
+00:03:17,819 --> 00:03:20,159
+be standard calculus notation let's call
+
+86
+00:03:20,159 --> 00:03:22,590
+that thickness dr for a tiny difference
+
+87
+00:03:22,590 --> 00:03:24,930
+in the radius from one ring to the next
+
+88
+00:03:24,930 --> 00:03:26,519
+maybe you think of it as something like
+
+89
+00:03:26,519 --> 00:03:30,870
+0.1 so approximating this unwrapped ring
+
+90
+00:03:30,870 --> 00:03:33,840
+as a thin rectangle it's area is two pi
+
+91
+00:03:33,840 --> 00:03:36,750
+times R the radius times D are the
+
+92
+00:03:36,750 --> 00:03:39,299
+little thickness and even though that's
+
+93
+00:03:39,299 --> 00:03:41,250
+not perfect for smaller and smaller
+
+94
+00:03:41,250 --> 00:03:43,650
+choices of d R this is actually going to
+
+95
+00:03:43,650 --> 00:03:46,079
+be a better and better approximation for
+
+96
+00:03:46,079 --> 00:03:48,299
+that area since the top and the bottom
+
+97
+00:03:48,299 --> 00:03:49,859
+sides of this shape are going to get
+
+98
+00:03:49,859 --> 00:03:51,930
+closer and closer to being exactly the
+
+99
+00:03:51,930 --> 00:03:54,720
+same length so let's just move forward
+
+100
+00:03:54,720 --> 00:03:56,699
+with this approximation keeping in the
+
+101
+00:03:56,699 --> 00:03:58,199
+back of our minds that it's slightly
+
+102
+00:03:58,199 --> 00:04:00,030
+wrong but it's going to become more
+
+103
+00:04:00,030 --> 00:04:01,949
+accurate for smaller and smaller choices
+
+104
+00:04:01,949 --> 00:04:04,859
+of dr that is if we slice up the circle
+
+105
+00:04:04,859 --> 00:04:08,099
+into thinner and thinner rings so just
+
+106
+00:04:08,099 --> 00:04:09,959
+to sum up where we are you've broken up
+
+107
+00:04:09,959 --> 00:04:12,000
+the area of the circle into all of these
+
+108
+00:04:12,000 --> 00:04:14,400
+rings and you're approximating the area
+
+109
+00:04:14,400 --> 00:04:17,250
+of each one of those as two pi times its
+
+110
+00:04:17,250 --> 00:04:20,220
+radius times d r where the specific
+
+111
+00:04:20,220 --> 00:04:22,500
+value for that inner radius ranges from
+
+112
+00:04:22,500 --> 00:04:24,960
+zero for the smallest ring up to just
+
+113
+00:04:24,960 --> 00:04:27,180
+under three for the biggest ring spaced
+
+114
+00:04:27,180 --> 00:04:29,159
+out by whatever the thicknesses that you
+
+115
+00:04:29,159 --> 00:04:31,349
+choose for D are something like zero
+
+116
+00:04:31,349 --> 00:04:34,380
+point one and notice that the spacing
+
+117
+00:04:34,380 --> 00:04:36,449
+between the values here corresponds to
+
+118
+00:04:36,449 --> 00:04:39,000
+the thickness dr of each ring the
+
+119
+00:04:39,000 --> 00:04:40,800
+difference in radius from one ring to
+
+120
+00:04:40,800 --> 00:04:43,560
+the next in fact a nice way to think
+
+121
+00:04:43,560 --> 00:04:45,360
+about the rectangles approximating each
+
+122
+00:04:45,360 --> 00:04:47,669
+rings area is to fit them all up right
+
+123
+00:04:47,669 --> 00:04:51,000
+side by side along this axis each one
+
+124
+00:04:51,000 --> 00:04:53,190
+has a thickness D R which is why they
+
+125
+00:04:53,190 --> 00:04:55,080
+fit so snugly right there together and
+
+126
+00:04:55,080 --> 00:04:56,789
+the height of any one of these
+
+127
+00:04:56,789 --> 00:04:58,889
+rectangles sitting above some specific
+
+128
+00:04:58,889 --> 00:05:01,080
+value of R like zero point six is
+
+129
+00:05:01,080 --> 00:05:03,520
+exactly 2 pi times
+
+130
+00:05:03,520 --> 00:05:06,160
+at value that's the circumference of the
+
+131
+00:05:06,160 --> 00:05:07,900
+corresponding ring that this rectangle
+
+132
+00:05:07,900 --> 00:05:10,449
+approximates pictures like this two PI R
+
+133
+00:05:10,449 --> 00:05:11,979
+can actually get kind of tall for the
+
+134
+00:05:11,979 --> 00:05:14,319
+screen I mean two times pi times three
+
+135
+00:05:14,319 --> 00:05:17,050
+is around nineteen so let's just throw
+
+136
+00:05:17,050 --> 00:05:18,819
+up a y-axis that's scaled a little
+
+137
+00:05:18,819 --> 00:05:20,590
+differently so that we can actually fit
+
+138
+00:05:20,590 --> 00:05:22,349
+all of these rectangles on the screen a
+
+139
+00:05:22,349 --> 00:05:25,030
+nice way to think about this setup is to
+
+140
+00:05:25,030 --> 00:05:27,669
+draw the graph of two pi r which is a
+
+141
+00:05:27,669 --> 00:05:29,500
+straight line that has a slope two pi
+
+142
+00:05:29,500 --> 00:05:32,169
+each of these rectangles extends up to
+
+143
+00:05:32,169 --> 00:05:34,030
+the point where it just barely touches
+
+144
+00:05:34,030 --> 00:05:37,210
+that graph again we're being approximate
+
+145
+00:05:37,210 --> 00:05:39,159
+here each of these rectangles only
+
+146
+00:05:39,159 --> 00:05:40,630
+approximates the area of the
+
+147
+00:05:40,630 --> 00:05:43,030
+corresponding ring from the circle but
+
+148
+00:05:43,030 --> 00:05:45,340
+remember that approximation to PI R
+
+149
+00:05:45,340 --> 00:05:48,370
+times D R gets less and less wrong as
+
+150
+00:05:48,370 --> 00:05:50,409
+the size of d R gets smaller and smaller
+
+151
+00:05:50,409 --> 00:05:53,530
+and this has a very beautiful meaning
+
+152
+00:05:53,530 --> 00:05:54,909
+when we're looking at the sum of the
+
+153
+00:05:54,909 --> 00:05:57,340
+areas of all those rectangles for
+
+154
+00:05:57,340 --> 00:05:59,710
+smaller and smaller choices of dr you
+
+155
+00:05:59,710 --> 00:06:01,120
+might at first think that that turns the
+
+156
+00:06:01,120 --> 00:06:03,250
+problem into a monstrously large sum i
+
+157
+00:06:03,250 --> 00:06:05,050
+mean there's many many rectangles to
+
+158
+00:06:05,050 --> 00:06:06,849
+consider and the decimal precision of
+
+159
+00:06:06,849 --> 00:06:08,259
+each one of their areas is going to be
+
+160
+00:06:08,259 --> 00:06:11,409
+an absolute nightmare but notice all of
+
+161
+00:06:11,409 --> 00:06:13,719
+their areas in aggregate just looks like
+
+162
+00:06:13,719 --> 00:06:16,509
+the area under a graph and that portion
+
+163
+00:06:16,509 --> 00:06:18,729
+under the graph is just a triangle a
+
+164
+00:06:18,729 --> 00:06:21,550
+triangle with a base of 3 and a height
+
+165
+00:06:21,550 --> 00:06:25,479
+that's 2 pi times 3 so it's area 1/2
+
+166
+00:06:25,479 --> 00:06:27,490
+base times height works out to be
+
+167
+00:06:27,490 --> 00:06:31,900
+exactly pi times 3 squared or if the
+
+168
+00:06:31,900 --> 00:06:33,969
+radius of our original circle was some
+
+169
+00:06:33,969 --> 00:06:36,759
+other value capital r that area comes
+
+170
+00:06:36,759 --> 00:06:39,610
+out to be pi times R squared and that's
+
+171
+00:06:39,610 --> 00:06:42,310
+the formula for the area of a circle it
+
+172
+00:06:42,310 --> 00:06:43,930
+doesn't matter who you are or what you
+
+173
+00:06:43,930 --> 00:06:45,940
+typically think of math that right there
+
+174
+00:06:45,940 --> 00:06:49,380
+is a beautiful argument
+
+175
+00:06:49,740 --> 00:06:51,669
+but if you want to think like a
+
+176
+00:06:51,669 --> 00:06:52,779
+mathematician here
+
+177
+00:06:52,779 --> 00:06:54,610
+you don't just care about finding the
+
+178
+00:06:54,610 --> 00:06:57,039
+answer you care about developing general
+
+179
+00:06:57,039 --> 00:06:59,710
+problem-solving tools and techniques so
+
+180
+00:06:59,710 --> 00:07:01,569
+take a moment to meditate on what
+
+181
+00:07:01,569 --> 00:07:03,490
+exactly just happened and why it worked
+
+182
+00:07:03,490 --> 00:07:05,620
+because the way that we transitioned
+
+183
+00:07:05,620 --> 00:07:07,330
+from something approximate to something
+
+184
+00:07:07,330 --> 00:07:09,669
+precise is actually pretty subtle and it
+
+185
+00:07:09,669 --> 00:07:13,499
+cuts deep to what calculus is all about
+
+186
+00:07:13,719 --> 00:07:15,580
+you have this problem that can be
+
+187
+00:07:15,580 --> 00:07:17,619
+approximated with the sum of many small
+
+188
+00:07:17,619 --> 00:07:19,869
+numbers each of which looked like 2 PI R
+
+189
+00:07:19,869 --> 00:07:22,689
+times D are 4 values of our ranging
+
+190
+00:07:22,689 --> 00:07:25,919
+between 0 & 3
+
+191
+00:07:26,120 --> 00:07:28,430
+remember the small numbered er here
+
+192
+00:07:28,430 --> 00:07:30,530
+represents our choice for the thickness
+
+193
+00:07:30,530 --> 00:07:33,740
+of each ring for example 0.1 and there
+
+194
+00:07:33,740 --> 00:07:35,320
+are two important things to note here
+
+195
+00:07:35,320 --> 00:07:38,690
+first of all not only is dr a factor in
+
+196
+00:07:38,690 --> 00:07:40,610
+the quantities we're adding up to PI R
+
+197
+00:07:40,610 --> 00:07:43,400
+times D R it also gives the spacing
+
+198
+00:07:43,400 --> 00:07:45,639
+between the different values of R and
+
+199
+00:07:45,639 --> 00:07:48,650
+secondly the smaller our choice for dr
+
+200
+00:07:48,650 --> 00:07:52,580
+the better the approximation adding all
+
+201
+00:07:52,580 --> 00:07:53,930
+of those numbers could be seen in a
+
+202
+00:07:53,930 --> 00:07:55,820
+different pretty clever way as adding
+
+203
+00:07:55,820 --> 00:07:58,130
+the areas of many thin rectangles
+
+204
+00:07:58,130 --> 00:08:00,560
+sitting underneath a graph the graph of
+
+205
+00:08:00,560 --> 00:08:03,410
+the function 2 pi r in this case then
+
+206
+00:08:03,410 --> 00:08:06,110
+and this is key by considering smaller
+
+207
+00:08:06,110 --> 00:08:08,720
+and smaller choices for dr corresponding
+
+208
+00:08:08,720 --> 00:08:10,490
+to better and better approximations of
+
+209
+00:08:10,490 --> 00:08:12,919
+the original problem this some thought
+
+210
+00:08:12,919 --> 00:08:14,990
+of as the aggregate area of those
+
+211
+00:08:14,990 --> 00:08:17,750
+rectangles approaches the area under the
+
+212
+00:08:17,750 --> 00:08:20,240
+graph and because of that you can
+
+213
+00:08:20,240 --> 00:08:22,070
+conclude that the answer to the original
+
+214
+00:08:22,070 --> 00:08:24,260
+question in full-on approximated
+
+215
+00:08:24,260 --> 00:08:27,050
+precision is exactly the same as the
+
+216
+00:08:27,050 --> 00:08:29,870
+area underneath this graph
+
+217
+00:08:29,870 --> 00:08:33,440
+a lot of other hard problems in math and
+
+218
+00:08:33,440 --> 00:08:35,270
+science can be broken down and
+
+219
+00:08:35,270 --> 00:08:37,640
+approximated as the sum of many small
+
+220
+00:08:37,640 --> 00:08:40,279
+quantities things like figuring out how
+
+221
+00:08:40,279 --> 00:08:42,349
+far a car has traveled based on its
+
+222
+00:08:42,349 --> 00:08:44,990
+velocity at each point in time in a case
+
+223
+00:08:44,990 --> 00:08:46,670
+like that you might range through many
+
+224
+00:08:46,670 --> 00:08:48,470
+different points in time and at each one
+
+225
+00:08:48,470 --> 00:08:51,560
+multiply the velocity at that time times
+
+226
+00:08:51,560 --> 00:08:54,529
+a tiny change in time DT which would
+
+227
+00:08:54,529 --> 00:08:55,880
+give the corresponding little bit of
+
+228
+00:08:55,880 --> 00:08:57,740
+distance traveled during that little
+
+229
+00:08:57,740 --> 00:09:00,320
+time I'll talk through the details of
+
+230
+00:09:00,320 --> 00:09:02,210
+examples like this later in the series
+
+231
+00:09:02,210 --> 00:09:05,000
+but at a high level many of these types
+
+232
+00:09:05,000 --> 00:09:07,220
+of problems turn out to be equivalent to
+
+233
+00:09:07,220 --> 00:09:09,529
+finding the area under some graph in
+
+234
+00:09:09,529 --> 00:09:11,480
+much the same way that our circle
+
+235
+00:09:11,480 --> 00:09:14,150
+problem did this happens whenever the
+
+236
+00:09:14,150 --> 00:09:15,589
+quantities that you're adding up
+
+237
+00:09:15,589 --> 00:09:17,690
+the one whose sum approximates the
+
+238
+00:09:17,690 --> 00:09:19,820
+original problem can be thought of as
+
+239
+00:09:19,820 --> 00:09:22,010
+the areas of many thin rectangles
+
+240
+00:09:22,010 --> 00:09:23,779
+sitting side-by-side like this
+
+241
+00:09:23,779 --> 00:09:27,380
+if finer and finer approximations of the
+
+242
+00:09:27,380 --> 00:09:29,480
+original problem correspond to thinner
+
+243
+00:09:29,480 --> 00:09:31,730
+and thinner rings then the original
+
+244
+00:09:31,730 --> 00:09:33,560
+problem is going to be equivalent to
+
+245
+00:09:33,560 --> 00:09:36,860
+finding the area under some graph again
+
+246
+00:09:36,860 --> 00:09:38,810
+this is an idea we'll see in more detail
+
+247
+00:09:38,810 --> 00:09:41,120
+later in the series so don't worry if
+
+248
+00:09:41,120 --> 00:09:43,010
+it's not 100% clear right now
+
+249
+00:09:43,010 --> 00:09:45,920
+the point now is that you as the
+
+250
+00:09:45,920 --> 00:09:47,750
+mathematician having just solved a
+
+251
+00:09:47,750 --> 00:09:49,550
+problem by reframing it as the area
+
+252
+00:09:49,550 --> 00:09:52,250
+under a graph might start thinking about
+
+253
+00:09:52,250 --> 00:09:54,320
+how to find the areas under other graphs
+
+254
+00:09:54,320 --> 00:09:57,020
+I mean we were lucky in the circle
+
+255
+00:09:57,020 --> 00:09:58,670
+problem that the relevant area turned
+
+256
+00:09:58,670 --> 00:10:00,770
+out to be a triangle but imagine instead
+
+257
+00:10:00,770 --> 00:10:03,410
+something like a parabola the graph of x
+
+258
+00:10:03,410 --> 00:10:06,350
+squared what's the area underneath that
+
+259
+00:10:06,350 --> 00:10:09,140
+curve say between the values of x equals
+
+260
+00:10:09,140 --> 00:10:13,310
+zero and x equals three well it's hard
+
+261
+00:10:13,310 --> 00:10:16,010
+to think about right and let me reframe
+
+262
+00:10:16,010 --> 00:10:17,360
+that question in a slightly different
+
+263
+00:10:17,360 --> 00:10:17,810
+way
+
+264
+00:10:17,810 --> 00:10:20,480
+we'll fix that left endpoint in place at
+
+265
+00:10:20,480 --> 00:10:24,910
+zero and let the right endpoint vary
+
+266
+00:10:26,290 --> 00:10:29,259
+are you able to find a function a of X
+
+267
+00:10:29,259 --> 00:10:31,569
+that gives you the area under this
+
+268
+00:10:31,569 --> 00:10:36,279
+parabola between 0 and X a function a of
+
+269
+00:10:36,279 --> 00:10:38,799
+X like this is called an integral of
+
+270
+00:10:38,799 --> 00:10:41,559
+x-squared calculus holds within it the
+
+271
+00:10:41,559 --> 00:10:43,479
+tools to figure out what an integral
+
+272
+00:10:43,479 --> 00:10:46,029
+like this is but right now it's just a
+
+273
+00:10:46,029 --> 00:10:48,129
+mystery function to us we know it gives
+
+274
+00:10:48,129 --> 00:10:50,079
+the area under the graph of x squared
+
+275
+00:10:50,079 --> 00:10:52,179
+between some fixed left point and some
+
+276
+00:10:52,179 --> 00:10:54,069
+variable right point but we don't know
+
+277
+00:10:54,069 --> 00:10:57,129
+what it is and again the reason we care
+
+278
+00:10:57,129 --> 00:10:59,019
+about this kind of question is not just
+
+279
+00:10:59,019 --> 00:11:01,179
+for the sake of asking hard geometry
+
+280
+00:11:01,179 --> 00:11:03,759
+questions it's because many practical
+
+281
+00:11:03,759 --> 00:11:05,589
+problems that can be approximated by
+
+282
+00:11:05,589 --> 00:11:07,779
+adding up a large number of small things
+
+283
+00:11:07,779 --> 00:11:10,539
+can be reframed as a question about an
+
+284
+00:11:10,539 --> 00:11:14,049
+area under a certain graph and I'll tell
+
+285
+00:11:14,049 --> 00:11:15,639
+you right now that finding this area
+
+286
+00:11:15,639 --> 00:11:18,579
+this integral function is genuinely hard
+
+287
+00:11:18,579 --> 00:11:21,220
+and whenever you come across a genuinely
+
+288
+00:11:21,220 --> 00:11:23,769
+hard question in math a good policy is
+
+289
+00:11:23,769 --> 00:11:25,809
+to not try too hard to get at the answer
+
+290
+00:11:25,809 --> 00:11:28,029
+directly since usually you just end up
+
+291
+00:11:28,029 --> 00:11:30,249
+banging your head against a wall instead
+
+292
+00:11:30,249 --> 00:11:32,439
+play around with the idea with no
+
+293
+00:11:32,439 --> 00:11:34,839
+particular goal in mind spend some time
+
+294
+00:11:34,839 --> 00:11:36,489
+building up familiarity with the
+
+295
+00:11:36,489 --> 00:11:38,470
+interplay between the function defining
+
+296
+00:11:38,470 --> 00:11:41,139
+the graph in this case x squared and the
+
+297
+00:11:41,139 --> 00:11:43,700
+function giving the area
+
+298
+00:11:43,700 --> 00:11:46,070
+in that playful spirit if you're lucky
+
+299
+00:11:46,070 --> 00:11:47,950
+here's something that you might notice
+
+300
+00:11:47,950 --> 00:11:50,900
+when you slightly increase X by some
+
+301
+00:11:50,900 --> 00:11:53,990
+tiny nudge DX look at the resulting
+
+302
+00:11:53,990 --> 00:11:56,240
+change in area represented with this
+
+303
+00:11:56,240 --> 00:11:58,940
+sliver that I'm going to call da for a
+
+304
+00:11:58,940 --> 00:12:02,510
+tiny difference in area that sliver can
+
+305
+00:12:02,510 --> 00:12:04,010
+be pretty well approximated with a
+
+306
+00:12:04,010 --> 00:12:06,590
+rectangle one whose height is x squared
+
+307
+00:12:06,590 --> 00:12:10,190
+and whose width is DX and the smaller
+
+308
+00:12:10,190 --> 00:12:13,070
+the size of that nudge DX the more that
+
+309
+00:12:13,070 --> 00:12:16,380
+sliver actually looks like a rectangle
+
+310
+00:12:16,380 --> 00:12:18,450
+now this gives us an interesting way to
+
+311
+00:12:18,450 --> 00:12:20,550
+think about how a of X is related to
+
+312
+00:12:20,550 --> 00:12:23,580
+x-squared a change to the output of a
+
+313
+00:12:23,580 --> 00:12:26,580
+this little da is about equal to x
+
+314
+00:12:26,580 --> 00:12:28,770
+squared where X is whatever input you
+
+315
+00:12:28,770 --> 00:12:30,990
+started at x DX
+
+316
+00:12:30,990 --> 00:12:32,880
+the little nudge to the input that
+
+317
+00:12:32,880 --> 00:12:36,240
+caused a to change or rearranged da
+
+318
+00:12:36,240 --> 00:12:39,660
+divided by DX the ratio of a tiny change
+
+319
+00:12:39,660 --> 00:12:42,090
+in a to the tiny change in X that caused
+
+320
+00:12:42,090 --> 00:12:44,670
+it is approximately whatever x squared
+
+321
+00:12:44,670 --> 00:12:46,920
+is at that point and that's an
+
+322
+00:12:46,920 --> 00:12:48,570
+approximation that should get better and
+
+323
+00:12:48,570 --> 00:12:50,400
+better for smaller and smaller choices
+
+324
+00:12:50,400 --> 00:12:53,610
+of DX in other words we don't know what
+
+325
+00:12:53,610 --> 00:12:56,400
+a of X is that remains a mystery but we
+
+326
+00:12:56,400 --> 00:12:58,440
+do know a property that this mystery
+
+327
+00:12:58,440 --> 00:13:00,990
+function must have when you look at two
+
+328
+00:13:00,990 --> 00:13:04,410
+nearby points for example 3 & 3 point 0
+
+329
+00:13:04,410 --> 00:13:05,130
+0 1
+
+330
+00:13:05,130 --> 00:13:07,710
+consider the change to the output of a
+
+331
+00:13:07,710 --> 00:13:10,230
+between those two points the difference
+
+332
+00:13:10,230 --> 00:13:12,390
+between the mystery function evaluated
+
+333
+00:13:12,390 --> 00:13:16,890
+at 3.00 1 and evaluated at 3 that change
+
+334
+00:13:16,890 --> 00:13:18,990
+divided by the difference in the input
+
+335
+00:13:18,990 --> 00:13:22,050
+values which in this case is 0.001
+
+336
+00:13:22,050 --> 00:13:24,750
+should be about equal to the value of x
+
+337
+00:13:24,750 --> 00:13:26,970
+squared for the starting input in this
+
+338
+00:13:26,970 --> 00:13:29,440
+case 3 squared
+
+339
+00:13:29,440 --> 00:13:32,350
+in this relationship between tiny
+
+340
+00:13:32,350 --> 00:13:34,450
+changes to the mystery function and the
+
+341
+00:13:34,450 --> 00:13:36,880
+values of x-squared itself is true at
+
+342
+00:13:36,880 --> 00:13:39,850
+all inputs not just three that doesn't
+
+343
+00:13:39,850 --> 00:13:41,680
+immediately tell us how to find a of X
+
+344
+00:13:41,680 --> 00:13:43,990
+but it provides a very strong clue that
+
+345
+00:13:43,990 --> 00:13:45,769
+we can work with
+
+346
+00:13:45,769 --> 00:13:47,629
+and there's nothing special about the
+
+347
+00:13:47,629 --> 00:13:49,910
+graph x squared here any function
+
+348
+00:13:49,910 --> 00:13:52,459
+defined as the area under some graph has
+
+349
+00:13:52,459 --> 00:13:55,550
+this property that da divided by DX a
+
+350
+00:13:55,550 --> 00:13:58,459
+slight nudge to the output of a divided
+
+351
+00:13:58,459 --> 00:14:00,079
+by a slight nudge to the input that
+
+352
+00:14:00,079 --> 00:14:02,629
+caused it is about equal to the height
+
+353
+00:14:02,629 --> 00:14:06,769
+of the graph at that point again that's
+
+354
+00:14:06,769 --> 00:14:08,269
+an approximation that gets better and
+
+355
+00:14:08,269 --> 00:14:11,139
+better for smaller choices of DX and
+
+356
+00:14:11,139 --> 00:14:13,939
+here we're stumbling into another big
+
+357
+00:14:13,939 --> 00:14:17,149
+idea from calculus derivatives this
+
+358
+00:14:17,149 --> 00:14:20,089
+ratio da divided by DX is called the
+
+359
+00:14:20,089 --> 00:14:23,119
+derivative of a or more technically the
+
+360
+00:14:23,119 --> 00:14:24,470
+derivative is whatever this ratio
+
+361
+00:14:24,470 --> 00:14:26,779
+approaches as DX gets smaller and
+
+362
+00:14:26,779 --> 00:14:29,449
+smaller although I've much more deeply
+
+363
+00:14:29,449 --> 00:14:30,980
+into the idea of a derivative in the
+
+364
+00:14:30,980 --> 00:14:33,499
+next video but loosely speaking it's a
+
+365
+00:14:33,499 --> 00:14:35,509
+measure of how sensitive a function is
+
+366
+00:14:35,509 --> 00:14:38,239
+to small changes in its input you'll see
+
+367
+00:14:38,239 --> 00:14:39,860
+as the series goes on that there are
+
+368
+00:14:39,860 --> 00:14:41,899
+many many ways that you can visualize a
+
+369
+00:14:41,899 --> 00:14:43,910
+derivative depending on what function
+
+370
+00:14:43,910 --> 00:14:44,959
+you're looking at and how you think
+
+371
+00:14:44,959 --> 00:14:48,459
+about tiny nudges to its output
+
+372
+00:14:49,040 --> 00:14:50,750
+and we care about derivatives because
+
+373
+00:14:50,750 --> 00:14:52,940
+they help us solve problems and in our
+
+374
+00:14:52,940 --> 00:14:54,949
+little exploration here we already have
+
+375
+00:14:54,949 --> 00:14:56,660
+a slight glimpse of one way that they're
+
+376
+00:14:56,660 --> 00:14:59,029
+used they are the key to solving
+
+377
+00:14:59,029 --> 00:15:01,339
+integral questions problems that require
+
+378
+00:15:01,339 --> 00:15:04,610
+finding the area under a curve once you
+
+379
+00:15:04,610 --> 00:15:06,440
+gain enough familiarity with computing
+
+380
+00:15:06,440 --> 00:15:08,449
+derivatives you'll be able to look at a
+
+381
+00:15:08,449 --> 00:15:10,430
+situation like this one where you don't
+
+382
+00:15:10,430 --> 00:15:12,410
+know what a function is but you do know
+
+383
+00:15:12,410 --> 00:15:13,970
+that its derivative should be x squared
+
+384
+00:15:13,970 --> 00:15:17,269
+and from that reverse engineer what the
+
+385
+00:15:17,269 --> 00:15:21,529
+function must be and this back and forth
+
+386
+00:15:21,529 --> 00:15:24,230
+between integrals and derivatives where
+
+387
+00:15:24,230 --> 00:15:25,819
+the derivative of a function for the
+
+388
+00:15:25,819 --> 00:15:28,459
+area under a graph gives you back the
+
+389
+00:15:28,459 --> 00:15:30,310
+function defining the graph itself is
+
+390
+00:15:30,310 --> 00:15:32,630
+called the fundamental theorem of
+
+391
+00:15:32,630 --> 00:15:35,449
+calculus it ties together the two big
+
+392
+00:15:35,449 --> 00:15:37,819
+ideas of integrals and derivatives and
+
+393
+00:15:37,819 --> 00:15:40,910
+it shows how in some sense each one is
+
+394
+00:15:40,910 --> 00:15:43,990
+an inverse of the other
+
+395
+00:15:44,019 --> 00:15:46,699
+all of this is only a high-level view
+
+396
+00:15:46,699 --> 00:15:48,709
+just a peek at some of the core ideas
+
+397
+00:15:48,709 --> 00:15:51,019
+that emerge in calculus and what follows
+
+398
+00:15:51,019 --> 00:15:52,699
+in the series are the details for
+
+399
+00:15:52,699 --> 00:15:55,100
+derivatives and integrals and more at
+
+400
+00:15:55,100 --> 00:15:57,050
+all points I want you to feel that you
+
+401
+00:15:57,050 --> 00:15:59,029
+could have invented calculus yourself
+
+402
+00:15:59,029 --> 00:16:01,250
+that if you drew the right pictures and
+
+403
+00:16:01,250 --> 00:16:02,899
+played with each idea in just the right
+
+404
+00:16:02,899 --> 00:16:05,240
+way these formulas and rules and
+
+405
+00:16:05,240 --> 00:16:07,190
+constructs that are presented could have
+
+406
+00:16:07,190 --> 00:16:09,019
+just as easily popped out naturally from
+
+407
+00:16:09,019 --> 00:16:13,339
+your own explorations and before you go
+
+408
+00:16:13,339 --> 00:16:14,899
+it would feel wrong not to give the
+
+409
+00:16:14,899 --> 00:16:16,370
+people who supported this series on
+
+410
+00:16:16,370 --> 00:16:18,920
+patreon a well-deserved thanks both for
+
+411
+00:16:18,920 --> 00:16:20,839
+their financial backing as well as for
+
+412
+00:16:20,839 --> 00:16:22,639
+the suggestions they gave while the
+
+413
+00:16:22,639 --> 00:16:23,870
+series was being developed
+
+414
+00:16:23,870 --> 00:16:26,389
+you see supporters got early access to
+
+415
+00:16:26,389 --> 00:16:28,310
+the videos as I made them and they'll
+
+416
+00:16:28,310 --> 00:16:30,139
+continue to get early access for future
+
+417
+00:16:30,139 --> 00:16:32,870
+essence of type series and as a thanks
+
+418
+00:16:32,870 --> 00:16:33,649
+to the community
+
+419
+00:16:33,649 --> 00:16:35,600
+I keep ads off of new videos for their
+
+420
+00:16:35,600 --> 00:16:38,209
+first month I'm still astounded that I
+
+421
+00:16:38,209 --> 00:16:39,889
+can spend time working on videos like
+
+422
+00:16:39,889 --> 00:16:42,680
+these and in a very direct way you are
+
+423
+00:16:42,680 --> 00:16:45,430
+the one to thank for that
+
+424
+00:16:45,580 --> 00:16:59,840
+[Music]
+
+425
+00:16:59,840 --> 00:17:01,880
+you
+
+426
+00:17:01,880 --> 00:17:06,109
+[Music]
+
