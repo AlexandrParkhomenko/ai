@@ -1,0 +1,6364 @@
+1
+00:00:04,000 --> 00:00:05,600
+basically today i'm going to talk about
+
+2
+00:00:05,600 --> 00:00:07,359
+search i'll give a little brief overview
+
+3
+00:00:07,359 --> 00:00:08,720
+of the past person and future it'll be a
+
+4
+00:00:08,720 --> 00:00:10,800
+survey on a variety of topics meant to
+
+5
+00:00:10,800 --> 00:00:12,320
+familiar familiarize yourself with some
+
+6
+00:00:12,320 --> 00:00:13,679
+of the problems that
+
+7
+00:00:13,679 --> 00:00:17,039
+we see when we're working on search
+
+8
+00:00:17,039 --> 00:00:18,560
+so basically what is search so i'm going
+
+9
+00:00:18,560 --> 00:00:20,160
+to start with that um you've all
+
+10
+00:00:20,160 --> 00:00:22,160
+produced search engines in the past
+
+11
+00:00:22,160 --> 00:00:23,920
+um everybody uses search multiple times
+
+12
+00:00:23,920 --> 00:00:24,880
+a day
+
+13
+00:00:24,880 --> 00:00:26,080
+previously there were search engines
+
+14
+00:00:26,080 --> 00:00:27,519
+like yahoo ask i don't know if everybody
+
+15
+00:00:27,519 --> 00:00:29,279
+anybody remembers at least back in the
+
+16
+00:00:29,279 --> 00:00:30,560
+day
+
+17
+00:00:30,560 --> 00:00:32,238
+google of course is kind of
+
+18
+00:00:32,238 --> 00:00:33,760
+the dominant player in the market right
+
+19
+00:00:33,760 --> 00:00:36,079
+now there's also bing
+
+20
+00:00:36,079 --> 00:00:37,680
+there's also a variety of privacy
+
+21
+00:00:37,680 --> 00:00:38,879
+options coming up so for example
+
+22
+00:00:38,879 --> 00:00:41,440
+duckduckgo focuses a lot on private
+
+23
+00:00:41,440 --> 00:00:44,000
+search ecosia kind of focuses on social
+
+24
+00:00:44,000 --> 00:00:46,480
+good so when you search they plan trees
+
+25
+00:00:46,480 --> 00:00:48,480
+um i work at you.com which is a company
+
+26
+00:00:48,480 --> 00:00:50,800
+that's focused on personalized search as
+
+27
+00:00:50,800 --> 00:00:52,640
+well as private search
+
+28
+00:00:52,640 --> 00:00:54,399
+um so yeah there's there's a variety of
+
+29
+00:00:54,399 --> 00:00:56,000
+um
+
+30
+00:00:56,000 --> 00:00:57,520
+search engines out there but you know
+
+31
+00:00:57,520 --> 00:00:58,800
+search is actually even broader than
+
+32
+00:00:58,800 --> 00:01:01,600
+search engines so their search kind of
+
+33
+00:01:01,600 --> 00:01:03,199
+happening at an enterprise level within
+
+34
+00:01:03,199 --> 00:01:05,119
+companies for a variety of reasons like
+
+35
+00:01:05,119 --> 00:01:06,799
+searching internal documents if you
+
+36
+00:01:06,799 --> 00:01:09,119
+think about mail gmail also
+
+37
+00:01:09,119 --> 00:01:10,720
+in some ways as a search engine over
+
+38
+00:01:10,720 --> 00:01:12,000
+mail
+
+39
+00:01:12,000 --> 00:01:13,280
+in addition to allowing you to send and
+
+40
+00:01:13,280 --> 00:01:15,040
+receive mail
+
+41
+00:01:15,040 --> 00:01:16,799
+any forum like for example reddit has
+
+42
+00:01:16,799 --> 00:01:19,119
+their own search functionalities
+
+43
+00:01:19,119 --> 00:01:21,040
+so search is actually a very broad
+
+44
+00:01:21,040 --> 00:01:22,159
+problem
+
+45
+00:01:22,159 --> 00:01:23,200
+that affects kind of multiple
+
+46
+00:01:23,200 --> 00:01:26,200
+disciplines
+
+47
+00:01:26,240 --> 00:01:28,000
+so in order to talk about search i think
+
+48
+00:01:28,000 --> 00:01:29,680
+that academic discipline most aligned
+
+49
+00:01:29,680 --> 00:01:30,720
+with search is something called
+
+50
+00:01:30,720 --> 00:01:32,159
+information retrieval
+
+51
+00:01:32,159 --> 00:01:33,600
+so if you kind of look at the wikipedia
+
+52
+00:01:33,600 --> 00:01:34,960
+definition of information retrieval it's
+
+53
+00:01:34,960 --> 00:01:36,880
+basically defined as searching for
+
+54
+00:01:36,880 --> 00:01:38,400
+information in a document searching for
+
+55
+00:01:38,400 --> 00:01:40,320
+documents and then also searching for
+
+56
+00:01:40,320 --> 00:01:41,600
+other things
+
+57
+00:01:41,600 --> 00:01:43,360
+so they also describe in this in this
+
+58
+00:01:43,360 --> 00:01:46,320
+little snippet text images or sounds so
+
+59
+00:01:46,320 --> 00:01:48,000
+information retrieval can technically be
+
+60
+00:01:48,000 --> 00:01:49,520
+limited it's not limited to a single
+
+61
+00:01:49,520 --> 00:01:51,759
+modality although the most common form
+
+62
+00:01:51,759 --> 00:01:53,520
+of information retrieval and the most
+
+63
+00:01:53,520 --> 00:01:57,840
+useful one in daily practice is text
+
+64
+00:01:57,840 --> 00:01:59,520
+another definition that i find a little
+
+65
+00:01:59,520 --> 00:02:01,600
+bit more precise is
+
+66
+00:02:01,600 --> 00:02:02,399
+from
+
+67
+00:02:02,399 --> 00:02:04,000
+professor manning's book introduction to
+
+68
+00:02:04,000 --> 00:02:06,000
+information retrieval so this one is
+
+69
+00:02:06,000 --> 00:02:08,239
+basically defined as finding material of
+
+70
+00:02:08,239 --> 00:02:10,000
+an unstructured nature that satisfies an
+
+71
+00:02:10,000 --> 00:02:11,120
+information need within large
+
+72
+00:02:11,120 --> 00:02:13,040
+collections so if we kind of break this
+
+73
+00:02:13,040 --> 00:02:15,360
+down a little bit the first point is
+
+74
+00:02:15,360 --> 00:02:16,879
+finding material of an unstructured
+
+75
+00:02:16,879 --> 00:02:17,760
+nature
+
+76
+00:02:17,760 --> 00:02:18,959
+so
+
+77
+00:02:18,959 --> 00:02:20,080
+if you are looking for structured
+
+78
+00:02:20,080 --> 00:02:22,239
+information databases are very good so
+
+79
+00:02:22,239 --> 00:02:23,280
+search is kind of different than
+
+80
+00:02:23,280 --> 00:02:26,160
+database lookups um because we're
+
+81
+00:02:26,160 --> 00:02:27,360
+actually dealing with unstructured
+
+82
+00:02:27,360 --> 00:02:28,480
+information which makes it a little bit
+
+83
+00:02:28,480 --> 00:02:30,000
+more of a challenging or a little bit of
+
+84
+00:02:30,000 --> 00:02:32,319
+a different problem
+
+85
+00:02:32,319 --> 00:02:33,840
+and then the other point is large
+
+86
+00:02:33,840 --> 00:02:35,280
+collections so when we talk about search
+
+87
+00:02:35,280 --> 00:02:37,040
+information retrieval we're usually
+
+88
+00:02:37,040 --> 00:02:39,200
+operating over very large corpuses of
+
+89
+00:02:39,200 --> 00:02:41,120
+information if you had a small corporate
+
+90
+00:02:41,120 --> 00:02:43,200
+information then you may not actually
+
+91
+00:02:43,200 --> 00:02:45,760
+need to develop robust search techniques
+
+92
+00:02:45,760 --> 00:02:47,200
+does anybody have any questions on kind
+
+93
+00:02:47,200 --> 00:02:48,560
+of what searches and what information
+
+94
+00:02:48,560 --> 00:02:51,840
+retrieval is before i move on
+
+95
+00:02:55,440 --> 00:02:56,560
+cool so
+
+96
+00:02:56,560 --> 00:02:58,800
+i'll now talk about relevance so when we
+
+97
+00:02:58,800 --> 00:03:00,239
+think about search the goal of the
+
+98
+00:03:00,239 --> 00:03:01,519
+search system is to provide relevant
+
+99
+00:03:01,519 --> 00:03:03,440
+information to users
+
+100
+00:03:03,440 --> 00:03:05,200
+but as you can imagine relevance is kind
+
+101
+00:03:05,200 --> 00:03:07,120
+of a little bit of a subjective term
+
+102
+00:03:07,120 --> 00:03:10,080
+and it you know how you define relevant
+
+103
+00:03:10,080 --> 00:03:12,000
+and what relevance means matters a lot
+
+104
+00:03:12,000 --> 00:03:13,200
+and probably differs from domain to
+
+105
+00:03:13,200 --> 00:03:14,959
+domain but when you think about general
+
+106
+00:03:14,959 --> 00:03:16,879
+search um you can exit you can kind of
+
+107
+00:03:16,879 --> 00:03:18,720
+think about you know different types of
+
+108
+00:03:18,720 --> 00:03:20,879
+search categories so one might be facts
+
+109
+00:03:20,879 --> 00:03:22,239
+if you're looking up when was barack
+
+110
+00:03:22,239 --> 00:03:24,319
+obama born the relevant information is
+
+111
+00:03:24,319 --> 00:03:25,760
+quite obvious it's just literally the
+
+112
+00:03:25,760 --> 00:03:28,560
+year or date that obama was born
+
+113
+00:03:28,560 --> 00:03:29,519
+similarly with the what is the
+
+114
+00:03:29,519 --> 00:03:31,360
+population of california it's likely
+
+115
+00:03:31,360 --> 00:03:32,720
+going to be a number but then you know
+
+116
+00:03:32,720 --> 00:03:34,000
+there's also deeper levels like when you
+
+117
+00:03:34,000 --> 00:03:35,920
+think about population of california
+
+118
+00:03:35,920 --> 00:03:37,680
+are we talking about
+
+119
+00:03:37,680 --> 00:03:39,120
+or if it's like you know a more specific
+
+120
+00:03:39,120 --> 00:03:40,959
+city like san francisco are you talking
+
+121
+00:03:40,959 --> 00:03:42,319
+about the greater metropolitan area are
+
+122
+00:03:42,319 --> 00:03:45,360
+you talking about within the city itself
+
+123
+00:03:45,360 --> 00:03:46,400
+so you have to understand a little bit
+
+124
+00:03:46,400 --> 00:03:48,319
+about the intent when people usually ask
+
+125
+00:03:48,319 --> 00:03:49,280
+things like that they're talking about
+
+126
+00:03:49,280 --> 00:03:51,120
+the greater metropolitan area
+
+127
+00:03:51,120 --> 00:03:52,720
+but sometimes they're not so a lot of
+
+128
+00:03:52,720 --> 00:03:54,560
+it's actually understanding intent and
+
+129
+00:03:54,560 --> 00:03:55,760
+this is kind of what makes relevance a
+
+130
+00:03:55,760 --> 00:03:56,879
+pretty tricky
+
+131
+00:03:56,879 --> 00:03:58,879
+issue another one is recommendation so
+
+132
+00:03:58,879 --> 00:04:00,080
+if you say what movie should i watch
+
+133
+00:04:00,080 --> 00:04:01,760
+into a search engine
+
+134
+00:04:01,760 --> 00:04:03,920
+the relevant information there is also a
+
+135
+00:04:03,920 --> 00:04:05,760
+little bit less defined as in the fax
+
+136
+00:04:05,760 --> 00:04:07,760
+case so for example you know if there's
+
+137
+00:04:07,760 --> 00:04:09,439
+a new movie coming out
+
+138
+00:04:09,439 --> 00:04:10,879
+i recently watched that movie everything
+
+139
+00:04:10,879 --> 00:04:12,879
+everywhere all at once so i mean that
+
+140
+00:04:12,879 --> 00:04:14,480
+might be a good recommendation based on
+
+141
+00:04:14,480 --> 00:04:15,599
+recency
+
+142
+00:04:15,599 --> 00:04:17,040
+um so
+
+143
+00:04:17,040 --> 00:04:18,720
+there's but at the same time there's no
+
+144
+00:04:18,720 --> 00:04:19,839
+exact answers you have to take into
+
+145
+00:04:19,839 --> 00:04:22,079
+account popularity signals etc if you
+
+146
+00:04:22,079 --> 00:04:23,759
+look up best countries to visit
+
+147
+00:04:23,759 --> 00:04:25,440
+similarly i think a lot of this goal the
+
+148
+00:04:25,440 --> 00:04:26,639
+search engine becomes to provide
+
+149
+00:04:26,639 --> 00:04:28,560
+reputable sources so you want to have
+
+150
+00:04:28,560 --> 00:04:30,080
+people who really know
+
+151
+00:04:30,080 --> 00:04:31,759
+are travel guides etc
+
+152
+00:04:31,759 --> 00:04:33,600
+so you want to take into account signals
+
+153
+00:04:33,600 --> 00:04:34,960
+for example pagerank can be useful as
+
+154
+00:04:34,960 --> 00:04:36,000
+well
+
+155
+00:04:36,000 --> 00:04:37,600
+another type of category of searches is
+
+156
+00:04:37,600 --> 00:04:39,600
+something like research so for example
+
+157
+00:04:39,600 --> 00:04:41,360
+you know if you're typing an information
+
+158
+00:04:41,360 --> 00:04:43,120
+retrieval papers you're not looking for
+
+159
+00:04:43,120 --> 00:04:45,120
+a single answer or a single movie or a
+
+160
+00:04:45,120 --> 00:04:46,800
+single date you're looking for kind of a
+
+161
+00:04:46,800 --> 00:04:48,080
+set information
+
+162
+00:04:48,080 --> 00:04:49,520
+similarly if you look up how to paint a
+
+163
+00:04:49,520 --> 00:04:50,479
+wall
+
+164
+00:04:50,479 --> 00:04:52,080
+you're probably not looking for one
+
+165
+00:04:52,080 --> 00:04:53,120
+method you're looking for kind of
+
+166
+00:04:53,120 --> 00:04:54,720
+different methods and you want to find a
+
+167
+00:04:54,720 --> 00:04:56,080
+variety of sources and maybe even
+
+168
+00:04:56,080 --> 00:04:57,840
+extracted snippets from those sources to
+
+169
+00:04:57,840 --> 00:04:59,680
+allow you to do your job
+
+170
+00:04:59,680 --> 00:05:01,199
+uh similarly if you're doing a task say
+
+171
+00:05:01,199 --> 00:05:03,120
+you're filing immigration forms
+
+172
+00:05:03,120 --> 00:05:04,960
+um again search is kind of useful for
+
+173
+00:05:04,960 --> 00:05:06,720
+connecting people and making that type
+
+174
+00:05:06,720 --> 00:05:08,639
+of stuff more accessible
+
+175
+00:05:08,639 --> 00:05:10,479
+um is there any i guess i don't know do
+
+176
+00:05:10,479 --> 00:05:11,680
+that people have any questions about
+
+177
+00:05:11,680 --> 00:05:13,039
+relevance or
+
+178
+00:05:13,039 --> 00:05:14,400
+i don't know does anybody want to kind
+
+179
+00:05:14,400 --> 00:05:16,240
+of think of another category i might
+
+180
+00:05:16,240 --> 00:05:17,680
+have missed here of different types of
+
+181
+00:05:17,680 --> 00:05:19,199
+searches that you've done maybe today or
+
+182
+00:05:19,199 --> 00:05:21,600
+yesterday
+
+183
+00:05:23,360 --> 00:05:25,280
+so if you have questions also you can
+
+184
+00:05:25,280 --> 00:05:26,639
+dive into
+
+185
+00:05:26,639 --> 00:05:28,160
+zoom to uh
+
+186
+00:05:28,160 --> 00:05:30,160
+type in your question in the shared room
+
+187
+00:05:30,160 --> 00:05:31,840
+so we don't have questions so far but i
+
+188
+00:05:31,840 --> 00:05:34,080
+do have some connection later
+
+189
+00:05:34,080 --> 00:05:35,840
+okay yeah yeah sure i'll keep moving on
+
+190
+00:05:35,840 --> 00:05:37,600
+then
+
+191
+00:05:37,600 --> 00:05:38,560
+so
+
+192
+00:05:38,560 --> 00:05:40,880
+now let's talk about search systems so
+
+193
+00:05:40,880 --> 00:05:42,320
+when we're building a search system
+
+194
+00:05:42,320 --> 00:05:43,680
+there's a variety of considerations that
+
+195
+00:05:43,680 --> 00:05:46,160
+we can account and this applies to very
+
+196
+00:05:46,160 --> 00:05:47,919
+specialized search systems
+
+197
+00:05:47,919 --> 00:05:49,680
+um it applies to bigger search systems
+
+198
+00:05:49,680 --> 00:05:52,000
+as well so you know general search cases
+
+199
+00:05:52,000 --> 00:05:53,440
+are you know companies like you.com and
+
+200
+00:05:53,440 --> 00:05:54,560
+google
+
+201
+00:05:54,560 --> 00:05:56,080
+where we're trying to kind of service a
+
+202
+00:05:56,080 --> 00:05:57,759
+variety of
+
+203
+00:05:57,759 --> 00:05:59,600
+um you know search method like basically
+
+204
+00:05:59,600 --> 00:06:01,600
+a variety of queries not related to any
+
+205
+00:06:01,600 --> 00:06:04,000
+specific topic but really general but
+
+206
+00:06:04,000 --> 00:06:05,280
+you can also think of in the space of
+
+207
+00:06:05,280 --> 00:06:06,639
+healthcare so this class kind of focuses
+
+208
+00:06:06,639 --> 00:06:08,720
+a lot on ai and healthcare as well
+
+209
+00:06:08,720 --> 00:06:10,560
+imagine like electronic medical records
+
+210
+00:06:10,560 --> 00:06:12,000
+there that also can be thought of as a
+
+211
+00:06:12,000 --> 00:06:13,120
+search system
+
+212
+00:06:13,120 --> 00:06:14,319
+um there's a lot of unstructured
+
+213
+00:06:14,319 --> 00:06:16,080
+document and clinical notes so when
+
+214
+00:06:16,080 --> 00:06:18,000
+you're searching um a lot of these
+
+215
+00:06:18,000 --> 00:06:19,919
+considerations still apply and yeah i'll
+
+216
+00:06:19,919 --> 00:06:21,600
+go through some of them um but so one
+
+217
+00:06:21,600 --> 00:06:23,600
+would be relevant so is the information
+
+218
+00:06:23,600 --> 00:06:25,360
+relevant to the user so when building a
+
+219
+00:06:25,360 --> 00:06:26,400
+search system you'd want to kind of
+
+220
+00:06:26,400 --> 00:06:27,840
+benchmark and measure
+
+221
+00:06:27,840 --> 00:06:29,600
+how relevant the information you're
+
+222
+00:06:29,600 --> 00:06:31,199
+providing is a second important
+
+223
+00:06:31,199 --> 00:06:33,440
+consideration is latency so usually we
+
+224
+00:06:33,440 --> 00:06:34,560
+measure latency on the order of
+
+225
+00:06:34,560 --> 00:06:35,919
+milliseconds
+
+226
+00:06:35,919 --> 00:06:36,720
+um
+
+227
+00:06:36,720 --> 00:06:38,479
+because at you know at today's level you
+
+228
+00:06:38,479 --> 00:06:39,759
+know google has kind of trained all of
+
+229
+00:06:39,759 --> 00:06:42,560
+us to expect search to be really fast if
+
+230
+00:06:42,560 --> 00:06:45,039
+you're above you know a second or you're
+
+231
+00:06:45,039 --> 00:06:46,720
+measured in seconds that's often very
+
+232
+00:06:46,720 --> 00:06:49,039
+slow for consumers but of course this
+
+233
+00:06:49,039 --> 00:06:50,880
+can differ based on the discipline
+
+234
+00:06:50,880 --> 00:06:52,960
+but in general we want to operate on the
+
+235
+00:06:52,960 --> 00:06:55,199
+order of magnitude of milliseconds
+
+236
+00:06:55,199 --> 00:06:56,080
+um
+
+237
+00:06:56,080 --> 00:06:57,599
+and it could be like you know 100 to
+
+238
+00:06:57,599 --> 00:06:59,680
+like 600 milliseconds
+
+239
+00:06:59,680 --> 00:07:01,120
+again it depends a little bit on the use
+
+240
+00:07:01,120 --> 00:07:04,000
+case the user the system etc
+
+241
+00:07:04,000 --> 00:07:05,680
+user interfaces are very important for
+
+242
+00:07:05,680 --> 00:07:07,919
+search systems um so when we think about
+
+243
+00:07:07,919 --> 00:07:09,680
+a user interface i think there's two
+
+244
+00:07:09,680 --> 00:07:10,960
+fundamental questions that we have to
+
+245
+00:07:10,960 --> 00:07:11,759
+answer
+
+246
+00:07:11,759 --> 00:07:13,520
+one is how do we present the information
+
+247
+00:07:13,520 --> 00:07:15,840
+to the user um do we you know do we give
+
+248
+00:07:15,840 --> 00:07:17,440
+them the snippet do we give them links
+
+249
+00:07:17,440 --> 00:07:18,880
+do we give them
+
+250
+00:07:18,880 --> 00:07:20,880
+links plus content plus you know some
+
+251
+00:07:20,880 --> 00:07:21,919
+reviews
+
+252
+00:07:21,919 --> 00:07:23,360
+and also how do we accept input from the
+
+253
+00:07:23,360 --> 00:07:25,520
+user so do we allow people to kind of
+
+254
+00:07:25,520 --> 00:07:27,039
+are they asking a question for example
+
+255
+00:07:27,039 --> 00:07:28,880
+if you think about alexa it's kind of
+
+256
+00:07:28,880 --> 00:07:30,479
+you know voice based input
+
+257
+00:07:30,479 --> 00:07:31,759
+but if you think about you know the most
+
+258
+00:07:31,759 --> 00:07:33,199
+typical uses of search people are typing
+
+259
+00:07:33,199 --> 00:07:35,840
+into a keyboard into a little box
+
+260
+00:07:35,840 --> 00:07:37,680
+um so that's kind of the user interface
+
+261
+00:07:37,680 --> 00:07:38,800
+from the input side and then also the
+
+262
+00:07:38,800 --> 00:07:40,560
+presentation section
+
+263
+00:07:40,560 --> 00:07:42,080
+experience so one thing we think a lot
+
+264
+00:07:42,080 --> 00:07:43,919
+about is is the information actually
+
+265
+00:07:43,919 --> 00:07:45,919
+actionable so if we give you information
+
+266
+00:07:45,919 --> 00:07:47,360
+does it allow you to take action from
+
+267
+00:07:47,360 --> 00:07:50,080
+there so action can mean multiple things
+
+268
+00:07:50,080 --> 00:07:52,080
+in one case action might be
+
+269
+00:07:52,080 --> 00:07:54,319
+um you know finding the next link that
+
+270
+00:07:54,319 --> 00:07:56,240
+you want to click on that kind of brings
+
+271
+00:07:56,240 --> 00:07:57,280
+you closer to the goal you were
+
+272
+00:07:57,280 --> 00:07:58,400
+searching for
+
+273
+00:07:58,400 --> 00:08:00,240
+action might also be like you know an
+
+274
+00:08:00,240 --> 00:08:01,360
+actual tangible thing you might be
+
+275
+00:08:01,360 --> 00:08:03,360
+looking for plane tickets action might
+
+276
+00:08:03,360 --> 00:08:04,720
+be you know buying a plane ticket there
+
+277
+00:08:04,720 --> 00:08:06,319
+on the spot or if you're looking for
+
+278
+00:08:06,319 --> 00:08:08,960
+recipes action might be you know copying
+
+279
+00:08:08,960 --> 00:08:10,720
+the recipe that you want and you know
+
+280
+00:08:10,720 --> 00:08:12,479
+actually making a you know i don't know
+
+281
+00:08:12,479 --> 00:08:13,520
+banana bread that's what you were
+
+282
+00:08:13,520 --> 00:08:14,879
+searching for
+
+283
+00:08:14,879 --> 00:08:17,120
+modalities are another question so what
+
+284
+00:08:17,120 --> 00:08:18,560
+search modalities do we support when
+
+285
+00:08:18,560 --> 00:08:20,720
+we're building a search system um you
+
+286
+00:08:20,720 --> 00:08:22,479
+know text is as i mentioned the most
+
+287
+00:08:22,479 --> 00:08:25,120
+common one but there's also image search
+
+288
+00:08:25,120 --> 00:08:26,560
+there's you know
+
+289
+00:08:26,560 --> 00:08:27,840
+in terms of like you know ingesting
+
+290
+00:08:27,840 --> 00:08:30,639
+input you know voice recognition etc
+
+291
+00:08:30,639 --> 00:08:31,919
+throughput is another question so this
+
+292
+00:08:31,919 --> 00:08:33,519
+also depends on your intended use case
+
+293
+00:08:33,519 --> 00:08:35,360
+but how many queries per second can you
+
+294
+00:08:35,360 --> 00:08:36,320
+support
+
+295
+00:08:36,320 --> 00:08:37,919
+um so for certain systems if you don't
+
+296
+00:08:37,919 --> 00:08:39,919
+have that many users it's probably not
+
+297
+00:08:39,919 --> 00:08:41,279
+that important but if you have many
+
+298
+00:08:41,279 --> 00:08:43,279
+users and you want to scale to hundreds
+
+299
+00:08:43,279 --> 00:08:45,200
+of millions of users throughput becomes
+
+300
+00:08:45,200 --> 00:08:47,760
+very important as does cost it's another
+
+301
+00:08:47,760 --> 00:08:48,800
+you know another really important
+
+302
+00:08:48,800 --> 00:08:50,160
+consideration is how expensive is the
+
+303
+00:08:50,160 --> 00:08:52,320
+search isn't to maintain
+
+304
+00:08:52,320 --> 00:08:53,920
+and you know there's multiple factors
+
+305
+00:08:53,920 --> 00:08:55,279
+that can drive cost
+
+306
+00:08:55,279 --> 00:08:56,880
+one of which is
+
+307
+00:08:56,880 --> 00:08:58,080
+the most important of which is probably
+
+308
+00:08:58,080 --> 00:08:59,680
+going to be the indexing cost because
+
+309
+00:08:59,680 --> 00:09:00,959
+you have to store the information and
+
+310
+00:09:00,959 --> 00:09:04,000
+indexing is in general expensive because
+
+311
+00:09:04,000 --> 00:09:05,279
+you need it to be stored in a way that
+
+312
+00:09:05,279 --> 00:09:07,839
+can be retrieved very fast and it kind
+
+313
+00:09:07,839 --> 00:09:09,600
+of dies back into latency
+
+314
+00:09:09,600 --> 00:09:10,959
+so there's often kind of trade-offs
+
+315
+00:09:10,959 --> 00:09:12,720
+between relevance latency costs and
+
+316
+00:09:12,720 --> 00:09:14,000
+throughput
+
+317
+00:09:14,000 --> 00:09:15,200
+um so that's kind of a little bit of
+
+318
+00:09:15,200 --> 00:09:16,320
+some of the considerations of search
+
+319
+00:09:16,320 --> 00:09:17,600
+systems
+
+320
+00:09:17,600 --> 00:09:19,279
+does anybody have any questions on some
+
+321
+00:09:19,279 --> 00:09:20,839
+of these
+
+322
+00:09:20,839 --> 00:09:24,000
+considerations uh yeah please yeah yeah
+
+323
+00:09:24,000 --> 00:09:25,680
+another question again
+
+324
+00:09:25,680 --> 00:09:26,959
+oh okay
+
+325
+00:09:26,959 --> 00:09:29,279
+sorry
+
+326
+00:09:30,560 --> 00:09:32,480
+uh yeah i can hear you
+
+327
+00:09:32,480 --> 00:09:35,480
+uh
+
+328
+00:09:43,200 --> 00:09:45,120
+relevance and latency
+
+329
+00:09:45,120 --> 00:09:46,080
+like
+
+330
+00:09:46,080 --> 00:09:47,760
+is it
+
+331
+00:09:47,760 --> 00:09:49,760
+can you be considered between relevance
+
+332
+00:09:49,760 --> 00:09:51,360
+and agencies and then you mean you have
+
+333
+00:09:51,360 --> 00:09:53,279
+like if you would want to show the
+
+334
+00:09:53,279 --> 00:09:55,839
+showcase the most relevant um
+
+335
+00:09:55,839 --> 00:09:57,440
+search then you could go through like
+
+336
+00:09:57,440 --> 00:09:59,120
+brute force even in your recommendation
+
+337
+00:09:59,120 --> 00:10:00,320
+system otherwise you can do like
+
+338
+00:10:00,320 --> 00:10:01,440
+something like that
+
+339
+00:10:01,440 --> 00:10:03,600
+or is it like
+
+340
+00:10:03,600 --> 00:10:04,959
+i i just want to tell you if you can go
+
+341
+00:10:04,959 --> 00:10:06,480
+to a big defender that's how you kind of
+
+342
+00:10:06,480 --> 00:10:09,120
+like make this train up at eu.com
+
+343
+00:10:09,120 --> 00:10:11,040
+yeah yeah so sorry your voice is a
+
+344
+00:10:11,040 --> 00:10:13,839
+little bit grainy my my apologies but i
+
+345
+00:10:13,839 --> 00:10:15,920
+think
+
+346
+00:10:15,920 --> 00:10:17,279
+your question it seemed to be what is
+
+347
+00:10:17,279 --> 00:10:18,480
+the trade-off between relevance and
+
+348
+00:10:18,480 --> 00:10:21,040
+latency um in practice right and going a
+
+349
+00:10:21,040 --> 00:10:23,600
+little bit deeper onto that yeah
+
+350
+00:10:23,600 --> 00:10:24,959
+okay yeah yeah sure so yeah that's
+
+351
+00:10:24,959 --> 00:10:27,120
+that's a great question so and i'll get
+
+352
+00:10:27,120 --> 00:10:28,399
+into this a little bit later in the talk
+
+353
+00:10:28,399 --> 00:10:29,440
+when we go into some of the more
+
+354
+00:10:29,440 --> 00:10:31,279
+technical concepts
+
+355
+00:10:31,279 --> 00:10:33,360
+but you can imagine that
+
+356
+00:10:33,360 --> 00:10:34,959
+having as you mentioned a brute force
+
+357
+00:10:34,959 --> 00:10:35,839
+approach
+
+358
+00:10:35,839 --> 00:10:37,680
+could you know provide more relevance if
+
+359
+00:10:37,680 --> 00:10:38,800
+you're able to
+
+360
+00:10:38,800 --> 00:10:40,240
+you know look at more information within
+
+361
+00:10:40,240 --> 00:10:42,160
+a document and do more computation
+
+362
+00:10:42,160 --> 00:10:43,680
+you're likely to improve relevance at
+
+363
+00:10:43,680 --> 00:10:45,680
+the cost of latency one simple example
+
+364
+00:10:45,680 --> 00:10:48,000
+might be long documents so imagine you
+
+365
+00:10:48,000 --> 00:10:48,880
+have
+
+366
+00:10:48,880 --> 00:10:51,760
+um a corpus of 100 million really long
+
+367
+00:10:51,760 --> 00:10:53,839
+documents you might be able to surface
+
+368
+00:10:53,839 --> 00:10:55,760
+more relevant information if you
+
+369
+00:10:55,760 --> 00:10:57,360
+um do some type of processing that looks
+
+370
+00:10:57,360 --> 00:10:59,279
+across all the information across all
+
+371
+00:10:59,279 --> 00:11:00,720
+the documents
+
+372
+00:11:00,720 --> 00:11:02,160
+another approach might be to only look
+
+373
+00:11:02,160 --> 00:11:03,440
+at the summary
+
+374
+00:11:03,440 --> 00:11:05,360
+field of each of these documents so
+
+375
+00:11:05,360 --> 00:11:07,760
+that's a very simple example of how
+
+376
+00:11:07,760 --> 00:11:09,200
+one approach might have lower latency
+
+377
+00:11:09,200 --> 00:11:10,800
+but the other one might yield more
+
+378
+00:11:10,800 --> 00:11:12,720
+relevant information
+
+379
+00:11:12,720 --> 00:11:13,920
+but yeah there's a there's a lot i think
+
+380
+00:11:13,920 --> 00:11:15,279
+you also mentioned some techniques like
+
+381
+00:11:15,279 --> 00:11:17,600
+lsh etc like hashing
+
+382
+00:11:17,600 --> 00:11:19,200
+um yeah i mean there but i mean the goal
+
+383
+00:11:19,200 --> 00:11:20,240
+is really to provide relevant
+
+384
+00:11:20,240 --> 00:11:23,200
+information at low latency um so we do
+
+385
+00:11:23,200 --> 00:11:25,200
+want to kind of optimize on both to the
+
+386
+00:11:25,200 --> 00:11:26,959
+degree we can
+
+387
+00:11:26,959 --> 00:11:27,920
+and i'll go more into some of the
+
+388
+00:11:27,920 --> 00:11:29,120
+technical details there does that answer
+
+389
+00:11:29,120 --> 00:11:30,800
+your question or do you have another did
+
+390
+00:11:30,800 --> 00:11:33,120
+you have something more specific in mind
+
+391
+00:11:33,120 --> 00:11:36,160
+no that's good thank you
+
+392
+00:11:36,800 --> 00:11:38,000
+cool does anybody else have any
+
+393
+00:11:38,000 --> 00:11:39,680
+questions on some of the search system
+
+394
+00:11:39,680 --> 00:11:42,680
+considerations
+
+395
+00:11:44,720 --> 00:11:46,000
+okay so i'll talk a little bit about the
+
+396
+00:11:46,000 --> 00:11:47,519
+high-level architecture of common search
+
+397
+00:11:47,519 --> 00:11:49,680
+systems um so in general when we think
+
+398
+00:11:49,680 --> 00:11:52,000
+about search systems um there's some
+
+399
+00:11:52,000 --> 00:11:53,279
+steps that kind of go there's it's
+
+400
+00:11:53,279 --> 00:11:55,200
+almost you can think of it as a pipeline
+
+401
+00:11:55,200 --> 00:11:57,839
+so a query is what the user inputs into
+
+402
+00:11:57,839 --> 00:11:59,839
+the search system expecting some type of
+
+403
+00:11:59,839 --> 00:12:03,120
+relevant output so the query comes in
+
+404
+00:12:03,120 --> 00:12:04,800
+oftentimes we do things like query
+
+405
+00:12:04,800 --> 00:12:07,040
+transformation what this means is we
+
+406
+00:12:07,040 --> 00:12:09,120
+might want to transform the query
+
+407
+00:12:09,120 --> 00:12:10,399
+normalize it
+
+408
+00:12:10,399 --> 00:12:12,800
+um you know do multiple versions of the
+
+409
+00:12:12,800 --> 00:12:13,680
+query
+
+410
+00:12:13,680 --> 00:12:15,040
+um based on kind of what we see from
+
+411
+00:12:15,040 --> 00:12:17,440
+other users etc so we can transform the
+
+412
+00:12:17,440 --> 00:12:18,399
+query
+
+413
+00:12:18,399 --> 00:12:19,680
+understand the intent behind it a little
+
+414
+00:12:19,680 --> 00:12:20,639
+bit better
+
+415
+00:12:20,639 --> 00:12:22,639
+we then bring it to a retrieval system
+
+416
+00:12:22,639 --> 00:12:24,399
+so retrieval is usually when people talk
+
+417
+00:12:24,399 --> 00:12:26,079
+about retrieval we're thinking about
+
+418
+00:12:26,079 --> 00:12:27,519
+kind of generating a large set of
+
+419
+00:12:27,519 --> 00:12:29,519
+candidate documents from an even larger
+
+420
+00:12:29,519 --> 00:12:31,440
+corpus so you can imagine if we have
+
+421
+00:12:31,440 --> 00:12:32,720
+billions of documents or hundreds of
+
+422
+00:12:32,720 --> 00:12:34,720
+millions of documents the retrieval step
+
+423
+00:12:34,720 --> 00:12:37,120
+might get 100 or 1 000
+
+424
+00:12:37,120 --> 00:12:38,959
+of the relevant documents
+
+425
+00:12:38,959 --> 00:12:40,480
+and then re-ranking is kind of the last
+
+426
+00:12:40,480 --> 00:12:42,240
+stage where once you have some of these
+
+427
+00:12:42,240 --> 00:12:44,160
+documents you want to re-rank them
+
+428
+00:12:44,160 --> 00:12:45,680
+in an order that will be best for the
+
+429
+00:12:45,680 --> 00:12:48,639
+user because when we think about search
+
+430
+00:12:48,639 --> 00:12:51,040
+really precision and recall are very two
+
+431
+00:12:51,040 --> 00:12:52,720
+very important concepts
+
+432
+00:12:52,720 --> 00:12:54,240
+i'll assume you all kind of understand
+
+433
+00:12:54,240 --> 00:12:56,240
+what those are but you can imagine that
+
+434
+00:12:56,240 --> 00:12:58,399
+precision is really important for search
+
+435
+00:12:58,399 --> 00:13:01,040
+um recall is also important but
+
+436
+00:13:01,040 --> 00:13:02,320
+um you know when you have hundreds of
+
+437
+00:13:02,320 --> 00:13:04,399
+millions of documents there are likely
+
+438
+00:13:04,399 --> 00:13:06,880
+going to be you know more documents for
+
+439
+00:13:06,880 --> 00:13:08,639
+a specific topic than a user can you
+
+440
+00:13:08,639 --> 00:13:10,639
+know ever read so that's why precision
+
+441
+00:13:10,639 --> 00:13:11,920
+becomes important
+
+442
+00:13:11,920 --> 00:13:14,000
+if you show a user you know the wrong
+
+443
+00:13:14,000 --> 00:13:16,320
+document at the first link they're going
+
+444
+00:13:16,320 --> 00:13:17,680
+to be it's going to be a pretty poor
+
+445
+00:13:17,680 --> 00:13:19,200
+user experience
+
+446
+00:13:19,200 --> 00:13:20,959
+so precision is generally very important
+
+447
+00:13:20,959 --> 00:13:22,800
+but of course you want to have you know
+
+448
+00:13:22,800 --> 00:13:25,680
+recall be good as well and again usually
+
+449
+00:13:25,680 --> 00:13:27,040
+people only look at the first couple
+
+450
+00:13:27,040 --> 00:13:28,480
+links i think one of the things to think
+
+451
+00:13:28,480 --> 00:13:30,880
+about search is that it's really um
+
+452
+00:13:30,880 --> 00:13:33,120
+people you know are often trying to find
+
+453
+00:13:33,120 --> 00:13:34,800
+information very fast
+
+454
+00:13:34,800 --> 00:13:36,240
+you don't want to burden the user at all
+
+455
+00:13:36,240 --> 00:13:38,000
+so you want you know real information to
+
+456
+00:13:38,000 --> 00:13:39,519
+come up first but yeah so that's kind of
+
+457
+00:13:39,519 --> 00:13:41,440
+some of the steps in the pipeline of you
+
+458
+00:13:41,440 --> 00:13:42,800
+know common search systems and this
+
+459
+00:13:42,800 --> 00:13:44,800
+again applies across domains from web
+
+460
+00:13:44,800 --> 00:13:46,320
+general web search to more specific
+
+461
+00:13:46,320 --> 00:13:51,199
+search um within you know emrs etc
+
+462
+00:13:51,199 --> 00:13:53,279
+or even within mail like you know
+
+463
+00:13:53,279 --> 00:13:55,360
+outlook for example
+
+464
+00:13:55,360 --> 00:13:57,279
+so here i have a question here
+
+465
+00:13:57,279 --> 00:13:58,240
+yeah
+
+466
+00:13:58,240 --> 00:14:01,440
+so query basic can be divided into two
+
+467
+00:14:01,440 --> 00:14:04,399
+types one is informational query
+
+468
+00:14:04,399 --> 00:14:06,639
+and the other one is called navigational
+
+469
+00:14:06,639 --> 00:14:08,000
+query
+
+470
+00:14:08,000 --> 00:14:10,320
+so informational means for example you
+
+471
+00:14:10,320 --> 00:14:11,920
+guys have been covered nineteen
+
+472
+00:14:11,920 --> 00:14:13,040
+treatment
+
+473
+00:14:13,040 --> 00:14:15,440
+and i don't know the ground truth
+
+474
+00:14:15,440 --> 00:14:18,079
+so therefore precision is important
+
+475
+00:14:18,079 --> 00:14:19,839
+right if you're missing some
+
+476
+00:14:19,839 --> 00:14:21,920
+much better articles because i have no
+
+477
+00:14:21,920 --> 00:14:24,240
+idea their existence so i wouldn't
+
+478
+00:14:24,240 --> 00:14:25,440
+complain
+
+479
+00:14:25,440 --> 00:14:27,440
+but for navigational means something
+
+480
+00:14:27,440 --> 00:14:29,920
+like something i typed in michael jordan
+
+481
+00:14:29,920 --> 00:14:32,000
+and you give me uh the researcher
+
+482
+00:14:32,000 --> 00:14:33,920
+michael jordan in berkeley
+
+483
+00:14:33,920 --> 00:14:35,519
+and most of people will be offended
+
+484
+00:14:35,519 --> 00:14:37,680
+because they want to look at this
+
+485
+00:14:37,680 --> 00:14:39,920
+basketball player right in that
+
+486
+00:14:39,920 --> 00:14:42,480
+situation the recall will be critical
+
+487
+00:14:42,480 --> 00:14:43,360
+so
+
+488
+00:14:43,360 --> 00:14:45,040
+do you have to handle
+
+489
+00:14:45,040 --> 00:14:48,000
+uh kind of classified search type
+
+490
+00:14:48,000 --> 00:14:50,000
+internally or
+
+491
+00:14:50,000 --> 00:14:52,959
+how do you deal with the trade-off
+
+492
+00:14:52,959 --> 00:14:54,639
+yeah yeah that's that's actually a great
+
+493
+00:14:54,639 --> 00:14:56,959
+question um and again i think the things
+
+494
+00:14:56,959 --> 00:14:58,720
+i'm talking about are you know concepts
+
+495
+00:14:58,720 --> 00:15:00,079
+that are in the public domain i can't go
+
+496
+00:15:00,079 --> 00:15:01,360
+too much into
+
+497
+00:15:01,360 --> 00:15:02,959
+a lot of the specific technologies we
+
+498
+00:15:02,959 --> 00:15:06,160
+use but at a high level um
+
+499
+00:15:06,160 --> 00:15:07,680
+it is important and it depends on the
+
+500
+00:15:07,680 --> 00:15:09,839
+domain like as you mentioned domain can
+
+501
+00:15:09,839 --> 00:15:12,240
+be defined as are you searching you know
+
+502
+00:15:12,240 --> 00:15:14,959
+for travel or for recipes or for
+
+503
+00:15:14,959 --> 00:15:16,800
+you know something like academic
+
+504
+00:15:16,800 --> 00:15:18,480
+research that's one you know level in
+
+505
+00:15:18,480 --> 00:15:19,199
+which
+
+506
+00:15:19,199 --> 00:15:20,880
+one could classify a query the other one
+
+507
+00:15:20,880 --> 00:15:22,720
+is the query itself as you mentioned
+
+508
+00:15:22,720 --> 00:15:24,079
+there's informational and navigational
+
+509
+00:15:24,079 --> 00:15:25,120
+queries
+
+510
+00:15:25,120 --> 00:15:27,040
+um and i think one thing is you know a
+
+511
+00:15:27,040 --> 00:15:28,639
+lot of it comes down to
+
+512
+00:15:28,639 --> 00:15:30,399
+the evaluation infrastructure
+
+513
+00:15:30,399 --> 00:15:32,079
+um so you know when you think about
+
+514
+00:15:32,079 --> 00:15:33,440
+recalling precision
+
+515
+00:15:33,440 --> 00:15:34,800
+as you mentioned the trade-offs might be
+
+516
+00:15:34,800 --> 00:15:35,680
+different between the two different
+
+517
+00:15:35,680 --> 00:15:36,959
+types of queries
+
+518
+00:15:36,959 --> 00:15:39,120
+and we would want to
+
+519
+00:15:39,120 --> 00:15:41,199
+be able to kind of have good metrics on
+
+520
+00:15:41,199 --> 00:15:42,480
+both types
+
+521
+00:15:42,480 --> 00:15:44,560
+in general it's kind of you know
+
+522
+00:15:44,560 --> 00:15:46,880
+it's nice to have end-to-end systems um
+
+523
+00:15:46,880 --> 00:15:48,399
+having lots of you know special like
+
+524
+00:15:48,399 --> 00:15:50,240
+logic for different queries
+
+525
+00:15:50,240 --> 00:15:52,160
+um can also make sense
+
+526
+00:15:52,160 --> 00:15:54,399
+but you know as we see like you know
+
+527
+00:15:54,399 --> 00:15:56,240
+and you know this is not just limited to
+
+528
+00:15:56,240 --> 00:15:58,240
+search but you know just generally
+
+529
+00:15:58,240 --> 00:16:00,000
+um you know problems driven by ai like
+
+530
+00:16:00,000 --> 00:16:02,880
+self-driving it's often nice to kind of
+
+531
+00:16:02,880 --> 00:16:04,320
+be able to wrap everything end-to-end
+
+532
+00:16:04,320 --> 00:16:05,839
+and learn a lot of this
+
+533
+00:16:05,839 --> 00:16:06,720
+um
+
+534
+00:16:06,720 --> 00:16:07,680
+you know
+
+535
+00:16:07,680 --> 00:16:08,720
+through you know deep learning
+
+536
+00:16:08,720 --> 00:16:11,279
+approaches etc to avoid kind of you know
+
+537
+00:16:11,279 --> 00:16:13,199
+having separate classification models et
+
+538
+00:16:13,199 --> 00:16:15,040
+cetera but sometimes you know it is
+
+539
+00:16:15,040 --> 00:16:16,480
+necessary in practice so it's kind of a
+
+540
+00:16:16,480 --> 00:16:17,920
+difference between
+
+541
+00:16:17,920 --> 00:16:20,240
+um domain yeah there's a little bit of
+
+542
+00:16:20,240 --> 00:16:22,320
+nuance to it but yeah in general it's
+
+543
+00:16:22,320 --> 00:16:25,440
+definitely a good point to be aware of
+
+544
+00:16:25,440 --> 00:16:27,440
+and also also i think so far you talked
+
+545
+00:16:27,440 --> 00:16:29,759
+about search engine in general right
+
+546
+00:16:29,759 --> 00:16:32,240
+hopefully eventually you talk about what
+
+547
+00:16:32,240 --> 00:16:34,880
+the delta between you.com
+
+548
+00:16:34,880 --> 00:16:36,880
+and the google search
+
+549
+00:16:36,880 --> 00:16:38,320
+and uh
+
+550
+00:16:38,320 --> 00:16:40,320
+you did mention about
+
+551
+00:16:40,320 --> 00:16:42,720
+uh query transformation
+
+552
+00:16:42,720 --> 00:16:44,880
+in the end of the slide right query then
+
+553
+00:16:44,880 --> 00:16:47,279
+you do query transformation
+
+554
+00:16:47,279 --> 00:16:49,040
+i would imagine
+
+555
+00:16:49,040 --> 00:16:51,519
+so like query query rewriting you can do
+
+556
+00:16:51,519 --> 00:16:53,360
+two two or three kind of things one is
+
+557
+00:16:53,360 --> 00:16:55,759
+that you want to consider a person's
+
+558
+00:16:55,759 --> 00:16:58,480
+contextual information like location if
+
+559
+00:16:58,480 --> 00:17:01,279
+i type in pizza you want to say well i
+
+560
+00:17:01,279 --> 00:17:03,920
+don't want to display pizza in europe i
+
+561
+00:17:03,920 --> 00:17:06,079
+know you are in california
+
+562
+00:17:06,079 --> 00:17:08,240
+and the the other possibility is if i
+
+563
+00:17:08,240 --> 00:17:10,640
+type in toyota you say well
+
+564
+00:17:10,640 --> 00:17:12,559
+maybe i don't have too many results
+
+565
+00:17:12,559 --> 00:17:14,799
+about toyota and i can give you honda
+
+566
+00:17:14,799 --> 00:17:18,480
+and maybe bmw so i in addition to the
+
+567
+00:17:18,480 --> 00:17:21,760
+the semantic kind of expansion
+
+568
+00:17:21,760 --> 00:17:23,919
+or be more specific based on contextual
+
+569
+00:17:23,919 --> 00:17:25,199
+information
+
+570
+00:17:25,199 --> 00:17:27,119
+what are the kind of query
+
+571
+00:17:27,119 --> 00:17:28,559
+transformation
+
+572
+00:17:28,559 --> 00:17:31,039
+i think the search engine will perform
+
+573
+00:17:31,039 --> 00:17:32,480
+yeah yeah that's a great point so i
+
+574
+00:17:32,480 --> 00:17:35,280
+think one very simple example is spell
+
+575
+00:17:35,280 --> 00:17:36,160
+check
+
+576
+00:17:36,160 --> 00:17:38,160
+um a lot of the you know also a lot of
+
+577
+00:17:38,160 --> 00:17:40,160
+the point of query transformation is to
+
+578
+00:17:40,160 --> 00:17:42,400
+make the retrieval step easier
+
+579
+00:17:42,400 --> 00:17:44,000
+um so query transformation in and of
+
+580
+00:17:44,000 --> 00:17:46,960
+itself is not useful insofar as it kind
+
+581
+00:17:46,960 --> 00:17:49,039
+of helps the retrieval process so you
+
+582
+00:17:49,039 --> 00:17:50,240
+can think of this as being a joint
+
+583
+00:17:50,240 --> 00:17:52,320
+problem where the query transformation
+
+584
+00:17:52,320 --> 00:17:54,320
+retrieval and re-ranking all have to
+
+585
+00:17:54,320 --> 00:17:56,480
+work in close like lockstep with each
+
+586
+00:17:56,480 --> 00:17:57,760
+other
+
+587
+00:17:57,760 --> 00:17:59,440
+but one simple example would be spell
+
+588
+00:17:59,440 --> 00:18:01,200
+check um if the user misspelled
+
+589
+00:18:01,200 --> 00:18:02,240
+something
+
+590
+00:18:02,240 --> 00:18:03,840
+we can kind of you know
+
+591
+00:18:03,840 --> 00:18:05,360
+correct that at the queer transformation
+
+592
+00:18:05,360 --> 00:18:07,120
+level
+
+593
+00:18:07,120 --> 00:18:08,559
+and that can help with the retrieval
+
+594
+00:18:08,559 --> 00:18:09,760
+stage
+
+595
+00:18:09,760 --> 00:18:11,360
+other examples might be
+
+596
+00:18:11,360 --> 00:18:12,799
+adding information
+
+597
+00:18:12,799 --> 00:18:14,080
+if you know certain things you know
+
+598
+00:18:14,080 --> 00:18:16,400
+maybe that can help personalize it
+
+599
+00:18:16,400 --> 00:18:18,480
+if you're looking for a certain fridge
+
+600
+00:18:18,480 --> 00:18:20,240
+um i don't know
+
+601
+00:18:20,240 --> 00:18:21,840
+maybe there's some
+
+602
+00:18:21,840 --> 00:18:24,000
+you know based on other signals we can
+
+603
+00:18:24,000 --> 00:18:25,200
+kind of specify the query a little bit
+
+604
+00:18:25,200 --> 00:18:26,720
+more
+
+605
+00:18:26,720 --> 00:18:28,480
+we can also do multiple queries at once
+
+606
+00:18:28,480 --> 00:18:30,240
+if we want to that's kind of a more
+
+607
+00:18:30,240 --> 00:18:32,240
+compute heavy approach but if you want
+
+608
+00:18:32,240 --> 00:18:34,559
+to maximize your you know retrieval uh
+
+609
+00:18:34,559 --> 00:18:36,080
+you might want to
+
+610
+00:18:36,080 --> 00:18:38,240
+um transform it in different ways
+
+611
+00:18:38,240 --> 00:18:40,000
+but yeah i mean there's like a probably
+
+612
+00:18:40,000 --> 00:18:42,160
+a breadth of approaches those are just a
+
+613
+00:18:42,160 --> 00:18:43,360
+couple i think spell check is probably
+
+614
+00:18:43,360 --> 00:18:44,320
+the most
+
+615
+00:18:44,320 --> 00:18:47,120
+um intuitive example
+
+616
+00:18:47,120 --> 00:18:48,160
+okay
+
+617
+00:18:48,160 --> 00:18:52,240
+there's another question i can ask is uh
+
+618
+00:18:52,880 --> 00:18:56,960
+people consider not in a big data era
+
+619
+00:18:56,960 --> 00:18:59,840
+google is really hard to be beaten
+
+620
+00:18:59,840 --> 00:19:01,280
+the reason is the following because
+
+621
+00:19:01,280 --> 00:19:03,480
+google like in
+
+622
+00:19:03,480 --> 00:19:06,160
+1998 when they get started because i was
+
+623
+00:19:06,160 --> 00:19:08,559
+their classmates and they used page rank
+
+624
+00:19:08,559 --> 00:19:10,480
+right that paper was never really
+
+625
+00:19:10,480 --> 00:19:11,679
+published
+
+626
+00:19:11,679 --> 00:19:14,080
+in a conference but
+
+627
+00:19:14,080 --> 00:19:16,160
+the paper is well cited
+
+628
+00:19:16,160 --> 00:19:18,080
+and patreon everybody knows right you
+
+629
+00:19:18,080 --> 00:19:20,240
+have an important page lots of important
+
+630
+00:19:20,240 --> 00:19:22,880
+pages point to your your page then the
+
+631
+00:19:22,880 --> 00:19:25,280
+ranking of your page can be higher
+
+632
+00:19:25,280 --> 00:19:27,679
+and they found out there are a lot of
+
+633
+00:19:27,679 --> 00:19:29,679
+lots of spamming kind of cheating
+
+634
+00:19:29,679 --> 00:19:30,799
+techniques
+
+635
+00:19:30,799 --> 00:19:32,480
+uh so my team
+
+636
+00:19:32,480 --> 00:19:33,600
+uh in
+
+637
+00:19:33,600 --> 00:19:35,679
+2000 or so we were working on spam
+
+638
+00:19:35,679 --> 00:19:37,679
+fighting we want to get rid of kind of
+
+639
+00:19:37,679 --> 00:19:39,760
+cheating websites
+
+640
+00:19:39,760 --> 00:19:40,640
+but
+
+641
+00:19:40,640 --> 00:19:42,480
+about in 2010
+
+642
+00:19:42,480 --> 00:19:44,000
+and page rank
+
+643
+00:19:44,000 --> 00:19:46,400
+was pretty much start to be utilized
+
+644
+00:19:46,400 --> 00:19:48,160
+because google has already collected so
+
+645
+00:19:48,160 --> 00:19:49,679
+much data so
+
+646
+00:19:49,679 --> 00:19:50,559
+when
+
+647
+00:19:50,559 --> 00:19:52,400
+the user feedback to the search results
+
+648
+00:19:52,400 --> 00:19:54,240
+they click on let's say i give you 10
+
+649
+00:19:54,240 --> 00:19:56,000
+results and most of the user in
+
+650
+00:19:56,000 --> 00:19:58,160
+california they click on the second one
+
+651
+00:19:58,160 --> 00:19:59,919
+people in connecticut they click on the
+
+652
+00:19:59,919 --> 00:20:02,240
+third one so eventually they know well
+
+653
+00:20:02,240 --> 00:20:04,080
+from the user feedback
+
+654
+00:20:04,080 --> 00:20:06,480
+i don't i can just give you the ranking
+
+655
+00:20:06,480 --> 00:20:09,120
+right there i don't need to have this a
+
+656
+00:20:09,120 --> 00:20:12,080
+generic or universal uh
+
+657
+00:20:12,080 --> 00:20:14,720
+ranking system which is easy spam
+
+658
+00:20:14,720 --> 00:20:17,360
+so if that's true they call the system
+
+659
+00:20:17,360 --> 00:20:18,559
+netboost
+
+660
+00:20:18,559 --> 00:20:20,960
+if that's true the more data about user
+
+661
+00:20:20,960 --> 00:20:21,919
+you have
+
+662
+00:20:21,919 --> 00:20:23,039
+and the
+
+663
+00:20:23,039 --> 00:20:25,200
+the better the quality will be
+
+664
+00:20:25,200 --> 00:20:27,760
+and how can you compete with google and
+
+665
+00:20:27,760 --> 00:20:30,799
+i i this is this is a kvi i had another
+
+666
+00:20:30,799 --> 00:20:32,799
+story you know i knew
+
+667
+00:20:32,799 --> 00:20:36,720
+the the leader of bing.com really well
+
+668
+00:20:36,720 --> 00:20:38,720
+and if you trace back to be.com's
+
+669
+00:20:38,720 --> 00:20:39,840
+history
+
+670
+00:20:39,840 --> 00:20:40,880
+and
+
+671
+00:20:40,880 --> 00:20:44,400
+beat.com when the explorer was are still
+
+672
+00:20:44,400 --> 00:20:45,840
+very popular
+
+673
+00:20:45,840 --> 00:20:48,320
+so bean.com did the following thing and
+
+674
+00:20:48,320 --> 00:20:49,280
+i was
+
+675
+00:20:49,280 --> 00:20:52,640
+caught by google so ping.com when you do
+
+676
+00:20:52,640 --> 00:20:55,120
+you use explorer do a google search and
+
+677
+00:20:55,120 --> 00:20:57,280
+be.com will record
+
+678
+00:20:57,280 --> 00:21:00,080
+the search repeat of google
+
+679
+00:21:00,080 --> 00:21:02,880
+so that means google itself is not
+
+680
+00:21:02,880 --> 00:21:04,080
+recording
+
+681
+00:21:04,080 --> 00:21:05,840
+which one you click right what all the
+
+682
+00:21:05,840 --> 00:21:07,919
+search results so they can do this uh
+
+683
+00:21:07,919 --> 00:21:10,480
+collaborative filtering but bing.com did
+
+684
+00:21:10,480 --> 00:21:12,159
+not have a successful search anyway they
+
+685
+00:21:12,159 --> 00:21:14,159
+couldn't collect signal but they were
+
+686
+00:21:14,159 --> 00:21:16,640
+dominated 10 years ago on explorer
+
+687
+00:21:16,640 --> 00:21:19,039
+navigation navigators so they collect
+
+688
+00:21:19,039 --> 00:21:21,600
+that data within their browsers
+
+689
+00:21:21,600 --> 00:21:23,760
+and that was called by google where
+
+690
+00:21:23,760 --> 00:21:25,360
+google can do
+
+691
+00:21:25,360 --> 00:21:27,440
+this a lot of games can be played very
+
+692
+00:21:27,440 --> 00:21:28,960
+interesting
+
+693
+00:21:28,960 --> 00:21:30,720
+so how do you comment on that i mean how
+
+694
+00:21:30,720 --> 00:21:33,200
+can u.com you don't have a browser
+
+695
+00:21:33,200 --> 00:21:34,880
+and you cannot cheat and you don't have
+
+696
+00:21:34,880 --> 00:21:36,799
+a lot of user to start with
+
+697
+00:21:36,799 --> 00:21:39,440
+and uh okay so
+
+698
+00:21:39,440 --> 00:21:40,400
+yeah
+
+699
+00:21:40,400 --> 00:21:42,159
+that's it that's a great question um and
+
+700
+00:21:42,159 --> 00:21:43,760
+yeah that is the challenge i guess you
+
+701
+00:21:43,760 --> 00:21:44,480
+know
+
+702
+00:21:44,480 --> 00:21:46,480
+um there are at some level there are
+
+703
+00:21:46,480 --> 00:21:47,840
+economies of scale when it comes to
+
+704
+00:21:47,840 --> 00:21:50,159
+search as you mentioned user signals are
+
+705
+00:21:50,159 --> 00:21:52,880
+important for any search system
+
+706
+00:21:52,880 --> 00:21:55,120
+um i think we think that we have
+
+707
+00:21:55,120 --> 00:21:57,919
+some creative ways of
+
+708
+00:21:57,919 --> 00:21:59,600
+kind of bootstrapping and developing a
+
+709
+00:21:59,600 --> 00:22:01,120
+system and kind of building our
+
+710
+00:22:01,120 --> 00:22:03,760
+functionality in a way that
+
+711
+00:22:03,760 --> 00:22:06,000
+you know uses
+
+712
+00:22:06,000 --> 00:22:07,840
+like user signals that we get but also
+
+713
+00:22:07,840 --> 00:22:10,159
+is able to kind of provide an initially
+
+714
+00:22:10,159 --> 00:22:12,159
+good experience out of the box a lot of
+
+715
+00:22:12,159 --> 00:22:14,159
+it is kind of focusing on
+
+716
+00:22:14,159 --> 00:22:15,840
+um you know
+
+717
+00:22:15,840 --> 00:22:17,200
+like innovative presentations of
+
+718
+00:22:17,200 --> 00:22:18,799
+information etc
+
+719
+00:22:18,799 --> 00:22:21,280
+um having a different way of
+
+720
+00:22:21,280 --> 00:22:23,039
+like servicing information to the user
+
+721
+00:22:23,039 --> 00:22:24,400
+is a lot of it
+
+722
+00:22:24,400 --> 00:22:26,960
+but yeah i mean you are right that um
+
+723
+00:22:26,960 --> 00:22:28,480
+like you know there are advantages to
+
+724
+00:22:28,480 --> 00:22:30,559
+having large amounts of user data that
+
+725
+00:22:30,559 --> 00:22:32,400
+you can train and fine-tune models on
+
+726
+00:22:32,400 --> 00:22:33,679
+and you know that's what you see google
+
+727
+00:22:33,679 --> 00:22:35,919
+has done um as well as bing and kind of
+
+728
+00:22:35,919 --> 00:22:38,080
+a lot of folks who build search engines
+
+729
+00:22:38,080 --> 00:22:39,600
+um you know user feedback is is
+
+730
+00:22:39,600 --> 00:22:41,919
+obviously very important um but yeah i
+
+731
+00:22:41,919 --> 00:22:43,520
+mean i didn't really give a clear answer
+
+732
+00:22:43,520 --> 00:22:45,520
+and i can go a little bit more into
+
+733
+00:22:45,520 --> 00:22:47,840
+like you.com questions at the end um i
+
+734
+00:22:47,840 --> 00:22:49,360
+could talk a little bit about that too
+
+735
+00:22:49,360 --> 00:22:51,600
+if there's interest but
+
+736
+00:22:51,600 --> 00:22:52,799
+um
+
+737
+00:22:52,799 --> 00:22:54,559
+yeah i unfortunately can't go too deep
+
+738
+00:22:54,559 --> 00:22:56,960
+into the specific technology right now
+
+739
+00:22:56,960 --> 00:22:58,480
+um but
+
+740
+00:22:58,480 --> 00:23:00,159
+i think you know it's going to come down
+
+741
+00:23:00,159 --> 00:23:02,320
+to developing a good experience that
+
+742
+00:23:02,320 --> 00:23:04,480
+users like and draws them away from
+
+743
+00:23:04,480 --> 00:23:06,480
+google uh focusing on things you know
+
+744
+00:23:06,480 --> 00:23:08,720
+like privacy like innovative apps is
+
+745
+00:23:08,720 --> 00:23:10,480
+what we call them so i talked about you
+
+746
+00:23:10,480 --> 00:23:12,880
+right before um so we see that kind of
+
+747
+00:23:12,880 --> 00:23:14,400
+is interesting to users and brings them
+
+748
+00:23:14,400 --> 00:23:15,520
+in because it's functionality that you
+
+749
+00:23:15,520 --> 00:23:17,679
+can't see other places if you want to
+
+750
+00:23:17,679 --> 00:23:19,120
+generate code
+
+751
+00:23:19,120 --> 00:23:20,400
+or if you want to like you know look up
+
+752
+00:23:20,400 --> 00:23:23,039
+code snippets we also have an app called
+
+753
+00:23:23,039 --> 00:23:23,919
+um
+
+754
+00:23:23,919 --> 00:23:25,200
+it's basically
+
+755
+00:23:25,200 --> 00:23:27,520
+a code generator u code it's a i guess
+
+756
+00:23:27,520 --> 00:23:29,039
+like it's it's a code generation app
+
+757
+00:23:29,039 --> 00:23:30,960
+where you can actually generate code
+
+758
+00:23:30,960 --> 00:23:33,280
+using like a neural model
+
+759
+00:23:33,280 --> 00:23:34,400
+so these are all things you can't do in
+
+760
+00:23:34,400 --> 00:23:36,080
+google right now so the idea is that by
+
+761
+00:23:36,080 --> 00:23:37,679
+making like some key bets there along
+
+762
+00:23:37,679 --> 00:23:39,600
+with just lowering our foundational
+
+763
+00:23:39,600 --> 00:23:41,600
+strength in search and allowing for more
+
+764
+00:23:41,600 --> 00:23:43,600
+personalization uh we can kind of
+
+765
+00:23:43,600 --> 00:23:45,520
+compete so that's kind of uh the one
+
+766
+00:23:45,520 --> 00:23:46,880
+answer is um
+
+767
+00:23:46,880 --> 00:23:48,159
+you know
+
+768
+00:23:48,159 --> 00:23:50,400
+that different presentation
+
+769
+00:23:50,400 --> 00:23:52,799
+personalization as well google it's kind
+
+770
+00:23:52,799 --> 00:23:54,880
+of a black box um you don't really get
+
+771
+00:23:54,880 --> 00:23:56,960
+to personalize what you see so we can
+
+772
+00:23:56,960 --> 00:23:58,960
+focus on that a little bit and then also
+
+773
+00:23:58,960 --> 00:24:01,200
+privacy um so it's not all about just
+
+774
+00:24:01,200 --> 00:24:02,960
+relevance some of it's also about
+
+775
+00:24:02,960 --> 00:24:05,679
+privacy not tracking users
+
+776
+00:24:05,679 --> 00:24:07,120
+and generally kind of
+
+777
+00:24:07,120 --> 00:24:09,120
+being respectful so yeah those are those
+
+778
+00:24:09,120 --> 00:24:10,799
+are some ways in which we think we can
+
+779
+00:24:10,799 --> 00:24:12,960
+differentiate
+
+780
+00:24:12,960 --> 00:24:15,039
+okay thank you maybe more questions
+
+781
+00:24:15,039 --> 00:24:17,360
+later
+
+782
+00:24:17,600 --> 00:24:18,960
+yeah so now i'll kind of talk a little
+
+783
+00:24:18,960 --> 00:24:20,159
+bit about classical information
+
+784
+00:24:20,159 --> 00:24:22,480
+retrieval um so classical information
+
+785
+00:24:22,480 --> 00:24:24,480
+retrieval deals with um
+
+786
+00:24:24,480 --> 00:24:25,679
+like you know the kind of problem
+
+787
+00:24:25,679 --> 00:24:27,200
+setting is you give it a corpus of text
+
+788
+00:24:27,200 --> 00:24:29,600
+documents and a user query we want to
+
+789
+00:24:29,600 --> 00:24:31,120
+provide relevant documents in a ranked
+
+790
+00:24:31,120 --> 00:24:33,200
+order so when we think about classical
+
+791
+00:24:33,200 --> 00:24:35,520
+ir one of the most important concepts is
+
+792
+00:24:35,520 --> 00:24:36,960
+an inverted index
+
+793
+00:24:36,960 --> 00:24:38,559
+so an inverted index is basically a
+
+794
+00:24:38,559 --> 00:24:40,640
+common efficient data structure used to
+
+795
+00:24:40,640 --> 00:24:42,080
+index and support keyword search over
+
+796
+00:24:42,080 --> 00:24:43,600
+documents
+
+797
+00:24:43,600 --> 00:24:45,120
+as you can imagine
+
+798
+00:24:45,120 --> 00:24:46,960
+it basically is like a mapping from
+
+799
+00:24:46,960 --> 00:24:48,880
+words to documents
+
+800
+00:24:48,880 --> 00:24:50,640
+um but you can think that this might be
+
+801
+00:24:50,640 --> 00:24:52,720
+really sparse a lot of words may
+
+802
+00:24:52,720 --> 00:24:54,720
+not be used in a lot of documents
+
+803
+00:24:54,720 --> 00:24:56,880
+um so you kind of want to have a sparse
+
+804
+00:24:56,880 --> 00:24:58,559
+encoding of it and there's kind of very
+
+805
+00:24:58,559 --> 00:25:00,559
+efficient ways of doing this and this is
+
+806
+00:25:00,559 --> 00:25:01,840
+kind of very old technology it's been
+
+807
+00:25:01,840 --> 00:25:03,679
+used for a while and it still actually
+
+808
+00:25:03,679 --> 00:25:05,600
+is very useful so some questions when it
+
+809
+00:25:05,600 --> 00:25:06,799
+comes to inverted indices are how do you
+
+810
+00:25:06,799 --> 00:25:08,240
+tokenize documents
+
+811
+00:25:08,240 --> 00:25:10,320
+thinking about things like stemming
+
+812
+00:25:10,320 --> 00:25:11,919
+we can do so stemming basically means
+
+813
+00:25:11,919 --> 00:25:13,919
+that if you have a plural word can we
+
+814
+00:25:13,919 --> 00:25:15,679
+kind of normalize it into its stemmed
+
+815
+00:25:15,679 --> 00:25:17,600
+version and that way we can do it to put
+
+816
+00:25:17,600 --> 00:25:19,360
+the query and the document
+
+817
+00:25:19,360 --> 00:25:20,720
+um so
+
+818
+00:25:20,720 --> 00:25:22,000
+we can kind of be a little bit more
+
+819
+00:25:22,000 --> 00:25:24,080
+robust to those types of things
+
+820
+00:25:24,080 --> 00:25:25,600
+another you know important concept is
+
+821
+00:25:25,600 --> 00:25:26,960
+about calculating relevant scores from
+
+822
+00:25:26,960 --> 00:25:28,960
+the query and document
+
+823
+00:25:28,960 --> 00:25:31,440
+one common approach is called tfidf
+
+824
+00:25:31,440 --> 00:25:34,080
+so tf idf stands for term frequency
+
+825
+00:25:34,080 --> 00:25:36,720
+inverse document frequency the idea here
+
+826
+00:25:36,720 --> 00:25:38,880
+is that you know if a term
+
+827
+00:25:38,880 --> 00:25:40,320
+if you're looking up a query a query is
+
+828
+00:25:40,320 --> 00:25:42,480
+composed of terms if a term appears
+
+829
+00:25:42,480 --> 00:25:44,080
+multiple times in a document that
+
+830
+00:25:44,080 --> 00:25:46,159
+document is likely to be relevant
+
+831
+00:25:46,159 --> 00:25:48,640
+but you know if documents are
+
+832
+00:25:48,640 --> 00:25:50,080
+you know you know if you also have to
+
+833
+00:25:50,080 --> 00:25:52,559
+normalize by how often that term is in
+
+834
+00:25:52,559 --> 00:25:54,400
+documents so if that term is a really
+
+835
+00:25:54,400 --> 00:25:56,799
+common term we probably want to kind of
+
+836
+00:25:56,799 --> 00:25:58,480
+down weight that as well so that's what
+
+837
+00:25:58,480 --> 00:26:00,400
+the inverse document frequency does
+
+838
+00:26:00,400 --> 00:26:01,840
+so you basically multiply these two
+
+839
+00:26:01,840 --> 00:26:04,640
+terms and you have a score called tf idf
+
+840
+00:26:04,640 --> 00:26:05,919
+and you know in practice what you might
+
+841
+00:26:05,919 --> 00:26:07,679
+want to do is something like this where
+
+842
+00:26:07,679 --> 00:26:10,080
+you have a query consisted in many terms
+
+843
+00:26:10,080 --> 00:26:12,159
+you basically sum the score of every
+
+844
+00:26:12,159 --> 00:26:14,159
+single term
+
+845
+00:26:14,159 --> 00:26:15,600
+within the query
+
+846
+00:26:15,600 --> 00:26:16,880
+against the documents and you're able to
+
+847
+00:26:16,880 --> 00:26:18,320
+compute a score
+
+848
+00:26:18,320 --> 00:26:19,760
+so tf idf is kind of the very
+
+849
+00:26:19,760 --> 00:26:21,200
+traditional approach
+
+850
+00:26:21,200 --> 00:26:22,559
+in practice
+
+851
+00:26:22,559 --> 00:26:24,559
+bm25 is like the fancier more effective
+
+852
+00:26:24,559 --> 00:26:26,000
+method commonly used in large-scale
+
+853
+00:26:26,000 --> 00:26:27,279
+search systems
+
+854
+00:26:27,279 --> 00:26:30,159
+um so bm25 and if you're curious you can
+
+855
+00:26:30,159 --> 00:26:31,919
+kind of read more online there's it's a
+
+856
+00:26:31,919 --> 00:26:33,520
+little bit more of a complicated formula
+
+857
+00:26:33,520 --> 00:26:35,200
+i definitely recommend that you look
+
+858
+00:26:35,200 --> 00:26:36,320
+into it more if you're interested but
+
+859
+00:26:36,320 --> 00:26:37,679
+the idea is that you also penalize
+
+860
+00:26:37,679 --> 00:26:39,760
+longer documents so
+
+861
+00:26:39,760 --> 00:26:41,600
+25 also means there's like 25 versions
+
+862
+00:26:41,600 --> 00:26:43,200
+of it so it's something that has been
+
+863
+00:26:43,200 --> 00:26:45,440
+iterated on for a while and you know has
+
+864
+00:26:45,440 --> 00:26:46,880
+found to be effective
+
+865
+00:26:46,880 --> 00:26:49,440
+in doing a keyword search
+
+866
+00:26:49,440 --> 00:26:50,720
+we talked about query expansions a
+
+867
+00:26:50,720 --> 00:26:52,559
+little bit and also learning to rank is
+
+868
+00:26:52,559 --> 00:26:54,400
+also important learning to rank is
+
+869
+00:26:54,400 --> 00:26:56,320
+basically can we like train you know
+
+870
+00:26:56,320 --> 00:26:58,159
+very simple models based on document
+
+871
+00:26:58,159 --> 00:26:59,120
+fields
+
+872
+00:26:59,120 --> 00:27:01,760
+um to you know be able to
+
+873
+00:27:01,760 --> 00:27:03,520
+better provide
+
+874
+00:27:03,520 --> 00:27:05,919
+like improve relevance so for example a
+
+875
+00:27:05,919 --> 00:27:08,159
+lot of fields are textual but some are
+
+876
+00:27:08,159 --> 00:27:10,559
+not you can imagine likes for example as
+
+877
+00:27:10,559 --> 00:27:12,480
+like a popularity signal so we need to
+
+878
+00:27:12,480 --> 00:27:14,720
+be able to kind of learn and kind of you
+
+879
+00:27:14,720 --> 00:27:16,640
+know use all of these different signals
+
+880
+00:27:16,640 --> 00:27:18,720
+whether it's textual or non-textual
+
+881
+00:27:18,720 --> 00:27:20,320
+so this is kind of you know the state of
+
+882
+00:27:20,320 --> 00:27:22,559
+classical information retrieval
+
+883
+00:27:22,559 --> 00:27:24,320
+kind of the next evolution is really
+
+884
+00:27:24,320 --> 00:27:26,320
+neural information retrieval um or
+
+885
+00:27:26,320 --> 00:27:27,760
+neural ir
+
+886
+00:27:27,760 --> 00:27:28,960
+so as you can imagine one of the
+
+887
+00:27:28,960 --> 00:27:31,200
+limitations of classical ir is that
+
+888
+00:27:31,200 --> 00:27:33,279
+keywords does not equal understanding
+
+889
+00:27:33,279 --> 00:27:35,520
+um you know there's been a ton of
+
+890
+00:27:35,520 --> 00:27:38,159
+advances in nlp over the last five years
+
+891
+00:27:38,159 --> 00:27:40,399
+most significantly with the rise of
+
+892
+00:27:40,399 --> 00:27:42,320
+these large pre-trained language models
+
+893
+00:27:42,320 --> 00:27:44,000
+or large language models
+
+894
+00:27:44,000 --> 00:27:45,200
+which are able to kind of also
+
+895
+00:27:45,200 --> 00:27:46,480
+understand the semantics a little bit
+
+896
+00:27:46,480 --> 00:27:47,360
+better
+
+897
+00:27:47,360 --> 00:27:48,799
+instead of just the keywords and some of
+
+898
+00:27:48,799 --> 00:27:51,200
+the lexical you know
+
+899
+00:27:51,200 --> 00:27:53,279
+uh format of the word
+
+900
+00:27:53,279 --> 00:27:54,799
+um so the so basically the question is
+
+901
+00:27:54,799 --> 00:27:56,159
+can we take advantage of recent advances
+
+902
+00:27:56,159 --> 00:27:58,000
+in nlp over the last couple years and
+
+903
+00:27:58,000 --> 00:27:59,919
+the answer is yes so you know these
+
+904
+00:27:59,919 --> 00:28:01,120
+pre-trained language models or language
+
+905
+00:28:01,120 --> 00:28:03,120
+models produce embeddings that you can
+
+906
+00:28:03,120 --> 00:28:04,320
+you know that correspond to both the
+
+907
+00:28:04,320 --> 00:28:06,240
+queries and documents and then we can
+
+908
+00:28:06,240 --> 00:28:07,600
+use this in techniques like semantic
+
+909
+00:28:07,600 --> 00:28:08,480
+search
+
+910
+00:28:08,480 --> 00:28:10,080
+so semantic search is kind of asking the
+
+911
+00:28:10,080 --> 00:28:11,039
+question of
+
+912
+00:28:11,039 --> 00:28:12,799
+can we efficiently use embedding models
+
+913
+00:28:12,799 --> 00:28:14,880
+to search over large corpus of documents
+
+914
+00:28:14,880 --> 00:28:16,399
+and the answer is yeah yes so this is
+
+915
+00:28:16,399 --> 00:28:18,320
+actually something that's very new right
+
+916
+00:28:18,320 --> 00:28:19,360
+now so it's kind of the cutting edge
+
+917
+00:28:19,360 --> 00:28:21,520
+there's a lot of research happening here
+
+918
+00:28:21,520 --> 00:28:22,799
+one question you might have is when
+
+919
+00:28:22,799 --> 00:28:25,039
+you're doing using embeddings
+
+920
+00:28:25,039 --> 00:28:26,320
+you can imagine it being very compute
+
+921
+00:28:26,320 --> 00:28:28,640
+heavy so imagine you have a query and
+
+922
+00:28:28,640 --> 00:28:29,840
+you have embeddings for every single
+
+923
+00:28:29,840 --> 00:28:31,440
+document in your corpus that could be
+
+924
+00:28:31,440 --> 00:28:33,600
+hundreds of millions of documents
+
+925
+00:28:33,600 --> 00:28:34,960
+um you know even if you're able to
+
+926
+00:28:34,960 --> 00:28:36,080
+pre-compute the embeddings for the
+
+927
+00:28:36,080 --> 00:28:37,840
+documents you don't know what the query
+
+928
+00:28:37,840 --> 00:28:39,200
+is ahead of time
+
+929
+00:28:39,200 --> 00:28:40,799
+so you may need to if you want to just
+
+930
+00:28:40,799 --> 00:28:42,720
+do a very simple method you would embed
+
+931
+00:28:42,720 --> 00:28:44,720
+the query you compare it to every single
+
+932
+00:28:44,720 --> 00:28:47,039
+document and then you would surface
+
+933
+00:28:47,039 --> 00:28:49,279
+the top 10 documents by score
+
+934
+00:28:49,279 --> 00:28:50,480
+you could imagine that's going to be
+
+935
+00:28:50,480 --> 00:28:52,799
+very slow and latency is an important
+
+936
+00:28:52,799 --> 00:28:54,399
+search system consideration
+
+937
+00:28:54,399 --> 00:28:55,919
+so the way we solve this is using
+
+938
+00:28:55,919 --> 00:28:57,039
+techniques like approximate nearest
+
+939
+00:28:57,039 --> 00:28:59,919
+neighbor search so a ns allow low
+
+940
+00:28:59,919 --> 00:29:00,880
+latency to achieve from dense
+
+941
+00:29:00,880 --> 00:29:02,799
+representations if you're curious about
+
+942
+00:29:02,799 --> 00:29:04,320
+learning more you can look into this
+
+943
+00:29:04,320 --> 00:29:06,720
+technique called hnsw hierarchical
+
+944
+00:29:06,720 --> 00:29:09,200
+navigational small world graphs
+
+945
+00:29:09,200 --> 00:29:10,559
+and there's also open source solutions
+
+946
+00:29:10,559 --> 00:29:11,520
+like face
+
+947
+00:29:11,520 --> 00:29:13,200
+so face is you know
+
+948
+00:29:13,200 --> 00:29:14,880
+a way of kind of creating some of these
+
+949
+00:29:14,880 --> 00:29:16,399
+a n
+
+950
+00:29:16,399 --> 00:29:18,640
+clusters so that you can do and take
+
+951
+00:29:18,640 --> 00:29:20,720
+advantage of some of these advances if
+
+952
+00:29:20,720 --> 00:29:24,440
+you're doing embedding lookups
+
+953
+00:29:27,840 --> 00:29:29,200
+so yeah now i'll kind of move into a
+
+954
+00:29:29,200 --> 00:29:31,120
+little bit of neural ir as it relates to
+
+955
+00:29:31,120 --> 00:29:32,880
+re-ranking so this is a little bit
+
+956
+00:29:32,880 --> 00:29:34,000
+different so this is assuming that we
+
+957
+00:29:34,000 --> 00:29:36,320
+have retrieved k documents uh we want to
+
+958
+00:29:36,320 --> 00:29:37,679
+generate a score for every query
+
+959
+00:29:37,679 --> 00:29:39,520
+document and then sort the documents by
+
+960
+00:29:39,520 --> 00:29:40,399
+score
+
+961
+00:29:40,399 --> 00:29:41,760
+so some of the retrieval approaches we
+
+962
+00:29:41,760 --> 00:29:44,320
+described earlier earlier like bm25 can
+
+963
+00:29:44,320 --> 00:29:45,840
+generate a small set of candidate
+
+964
+00:29:45,840 --> 00:29:48,240
+documents that we then want to re-rank
+
+965
+00:29:48,240 --> 00:29:49,600
+and when we talk think about re-ranking
+
+966
+00:29:49,600 --> 00:29:50,799
+here
+
+967
+00:29:50,799 --> 00:29:52,399
+this is kind of going back to one of the
+
+968
+00:29:52,399 --> 00:29:54,320
+students questions earlier latency
+
+969
+00:29:54,320 --> 00:29:55,600
+versus performance becomes a little bit
+
+970
+00:29:55,600 --> 00:29:56,720
+more clear
+
+971
+00:29:56,720 --> 00:29:58,320
+but i'll go into a specific kind of
+
+972
+00:29:58,320 --> 00:30:00,559
+example of a trade-off
+
+973
+00:30:00,559 --> 00:30:03,279
+um but the task itself is we have a
+
+974
+00:30:03,279 --> 00:30:05,039
+candidate set of documents we want to
+
+975
+00:30:05,039 --> 00:30:07,200
+re-rank them and we can now use fancier
+
+976
+00:30:07,200 --> 00:30:09,039
+approaches because we don't have to look
+
+977
+00:30:09,039 --> 00:30:10,880
+across the entire corpus we're looking
+
+978
+00:30:10,880 --> 00:30:12,720
+across the subset of the corpus
+
+979
+00:30:12,720 --> 00:30:15,279
+so two important kind of techniques are
+
+980
+00:30:15,279 --> 00:30:16,240
+things called bi-encoders and
+
+981
+00:30:16,240 --> 00:30:19,039
+cross-encoders so by encoders are allow
+
+982
+00:30:19,039 --> 00:30:20,480
+you to embed
+
+983
+00:30:20,480 --> 00:30:22,000
+the query and the document separately
+
+984
+00:30:22,000 --> 00:30:23,440
+and then you can basically do a cosign
+
+985
+00:30:23,440 --> 00:30:26,240
+similarity or dot product etc in order
+
+986
+00:30:26,240 --> 00:30:28,159
+to get a score the advantage of buying
+
+987
+00:30:28,159 --> 00:30:29,679
+coders is that you can kind of
+
+988
+00:30:29,679 --> 00:30:31,279
+pre-compute the embeddings for all your
+
+989
+00:30:31,279 --> 00:30:32,880
+documents and you could take advantage
+
+990
+00:30:32,880 --> 00:30:35,120
+of advances like a m approximation your
+
+991
+00:30:35,120 --> 00:30:36,559
+they research
+
+992
+00:30:36,559 --> 00:30:39,520
+but you can imagine that um it's a
+
+993
+00:30:39,520 --> 00:30:41,600
+little bit limited because you don't
+
+994
+00:30:41,600 --> 00:30:42,880
+you're not able to kind of get
+
+995
+00:30:42,880 --> 00:30:45,200
+interactions between the query and
+
+996
+00:30:45,200 --> 00:30:47,360
+documents so that's what where
+
+997
+00:30:47,360 --> 00:30:50,000
+cross-encoder comes in a encoder embeds
+
+998
+00:30:50,000 --> 00:30:52,240
+both the query and document at the same
+
+999
+00:30:52,240 --> 00:30:53,840
+time
+
+1000
+00:30:53,840 --> 00:30:54,960
+and the idea is that you pass in the
+
+1001
+00:30:54,960 --> 00:30:56,880
+query and document through a language
+
+1002
+00:30:56,880 --> 00:30:58,559
+model like bert and you know you're
+
+1003
+00:30:58,559 --> 00:31:01,200
+doing interaction over all the tokens so
+
+1004
+00:31:01,200 --> 00:31:02,799
+all the query is interacting with all
+
+1005
+00:31:02,799 --> 00:31:04,480
+the document and you're able to kind of
+
+1006
+00:31:04,480 --> 00:31:05,919
+get some type of score that you're able
+
+1007
+00:31:05,919 --> 00:31:08,240
+to train and that's able to kind of as
+
+1008
+00:31:08,240 --> 00:31:09,679
+you can imagine
+
+1009
+00:31:09,679 --> 00:31:12,480
+be a lot better signal of relevance
+
+1010
+00:31:12,480 --> 00:31:13,919
+but this is where latency comes into
+
+1011
+00:31:13,919 --> 00:31:15,840
+play if you're doing the buy encoder
+
+1012
+00:31:15,840 --> 00:31:17,760
+it's going to be fast and cheap
+
+1013
+00:31:17,760 --> 00:31:19,519
+or maybe not cheap but it'll at least be
+
+1014
+00:31:19,519 --> 00:31:21,360
+fast if you're doing the cross-encoder
+
+1015
+00:31:21,360 --> 00:31:22,320
+approach
+
+1016
+00:31:22,320 --> 00:31:23,519
+latency is probably going to be more of
+
+1017
+00:31:23,519 --> 00:31:24,960
+a consideration
+
+1018
+00:31:24,960 --> 00:31:27,440
+because you actually have to
+
+1019
+00:31:27,440 --> 00:31:29,679
+pass the query and document together and
+
+1020
+00:31:29,679 --> 00:31:30,799
+you can't really predict what the query
+
+1021
+00:31:30,799 --> 00:31:33,600
+is going to be beforehand
+
+1022
+00:31:33,600 --> 00:31:35,200
+so this is kind of a nice image from
+
+1023
+00:31:35,200 --> 00:31:36,960
+this paper called colbert
+
+1024
+00:31:36,960 --> 00:31:38,159
+i actually recommend there's a class
+
+1025
+00:31:38,159 --> 00:31:41,200
+that's stanford called cs2020 224u i
+
+1026
+00:31:41,200 --> 00:31:42,080
+think
+
+1027
+00:31:42,080 --> 00:31:43,120
+in which they have a section on
+
+1028
+00:31:43,120 --> 00:31:45,039
+information retrieval which you know
+
+1029
+00:31:45,039 --> 00:31:46,880
+it's nice if you all have um
+
+1030
+00:31:46,880 --> 00:31:48,720
+if you're interested in this topic um
+
+1031
+00:31:48,720 --> 00:31:49,919
+i'm not sure if there's other i don't
+
+1032
+00:31:49,919 --> 00:31:50,880
+think there's too many information
+
+1033
+00:31:50,880 --> 00:31:52,559
+reveal specific courses
+
+1034
+00:31:52,559 --> 00:31:54,159
+but there are like i guess some courses
+
+1035
+00:31:54,159 --> 00:31:56,240
+like 224n is also probably going to be
+
+1036
+00:31:56,240 --> 00:31:58,720
+important um which is a
+
+1037
+00:31:58,720 --> 00:32:01,519
+nlp class but basically at a very i'll
+
+1038
+00:32:01,519 --> 00:32:03,120
+just quickly go through some of these
+
+1039
+00:32:03,120 --> 00:32:05,039
+paradigms so one is representation
+
+1040
+00:32:05,039 --> 00:32:06,240
+representation based similarity that's
+
+1041
+00:32:06,240 --> 00:32:07,679
+what i described before
+
+1042
+00:32:07,679 --> 00:32:09,760
+we embed the query and document and then
+
+1043
+00:32:09,760 --> 00:32:11,039
+we kind of compute like a cosine
+
+1044
+00:32:11,039 --> 00:32:13,360
+similarity or dot product another one is
+
+1045
+00:32:13,360 --> 00:32:14,720
+you can imagine kind of constructing
+
+1046
+00:32:14,720 --> 00:32:16,080
+some type of
+
+1047
+00:32:16,080 --> 00:32:18,000
+matrix based on the query and document
+
+1048
+00:32:18,000 --> 00:32:20,240
+and then doing like cnns convolutions et
+
+1049
+00:32:20,240 --> 00:32:21,279
+cetera
+
+1050
+00:32:21,279 --> 00:32:22,559
+the other one i mentioned the cross
+
+1051
+00:32:22,559 --> 00:32:24,399
+encoder approach all to all interaction
+
+1052
+00:32:24,399 --> 00:32:25,840
+we embed the query and document together
+
+1053
+00:32:25,840 --> 00:32:27,519
+and you can see that there's this rich
+
+1054
+00:32:27,519 --> 00:32:29,360
+set of interaction happening and you can
+
+1055
+00:32:29,360 --> 00:32:31,039
+use the signal at the end
+
+1056
+00:32:31,039 --> 00:32:32,399
+and then in this paper they talk about
+
+1057
+00:32:32,399 --> 00:32:34,399
+kind of another approach in which we uh
+
+1058
+00:32:34,399 --> 00:32:35,679
+still kind of do something called late
+
+1059
+00:32:35,679 --> 00:32:37,600
+interaction so you're not doing
+
+1060
+00:32:37,600 --> 00:32:38,880
+you don't basically have to use all the
+
+1061
+00:32:38,880 --> 00:32:40,159
+layers of the transformer you can
+
+1062
+00:32:40,159 --> 00:32:43,760
+basically you can cache um the layers
+
+1063
+00:32:43,760 --> 00:32:45,760
+like the last layers of the documents
+
+1064
+00:32:45,760 --> 00:32:47,840
+and then when you embed the query uh you
+
+1065
+00:32:47,840 --> 00:32:49,519
+select embed the query and like from the
+
+1066
+00:32:49,519 --> 00:32:50,480
+beginning and pass it through all the
+
+1067
+00:32:50,480 --> 00:32:52,240
+layers of the transformer but you can
+
+1068
+00:32:52,240 --> 00:32:54,240
+use the last layers of the document and
+
+1069
+00:32:54,240 --> 00:32:55,919
+use some type of
+
+1070
+00:32:55,919 --> 00:32:58,080
+mathematical operations in order to kind
+
+1071
+00:32:58,080 --> 00:32:59,440
+of simulate a little bit of the alto
+
+1072
+00:32:59,440 --> 00:33:01,919
+interaction
+
+1073
+00:33:02,240 --> 00:33:03,519
+so
+
+1074
+00:33:03,519 --> 00:33:06,000
+a question here yeah uh
+
+1075
+00:33:06,000 --> 00:33:08,799
+query seems to be pretty short compared
+
+1076
+00:33:08,799 --> 00:33:11,760
+to the length of a document right yes
+
+1077
+00:33:11,760 --> 00:33:14,480
+yeah the query i remember google's
+
+1078
+00:33:14,480 --> 00:33:17,440
+statistical query typically would be
+
+1079
+00:33:17,440 --> 00:33:20,720
+like less than three words
+
+1080
+00:33:21,200 --> 00:33:24,000
+so in that sense the embedding of query
+
+1081
+00:33:24,000 --> 00:33:26,720
+and the embedding of document
+
+1082
+00:33:26,720 --> 00:33:29,039
+they are in in kind of different i would
+
+1083
+00:33:29,039 --> 00:33:30,880
+say in different space i mean
+
+1084
+00:33:30,880 --> 00:33:32,799
+dimensionality could be different
+
+1085
+00:33:32,799 --> 00:33:34,960
+the query embedding
+
+1086
+00:33:34,960 --> 00:33:37,440
+cannot be a very in a very smart space
+
+1087
+00:33:37,440 --> 00:33:39,360
+right the very smart space doesn't make
+
+1088
+00:33:39,360 --> 00:33:40,240
+sense
+
+1089
+00:33:40,240 --> 00:33:42,320
+so query typically
+
+1090
+00:33:42,320 --> 00:33:44,320
+you do a semantic classification of the
+
+1091
+00:33:44,320 --> 00:33:46,320
+query whether the query is belonging to
+
+1092
+00:33:46,320 --> 00:33:48,799
+let's say apple you say okay this apple
+
+1093
+00:33:48,799 --> 00:33:51,519
+is this an i.t apple or it's a
+
+1094
+00:33:51,519 --> 00:33:53,919
+agricultural apple it's kind of course
+
+1095
+00:33:53,919 --> 00:33:55,919
+gram classification semantic
+
+1096
+00:33:55,919 --> 00:33:58,720
+classification then you go for
+
+1097
+00:33:58,720 --> 00:34:02,080
+the documents documents also classified
+
+1098
+00:34:02,080 --> 00:34:04,480
+in cement you know semantics place but
+
+1099
+00:34:04,480 --> 00:34:06,399
+when you talk about embedding that's
+
+1100
+00:34:06,399 --> 00:34:07,919
+really fine grant
+
+1101
+00:34:07,919 --> 00:34:10,480
+singularity fine when comparison i i
+
+1102
+00:34:10,480 --> 00:34:12,159
+don't i don't know how helpful that
+
+1103
+00:34:12,159 --> 00:34:14,239
+could be
+
+1104
+00:34:14,239 --> 00:34:15,599
+yeah that's uh so you're basically your
+
+1105
+00:34:15,599 --> 00:34:16,800
+question is
+
+1106
+00:34:16,800 --> 00:34:18,399
+um queries and documents are very
+
+1107
+00:34:18,399 --> 00:34:20,399
+different how do we and that's a great
+
+1108
+00:34:20,399 --> 00:34:21,760
+point and i'll yeah that's actually one
+
+1109
+00:34:21,760 --> 00:34:23,520
+of the challenges in the field is
+
+1110
+00:34:23,520 --> 00:34:25,520
+the documents can be much longer so
+
+1111
+00:34:25,520 --> 00:34:27,199
+there is a concept called like symmetric
+
+1112
+00:34:27,199 --> 00:34:29,359
+search and asymmetric search symmetric
+
+1113
+00:34:29,359 --> 00:34:30,800
+search is basically when your query and
+
+1114
+00:34:30,800 --> 00:34:33,440
+document have similar lengths so you can
+
+1115
+00:34:33,440 --> 00:34:34,719
+imagine that a document might have
+
+1116
+00:34:34,719 --> 00:34:36,639
+something like a title field in that
+
+1117
+00:34:36,639 --> 00:34:38,879
+case the query and document do live in
+
+1118
+00:34:38,879 --> 00:34:40,480
+the same space if you define the
+
+1119
+00:34:40,480 --> 00:34:42,239
+document to just be a title
+
+1120
+00:34:42,239 --> 00:34:44,719
+or a very small field of document
+
+1121
+00:34:44,719 --> 00:34:46,960
+but as you imagine documents are much
+
+1122
+00:34:46,960 --> 00:34:48,239
+bigger so then we're dealing with
+
+1123
+00:34:48,239 --> 00:34:50,320
+asymmetric search i think the idea here
+
+1124
+00:34:50,320 --> 00:34:51,520
+is that you can still put them in the
+
+1125
+00:34:51,520 --> 00:34:52,719
+same space
+
+1126
+00:34:52,719 --> 00:34:54,480
+um but you would need to train a model
+
+1127
+00:34:54,480 --> 00:34:56,239
+that kind of takes that into account
+
+1128
+00:34:56,239 --> 00:34:57,680
+so there's actually a lot of uh so
+
+1129
+00:34:57,680 --> 00:35:00,839
+sentence transformers this kind of
+
+1130
+00:35:00,839 --> 00:35:02,560
+initiative um
+
+1131
+00:35:02,560 --> 00:35:04,079
+and i think it's kind of yeah so they
+
+1132
+00:35:04,079 --> 00:35:06,320
+talk they have like a lot of models um
+
+1133
+00:35:06,320 --> 00:35:07,680
+some of which have actually been trained
+
+1134
+00:35:07,680 --> 00:35:10,000
+on the asymmetric search task
+
+1135
+00:35:10,000 --> 00:35:12,160
+um so i think you're you're right
+
+1136
+00:35:12,160 --> 00:35:14,720
+um that it does pose challenges but
+
+1137
+00:35:14,720 --> 00:35:16,240
+there are approaches that are developing
+
+1138
+00:35:16,240 --> 00:35:17,440
+where
+
+1139
+00:35:17,440 --> 00:35:19,040
+the models are specifically there's like
+
+1140
+00:35:19,040 --> 00:35:20,880
+different embedders for the query and
+
+1141
+00:35:20,880 --> 00:35:23,040
+different embedders for the document and
+
+1142
+00:35:23,040 --> 00:35:24,240
+you can
+
+1143
+00:35:24,240 --> 00:35:25,520
+put them into the same space so you can
+
+1144
+00:35:25,520 --> 00:35:27,440
+do a comparison
+
+1145
+00:35:27,440 --> 00:35:29,680
+does that kind of make sense or
+
+1146
+00:35:29,680 --> 00:35:31,920
+that's okay i mean without any details i
+
+1147
+00:35:31,920 --> 00:35:35,680
+think at high level i i got the idea uh
+
+1148
+00:35:35,680 --> 00:35:37,760
+richard social right he he published a
+
+1149
+00:35:37,760 --> 00:35:40,640
+paper his team in salesforce about four
+
+1150
+00:35:40,640 --> 00:35:43,760
+five years ago about modeling all the
+
+1151
+00:35:43,760 --> 00:35:47,839
+nlp tasks into just a qa model
+
+1152
+00:35:47,839 --> 00:35:50,960
+like i i i gave an example if you say
+
+1153
+00:35:50,960 --> 00:35:52,560
+you want to do translation you say you
+
+1154
+00:35:52,560 --> 00:35:55,119
+can say what is the translated version
+
+1155
+00:35:55,119 --> 00:35:57,119
+of this english document in french
+
+1156
+00:35:57,119 --> 00:36:00,480
+friends french so
+
+1157
+00:36:00,480 --> 00:36:01,280
+uh
+
+1158
+00:36:01,280 --> 00:36:03,440
+in tpd3 right now they also have this
+
+1159
+00:36:03,440 --> 00:36:05,760
+kind of in context
+
+1160
+00:36:05,760 --> 00:36:08,240
+text learning it's pretty similar to
+
+1161
+00:36:08,240 --> 00:36:11,119
+rich's idea five years ago
+
+1162
+00:36:11,119 --> 00:36:13,760
+so here you have a query right if you
+
+1163
+00:36:13,760 --> 00:36:15,760
+can
+
+1164
+00:36:15,760 --> 00:36:19,359
+formulate query or search into a qa
+
+1165
+00:36:19,359 --> 00:36:22,640
+model so i query something
+
+1166
+00:36:22,640 --> 00:36:24,480
+you don't just return me to
+
+1167
+00:36:24,480 --> 00:36:27,440
+to to point to some documents but you
+
+1168
+00:36:27,440 --> 00:36:29,440
+aggregate the documents you summarize
+
+1169
+00:36:29,440 --> 00:36:32,480
+relevant information within the document
+
+1170
+00:36:32,480 --> 00:36:34,720
+and that will be much more relevant my
+
+1171
+00:36:34,720 --> 00:36:37,440
+problem right now in a lot of searches
+
+1172
+00:36:37,440 --> 00:36:39,440
+is i really i mean you give me the
+
+1173
+00:36:39,440 --> 00:36:42,400
+entire paper i have to really search for
+
+1174
+00:36:42,400 --> 00:36:45,119
+the most relevant articles i mean those
+
+1175
+00:36:45,119 --> 00:36:47,440
+most relevant paragraphs and that's kind
+
+1176
+00:36:47,440 --> 00:36:50,240
+of very painful
+
+1177
+00:36:50,720 --> 00:36:53,200
+so do you do are you do you think one of
+
+1178
+00:36:53,200 --> 00:36:55,680
+the user experience u.com will endeavor
+
+1179
+00:36:55,680 --> 00:36:56,640
+will be
+
+1180
+00:36:56,640 --> 00:36:58,960
+some sort like find find grand query or
+
+1181
+00:36:58,960 --> 00:37:02,560
+find grand qa kind of kind of system
+
+1182
+00:37:02,560 --> 00:37:04,480
+yeah i mean i think um we're probably
+
+1183
+00:37:04,480 --> 00:37:06,160
+like whatever provides the best
+
+1184
+00:37:06,160 --> 00:37:08,000
+experience for our users and fulfills
+
+1185
+00:37:08,000 --> 00:37:08,880
+kind of
+
+1186
+00:37:08,880 --> 00:37:11,520
+that need we'll definitely explore
+
+1187
+00:37:11,520 --> 00:37:12,960
+i mean a lot of it you know a lot of
+
+1188
+00:37:12,960 --> 00:37:14,400
+what we do right now is you can see kind
+
+1189
+00:37:14,400 --> 00:37:16,560
+of summarize content from the web so if
+
+1190
+00:37:16,560 --> 00:37:18,079
+you look up and you kind of see some of
+
+1191
+00:37:18,079 --> 00:37:20,079
+our apps we do summarize a lot of the
+
+1192
+00:37:20,079 --> 00:37:22,800
+content from the web page but i think
+
+1193
+00:37:22,800 --> 00:37:24,240
+you're right i mean i think
+
+1194
+00:37:24,240 --> 00:37:25,920
+there are a lot of exciting advances you
+
+1195
+00:37:25,920 --> 00:37:28,640
+know qa models etc
+
+1196
+00:37:28,640 --> 00:37:30,320
+that you know
+
+1197
+00:37:30,320 --> 00:37:33,280
+um you know we'll keep investigating and
+
+1198
+00:37:33,280 --> 00:37:35,359
+will likely um
+
+1199
+00:37:35,359 --> 00:37:37,359
+yeah like you like but but our focus is
+
+1200
+00:37:37,359 --> 00:37:38,560
+really on like the users and what we
+
+1201
+00:37:38,560 --> 00:37:39,760
+think will
+
+1202
+00:37:39,760 --> 00:37:41,040
+kind of provide like a you know an
+
+1203
+00:37:41,040 --> 00:37:42,960
+innovative user experience
+
+1204
+00:37:42,960 --> 00:37:44,640
+um i can't go too much into details
+
+1205
+00:37:44,640 --> 00:37:46,880
+about like um some of the technology and
+
+1206
+00:37:46,880 --> 00:37:48,079
+stuff but i can talk to kind of other
+
+1207
+00:37:48,079 --> 00:37:50,000
+things happening in the public domain so
+
+1208
+00:37:50,000 --> 00:37:52,480
+for example i think one cool thing is um
+
+1209
+00:37:52,480 --> 00:37:53,760
+i know i think there's like a model
+
+1210
+00:37:53,760 --> 00:37:55,599
+released by openai i think it's called
+
+1211
+00:37:55,599 --> 00:37:57,040
+like web gpt
+
+1212
+00:37:57,040 --> 00:37:58,640
+where they look across different
+
+1213
+00:37:58,640 --> 00:38:00,480
+documents
+
+1214
+00:38:00,480 --> 00:38:02,960
+and try to summarize it
+
+1215
+00:38:02,960 --> 00:38:05,280
+one of the problems with using gpt3
+
+1216
+00:38:05,280 --> 00:38:07,599
+is that you know there's no trust there
+
+1217
+00:38:07,599 --> 00:38:10,160
+um jbt3 has no guarantees on its output
+
+1218
+00:38:10,160 --> 00:38:12,560
+so if you look up when was obama born
+
+1219
+00:38:12,560 --> 00:38:14,560
+using gpt3
+
+1220
+00:38:14,560 --> 00:38:15,920
+you know it's kind of just it's very
+
+1221
+00:38:15,920 --> 00:38:17,280
+probabilistic you don't really have
+
+1222
+00:38:17,280 --> 00:38:18,560
+guarantees that the answer will be
+
+1223
+00:38:18,560 --> 00:38:19,520
+correct
+
+1224
+00:38:19,520 --> 00:38:20,960
+um so that's also like you know thinking
+
+1225
+00:38:20,960 --> 00:38:22,800
+about trust thinking about you know
+
+1226
+00:38:22,800 --> 00:38:24,240
+providing facts
+
+1227
+00:38:24,240 --> 00:38:25,760
+and those are some of like the values i
+
+1228
+00:38:25,760 --> 00:38:27,280
+guess um so
+
+1229
+00:38:27,280 --> 00:38:29,200
+yeah it's a little bit it's interesting
+
+1230
+00:38:29,200 --> 00:38:30,320
+a lot of these
+
+1231
+00:38:30,320 --> 00:38:31,839
+neural approaches like especially the
+
+1232
+00:38:31,839 --> 00:38:33,760
+generative type approaches
+
+1233
+00:38:33,760 --> 00:38:36,320
+um have some pretty clear downsides but
+
+1234
+00:38:36,320 --> 00:38:37,280
+i think that you know there's cool
+
+1235
+00:38:37,280 --> 00:38:39,599
+research going on i know at stanford and
+
+1236
+00:38:39,599 --> 00:38:41,760
+a bunch of research institutions
+
+1237
+00:38:41,760 --> 00:38:44,079
+um on nlp and it's like kind of you know
+
+1238
+00:38:44,079 --> 00:38:46,160
+proceeding at a really fast pace so it's
+
+1239
+00:38:46,160 --> 00:38:47,440
+it's exciting
+
+1240
+00:38:47,440 --> 00:38:48,720
+i don't know if that answered you that
+
+1241
+00:38:48,720 --> 00:38:50,079
+probably didn't answer the specifics of
+
+1242
+00:38:50,079 --> 00:38:52,000
+the question but yeah that's a that's a
+
+1243
+00:38:52,000 --> 00:38:54,880
+high level answer i i kind of okay but
+
+1244
+00:38:54,880 --> 00:38:56,800
+if you get into deep digging to find
+
+1245
+00:38:56,800 --> 00:38:57,839
+grant
+
+1246
+00:38:57,839 --> 00:38:59,839
+uh it's really tough but let's just what
+
+1247
+00:38:59,839 --> 00:39:02,400
+you use your one very simple query say
+
+1248
+00:39:02,400 --> 00:39:03,520
+okay
+
+1249
+00:39:03,520 --> 00:39:06,079
+the war in ukraine
+
+1250
+00:39:06,079 --> 00:39:09,599
+what is the latest status right so there
+
+1251
+00:39:09,599 --> 00:39:12,560
+are two issues one is you need to get
+
+1252
+00:39:12,560 --> 00:39:15,119
+relevant documents and also like you
+
+1253
+00:39:15,119 --> 00:39:16,880
+said gp3 doesn't know whether the
+
+1254
+00:39:16,880 --> 00:39:19,440
+document is a fake one or it's a real
+
+1255
+00:39:19,440 --> 00:39:21,839
+one right now that's the one issue fake
+
+1256
+00:39:21,839 --> 00:39:22,960
+or real
+
+1257
+00:39:22,960 --> 00:39:24,480
+or credible
+
+1258
+00:39:24,480 --> 00:39:26,079
+and number two
+
+1259
+00:39:26,079 --> 00:39:28,240
+it's uh when you talk about one event
+
+1260
+00:39:28,240 --> 00:39:29,599
+even covet
+
+1261
+00:39:29,599 --> 00:39:32,000
+uh the timing is very important
+
+1262
+00:39:32,000 --> 00:39:34,320
+uh because if you talk about if you
+
+1263
+00:39:34,320 --> 00:39:36,320
+summarize documents even that document
+
+1264
+00:39:36,320 --> 00:39:38,880
+is very prominent but that was published
+
+1265
+00:39:38,880 --> 00:39:39,920
+last year
+
+1266
+00:39:39,920 --> 00:39:40,720
+so
+
+1267
+00:39:40,720 --> 00:39:42,480
+how do you prioritize
+
+1268
+00:39:42,480 --> 00:39:44,320
+when you do summarization like if you
+
+1269
+00:39:44,320 --> 00:39:46,400
+talk about the worst situation in
+
+1270
+00:39:46,400 --> 00:39:47,520
+ukraine
+
+1271
+00:39:47,520 --> 00:39:49,040
+perhaps the news
+
+1272
+00:39:49,040 --> 00:39:51,040
+this morning is more important than the
+
+1273
+00:39:51,040 --> 00:39:52,640
+news yesterday
+
+1274
+00:39:52,640 --> 00:39:54,079
+and
+
+1275
+00:39:54,079 --> 00:39:56,960
+at google this is a big struggle because
+
+1276
+00:39:56,960 --> 00:39:57,760
+they
+
+1277
+00:39:57,760 --> 00:40:00,800
+do not want to have a new website
+
+1278
+00:40:00,800 --> 00:40:01,520
+to
+
+1279
+00:40:01,520 --> 00:40:03,520
+show in a prominent place right away
+
+1280
+00:40:03,520 --> 00:40:04,400
+because
+
+1281
+00:40:04,400 --> 00:40:06,640
+they called they talked about top rights
+
+1282
+00:40:06,640 --> 00:40:10,079
+inquiry comprising uprising results when
+
+1283
+00:40:10,079 --> 00:40:12,560
+you have a top rising result it tends to
+
+1284
+00:40:12,560 --> 00:40:14,480
+be a spam page
+
+1285
+00:40:14,480 --> 00:40:17,200
+right people can scam your system
+
+1286
+00:40:17,200 --> 00:40:19,680
+to have their advertisement
+
+1287
+00:40:19,680 --> 00:40:21,359
+highly ranked
+
+1288
+00:40:21,359 --> 00:40:24,720
+so this trade-off saying timeliness and
+
+1289
+00:40:24,720 --> 00:40:27,119
+and comprising so i gave you an example
+
+1290
+00:40:27,119 --> 00:40:30,720
+in 206 206 google started this uh
+
+1291
+00:40:30,720 --> 00:40:32,319
+beijing branch
+
+1292
+00:40:32,319 --> 00:40:35,200
+and there was a very kind of
+
+1293
+00:40:35,200 --> 00:40:37,760
+interesting story the next day so we
+
+1294
+00:40:37,760 --> 00:40:40,319
+started we had a huge ceremony press
+
+1295
+00:40:40,319 --> 00:40:42,240
+event let's say
+
+1296
+00:40:42,240 --> 00:40:44,319
+on may 1st okay
+
+1297
+00:40:44,319 --> 00:40:47,119
+and on may 2nd you see baidu search
+
+1298
+00:40:47,119 --> 00:40:48,000
+engine
+
+1299
+00:40:48,000 --> 00:40:50,240
+you search on google whatever they show
+
+1300
+00:40:50,240 --> 00:40:52,400
+the top result a google launch a new
+
+1301
+00:40:52,400 --> 00:40:54,960
+division in china but google itself has
+
+1302
+00:40:54,960 --> 00:40:57,520
+no doubt not news until a week later
+
+1303
+00:40:57,520 --> 00:41:00,160
+because they want the information
+
+1304
+00:41:00,160 --> 00:41:02,640
+to gain their ranks in time
+
+1305
+00:41:02,640 --> 00:41:04,400
+so all those kind of problems will
+
+1306
+00:41:04,400 --> 00:41:06,400
+affect your summarization quality right
+
+1307
+00:41:06,400 --> 00:41:08,960
+those are really nitty-gritty details
+
+1308
+00:41:08,960 --> 00:41:11,440
+yeah uh when we do research in
+
+1309
+00:41:11,440 --> 00:41:13,760
+university we were typically saying well
+
+1310
+00:41:13,760 --> 00:41:15,520
+you give me a whole bunch of documents
+
+1311
+00:41:15,520 --> 00:41:17,440
+they are equally important you don't
+
+1312
+00:41:17,440 --> 00:41:19,440
+consider citations you don't consider
+
+1313
+00:41:19,440 --> 00:41:22,079
+timeliness or maybe some papers resolved
+
+1314
+00:41:22,079 --> 00:41:24,400
+already been invalidated by the
+
+1315
+00:41:24,400 --> 00:41:27,119
+future papers or something on papers
+
+1316
+00:41:27,119 --> 00:41:29,359
+so how could one deal with that kind of
+
+1317
+00:41:29,359 --> 00:41:31,280
+question i'm not trying to pick your
+
+1318
+00:41:31,280 --> 00:41:33,839
+brand or get into you.com
+
+1319
+00:41:33,839 --> 00:41:35,920
+secrets i'm trying to say there are lots
+
+1320
+00:41:35,920 --> 00:41:37,760
+of other problems just
+
+1321
+00:41:37,760 --> 00:41:40,880
+in addition to just the relevance
+
+1322
+00:41:40,880 --> 00:41:43,119
+yeah you're absolutely correct i think
+
+1323
+00:41:43,119 --> 00:41:46,480
+i mean what you stated is spot on um
+
+1324
+00:41:46,480 --> 00:41:47,599
+there's a lot of different you know
+
+1325
+00:41:47,599 --> 00:41:49,440
+issues i think you talked about
+
+1326
+00:41:49,440 --> 00:41:51,839
+uh recent news being an example um like
+
+1327
+00:41:51,839 --> 00:41:54,160
+how do you know if a query is
+
+1328
+00:41:54,160 --> 00:41:56,079
+you know merits having a new source at
+
+1329
+00:41:56,079 --> 00:41:57,680
+the top um that's something we think a
+
+1330
+00:41:57,680 --> 00:41:59,920
+lot about um so we have for example
+
+1331
+00:41:59,920 --> 00:42:01,599
+these different apps that we show some
+
+1332
+00:42:01,599 --> 00:42:04,000
+of which are kind of news related and we
+
+1333
+00:42:04,000 --> 00:42:05,599
+do have to think about that and you're
+
+1334
+00:42:05,599 --> 00:42:08,319
+right it is a very nitty gritty problem
+
+1335
+00:42:08,319 --> 00:42:09,920
+um and there's like tons of very like
+
+1336
+00:42:09,920 --> 00:42:12,240
+little nitty gritty issues
+
+1337
+00:42:12,240 --> 00:42:14,079
+that happen in practice that often we
+
+1338
+00:42:14,079 --> 00:42:15,680
+don't really see in research
+
+1339
+00:42:15,680 --> 00:42:17,040
+more at least aren't as emphasized in
+
+1340
+00:42:17,040 --> 00:42:18,079
+research
+
+1341
+00:42:18,079 --> 00:42:19,599
+so yeah i think that's that's a good
+
+1342
+00:42:19,599 --> 00:42:20,560
+point
+
+1343
+00:42:20,560 --> 00:42:21,520
+um
+
+1344
+00:42:21,520 --> 00:42:23,040
+yeah i don't have too much to add to
+
+1345
+00:42:23,040 --> 00:42:24,880
+what you said i think what you said
+
+1346
+00:42:24,880 --> 00:42:26,240
+kind of summarizes a little bit of the
+
+1347
+00:42:26,240 --> 00:42:27,599
+problems there
+
+1348
+00:42:27,599 --> 00:42:29,599
+there are i guess you know
+
+1349
+00:42:29,599 --> 00:42:31,040
+solutions like obviously like we can
+
+1350
+00:42:31,040 --> 00:42:32,720
+like you know there are
+
+1351
+00:42:32,720 --> 00:42:34,160
+you know approaches one can take so i'm
+
+1352
+00:42:34,160 --> 00:42:36,560
+sure google for example
+
+1353
+00:42:36,560 --> 00:42:38,560
+um looks at and tries to kind of have
+
+1354
+00:42:38,560 --> 00:42:40,400
+some type of understanding of the query
+
+1355
+00:42:40,400 --> 00:42:41,680
+whether this is a type of query that's
+
+1356
+00:42:41,680 --> 00:42:42,880
+kind of an information like a news type
+
+1357
+00:42:42,880 --> 00:42:45,119
+query etc so i think a lot of it has to
+
+1358
+00:42:45,119 --> 00:42:48,000
+do with intent and understanding
+
+1359
+00:42:48,000 --> 00:42:49,760
+a lot of it has to do with
+
+1360
+00:42:49,760 --> 00:42:52,560
+other methods as well
+
+1361
+00:42:53,359 --> 00:42:57,640
+okay great thank you
+
+1362
+00:42:58,319 --> 00:42:59,920
+yeah so i think one really important
+
+1363
+00:42:59,920 --> 00:43:01,119
+concept when it comes to building a
+
+1364
+00:43:01,119 --> 00:43:02,800
+search system and again this applies to
+
+1365
+00:43:02,800 --> 00:43:04,880
+any search system so if you're building
+
+1366
+00:43:04,880 --> 00:43:07,520
+search for mail or search across medical
+
+1367
+00:43:07,520 --> 00:43:08,800
+information
+
+1368
+00:43:08,800 --> 00:43:11,760
+or search for like a like an emr system
+
+1369
+00:43:11,760 --> 00:43:13,200
+some pretty standard
+
+1370
+00:43:13,200 --> 00:43:15,680
+metrics are you know concepts like
+
+1371
+00:43:15,680 --> 00:43:17,200
+average precision
+
+1372
+00:43:17,200 --> 00:43:18,960
+so and when we talk about precision
+
+1373
+00:43:18,960 --> 00:43:20,480
+usually in the search setting
+
+1374
+00:43:20,480 --> 00:43:22,720
+we talk about precision at k
+
+1375
+00:43:22,720 --> 00:43:24,960
+where k is a number of the first results
+
+1376
+00:43:24,960 --> 00:43:26,560
+that you've returned so usually things
+
+1377
+00:43:26,560 --> 00:43:28,800
+like k at 5 and k at 10 are important
+
+1378
+00:43:28,800 --> 00:43:30,000
+because actually in practice how many
+
+1379
+00:43:30,000 --> 00:43:31,280
+times you actually go to the second page
+
+1380
+00:43:31,280 --> 00:43:33,359
+of the search results probably very few
+
+1381
+00:43:33,359 --> 00:43:34,800
+times you're usually looking at the
+
+1382
+00:43:34,800 --> 00:43:37,839
+first page which has around 10 results
+
+1383
+00:43:37,839 --> 00:43:39,760
+in traditional systems
+
+1384
+00:43:39,760 --> 00:43:41,680
+so average position is important average
+
+1385
+00:43:41,680 --> 00:43:44,160
+recall is also kind of a useful metric
+
+1386
+00:43:44,160 --> 00:43:45,440
+mean reciprocal rank is also an
+
+1387
+00:43:45,440 --> 00:43:46,560
+important one
+
+1388
+00:43:46,560 --> 00:43:47,440
+um
+
+1389
+00:43:47,440 --> 00:43:48,800
+so and again if you want to like
+
+1390
+00:43:48,800 --> 00:43:50,079
+actually learn more about these i would
+
+1391
+00:43:50,079 --> 00:43:51,520
+just look them up these are pretty
+
+1392
+00:43:51,520 --> 00:43:53,359
+standard terms but me and reciprocal
+
+1393
+00:43:53,359 --> 00:43:54,640
+rank measures the first relevant
+
+1394
+00:43:54,640 --> 00:43:57,599
+document um so basically if the second
+
+1395
+00:43:57,599 --> 00:43:59,280
+document is a relevant one the
+
+1396
+00:43:59,280 --> 00:44:00,960
+reciprocal rank is going to be 1 divided
+
+1397
+00:44:00,960 --> 00:44:02,560
+by 2 or 0.5
+
+1398
+00:44:02,560 --> 00:44:04,160
+and then mean simply implies that you're
+
+1399
+00:44:04,160 --> 00:44:05,359
+going to get the average across many
+
+1400
+00:44:05,359 --> 00:44:07,200
+queries there's concepts like average
+
+1401
+00:44:07,200 --> 00:44:09,040
+precision which is kind of a way of
+
+1402
+00:44:09,040 --> 00:44:11,359
+computing precision across you know
+
+1403
+00:44:11,359 --> 00:44:13,359
+various ranked documents
+
+1404
+00:44:13,359 --> 00:44:15,040
+um and then another one is normalized
+
+1405
+00:44:15,040 --> 00:44:16,240
+ndcg
+
+1406
+00:44:16,240 --> 00:44:18,640
+normalized discounted cumulative gain um
+
+1407
+00:44:18,640 --> 00:44:19,599
+this is kind of a different type of
+
+1408
+00:44:19,599 --> 00:44:21,599
+metric in that you're using relevance
+
+1409
+00:44:21,599 --> 00:44:22,400
+labels
+
+1410
+00:44:22,400 --> 00:44:24,160
+so if you can take into account not just
+
+1411
+00:44:24,160 --> 00:44:25,680
+whether or not a document is relevant
+
+1412
+00:44:25,680 --> 00:44:27,760
+but how relevant it is so for example
+
+1413
+00:44:27,760 --> 00:44:30,000
+you can have like four grades one two
+
+1414
+00:44:30,000 --> 00:44:32,960
+three four and ndcg can kind of measure
+
+1415
+00:44:32,960 --> 00:44:34,480
+how well the search performs taking into
+
+1416
+00:44:34,480 --> 00:44:36,560
+account the rank of the document as well
+
+1417
+00:44:36,560 --> 00:44:37,599
+as its um
+
+1418
+00:44:37,599 --> 00:44:39,520
+its graded scale
+
+1419
+00:44:39,520 --> 00:44:41,680
+and again this is like a very i don't
+
+1420
+00:44:41,680 --> 00:44:43,119
+expect you all to
+
+1421
+00:44:43,119 --> 00:44:44,640
+understand all these metrics at a deep
+
+1422
+00:44:44,640 --> 00:44:45,680
+level just
+
+1423
+00:44:45,680 --> 00:44:48,079
+um from this one slide but if you're
+
+1424
+00:44:48,079 --> 00:44:49,920
+curious you can just definitely like
+
+1425
+00:44:49,920 --> 00:44:51,760
+look online there's tons of resources
+
+1426
+00:44:51,760 --> 00:44:53,040
+and you can look into the formulas and
+
+1427
+00:44:53,040 --> 00:44:54,319
+stuff to get more of a deep
+
+1428
+00:44:54,319 --> 00:44:56,079
+understanding but the idea here is that
+
+1429
+00:44:56,079 --> 00:44:57,440
+the metrics are averaged across multiple
+
+1430
+00:44:57,440 --> 00:44:59,280
+queries in a test set and these are some
+
+1431
+00:44:59,280 --> 00:45:00,560
+of the standard ones that you might want
+
+1432
+00:45:00,560 --> 00:45:02,160
+to look more into
+
+1433
+00:45:02,160 --> 00:45:05,839
+if you're building search systems
+
+1434
+00:45:08,720 --> 00:45:09,839
+does anybody have any questions on
+
+1435
+00:45:09,839 --> 00:45:12,960
+evaluating search systems
+
+1436
+00:45:14,720 --> 00:45:16,000
+yeah so i guess on the topic of
+
+1437
+00:45:16,000 --> 00:45:17,839
+evaluation
+
+1438
+00:45:17,839 --> 00:45:19,359
+important so there's some publicly
+
+1439
+00:45:19,359 --> 00:45:21,280
+available benchmarks so for example
+
+1440
+00:45:21,280 --> 00:45:24,480
+benchmarking ir or beir
+
+1441
+00:45:24,480 --> 00:45:26,000
+it had a really interesting table so
+
+1442
+00:45:26,000 --> 00:45:27,920
+over here you can see that
+
+1443
+00:45:27,920 --> 00:45:29,280
+um we off it's actually quite
+
+1444
+00:45:29,280 --> 00:45:30,720
+interesting because bm25 which we
+
+1445
+00:45:30,720 --> 00:45:33,520
+discussed before actually performs
+
+1446
+00:45:33,520 --> 00:45:35,680
+pretty well even now compared to a lot
+
+1447
+00:45:35,680 --> 00:45:37,520
+of the neural approaches so you can see
+
+1448
+00:45:37,520 --> 00:45:39,920
+here average performance versus bm25 and
+
+1449
+00:45:39,920 --> 00:45:42,240
+a lot of these deep learning approaches
+
+1450
+00:45:42,240 --> 00:45:43,839
+have negative performance compared to
+
+1451
+00:45:43,839 --> 00:45:45,040
+bm25
+
+1452
+00:45:45,040 --> 00:45:46,800
+which is quite fascinating
+
+1453
+00:45:46,800 --> 00:45:48,800
+um especially because a lot of them are
+
+1454
+00:45:48,800 --> 00:45:50,880
+very specific to certain domains so even
+
+1455
+00:45:50,880 --> 00:45:52,800
+if they do better on a domain like ms
+
+1456
+00:45:52,800 --> 00:45:53,920
+marco
+
+1457
+00:45:53,920 --> 00:45:56,480
+they do a lot worse on domains
+
+1458
+00:45:56,480 --> 00:45:58,720
+like outside of that yeah they don't
+
+1459
+00:45:58,720 --> 00:46:01,040
+transfer across domains basically so we
+
+1460
+00:46:01,040 --> 00:46:02,800
+see that bm25
+
+1461
+00:46:02,800 --> 00:46:04,800
+um surprises it still performs pretty
+
+1462
+00:46:04,800 --> 00:46:06,880
+well and there are approaches like here
+
+1463
+00:46:06,880 --> 00:46:07,920
+coming up
+
+1464
+00:46:07,920 --> 00:46:11,119
+um and especially using bm25 plus cross
+
+1465
+00:46:11,119 --> 00:46:13,280
+encoding seems to work really well
+
+1466
+00:46:13,280 --> 00:46:15,280
+but we don't see that many improvements
+
+1467
+00:46:15,280 --> 00:46:16,480
+so this is quite exciting because it
+
+1468
+00:46:16,480 --> 00:46:17,839
+means that there's a lot of
+
+1469
+00:46:17,839 --> 00:46:19,359
+room to grow in terms of neural
+
+1470
+00:46:19,359 --> 00:46:20,400
+approaches
+
+1471
+00:46:20,400 --> 00:46:21,599
+but it's also interesting because the
+
+1472
+00:46:21,599 --> 00:46:23,760
+electrical approach is still
+
+1473
+00:46:23,760 --> 00:46:25,119
+you know when we're looking at zero shot
+
+1474
+00:46:25,119 --> 00:46:27,440
+performances do pretty well
+
+1475
+00:46:27,440 --> 00:46:29,359
+um so it's a little bit of i talked a
+
+1476
+00:46:29,359 --> 00:46:31,200
+lot about the promise of neural ir i'm
+
+1477
+00:46:31,200 --> 00:46:33,040
+also like just briefly mentioning that
+
+1478
+00:46:33,040 --> 00:46:36,400
+there still are a lot of limitations
+
+1479
+00:46:36,400 --> 00:46:38,640
+and speaking of limitations some future
+
+1480
+00:46:38,640 --> 00:46:40,160
+you know research directions one is long
+
+1481
+00:46:40,160 --> 00:46:42,240
+document search so language models have
+
+1482
+00:46:42,240 --> 00:46:44,079
+token limits so bert has a limit of 512
+
+1483
+00:46:44,079 --> 00:46:45,119
+tokens
+
+1484
+00:46:45,119 --> 00:46:47,200
+this can be quite
+
+1485
+00:46:47,200 --> 00:46:48,720
+important when you're talking about you
+
+1486
+00:46:48,720 --> 00:46:50,400
+know trying to understand large sets of
+
+1487
+00:46:50,400 --> 00:46:52,160
+documents and this is why inverted
+
+1488
+00:46:52,160 --> 00:46:54,240
+indices still work pretty well
+
+1489
+00:46:54,240 --> 00:46:56,000
+because they're they're designed to
+
+1490
+00:46:56,000 --> 00:46:57,280
+handle really large documents because
+
+1491
+00:46:57,280 --> 00:46:58,560
+you're just literally looking at the
+
+1492
+00:46:58,560 --> 00:47:00,240
+keywords you don't have to embed and
+
+1493
+00:47:00,240 --> 00:47:01,760
+understand all of it
+
+1494
+00:47:01,760 --> 00:47:03,280
+um that kind of brings us to the
+
+1495
+00:47:03,280 --> 00:47:04,480
+question of how do we effectively embed
+
+1496
+00:47:04,480 --> 00:47:06,400
+long documents for semantic search
+
+1497
+00:47:06,400 --> 00:47:08,880
+neural remake a re-ranking so there's
+
+1498
+00:47:08,880 --> 00:47:10,480
+techniques like long former etc that
+
+1499
+00:47:10,480 --> 00:47:11,599
+have come out
+
+1500
+00:47:11,599 --> 00:47:12,880
+and i think professor chang may have
+
+1501
+00:47:12,880 --> 00:47:14,240
+talked about it in a previous lecture or
+
+1502
+00:47:14,240 --> 00:47:17,359
+a future one when he talks about nlp
+
+1503
+00:47:17,359 --> 00:47:18,720
+another concept is how do we effectively
+
+1504
+00:47:18,720 --> 00:47:19,920
+chunk long documents into smaller
+
+1505
+00:47:19,920 --> 00:47:21,839
+semantic pieces
+
+1506
+00:47:21,839 --> 00:47:23,200
+these are all kind of topics related to
+
+1507
+00:47:23,200 --> 00:47:24,720
+long document search
+
+1508
+00:47:24,720 --> 00:47:26,559
+um how do we combine lexical systematic
+
+1509
+00:47:26,559 --> 00:47:28,319
+search effectively so can we kind of
+
+1510
+00:47:28,319 --> 00:47:30,559
+take the best of both worlds
+
+1511
+00:47:30,559 --> 00:47:32,559
+when we get to semantic search are there
+
+1512
+00:47:32,559 --> 00:47:33,680
+better approaches for fine tuning
+
+1513
+00:47:33,680 --> 00:47:34,800
+embeddings different architectural
+
+1514
+00:47:34,800 --> 00:47:37,359
+improvements training procedures
+
+1515
+00:47:37,359 --> 00:47:38,880
+when we train you know these types of
+
+1516
+00:47:38,880 --> 00:47:40,880
+models often you deal with triplets
+
+1517
+00:47:40,880 --> 00:47:42,559
+which is like a query a positive example
+
+1518
+00:47:42,559 --> 00:47:44,400
+a negative example and you use some type
+
+1519
+00:47:44,400 --> 00:47:46,000
+of cross-entropy loss
+
+1520
+00:47:46,000 --> 00:47:48,480
+to you know fine-tune the embeddings to
+
+1521
+00:47:48,480 --> 00:47:51,520
+kind of be better aligned with relevance
+
+1522
+00:47:51,520 --> 00:47:53,839
+um so how do you effectively efficiently
+
+1523
+00:47:53,839 --> 00:47:54,960
+capture potential information with the
+
+1524
+00:47:54,960 --> 00:47:56,880
+query and document jointly
+
+1525
+00:47:56,880 --> 00:47:58,319
+transfer learning can that be used in
+
+1526
+00:47:58,319 --> 00:48:00,079
+multi in ir
+
+1527
+00:48:00,079 --> 00:48:02,240
+multi-task learning as well
+
+1528
+00:48:02,240 --> 00:48:04,160
+kind of you know what is the the future
+
+1529
+00:48:04,160 --> 00:48:05,040
+there
+
+1530
+00:48:05,040 --> 00:48:06,559
+um another another kind of research
+
+1531
+00:48:06,559 --> 00:48:08,319
+direction is learning to rank
+
+1532
+00:48:08,319 --> 00:48:10,160
+how do we incorporate non-textual
+
+1533
+00:48:10,160 --> 00:48:12,000
+signals with technical signals well and
+
+1534
+00:48:12,000 --> 00:48:14,160
+then lastly i'll kind of leave it with a
+
+1535
+00:48:14,160 --> 00:48:16,319
+multimodal search so i think multimoodle
+
+1536
+00:48:16,319 --> 00:48:18,000
+search is going to be very interesting
+
+1537
+00:48:18,000 --> 00:48:19,119
+but can we search within various
+
+1538
+00:48:19,119 --> 00:48:21,119
+modalities so if you look can we
+
+1539
+00:48:21,119 --> 00:48:22,000
+actually
+
+1540
+00:48:22,000 --> 00:48:23,839
+provide documents as well as images at
+
+1541
+00:48:23,839 --> 00:48:25,680
+the same time or if you want to just do
+
+1542
+00:48:25,680 --> 00:48:26,800
+image search
+
+1543
+00:48:26,800 --> 00:48:28,079
+and also you know maybe in more
+
+1544
+00:48:28,079 --> 00:48:29,440
+specialized search modalities and fields
+
+1545
+00:48:29,440 --> 00:48:31,200
+like healthcare multimodal search
+
+1546
+00:48:31,200 --> 00:48:32,960
+becomes important a lot of healthcare
+
+1547
+00:48:32,960 --> 00:48:34,880
+deals with images
+
+1548
+00:48:34,880 --> 00:48:37,760
+as well as kind of unstructured text
+
+1549
+00:48:37,760 --> 00:48:40,480
+as well as structure text so multimodal
+
+1550
+00:48:40,480 --> 00:48:43,119
+search is kind of a very interesting
+
+1551
+00:48:43,119 --> 00:48:46,079
+area of you know innovation
+
+1552
+00:48:46,079 --> 00:48:47,200
+but yeah so these are some of the future
+
+1553
+00:48:47,200 --> 00:48:48,559
+research directions and i'll just leave
+
+1554
+00:48:48,559 --> 00:48:50,640
+it at that that's um
+
+1555
+00:48:50,640 --> 00:48:52,000
+i've been talking for a while but i hope
+
+1556
+00:48:52,000 --> 00:48:53,760
+you'll thank you all for listening
+
+1557
+00:48:53,760 --> 00:48:55,280
+and i'll i'll just hang on if you have a
+
+1558
+00:48:55,280 --> 00:48:57,040
+couple of questions
+
+1559
+00:48:57,040 --> 00:49:00,839
+yeah thank you so much
+
+1560
+00:49:03,900 --> 00:49:06,559
+[Music]
+
+1561
+00:49:06,559 --> 00:49:09,359
+yeah i can hear you much better now
+
+1562
+00:49:09,359 --> 00:49:12,559
+so i can mute right yeah
+
+1563
+00:49:12,559 --> 00:49:13,839
+um
+
+1564
+00:49:13,839 --> 00:49:15,680
+does it work this way yeah yeah this is
+
+1565
+00:49:15,680 --> 00:49:16,880
+perfect
+
+1566
+00:49:16,880 --> 00:49:19,200
+okay okay yeah i was wondering because
+
+1567
+00:49:19,200 --> 00:49:20,559
+last time i remember when you were
+
+1568
+00:49:20,559 --> 00:49:22,720
+presenting the um
+
+1569
+00:49:22,720 --> 00:49:23,839
+the
+
+1570
+00:49:23,839 --> 00:49:25,680
+uh project ideas you were saying that
+
+1571
+00:49:25,680 --> 00:49:27,280
+currently you don't
+
+1572
+00:49:27,280 --> 00:49:29,280
+monetize the product and you are
+
+1573
+00:49:29,280 --> 00:49:30,640
+thinking about
+
+1574
+00:49:30,640 --> 00:49:31,520
+um
+
+1575
+00:49:31,520 --> 00:49:34,160
+actually doing non-personalized ads and
+
+1576
+00:49:34,160 --> 00:49:36,319
+i was thinking whether you ever looked
+
+1577
+00:49:36,319 --> 00:49:38,640
+as a company into stuff like the brave
+
+1578
+00:49:38,640 --> 00:49:41,599
+browser and this association to like
+
+1579
+00:49:41,599 --> 00:49:43,359
+crypto that you're being paid for
+
+1580
+00:49:43,359 --> 00:49:46,160
+advertisements and what you take about
+
+1581
+00:49:46,160 --> 00:49:47,520
+like these
+
+1582
+00:49:47,520 --> 00:49:49,200
+um kind of like i mean it's not
+
+1583
+00:49:49,200 --> 00:49:51,359
+necessarily search but these alternative
+
+1584
+00:49:51,359 --> 00:49:53,839
+browsers are in their
+
+1585
+00:49:53,839 --> 00:49:56,319
+approach
+
+1586
+00:49:56,319 --> 00:49:58,240
+yeah yeah that's a that's an interesting
+
+1587
+00:49:58,240 --> 00:49:59,599
+question um
+
+1588
+00:49:59,599 --> 00:50:00,800
+also professor chang do you mind if we
+
+1589
+00:50:00,800 --> 00:50:03,119
+just stop recording for the
+
+1590
+00:50:03,119 --> 00:50:04,319
+this session
+
+1591
+00:50:04,319 --> 00:50:07,880
+is this part of it
+

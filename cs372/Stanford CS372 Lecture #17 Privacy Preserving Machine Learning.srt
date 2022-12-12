@@ -1,0 +1,8476 @@
+1
+00:00:02,560 --> 00:00:04,960
+hi good morning everyone
+
+2
+00:00:04,960 --> 00:00:06,720
+today's lecture we are going to cover
+
+3
+00:00:06,720 --> 00:00:08,559
+privacy preservation
+
+4
+00:00:08,559 --> 00:00:11,280
+machine learning uh privacy is a very
+
+5
+00:00:11,280 --> 00:00:12,400
+critical issue
+
+6
+00:00:12,400 --> 00:00:14,920
+i would talk about the reasons
+
+7
+00:00:14,920 --> 00:00:16,160
+regulations
+
+8
+00:00:16,160 --> 00:00:18,640
+approaches and finally one of the
+
+9
+00:00:18,640 --> 00:00:19,840
+solutions
+
+10
+00:00:19,840 --> 00:00:23,039
+stanford has implemented uh before we
+
+11
+00:00:23,039 --> 00:00:25,519
+get started let's talk about this uh
+
+12
+00:00:25,519 --> 00:00:29,439
+our presentation schedule uh we have two
+
+13
+00:00:29,439 --> 00:00:34,160
+uh classes uh open for sign up
+
+14
+00:00:34,160 --> 00:00:37,680
+next tuesday and the next thursday
+
+15
+00:00:37,680 --> 00:00:40,480
+and each presentation is expected to be
+
+16
+00:00:40,480 --> 00:00:42,239
+about 30 minutes
+
+17
+00:00:42,239 --> 00:00:46,239
+so if you your time cannot accommodate
+
+18
+00:00:46,239 --> 00:00:46,960
+to this
+
+19
+00:00:46,960 --> 00:00:50,800
+to uh presentation epochs
+
+20
+00:00:50,800 --> 00:00:53,440
+we can accommodate a scheduling other
+
+21
+00:00:53,440 --> 00:00:54,399
+time
+
+22
+00:00:54,399 --> 00:00:56,879
+but it should be before uh the time we
+
+23
+00:00:56,879 --> 00:00:58,480
+need to turn in the
+
+24
+00:00:58,480 --> 00:01:01,760
+your grades and also just a reminder
+
+25
+00:01:01,760 --> 00:01:02,960
+please uh
+
+26
+00:01:02,960 --> 00:01:06,080
+do cost evaluation and this is
+
+27
+00:01:06,080 --> 00:01:09,280
+reminding me by the register uh
+
+28
+00:01:09,280 --> 00:01:11,280
+we would like to really appreciate your
+
+29
+00:01:11,280 --> 00:01:13,280
+comments suggestions
+
+30
+00:01:13,280 --> 00:01:16,240
+so for the next addition we can make
+
+31
+00:01:16,240 --> 00:01:17,520
+improvement
+
+32
+00:01:17,520 --> 00:01:20,320
+or basically what we have done right and
+
+33
+00:01:20,320 --> 00:01:20,960
+what
+
+34
+00:01:20,960 --> 00:01:25,680
+you expect us to improve let us know
+
+35
+00:01:25,680 --> 00:01:29,360
+and remaining lectures today
+
+36
+00:01:29,360 --> 00:01:31,280
+again we cover privacy preserving
+
+37
+00:01:31,280 --> 00:01:32,720
+machine learning
+
+38
+00:01:32,720 --> 00:01:35,840
+and this thursday and
+
+39
+00:01:35,840 --> 00:01:38,479
+we had covered already consciousness and
+
+40
+00:01:38,479 --> 00:01:40,640
+we are going to wrap up consciousness
+
+41
+00:01:40,640 --> 00:01:44,159
+get into mind and ethics these are two
+
+42
+00:01:44,159 --> 00:01:47,360
+very critical subjects but at the same
+
+43
+00:01:47,360 --> 00:01:49,200
+time very abstract
+
+44
+00:01:49,200 --> 00:01:53,280
+but i plan to root on psychology
+
+45
+00:01:53,280 --> 00:01:56,799
+and maybe physics right to give you
+
+46
+00:01:56,799 --> 00:01:59,119
+some of the perspectives from quantum
+
+47
+00:01:59,119 --> 00:02:00,240
+mechanics
+
+48
+00:02:00,240 --> 00:02:02,079
+and maybe even from religions
+
+49
+00:02:02,079 --> 00:02:04,640
+perspective
+
+50
+00:02:05,040 --> 00:02:07,680
+okay to this outline we are going to
+
+51
+00:02:07,680 --> 00:02:08,160
+start
+
+52
+00:02:08,160 --> 00:02:11,038
+cover the major concerns about privacy
+
+53
+00:02:11,038 --> 00:02:12,640
+from users perspective
+
+54
+00:02:12,640 --> 00:02:16,000
+and also from companies perspectives
+
+55
+00:02:16,000 --> 00:02:18,000
+and the privacy regulations the key
+
+56
+00:02:18,000 --> 00:02:20,000
+regulations are ccpa
+
+57
+00:02:20,000 --> 00:02:23,680
+and gdpr and we plan to explain
+
+58
+00:02:23,680 --> 00:02:26,640
+them in details and also in the medical
+
+59
+00:02:26,640 --> 00:02:27,280
+domain
+
+60
+00:02:27,280 --> 00:02:29,440
+right we have we have another set of
+
+61
+00:02:29,440 --> 00:02:30,720
+regulations
+
+62
+00:02:30,720 --> 00:02:34,000
+but they are pretty similar uh then
+
+63
+00:02:34,000 --> 00:02:37,120
+from this compliance requirements if we
+
+64
+00:02:37,120 --> 00:02:39,120
+cannot comply as a company
+
+65
+00:02:39,120 --> 00:02:42,000
+the company may be fined heavily so we
+
+66
+00:02:42,000 --> 00:02:42,800
+have to
+
+67
+00:02:42,800 --> 00:02:44,959
+understand the complex requirement and
+
+68
+00:02:44,959 --> 00:02:46,000
+convert the
+
+69
+00:02:46,000 --> 00:02:48,640
+requirement into execution requirements
+
+70
+00:02:48,640 --> 00:02:50,560
+and we must have heard about
+
+71
+00:02:50,560 --> 00:02:53,920
+like federated learning or differential
+
+72
+00:02:53,920 --> 00:02:56,800
+learning will those implementation
+
+73
+00:02:56,800 --> 00:02:57,920
+fulfill the
+
+74
+00:02:57,920 --> 00:03:00,159
+regulation requirements or not i
+
+75
+00:03:00,159 --> 00:03:01,760
+personally consider they are not
+
+76
+00:03:01,760 --> 00:03:04,560
+adequate but it's really hard to say
+
+77
+00:03:04,560 --> 00:03:05,599
+until
+
+78
+00:03:05,599 --> 00:03:08,959
+a company and was a company will be
+
+79
+00:03:08,959 --> 00:03:10,959
+brought to the lawsuit situation
+
+80
+00:03:10,959 --> 00:03:14,000
+the court eventually will clarify
+
+81
+00:03:14,000 --> 00:03:17,120
+the boundary of the regulations so
+
+82
+00:03:17,120 --> 00:03:19,599
+we enumerate three major technical
+
+83
+00:03:19,599 --> 00:03:20,720
+approaches
+
+84
+00:03:20,720 --> 00:03:23,360
+to be able to preserve privacy and
+
+85
+00:03:23,360 --> 00:03:24,400
+finally
+
+86
+00:03:24,400 --> 00:03:26,239
+uh i mentioned this is a standard system
+
+87
+00:03:26,239 --> 00:03:28,000
+called saltaria
+
+88
+00:03:28,000 --> 00:03:30,720
+it's called developed by by stanford and
+
+89
+00:03:30,720 --> 00:03:32,640
+also my previous colleagues
+
+90
+00:03:32,640 --> 00:03:35,840
+and use this blockchain to safeguarding
+
+91
+00:03:35,840 --> 00:03:38,879
+privacy so privacy
+
+92
+00:03:38,879 --> 00:03:40,640
+for sure we know that they say using
+
+93
+00:03:40,640 --> 00:03:42,560
+cell phone using laptop
+
+94
+00:03:42,560 --> 00:03:46,080
+whatever information we enter we will be
+
+95
+00:03:46,080 --> 00:03:48,319
+tracked right so there's a trade-off
+
+96
+00:03:48,319 --> 00:03:49,200
+between
+
+97
+00:03:49,200 --> 00:03:51,519
+free usage applications and you have to
+
+98
+00:03:51,519 --> 00:03:52,799
+give us something
+
+99
+00:03:52,799 --> 00:03:55,519
+and in certain situations if you don't
+
+100
+00:03:55,519 --> 00:03:56,720
+give up your information
+
+101
+00:03:56,720 --> 00:03:58,400
+the application cannot be run like
+
+102
+00:03:58,400 --> 00:04:00,480
+google maps right google maps you say i
+
+103
+00:04:00,480 --> 00:04:01,840
+want to about
+
+104
+00:04:01,840 --> 00:04:05,200
+uh location tracking then good luck
+
+105
+00:04:05,200 --> 00:04:08,640
+uh it just cannot be functioning so but
+
+106
+00:04:08,640 --> 00:04:11,680
+other applications like news so i i'm
+
+107
+00:04:11,680 --> 00:04:14,159
+consulting a japanese company right now
+
+108
+00:04:14,159 --> 00:04:16,399
+and they are worried about if they track
+
+109
+00:04:16,399 --> 00:04:18,160
+your reading patterns
+
+110
+00:04:18,160 --> 00:04:20,639
+uh what will be the regulation
+
+111
+00:04:20,639 --> 00:04:21,759
+ramifications
+
+112
+00:04:21,759 --> 00:04:24,880
+right so in certain applications the
+
+113
+00:04:24,880 --> 00:04:26,960
+yes or no between yes and no the
+
+114
+00:04:26,960 --> 00:04:29,199
+boundaries is kind of tricky
+
+115
+00:04:29,199 --> 00:04:32,240
+and the sale giant vehicle for sure
+
+116
+00:04:32,240 --> 00:04:35,280
+uh he has been collecting tons of data
+
+117
+00:04:35,280 --> 00:04:38,000
+and uh take tesla as an example if you
+
+118
+00:04:38,000 --> 00:04:39,120
+see the fine print
+
+119
+00:04:39,120 --> 00:04:41,840
+behind the vehicle you can see uh it
+
+120
+00:04:41,840 --> 00:04:43,040
+collects your
+
+121
+00:04:43,040 --> 00:04:45,759
+battery status temperature inside
+
+122
+00:04:45,759 --> 00:04:47,840
+outside your location
+
+123
+00:04:47,840 --> 00:04:51,120
+also in this level two uh cell driving
+
+124
+00:04:51,120 --> 00:04:52,400
+they have to track
+
+125
+00:04:52,400 --> 00:04:55,120
+the user's status right if a user is
+
+126
+00:04:55,120 --> 00:04:56,479
+dozing off
+
+127
+00:04:56,479 --> 00:04:59,040
+they quickly they will just turn off
+
+128
+00:04:59,040 --> 00:05:00,639
+self-driving mode
+
+129
+00:05:00,639 --> 00:05:02,880
+and all those information potentially
+
+130
+00:05:02,880 --> 00:05:04,000
+where you are
+
+131
+00:05:04,000 --> 00:05:06,479
+and what is your conversation even in
+
+132
+00:05:06,479 --> 00:05:07,360
+the car
+
+133
+00:05:07,360 --> 00:05:10,080
+uh they will track and for instance if
+
+134
+00:05:10,080 --> 00:05:10,880
+you are
+
+135
+00:05:10,880 --> 00:05:13,280
+in they say in some countries you get
+
+136
+00:05:13,280 --> 00:05:14,639
+into a taxi
+
+137
+00:05:14,639 --> 00:05:17,360
+and everything uh you you kind of
+
+138
+00:05:17,360 --> 00:05:18,400
+conduct
+
+139
+00:05:18,400 --> 00:05:22,400
+in that tennessee in that space uh
+
+140
+00:05:22,400 --> 00:05:24,720
+it's not personal information it's
+
+141
+00:05:24,720 --> 00:05:26,160
+actually private
+
+142
+00:05:26,160 --> 00:05:28,960
+and so when we talk about healthcare we
+
+143
+00:05:28,960 --> 00:05:31,199
+introduce this tricorder device
+
+144
+00:05:31,199 --> 00:05:34,479
+with a number of uh medical iots
+
+145
+00:05:34,479 --> 00:05:38,560
+and all those information such as the
+
+146
+00:05:38,560 --> 00:05:41,919
+walking pattern and the the ecg
+
+147
+00:05:41,919 --> 00:05:42,800
+information
+
+148
+00:05:42,800 --> 00:05:46,160
+on apple watch right those data
+
+149
+00:05:46,160 --> 00:05:49,280
+is being collected and utilized
+
+150
+00:05:49,280 --> 00:05:52,320
+and frankly i have no idea who is using
+
+151
+00:05:52,320 --> 00:05:52,880
+my
+
+152
+00:05:52,880 --> 00:05:56,080
+uh ecg data and will
+
+153
+00:05:56,080 --> 00:05:59,120
+apple resell my data to
+
+154
+00:05:59,120 --> 00:06:02,240
+other companies at this point i'm just
+
+155
+00:06:02,240 --> 00:06:03,280
+totally clueless
+
+156
+00:06:03,280 --> 00:06:06,240
+right so it would be nice to be informed
+
+157
+00:06:06,240 --> 00:06:07,840
+what kind of data is being collected
+
+158
+00:06:07,840 --> 00:06:08,800
+from me
+
+159
+00:06:08,800 --> 00:06:12,240
+and to to which party the data
+
+160
+00:06:12,240 --> 00:06:16,240
+will be sold and although as part of
+
+161
+00:06:16,240 --> 00:06:17,360
+stanford over
+
+162
+00:06:17,360 --> 00:06:19,440
+we're doing this virtual system and
+
+163
+00:06:19,440 --> 00:06:21,039
+virtual assistant will become
+
+164
+00:06:21,039 --> 00:06:22,960
+more and more popular even you don't
+
+165
+00:06:22,960 --> 00:06:25,199
+have a speaker just talk to
+
+166
+00:06:25,199 --> 00:06:27,759
+your computer through siri the
+
+167
+00:06:27,759 --> 00:06:29,680
+information is being collected
+
+168
+00:06:29,680 --> 00:06:32,560
+and all these speakers suppose we turn
+
+169
+00:06:32,560 --> 00:06:33,360
+them off
+
+170
+00:06:33,360 --> 00:06:35,440
+they are still sort of listening right
+
+171
+00:06:35,440 --> 00:06:36,880
+because they need to be
+
+172
+00:06:36,880 --> 00:06:40,080
+be waken up to perform their duties
+
+173
+00:06:40,080 --> 00:06:42,960
+so conversations at home uh will be
+
+174
+00:06:42,960 --> 00:06:43,840
+recorded
+
+175
+00:06:43,840 --> 00:06:46,319
+so one situation i got into this was
+
+176
+00:06:46,319 --> 00:06:48,160
+about a week ago
+
+177
+00:06:48,160 --> 00:06:51,280
+i went up to the dish and i came home
+
+178
+00:06:51,280 --> 00:06:53,680
+and i i feel i feel my knees
+
+179
+00:06:53,680 --> 00:06:57,840
+were hurting so i i on the one hand i'm
+
+180
+00:06:57,840 --> 00:07:00,880
+searching for remedies for
+
+181
+00:07:00,880 --> 00:07:03,360
+heating my knees at the same time i also
+
+182
+00:07:03,360 --> 00:07:05,520
+talked to my wife about the situation
+
+183
+00:07:05,520 --> 00:07:08,800
+and suddenly facebook uh prompt this
+
+184
+00:07:08,800 --> 00:07:11,759
+video to me so that was very spooky
+
+185
+00:07:11,759 --> 00:07:12,479
+right
+
+186
+00:07:12,479 --> 00:07:14,479
+uh so this could be one of two
+
+187
+00:07:14,479 --> 00:07:16,080
+situations one was
+
+188
+00:07:16,080 --> 00:07:19,840
+facebook sue macbook
+
+189
+00:07:19,840 --> 00:07:22,319
+was listening to me and the second thing
+
+190
+00:07:22,319 --> 00:07:24,720
+is maybe i was typing something
+
+191
+00:07:24,720 --> 00:07:27,199
+in real time the information was
+
+192
+00:07:27,199 --> 00:07:28,560
+transmitted to
+
+193
+00:07:28,560 --> 00:07:30,800
+facebook and facebook do this kind of
+
+194
+00:07:30,800 --> 00:07:31,680
+real-time
+
+195
+00:07:31,680 --> 00:07:34,639
+matching so this is uh to me is a kind
+
+196
+00:07:34,639 --> 00:07:36,240
+of horrible experience means
+
+197
+00:07:36,240 --> 00:07:40,400
+well in real time people can target me
+
+198
+00:07:40,400 --> 00:07:42,080
+or you can say this is a blessing i have
+
+199
+00:07:42,080 --> 00:07:44,720
+this health health concern and someone
+
+200
+00:07:44,720 --> 00:07:45,039
+is
+
+201
+00:07:45,039 --> 00:07:48,800
+really caring for me so
+
+202
+00:07:48,800 --> 00:07:51,199
+top consumer privacy concerns so yes i
+
+203
+00:07:51,199 --> 00:07:52,479
+do have a lot of concerns
+
+204
+00:07:52,479 --> 00:07:55,680
+this is a survey conducted by
+
+205
+00:07:55,680 --> 00:07:58,400
+some agencies and you can search all
+
+206
+00:07:58,400 --> 00:07:59,759
+these kind of different surveys on the
+
+207
+00:07:59,759 --> 00:08:00,479
+internet
+
+208
+00:08:00,479 --> 00:08:02,639
+so i summarize some key concerns one is
+
+209
+00:08:02,639 --> 00:08:04,240
+definitely identity
+
+210
+00:08:04,240 --> 00:08:07,759
+theft it's not really changing these
+
+211
+00:08:07,759 --> 00:08:08,560
+days
+
+212
+00:08:08,560 --> 00:08:12,160
+even you say i want to anonymize myself
+
+213
+00:08:12,160 --> 00:08:15,919
+but still do cross-court correlation
+
+214
+00:08:15,919 --> 00:08:18,400
+the if people really want to target you
+
+215
+00:08:18,400 --> 00:08:19,520
+individually
+
+216
+00:08:19,520 --> 00:08:22,240
+they could get your pi information
+
+217
+00:08:22,240 --> 00:08:23,360
+personal identifying
+
+218
+00:08:23,360 --> 00:08:25,919
+the information and the private data
+
+219
+00:08:25,919 --> 00:08:27,360
+then will be made
+
+220
+00:08:27,360 --> 00:08:30,080
+public and this is really bad for
+
+221
+00:08:30,080 --> 00:08:31,039
+especially
+
+222
+00:08:31,039 --> 00:08:34,719
+politicians even for us right it is not
+
+223
+00:08:34,719 --> 00:08:37,760
+a glamorous glimmer situation
+
+224
+00:08:37,760 --> 00:08:39,919
+and data can be sold and distributed
+
+225
+00:08:39,919 --> 00:08:41,200
+without our knowledge
+
+226
+00:08:41,200 --> 00:08:43,519
+and certain data especially medical data
+
+227
+00:08:43,519 --> 00:08:44,800
+could be valuable
+
+228
+00:08:44,800 --> 00:08:48,000
+so when data being sold people will be
+
+229
+00:08:48,000 --> 00:08:50,000
+willing to sell the data for
+
+230
+00:08:50,000 --> 00:08:52,560
+revenue or for charity but they'd like
+
+231
+00:08:52,560 --> 00:08:53,279
+to
+
+232
+00:08:53,279 --> 00:08:56,320
+know the fact the data has been used
+
+233
+00:08:56,320 --> 00:08:59,040
+and the safety if my location can always
+
+234
+00:08:59,040 --> 00:09:00,320
+be tracked
+
+235
+00:09:00,320 --> 00:09:03,680
+then if people want to impose harm
+
+236
+00:09:03,680 --> 00:09:07,360
+to myself and that's kind of
+
+237
+00:09:07,360 --> 00:09:10,720
+not a converting situation so
+
+238
+00:09:10,720 --> 00:09:14,480
+let's enumerate some details of ccpa
+
+239
+00:09:14,480 --> 00:09:18,560
+and the gdpr regulations so gdpr
+
+240
+00:09:18,560 --> 00:09:22,080
+was is established by european union and
+
+241
+00:09:22,080 --> 00:09:22,959
+ccpa
+
+242
+00:09:22,959 --> 00:09:27,760
+was passed by california congress
+
+243
+00:09:27,760 --> 00:09:30,720
+about two years ago then the was become
+
+244
+00:09:30,720 --> 00:09:31,839
+active
+
+245
+00:09:31,839 --> 00:09:35,760
+january 2020 and they gave
+
+246
+00:09:35,760 --> 00:09:38,880
+all the companies some great spirit to
+
+247
+00:09:38,880 --> 00:09:40,160
+implement it
+
+248
+00:09:40,160 --> 00:09:43,600
+and currently as i if if my
+
+249
+00:09:43,600 --> 00:09:46,000
+information is not obsolete means if a
+
+250
+00:09:46,000 --> 00:09:46,720
+consumer
+
+251
+00:09:46,720 --> 00:09:50,160
+asks for certain privacy related actions
+
+252
+00:09:50,160 --> 00:09:51,519
+to be constructed by a company let's
+
+253
+00:09:51,519 --> 00:09:54,000
+like erase my assets history
+
+254
+00:09:54,000 --> 00:09:56,560
+the company has to respond in about
+
+255
+00:09:56,560 --> 00:09:57,839
+three months
+
+256
+00:09:57,839 --> 00:10:00,880
+so because the regulation was just
+
+257
+00:10:00,880 --> 00:10:02,800
+was just out there last year so
+
+258
+00:10:02,800 --> 00:10:04,079
+therefore they gave this
+
+259
+00:10:04,079 --> 00:10:07,760
+long grace period for all the companies
+
+260
+00:10:07,760 --> 00:10:12,079
+to get their ad together and recently
+
+261
+00:10:12,079 --> 00:10:14,320
+when you access certain sites you
+
+262
+00:10:14,320 --> 00:10:15,279
+started to get
+
+263
+00:10:15,279 --> 00:10:17,760
+a pop-up like can i use your cookie can
+
+264
+00:10:17,760 --> 00:10:19,760
+i track your cookie and so on so forth
+
+265
+00:10:19,760 --> 00:10:23,279
+those are pretty much because of a ccpa
+
+266
+00:10:23,279 --> 00:10:27,440
+and lawyers agree ccpa although was
+
+267
+00:10:27,440 --> 00:10:29,760
+initiated in california but will be
+
+268
+00:10:29,760 --> 00:10:30,640
+widely
+
+269
+00:10:30,640 --> 00:10:34,800
+adopted by other states very very soon
+
+270
+00:10:34,800 --> 00:10:38,160
+so like i mentioned ccpa started
+
+271
+00:10:38,160 --> 00:10:41,680
+last year and some terms let's
+
+272
+00:10:41,680 --> 00:10:44,320
+define them so when we discuss all the
+
+273
+00:10:44,320 --> 00:10:45,360
+implementations
+
+274
+00:10:45,360 --> 00:10:48,560
+we will be on the same page so here we
+
+275
+00:10:48,560 --> 00:10:49,680
+say person
+
+276
+00:10:49,680 --> 00:10:53,920
+person we talk about uh juris prudence
+
+277
+00:10:53,920 --> 00:10:57,279
+uh nature person just like the person
+
+278
+00:10:57,279 --> 00:10:58,880
+with with the body
+
+279
+00:10:58,880 --> 00:11:01,360
+with temperature right it's not like a
+
+280
+00:11:01,360 --> 00:11:02,079
+business
+
+281
+00:11:02,079 --> 00:11:05,279
+business kind of unit so
+
+282
+00:11:05,279 --> 00:11:07,839
+personal information defined by
+
+283
+00:11:07,839 --> 00:11:08,959
+information that can
+
+284
+00:11:08,959 --> 00:11:13,040
+identify or relates to describes
+
+285
+00:11:13,040 --> 00:11:14,800
+is reasonable capable of being
+
+286
+00:11:14,800 --> 00:11:16,399
+associated with
+
+287
+00:11:16,399 --> 00:11:20,000
+a real person so this
+
+288
+00:11:20,000 --> 00:11:21,680
+kind of personal information could
+
+289
+00:11:21,680 --> 00:11:23,200
+include my
+
+290
+00:11:23,200 --> 00:11:26,560
+address ids and
+
+291
+00:11:26,560 --> 00:11:28,880
+several other things and we talk about
+
+292
+00:11:28,880 --> 00:11:30,240
+more
+
+293
+00:11:30,240 --> 00:11:34,240
+in later slides and then to
+
+294
+00:11:34,240 --> 00:11:37,120
+start the data imagine data we divide
+
+295
+00:11:37,120 --> 00:11:38,720
+the people into
+
+296
+00:11:38,720 --> 00:11:41,519
+uh kind of three two or three categories
+
+297
+00:11:41,519 --> 00:11:43,360
+why is the people need to manage data
+
+298
+00:11:43,360 --> 00:11:45,680
+right data we call data subject
+
+299
+00:11:45,680 --> 00:11:49,360
+and the data controller is a person
+
+300
+00:11:49,360 --> 00:11:51,600
+who determines the process of managing
+
+301
+00:11:51,600 --> 00:11:52,399
+the data
+
+302
+00:11:52,399 --> 00:11:54,720
+and set up the sop standard operation
+
+303
+00:11:54,720 --> 00:11:55,600
+process
+
+304
+00:11:55,600 --> 00:11:58,959
+for processing data and data processors
+
+305
+00:11:58,959 --> 00:12:01,040
+are the people who are instructed by
+
+306
+00:12:01,040 --> 00:12:02,320
+data controllers
+
+307
+00:12:02,320 --> 00:12:05,360
+to process the data so
+
+308
+00:12:05,360 --> 00:12:07,200
+basically you have controller and
+
+309
+00:12:07,200 --> 00:12:08,959
+processor they play
+
+310
+00:12:08,959 --> 00:12:13,360
+different roles okay and
+
+311
+00:12:13,360 --> 00:12:17,200
+pi personal information is divided by
+
+312
+00:12:17,200 --> 00:12:19,680
+a few categories one is personal
+
+313
+00:12:19,680 --> 00:12:21,120
+information strictly
+
+314
+00:12:21,120 --> 00:12:23,519
+prohibited to disclose including a
+
+315
+00:12:23,519 --> 00:12:25,040
+person's religion
+
+316
+00:12:25,040 --> 00:12:28,560
+genetics biometric health healthcare
+
+317
+00:12:28,560 --> 00:12:33,680
+data and ids and there there are more
+
+318
+00:12:33,680 --> 00:12:37,279
+and some data they are anonymized
+
+319
+00:12:37,279 --> 00:12:40,480
+right so suppose you have a database
+
+320
+00:12:40,480 --> 00:12:43,680
+storing a person's name and then all the
+
+321
+00:12:43,680 --> 00:12:46,959
+personal information plus their access
+
+322
+00:12:46,959 --> 00:12:47,519
+history
+
+323
+00:12:47,519 --> 00:12:50,720
+access means i say i access a news
+
+324
+00:12:50,720 --> 00:12:53,440
+website the asset history will be all
+
+325
+00:12:53,440 --> 00:12:54,720
+the news i've read
+
+326
+00:12:54,720 --> 00:12:58,000
+in the last let's say several weeks so
+
+327
+00:12:58,000 --> 00:13:00,399
+you like to be able to anonymize not
+
+328
+00:13:00,399 --> 00:13:02,240
+really the assets patterns
+
+329
+00:13:02,240 --> 00:13:04,800
+but my pi personal information need to
+
+330
+00:13:04,800 --> 00:13:06,800
+be anonymized
+
+331
+00:13:06,800 --> 00:13:09,279
+and another category is pseudo
+
+332
+00:13:09,279 --> 00:13:10,399
+anonymized
+
+333
+00:13:10,399 --> 00:13:13,279
+so even let's say you anonymize my
+
+334
+00:13:13,279 --> 00:13:14,320
+record
+
+335
+00:13:14,320 --> 00:13:17,600
+but still using some mechanisms
+
+336
+00:13:17,600 --> 00:13:20,320
+i can still re-engineering or
+
+337
+00:13:20,320 --> 00:13:21,920
+re-identify
+
+338
+00:13:21,920 --> 00:13:25,279
+that person right i will give an example
+
+339
+00:13:25,279 --> 00:13:27,200
+shortly so basically suppose i have your
+
+340
+00:13:27,200 --> 00:13:28,320
+address
+
+341
+00:13:28,320 --> 00:13:31,519
+and that's very very simple i have your
+
+342
+00:13:31,519 --> 00:13:32,160
+gender
+
+343
+00:13:32,160 --> 00:13:35,360
+and maybe your working location
+
+344
+00:13:35,360 --> 00:13:38,639
+maybe it's not too hard to pin down uh
+
+345
+00:13:38,639 --> 00:13:41,519
+your identity even not yourself per se
+
+346
+00:13:41,519 --> 00:13:44,240
+but can profile you into a specific
+
+347
+00:13:44,240 --> 00:13:46,079
+group
+
+348
+00:13:46,079 --> 00:13:49,680
+so this is a example
+
+349
+00:13:49,680 --> 00:13:52,800
+suppose you have data stored
+
+350
+00:13:52,800 --> 00:13:56,000
+by let's say facebook or google and
+
+351
+00:13:56,000 --> 00:13:57,600
+they need to worry about two things one
+
+352
+00:13:57,600 --> 00:13:59,120
+is how to store
+
+353
+00:13:59,120 --> 00:14:02,240
+data and the second thing is how the
+
+354
+00:14:02,240 --> 00:14:03,279
+data will be
+
+355
+00:14:03,279 --> 00:14:06,639
+accessed right and the storage because
+
+356
+00:14:06,639 --> 00:14:08,639
+when you store data data will be used
+
+357
+00:14:08,639 --> 00:14:10,800
+so how the data gets stored can affect
+
+358
+00:14:10,800 --> 00:14:12,000
+privacy
+
+359
+00:14:12,000 --> 00:14:15,040
+so let's say you have your
+
+360
+00:14:15,040 --> 00:14:18,320
+database table which consists of
+
+361
+00:14:18,320 --> 00:14:21,120
+personal information and like i
+
+362
+00:14:21,120 --> 00:14:22,079
+mentioned some
+
+363
+00:14:22,079 --> 00:14:24,399
+access history you have to separate the
+
+364
+00:14:24,399 --> 00:14:25,680
+two into two
+
+365
+00:14:25,680 --> 00:14:29,279
+tables and do it to a join and the only
+
+366
+00:14:29,279 --> 00:14:32,000
+data controller can see both tables
+
+367
+00:14:32,000 --> 00:14:36,160
+and the data processor can only touch on
+
+368
+00:14:36,160 --> 00:14:39,360
+the table with only data data history
+
+369
+00:14:39,360 --> 00:14:42,160
+but with rpi information okay so you
+
+370
+00:14:42,160 --> 00:14:43,199
+kind of reduce
+
+371
+00:14:43,199 --> 00:14:46,720
+the number of people who can touch the
+
+372
+00:14:46,720 --> 00:14:50,079
+pi information and oh
+
+373
+00:14:50,079 --> 00:14:52,560
+even let's say data controller can
+
+374
+00:14:52,560 --> 00:14:54,480
+access pi information
+
+375
+00:14:54,480 --> 00:14:58,079
+and all the assets must be locked
+
+376
+00:14:58,079 --> 00:15:01,839
+and locked on indebted record for future
+
+377
+00:15:01,839 --> 00:15:06,160
+audit so here one important point
+
+378
+00:15:06,160 --> 00:15:09,440
+sticks out is indelible record
+
+379
+00:15:09,440 --> 00:15:12,959
+for audit and the auditing process must
+
+380
+00:15:12,959 --> 00:15:13,600
+be
+
+381
+00:15:13,600 --> 00:15:17,600
+transparent and must be trusted
+
+382
+00:15:17,600 --> 00:15:20,639
+and all the actions done by this
+
+383
+00:15:20,639 --> 00:15:23,680
+dc and also
+
+384
+00:15:23,680 --> 00:15:26,079
+need to be provable right so you say
+
+385
+00:15:26,079 --> 00:15:28,000
+yeah i did it i did this and
+
+386
+00:15:28,000 --> 00:15:31,199
+that but that's your verbal claims but
+
+387
+00:15:31,199 --> 00:15:31,680
+when
+
+388
+00:15:31,680 --> 00:15:35,199
+fcc audits a company they want to see
+
+389
+00:15:35,199 --> 00:15:38,639
+provable evidence
+
+390
+00:15:38,720 --> 00:15:42,000
+so privacy governance
+
+391
+00:15:42,000 --> 00:15:45,040
+and the policy
+
+392
+00:15:45,040 --> 00:15:47,279
+clearly returned to cover the following
+
+393
+00:15:47,279 --> 00:15:48,880
+so i will talk about
+
+394
+00:15:48,880 --> 00:15:53,279
+uh gdpr and ccpa separately but they are
+
+395
+00:15:53,279 --> 00:15:55,040
+very similar
+
+396
+00:15:55,040 --> 00:15:58,240
+only about one or two items they are
+
+397
+00:15:58,240 --> 00:16:01,040
+they have slight differences so the
+
+398
+00:16:01,040 --> 00:16:03,040
+policy clearly written
+
+399
+00:16:03,040 --> 00:16:05,600
+uh just sent to the user user need to
+
+400
+00:16:05,600 --> 00:16:08,399
+consent the policy has to cover
+
+401
+00:16:08,399 --> 00:16:11,680
+what data the site collects from the
+
+402
+00:16:11,680 --> 00:16:12,800
+user
+
+403
+00:16:12,800 --> 00:16:15,680
+and the collection method mechanism how
+
+404
+00:16:15,680 --> 00:16:17,360
+data will be used
+
+405
+00:16:17,360 --> 00:16:20,320
+and what the user will receive as an
+
+406
+00:16:20,320 --> 00:16:20,959
+exchange
+
+407
+00:16:20,959 --> 00:16:24,399
+right so for example your you would
+
+408
+00:16:24,399 --> 00:16:27,680
+give more accurate ads as an
+
+409
+00:16:27,680 --> 00:16:29,440
+exchange whether you like it or not you
+
+410
+00:16:29,440 --> 00:16:30,959
+can make a decision
+
+411
+00:16:30,959 --> 00:16:34,320
+and where the data has been stored and
+
+412
+00:16:34,320 --> 00:16:36,000
+where the data be shared and share with
+
+413
+00:16:36,000 --> 00:16:38,240
+whom so this
+
+414
+00:16:38,240 --> 00:16:41,440
+required information must be stated
+
+415
+00:16:41,440 --> 00:16:45,199
+in in the privacy policy and
+
+416
+00:16:45,199 --> 00:16:49,519
+some consent must be is pleasingly given
+
+417
+00:16:49,519 --> 00:16:52,240
+by the data subject and you cannot just
+
+418
+00:16:52,240 --> 00:16:53,440
+say i give you this
+
+419
+00:16:53,440 --> 00:16:56,639
+policy with 10 items and
+
+420
+00:16:56,639 --> 00:16:58,560
+then you say well you have to agree with
+
+421
+00:16:58,560 --> 00:17:00,880
+either or or nothing
+
+422
+00:17:00,880 --> 00:17:03,279
+so the key thing here is that by default
+
+423
+00:17:03,279 --> 00:17:04,640
+all the items
+
+424
+00:17:04,640 --> 00:17:08,319
+will be opt out and we have to itemize
+
+425
+00:17:08,319 --> 00:17:11,280
+each collected data item separately and
+
+426
+00:17:11,280 --> 00:17:11,599
+then
+
+427
+00:17:11,599 --> 00:17:14,880
+there's no bundle agreement and the user
+
+428
+00:17:14,880 --> 00:17:15,679
+has to
+
+429
+00:17:15,679 --> 00:17:18,799
+click each one of them to say either i
+
+430
+00:17:18,799 --> 00:17:21,280
+accept your collection of my data
+
+431
+00:17:21,280 --> 00:17:22,640
+collecting my data
+
+432
+00:17:22,640 --> 00:17:26,000
+or not right so no box
+
+433
+00:17:26,000 --> 00:17:29,120
+can be pre-checked and the option is
+
+434
+00:17:29,120 --> 00:17:31,919
+up out and the user can come in to
+
+435
+00:17:31,919 --> 00:17:32,960
+select
+
+436
+00:17:32,960 --> 00:17:35,919
+the items they feel comfortable about
+
+437
+00:17:35,919 --> 00:17:37,840
+and they can always come back to
+
+438
+00:17:37,840 --> 00:17:41,440
+uh about okay so everything has to be
+
+439
+00:17:41,440 --> 00:17:43,360
+done explicitly that's the key
+
+440
+00:17:43,360 --> 00:17:46,720
+so unlike currently many consumer
+
+441
+00:17:46,720 --> 00:17:47,840
+activities
+
+442
+00:17:47,840 --> 00:17:51,360
+you will be given a huge or
+
+443
+00:17:51,360 --> 00:17:54,320
+huge huge deck of documents and you you
+
+444
+00:17:54,320 --> 00:17:55,520
+are required to sign
+
+445
+00:17:55,520 --> 00:17:57,840
+to finish signing within 10 or 20
+
+446
+00:17:57,840 --> 00:17:58,720
+minutes
+
+447
+00:17:58,720 --> 00:18:01,440
+especially let's say you buy a house or
+
+448
+00:18:01,440 --> 00:18:01,840
+you
+
+449
+00:18:01,840 --> 00:18:04,720
+can even buy a car and the contract
+
+450
+00:18:04,720 --> 00:18:05,840
+agreement
+
+451
+00:18:05,840 --> 00:18:08,960
+a few pages and you just cannot
+
+452
+00:18:08,960 --> 00:18:12,400
+see all the details of or fine prints
+
+453
+00:18:12,400 --> 00:18:16,320
+within the the pressure timing
+
+454
+00:18:16,320 --> 00:18:19,919
+okay the second uh information
+
+455
+00:18:19,919 --> 00:18:23,280
+pieces specifically cover uh gdpr
+
+456
+00:18:23,280 --> 00:18:26,000
+it's european regulations and the
+
+457
+00:18:26,000 --> 00:18:27,679
+consumer has right
+
+458
+00:18:27,679 --> 00:18:31,440
+to write of inform right any data
+
+459
+00:18:31,440 --> 00:18:35,280
+being accessed must be be told
+
+460
+00:18:35,280 --> 00:18:37,919
+and the right of assets must be granted
+
+461
+00:18:37,919 --> 00:18:38,960
+by the user
+
+462
+00:18:38,960 --> 00:18:41,200
+and right the user has right to erase to
+
+463
+00:18:41,200 --> 00:18:42,320
+be forgotten
+
+464
+00:18:42,320 --> 00:18:44,720
+and right of data probability if i want
+
+465
+00:18:44,720 --> 00:18:46,000
+to move my data from
+
+466
+00:18:46,000 --> 00:18:48,880
+hospital a to hospital b b you cannot
+
+467
+00:18:48,880 --> 00:18:49,600
+say no
+
+468
+00:18:49,600 --> 00:18:51,679
+you have to let me do it right to
+
+469
+00:18:51,679 --> 00:18:53,600
+restrict data processing
+
+470
+00:18:53,600 --> 00:18:56,880
+and write to object and data processing
+
+471
+00:18:56,880 --> 00:18:59,440
+can you you can you can even be very
+
+472
+00:18:59,440 --> 00:19:00,880
+specific saying okay
+
+473
+00:19:00,880 --> 00:19:03,280
+my gender information or my age
+
+474
+00:19:03,280 --> 00:19:04,480
+information
+
+475
+00:19:04,480 --> 00:19:08,400
+should not be revealed right to
+
+476
+00:19:08,400 --> 00:19:11,120
+rectification means i can make changes
+
+477
+00:19:11,120 --> 00:19:12,799
+to my personal information
+
+478
+00:19:12,799 --> 00:19:15,440
+and right to reject automated individual
+
+479
+00:19:15,440 --> 00:19:16,559
+decision making
+
+480
+00:19:16,559 --> 00:19:20,880
+or profiling or even as targeting
+
+481
+00:19:20,880 --> 00:19:25,039
+and ccpa as i said uh the
+
+482
+00:19:25,039 --> 00:19:27,520
+b of rights are very similar to gdpr
+
+483
+00:19:27,520 --> 00:19:29,120
+except for two items
+
+484
+00:19:29,120 --> 00:19:32,240
+so i highlight in in red the first here
+
+485
+00:19:32,240 --> 00:19:32,880
+is
+
+486
+00:19:32,880 --> 00:19:35,440
+know whether their personal data is sold
+
+487
+00:19:35,440 --> 00:19:36,799
+or disclosed
+
+488
+00:19:36,799 --> 00:19:40,799
+and if so to whom okay and gdpr didn't
+
+489
+00:19:40,799 --> 00:19:41,200
+say
+
+490
+00:19:41,200 --> 00:19:44,000
+not specifically but ccpa is saying well
+
+491
+00:19:44,000 --> 00:19:45,600
+if your data has been sold
+
+492
+00:19:45,600 --> 00:19:48,400
+you have to tell the the owner
+
+493
+00:19:48,400 --> 00:19:49,520
+explicitly
+
+494
+00:19:49,520 --> 00:19:52,240
+and this is probably because of the a
+
+495
+00:19:52,240 --> 00:19:52,720
+few
+
+496
+00:19:52,720 --> 00:19:55,840
+problems happen in in the past years and
+
+497
+00:19:55,840 --> 00:19:59,120
+i have some examples to show you
+
+498
+00:19:59,120 --> 00:20:02,559
+shortly and the final one is is a little
+
+499
+00:20:02,559 --> 00:20:04,320
+bit dicey it's got
+
+500
+00:20:04,320 --> 00:20:07,760
+not to be discriminated and
+
+501
+00:20:07,760 --> 00:20:10,880
+i could understand it until uh the the
+
+502
+00:20:10,880 --> 00:20:12,240
+company's smart news
+
+503
+00:20:12,240 --> 00:20:14,480
+and try to implement the privacy uh
+
+504
+00:20:14,480 --> 00:20:15,360
+rules
+
+505
+00:20:15,360 --> 00:20:19,280
+so so smart news in the usually say well
+
+506
+00:20:19,280 --> 00:20:22,320
+our privacy data store in the back back
+
+507
+00:20:22,320 --> 00:20:24,400
+end is very convoluted
+
+508
+00:20:24,400 --> 00:20:27,360
+so if we really need to be in compliance
+
+509
+00:20:27,360 --> 00:20:29,120
+then we have to
+
+510
+00:20:29,120 --> 00:20:31,440
+redesign the database schemas we have to
+
+511
+00:20:31,440 --> 00:20:32,960
+do this data
+
+512
+00:20:32,960 --> 00:20:34,799
+downloading reloading this will take
+
+513
+00:20:34,799 --> 00:20:38,159
+some time so why don't we do a shortcut
+
+514
+00:20:38,159 --> 00:20:41,919
+we just tell the users who up out
+
+515
+00:20:41,919 --> 00:20:45,440
+this kind of access data agreement
+
+516
+00:20:45,440 --> 00:20:48,720
+we just say okay sorry you cannot use
+
+517
+00:20:48,720 --> 00:20:50,640
+our application anymore and basically
+
+518
+00:20:50,640 --> 00:20:51,840
+you install them
+
+519
+00:20:51,840 --> 00:20:53,440
+they install their applications from
+
+520
+00:20:53,440 --> 00:20:55,760
+their phone or from your desktop
+
+521
+00:20:55,760 --> 00:20:58,799
+and from ccps percent perspective
+
+522
+00:20:58,799 --> 00:21:00,720
+you cannot do that because this means
+
+523
+00:21:00,720 --> 00:21:02,000
+you are discriminating
+
+524
+00:21:02,000 --> 00:21:05,280
+certain users they are not waiting
+
+525
+00:21:05,280 --> 00:21:08,159
+to let you collect their data but why
+
+526
+00:21:08,159 --> 00:21:08,880
+this is
+
+527
+00:21:08,880 --> 00:21:12,559
+very kind of dicey because suppose uh
+
+528
+00:21:12,559 --> 00:21:15,679
+in the situation of google maps right
+
+529
+00:21:15,679 --> 00:21:17,679
+so you say okay i'm not going to allow
+
+530
+00:21:17,679 --> 00:21:19,200
+you to track my
+
+531
+00:21:19,200 --> 00:21:22,640
+location so you say oh then i cannot
+
+532
+00:21:22,640 --> 00:21:23,440
+give you
+
+533
+00:21:23,440 --> 00:21:26,400
+uh driving direction that's not really
+
+534
+00:21:26,400 --> 00:21:28,159
+discriminating against you that's
+
+535
+00:21:28,159 --> 00:21:30,400
+i cannot serve you because i don't have
+
+536
+00:21:30,400 --> 00:21:32,320
+certain information about your
+
+537
+00:21:32,320 --> 00:21:34,799
+your situation there's no way i can give
+
+538
+00:21:34,799 --> 00:21:35,360
+you
+
+539
+00:21:35,360 --> 00:21:38,159
+a reasonable prediction of your of your
+
+540
+00:21:38,159 --> 00:21:38,880
+next
+
+541
+00:21:38,880 --> 00:21:42,400
+driving uh direction so
+
+542
+00:21:42,400 --> 00:21:44,080
+another scenario you can say the
+
+543
+00:21:44,080 --> 00:21:45,600
+opposite let's say
+
+544
+00:21:45,600 --> 00:21:48,559
+i have this application i want to charge
+
+545
+00:21:48,559 --> 00:21:49,679
+you for let's say
+
+546
+00:21:49,679 --> 00:21:53,440
+subscription fee 10 a month
+
+547
+00:21:53,440 --> 00:21:56,480
+but if you allow me to access your data
+
+548
+00:21:56,480 --> 00:21:59,520
+then it's free so then then this
+
+549
+00:21:59,520 --> 00:22:02,000
+if you if you have this kind of kind of
+
+550
+00:22:02,000 --> 00:22:03,520
+the over
+
+551
+00:22:03,520 --> 00:22:04,960
+it's hard to say whether you are
+
+552
+00:22:04,960 --> 00:22:07,280
+discriminating against a user or not
+
+553
+00:22:07,280 --> 00:22:10,000
+right so all these kind of boundary
+
+554
+00:22:10,000 --> 00:22:11,520
+conditions
+
+555
+00:22:11,520 --> 00:22:13,360
+we can interpret right now but
+
+556
+00:22:13,360 --> 00:22:15,360
+eventually will be interpreted by
+
+557
+00:22:15,360 --> 00:22:19,600
+the law of the core of the law
+
+558
+00:22:19,760 --> 00:22:23,440
+so finally a very subtle point but it's
+
+559
+00:22:23,440 --> 00:22:24,880
+extremely critical is
+
+560
+00:22:24,880 --> 00:22:27,440
+i'm not going to read this at all
+
+561
+00:22:27,440 --> 00:22:28,240
+details
+
+562
+00:22:28,240 --> 00:22:30,320
+the critical thing is you have to be
+
+563
+00:22:30,320 --> 00:22:31,679
+able to
+
+564
+00:22:31,679 --> 00:22:34,159
+write all your privacy safeguarding
+
+565
+00:22:34,159 --> 00:22:35,280
+actions
+
+566
+00:22:35,280 --> 00:22:39,280
+somewhere and eventually your actions
+
+567
+00:22:39,280 --> 00:22:42,720
+have to be provable so give your example
+
+568
+00:22:42,720 --> 00:22:43,840
+this a person
+
+569
+00:22:43,840 --> 00:22:47,039
+x requested company y to erase
+
+570
+00:22:47,039 --> 00:22:50,240
+is or probably consent via email
+
+571
+00:22:50,240 --> 00:22:52,240
+and companywide did not fulfill the
+
+572
+00:22:52,240 --> 00:22:53,280
+request
+
+573
+00:22:53,280 --> 00:22:55,120
+and but claim they claim that they have
+
+574
+00:22:55,120 --> 00:22:57,039
+done the request
+
+575
+00:22:57,039 --> 00:22:59,520
+right so you say okay erase my data i
+
+576
+00:22:59,520 --> 00:23:00,720
+say oh i did it
+
+577
+00:23:00,720 --> 00:23:03,360
+but i actually did not so how can you
+
+578
+00:23:03,360 --> 00:23:04,400
+prove it
+
+579
+00:23:04,400 --> 00:23:06,960
+and you can get into this uh he says
+
+580
+00:23:06,960 --> 00:23:08,240
+she's a situation
+
+581
+00:23:08,240 --> 00:23:11,200
+that would be very convoluted so the law
+
+582
+00:23:11,200 --> 00:23:12,240
+requires
+
+583
+00:23:12,240 --> 00:23:15,280
+the company has to be able to prove they
+
+584
+00:23:15,280 --> 00:23:16,559
+have done all the
+
+585
+00:23:16,559 --> 00:23:19,200
+processes to safeguarding the user's
+
+586
+00:23:19,200 --> 00:23:20,000
+privacy
+
+587
+00:23:20,000 --> 00:23:21,440
+so let's come back and talk about
+
+588
+00:23:21,440 --> 00:23:25,440
+probability in the end
+
+589
+00:23:25,679 --> 00:23:29,280
+and these are some landmark cases of
+
+590
+00:23:29,280 --> 00:23:32,400
+privacy positive violation and the
+
+591
+00:23:32,400 --> 00:23:34,080
+consequences
+
+592
+00:23:34,080 --> 00:23:37,760
+on the top row you see in the beginning
+
+593
+00:23:37,760 --> 00:23:38,400
+or
+
+594
+00:23:38,400 --> 00:23:41,600
+uh maybe a couple of years ago uber was
+
+595
+00:23:41,600 --> 00:23:42,720
+fined for
+
+596
+00:23:42,720 --> 00:23:45,840
+148 million by eu so
+
+597
+00:23:45,840 --> 00:23:49,039
+the top line was a violation of
+
+598
+00:23:49,039 --> 00:23:52,640
+gdpr and then there was a
+
+599
+00:23:52,640 --> 00:23:55,919
+230 million dollars fine
+
+600
+00:23:55,919 --> 00:23:59,279
+from british airway and
+
+601
+00:23:59,279 --> 00:24:02,640
+the most recent one was ftc
+
+602
+00:24:02,640 --> 00:24:05,919
+versus facebook and facebook was fine by
+
+603
+00:24:05,919 --> 00:24:09,840
+five billion dollars and
+
+604
+00:24:09,840 --> 00:24:12,559
+the bottom is of course is the case
+
+605
+00:24:12,559 --> 00:24:14,240
+happened just last year
+
+606
+00:24:14,240 --> 00:24:18,400
+uh ftc brought a lawsuit against
+
+607
+00:24:18,400 --> 00:24:21,520
+google youtube and google youtube did
+
+608
+00:24:21,520 --> 00:24:23,440
+not send consent
+
+609
+00:24:23,440 --> 00:24:26,799
+to children's parent for accessing
+
+610
+00:24:26,799 --> 00:24:30,799
+children's data right so this is also
+
+611
+00:24:30,799 --> 00:24:33,679
+kind of complicated because for minors
+
+612
+00:24:33,679 --> 00:24:34,080
+uh
+
+613
+00:24:34,080 --> 00:24:36,320
+they don't have even they say well i
+
+614
+00:24:36,320 --> 00:24:37,200
+agree
+
+615
+00:24:37,200 --> 00:24:39,279
+you collect my data but they don't
+
+616
+00:24:39,279 --> 00:24:40,640
+really have they don't they don't have a
+
+617
+00:24:40,640 --> 00:24:41,520
+sufficient uh
+
+618
+00:24:41,520 --> 00:24:43,840
+ability to make such a judgment so the
+
+619
+00:24:43,840 --> 00:24:45,360
+concern should be sent to
+
+620
+00:24:45,360 --> 00:24:48,320
+parents then this was google was swined
+
+621
+00:24:48,320 --> 00:24:48,960
+by
+
+622
+00:24:48,960 --> 00:24:52,080
+170 million dollars
+
+623
+00:24:52,080 --> 00:24:56,880
+so a very uh tricky situation here was
+
+624
+00:24:56,880 --> 00:24:59,360
+some company they would say okay i get
+
+625
+00:24:59,360 --> 00:25:00,799
+fined by
+
+626
+00:25:00,799 --> 00:25:04,000
+ftc or some agencies for
+
+627
+00:25:04,000 --> 00:25:06,480
+millions of dollars but on the other
+
+628
+00:25:06,480 --> 00:25:07,440
+hand
+
+629
+00:25:07,440 --> 00:25:10,400
+because of the information i can earn
+
+630
+00:25:10,400 --> 00:25:12,400
+billions of dollars
+
+631
+00:25:12,400 --> 00:25:15,520
+so for some companies they will say
+
+632
+00:25:15,520 --> 00:25:18,960
+well this is cost of sales
+
+633
+00:25:18,960 --> 00:25:20,000
+i don't know whether you have heard
+
+634
+00:25:20,000 --> 00:25:22,240
+about this term or not um
+
+635
+00:25:22,240 --> 00:25:26,000
+like one example i can provide is
+
+636
+00:25:26,000 --> 00:25:28,720
+like google use page rank in the
+
+637
+00:25:28,720 --> 00:25:29,600
+beginning
+
+638
+00:25:29,600 --> 00:25:33,039
+and then they do this ad words
+
+639
+00:25:33,039 --> 00:25:35,919
+right if you you can buy words on search
+
+640
+00:25:35,919 --> 00:25:36,720
+terms
+
+641
+00:25:36,720 --> 00:25:40,320
+on google and the patents of adwords
+
+642
+00:25:40,320 --> 00:25:43,600
+was owned by a european company
+
+643
+00:25:43,600 --> 00:25:47,120
+so if you implement it without licensing
+
+644
+00:25:47,120 --> 00:25:50,480
+then you'll be fined heavily but
+
+645
+00:25:50,480 --> 00:25:53,600
+if you want to license it and there's a
+
+646
+00:25:53,600 --> 00:25:54,080
+cost
+
+647
+00:25:54,080 --> 00:25:55,919
+so how can you deal with the situation
+
+648
+00:25:55,919 --> 00:25:57,279
+right so that's
+
+649
+00:25:57,279 --> 00:25:58,960
+when that happens that's a consideration
+
+650
+00:25:58,960 --> 00:26:00,799
+i'll say yeah let me let me just
+
+651
+00:26:00,799 --> 00:26:04,880
+violate it if uh it's not working then i
+
+652
+00:26:04,880 --> 00:26:05,520
+just
+
+653
+00:26:05,520 --> 00:26:08,000
+uh during this kind of disagreement or
+
+654
+00:26:08,000 --> 00:26:08,880
+dispute
+
+655
+00:26:08,880 --> 00:26:12,080
+i can just drop it but if i make huge
+
+656
+00:26:12,080 --> 00:26:13,279
+profit about it
+
+657
+00:26:13,279 --> 00:26:15,840
+then i can just pay the fine because at
+
+658
+00:26:15,840 --> 00:26:16,559
+the end i'm
+
+659
+00:26:16,559 --> 00:26:20,320
+earning more than then my my loss
+
+660
+00:26:20,320 --> 00:26:22,960
+so that was very uh that kind of act was
+
+661
+00:26:22,960 --> 00:26:25,360
+very non-ethical but
+
+662
+00:26:25,360 --> 00:26:29,039
+it's it's actually in practice okay
+
+663
+00:26:29,039 --> 00:26:31,120
+now we want to say you talk about all
+
+664
+00:26:31,120 --> 00:26:32,640
+these compliance requirements
+
+665
+00:26:32,640 --> 00:26:35,279
+how can we implement it and be very
+
+666
+00:26:35,279 --> 00:26:36,320
+careful
+
+667
+00:26:36,320 --> 00:26:38,400
+there are many methods presented out
+
+668
+00:26:38,400 --> 00:26:39,440
+there
+
+669
+00:26:39,440 --> 00:26:42,960
+but os on mine is one even
+
+670
+00:26:42,960 --> 00:26:46,000
+the policy has been implemented
+
+671
+00:26:46,000 --> 00:26:50,200
+can private private information still be
+
+672
+00:26:50,200 --> 00:26:53,679
+re-identified or people can do reverse
+
+673
+00:26:53,679 --> 00:26:54,880
+engineer to
+
+674
+00:26:54,880 --> 00:26:57,200
+find out who you are or which group you
+
+675
+00:26:57,200 --> 00:26:58,000
+belong to
+
+676
+00:26:58,000 --> 00:27:00,400
+right so that's one thing to consider
+
+677
+00:27:00,400 --> 00:27:01,120
+the second
+
+678
+00:27:01,120 --> 00:27:02,880
+thing to consider is again the
+
+679
+00:27:02,880 --> 00:27:04,400
+probability
+
+680
+00:27:04,400 --> 00:27:07,120
+and trust right so you say you had done
+
+681
+00:27:07,120 --> 00:27:08,320
+that but
+
+682
+00:27:08,320 --> 00:27:11,440
+prove me how did you do it and when did
+
+683
+00:27:11,440 --> 00:27:13,919
+you do it
+
+684
+00:27:14,000 --> 00:27:17,039
+so the execution to comply
+
+685
+00:27:17,039 --> 00:27:20,559
+consists of uh five steps one is you
+
+686
+00:27:20,559 --> 00:27:22,159
+have to delegate
+
+687
+00:27:22,159 --> 00:27:25,840
+an oversight committee in a company
+
+688
+00:27:25,840 --> 00:27:28,080
+so this is just not saying say i have
+
+689
+00:27:28,080 --> 00:27:28,880
+done that
+
+690
+00:27:28,880 --> 00:27:32,399
+so when ftc orders a company my previous
+
+691
+00:27:32,399 --> 00:27:34,320
+company was audited by
+
+692
+00:27:34,320 --> 00:27:37,919
+ftc so when they came in they say hey
+
+693
+00:27:37,919 --> 00:27:40,320
+give me all the documents to show you do
+
+694
+00:27:40,320 --> 00:27:41,840
+have an oversight committee
+
+695
+00:27:41,840 --> 00:27:45,039
+who they are and these people do exist
+
+696
+00:27:45,039 --> 00:27:48,720
+okay and they they map the data you have
+
+697
+00:27:48,720 --> 00:27:49,760
+collected
+
+698
+00:27:49,760 --> 00:27:52,960
+to your usage and storage so where do
+
+699
+00:27:52,960 --> 00:27:54,080
+you store data
+
+700
+00:27:54,080 --> 00:27:56,960
+can you show us the document and how the
+
+701
+00:27:56,960 --> 00:27:57,600
+data
+
+702
+00:27:57,600 --> 00:28:00,640
+has been used so it's definitely hard
+
+703
+00:28:00,640 --> 00:28:03,360
+for ftc to really get into your database
+
+704
+00:28:03,360 --> 00:28:05,120
+to look around but they want to see
+
+705
+00:28:05,120 --> 00:28:06,559
+documentations
+
+706
+00:28:06,559 --> 00:28:09,679
+and then do you have this sop for your
+
+707
+00:28:09,679 --> 00:28:12,960
+employees right so all the regulation we
+
+708
+00:28:12,960 --> 00:28:14,000
+talk about
+
+709
+00:28:14,000 --> 00:28:17,120
+do you have this compliance process for
+
+710
+00:28:17,120 --> 00:28:17,919
+your
+
+711
+00:28:17,919 --> 00:28:21,279
+data controller and also data processors
+
+712
+00:28:21,279 --> 00:28:24,240
+if frankly you don't even have a process
+
+713
+00:28:24,240 --> 00:28:25,120
+in place
+
+714
+00:28:25,120 --> 00:28:27,919
+then everything is just talking and do
+
+715
+00:28:27,919 --> 00:28:29,840
+you have your personnel divided
+
+716
+00:28:29,840 --> 00:28:32,880
+into dc and the dpe
+
+717
+00:28:32,880 --> 00:28:35,520
+and also specifying their roles very
+
+718
+00:28:35,520 --> 00:28:36,240
+clearly
+
+719
+00:28:36,240 --> 00:28:40,240
+right and sop for serving consumers when
+
+720
+00:28:40,240 --> 00:28:41,279
+consumers
+
+721
+00:28:41,279 --> 00:28:44,399
+is served did you really give them this
+
+722
+00:28:44,399 --> 00:28:46,000
+kind of contract to sign
+
+723
+00:28:46,000 --> 00:28:48,640
+so allow them to open an about and
+
+724
+00:28:48,640 --> 00:28:50,159
+compile with all these
+
+725
+00:28:50,159 --> 00:28:55,360
+required items and finally probability
+
+726
+00:28:56,640 --> 00:28:58,399
+let's look at the technique technical
+
+727
+00:28:58,399 --> 00:29:00,080
+approaches so
+
+728
+00:29:00,080 --> 00:29:03,919
+the first one is very uh understandable
+
+729
+00:29:03,919 --> 00:29:06,080
+you say i just anonymize the data right
+
+730
+00:29:06,080 --> 00:29:07,120
+then we have this
+
+731
+00:29:07,120 --> 00:29:10,240
+differential privacy was popular before
+
+732
+00:29:10,240 --> 00:29:10,799
+cc
+
+733
+00:29:10,799 --> 00:29:14,159
+uh ccpa uh was activated
+
+734
+00:29:14,159 --> 00:29:16,640
+and the federated learning is still very
+
+735
+00:29:16,640 --> 00:29:17,440
+popular
+
+736
+00:29:17,440 --> 00:29:20,399
+and google was was pushing that uh
+
+737
+00:29:20,399 --> 00:29:21,520
+pushing this back
+
+738
+00:29:21,520 --> 00:29:23,360
+this is this effort and quite a few
+
+739
+00:29:23,360 --> 00:29:25,120
+papers have been published
+
+740
+00:29:25,120 --> 00:29:27,760
+uh on this particular subject then
+
+741
+00:29:27,760 --> 00:29:28,799
+finally
+
+742
+00:29:28,799 --> 00:29:32,080
+talk about distributed ledgers so
+
+743
+00:29:32,080 --> 00:29:36,240
+anonymized versus pseudo anonymization
+
+744
+00:29:36,240 --> 00:29:38,880
+there are some subtle differences so
+
+745
+00:29:38,880 --> 00:29:40,559
+anonymization means
+
+746
+00:29:40,559 --> 00:29:43,919
+if i even i look at the the data or sql
+
+747
+00:29:43,919 --> 00:29:44,640
+table
+
+748
+00:29:44,640 --> 00:29:47,440
+i have no idea who is that particular
+
+749
+00:29:47,440 --> 00:29:48,399
+person so
+
+750
+00:29:48,399 --> 00:29:51,440
+basically just hide all the personal
+
+751
+00:29:51,440 --> 00:29:54,240
+identifiable information right so
+
+752
+00:29:54,240 --> 00:29:55,279
+including
+
+753
+00:29:55,279 --> 00:29:56,720
+excel already your gender your
+
+754
+00:29:56,720 --> 00:29:58,960
+profession and so on so forth
+
+755
+00:29:58,960 --> 00:30:02,159
+so but even let's say data has been
+
+756
+00:30:02,159 --> 00:30:05,600
+anonymized uh still could be
+
+757
+00:30:05,600 --> 00:30:08,320
+re-engineered to find out who is a
+
+758
+00:30:08,320 --> 00:30:10,159
+person for instance
+
+759
+00:30:10,159 --> 00:30:13,600
+uh let's say cell phone would track my
+
+760
+00:30:13,600 --> 00:30:16,640
+locations so he knows in the daytime i
+
+761
+00:30:16,640 --> 00:30:18,320
+will be in certain locations around
+
+762
+00:30:18,320 --> 00:30:19,440
+stanford
+
+763
+00:30:19,440 --> 00:30:22,799
+so for sure i think uh
+
+764
+00:30:22,799 --> 00:30:26,000
+the google maps will say oh edward is
+
+765
+00:30:26,000 --> 00:30:28,320
+affiliated with stanford university and
+
+766
+00:30:28,320 --> 00:30:30,080
+he lives in palo alto
+
+767
+00:30:30,080 --> 00:30:33,760
+right and from the duration i
+
+768
+00:30:33,760 --> 00:30:36,720
+stay in a particular location they say i
+
+769
+00:30:36,720 --> 00:30:38,559
+stay in the gates building
+
+770
+00:30:38,559 --> 00:30:40,960
+but i'm not moving around very
+
+771
+00:30:40,960 --> 00:30:41,919
+frequently
+
+772
+00:30:41,919 --> 00:30:44,559
+i mean at one spot for more than one
+
+773
+00:30:44,559 --> 00:30:45,279
+hours
+
+774
+00:30:45,279 --> 00:30:48,559
+so easily to infer well
+
+775
+00:30:48,559 --> 00:30:50,640
+maybe you are not a student yes a
+
+776
+00:30:50,640 --> 00:30:52,000
+student will be moving around
+
+777
+00:30:52,000 --> 00:30:54,480
+to different classrooms but maybe you
+
+778
+00:30:54,480 --> 00:30:55,679
+are a staff
+
+779
+00:30:55,679 --> 00:30:59,120
+or a faculty member right so
+
+780
+00:30:59,120 --> 00:31:03,039
+if you say oh every every other days
+
+781
+00:31:03,039 --> 00:31:05,360
+you will show up at a particular
+
+782
+00:31:05,360 --> 00:31:06,159
+building
+
+783
+00:31:06,159 --> 00:31:08,159
+and for about one hour and a half now
+
+784
+00:31:08,159 --> 00:31:09,919
+say okay it's more likely
+
+785
+00:31:09,919 --> 00:31:12,559
+you are a professor rather than the
+
+786
+00:31:12,559 --> 00:31:13,440
+staff
+
+787
+00:31:13,440 --> 00:31:16,960
+so see you have not really disclosed any
+
+788
+00:31:16,960 --> 00:31:19,279
+information explicitly you only have
+
+789
+00:31:19,279 --> 00:31:20,320
+this person's
+
+790
+00:31:20,320 --> 00:31:22,720
+moving patterns but already you got lots
+
+791
+00:31:22,720 --> 00:31:24,399
+of information from this person
+
+792
+00:31:24,399 --> 00:31:26,720
+right and the another example is on
+
+793
+00:31:26,720 --> 00:31:28,399
+facebook you say i'm not going to give
+
+794
+00:31:28,399 --> 00:31:29,120
+you any
+
+795
+00:31:29,120 --> 00:31:31,679
+of my personal information including my
+
+796
+00:31:31,679 --> 00:31:32,720
+birthday
+
+797
+00:31:32,720 --> 00:31:35,760
+and where i live but
+
+798
+00:31:35,760 --> 00:31:37,679
+unfortunately if you have your social
+
+799
+00:31:37,679 --> 00:31:39,919
+networks and you are interacting with
+
+800
+00:31:39,919 --> 00:31:40,799
+people
+
+801
+00:31:40,799 --> 00:31:44,159
+uh about 20 some years old
+
+802
+00:31:44,159 --> 00:31:47,200
+and they are college students
+
+803
+00:31:47,200 --> 00:31:50,240
+and most of them are from ucla it's not
+
+804
+00:31:50,240 --> 00:31:51,840
+really hard to infer
+
+805
+00:31:51,840 --> 00:31:54,880
+you should be in in high probability you
+
+806
+00:31:54,880 --> 00:31:56,159
+are ucla student
+
+807
+00:31:56,159 --> 00:31:58,320
+right then with other information
+
+808
+00:31:58,320 --> 00:31:59,440
+probably not stored
+
+809
+00:31:59,440 --> 00:32:02,159
+in that particular app then people can
+
+810
+00:32:02,159 --> 00:32:03,600
+identify you
+
+811
+00:32:03,600 --> 00:32:07,440
+so because i'm in this news business
+
+812
+00:32:07,440 --> 00:32:09,919
+now you know when you do ads targeting
+
+813
+00:32:09,919 --> 00:32:11,840
+if you just use the user's
+
+814
+00:32:11,840 --> 00:32:15,039
+news data itself so i was joking with
+
+815
+00:32:15,039 --> 00:32:15,519
+our
+
+816
+00:32:15,519 --> 00:32:18,559
+engineers i say well i i read
+
+817
+00:32:18,559 --> 00:32:22,320
+uh election news let's say i'm either
+
+818
+00:32:22,320 --> 00:32:22,799
+pro
+
+819
+00:32:22,799 --> 00:32:26,320
+republican or pro democrats just based
+
+820
+00:32:26,320 --> 00:32:26,880
+on
+
+821
+00:32:26,880 --> 00:32:30,000
+either i go to cnn or fox news can you
+
+822
+00:32:30,000 --> 00:32:31,919
+target me with ads
+
+823
+00:32:31,919 --> 00:32:34,960
+right this is just ridiculous if i i'm a
+
+824
+00:32:34,960 --> 00:32:35,679
+democrat
+
+825
+00:32:35,679 --> 00:32:38,080
+do you sell me tesla or do you want to
+
+826
+00:32:38,080 --> 00:32:39,679
+sell me for
+
+827
+00:32:39,679 --> 00:32:42,320
+it's not very clear so i said well news
+
+828
+00:32:42,320 --> 00:32:44,320
+data news reading history
+
+829
+00:32:44,320 --> 00:32:46,640
+using those to target ads is kind of
+
+830
+00:32:46,640 --> 00:32:47,840
+ridiculous
+
+831
+00:32:47,840 --> 00:32:50,880
+but then all companies would buy
+
+832
+00:32:50,880 --> 00:32:53,200
+information data information from
+
+833
+00:32:53,200 --> 00:32:54,320
+browsers
+
+834
+00:32:54,320 --> 00:32:57,440
+from other sources and the facebook
+
+835
+00:32:57,440 --> 00:32:59,200
+information i just gave you
+
+836
+00:32:59,200 --> 00:33:02,000
+i was doing a search on google i was not
+
+837
+00:33:02,000 --> 00:33:03,440
+doing a search on facebook
+
+838
+00:33:03,440 --> 00:33:05,440
+i would never do a search on facebook
+
+839
+00:33:05,440 --> 00:33:07,200
+saying oh my knee hurts
+
+840
+00:33:07,200 --> 00:33:09,200
+what should i do i did a search on
+
+841
+00:33:09,200 --> 00:33:10,960
+google but how come
+
+842
+00:33:10,960 --> 00:33:13,039
+facebook will pop up this particular ad
+
+843
+00:33:13,039 --> 00:33:14,159
+right so
+
+844
+00:33:14,159 --> 00:33:15,760
+somewhere someone was collecting
+
+845
+00:33:15,760 --> 00:33:18,320
+information then they aggregate
+
+846
+00:33:18,320 --> 00:33:21,519
+all information from all different apps
+
+847
+00:33:21,519 --> 00:33:24,640
+maybe through the browser or somewhere
+
+848
+00:33:24,640 --> 00:33:27,200
+then they aggregate and they target
+
+849
+00:33:27,200 --> 00:33:27,919
+myself
+
+850
+00:33:27,919 --> 00:33:30,159
+so if you just look at one application
+
+851
+00:33:30,159 --> 00:33:32,399
+you may say oh i'm very safe
+
+852
+00:33:32,399 --> 00:33:35,519
+no problem virtually about everything
+
+853
+00:33:35,519 --> 00:33:38,000
+but when i collaborate with some other
+
+854
+00:33:38,000 --> 00:33:39,039
+applications
+
+855
+00:33:39,039 --> 00:33:42,399
+then maybe our pi will be identified
+
+856
+00:33:42,399 --> 00:33:44,799
+so there are many horrible switch
+
+857
+00:33:44,799 --> 00:33:46,960
+scenarios you probably can
+
+858
+00:33:46,960 --> 00:33:50,000
+find on the internet if a person really
+
+859
+00:33:50,000 --> 00:33:52,480
+want to target you find who you are
+
+860
+00:33:52,480 --> 00:33:55,840
+uh it's not impossible so
+
+861
+00:33:55,840 --> 00:33:58,960
+so a basic practice is as following
+
+862
+00:33:58,960 --> 00:34:01,840
+uh like i say if you have a consumer's
+
+863
+00:34:01,840 --> 00:34:02,640
+data right
+
+864
+00:34:02,640 --> 00:34:04,720
+you want to say i want to separate the
+
+865
+00:34:04,720 --> 00:34:06,720
+data into two relation
+
+866
+00:34:06,720 --> 00:34:10,159
+relational database tables and in one
+
+867
+00:34:10,159 --> 00:34:10,879
+table
+
+868
+00:34:10,879 --> 00:34:14,159
+i can store his or her name and the
+
+869
+00:34:14,159 --> 00:34:16,560
+personal
+
+870
+00:34:16,560 --> 00:34:19,280
+information or personal identifiable
+
+871
+00:34:19,280 --> 00:34:20,480
+information
+
+872
+00:34:20,480 --> 00:34:23,760
+and then have a hash id then using this
+
+873
+00:34:23,760 --> 00:34:24,960
+hid
+
+874
+00:34:24,960 --> 00:34:28,399
+i can join another table the key will be
+
+875
+00:34:28,399 --> 00:34:30,480
+hash id unique hid
+
+876
+00:34:30,480 --> 00:34:32,719
+or you want to say maybe the hid may not
+
+877
+00:34:32,719 --> 00:34:34,800
+mean to be unique so that's another way
+
+878
+00:34:34,800 --> 00:34:36,079
+to make sure
+
+879
+00:34:36,079 --> 00:34:38,800
+the data you cannot target one person
+
+880
+00:34:38,800 --> 00:34:40,159
+maybe just a google person
+
+881
+00:34:40,159 --> 00:34:43,199
+then hash id has
+
+882
+00:34:43,199 --> 00:34:46,960
+then indexed to non-pii information
+
+883
+00:34:46,960 --> 00:34:49,440
+so the table this second table can be
+
+884
+00:34:49,440 --> 00:34:50,480
+accessed by
+
+885
+00:34:50,480 --> 00:34:52,480
+a data processor if they look at the
+
+886
+00:34:52,480 --> 00:34:54,560
+table they look at hash id
+
+887
+00:34:54,560 --> 00:34:56,879
+they look at all these numpy information
+
+888
+00:34:56,879 --> 00:34:57,839
+they are fine
+
+889
+00:34:57,839 --> 00:34:59,920
+they are not able to be able to identify
+
+890
+00:34:59,920 --> 00:35:00,960
+who is doing what
+
+891
+00:35:00,960 --> 00:35:04,400
+right only data controller oh
+
+892
+00:35:04,400 --> 00:35:06,880
+he or she can join two tables to know oh
+
+893
+00:35:06,880 --> 00:35:08,880
+this person with this hash id
+
+894
+00:35:08,880 --> 00:35:12,000
+is edward so edward has accessed
+
+895
+00:35:12,000 --> 00:35:15,520
+facebook and google in the last few days
+
+896
+00:35:15,520 --> 00:35:18,640
+so this is a very primitive way
+
+897
+00:35:18,640 --> 00:35:21,839
+of trying to be compliant but
+
+898
+00:35:21,839 --> 00:35:24,640
+for sure it's not really in fully
+
+899
+00:35:24,640 --> 00:35:27,200
+compliance
+
+900
+00:35:27,200 --> 00:35:31,119
+so the second method is differential
+
+901
+00:35:31,119 --> 00:35:33,520
+differential of privacy this was
+
+902
+00:35:33,520 --> 00:35:35,040
+proposed by
+
+903
+00:35:35,040 --> 00:35:38,720
+professors in hong kong ust
+
+904
+00:35:38,720 --> 00:35:41,680
+the idea was i don't really need to
+
+905
+00:35:41,680 --> 00:35:42,560
+separate
+
+906
+00:35:42,560 --> 00:35:45,920
+your pi from your uh his
+
+907
+00:35:45,920 --> 00:35:48,720
+access history but i just need to
+
+908
+00:35:48,720 --> 00:35:49,359
+introduce
+
+909
+00:35:49,359 --> 00:35:52,160
+noise to the data right in this example
+
+910
+00:35:52,160 --> 00:35:53,359
+here
+
+911
+00:35:53,359 --> 00:35:55,839
+on the top you see you have a very
+
+912
+00:35:55,839 --> 00:35:57,680
+specific information about person
+
+913
+00:35:57,680 --> 00:36:01,440
+including office in london department id
+
+914
+00:36:01,440 --> 00:36:05,599
+date joint 2015 and cell information
+
+915
+00:36:05,599 --> 00:36:08,720
+and so on so forth right if you get a
+
+916
+00:36:08,720 --> 00:36:09,760
+hold of
+
+917
+00:36:09,760 --> 00:36:12,720
+this this piece of information uh in the
+
+918
+00:36:12,720 --> 00:36:13,359
+company
+
+919
+00:36:13,359 --> 00:36:15,599
+if you work in the company you see this
+
+920
+00:36:15,599 --> 00:36:16,720
+it's probably not
+
+921
+00:36:16,720 --> 00:36:18,880
+not very challenging to infer who is
+
+922
+00:36:18,880 --> 00:36:20,160
+this person
+
+923
+00:36:20,160 --> 00:36:23,599
+so you say okay i'm going to try to
+
+924
+00:36:23,599 --> 00:36:25,920
+introduce noise so rather than london i
+
+925
+00:36:25,920 --> 00:36:27,520
+say well uk
+
+926
+00:36:27,520 --> 00:36:31,200
+and uh they joined i wouldn't want to
+
+927
+00:36:31,200 --> 00:36:34,320
+specify the the month just a year
+
+928
+00:36:34,320 --> 00:36:37,680
+then the day of birth i specify
+
+929
+00:36:37,680 --> 00:36:40,240
+and then maybe just a decade or an half
+
+930
+00:36:40,240 --> 00:36:41,839
+hour time
+
+931
+00:36:41,839 --> 00:36:45,359
+but still this is not booty proof so but
+
+932
+00:36:45,359 --> 00:36:48,000
+in theory differential privacy is
+
+933
+00:36:48,000 --> 00:36:48,720
+attractive
+
+934
+00:36:48,720 --> 00:36:50,560
+because they can come up with a
+
+935
+00:36:50,560 --> 00:36:52,480
+quantifiable method
+
+936
+00:36:52,480 --> 00:36:55,599
+to save guardian privacy and you can see
+
+937
+00:36:55,599 --> 00:36:56,320
+the formula
+
+938
+00:36:56,320 --> 00:36:58,720
+is in the middle of the screen the idea
+
+939
+00:36:58,720 --> 00:36:59,920
+here there are two
+
+940
+00:36:59,920 --> 00:37:03,280
+uh parameters one is this uh uh
+
+941
+00:37:03,280 --> 00:37:05,440
+sigma parameter so they have this sigma
+
+942
+00:37:05,440 --> 00:37:07,040
+algebra the sigma edgewise
+
+943
+00:37:07,040 --> 00:37:09,119
+i'm going to introduce you introduce to
+
+944
+00:37:09,119 --> 00:37:10,960
+your data certain noise
+
+945
+00:37:10,960 --> 00:37:14,320
+right so for particular field we already
+
+946
+00:37:14,320 --> 00:37:14,800
+seen
+
+947
+00:37:14,800 --> 00:37:18,000
+you say well i'm going to apply this
+
+948
+00:37:18,000 --> 00:37:21,359
+h expansion or
+
+949
+00:37:21,359 --> 00:37:24,560
+birthday kind of anonymize your year but
+
+950
+00:37:24,560 --> 00:37:27,200
+we put your day and month over there
+
+951
+00:37:27,200 --> 00:37:27,920
+this kind of
+
+952
+00:37:27,920 --> 00:37:31,040
+algebra and then they have these privacy
+
+953
+00:37:31,040 --> 00:37:32,000
+parameters
+
+954
+00:37:32,000 --> 00:37:33,680
+right they say well it's just like a
+
+955
+00:37:33,680 --> 00:37:35,680
+newest neighbor search so last time we
+
+956
+00:37:35,680 --> 00:37:37,200
+covered news neighbor but we didn't
+
+957
+00:37:37,200 --> 00:37:37,760
+finish
+
+958
+00:37:37,760 --> 00:37:40,079
+we continued next time was when you do a
+
+959
+00:37:40,079 --> 00:37:41,520
+newsletter search
+
+960
+00:37:41,520 --> 00:37:44,160
+you don't get just yourself you get a
+
+961
+00:37:44,160 --> 00:37:45,119
+group of people
+
+962
+00:37:45,119 --> 00:37:47,359
+so then you say i cannot really pin you
+
+963
+00:37:47,359 --> 00:37:48,800
+down as
+
+964
+00:37:48,800 --> 00:37:50,880
+a particular person in that group so
+
+965
+00:37:50,880 --> 00:37:52,800
+this is this appstore means
+
+966
+00:37:52,800 --> 00:37:55,760
+you can introduce this epson and then
+
+967
+00:37:55,760 --> 00:37:57,040
+there's a trade-off here
+
+968
+00:37:57,040 --> 00:37:59,200
+for the company to decide you see the
+
+969
+00:37:59,200 --> 00:38:01,119
+left-hand side the trade-off is
+
+970
+00:38:01,119 --> 00:38:04,480
+oh private private privacy magic
+
+971
+00:38:04,480 --> 00:38:07,599
+so you want to safeguarding privacy then
+
+972
+00:38:07,599 --> 00:38:10,400
+the epson value need to be very small
+
+973
+00:38:10,400 --> 00:38:10,800
+but
+
+974
+00:38:10,800 --> 00:38:12,880
+if you say well i don't quite care about
+
+975
+00:38:12,880 --> 00:38:14,320
+your policy i care about
+
+976
+00:38:14,320 --> 00:38:16,880
+uh utility sorry is it the other way you
+
+977
+00:38:16,880 --> 00:38:18,640
+want to safeguarding privacy
+
+978
+00:38:18,640 --> 00:38:21,520
+absolute value need to be large so when
+
+979
+00:38:21,520 --> 00:38:22,800
+you want to
+
+980
+00:38:22,800 --> 00:38:25,200
+when the information is given you you
+
+981
+00:38:25,200 --> 00:38:27,200
+identify actually a lot of people not
+
+982
+00:38:27,200 --> 00:38:27,839
+just
+
+983
+00:38:27,839 --> 00:38:30,079
+a small number of people so it's hard to
+
+984
+00:38:30,079 --> 00:38:31,520
+pin down one individual
+
+985
+00:38:31,520 --> 00:38:34,079
+and by the same nice utility metric so
+
+986
+00:38:34,079 --> 00:38:36,320
+if i get a whole bunch of people here
+
+987
+00:38:36,320 --> 00:38:38,880
+then this application suppose i want to
+
+988
+00:38:38,880 --> 00:38:39,520
+do
+
+989
+00:38:39,520 --> 00:38:42,960
+uh do a search i want to do information
+
+990
+00:38:42,960 --> 00:38:45,839
+dissemination recommendation then my
+
+991
+00:38:45,839 --> 00:38:46,960
+accuracy
+
+992
+00:38:46,960 --> 00:38:50,000
+right the applications target
+
+993
+00:38:50,000 --> 00:38:53,920
+performance metrics will suffer and for
+
+994
+00:38:53,920 --> 00:38:56,880
+any company which needs to generate
+
+995
+00:38:56,880 --> 00:38:57,680
+revenue
+
+996
+00:38:57,680 --> 00:39:00,640
+the revenue for sure will go down so the
+
+997
+00:39:00,640 --> 00:39:03,040
+question here is very very simple
+
+998
+00:39:03,040 --> 00:39:07,200
+uh privacy it's possible to be
+
+999
+00:39:07,200 --> 00:39:10,160
+implemented right so you say my privacy
+
+1000
+00:39:10,160 --> 00:39:11,839
+regulation is very loose
+
+1001
+00:39:11,839 --> 00:39:16,160
+and comply with privacy eventually
+
+1002
+00:39:16,160 --> 00:39:18,960
+can be kind of enhanced but i'm going to
+
+1003
+00:39:18,960 --> 00:39:20,640
+lose a lot of revenue
+
+1004
+00:39:20,640 --> 00:39:23,119
+will the company do that or would they
+
+1005
+00:39:23,119 --> 00:39:24,800
+try to do any kind of
+
+1006
+00:39:24,800 --> 00:39:28,320
+circumvention to prevent compliance
+
+1007
+00:39:28,320 --> 00:39:31,520
+so this is a real problem and
+
+1008
+00:39:31,520 --> 00:39:33,599
+that's the reason again probability
+
+1009
+00:39:33,599 --> 00:39:34,960
+becomes important
+
+1010
+00:39:34,960 --> 00:39:36,720
+so let's come back to look at this
+
+1011
+00:39:36,720 --> 00:39:38,480
+differential privacy
+
+1012
+00:39:38,480 --> 00:39:42,000
+and depends on how large the epstein you
+
+1013
+00:39:42,000 --> 00:39:44,240
+won't want it to be the privacy can be a
+
+1014
+00:39:44,240 --> 00:39:45,440
+local privacy
+
+1015
+00:39:45,440 --> 00:39:48,560
+or a global privacy local privacy means
+
+1016
+00:39:48,560 --> 00:39:51,040
+okay i have a small group of people i
+
+1017
+00:39:51,040 --> 00:39:52,320
+just want to
+
+1018
+00:39:52,320 --> 00:39:56,000
+implement this uh sigma algebra
+
+1019
+00:39:56,000 --> 00:40:00,160
+so magically alter their private data
+
+1020
+00:40:00,160 --> 00:40:02,400
+then i have an aggregator and eventually
+
+1021
+00:40:02,400 --> 00:40:03,200
+i can
+
+1022
+00:40:03,200 --> 00:40:07,200
+store the data but i can make my
+
+1023
+00:40:07,200 --> 00:40:10,480
+privacy slightly more global means
+
+1024
+00:40:10,480 --> 00:40:13,760
+i have an aggregator i already aggregate
+
+1025
+00:40:13,760 --> 00:40:16,960
+information from a large number of users
+
+1026
+00:40:16,960 --> 00:40:20,160
+let's say female or male then i use a
+
+1027
+00:40:20,160 --> 00:40:21,599
+magic formula
+
+1028
+00:40:21,599 --> 00:40:24,880
+to alter them right so then i have this
+
+1029
+00:40:24,880 --> 00:40:27,920
+anonymous output and because the
+
+1030
+00:40:27,920 --> 00:40:30,319
+input is a group of people so it's much
+
+1031
+00:40:30,319 --> 00:40:32,079
+harder to track back to
+
+1032
+00:40:32,079 --> 00:40:35,200
+individuals so when you combine both
+
+1033
+00:40:35,200 --> 00:40:36,960
+right suppose i say well your private
+
+1034
+00:40:36,960 --> 00:40:38,400
+data
+
+1035
+00:40:38,400 --> 00:40:39,920
+individual data i'm going to do a
+
+1036
+00:40:39,920 --> 00:40:41,680
+shuffling and then
+
+1037
+00:40:41,680 --> 00:40:44,400
+i do another layer i analyze the
+
+1038
+00:40:44,400 --> 00:40:45,760
+shuffling results
+
+1039
+00:40:45,760 --> 00:40:48,800
+and applying even more magic then i
+
+1040
+00:40:48,800 --> 00:40:50,960
+really anonymize everyone
+
+1041
+00:40:50,960 --> 00:40:53,440
+so the question is let's say the the
+
+1042
+00:40:53,440 --> 00:40:54,640
+final master
+
+1043
+00:40:54,640 --> 00:40:57,920
+is probably the most secure one but
+
+1044
+00:40:57,920 --> 00:41:02,000
+it probably provides uh the the business
+
+1045
+00:41:02,000 --> 00:41:05,599
+usage information to make their profit
+
+1046
+00:41:05,599 --> 00:41:08,480
+right so again this is a big trade-off
+
+1047
+00:41:08,480 --> 00:41:10,000
+situation
+
+1048
+00:41:10,000 --> 00:41:13,200
+so people trying to do this differential
+
+1049
+00:41:13,200 --> 00:41:17,359
+privacy then i think it's kind of
+
+1050
+00:41:17,359 --> 00:41:20,000
+dying out now it's really hard to prove
+
+1051
+00:41:20,000 --> 00:41:20,640
+to
+
+1052
+00:41:20,640 --> 00:41:23,760
+an auditor saying this is my epsilon
+
+1053
+00:41:23,760 --> 00:41:25,280
+this is my sigma
+
+1054
+00:41:25,280 --> 00:41:28,880
+so this is this is the way i conduct the
+
+1055
+00:41:28,880 --> 00:41:29,599
+business
+
+1056
+00:41:29,599 --> 00:41:32,319
+and i prove in theory this will work but
+
+1057
+00:41:32,319 --> 00:41:33,520
+no you cannot prove
+
+1058
+00:41:33,520 --> 00:41:35,760
+everything is done empirically and the
+
+1059
+00:41:35,760 --> 00:41:37,440
+even you show the empirical data
+
+1060
+00:41:37,440 --> 00:41:39,920
+and who can trust you in pure data so
+
+1061
+00:41:39,920 --> 00:41:40,560
+harvard
+
+1062
+00:41:40,560 --> 00:41:42,960
+published this uh interesting article
+
+1063
+00:41:42,960 --> 00:41:44,560
+it's interesting but
+
+1064
+00:41:44,560 --> 00:41:47,359
+it was not very sung basically uh this
+
+1065
+00:41:47,359 --> 00:41:48,160
+paper saying
+
+1066
+00:41:48,160 --> 00:41:51,440
+well you you do your differentiate uh
+
+1067
+00:41:51,440 --> 00:41:54,640
+differential or pseudo
+
+1068
+00:41:54,640 --> 00:41:58,319
+anonymization on the data but we can
+
+1069
+00:41:58,319 --> 00:42:01,920
+re-engineering we identify the users
+
+1070
+00:42:01,920 --> 00:42:02,880
+right so
+
+1071
+00:42:02,880 --> 00:42:06,240
+the experience they did was they get
+
+1072
+00:42:06,240 --> 00:42:09,760
+about 300 users data from the
+
+1073
+00:42:09,760 --> 00:42:12,960
+the medical databases then they say well
+
+1074
+00:42:12,960 --> 00:42:15,520
+everyone was anonymized so let's start
+
+1075
+00:42:15,520 --> 00:42:16,400
+to add
+
+1076
+00:42:16,400 --> 00:42:18,960
+additional information let's say a zip
+
+1077
+00:42:18,960 --> 00:42:19,520
+code
+
+1078
+00:42:19,520 --> 00:42:22,800
+and date of birth and so on and so forth
+
+1079
+00:42:22,800 --> 00:42:25,200
+at the end they say well we can identify
+
+1080
+00:42:25,200 --> 00:42:26,079
+accurately
+
+1081
+00:42:26,079 --> 00:42:29,440
+about 90 of people so
+
+1082
+00:42:29,440 --> 00:42:33,440
+i really i mean i understand this is a
+
+1083
+00:42:33,440 --> 00:42:36,560
+kind of uh interesting result
+
+1084
+00:42:36,560 --> 00:42:38,800
+showing the more personal data you know
+
+1085
+00:42:38,800 --> 00:42:39,920
+about a person
+
+1086
+00:42:39,920 --> 00:42:42,000
+you can more accurately infer who the
+
+1087
+00:42:42,000 --> 00:42:42,960
+person is
+
+1088
+00:42:42,960 --> 00:42:45,680
+but this is no brander right so the the
+
+1089
+00:42:45,680 --> 00:42:46,880
+chance to me was
+
+1090
+00:42:46,880 --> 00:42:49,119
+if you only have 300 pieces of
+
+1091
+00:42:49,119 --> 00:42:50,960
+information then you clam you can
+
+1092
+00:42:50,960 --> 00:42:54,240
+identify person 95 accurately
+
+1093
+00:42:54,240 --> 00:42:56,319
+i think it's an easy problem but if you
+
+1094
+00:42:56,319 --> 00:42:57,680
+enlarge your pool
+
+1095
+00:42:57,680 --> 00:43:01,040
+from 300 to 3 million and i bet
+
+1096
+00:43:01,040 --> 00:43:04,800
+even with a zip code you cannot do that
+
+1097
+00:43:04,800 --> 00:43:06,640
+and if you have day of birth here
+
+1098
+00:43:06,640 --> 00:43:08,960
+frankly
+
+1099
+00:43:08,960 --> 00:43:11,200
+uh even even with one million people the
+
+1100
+00:43:11,200 --> 00:43:12,000
+accuracy can
+
+1101
+00:43:12,000 --> 00:43:15,280
+still be quite high right so i
+
+1102
+00:43:15,280 --> 00:43:18,480
+respect the paper but the paper
+
+1103
+00:43:18,480 --> 00:43:21,680
+itself didn't really tell me
+
+1104
+00:43:21,680 --> 00:43:26,319
+any promising or exciting methods
+
+1105
+00:43:26,319 --> 00:43:29,240
+so federated learning it started from
+
+1106
+00:43:29,240 --> 00:43:30,800
+2017
+
+1107
+00:43:30,800 --> 00:43:35,200
+google uh wrote a paper and also a blog
+
+1108
+00:43:35,200 --> 00:43:37,680
+introduced the method the method is very
+
+1109
+00:43:37,680 --> 00:43:38,800
+logical
+
+1110
+00:43:38,800 --> 00:43:41,839
+so we all have our devices
+
+1111
+00:43:41,839 --> 00:43:44,880
+our laptop or cell phone
+
+1112
+00:43:44,880 --> 00:43:48,000
+and whatever personal devices and we
+
+1113
+00:43:48,000 --> 00:43:48,960
+don't
+
+1114
+00:43:48,960 --> 00:43:52,079
+send our private data to the app so
+
+1115
+00:43:52,079 --> 00:43:55,040
+to the concluded cloud so all data
+
+1116
+00:43:55,040 --> 00:43:56,000
+mining
+
+1117
+00:43:56,000 --> 00:43:57,839
+all this kind of machine learning will
+
+1118
+00:43:57,839 --> 00:43:59,119
+be conducted
+
+1119
+00:43:59,119 --> 00:44:02,800
+on the phone right so after
+
+1120
+00:44:02,800 --> 00:44:05,520
+the machine learning has been conducted
+
+1121
+00:44:05,520 --> 00:44:07,520
+the model has been learned
+
+1122
+00:44:07,520 --> 00:44:10,960
+on the phone then the model will be sent
+
+1123
+00:44:10,960 --> 00:44:14,079
+to the cloud and the cloud
+
+1124
+00:44:14,079 --> 00:44:16,640
+or is the centralized system then we'll
+
+1125
+00:44:16,640 --> 00:44:18,720
+aggregate all the information
+
+1126
+00:44:18,720 --> 00:44:21,839
+and develop a global model and the
+
+1127
+00:44:21,839 --> 00:44:23,359
+global model will come back
+
+1128
+00:44:23,359 --> 00:44:26,160
+in return compared to this target
+
+1129
+00:44:26,160 --> 00:44:29,040
+individual cell phones
+
+1130
+00:44:29,040 --> 00:44:31,599
+so on the one hand this is kind of
+
+1131
+00:44:31,599 --> 00:44:32,720
+attractive
+
+1132
+00:44:32,720 --> 00:44:35,359
+on the other hand it also introduces
+
+1133
+00:44:35,359 --> 00:44:36,240
+arrows
+
+1134
+00:44:36,240 --> 00:44:39,440
+to the classification and not only
+
+1135
+00:44:39,440 --> 00:44:40,960
+introduces arrows
+
+1136
+00:44:40,960 --> 00:44:42,960
+but there could be other problems let's
+
+1137
+00:44:42,960 --> 00:44:44,880
+say what kind of information you
+
+1138
+00:44:44,880 --> 00:44:45,760
+aggregate
+
+1139
+00:44:45,760 --> 00:44:49,040
+suppose i own the android system
+
+1140
+00:44:49,040 --> 00:44:52,079
+and or ios
+
+1141
+00:44:52,079 --> 00:44:54,400
+so the amount of data i collect is not
+
+1142
+00:44:54,400 --> 00:44:56,240
+just from one application i actually
+
+1143
+00:44:56,240 --> 00:44:57,200
+call that data from
+
+1144
+00:44:57,200 --> 00:45:00,319
+all different applications so
+
+1145
+00:45:00,319 --> 00:45:03,440
+as i as an example i gave you a few
+
+1146
+00:45:03,440 --> 00:45:04,240
+minutes ago
+
+1147
+00:45:04,240 --> 00:45:06,960
+this is even more dangerous than getting
+
+1148
+00:45:06,960 --> 00:45:08,000
+all information
+
+1149
+00:45:08,000 --> 00:45:10,079
+from one applications right one
+
+1150
+00:45:10,079 --> 00:45:11,200
+particular application
+
+1151
+00:45:11,200 --> 00:45:13,520
+but you get all information get
+
+1152
+00:45:13,520 --> 00:45:14,960
+information from all
+
+1153
+00:45:14,960 --> 00:45:18,560
+applications then you do uh
+
+1154
+00:45:18,560 --> 00:45:21,280
+kind of color collaborating among them
+
+1155
+00:45:21,280 --> 00:45:21,760
+and
+
+1156
+00:45:21,760 --> 00:45:23,280
+the kind of information you can call is
+
+1157
+00:45:23,280 --> 00:45:25,440
+just totally horrible
+
+1158
+00:45:25,440 --> 00:45:27,599
+and okay let's look at healthcare as one
+
+1159
+00:45:27,599 --> 00:45:29,839
+example suppose i have a
+
+1160
+00:45:29,839 --> 00:45:33,680
+deep neural net and this feature shows
+
+1161
+00:45:33,680 --> 00:45:35,680
+there are multiple layers attention
+
+1162
+00:45:35,680 --> 00:45:37,839
+layers and so on so forth
+
+1163
+00:45:37,839 --> 00:45:40,560
+and the idea of this federated learning
+
+1164
+00:45:40,560 --> 00:45:40,960
+is
+
+1165
+00:45:40,960 --> 00:45:44,640
+i'm going to cut off this multi-layer
+
+1166
+00:45:44,640 --> 00:45:48,880
+neural networks into two parts
+
+1167
+00:45:48,880 --> 00:45:51,520
+right so my animation doesn't work but
+
+1168
+00:45:51,520 --> 00:45:52,319
+actually
+
+1169
+00:45:52,319 --> 00:45:54,480
+the key thing is in the middle here
+
+1170
+00:45:54,480 --> 00:45:55,839
+let's say i draw a line
+
+1171
+00:45:55,839 --> 00:45:58,240
+in the middle here okay okay actually
+
+1172
+00:45:58,240 --> 00:45:59,599
+this picture will show
+
+1173
+00:45:59,599 --> 00:46:02,640
+so i have four hospitals each has
+
+1174
+00:46:02,640 --> 00:46:05,839
+been training the model based on their
+
+1175
+00:46:05,839 --> 00:46:06,319
+let's say
+
+1176
+00:46:06,319 --> 00:46:09,680
+x-ray data they want to do this cd scan
+
+1177
+00:46:09,680 --> 00:46:13,680
+or maybe lung disease classification
+
+1178
+00:46:13,680 --> 00:46:15,680
+so each hospital have collected certain
+
+1179
+00:46:15,680 --> 00:46:17,920
+data then run their own
+
+1180
+00:46:17,920 --> 00:46:20,800
+training algorithms and then i say okay
+
+1181
+00:46:20,800 --> 00:46:21,520
+i'm going to
+
+1182
+00:46:21,520 --> 00:46:25,280
+cut your neural net into a half
+
+1183
+00:46:25,280 --> 00:46:27,920
+so the top half so you learn in the
+
+1184
+00:46:27,920 --> 00:46:29,440
+middle then i say stop
+
+1185
+00:46:29,440 --> 00:46:31,920
+don't continue learning just ship me all
+
+1186
+00:46:31,920 --> 00:46:33,760
+the model parameters
+
+1187
+00:46:33,760 --> 00:46:36,000
+then you say okay i'm going to continue
+
+1188
+00:46:36,000 --> 00:46:37,359
+learning here
+
+1189
+00:46:37,359 --> 00:46:39,839
+in my center database so you guys stop
+
+1190
+00:46:39,839 --> 00:46:41,440
+learning i'm going to aggregate
+
+1191
+00:46:41,440 --> 00:46:43,920
+right so at the bottom here you show
+
+1192
+00:46:43,920 --> 00:46:44,800
+this is a
+
+1193
+00:46:44,800 --> 00:46:47,839
+send central centralized continuous
+
+1194
+00:46:47,839 --> 00:46:48,560
+learning
+
+1195
+00:46:48,560 --> 00:46:50,480
+and getting parameters from all
+
+1196
+00:46:50,480 --> 00:46:52,240
+different sites
+
+1197
+00:46:52,240 --> 00:46:55,839
+and this method seems to be
+
+1198
+00:46:55,839 --> 00:46:59,119
+reasonable but but there are clearly
+
+1199
+00:46:59,119 --> 00:47:01,599
+uh two shortcomings from medical
+
+1200
+00:47:01,599 --> 00:47:02,960
+perspective
+
+1201
+00:47:02,960 --> 00:47:05,520
+the first shortcoming is as angeline
+
+1202
+00:47:05,520 --> 00:47:06,560
+said
+
+1203
+00:47:06,560 --> 00:47:10,319
+every hospital may collect data
+
+1204
+00:47:10,319 --> 00:47:12,400
+using different process different
+
+1205
+00:47:12,400 --> 00:47:13,359
+devices
+
+1206
+00:47:13,359 --> 00:47:16,079
+or even same device same device with
+
+1207
+00:47:16,079 --> 00:47:17,920
+different process or
+
+1208
+00:47:17,920 --> 00:47:20,960
+calibrations so when you
+
+1209
+00:47:20,960 --> 00:47:24,000
+aggregate the parameters in
+
+1210
+00:47:24,000 --> 00:47:27,520
+this subsequent model those parameters
+
+1211
+00:47:27,520 --> 00:47:29,920
+may not agree with each other and that
+
+1212
+00:47:29,920 --> 00:47:33,040
+could problematic because
+
+1213
+00:47:33,040 --> 00:47:36,640
+each other will become your noisy
+
+1214
+00:47:36,640 --> 00:47:39,119
+disturbance rather than trying to help
+
+1215
+00:47:39,119 --> 00:47:40,160
+you
+
+1216
+00:47:40,160 --> 00:47:43,520
+so for the test data that could be
+
+1217
+00:47:43,520 --> 00:47:45,280
+this method could be productive because
+
+1218
+00:47:45,280 --> 00:47:47,280
+text it attached is the text
+
+1219
+00:47:47,280 --> 00:47:50,720
+but for imagery this pipeline may not be
+
+1220
+00:47:50,720 --> 00:47:52,800
+able to improve your accuracy
+
+1221
+00:47:52,800 --> 00:47:55,520
+and and in practice i see these kind of
+
+1222
+00:47:55,520 --> 00:47:56,480
+methods
+
+1223
+00:47:56,480 --> 00:47:59,359
+um it's really hard to be realized
+
+1224
+00:47:59,359 --> 00:48:00,640
+because
+
+1225
+00:48:00,640 --> 00:48:03,839
+no hospital here would trust
+
+1226
+00:48:03,839 --> 00:48:06,720
+other hospitals every hospital consider
+
+1227
+00:48:06,720 --> 00:48:08,400
+their own data to be
+
+1228
+00:48:08,400 --> 00:48:10,480
+to be a piece of gold they don't want to
+
+1229
+00:48:10,480 --> 00:48:12,160
+share with others
+
+1230
+00:48:12,160 --> 00:48:16,480
+so only perhaps in on android phone or
+
+1231
+00:48:16,480 --> 00:48:17,520
+on ios
+
+1232
+00:48:17,520 --> 00:48:20,880
+this federated learning can be conducted
+
+1233
+00:48:20,880 --> 00:48:24,400
+but for health care i have really strong
+
+1234
+00:48:24,400 --> 00:48:25,040
+doubt
+
+1235
+00:48:25,040 --> 00:48:28,800
+okay so problem solved
+
+1236
+00:48:28,800 --> 00:48:32,079
+and i don't think so and the
+
+1237
+00:48:32,079 --> 00:48:35,200
+two key problems one or the
+
+1238
+00:48:35,200 --> 00:48:38,319
+enumerate which is the trade-off between
+
+1239
+00:48:38,319 --> 00:48:41,280
+privacy safeguarding and the utility to
+
+1240
+00:48:41,280 --> 00:48:43,280
+the company or revenue of the company
+
+1241
+00:48:43,280 --> 00:48:46,000
+right this is always an ethical problem
+
+1242
+00:48:46,000 --> 00:48:46,880
+and
+
+1243
+00:48:46,880 --> 00:48:50,640
+a company a ipo post ipo company they
+
+1244
+00:48:50,640 --> 00:48:52,960
+have obligation to their shareholders
+
+1245
+00:48:52,960 --> 00:48:55,119
+and the ceo is under tremendous pressure
+
+1246
+00:48:55,119 --> 00:48:56,400
+to perform
+
+1247
+00:48:56,400 --> 00:48:59,680
+so i don't know where the ceo would
+
+1248
+00:48:59,680 --> 00:49:01,920
+draw the boundary then the second
+
+1249
+00:49:01,920 --> 00:49:03,119
+challenge is
+
+1250
+00:49:03,119 --> 00:49:05,680
+probability right you can claim anything
+
+1251
+00:49:05,680 --> 00:49:06,400
+but
+
+1252
+00:49:06,400 --> 00:49:10,160
+ccpa now requires a company to prove
+
+1253
+00:49:10,160 --> 00:49:12,559
+so this again this is the picture to
+
+1254
+00:49:12,559 --> 00:49:13,440
+summarize
+
+1255
+00:49:13,440 --> 00:49:16,240
+regulations but at the end on the right
+
+1256
+00:49:16,240 --> 00:49:17,040
+hand side
+
+1257
+00:49:17,040 --> 00:49:20,079
+is you should be able to trust
+
+1258
+00:49:20,079 --> 00:49:23,200
+the company and the company has to be
+
+1259
+00:49:23,200 --> 00:49:24,160
+able to prove
+
+1260
+00:49:24,160 --> 00:49:27,839
+their results and the policies so let me
+
+1261
+00:49:27,839 --> 00:49:30,240
+spend the remaining time to introduce
+
+1262
+00:49:30,240 --> 00:49:33,200
+saltaria sotaria is the goddess of
+
+1263
+00:49:33,200 --> 00:49:34,000
+greece
+
+1264
+00:49:34,000 --> 00:49:36,880
+it's kind of providing individuals
+
+1265
+00:49:36,880 --> 00:49:38,400
+safety
+
+1266
+00:49:38,400 --> 00:49:42,720
+and the basic idea is we want to lock
+
+1267
+00:49:42,720 --> 00:49:45,839
+everything including user consent
+
+1268
+00:49:45,839 --> 00:49:49,119
+user revocation and
+
+1269
+00:49:49,119 --> 00:49:51,920
+so all the consumers actions on their
+
+1270
+00:49:51,920 --> 00:49:52,720
+data
+
+1271
+00:49:52,720 --> 00:49:55,040
+and all these actions conducted by the
+
+1272
+00:49:55,040 --> 00:49:56,400
+company basically
+
+1273
+00:49:56,400 --> 00:50:00,559
+need to be hardened on a ledger
+
+1274
+00:50:00,559 --> 00:50:03,040
+and this ledger if you want to be able
+
+1275
+00:50:03,040 --> 00:50:05,040
+to be people to trust the ledger
+
+1276
+00:50:05,040 --> 00:50:06,880
+this ad ledger need to be open
+
+1277
+00:50:06,880 --> 00:50:08,800
+transparent to the public
+
+1278
+00:50:08,800 --> 00:50:12,319
+so anyone can audit the ledger if i say
+
+1279
+00:50:12,319 --> 00:50:15,200
+no no no this is a centralized system
+
+1280
+00:50:15,200 --> 00:50:16,000
+this is
+
+1281
+00:50:16,000 --> 00:50:18,800
+the bank's ledger so you can i'm going
+
+1282
+00:50:18,800 --> 00:50:20,319
+to log everything but
+
+1283
+00:50:20,319 --> 00:50:22,880
+sorry i cannot allow you to come in to
+
+1284
+00:50:22,880 --> 00:50:23,680
+see
+
+1285
+00:50:23,680 --> 00:50:25,920
+the details because i don't want you to
+
+1286
+00:50:25,920 --> 00:50:28,160
+see other people's account balance
+
+1287
+00:50:28,160 --> 00:50:31,599
+then this is a ledger which is not
+
+1288
+00:50:31,599 --> 00:50:32,640
+transparent
+
+1289
+00:50:32,640 --> 00:50:35,839
+and cannot bring people's trust okay so
+
+1290
+00:50:35,839 --> 00:50:37,040
+transparency
+
+1291
+00:50:37,040 --> 00:50:40,400
+is the key so that leads to uh
+
+1292
+00:50:40,400 --> 00:50:43,119
+the centralized and versus decentralized
+
+1293
+00:50:43,119 --> 00:50:44,079
+system
+
+1294
+00:50:44,079 --> 00:50:46,960
+the centralized system by the names
+
+1295
+00:50:46,960 --> 00:50:47,760
+basically saying
+
+1296
+00:50:47,760 --> 00:50:50,960
+all the data all the synchronization is
+
+1297
+00:50:50,960 --> 00:50:52,079
+conducted
+
+1298
+00:50:52,079 --> 00:50:55,440
+by one unit right let's say a central
+
+1299
+00:50:55,440 --> 00:50:56,319
+bank
+
+1300
+00:50:56,319 --> 00:50:59,680
+or all the banks in the u.s uh they have
+
+1301
+00:50:59,680 --> 00:51:00,240
+this
+
+1302
+00:51:00,240 --> 00:51:03,440
+uh bank the headquarter bank
+
+1303
+00:51:03,440 --> 00:51:05,359
+and all information need to be
+
+1304
+00:51:05,359 --> 00:51:06,559
+synchronized with
+
+1305
+00:51:06,559 --> 00:51:08,960
+the headquarters so when a bank want to
+
+1306
+00:51:08,960 --> 00:51:10,000
+close their books
+
+1307
+00:51:10,000 --> 00:51:12,960
+every day they have to synchronize uh
+
+1308
+00:51:12,960 --> 00:51:14,640
+from the center to all the
+
+1309
+00:51:14,640 --> 00:51:18,400
+distributed uh bank bank branches
+
+1310
+00:51:18,400 --> 00:51:21,040
+to try to reconcile their their books
+
+1311
+00:51:21,040 --> 00:51:22,640
+and decentralized means
+
+1312
+00:51:22,640 --> 00:51:24,960
+all individuals can communicate with
+
+1313
+00:51:24,960 --> 00:51:26,079
+each other
+
+1314
+00:51:26,079 --> 00:51:29,440
+and you can do local decisions
+
+1315
+00:51:29,440 --> 00:51:32,160
+but eventually uh we need to be able to
+
+1316
+00:51:32,160 --> 00:51:33,440
+reach global agreement
+
+1317
+00:51:33,440 --> 00:51:37,839
+okay so we come back to see an example
+
+1318
+00:51:37,839 --> 00:51:41,119
+is this centralized banking system uh
+
+1319
+00:51:41,119 --> 00:51:44,000
+deposit withdrawal and so on so forth
+
+1320
+00:51:44,000 --> 00:51:46,240
+let's say i have two atms
+
+1321
+00:51:46,240 --> 00:51:49,280
+i'm using two atms from one atm i
+
+1322
+00:51:49,280 --> 00:51:51,680
+deposit money the other atm i will show
+
+1323
+00:51:51,680 --> 00:51:52,640
+money right
+
+1324
+00:51:52,640 --> 00:51:54,880
+so the important thing is you need to be
+
+1325
+00:51:54,880 --> 00:51:56,559
+consistent you cannot say
+
+1326
+00:51:56,559 --> 00:51:59,359
+well before my deposit goes in i already
+
+1327
+00:51:59,359 --> 00:52:00,720
+withdraw my money
+
+1328
+00:52:00,720 --> 00:52:03,440
+so i have this kind of i kind of double
+
+1329
+00:52:03,440 --> 00:52:04,640
+deposit whatever
+
+1330
+00:52:04,640 --> 00:52:06,400
+this kind of secret scenario and you
+
+1331
+00:52:06,400 --> 00:52:08,079
+know in the bitcoin situation they want
+
+1332
+00:52:08,079 --> 00:52:09,200
+to save money
+
+1333
+00:52:09,200 --> 00:52:11,599
+double spending right you say i want to
+
+1334
+00:52:11,599 --> 00:52:14,000
+use my bitcoin to buy ten dollars of
+
+1335
+00:52:14,000 --> 00:52:17,119
+uh goods in in one company or one
+
+1336
+00:52:17,119 --> 00:52:19,119
+store use the same bitcoin to buy
+
+1337
+00:52:19,119 --> 00:52:20,880
+another thing so there's a
+
+1338
+00:52:20,880 --> 00:52:24,000
+window about 30 minutes
+
+1339
+00:52:24,000 --> 00:52:25,839
+for a bitcoin transaction to be
+
+1340
+00:52:25,839 --> 00:52:28,640
+committed we think that 30 seconds
+
+1341
+00:52:28,640 --> 00:52:30,160
+a person can double spend and that
+
+1342
+00:52:30,160 --> 00:52:32,079
+problem has to be closed right
+
+1343
+00:52:32,079 --> 00:52:34,720
+so but bitcoin is a decentralized
+
+1344
+00:52:34,720 --> 00:52:35,760
+problem it's much
+
+1345
+00:52:35,760 --> 00:52:36,960
+more challenging in a centralized
+
+1346
+00:52:36,960 --> 00:52:39,040
+problem but central apartment bank
+
+1347
+00:52:39,040 --> 00:52:41,520
+is one example and another example can
+
+1348
+00:52:41,520 --> 00:52:42,559
+be hospital
+
+1349
+00:52:42,559 --> 00:52:44,880
+so you say okay i'm going to perform
+
+1350
+00:52:44,880 --> 00:52:46,880
+certain process on a patient
+
+1351
+00:52:46,880 --> 00:52:48,240
+the information will be stored in the
+
+1352
+00:52:48,240 --> 00:52:50,319
+hospital but eventually the information
+
+1353
+00:52:50,319 --> 00:52:50,880
+has to
+
+1354
+00:52:50,880 --> 00:52:53,040
+be sent to who sent to a payer right
+
+1355
+00:52:53,040 --> 00:52:54,480
+sent to insurance company
+
+1356
+00:52:54,480 --> 00:52:58,160
+so insurance company pays the bills and
+
+1357
+00:52:58,160 --> 00:53:00,720
+they pretty much aggregate all the data
+
+1358
+00:53:00,720 --> 00:53:01,359
+together
+
+1359
+00:53:01,359 --> 00:53:05,119
+they have all hospitals data and this is
+
+1360
+00:53:05,119 --> 00:53:07,440
+pretty much universal in canada they
+
+1361
+00:53:07,440 --> 00:53:08,319
+have a
+
+1362
+00:53:08,319 --> 00:53:09,839
+universal health care run by the
+
+1363
+00:53:09,839 --> 00:53:11,839
+government the government has to pay the
+
+1364
+00:53:11,839 --> 00:53:12,400
+bills
+
+1365
+00:53:12,400 --> 00:53:14,240
+so the government has all the health
+
+1366
+00:53:14,240 --> 00:53:17,839
+care records of the canadian citizens
+
+1367
+00:53:17,839 --> 00:53:19,520
+now again the question is trust if you
+
+1368
+00:53:19,520 --> 00:53:21,599
+have a centralized system
+
+1369
+00:53:21,599 --> 00:53:23,599
+how can i trust you because you are not
+
+1370
+00:53:23,599 --> 00:53:24,880
+going to reveal me
+
+1371
+00:53:24,880 --> 00:53:28,880
+all the actions you have conducted so
+
+1372
+00:53:28,880 --> 00:53:30,000
+we like to be able to have a
+
+1373
+00:53:30,000 --> 00:53:32,400
+decentralized system so decentralized
+
+1374
+00:53:32,400 --> 00:53:34,480
+system the question then will be
+
+1375
+00:53:34,480 --> 00:53:36,480
+you have certain inconsistency that will
+
+1376
+00:53:36,480 --> 00:53:38,079
+happen you have
+
+1377
+00:53:38,079 --> 00:53:41,119
+local agreement but globally
+
+1378
+00:53:41,119 --> 00:53:44,480
+may not be agreeable so therefore
+
+1379
+00:53:44,480 --> 00:53:47,599
+consensus protocols need to be executed
+
+1380
+00:53:47,599 --> 00:53:49,760
+so consensus protocol can be separated
+
+1381
+00:53:49,760 --> 00:53:51,359
+into two camps
+
+1382
+00:53:51,359 --> 00:53:54,480
+one is distributed consensus you could
+
+1383
+00:53:54,480 --> 00:53:56,800
+have local consensus eventually you
+
+1384
+00:53:56,800 --> 00:53:59,359
+uh convert to global consensus or you
+
+1385
+00:53:59,359 --> 00:54:00,079
+just have a
+
+1386
+00:54:00,079 --> 00:54:02,640
+centralized consensus protocol and
+
+1387
+00:54:02,640 --> 00:54:03,200
+centralized
+
+1388
+00:54:03,200 --> 00:54:05,520
+consensus protocol has been out there
+
+1389
+00:54:05,520 --> 00:54:07,040
+for many many years
+
+1390
+00:54:07,040 --> 00:54:09,359
+because bank banks or airline
+
+1391
+00:54:09,359 --> 00:54:10,720
+reservation systems
+
+1392
+00:54:10,720 --> 00:54:12,800
+have been out there for more than two
+
+1393
+00:54:12,800 --> 00:54:14,720
+decades right
+
+1394
+00:54:14,720 --> 00:54:17,760
+for allies airline reservation systems
+
+1395
+00:54:17,760 --> 00:54:21,040
+and when they started about even 20-30
+
+1396
+00:54:21,040 --> 00:54:22,319
+years ago
+
+1397
+00:54:22,319 --> 00:54:26,240
+even today they haven't be able to
+
+1398
+00:54:26,240 --> 00:54:27,839
+really changing the system because it's
+
+1399
+00:54:27,839 --> 00:54:29,280
+just too many agents
+
+1400
+00:54:29,280 --> 00:54:31,599
+try to access the database and any
+
+1401
+00:54:31,599 --> 00:54:33,359
+modification to the system
+
+1402
+00:54:33,359 --> 00:54:38,559
+around into the risk of data corruption
+
+1403
+00:54:38,559 --> 00:54:41,040
+so we don't get into all these protocols
+
+1404
+00:54:41,040 --> 00:54:42,960
+in in details because we want to
+
+1405
+00:54:42,960 --> 00:54:46,160
+stay in a on a high level and the server
+
+1406
+00:54:46,160 --> 00:54:48,000
+has courses to cover
+
+1407
+00:54:48,000 --> 00:54:50,720
+uh the detail methods and when i was
+
+1408
+00:54:50,720 --> 00:54:51,359
+back in
+
+1409
+00:54:51,359 --> 00:54:53,520
+the cs department 20 years ago there was
+
+1410
+00:54:53,520 --> 00:54:54,720
+a database course
+
+1411
+00:54:54,720 --> 00:54:56,720
+then there was a transaction processing
+
+1412
+00:54:56,720 --> 00:54:58,480
+course and the transaction partnering
+
+1413
+00:54:58,480 --> 00:54:59,839
+costs will cover
+
+1414
+00:54:59,839 --> 00:55:03,040
+all these protocols to safeguarding
+
+1415
+00:55:03,040 --> 00:55:05,920
+agreement so let me just give you an
+
+1416
+00:55:05,920 --> 00:55:08,000
+example this is a rudimental
+
+1417
+00:55:08,000 --> 00:55:10,319
+consensus protocol talk or two-phase
+
+1418
+00:55:10,319 --> 00:55:11,839
+commit protocol
+
+1419
+00:55:11,839 --> 00:55:15,119
+so i have my participants
+
+1420
+00:55:15,119 --> 00:55:17,599
+right and eventually i need to make a
+
+1421
+00:55:17,599 --> 00:55:18,640
+decision
+
+1422
+00:55:18,640 --> 00:55:22,799
+so let's say i want to have a consensus
+
+1423
+00:55:22,799 --> 00:55:25,200
+we in a class you say when are we going
+
+1424
+00:55:25,200 --> 00:55:25,920
+to do
+
+1425
+00:55:25,920 --> 00:55:28,160
+our is hypothesis hypothetically when
+
+1426
+00:55:28,160 --> 00:55:29,040
+are we going to do
+
+1427
+00:55:29,040 --> 00:55:32,799
+our final exam and then i send send out
+
+1428
+00:55:32,799 --> 00:55:35,280
+two dates one is next tuesday another
+
+1429
+00:55:35,280 --> 00:55:36,559
+one next thursday
+
+1430
+00:55:36,559 --> 00:55:40,319
+then students start to vote right so
+
+1431
+00:55:40,319 --> 00:55:42,079
+once i get all the votes i say okay
+
+1432
+00:55:42,079 --> 00:55:44,079
+majority people vote for
+
+1433
+00:55:44,079 --> 00:55:46,640
+thursday so i would say i will return
+
+1434
+00:55:46,640 --> 00:55:47,760
+back to you to say
+
+1435
+00:55:47,760 --> 00:55:50,240
+okay now i'm prepared to come come meet
+
+1436
+00:55:50,240 --> 00:55:51,599
+because our rule is
+
+1437
+00:55:51,599 --> 00:55:55,040
+majority wings and then the decision in
+
+1438
+00:55:55,040 --> 00:55:56,160
+the decision phase
+
+1439
+00:55:56,160 --> 00:55:58,880
+the student will say yeah i was i was
+
+1440
+00:55:58,880 --> 00:56:01,359
+saying tuesday i prefer but now
+
+1441
+00:56:01,359 --> 00:56:04,240
+the kind of a majority decision is
+
+1442
+00:56:04,240 --> 00:56:06,160
+thursday so i'm going to okay
+
+1443
+00:56:06,160 --> 00:56:08,400
+commit i'm going to decide to commit so
+
+1444
+00:56:08,400 --> 00:56:11,119
+you have second phase of communication
+
+1445
+00:56:11,119 --> 00:56:13,280
+so in the two-phase company protocol
+
+1446
+00:56:13,280 --> 00:56:14,480
+here you see
+
+1447
+00:56:14,480 --> 00:56:17,839
+the overhead is the number of messages
+
+1448
+00:56:17,839 --> 00:56:19,359
+going back and forth
+
+1449
+00:56:19,359 --> 00:56:22,640
+to reach consensus and if the number of
+
+1450
+00:56:22,640 --> 00:56:23,839
+participants
+
+1451
+00:56:23,839 --> 00:56:26,240
+is small and you have this kind of
+
+1452
+00:56:26,240 --> 00:56:27,839
+centralized system
+
+1453
+00:56:27,839 --> 00:56:31,119
+and the cost is linear to the number of
+
+1454
+00:56:31,119 --> 00:56:32,000
+participants
+
+1455
+00:56:32,000 --> 00:56:34,880
+right say i have 10 students and maybe
+
+1456
+00:56:34,880 --> 00:56:36,160
+the message will be
+
+1457
+00:56:36,160 --> 00:56:38,400
+sending back and forth 40 times because
+
+1458
+00:56:38,400 --> 00:56:40,079
+the two-way messages for
+
+1459
+00:56:40,079 --> 00:56:42,960
+each face but then when you say i want
+
+1460
+00:56:42,960 --> 00:56:44,240
+to do a
+
+1461
+00:56:44,240 --> 00:56:47,760
+global but decentralized kind of company
+
+1462
+00:56:47,760 --> 00:56:48,799
+protocol
+
+1463
+00:56:48,799 --> 00:56:51,280
+then the cost will be much much higher
+
+1464
+00:56:51,280 --> 00:56:52,640
+will be n square
+
+1465
+00:56:52,640 --> 00:56:54,640
+right so everyone has to be able to talk
+
+1466
+00:56:54,640 --> 00:56:56,839
+to everyone in the most general
+
+1467
+00:56:56,839 --> 00:56:58,319
+situation and this
+
+1468
+00:56:58,319 --> 00:57:00,880
+is not affordable now you say well on
+
+1469
+00:57:00,880 --> 00:57:03,280
+the one hand i want to be transparent
+
+1470
+00:57:03,280 --> 00:57:05,760
+i want each person to be able to make
+
+1471
+00:57:05,760 --> 00:57:06,319
+their
+
+1472
+00:57:06,319 --> 00:57:09,440
+kind of own decision they can look at
+
+1473
+00:57:09,440 --> 00:57:11,440
+other people's data but on the other
+
+1474
+00:57:11,440 --> 00:57:14,240
+hand i have this kind of enormous cost
+
+1475
+00:57:14,240 --> 00:57:16,799
+how can i mitigate or i do the
+
+1476
+00:57:16,799 --> 00:57:18,000
+reasonable trade-off
+
+1477
+00:57:18,000 --> 00:57:20,400
+and the trade-off easy to understand
+
+1478
+00:57:20,400 --> 00:57:21,119
+here is
+
+1479
+00:57:21,119 --> 00:57:22,880
+i'm not going to talk to it to everyone
+
+1480
+00:57:22,880 --> 00:57:24,319
+although i want to do decentralized
+
+1481
+00:57:24,319 --> 00:57:25,119
+system
+
+1482
+00:57:25,119 --> 00:57:27,359
+but i'm going to talk talk to just a
+
+1483
+00:57:27,359 --> 00:57:28,400
+group of people
+
+1484
+00:57:28,400 --> 00:57:30,960
+right a group of people who i can trust
+
+1485
+00:57:30,960 --> 00:57:32,000
+they say
+
+1486
+00:57:32,000 --> 00:57:35,760
+i when i want to make a commit decision
+
+1487
+00:57:35,760 --> 00:57:39,599
+or when i say i want to sell my medical
+
+1488
+00:57:39,599 --> 00:57:43,520
+data record to sahil and
+
+1489
+00:57:43,520 --> 00:57:47,359
+this agreement only need to be approved
+
+1490
+00:57:47,359 --> 00:57:50,400
+or been seen by let's say triple a
+
+1491
+00:57:50,400 --> 00:57:53,520
+bank of america and maybe tesla only
+
+1492
+00:57:53,520 --> 00:57:54,000
+three
+
+1493
+00:57:54,000 --> 00:57:57,359
+because why i don't think they together
+
+1494
+00:57:57,359 --> 00:57:59,839
+have any interest to con conspire
+
+1495
+00:57:59,839 --> 00:58:00,480
+together
+
+1496
+00:58:00,480 --> 00:58:02,960
+to kind of hear me right so i say okay
+
+1497
+00:58:02,960 --> 00:58:04,079
+that's good enough
+
+1498
+00:58:04,079 --> 00:58:06,559
+three participants to vote for years
+
+1499
+00:58:06,559 --> 00:58:08,720
+then i can move on and
+
+1500
+00:58:08,720 --> 00:58:11,839
+so this is a kind of compromise
+
+1501
+00:58:11,839 --> 00:58:14,400
+but also reasonable right but if you say
+
+1502
+00:58:14,400 --> 00:58:16,960
+i'm going to randomly select
+
+1503
+00:58:16,960 --> 00:58:20,160
+a few then the situation will be much
+
+1504
+00:58:20,160 --> 00:58:21,520
+more dicey
+
+1505
+00:58:21,520 --> 00:58:23,839
+so just slightly talk about the bitcoin
+
+1506
+00:58:23,839 --> 00:58:24,799
+situation
+
+1507
+00:58:24,799 --> 00:58:27,359
+bitcoin is entirely decentralized and
+
+1508
+00:58:27,359 --> 00:58:27,920
+they say
+
+1509
+00:58:27,920 --> 00:58:31,280
+oh if two-thirds of people
+
+1510
+00:58:31,280 --> 00:58:33,920
+are voting saying your transaction is
+
+1511
+00:58:33,920 --> 00:58:34,480
+hard
+
+1512
+00:58:34,480 --> 00:58:37,839
+it's just an example or
+
+1513
+00:58:37,839 --> 00:58:40,000
+when they start to build new blocks
+
+1514
+00:58:40,000 --> 00:58:41,040
+right so
+
+1515
+00:58:41,040 --> 00:58:44,079
+when the new boss has been granted
+
+1516
+00:58:44,079 --> 00:58:46,160
+has been committed they have this that
+
+1517
+00:58:46,160 --> 00:58:47,839
+kind of longest block
+
+1518
+00:58:47,839 --> 00:58:50,079
+will win now this condition so you have
+
+1519
+00:58:50,079 --> 00:58:51,280
+a block which is
+
+1520
+00:58:51,280 --> 00:58:54,559
+six blocks longer you have a check which
+
+1521
+00:58:54,559 --> 00:58:55,200
+is six
+
+1522
+00:58:55,200 --> 00:58:57,839
+longer than the other chain then all the
+
+1523
+00:58:57,839 --> 00:58:59,119
+previous blocks
+
+1524
+00:58:59,119 --> 00:59:02,160
+will be hardened or will be granted or
+
+1525
+00:59:02,160 --> 00:59:03,040
+be committed
+
+1526
+00:59:03,040 --> 00:59:06,319
+but this would take some time right and
+
+1527
+00:59:06,319 --> 00:59:09,200
+they don't actually identify who are the
+
+1528
+00:59:09,200 --> 00:59:10,079
+people
+
+1529
+00:59:10,079 --> 00:59:13,280
+who can make a block committed so
+
+1530
+00:59:13,280 --> 00:59:15,119
+it's like racing you have to solve a
+
+1531
+00:59:15,119 --> 00:59:16,480
+puzzle and
+
+1532
+00:59:16,480 --> 00:59:18,480
+when a large number of people solve a
+
+1533
+00:59:18,480 --> 00:59:20,160
+puzzle then the block
+
+1534
+00:59:20,160 --> 00:59:23,280
+is kind of hardened and so who can solve
+
+1535
+00:59:23,280 --> 00:59:24,880
+the possible is random
+
+1536
+00:59:24,880 --> 00:59:27,040
+and they say even you say two-thirds or
+
+1537
+00:59:27,040 --> 00:59:27,920
+one-half
+
+1538
+00:59:27,920 --> 00:59:29,760
+the people in this two-third and one not
+
+1539
+00:59:29,760 --> 00:59:31,760
+one-half one-half tool
+
+1540
+00:59:31,760 --> 00:59:33,119
+they are random you don't know whether
+
+1541
+00:59:33,119 --> 00:59:35,040
+they can be trusted or not trusted
+
+1542
+00:59:35,040 --> 00:59:38,960
+so eventually you know uh some powerful
+
+1543
+00:59:38,960 --> 00:59:41,599
+uh kind of resource company they
+
+1544
+00:59:41,599 --> 00:59:43,119
+actually can hack down
+
+1545
+00:59:43,119 --> 00:59:45,359
+a bitcoin because they can own the
+
+1546
+00:59:45,359 --> 00:59:47,680
+majority of gpu in the world
+
+1547
+00:59:47,680 --> 00:59:50,559
+and they can be the majority of this
+
+1548
+00:59:50,559 --> 00:59:51,040
+kind of
+
+1549
+00:59:51,040 --> 00:59:54,079
+voting scenario right so instead of
+
+1550
+00:59:54,079 --> 00:59:55,280
+doing that kind of
+
+1551
+00:59:55,280 --> 00:59:58,400
+so expensive computation
+
+1552
+00:59:58,400 --> 01:00:00,079
+why not just saying oh i'm not going to
+
+1553
+01:00:00,079 --> 01:00:02,000
+send to 1 billion people
+
+1554
+01:00:02,000 --> 01:00:04,079
+i'm going to get these 10 people right
+
+1555
+01:00:04,079 --> 01:00:05,440
+uh these 10 people have
+
+1556
+01:00:05,440 --> 01:00:07,440
+config of interest with each other if
+
+1557
+01:00:07,440 --> 01:00:09,280
+they so or say yes
+
+1558
+01:00:09,280 --> 01:00:11,359
+then that's fine with me so that's
+
+1559
+01:00:11,359 --> 01:00:12,640
+pretty much the idea be
+
+1560
+01:00:12,640 --> 01:00:15,839
+between a centralized decentralized and
+
+1561
+01:00:15,839 --> 01:00:18,160
+decentralized you have this n square
+
+1562
+01:00:18,160 --> 01:00:21,359
+messaging cost and x maxing cost is huge
+
+1563
+01:00:21,359 --> 01:00:22,240
+because you know
+
+1564
+01:00:22,240 --> 01:00:25,119
+i o is much more expensive than cpu or
+
+1565
+01:00:25,119 --> 01:00:26,960
+gpu time computational time
+
+1566
+01:00:26,960 --> 01:00:30,000
+so that would just grind your system to
+
+1567
+01:00:30,000 --> 01:00:31,440
+a halt
+
+1568
+01:00:31,440 --> 01:00:33,520
+again the trade-off will be okay i'm not
+
+1569
+01:00:33,520 --> 01:00:35,200
+going to talk to n
+
+1570
+01:00:35,200 --> 01:00:38,400
+i'm going to talk uh just a small subset
+
+1571
+01:00:38,400 --> 01:00:42,720
+of n so this decentralized
+
+1572
+01:00:42,720 --> 01:00:46,079
+uh picture shows the trade-off between
+
+1573
+01:00:46,079 --> 01:00:46,960
+cost
+
+1574
+01:00:46,960 --> 01:00:50,160
+and the trust between transparency again
+
+1575
+01:00:50,160 --> 01:00:52,400
+and the trust and there are so many
+
+1576
+01:00:52,400 --> 01:00:53,920
+different protocols recently got
+
+1577
+01:00:53,920 --> 01:00:55,040
+proposed
+
+1578
+01:00:55,040 --> 01:00:57,040
+to be able to achieve a very good
+
+1579
+01:00:57,040 --> 01:00:58,960
+compromise between the two
+
+1580
+01:00:58,960 --> 01:01:01,839
+so what do i say good compromise really
+
+1581
+01:01:01,839 --> 01:01:02,799
+depends on
+
+1582
+01:01:02,799 --> 01:01:05,599
+the applications objective okay i can
+
+1583
+01:01:05,599 --> 01:01:06,160
+again
+
+1584
+01:01:06,160 --> 01:01:09,200
+give you a couple examples shortly so
+
+1585
+01:01:09,200 --> 01:01:12,240
+consensus versus transparency
+
+1586
+01:01:12,240 --> 01:01:14,880
+in the privacy situation uh all the
+
+1587
+01:01:14,880 --> 01:01:16,079
+actions like
+
+1588
+01:01:16,079 --> 01:01:19,280
+what can the data allow the consumer
+
+1589
+01:01:19,280 --> 01:01:22,480
+to be uh processed by the by the by the
+
+1590
+01:01:22,480 --> 01:01:23,280
+business
+
+1591
+01:01:23,280 --> 01:01:26,880
+and the contract open up our information
+
+1592
+01:01:26,880 --> 01:01:29,760
+rectification all the information need
+
+1593
+01:01:29,760 --> 01:01:31,680
+to be transparent to the public
+
+1594
+01:01:31,680 --> 01:01:36,079
+so can be audited and using blockchain
+
+1595
+01:01:36,079 --> 01:01:38,960
+to solve the problem first of all let's
+
+1596
+01:01:38,960 --> 01:01:40,319
+quickly identify
+
+1597
+01:01:40,319 --> 01:01:42,799
+the structural blockchain so a chain of
+
+1598
+01:01:42,799 --> 01:01:43,520
+blocks
+
+1599
+01:01:43,520 --> 01:01:46,559
+let's say h is the height
+
+1600
+01:01:46,559 --> 01:01:50,319
+means i have h individual blocks
+
+1601
+01:01:50,319 --> 01:01:53,440
+and every block may consist of
+
+1602
+01:01:53,440 --> 01:01:56,079
+a number of transactions right in the
+
+1603
+01:01:56,079 --> 01:01:57,920
+transaction is in the sense of bank is
+
+1604
+01:01:57,920 --> 01:01:59,599
+straightforward deposit
+
+1605
+01:01:59,599 --> 01:02:02,720
+and maybe withdraw or i look at my
+
+1606
+01:02:02,720 --> 01:02:04,000
+account history
+
+1607
+01:02:04,000 --> 01:02:07,200
+in the case of privacy every transaction
+
+1608
+01:02:07,200 --> 01:02:07,839
+is like
+
+1609
+01:02:07,839 --> 01:02:10,559
+oh user account a user is consent user
+
+1610
+01:02:10,559 --> 01:02:11,039
+b's
+
+1611
+01:02:11,039 --> 01:02:14,480
+revocation and business a
+
+1612
+01:02:14,480 --> 01:02:17,039
+access user b's data right those are the
+
+1613
+01:02:17,039 --> 01:02:18,000
+transactions
+
+1614
+01:02:18,000 --> 01:02:20,720
+upon your data subject will all be
+
+1615
+01:02:20,720 --> 01:02:21,359
+locked
+
+1616
+01:02:21,359 --> 01:02:25,599
+on the blockchain so this is one example
+
+1617
+01:02:25,599 --> 01:02:28,960
+or in one single block of the chain
+
+1618
+01:02:28,960 --> 01:02:31,920
+and the transactions are organized into
+
+1619
+01:02:31,920 --> 01:02:32,240
+a
+
+1620
+01:02:32,240 --> 01:02:35,359
+merkle tree so the characteristic of
+
+1621
+01:02:35,359 --> 01:02:36,640
+merkel trees
+
+1622
+01:02:36,640 --> 01:02:40,079
+if you change one of the leaf
+
+1623
+01:02:40,079 --> 01:02:42,880
+and then the hash value in the merkle
+
+1624
+01:02:42,880 --> 01:02:43,280
+tree
+
+1625
+01:02:43,280 --> 01:02:46,319
+will be modified so why we call this
+
+1626
+01:02:46,319 --> 01:02:47,599
+indelible because
+
+1627
+01:02:47,599 --> 01:02:50,400
+no one can come here to hack your data
+
+1628
+01:02:50,400 --> 01:02:51,680
+if someone did
+
+1629
+01:02:51,680 --> 01:02:53,280
+then the hashing value will be
+
+1630
+01:02:53,280 --> 01:02:55,280
+mismatched and
+
+1631
+01:02:55,280 --> 01:02:58,319
+we can identify and then this is like a
+
+1632
+01:02:58,319 --> 01:03:00,000
+binary tree eventually going up to the
+
+1633
+01:03:00,000 --> 01:03:00,720
+top
+
+1634
+01:03:00,720 --> 01:03:03,760
+and we have this root hash
+
+1635
+01:03:03,760 --> 01:03:05,359
+which is usually utilized to
+
+1636
+01:03:05,359 --> 01:03:06,799
+authenticate this
+
+1637
+01:03:06,799 --> 01:03:10,000
+block is not contaminated then
+
+1638
+01:03:10,000 --> 01:03:14,079
+this block has a hash index
+
+1639
+01:03:14,079 --> 01:03:17,760
+to the previous hash block so when we
+
+1640
+01:03:17,760 --> 01:03:20,720
+in in the index altogether you can see
+
+1641
+01:03:20,720 --> 01:03:22,559
+the blockchain has a number of
+
+1642
+01:03:22,559 --> 01:03:25,119
+blocks they are linked together with
+
+1643
+01:03:25,119 --> 01:03:26,160
+this kind of
+
+1644
+01:03:26,160 --> 01:03:30,160
+previous uh previous head address and
+
+1645
+01:03:30,160 --> 01:03:33,599
+every block has a number of transactions
+
+1646
+01:03:33,599 --> 01:03:36,400
+organized in this merkle tree now it's
+
+1647
+01:03:36,400 --> 01:03:38,559
+very evident why you only have a pointer
+
+1648
+01:03:38,559 --> 01:03:40,000
+to the previous block
+
+1649
+01:03:40,000 --> 01:03:41,599
+because you have no idea when you
+
+1650
+01:03:41,599 --> 01:03:44,160
+establish a plot you have no idea when
+
+1651
+01:03:44,160 --> 01:03:45,200
+the next ball will be
+
+1652
+01:03:45,200 --> 01:03:48,319
+will be established
+
+1653
+01:03:48,400 --> 01:03:51,599
+so key requirements here i'm not going
+
+1654
+01:03:51,599 --> 01:03:52,400
+to repeat
+
+1655
+01:03:52,400 --> 01:03:54,480
+transparency and the privacy and
+
+1656
+01:03:54,480 --> 01:03:55,599
+probability
+
+1657
+01:03:55,599 --> 01:03:58,559
+so now let's let's just step back to see
+
+1658
+01:03:58,559 --> 01:04:00,000
+how the blockchain
+
+1659
+01:04:00,000 --> 01:04:02,960
+can be utilized efficiently because i
+
+1660
+01:04:02,960 --> 01:04:04,799
+talk about bitcoin and you know bitcoin
+
+1661
+01:04:04,799 --> 01:04:06,000
+very well
+
+1662
+01:04:06,000 --> 01:04:08,880
+it's the problem is it's latency right
+
+1663
+01:04:08,880 --> 01:04:10,839
+latency of bitcoin means
+
+1664
+01:04:10,839 --> 01:04:14,000
+i need to trust a transaction
+
+1665
+01:04:14,000 --> 01:04:17,280
+but i need to wait for about half an
+
+1666
+01:04:17,280 --> 01:04:18,000
+hour
+
+1667
+01:04:18,000 --> 01:04:21,920
+because unless the transaction
+
+1668
+01:04:21,920 --> 01:04:24,079
+the the block which the transaction
+
+1669
+01:04:24,079 --> 01:04:25,039
+resides
+
+1670
+01:04:25,039 --> 01:04:28,480
+get committed and in addition
+
+1671
+01:04:28,480 --> 01:04:31,119
+that particular block resides in a
+
+1672
+01:04:31,119 --> 01:04:32,000
+blockchain
+
+1673
+01:04:32,000 --> 01:04:35,280
+which has a length six more blocks than
+
+1674
+01:04:35,280 --> 01:04:37,359
+the second longest one then i would say
+
+1675
+01:04:37,359 --> 01:04:39,039
+okay my transaction
+
+1676
+01:04:39,039 --> 01:04:41,599
+has been hardened and this will take
+
+1677
+01:04:41,599 --> 01:04:42,720
+half an hour
+
+1678
+01:04:42,720 --> 01:04:44,880
+and this is a pretty long time if you
+
+1679
+01:04:44,880 --> 01:04:47,440
+want to do this half an hour transaction
+
+1680
+01:04:47,440 --> 01:04:50,000
+then payment is impossible you do
+
+1681
+01:04:50,000 --> 01:04:51,119
+payment you go to
+
+1682
+01:04:51,119 --> 01:04:53,280
+stock box you say i'm going to use use
+
+1683
+01:04:53,280 --> 01:04:54,960
+blockchain to pay my bill
+
+1684
+01:04:54,960 --> 01:04:58,079
+the commit time is uh six hours so i
+
+1685
+01:04:58,079 --> 01:04:59,680
+think starbucks wouldn't accept your
+
+1686
+01:04:59,680 --> 01:05:00,319
+payment
+
+1687
+01:05:00,319 --> 01:05:03,359
+so like privacy or like
+
+1688
+01:05:03,359 --> 01:05:06,480
+uh currency if you want to use this kind
+
+1689
+01:05:06,480 --> 01:05:07,200
+of
+
+1690
+01:05:07,200 --> 01:05:10,319
+bitcoin methodologies something has to
+
+1691
+01:05:10,319 --> 01:05:11,200
+change
+
+1692
+01:05:11,200 --> 01:05:14,079
+and this is the way we did it so before
+
+1693
+01:05:14,079 --> 01:05:15,920
+we get into detail let's look at this
+
+1694
+01:05:15,920 --> 01:05:16,960
+eric brewer's
+
+1695
+01:05:16,960 --> 01:05:20,400
+cap theorem cap cap c stands for
+
+1696
+01:05:20,400 --> 01:05:21,599
+consistency
+
+1697
+01:05:21,599 --> 01:05:24,799
+so data viewed by different parties
+
+1698
+01:05:24,799 --> 01:05:27,520
+need to be consistent in the same order
+
+1699
+01:05:27,520 --> 01:05:29,760
+right you say i withdraw then i
+
+1700
+01:05:29,760 --> 01:05:32,319
+i deposit other people look at the
+
+1701
+01:05:32,319 --> 01:05:33,760
+record they want to see
+
+1702
+01:05:33,760 --> 01:05:35,359
+we saw deposit they want to see the
+
+1703
+01:05:35,359 --> 01:05:36,319
+other way then you have this
+
+1704
+01:05:36,319 --> 01:05:37,680
+inconsistent problem
+
+1705
+01:05:37,680 --> 01:05:40,000
+availability is another one you want the
+
+1706
+01:05:40,000 --> 01:05:41,359
+system to be up
+
+1707
+01:05:41,359 --> 01:05:43,520
+all the time so this is like the cell
+
+1708
+01:05:43,520 --> 01:05:44,720
+phone networks
+
+1709
+01:05:44,720 --> 01:05:46,880
+so if my if i shut down my cell phone
+
+1710
+01:05:46,880 --> 01:05:49,119
+now it shouldn't affect your
+
+1711
+01:05:49,119 --> 01:05:52,400
+your cell phone right it's very easy to
+
+1712
+01:05:52,400 --> 01:05:54,079
+understand because you want your cell
+
+1713
+01:05:54,079 --> 01:05:55,440
+phone to be available
+
+1714
+01:05:55,440 --> 01:05:57,440
+not depending on other people's cell
+
+1715
+01:05:57,440 --> 01:06:00,400
+phones and the partition tolerance
+
+1716
+01:06:00,400 --> 01:06:02,559
+and in the banking system partition
+
+1717
+01:06:02,559 --> 01:06:04,400
+tolerance is not allowed
+
+1718
+01:06:04,400 --> 01:06:07,520
+but in our cell phone scenario general
+
+1719
+01:06:07,520 --> 01:06:08,720
+network scenario
+
+1720
+01:06:08,720 --> 01:06:11,440
+internet partition tolerance should be
+
+1721
+01:06:11,440 --> 01:06:12,160
+allowed
+
+1722
+01:06:12,160 --> 01:06:14,960
+otherwise if my laptop is done your
+
+1723
+01:06:14,960 --> 01:06:16,000
+laptop needs to be
+
+1724
+01:06:16,000 --> 01:06:18,799
+in a standby mode that's not acceptable
+
+1725
+01:06:18,799 --> 01:06:19,520
+so
+
+1726
+01:06:19,520 --> 01:06:22,160
+if we look at this picture then we say
+
+1727
+01:06:22,160 --> 01:06:22,640
+well
+
+1728
+01:06:22,640 --> 01:06:24,480
+in the internet era if we want to do a
+
+1729
+01:06:24,480 --> 01:06:26,079
+distribute system
+
+1730
+01:06:26,079 --> 01:06:28,799
+this is one property we cannot sacrifice
+
+1731
+01:06:28,799 --> 01:06:30,240
+right which is partition
+
+1732
+01:06:30,240 --> 01:06:33,359
+tolerant okay we have to safeguarding
+
+1733
+01:06:33,359 --> 01:06:34,160
+this
+
+1734
+01:06:34,160 --> 01:06:38,559
+uh partition torrent property which is p
+
+1735
+01:06:38,559 --> 01:06:40,480
+but now since every poor theory is
+
+1736
+01:06:40,480 --> 01:06:42,480
+saying you can only
+
+1737
+01:06:42,480 --> 01:06:44,799
+ensure two out of three properties can
+
+1738
+01:06:44,799 --> 01:06:46,319
+be guaranteed
+
+1739
+01:06:46,319 --> 01:06:49,359
+at a simultaneous at one one time so
+
+1740
+01:06:49,359 --> 01:06:50,720
+either you choose
+
+1741
+01:06:50,720 --> 01:06:54,559
+uh cp or you choose
+
+1742
+01:06:54,559 --> 01:06:57,839
+ca a pa pa or
+
+1743
+01:06:57,839 --> 01:07:02,000
+only two other three or ca the the banks
+
+1744
+01:07:02,000 --> 01:07:04,960
+choose ca right they don't care about
+
+1745
+01:07:04,960 --> 01:07:06,240
+partition tolerance
+
+1746
+01:07:06,240 --> 01:07:08,640
+if there's a partition they shut down
+
+1747
+01:07:08,640 --> 01:07:09,920
+the system right away
+
+1748
+01:07:09,920 --> 01:07:12,880
+they guarantee consistency and when the
+
+1749
+01:07:12,880 --> 01:07:14,319
+system is consistent
+
+1750
+01:07:14,319 --> 01:07:17,520
+they open up they they make sure it's a
+
+1751
+01:07:17,520 --> 01:07:18,400
+scalable
+
+1752
+01:07:18,400 --> 01:07:22,400
+available so decentralized system as i
+
+1753
+01:07:22,400 --> 01:07:23,520
+just summarized
+
+1754
+01:07:23,520 --> 01:07:26,559
+we need to provide people just either cp
+
+1755
+01:07:26,559 --> 01:07:29,760
+or ap for the sake of bitcoin
+
+1756
+01:07:29,760 --> 01:07:33,599
+they provide this a and amp
+
+1757
+01:07:33,599 --> 01:07:35,760
+because bitcoin want to be available all
+
+1758
+01:07:35,760 --> 01:07:36,720
+the time
+
+1759
+01:07:36,720 --> 01:07:39,680
+and they want to also allow a network to
+
+1760
+01:07:39,680 --> 01:07:40,799
+be partitioned
+
+1761
+01:07:40,799 --> 01:07:44,079
+but they sacrifice consistency as i
+
+1762
+01:07:44,079 --> 01:07:45,200
+again just mentioned
+
+1763
+01:07:45,200 --> 01:07:48,559
+we think about six hours or half an hour
+
+1764
+01:07:48,559 --> 01:07:50,880
+depending on the situation your
+
+1765
+01:07:50,880 --> 01:07:51,920
+transaction
+
+1766
+01:07:51,920 --> 01:07:54,559
+was in an inconsistent state so double
+
+1767
+01:07:54,559 --> 01:07:55,520
+spending
+
+1768
+01:07:55,520 --> 01:07:59,280
+could happen and uh
+
+1769
+01:07:59,280 --> 01:08:02,799
+summarize bitcoins problem one is very
+
+1770
+01:08:02,799 --> 01:08:04,160
+expensive to maintain
+
+1771
+01:08:04,160 --> 01:08:06,720
+such a blockchain and one billion
+
+1772
+01:08:06,720 --> 01:08:07,440
+dollars
+
+1773
+01:08:07,440 --> 01:08:10,640
+a year and the lack of privacy why
+
+1774
+01:08:10,640 --> 01:08:13,520
+because you put data on the chat so now
+
+1775
+01:08:13,520 --> 01:08:15,119
+you say edward are you kidding
+
+1776
+01:08:15,119 --> 01:08:16,799
+you want to put medical data on the
+
+1777
+01:08:16,799 --> 01:08:19,679
+chain so you want to put medical data in
+
+1778
+01:08:19,679 --> 01:08:20,799
+the public
+
+1779
+01:08:20,799 --> 01:08:22,560
+so i will come back to address the issue
+
+1780
+01:08:22,560 --> 01:08:24,560
+shortly and
+
+1781
+01:08:24,560 --> 01:08:28,640
+use a pos proof of work protocol
+
+1782
+01:08:28,640 --> 01:08:31,279
+means you want to solve a parcel and
+
+1783
+01:08:31,279 --> 01:08:32,080
+nuance
+
+1784
+01:08:32,080 --> 01:08:35,198
+it's very expensive and finally low
+
+1785
+01:08:35,198 --> 01:08:35,839
+throughput
+
+1786
+01:08:35,839 --> 01:08:38,319
+right transaction per second for bitcoin
+
+1787
+01:08:38,319 --> 01:08:40,319
+is only seven transactions per second
+
+1788
+01:08:40,319 --> 01:08:44,560
+and ethereum is 15. not much better
+
+1789
+01:08:44,560 --> 01:08:46,799
+so we if we utilize that to be a payment
+
+1790
+01:08:46,799 --> 01:08:47,839
+that's impossible
+
+1791
+01:08:47,839 --> 01:08:50,719
+and if we want to utilize for security
+
+1792
+01:08:50,719 --> 01:08:52,560
+privacy preservation
+
+1793
+01:08:52,560 --> 01:08:55,120
+that's kind of also not very convenient
+
+1794
+01:08:55,120 --> 01:08:55,600
+but
+
+1795
+01:08:55,600 --> 01:08:58,158
+we can solve the problem so banking i
+
+1796
+01:08:58,158 --> 01:08:59,520
+talked about the centralized system
+
+1797
+01:08:59,520 --> 01:09:01,198
+using ca
+
+1798
+01:09:01,198 --> 01:09:03,120
+and we also already discussed the
+
+1799
+01:09:03,120 --> 01:09:04,479
+trade-off between
+
+1800
+01:09:04,479 --> 01:09:07,120
+centralized and decentralized consensus
+
+1801
+01:09:07,120 --> 01:09:08,319
+protocols
+
+1802
+01:09:08,319 --> 01:09:11,120
+and then let's look at satellite how can
+
+1803
+01:09:11,120 --> 01:09:11,600
+you
+
+1804
+01:09:11,600 --> 01:09:14,158
+implement a system which is at the same
+
+1805
+01:09:14,158 --> 01:09:14,799
+time
+
+1806
+01:09:14,799 --> 01:09:18,000
+can ensure this uh ap ap
+
+1807
+01:09:18,000 --> 01:09:21,120
+kind of property also can insure
+
+1808
+01:09:21,120 --> 01:09:24,158
+uh pc my pc and pa
+
+1809
+01:09:24,158 --> 01:09:26,479
+at the same time so pc and pa if you
+
+1810
+01:09:26,479 --> 01:09:27,839
+union a tube
+
+1811
+01:09:27,839 --> 01:09:31,279
+you can become pca the trick here is
+
+1812
+01:09:31,279 --> 01:09:33,120
+we want to be able to achieve short
+
+1813
+01:09:33,120 --> 01:09:34,319
+latency like
+
+1814
+01:09:34,319 --> 01:09:36,719
+one to two minutes and the super need to
+
+1815
+01:09:36,719 --> 01:09:38,238
+be extremely high
+
+1816
+01:09:38,238 --> 01:09:40,719
+and we are arguing this is actually
+
+1817
+01:09:40,719 --> 01:09:41,439
+argued by
+
+1818
+01:09:41,439 --> 01:09:44,880
+professor uh measures professor measures
+
+1819
+01:09:44,880 --> 01:09:46,319
+by the way
+
+1820
+01:09:46,319 --> 01:09:49,359
+he was one of the founders of uh uh
+
+1821
+01:09:49,359 --> 01:09:52,479
+stellar a standard or the ipo
+
+1822
+01:09:52,479 --> 01:09:55,520
+uh is maybe number eight the
+
+1823
+01:09:55,520 --> 01:09:57,440
+public published company probably ibo
+
+1824
+01:09:57,440 --> 01:09:59,760
+company on blockchains
+
+1825
+01:09:59,760 --> 01:10:03,040
+and uh he he and us had
+
+1826
+01:10:03,040 --> 01:10:04,880
+many many interesting debates so
+
+1827
+01:10:04,880 --> 01:10:06,320
+basically i say okay
+
+1828
+01:10:06,320 --> 01:10:08,800
+let's have this two-layer ball chain so
+
+1829
+01:10:08,800 --> 01:10:10,080
+you have men chen
+
+1830
+01:10:10,080 --> 01:10:13,040
+insures ap properties in the worst case
+
+1831
+01:10:13,040 --> 01:10:13,679
+main change
+
+1832
+01:10:13,679 --> 01:10:16,880
+ethereum it's in the public domain but
+
+1833
+01:10:16,880 --> 01:10:19,600
+the side chain will be on the ca using
+
+1834
+01:10:19,600 --> 01:10:20,719
+ca property
+
+1835
+01:10:20,719 --> 01:10:23,840
+right we are using uh cp property
+
+1836
+01:10:23,840 --> 01:10:26,880
+is also okay so the side chain will be
+
+1837
+01:10:26,880 --> 01:10:29,920
+very very quick but the mention will be
+
+1838
+01:10:29,920 --> 01:10:31,600
+be very slow
+
+1839
+01:10:31,600 --> 01:10:34,719
+so this is the picture or sidechain
+
+1840
+01:10:34,719 --> 01:10:36,640
+let's say even using cs system
+
+1841
+01:10:36,640 --> 01:10:39,280
+the mention is using this this uh ap
+
+1842
+01:10:39,280 --> 01:10:40,080
+system
+
+1843
+01:10:40,080 --> 01:10:43,040
+we organize them into three layers the
+
+1844
+01:10:43,040 --> 01:10:44,560
+first layer is a public chain
+
+1845
+01:10:44,560 --> 01:10:48,000
+with very slow response time
+
+1846
+01:10:48,000 --> 01:10:51,199
+and high latency and the second layer
+
+1847
+01:10:51,199 --> 01:10:53,760
+with very fast execution time low
+
+1848
+01:10:53,760 --> 01:10:54,560
+latency
+
+1849
+01:10:54,560 --> 01:10:57,199
+and high support the method to improve
+
+1850
+01:10:57,199 --> 01:10:58,320
+super is like
+
+1851
+01:10:58,320 --> 01:11:00,480
+david measure said you just replicate
+
+1852
+01:11:00,480 --> 01:11:02,480
+your cpu right you just improve
+
+1853
+01:11:02,480 --> 01:11:05,120
+just duplicate your local system and i
+
+1854
+01:11:05,120 --> 01:11:06,320
+only care about
+
+1855
+01:11:06,320 --> 01:11:08,880
+latency you want to guarantee latency
+
+1856
+01:11:08,880 --> 01:11:10,800
+then when you want to guarantee super
+
+1857
+01:11:10,800 --> 01:11:12,560
+if you have sufficient business you just
+
+1858
+01:11:12,560 --> 01:11:14,159
+replicate your system
+
+1859
+01:11:14,159 --> 01:11:16,400
+so that's a claim by professor david
+
+1860
+01:11:16,400 --> 01:11:18,560
+measures and we have to agree with him
+
+1861
+01:11:18,560 --> 01:11:20,320
+and finally you have this smart contract
+
+1862
+01:11:20,320 --> 01:11:22,480
+which is the way to
+
+1863
+01:11:22,480 --> 01:11:24,880
+not to put data on the blockchain but
+
+1864
+01:11:24,880 --> 01:11:26,000
+you put contract
+
+1865
+01:11:26,000 --> 01:11:29,040
+on the blockchain even more beautifully
+
+1866
+01:11:29,040 --> 01:11:32,480
+the contract is in nature language
+
+1867
+01:11:32,480 --> 01:11:35,760
+so if you say i put uh something
+
+1868
+01:11:35,760 --> 01:11:37,199
+on the blockchain which is my private
+
+1869
+01:11:37,199 --> 01:11:39,040
+data is is really bad
+
+1870
+01:11:39,040 --> 01:11:41,600
+if i put a digital contract which is a
+
+1871
+01:11:41,600 --> 01:11:42,719
+piece of code
+
+1872
+01:11:42,719 --> 01:11:45,440
+on the blockchain in fact we will be
+
+1873
+01:11:45,440 --> 01:11:47,520
+eventually put a piece of code
+
+1874
+01:11:47,520 --> 01:11:49,600
+on the blockchain let's say i want to
+
+1875
+01:11:49,600 --> 01:11:51,440
+access your data
+
+1876
+01:11:51,440 --> 01:11:53,360
+and this is a agreement in nature
+
+1877
+01:11:53,360 --> 01:11:55,040
+language but
+
+1878
+01:11:55,040 --> 01:11:57,520
+we need to be able to convert this
+
+1879
+01:11:57,520 --> 01:11:59,199
+nature language statement
+
+1880
+01:11:59,199 --> 01:12:02,560
+to a piece of restful api or sql
+
+1881
+01:12:02,560 --> 01:12:03,840
+statement let's say
+
+1882
+01:12:03,840 --> 01:12:07,120
+fetch something from
+
+1883
+01:12:07,120 --> 01:12:10,560
+relational database k with attribute
+
+1884
+01:12:10,560 --> 01:12:11,280
+equal to what
+
+1885
+01:12:11,280 --> 01:12:14,159
+right so with this particular piece of
+
+1886
+01:12:14,159 --> 01:12:14,800
+code
+
+1887
+01:12:14,800 --> 01:12:17,920
+but already approved then certain people
+
+1888
+01:12:17,920 --> 01:12:18,480
+can
+
+1889
+01:12:18,480 --> 01:12:21,360
+just execute the code to get your data
+
+1890
+01:12:21,360 --> 01:12:22,640
+so smart contract
+
+1891
+01:12:22,640 --> 01:12:25,600
+is a very important piece of information
+
+1892
+01:12:25,600 --> 01:12:26,560
+sitting here
+
+1893
+01:12:26,560 --> 01:12:28,800
+for two reasons one through nature
+
+1894
+01:12:28,800 --> 01:12:29,600
+language
+
+1895
+01:12:29,600 --> 01:12:32,080
+user can understand what they are up to
+
+1896
+01:12:32,080 --> 01:12:33,520
+then we convert
+
+1897
+01:12:33,520 --> 01:12:36,159
+the piece of information into a piece of
+
+1898
+01:12:36,159 --> 01:12:36,800
+code
+
+1899
+01:12:36,800 --> 01:12:39,120
+and this conversion i pretty much
+
+1900
+01:12:39,120 --> 01:12:39,920
+covered
+
+1901
+01:12:39,920 --> 01:12:42,400
+when i talked about oval right we had a
+
+1902
+01:12:42,400 --> 01:12:45,040
+lecture about this
+
+1903
+01:12:45,040 --> 01:12:48,159
+human voice speech interface
+
+1904
+01:12:48,159 --> 01:12:51,120
+and in that i talked about in oval and
+
+1905
+01:12:51,120 --> 01:12:53,040
+we need to do semantic grounding
+
+1906
+01:12:53,040 --> 01:12:55,360
+simulink grounding in principle is very
+
+1907
+01:12:55,360 --> 01:12:56,239
+challenging
+
+1908
+01:12:56,239 --> 01:12:58,400
+but if you want to just go on into
+
+1909
+01:12:58,400 --> 01:12:59,280
+programs
+
+1910
+01:12:59,280 --> 01:13:02,239
+it's much easier because programs only
+
+1911
+01:13:02,239 --> 01:13:02,800
+have
+
+1912
+01:13:02,800 --> 01:13:05,199
+a small number of instructions and also
+
+1913
+01:13:05,199 --> 01:13:06,480
+they are not ambiguous
+
+1914
+01:13:06,480 --> 01:13:08,880
+right in nature language a word can mean
+
+1915
+01:13:08,880 --> 01:13:11,199
+multiple meanings you have polygamy or
+
+1916
+01:13:11,199 --> 01:13:14,320
+other situations but in code when you
+
+1917
+01:13:14,320 --> 01:13:14,640
+say
+
+1918
+01:13:14,640 --> 01:13:16,880
+right it's right when you say move it's
+
+1919
+01:13:16,880 --> 01:13:18,400
+smooth so
+
+1920
+01:13:18,400 --> 01:13:21,600
+smart contract is the good solution
+
+1921
+01:13:21,600 --> 01:13:24,239
+so smart contract summarizes it it's a
+
+1922
+01:13:24,239 --> 01:13:25,840
+piece of nature language
+
+1923
+01:13:25,840 --> 01:13:28,880
+construct to convert to a code and the
+
+1924
+01:13:28,880 --> 01:13:30,159
+data is offline
+
+1925
+01:13:30,159 --> 01:13:33,040
+retrieved by approved code and the
+
+1926
+01:13:33,040 --> 01:13:34,159
+contract validation
+
+1927
+01:13:34,159 --> 01:13:36,159
+relocation execution will generate
+
+1928
+01:13:36,159 --> 01:13:38,320
+transactions and these transactions
+
+1929
+01:13:38,320 --> 01:13:41,120
+will be written onto the blockchain so
+
+1930
+01:13:41,120 --> 01:13:42,960
+when you look at a blockchain you you do
+
+1931
+01:13:42,960 --> 01:13:43,840
+see oh
+
+1932
+01:13:43,840 --> 01:13:45,840
+i have a piece of code executed but the
+
+1933
+01:13:45,840 --> 01:13:47,360
+code number
+
+1934
+01:13:47,360 --> 01:13:50,880
+is 722 you have this id and
+
+1935
+01:13:50,880 --> 01:13:53,520
+then you have transactions to form a
+
+1936
+01:13:53,520 --> 01:13:54,320
+tree
+
+1937
+01:13:54,320 --> 01:13:58,080
+and the root of the merkle tree
+
+1938
+01:13:58,080 --> 01:14:00,560
+on the subchain right we say sub channel
+
+1939
+01:14:00,560 --> 01:14:01,760
+will be very efficient
+
+1940
+01:14:01,760 --> 01:14:04,159
+but you say okay i make the subject very
+
+1941
+01:14:04,159 --> 01:14:05,280
+efficient
+
+1942
+01:14:05,280 --> 01:14:08,880
+but the root of the markov merkle tree
+
+1943
+01:14:08,880 --> 01:14:12,480
+i lock it to the main chain so when i
+
+1944
+01:14:12,480 --> 01:14:15,040
+lock the secondary route to the main
+
+1945
+01:14:15,040 --> 01:14:15,760
+chain
+
+1946
+01:14:15,760 --> 01:14:18,560
+the process will suffer from low latency
+
+1947
+01:14:18,560 --> 01:14:18,960
+but
+
+1948
+01:14:18,960 --> 01:14:22,719
+it's okay right because i can
+
+1949
+01:14:22,719 --> 01:14:25,920
+locally guarantee the transaction has
+
+1950
+01:14:25,920 --> 01:14:27,199
+been hardened
+
+1951
+01:14:27,199 --> 01:14:30,239
+but probability can be done
+
+1952
+01:14:30,239 --> 01:14:32,800
+can be guaranteed maybe half an hour
+
+1953
+01:14:32,800 --> 01:14:33,920
+later
+
+1954
+01:14:33,920 --> 01:14:36,960
+so this is acceptable acceptable to the
+
+1955
+01:14:36,960 --> 01:14:38,480
+private situation because even i want to
+
+1956
+01:14:38,480 --> 01:14:38,880
+sue
+
+1957
+01:14:38,880 --> 01:14:42,000
+a company i cannot fire a lawsuit within
+
+1958
+01:14:42,000 --> 01:14:45,280
+uh within half an hour right so
+
+1959
+01:14:45,280 --> 01:14:47,920
+i do have half an hour probably if you
+
+1960
+01:14:47,920 --> 01:14:48,320
+want to
+
+1961
+01:14:48,320 --> 01:14:50,000
+contact a lawyer to find a lawsuit that
+
+1962
+01:14:50,000 --> 01:14:51,520
+would probably take a few days
+
+1963
+01:14:51,520 --> 01:14:54,800
+so this hierarchical architecture
+
+1964
+01:14:54,800 --> 01:14:57,040
+is just beautiful you can accomplish the
+
+1965
+01:14:57,040 --> 01:14:58,159
+objectives
+
+1966
+01:14:58,159 --> 01:15:01,199
+to summarize we have this uh
+
+1967
+01:15:01,199 --> 01:15:04,880
+on a sidechain we have cash blocks
+
+1968
+01:15:04,880 --> 01:15:07,520
+and they got they got linked together
+
+1969
+01:15:07,520 --> 01:15:09,040
+and they enjoy the performance of
+
+1970
+01:15:09,040 --> 01:15:10,480
+high throughput because you get
+
+1971
+01:15:10,480 --> 01:15:13,199
+replicated systems and more importantly
+
+1972
+01:15:13,199 --> 01:15:15,760
+low latency and the privacy is
+
+1973
+01:15:15,760 --> 01:15:18,000
+safeguarded because we don't store data
+
+1974
+01:15:18,000 --> 01:15:18,960
+on the blockchain
+
+1975
+01:15:18,960 --> 01:15:22,719
+we only store the id of the code
+
+1976
+01:15:22,719 --> 01:15:24,320
+on the blockchain data is in the
+
+1977
+01:15:24,320 --> 01:15:26,560
+database access through
+
+1978
+01:15:26,560 --> 01:15:30,080
+the code and then we hash the root
+
+1979
+01:15:30,080 --> 01:15:34,239
+of the local merkle tree to the global
+
+1980
+01:15:34,239 --> 01:15:38,320
+blockchain so when the public auditing
+
+1981
+01:15:38,320 --> 01:15:40,880
+when the public audit is conducted they
+
+1982
+01:15:40,880 --> 01:15:41,920
+can go back to the
+
+1983
+01:15:41,920 --> 01:15:45,920
+global uh global blockchain to verify
+
+1984
+01:15:45,920 --> 01:15:49,120
+the local mercury hash value is not
+
+1985
+01:15:49,120 --> 01:15:49,920
+altered
+
+1986
+01:15:49,920 --> 01:15:53,120
+right this ensure often
+
+1987
+01:15:53,120 --> 01:15:56,320
+authenticality so
+
+1988
+01:15:56,320 --> 01:15:58,480
+this picture just to complete when we
+
+1989
+01:15:58,480 --> 01:15:59,520
+implement system
+
+1990
+01:15:59,520 --> 01:16:01,760
+we still need to have a reasonable user
+
+1991
+01:16:01,760 --> 01:16:02,880
+interface
+
+1992
+01:16:02,880 --> 01:16:04,960
+if you like to know the details you can
+
+1993
+01:16:04,960 --> 01:16:06,239
+look into our
+
+1994
+01:16:06,239 --> 01:16:09,440
+publication available on the internet
+
+1995
+01:16:09,440 --> 01:16:12,960
+let me get into slightly more details
+
+1996
+01:16:12,960 --> 01:16:14,400
+on the left-hand side right you have
+
+1997
+01:16:14,400 --> 01:16:16,320
+interface here
+
+1998
+01:16:16,320 --> 01:16:19,600
+both data consumer data provider can
+
+1999
+01:16:19,600 --> 01:16:22,560
+access through the web and the data
+
+2000
+01:16:22,560 --> 01:16:24,080
+provider let's say i'm a
+
+2001
+01:16:24,080 --> 01:16:26,880
+patient i can say okay i have a data my
+
+2002
+01:16:26,880 --> 01:16:27,440
+x-ray
+
+2003
+01:16:27,440 --> 01:16:30,320
+i'm willing to sell my data at the price
+
+2004
+01:16:30,320 --> 01:16:31,679
+and data consumer
+
+2005
+01:16:31,679 --> 01:16:32,960
+comes in to say this may be a
+
+2006
+01:16:32,960 --> 01:16:34,880
+pharmaceutical company saying i like to
+
+2007
+01:16:34,880 --> 01:16:36,000
+be able to beat
+
+2008
+01:16:36,000 --> 01:16:38,560
+uh 20 pieces of data in a particular
+
+2009
+01:16:38,560 --> 01:16:39,360
+situation
+
+2010
+01:16:39,360 --> 01:16:42,080
+or i say i want to do irb i want to do
+
+2011
+01:16:42,080 --> 01:16:43,040
+kind of
+
+2012
+01:16:43,040 --> 01:16:46,159
+draw discovery or or vaccine tests i
+
+2013
+01:16:46,159 --> 01:16:47,120
+need to recall
+
+2014
+01:16:47,120 --> 01:16:49,840
+10 10 million people or 10 000 people i
+
+2015
+01:16:49,840 --> 01:16:51,199
+can go to the system and say
+
+2016
+01:16:51,199 --> 01:16:54,719
+who willing to give me your vaccine
+
+2017
+01:16:54,719 --> 01:16:57,600
+drug interaction or side effect data so
+
+2018
+01:16:57,600 --> 01:17:00,080
+then this agreement can be conducted
+
+2019
+01:17:00,080 --> 01:17:02,719
+through the web application so once the
+
+2020
+01:17:02,719 --> 01:17:04,080
+the consensus have been
+
+2021
+01:17:04,080 --> 01:17:06,480
+performed then the data will be stored
+
+2022
+01:17:06,480 --> 01:17:07,120
+right
+
+2023
+01:17:07,120 --> 01:17:09,920
+into the database at the same time the
+
+2024
+01:17:09,920 --> 01:17:10,719
+blockchain
+
+2025
+01:17:10,719 --> 01:17:13,280
+will be also locked on the blockchain
+
+2026
+01:17:13,280 --> 01:17:15,280
+and then when the audit comes in
+
+2027
+01:17:15,280 --> 01:17:18,000
+is the bottom is audit audit comes in
+
+2028
+01:17:18,000 --> 01:17:20,400
+you can look into the local database
+
+2029
+01:17:20,400 --> 01:17:21,920
+which caches the blockchain's
+
+2030
+01:17:21,920 --> 01:17:23,920
+information and right away i can say
+
+2031
+01:17:23,920 --> 01:17:24,480
+well
+
+2032
+01:17:24,480 --> 01:17:26,159
+uh the company already fulfill your
+
+2033
+01:17:26,159 --> 01:17:27,840
+requirement and this is the information
+
+2034
+01:17:27,840 --> 01:17:29,120
+i can give you right away
+
+2035
+01:17:29,120 --> 01:17:31,760
+the response time for this ats cache can
+
+2036
+01:17:31,760 --> 01:17:33,199
+be just within seconds
+
+2037
+01:17:33,199 --> 01:17:35,280
+then they say no i don't trust you i
+
+2038
+01:17:35,280 --> 01:17:37,280
+want to go to the core to verify
+
+2039
+01:17:37,280 --> 01:17:39,280
+then the core will not access the
+
+2040
+01:17:39,280 --> 01:17:41,280
+company's private data here storing the
+
+2041
+01:17:41,280 --> 01:17:42,000
+cache
+
+2042
+01:17:42,000 --> 01:17:44,880
+the core will go to zotero which is a
+
+2043
+01:17:44,880 --> 01:17:46,400
+transparent public
+
+2044
+01:17:46,400 --> 01:17:49,280
+ledger and the court or auditor can go
+
+2045
+01:17:49,280 --> 01:17:50,000
+there
+
+2046
+01:17:50,000 --> 01:17:52,960
+to access the all the transaction
+
+2047
+01:17:52,960 --> 01:17:55,360
+transactional information
+
+2048
+01:17:55,360 --> 01:17:58,159
+and this is a picture thanks to
+
+2049
+01:17:58,159 --> 01:18:00,239
+professor david measures
+
+2050
+01:18:00,239 --> 01:18:03,679
+monica and the shivaya in ntu and we try
+
+2051
+01:18:03,679 --> 01:18:04,400
+many different
+
+2052
+01:18:04,400 --> 01:18:07,280
+local protocols and eventually we
+
+2053
+01:18:07,280 --> 01:18:08,960
+identify stellar
+
+2054
+01:18:08,960 --> 01:18:12,320
+and tender mean those are two
+
+2055
+01:18:12,320 --> 01:18:16,560
+good protocols we can employ and uh
+
+2056
+01:18:16,560 --> 01:18:18,800
+there's a very strong argument from
+
+2057
+01:18:18,800 --> 01:18:20,320
+professor david measures
+
+2058
+01:18:20,320 --> 01:18:23,520
+he's a no-nonsense guy he said why do
+
+2059
+01:18:23,520 --> 01:18:24,640
+you guys want to use
+
+2060
+01:18:24,640 --> 01:18:26,719
+blockchain because i can see this entire
+
+2061
+01:18:26,719 --> 01:18:29,520
+system can be implemented by a log only
+
+2062
+01:18:29,520 --> 01:18:32,159
+method it's just log right you just
+
+2063
+01:18:32,159 --> 01:18:32,960
+logging
+
+2064
+01:18:32,960 --> 01:18:37,360
+why do you need to ensure consistency
+
+2065
+01:18:37,360 --> 01:18:40,239
+in this whole thing this is not payment
+
+2066
+01:18:40,239 --> 01:18:40,560
+and
+
+2067
+01:18:40,560 --> 01:18:42,800
+we do have a very good counter argument
+
+2068
+01:18:42,800 --> 01:18:44,880
+that counter argument
+
+2069
+01:18:44,880 --> 01:18:48,480
+ceased his concern so if you have time
+
+2070
+01:18:48,480 --> 01:18:50,000
+to think about it
+
+2071
+01:18:50,000 --> 01:18:53,760
+why we need to have consensus
+
+2072
+01:18:53,760 --> 01:18:56,239
+on consistency on the order of
+
+2073
+01:18:56,239 --> 01:18:57,280
+transaction
+
+2074
+01:18:57,280 --> 01:19:01,040
+in the privacy preservation scenario
+
+2075
+01:19:01,040 --> 01:19:03,280
+yeah it's an interesting question to
+
+2076
+01:19:03,280 --> 01:19:05,040
+think about
+
+2077
+01:19:05,040 --> 01:19:07,679
+uh so we uh do some experiment we
+
+2078
+01:19:07,679 --> 01:19:09,679
+conducted but the details
+
+2079
+01:19:09,679 --> 01:19:12,719
+uh again referred to our publications
+
+2080
+01:19:12,719 --> 01:19:15,520
+so summarize today's lecture lecture
+
+2081
+01:19:15,520 --> 01:19:17,600
+privacy is very critical if you started
+
+2082
+01:19:17,600 --> 01:19:18,640
+the company
+
+2083
+01:19:18,640 --> 01:19:21,600
+you want to be able to consider privacy
+
+2084
+01:19:21,600 --> 01:19:22,000
+before
+
+2085
+01:19:22,000 --> 01:19:24,400
+ipos right or the lawsuit wouldn't come
+
+2086
+01:19:24,400 --> 01:19:26,080
+in when you are a current company
+
+2087
+01:19:26,080 --> 01:19:28,719
+but when you go public the next day you
+
+2088
+01:19:28,719 --> 01:19:30,159
+see a number of
+
+2089
+01:19:30,159 --> 01:19:34,000
+uh a number of letters from lawyers
+
+2090
+01:19:34,000 --> 01:19:37,679
+and complex requirements and
+
+2091
+01:19:37,679 --> 01:19:39,440
+also some solutions they are
+
+2092
+01:19:39,440 --> 01:19:40,800
+complementary right
+
+2093
+01:19:40,800 --> 01:19:43,199
+you can use them in in a combined method
+
+2094
+01:19:43,199 --> 01:19:45,920
+by the ndm probability transparency
+
+2095
+01:19:45,920 --> 01:19:48,960
+they must be safeguarded and
+
+2096
+01:19:48,960 --> 01:19:52,719
+uh with this concludes today's lecture
+
+2097
+01:19:52,719 --> 01:19:55,199
+uh you have questions please ask on the
+
+2098
+01:19:55,199 --> 01:19:56,080
+slack
+
+2099
+01:19:56,080 --> 01:19:59,600
+and also remind you to sign up for your
+
+2100
+01:19:59,600 --> 01:20:02,800
+final uh presentation the final page
+
+2101
+01:20:02,800 --> 01:20:04,080
+here is
+
+2102
+01:20:04,080 --> 01:20:07,199
+the publications so gdpr
+
+2103
+01:20:07,199 --> 01:20:11,440
+and uh ccpa and finally this is the
+
+2104
+01:20:11,440 --> 01:20:14,480
+salteria paper
+
+2105
+01:20:14,480 --> 01:20:17,679
+so i see one question oh you know
+
+2106
+01:20:17,679 --> 01:20:20,159
+thank you thank you very much now a
+
+2107
+01:20:20,159 --> 01:20:20,719
+question
+
+2108
+01:20:20,719 --> 01:20:23,440
+any questions
+
+2109
+01:20:29,679 --> 01:20:31,360
+okay next year we are going to fix them
+
+2110
+01:20:31,360 --> 01:20:33,280
+and this year we are going to have
+
+2111
+01:20:33,280 --> 01:20:34,719
+lunches live
+
+2112
+01:20:34,719 --> 01:20:37,760
+so we can have much
+
+2113
+01:20:37,760 --> 01:20:41,120
+more engaged discussion
+
+2114
+01:20:41,120 --> 01:20:43,840
+and uh so thank you so much again send
+
+2115
+01:20:43,840 --> 01:20:44,880
+your message for
+
+2116
+01:20:44,880 --> 01:20:47,280
+questions on the slack do the cost
+
+2117
+01:20:47,280 --> 01:20:48,560
+evaluation
+
+2118
+01:20:48,560 --> 01:20:51,760
+and sign up for the presentation
+
+2119
+01:20:51,760 --> 01:21:01,840
+slots bye bye
+

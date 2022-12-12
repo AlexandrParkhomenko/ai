@@ -1,0 +1,3169 @@
+1
+00:00:07,270 --> 00:00:16,699
+So, let's get started. Welcome to cs372. Like
+i mentioned last time, we got into the final
+
+2
+00:00:16,699 --> 00:00:23,340
+lecture series on "Consciousness and Mind."
+The first lecture was given by Dr. Duvvuri
+
+3
+00:00:23,340 --> 00:00:30,641
+because we really want a psychiatrist to come
+in to tell us the real-world situations. Something
+
+4
+00:00:30,641 --> 00:00:36,870
+is normal and something, e.g., mentally disorder,
+is abnormal (or atypical, deviant, or unhealthy).
+
+5
+00:00:36,870 --> 00:00:42,230
+You know psychiatrists when they try to diagnose
+whether someone has mental disorders they
+
+6
+00:00:42,230 --> 00:00:46,310
+definitely compare normal behaviors with the
+abnormal behaviors. (As we will illustrate,
+
+7
+00:00:46,310 --> 00:00:54,440
+finding order or disorder by comparing the
+two.) Let me project the slides first.
+
+8
+00:00:54,440 --> 00:01:06,860
+Okay, so today's lecture we will be focusing
+on consciousness: how to model consciousness.
+
+9
+00:01:06,860 --> 00:01:15,069
+As I mentioned last time there are several
+topics we need to cover and started with a
+
+10
+00:01:15,069 --> 00:01:22,880
+comparison between normal and abnormal behaviors.
+Today we focus on "what is consciousness"
+
+11
+00:01:22,880 --> 00:01:29,060
+and next time will be "where is consciousness"
+and then how it works. And finally we will
+
+12
+00:01:29,060 --> 00:01:36,799
+address mind and ethics, which at this point
+you may consider to be a little bit abstract.
+
+13
+00:01:36,799 --> 00:01:42,679
+But once we lay out the foundation of "what
+is consciousness" and "where it is", maybe
+
+14
+00:01:42,679 --> 00:01:50,719
+mind and ethics can be more evident. And we
+even attempt to quantify them (ethics and
+
+15
+00:01:50,719 --> 00:01:59,169
+love). Let's look at why we want to study
+the topic. It all started about two and a
+
+16
+00:01:59,169 --> 00:02:06,319
+half years ago, when Yoshua Bengio at the
+Neurips conference, he gave a keynote on the
+
+17
+00:02:06,319 --> 00:02:13,500
+limitations of the current AI. In the talk,
+basically we all understand the limitations
+
+18
+00:02:13,500 --> 00:02:21,290
+today, AI today requires large volume of training
+data, and lacking robustness. If you're just
+
+19
+00:02:21,290 --> 00:02:31,150
+changing a few pixels, classification could
+be erroneous. We have problems with explainability,
+
+20
+00:02:31,150 --> 00:02:39,250
+reasoning, and causal analysis. We all understand
+we have generalization problems. Bengio mentioned
+
+21
+00:02:39,250 --> 00:02:46,640
+there are two avenues to address the issues.
+One is that we develop some bandaids to try
+
+22
+00:02:46,640 --> 00:02:54,470
+to patch so-called system one today. And then
+the second approach is let's start from afresh,
+
+23
+00:02:54,470 --> 00:03:03,430
+start from scratch, start from high level
+cognition. There are two philosophical thinkings.
+
+24
+00:03:03,430 --> 00:03:11,120
+One is consciousness, or they call system
+two. Is consciousness purely computational
+
+25
+00:03:11,120 --> 00:03:18,180
+just like system one? I will get into slightly
+details about why we think unconsciousness,
+
+26
+00:03:18,180 --> 00:03:26,630
+the processing, is only computation, and consciousness
+may be computation only or may be beyond computation.
+
+27
+00:03:26,630 --> 00:03:35,790
+Bengio's idea was computation all the way.
+If you talk to other scholars, their thoughts
+
+28
+00:03:35,790 --> 00:03:43,260
+like Roger Penrose's, he would say no because
+consciousness and unconsciousness, their mechanisms
+
+29
+00:03:43,260 --> 00:03:52,100
+are different. Some "matters" may not be purely
+computational. It's interesting when i came
+
+30
+00:03:52,100 --> 00:04:00,500
+across the book published by Erwin Schrodinger
+in 1944. This is a very very long time ago.
+
+31
+00:04:00,500 --> 00:04:10,540
+Erwin is the grandfather or the father of
+quantum mechanics. In his book even almost
+
+32
+00:04:10,540 --> 00:04:19,470
+80 years ago he actually depicted the idea
+of consciousness. I think his book is interesting
+
+33
+00:04:19,470 --> 00:04:28,550
+because he doesn't talk about philosophy or
+theology. He really focuses on physics, using
+
+34
+00:04:28,550 --> 00:04:35,419
+physics to explain consciousness. So you see
+some science there rather than just abstract
+
+35
+00:04:35,419 --> 00:04:43,629
+thinking and debating. In bengio's talk, he
+mentioned a book published by Daniel Kahneman.
+
+36
+00:04:43,629 --> 00:04:49,364
+The title of book is "Thinking Fast and Thinking
+Slow". System one at the bottom (of the slide)
+
+37
+00:04:49,364 --> 00:04:58,510
+is the current AI. Daniel characterizes the
+current AI to be thinking fast, thinking habitually,
+
+38
+00:04:58,510 --> 00:05:05,550
+intuitively, and unconsciously. And we cannot
+explain the mechanisms or causality. System
+
+39
+00:05:05,550 --> 00:05:12,999
+two, on the other hand, is thinking slow.
+We think logically, sequentially. We plan
+
+40
+00:05:12,999 --> 00:05:18,169
+and we conduct reasoning.
+
+41
+00:05:18,169 --> 00:05:24,030
+Mapping thinking fast and thinking slow or
+system one and system two to psychological
+
+42
+00:05:24,030 --> 00:05:32,449
+study, we look at the father of psychology
+Sigmund Freud. His view of human mind has
+
+43
+00:05:32,449 --> 00:05:39,819
+two parts. At the bottom we consider to be
+unconsciousness. Let us blow up the figure
+
+44
+00:05:39,819 --> 00:05:48,050
+on the right hand side. Unconsciousness, according
+to Freud, there are fears, violent motives,
+
+45
+00:05:48,050 --> 00:05:54,080
+unacceptable sexual desires, irrational wishes,
+and so on so forth. And consciousness includes
+
+46
+00:05:54,080 --> 00:06:00,169
+thoughts and perceptions. This is really in
+the early days, and Freud came up with this
+
+47
+00:06:00,169 --> 00:06:06,720
+kind of classification. It's interesting to
+me, in unconscious level Freud put down a
+
+48
+00:06:06,720 --> 00:06:16,499
+few very negative adjectives. For instance,
+before wish Freud put irrational, and urges
+
+49
+00:06:16,499 --> 00:06:27,610
+immoral, right. Or needs, and you put selfish
+in front of it. But our needs: we have urge,
+
+50
+00:06:27,610 --> 00:06:35,410
+perhaps we are really hungry or we get some
+external stimuli, and we we feel hurt. You
+
+51
+00:06:35,410 --> 00:06:42,949
+couldn't actually put a moral value in front
+of those needs. Moral judgment should be probably
+
+52
+00:06:42,949 --> 00:06:49,599
+in the consciousness level. So let's don't
+judge morality at this point until the last
+
+53
+00:06:49,599 --> 00:06:57,270
+lecture. Basically a lot of functions of human
+being work in the unconscious state. One evident
+
+54
+00:06:57,270 --> 00:07:02,940
+example is our breathing. We don't have to
+pay attention to our breathing and we don't
+
+55
+00:07:02,940 --> 00:07:11,550
+have to be conscious about our heartbeat.
+Everything is done virtually automatically.
+
+56
+00:07:11,550 --> 00:07:18,839
+Let's define what is consciousness. This is
+a very challenging topic and you get perspectives
+
+57
+00:07:18,839 --> 00:07:24,930
+from different disciplines including physicists,
+biologists, neuroscientists, theologians,
+
+58
+00:07:24,930 --> 00:07:32,909
+philosophers, computer scientists, and so
+on so forth. There have been over 20,000 papers
+
+59
+00:07:32,909 --> 00:07:39,759
+published so far but producing little results.
+Let's come back to consciousness. Let's look
+
+60
+00:07:39,759 --> 00:07:47,559
+at some a prominent definitions. The first
+definition was given by Michio Kaku. He is
+
+61
+00:07:47,559 --> 00:07:54,839
+a very famous physicist and he said well,
+consciousness can be defined in relation to
+
+62
+00:07:54,839 --> 00:08:01,129
+the space. To us, if we want to be conscious
+about our presence, yes we have the the sense
+
+63
+00:08:01,129 --> 00:08:11,789
+of space, and we also have the sense of time.
+Time is critical because if we want to derive
+
+64
+00:08:11,789 --> 00:08:19,460
+some thoughts, we need to probably look into
+the past so we have to tap into the memory.
+
+65
+00:08:19,460 --> 00:08:25,419
+We want to do planning, we want to be able
+to project into the future. So space and time,
+
+66
+00:08:25,419 --> 00:08:33,760
+we accept those are critical foundations of
+consciousness. And also in relationship to
+
+67
+00:08:33,760 --> 00:08:43,510
+others. Let's give some examples. These are
+the examples given by Kaku. Though it's debatable
+
+68
+00:08:43,510 --> 00:08:51,250
+whether plants have consciousness or not,
+Kaku basically saying if you look at consciousness,
+
+69
+00:08:51,250 --> 00:08:59,800
+which can be quantified by the number of feedback
+loops. Any organisms have feedback loops and
+
+70
+00:08:59,800 --> 00:09:06,510
+can enhance their livings, you can probably
+just consider that (they have) consciousness.
+
+71
+00:09:06,510 --> 00:09:13,530
+For plants, plants can sense temperature and
+can sense where the water is. So the roots
+
+72
+00:09:13,530 --> 00:09:21,360
+of the plant would grow toward or grow toward
+the direction of water. There are many flowers
+
+73
+00:09:21,360 --> 00:09:31,880
+would grow toward the sun, or toward the high
+temperature direction. If you look at our
+
+74
+00:09:31,880 --> 00:09:38,190
+pets, these are mammals, typically. They would
+react to threats and they have interactions
+
+75
+00:09:38,190 --> 00:09:46,990
+with human and other animals. For human beings,
+we have a lot of sensors or feedback loops.
+
+76
+00:09:46,990 --> 00:09:53,310
+We do learning and like for example learning
+i think teacher will provide feedback. We
+
+77
+00:09:53,310 --> 00:09:59,390
+have emotion. Emotion reacts to other people
+and other people would also provide us feedback.
+
+78
+00:09:59,390 --> 00:10:03,240
+We have constantly been evaluated in this
+society.
+
+79
+00:10:03,240 --> 00:10:10,320
+Next, consciousness versus attention. These
+are two different terms. Attention has already
+
+80
+00:10:10,320 --> 00:10:17,630
+been studied thoroughly by psychiatrists.
+Also in computer science you know our "attention
+
+81
+00:10:17,630 --> 00:10:25,790
+model" using the term attention. But strictly
+speaking these are two different ideas and
+
+82
+00:10:25,790 --> 00:10:33,430
+two different terms. It's possible or it's
+actually kind of consciousness and attention
+
+83
+00:10:33,430 --> 00:10:40,910
+they are entangled with each other. But they
+are distinct in the brain functionality. We
+
+84
+00:10:40,910 --> 00:10:47,990
+generally we can treat consciousness as a
+synthesizer or a summarizer. Consciousness,
+
+85
+00:10:47,990 --> 00:10:54,360
+would kind of summarize the entire environment
+using different sensors. For instance, sitting
+
+86
+00:10:54,360 --> 00:11:00,820
+in the classroom we use our visual (eyes),
+ears, we use our different organs to sense
+
+87
+00:11:00,820 --> 00:11:08,150
+the entire environment. But analyzer is done
+by the attention module. Attention module,
+
+88
+00:11:08,150 --> 00:11:14,280
+for example I look at the entire classroom,
+then i want to talk to Bill. I pay my attention
+
+89
+00:11:14,280 --> 00:11:19,930
+to one individual and this is because I already
+know the entire contextual information. When
+
+90
+00:11:19,930 --> 00:11:28,450
+I want to zoom into a specific individual
+i'm doing the attention, more focused. So
+
+91
+00:11:28,450 --> 00:11:36,180
+you could say consciousness may operate in
+a longer time scale including information
+
+92
+00:11:36,180 --> 00:11:43,280
+summary, planning, decision making. Attention
+is to select the information to meet the current
+
+93
+00:11:43,280 --> 00:11:48,684
+behavior objective. So, one is longer term
+and one is shorter term.
+
+94
+00:11:48,684 --> 00:11:56,590
+Let's look at one example used by psychiatrists.
+If we look at the screen right now we see
+
+95
+00:11:56,590 --> 00:12:06,890
+some symbols here. For the bottom-up consciousness,
+basically we are sensing the pixels our eyes,
+
+96
+00:12:06,890 --> 00:12:13,130
+retina, sensing these pixels and there's an
+image perception in our brain. Consciously
+
+97
+00:12:13,130 --> 00:12:20,690
+we're trying to detect or try to recognize
+this symbol. How many people consider this
+
+98
+00:12:20,690 --> 00:12:32,440
+is a digit,
+two digits, or an alphabet? B, 13, and B,
+
+99
+00:12:32,440 --> 00:12:39,000
+is ambiguous, right? Let's say if you have
+these three characters in a row. This is called
+
+100
+00:12:39,000 --> 00:12:45,840
+top-down attention. You are consciously aware
+of several characters here. Then when you
+
+101
+00:12:45,840 --> 00:12:54,130
+zoom in to pay attention to the middle character,
+you tend to say this is a B. If you have another
+
+102
+00:12:54,130 --> 00:13:03,240
+sequence of numbers and here you would probably
+say 13. So top-down attention works differently
+
+103
+00:13:03,240 --> 00:13:09,470
+from bottom-up attention. In the end of this
+lecture i would go back to talk about the
+
+104
+00:13:09,470 --> 00:13:15,390
+current machine learning model, the attention
+model. The attention model, the current implementation
+
+105
+00:13:15,390 --> 00:13:22,651
+is pretty much bottom-up not top-down. Do
+we need to have top-down attention built into
+
+106
+00:13:22,651 --> 00:13:29,340
+machine learning? My answer is absolutely
+yes. So this is a really interesting opportunity.
+
+107
+00:13:29,340 --> 00:13:36,430
+When we talk about system one system two integration
+this is an opportunity to enhance system two.
+
+108
+00:13:36,430 --> 00:13:43,850
+We can model subjectivity into AI, right?
+Subjectivity, let's do a very simple discussion.
+
+109
+00:13:43,850 --> 00:13:51,010
+Two different people look at the same instance
+of object, they may have different feelings.
+
+110
+00:13:51,010 --> 00:13:58,910
+But when you say objectively, when a machine
+perceives an object, the machine can only
+
+111
+00:13:58,910 --> 00:14:06,480
+come up with one classification. Otherwise
+it's a bug. Otherwise we say it's an error.
+
+112
+00:14:06,480 --> 00:14:12,870
+So, subjectivity has to be top down. Where
+is this top? If you say objectivity, then
+
+113
+00:14:12,870 --> 00:14:21,690
+bottom up would be sufficient. Discussion
+one. Is it possible that consciousness is
+
+114
+00:14:21,690 --> 00:14:36,290
+absent of attention. We are in a conscious
+state but there's no attention whatsoever.
+
+115
+00:14:36,290 --> 00:14:40,290
+Pretty much i have already given the answer.
+But it's still debatable, I mean if you look
+
+116
+00:14:40,290 --> 00:14:45,560
+at articles in psychiatry about what's the
+difference between consciousness and attention,
+
+117
+00:14:45,560 --> 00:14:52,930
+they've done lots of experiments and looking
+at the brain activities under different situations.
+
+118
+00:14:52,930 --> 00:15:01,320
+They're still not conclusive. But in principle
+people agree the top-down attention mechanism
+
+119
+00:15:01,320 --> 00:15:10,550
+needs to be in consciousness state. But the
+bottom-up is debatable because if you talk
+
+120
+00:15:10,550 --> 00:15:16,980
+to psychiatrists they have different ideas.
+But if i read into Schrodinger's model and
+
+121
+00:15:16,980 --> 00:15:23,860
+which i will show in the next slide. The question
+is when do we transition from unconscious
+
+122
+00:15:23,860 --> 00:15:32,730
+state to conscious state. When you ride your
+bike today or take Margherita to the campus
+
+123
+00:15:32,730 --> 00:15:39,960
+today are you consciously... are you always
+in conscious mode when you ride your bike?
+
+124
+00:15:39,960 --> 00:15:43,870
+You say i'm balancing on the bike. When we
+learned how to
+
+125
+00:15:43,870 --> 00:15:50,270
+bike, do you see kids learn how to walk? They
+are constantly in the consciousness state:
+
+126
+00:15:50,270 --> 00:15:56,460
+They want to balance themselves they don't
+want to fall. But i don't think most of us
+
+127
+00:15:56,460 --> 00:16:04,400
+walking on the campus today, we we are very
+conscious about balancing our body, right?
+
+128
+00:16:04,400 --> 00:16:12,540
+We are walking in pretty much in unconscious
+state. In the biking situation, I saw my neighbors,
+
+129
+00:16:12,540 --> 00:16:20,279
+because i live in front of Palo Alto high
+school, and quite a few students biking at
+
+130
+00:16:20,279 --> 00:16:26,160
+the same time watching on their phones. Definitely
+they are not paying any attention, not probably
+
+131
+00:16:26,160 --> 00:16:33,040
+not even in the conscious state when they
+are biking. The notion of biking, it's already
+
+132
+00:16:33,040 --> 00:16:35,130
+kind of in unconscious state because it's
+already
+
+133
+00:16:35,130 --> 00:16:39,790
+habitual. Let's look at how they (consciousness
+and unconsciousness) transition to each other,
+
+134
+00:16:39,790 --> 00:16:46,840
+so we may be able to understand some insights.
+According to schrodinger,
+
+135
+00:16:46,840 --> 00:16:54,000
+if we are in unconsciousness state, to get
+into consciousness state, there must be a
+
+136
+00:16:54,000 --> 00:17:02,850
+quantum jump, quantum jump a quantum mechanism
+phenomenon. Quantum jump means there are
+
+137
+00:17:02,850 --> 00:17:10,069
+two different states of an atom, and it wants
+to transition from one state the second one
+
+138
+00:17:10,069 --> 00:17:11,069
+(on the slide, points 1 and 2),
+
+139
+00:17:11,069 --> 00:17:17,599
+there must be the energy surge (point 3).
+Once you have energy surge to a certain level,
+
+140
+00:17:17,599 --> 00:17:21,249
+then there's a
+probability that quantum jump or state transition
+
+141
+00:17:21,250 --> 00:17:29,161
+will happen. Likewise here, Schrodinger saying
+if a person is in unconsciousness state. Let's
+
+142
+00:17:29,161 --> 00:17:36,530
+say we continue sensing the environment. Our
+body is sensing the temperature but in the
+
+143
+00:17:36,530 --> 00:17:43,790
+beginning we don't feel anything different.
+But accumulatively and we started to feel
+
+144
+00:17:43,790 --> 00:17:50,640
+very warm and getting hotter and hotter. And
+then suddenly there's a quantum jump and we
+
+145
+00:17:50,640 --> 00:17:58,220
+start to feel if there's some kind of heat
+or cold. Now the feeling of heat or feeling
+
+146
+00:17:58,220 --> 00:18:03,280
+of cold really gets into the consciousness
+state.
+
+147
+00:18:03,280 --> 00:18:08,540
+But there's another situation which would
+look at some scenarios in the next slide.
+
+148
+00:18:08,540 --> 00:18:15,760
+Look at the left-hand side. Sensitization
+typically is classified to act in unconscious
+
+149
+00:18:15,760 --> 00:18:21,620
+state. Like acrophobia, i don't know, i do
+have
+
+150
+00:18:21,620 --> 00:18:26,940
+fear of heights and when i walk on like Chicago's
+Wills Tower...
+
+151
+00:18:26,940 --> 00:18:32,460
+In this tall building, there's an observatory.
+You walk out there's a piece of glass under
+
+152
+00:18:32,460 --> 00:18:38,800
+your feet. And i just couldn't stand up! You
+asked me whether i'm consciously fear about
+
+153
+00:18:38,800 --> 00:18:44,820
+height or unconsciously fear about height?
+I have to say I cannot control myself. So
+
+154
+00:18:44,820 --> 00:18:50,040
+that's considered to be a phobia and considered
+to be in unconsciousness state. A lot of people
+
+155
+00:18:50,040 --> 00:18:55,520
+have phobia about noise about something they
+don't like like my one of my daughters phobia
+
+156
+00:18:55,520 --> 00:19:07,309
+with spiders. The second one is habituation---
+something going on for a long long time, and
+
+157
+00:19:07,309 --> 00:19:14,290
+something repetitive going on. One example
+is sensing, and sensing if there is no sufficient
+
+158
+00:19:14,290 --> 00:19:21,431
+energy to incur a state transition, it just
+continues to to be done in the unconscious
+
+159
+00:19:21,431 --> 00:19:22,431
+state.
+
+160
+00:19:22,431 --> 00:19:29,820
+Like right now i'm watching this entire classroom
+and if i don't pay attention to anything.
+
+161
+00:19:29,820 --> 00:19:39,360
+Do you think i can sense the water fountain
+outside? outside the windows? Actually i could!
+
+162
+00:19:39,360 --> 00:19:46,030
+Water fountain is out there. Unless i pay
+attention to matters outside the window it's
+
+163
+00:19:46,030 --> 00:19:53,650
+in my sensing in the domain of my sensing
+but it's in unconsciousness state.
+
+164
+00:19:53,650 --> 00:20:01,790
+Our organ operations---breathing, heartbeat---
+there's no way we can control them. They just
+
+165
+00:20:01,790 --> 00:20:06,210
+function so called "normally", and we pay
+attention to them only when our breathing
+
+166
+00:20:06,210 --> 00:20:13,190
+gets into trouble or our heartbeats get into
+trouble. Metabolism right? You don't care,
+
+167
+00:20:13,190 --> 00:20:18,480
+you don't actually pay attention to how you
+digest the food and how the nutrition get
+
+168
+00:20:18,480 --> 00:20:26,710
+distributed into blood vessels. This figure
+here shows there are two dimensions: in the
+
+169
+00:20:26,710 --> 00:20:31,941
+x axis is computational complexity. On the
+left-hand side computational complexity is
+
+170
+00:20:31,941 --> 00:20:36,710
+very low, on the right-hand side computation
+requirement is very high. In the vertical
+
+171
+00:20:36,710 --> 00:20:43,151
+axis, we show on the top is consciousness
+and at the bottom is unconsciousness. The
+
+172
+00:20:43,151 --> 00:20:54,610
+first question here is "1 + 7", we probably
+consider this to be computational non-intensive,
+
+173
+00:20:54,610 --> 00:21:04,090
+and pi square, it's more complex. To us, 1
++ 7 we can do it in seconds but pi square
+
+174
+00:21:04,090 --> 00:21:10,950
+requires us to work on this arithmetic for
+really some time. Actually pi squared does
+
+175
+00:21:10,950 --> 00:21:20,090
+not have an answer! Pi it's a huge number
+(infinite decimal). We do arithmetic in unconsciousness
+
+176
+00:21:20,090 --> 00:21:25,760
+state or consciousness state?
+Even computationally it can be very simple,
+
+177
+00:21:25,760 --> 00:21:32,140
+right? 1 + 7 is very simple, we have to do
+it in the consciousness state. This is probably
+
+178
+00:21:32,140 --> 00:21:42,059
+an easy example. Do you have a disagreement?
+
+179
+00:21:42,059 --> 00:21:53,390
+Let's now look at more challenging situations.
+I'm going to show uh different applications
+
+180
+00:21:53,390 --> 00:22:00,309
+and let's try to put them in the right place.
+The first is let's play Go, not playing with
+
+181
+00:22:00,309 --> 00:22:05,300
+computers just people playing go. Where should
+we place
+
+182
+00:22:05,300 --> 00:22:12,110
+this kind of chess playing, or Go game?
+
+183
+00:22:12,110 --> 00:22:20,720
+Should it be computationally intensive? or
+it's trivial? or it's in conscious state?
+
+184
+00:22:20,720 --> 00:22:25,390
+or we can play the game in unconscious state?
+
+185
+00:22:25,390 --> 00:22:45,090
+Computationally high? okay. Conscious, right?
+We cannot just sleep and play chess. The second
+
+186
+00:22:45,090 --> 00:22:56,920
+question is vision, our vision, is it conscious
+state or unconscious?
+
+187
+00:22:56,920 --> 00:23:11,990
+Student: both. Instructor: Yes good point.
+sensing can be in unconscious state but when
+
+188
+00:23:11,990 --> 00:23:18,160
+we have feeling when we try to pay attention
+to certain things then we get into a consciousness
+
+189
+00:23:18,160 --> 00:23:20,210
+state. that's good.
+
+190
+00:23:20,210 --> 00:23:27,830
+And AlphaGo, what do you think? AlphaGo is
+for sure computationally intensive, when the
+
+191
+00:23:27,830 --> 00:23:35,350
+training was being performed. But if AlphaGo
+has already recorded all the possible moves,
+
+192
+00:23:35,350 --> 00:23:41,090
+during playing with an individual. That individual
+is really in a hustling state---
+
+193
+00:23:41,090 --> 00:23:48,540
+consciousness and high computation complex---thinking
+very very slow, and try to project all the
+
+194
+00:23:48,540 --> 00:23:53,570
+possible moves in the future. But how about
+alpha go in a playing mode? not in a training
+
+195
+00:23:53,570 --> 00:23:59,110
+mode. Do you think the computational complexity
+is extremely high?
+
+196
+00:23:59,110 --> 00:24:06,020
+And do you think it's in the consciousness
+state to play with human? We know machine
+
+197
+00:24:06,020 --> 00:24:11,990
+may not have consciousness, right? AlphaGo
+in the playing mode it's in unconsciousness
+
+198
+00:24:11,990 --> 00:24:22,590
+state and what it's doing is doing search.
+Seeing the current layout of the board, and
+
+199
+00:24:22,590 --> 00:24:27,850
+because it already tried itself to see all
+possible moves, so it said, oh, this is the
+
+200
+00:24:27,850 --> 00:24:34,520
+current board configuration. Let me search
+the best move given this particular configuration.
+
+201
+00:24:34,520 --> 00:24:43,220
+That's just a search kind of method.
+We can consider this search, compared with
+
+202
+00:24:43,220 --> 00:24:51,290
+the training process, it's much less computational
+intensive. Let's plot these four (applications)
+
+203
+00:24:51,290 --> 00:24:52,300
+inon the diagram.
+
+204
+00:24:52,300 --> 00:25:00,200
+AlphaGo, i would say it's at the bottom (unconsciousness).
+Computationally high? i kind of question that,
+
+205
+00:25:00,200 --> 00:25:05,660
+we can move it to the left a little bit. And
+vision is in between and getting into preconscious
+
+206
+00:25:05,660 --> 00:25:12,190
+state. And nature language processing for
+sure, we talk about when we have language
+
+207
+00:25:12,190 --> 00:25:18,510
+to have conversation with each other, we have
+to get into consciousness state.
+
+208
+00:25:18,510 --> 00:25:24,140
+Of course if we just look at alphabets, we
+probably in unconscious state. But eventually
+
+209
+00:25:24,140 --> 00:25:29,000
+when we formulate an article, a conversation
+with others, we get into the consciousness
+
+210
+00:25:29,000 --> 00:25:38,200
+state. These are just some examples. Now we
+look at Schrodinger's point of view. A look
+
+211
+00:25:38,200 --> 00:25:46,921
+at consciousness in relation to learning and
+adaptation. He's looking from the evolution
+
+212
+00:25:46,921 --> 00:25:56,820
+perspective, and more specifically, he uses
+physics to try to explain these two modes.
+
+213
+00:25:56,820 --> 00:26:04,030
+The first one is the second law of thermodynamics,
+the second we already mentioned, quantum mechanics,
+
+214
+00:26:04,030 --> 00:26:11,730
+that is, quantum jump. Finally he mentioned
+the relationship with mortality.
+
+215
+00:26:11,730 --> 00:26:21,730
+Mortality we will talk about in the last lecture.
+Humans select to learn so when we want to
+
+216
+00:26:21,730 --> 00:26:32,320
+learn something we learn for two purposes.
+We learn for wants or we learn for needs.
+
+217
+00:26:32,320 --> 00:26:39,929
+Needs are basic survival requirements like
+eating, cooking, those are you can consider
+
+218
+00:26:39,929 --> 00:26:47,350
+to be needs. Or we want to find water, we
+want to learn how to dig a well, and those
+
+219
+00:26:47,350 --> 00:26:56,520
+are for needs, not optional. And for needs
+we talk about in the bottom (of the slide)---survival
+
+220
+00:26:56,520 --> 00:27:06,380
+or adaptation. Human must learn to survive.
+If we have a drought condition here in Santa
+
+221
+00:27:06,380 --> 00:27:12,309
+Clara, we probably would go to supermarket
+to buy drinking water or we go to other states
+
+222
+00:27:12,309 --> 00:27:17,590
+to find water. We have to be able to adapt
+to survive. However, there are certain essential
+
+223
+00:27:17,590 --> 00:27:23,700
+skills we don't have to learn at all. In fact
+we cannot learn, we cannot afford learning,
+
+224
+00:27:23,700 --> 00:27:28,610
+and we don't know how to learn them! We don't
+have time to learn them. Just give you two
+
+225
+00:27:28,610 --> 00:27:37,280
+examples---breathing and heartbeat.
+(An) embryo can already start having heartbeats.
+
+226
+00:27:37,280 --> 00:27:43,559
+Do you think embryo learns how to do heartbeats?
+No. Embryo doesn't have consciousness (to
+
+227
+00:27:43,559 --> 00:27:47,410
+learn).
+It's interesting the complex operations of
+
+228
+00:27:47,410 --> 00:27:54,610
+human beings were already given before we
+were born. We did not have to learn them and
+
+229
+00:27:54,610 --> 00:28:00,491
+actually we couldn't learn them. Can you learn
+how to breathe differently or changing your
+
+230
+00:28:00,491 --> 00:28:08,480
+heartbeat rhythms consciously? The answer
+is no, not really. Philosophically you'll
+
+231
+00:28:08,480 --> 00:28:20,010
+say oh most challenging matters already been
+given by someone or evolution. Only the not
+
+232
+00:28:20,010 --> 00:28:27,570
+so important things, I say, wants your desire.
+I want to have something better to eat, I
+
+233
+00:28:27,570 --> 00:28:33,850
+want to swim, I want to bike. If you (we)
+don't don't bike you can still survive. You
+
+234
+00:28:33,850 --> 00:28:39,600
+can walk to the classroom maybe get more healthier.
+
+235
+00:28:39,600 --> 00:28:50,070
+For the optional things, yes, we can learn.
+But for the essential matters, we cannot learn.
+
+236
+00:28:50,070 --> 00:28:55,970
+We don't have time to learn, and they are
+embedded in our our body. I actually, when
+
+237
+00:28:55,970 --> 00:29:04,250
+i translated Schrodinger's "What is Life",
+ my own feeling at the end was saying: well,
+
+238
+00:29:04,250 --> 00:29:12,281
+what we could learn in the world is really
+really limited. First of all essential skills
+
+239
+00:29:12,281 --> 00:29:19,630
+already be given, right. Secondly when we
+were born we are confined by our heredity.
+
+240
+00:29:19,630 --> 00:29:26,140
+Heredity includes broadly not only our chromosome
+DNA, but also includes
+
+241
+00:29:26,140 --> 00:29:40,330
+our identity. Our DNA gave us our IQ, maybe
+mortality means diseases, and EQ, personality.
+
+242
+00:29:40,330 --> 00:29:49,530
+We also we were born with identity: nationality,
+family. Nationality and family already give
+
+243
+00:29:49,530 --> 00:30:00,410
+us some intrinsic directions, inertials. Nationality
+already gives you a set of hates. Your family
+
+244
+00:30:00,410 --> 00:30:07,660
+may already give you a set of possible religions
+you would you would try to convert into so
+
+245
+00:30:07,660 --> 00:30:14,400
+you don't really have a lot of choices. Yes,
+some people are more rebellious, and they
+
+246
+00:30:14,400 --> 00:30:20,970
+can defy their identities. But most of people
+would just be conformative.
+
+247
+00:30:20,970 --> 00:30:29,120
+Therefore, what we could learn mostly is for
+our wants, and they are optional, they are
+
+248
+00:30:29,120 --> 00:30:36,510
+extra-curriculum. I was joking about the the
+free will we have? Probably just for
+
+249
+00:30:36,510 --> 00:30:47,480
+ordering dishes, on doorDash or in a restaurant.
+Other things pretty much restricted. Okay
+
+250
+00:30:47,480 --> 00:30:48,480
+free will...
+
+251
+00:30:48,480 --> 00:30:54,350
+when we go to lecture #18 (#17). Free will
+is it's kind of a philosophical question.
+
+252
+00:30:54,350 --> 00:30:59,410
+Do we really have free will? It's just a survey
+for the fun of it.
+
+253
+00:30:59,410 --> 00:31:04,100
+How many consider you have free will? (~50%
+of the class)
+
+254
+00:31:04,100 --> 00:31:09,230
+How many consider you don't have free will
+whatsoever? (zero vote)
+
+255
+00:31:09,230 --> 00:31:20,030
+Okay. Lex Fridman, an MIT professor, who has
+produced many podcasts. So far i think he
+
+256
+00:31:20,030 --> 00:31:27,210
+has gotten about 270 episodes. In the early
+days the podcast each episode is about one
+
+257
+00:31:27,210 --> 00:31:33,450
+hour. And started about Eps#200, there's no
+limit of time. There are podcasts lasting
+
+258
+00:31:33,450 --> 00:31:39,920
+even four or five hours. It's really really
+intriguing, some subjects, The two questions
+
+259
+00:31:39,920 --> 00:31:45,000
+he always asked, to most of the guest speakers
+he
+
+260
+00:31:45,000 --> 00:31:46,010
+would ask... The first question is
+
+261
+00:31:46,010 --> 00:31:53,531
+"Are you a robot? Then, "Do you really think
+human
+
+262
+00:31:53,531 --> 00:31:58,309
+has free will?" "Do you have free will or
+not?" "Everything is predetermined or not?"
+
+263
+00:31:58,309 --> 00:32:05,190
+Surprisingly those smart people he interviewed
+including Nobel laureates, Turing Award winners.
+
+264
+00:32:05,190 --> 00:32:09,300
+Their answers are pretty coherent.
+
+265
+00:32:09,300 --> 00:32:23,050
+Most of people like including myself, I consider
+I'm a robot. Free will is my illusion.
+
+266
+00:32:23,050 --> 00:32:28,880
+Let's come back (laughing) to the lecture.
+Human, how do we learn? We learn starting
+
+267
+00:32:28,880 --> 00:32:36,000
+from we have a need to learn, then starts
+from external stimulus. Suppose here we're
+
+268
+00:32:36,000 --> 00:32:40,860
+just using "vision" as an example. Our retinas
+start
+
+269
+00:32:40,860 --> 00:32:48,010
+sensing pixels (light) and then our perception,
+our sensing circuits will convert input signals
+
+270
+00:32:48,010 --> 00:32:55,120
+into
+quantifiable, we call sensual quality. In
+
+271
+00:32:55,120 --> 00:33:02,160
+vision, sensing we sensing a lot of pixels
+into our eyes, those like electrical signals,
+
+272
+00:33:02,160 --> 00:33:08,799
+then the sensual quality is kind of color.
+It's a it's a vital one. Then you could say
+
+273
+00:33:08,799 --> 00:33:14,250
+texture and shape.
+Eventually we have understanding we recognize
+
+274
+00:33:14,250 --> 00:33:20,480
+objects, and object recognition requires our
+memory at the same time. Let's just look at
+
+275
+00:33:20,480 --> 00:33:29,809
+the first stage of sensing. We have 1) sensing
+the signals and then 2) central quality. Do
+
+276
+00:33:29,809 --> 00:33:37,970
+we get identical sensual quality. Here again
+we may only be in unconsciousness state right?
+
+277
+00:33:37,970 --> 00:33:44,900
+The picture on the top.
+Let's blow up the picture. it's only sensing
+
+278
+00:33:44,900 --> 00:33:53,720
+and producing sensual quality, and then get
+into our either cerebrum or cerebellum, either
+
+279
+00:33:53,720 --> 00:34:00,360
+processing consciously or unconsciously. Finally
+we have responses. This is process of learning.
+
+280
+00:34:00,360 --> 00:34:10,159
+In just the sensing mode, do we have...
+is it a one-to-one relationship: do we have
+
+281
+00:34:10,159 --> 00:34:17,510
+one signal producing one sensual quality or
+there could be a mixture of multiple signals
+
+282
+00:34:17,510 --> 00:34:23,679
+can produce one sensual quality? And one (input)
+signal can produce multiple different sensual
+
+283
+00:34:23,679 --> 00:34:25,290
+qualities?
+
+284
+00:34:25,290 --> 00:34:32,210
+Very simple question is: when we perceive
+sensual quality to be yellow, yellow color.
+
+285
+00:34:32,210 --> 00:34:39,859
+What should be the input to our retinas?
+If we look at the light spectrum, when we
+
+286
+00:34:39,859 --> 00:34:48,690
+have this 600 nanometer signal and it peaks
+in our eyes as yellow color. This is given
+
+287
+00:34:48,690 --> 00:34:55,060
+by schrodinger and now it's well known. The
+same sensual quality can come from different
+
+288
+00:34:55,060 --> 00:35:00,890
+mixtures of signals.
+If we have two other signals 535 which is
+
+289
+00:35:00,890 --> 00:35:09,950
+green and plus 760 which is red, the combine
+of the two also gives us yellow sensation.
+
+290
+00:35:09,950 --> 00:35:15,560
+Here we have possibility of multiple signals
+combinations, different mixtures, can give
+
+291
+00:35:15,560 --> 00:35:22,182
+us the same sensation or sensual quality.
+Then we have to think about computers, how a
+
+292
+00:35:22,182 --> 00:35:28,680
+computer operates? can compute function under
+this situation? Different inputs have different
+
+293
+00:35:28,680 --> 00:35:36,450
+outputs, i think computer could do that, right?
+Function can handle many to one mapping.
+
+294
+00:35:36,450 --> 00:35:44,950
+But the problem is the other way. The other
+way is same color (light), but different sensual
+
+295
+00:35:44,950 --> 00:35:48,850
+qualities in different individuals.
+
+296
+00:35:48,850 --> 00:35:58,770
+It's very evident for people having colorblind,
+their essential quality is different even
+
+297
+00:35:58,770 --> 00:36:04,710
+we are perceiving the same thing. They have
+red-green color blind blue-yellow and also
+
+298
+00:36:04,710 --> 00:36:10,360
+complete color blind. Let's look at one example
+of red-green color blind. On the left-hand
+
+299
+00:36:10,360 --> 00:36:16,920
+(of the slide) side there's no colorblind;
+on the right-hand side this person has a red-green
+
+300
+00:36:16,920 --> 00:36:17,920
+color blind,
+
+301
+00:36:17,920 --> 00:36:23,750
+and how the person perceived. Here is already
+interesting this is a good picture produced
+
+302
+00:36:23,750 --> 00:36:30,480
+by psychiatrists, but how can psychiatrists
+figure out like---how can I figure out your
+
+303
+00:36:30,480 --> 00:36:39,349
+color quality? When we look at this picture
+on the left hand side, i myself see yellow,
+
+304
+00:36:39,349 --> 00:36:46,030
+green, and the red, and maybe other colors.
+You may also see the same colors or you may
+
+305
+00:36:46,030 --> 00:36:47,030
+not.
+
+306
+00:36:47,030 --> 00:36:52,570
+For color blind, they only see green. But
+suppose we don't have colorblind. Even the
+
+307
+00:36:52,570 --> 00:37:01,550
+same red for us, the sensation in our retinas
+may be different. your ReD is probably different
+
+308
+00:37:01,550 --> 00:37:08,630
+from my REd. This is already to us it's very
+challenging to compute it's also very challenging
+
+309
+00:37:08,630 --> 00:37:14,300
+because you have different inputs, we all
+consider to be the same. And here even we
+
+310
+00:37:14,300 --> 00:37:22,280
+have different color qualities, still people
+can recognize there are different fruits,
+
+311
+00:37:22,280 --> 00:37:26,820
+apples, and pineapple, and so on so forth.
+
+312
+00:37:26,820 --> 00:37:34,960
+Now let's review two math concepts the first
+one is relation. Relation defines as a relationship
+
+313
+00:37:34,960 --> 00:37:42,660
+between two values. We have four different
+relations on this slide: one too many, one
+
+314
+00:37:42,660 --> 00:37:50,750
+to one, many to one, and many too many. However,
+function is a relation where each input has
+
+315
+00:37:50,750 --> 00:37:58,811
+only one output. Among the four relations,
+only the two in the middle: one to one, and
+
+316
+00:37:58,811 --> 00:38:06,390
+many to one, (each) produces one output. They
+are legitimate functions. Now let's go back
+
+317
+00:38:06,390 --> 00:38:16,110
+to visit our visual system. We have input
+as senses and input generates sensual qualities.
+
+318
+00:38:16,110 --> 00:38:25,410
+As we already mentioned using colorblind as
+an example, here we have one to many relationship.
+
+319
+00:38:25,410 --> 00:38:32,880
+Then from the sensual quality, let's say you
+and I both look at the ocean, and we may have
+
+320
+00:38:32,880 --> 00:38:41,570
+different emotions incurred, because maybe
+our memory or our computational information.
+
+321
+00:38:41,570 --> 00:38:49,420
+Therefore, we encounter this interesting problem
+of from senses to sensual quality is not a
+
+322
+00:38:49,420 --> 00:38:56,540
+function, and from sensual quality to emotion
+is not a function either.
+
+323
+00:38:56,540 --> 00:39:06,060
+But in our CNN or machine learning algorithms,
+we typically implement everything as a function.
+
+324
+00:39:06,060 --> 00:39:13,910
+Therefore the interesting challenge to us
+is how can we model one to many?
+
+325
+00:39:13,910 --> 00:39:21,220
+When we consider contextual information in
+memory, and this we call subjectivity... Now
+
+326
+00:39:21,220 --> 00:39:27,970
+let's pop up one level. Let's revisit our
+stimulus-response pathway. We already talked
+
+327
+00:39:27,970 --> 00:39:37,970
+about input generating sensing quality. Before
+human can produce a response, our brain will
+
+328
+00:39:37,970 --> 00:39:46,540
+be operating on the signals and making a decision.
+Our brain operates in two different modes,
+
+329
+00:39:46,540 --> 00:39:53,420
+consciousness and unconsciousness. When we
+define consciousness in the beginning of the
+
+330
+00:39:53,420 --> 00:40:03,349
+lecture, we try to contrast the term consciousness
+with attention. Attention can be either bottom-up
+
+331
+00:40:03,349 --> 00:40:04,890
+as shown on the left hand side
+
+332
+00:40:04,890 --> 00:40:12,930
+of this diagram or top-down. When attention
+is top-down, it's pretty much goal driven
+
+333
+00:40:12,930 --> 00:40:22,410
+and it operates in the consciousness mode.
+However, when attention is bottom-up, it's
+
+334
+00:40:22,410 --> 00:40:32,500
+a stimulus driven. We continue sensing our
+world, and when the collected energy reaches
+
+335
+00:40:32,500 --> 00:40:38,770
+a certain threshold, then there's a transition
+going on from unconsciousness to consciousness.
+
+336
+00:40:38,770 --> 00:40:49,050
+I really appreciate the explanation done by
+Erwin Schrodinger, the father of quantum mechanics.
+
+337
+00:40:49,050 --> 00:40:55,670
+Let's take a look at how a CNN neuron works.
+A neuron collects information from upstream
+
+338
+00:40:55,670 --> 00:41:03,609
+neurons. When the energy level reaches a threshold,
+the neuron will fire, and would propagate
+
+339
+00:41:03,609 --> 00:41:10,960
+the signal to the downstream neurons. This
+is precisely how Schrodinger explains the
+
+340
+00:41:10,960 --> 00:41:16,680
+state transition in an atom. An atom can be
+in two different modes
+
+341
+00:41:16,680 --> 00:41:25,150
+---on this slide mode 1 and mode 2. An atom is
+in the stable state until the energy level
+
+342
+00:41:25,150 --> 00:41:31,330
+reaches 3. Once the energy level reaches a
+threshold,
+
+343
+00:41:31,330 --> 00:41:37,740
+there's a probability that a state transition
+will happen. This is exactly the ingenious
+
+344
+00:41:37,740 --> 00:41:39,900
+of the CNN model,
+
+345
+00:41:39,900 --> 00:41:49,020
+which models exactly how schrodinger depicts
+the state transition physically in the atoms.
+
+346
+00:41:49,020 --> 00:41:57,710
+How about the other way? How do we transition
+from the consciousness state to unconscious
+
+347
+00:41:57,710 --> 00:41:58,710
+state?
+
+348
+00:41:58,710 --> 00:42:06,490
+When we listen to music, in the beginning
+we may be paying attention to the lyric, but
+
+349
+00:42:06,490 --> 00:42:14,590
+eventually, or in my case, i would fall into
+sleep. Driving is another experience. If I'm
+
+350
+00:42:14,590 --> 00:42:21,300
+very familiar with the route, I do
+not really pay attention to the details. The
+
+351
+00:42:21,300 --> 00:42:30,200
+emotion or emotion of sadness or happiness
+eventually will fade away. And these are all
+
+352
+00:42:30,200 --> 00:42:37,480
+good things because in the emotion scenario
+we don't want to be sad forever. Evolution
+
+353
+00:42:37,480 --> 00:42:44,500
+builds in, in our brain we will forget about
+the sadness, and at the same time, we cannot
+
+354
+00:42:44,500 --> 00:42:51,530
+be happy forever we have to transition into
+the normal mode and to continue to live with
+
+355
+00:42:51,530 --> 00:43:01,630
+our lives. Schrodinger saying well the transition
+is kind of fading away can be thought as second
+
+356
+00:43:01,630 --> 00:43:06,010
+law of thermodynamics.
+
+357
+00:43:06,010 --> 00:43:12,550
+The second law of thermodynamics expresses
+the fundamental and the simple truth about
+
+358
+00:43:12,550 --> 00:43:23,090
+the universe that disorder characterized by
+a quantity called entropy, always increases.
+
+359
+00:43:23,090 --> 00:43:30,339
+When the entropy is peaked, the
+isolated system is we call in the dead state
+
+360
+00:43:30,339 --> 00:43:40,410
+or inert state. And like our physical body,
+eventually aging is a phenomenon of the second
+
+361
+00:43:40,410 --> 00:43:48,859
+law of thermodynamics. Schrodinger in his
+book actually made a joke about how can we
+
+362
+00:43:48,859 --> 00:43:55,210
+live longer by slowing down our increase of
+disorder.
+
+363
+00:43:55,210 --> 00:44:01,710
+There he suggested a couple of remedies. If
+you are interested (in living longer) we can
+
+364
+00:44:01,710 --> 00:44:07,500
+talk about it offline.
+The second law may be formulated by the observation
+
+365
+00:44:07,500 --> 00:44:15,780
+that the entropy is in the isolated system
+left to spontaneous evolution cannot decrease
+
+366
+00:44:15,780 --> 00:44:23,420
+as this system always arrives at the state
+of thermodynamic equilibrium where the entropy
+
+367
+00:44:23,420 --> 00:44:33,210
+is the highest. There are several experiments
+and which can illustrate how this second law
+
+368
+00:44:33,210 --> 00:44:39,349
+works.
+A popular one is in a closed space you inject
+
+369
+00:44:39,349 --> 00:44:47,930
+some color particles, and eventually the color
+particles will be distributed evenly in the
+
+370
+00:44:47,930 --> 00:44:54,541
+close space. Or maybe you input two different
+kind of air one in green color the other one
+
+371
+00:44:54,541 --> 00:45:03,510
+in red color and after a period of time those
+two colors will mix together.
+
+372
+00:45:03,510 --> 00:45:12,290
+Now we put everything together and we start
+with the in this consciousness state we learn
+
+373
+00:45:12,290 --> 00:45:18,230
+how to walk how to bike and the first time
+come to stanford we have to navigate using
+
+374
+00:45:18,230 --> 00:45:27,000
+a map and so on so forth. Once we get familiar
+with walking, biking, and driving directions,
+
+375
+00:45:27,000 --> 00:45:33,869
+we get into a habitual and repetitive mode.
+Then there's the transition happens
+
+376
+00:45:33,869 --> 00:45:40,260
+---when we continue doing these tasks we will
+be operating most of these tasks in unconsciousness
+
+377
+00:45:40,260 --> 00:45:47,109
+mode. As we mentioned this is really good
+for the human being and for animals because
+
+378
+00:45:47,109 --> 00:45:55,670
+our emotions, we like them to fade away so
+we can get on with our lives. In the unconscious
+
+379
+00:45:55,670 --> 00:46:04,070
+mode, see here we do a lot of tasks including
+our heartbeats, metabolism unconsciously.
+
+380
+00:46:04,070 --> 00:46:10,910
+But if we drive to the campus and suddenly
+we see an unexpected pediatric pedestrian
+
+381
+00:46:10,910 --> 00:46:16,330
+we are suddenly transitioning back to the
+conscious mode to try to figure out how to
+
+382
+00:46:16,330 --> 00:46:24,800
+handle that situation. If you bike you hit
+a tree suddenly, yes we need to stop there
+
+383
+00:46:24,800 --> 00:46:30,031
+and transition into the conscious mode and
+handle the abruptive situation. This (process)
+
+384
+00:46:30,031 --> 00:46:38,870
+is called adaptation, which is necessary for
+survival. Okay, let's now make some observations.
+
+385
+00:46:38,870 --> 00:46:47,109
+In consciousness and unconsciousness and when
+they need to transition, they transition via
+
+386
+00:46:47,109 --> 00:46:54,881
+two physics mechanisms---quantum jump and
+the second law of thermal dynamics. These
+
+387
+00:46:54,881 --> 00:47:04,000
+are great because we have a solid foundation
+to implement the transitions. We're learning
+
+388
+00:47:04,000 --> 00:47:12,390
+for adaptation is done in the consciousness
+mode and mainly for our biological needs and
+
+389
+00:47:12,390 --> 00:47:20,490
+for our our wants, which could be optional.
+We eventually fade emotion into unconscious
+
+390
+00:47:20,490 --> 00:47:29,380
+state when things are repetitive. We also
+talk about in the conscious state and when
+
+391
+00:47:29,380 --> 00:47:39,089
+we pay attention it could be top-down attention,
+because we are aware of the bigger picture
+
+392
+00:47:39,089 --> 00:47:49,060
+then we want to focus on some specifics. In
+attention or in a conscious mode one important
+
+393
+00:47:49,060 --> 00:47:56,410
+element is we cannot model this as just a
+function because there could be one too many
+
+394
+00:47:56,410 --> 00:48:03,460
+mapping, which means that one sensing quality
+can map to different emotions. And this we
+
+395
+00:48:03,460 --> 00:48:09,530
+call subjectivity a machine does not have
+subjectivity if you look at today's machine
+
+396
+00:48:09,530 --> 00:48:16,010
+learning to this machine learning is the results
+average of subjectivity. The training data
+
+397
+00:48:16,010 --> 00:48:21,369
+may be labeled by different people, they have
+their own subjectivities. And we aggregate
+
+398
+00:48:21,369 --> 00:48:29,270
+everything together and uniformly or universally
+we learn a set of parameters and then perform
+
+399
+00:48:29,270 --> 00:48:38,641
+prediction. How can we model subjectivity?
+This, we can talk about it shortly after these
+
+400
+00:48:38,641 --> 00:48:46,700
+observations. We, one way to do it to avoid
+this function definition issue is we can take
+
+401
+00:48:46,700 --> 00:48:54,060
+more arguments. If we take space, time, and
+value into the arguments of a function, then
+
+402
+00:48:54,060 --> 00:49:00,060
+there's the possibility that we could have
+a one-to-one mapping. Bottom-up attention
+
+403
+00:49:00,060 --> 00:49:06,839
+is performed in the unconsciousness mode.
+So we can only pay attention to one or two
+
+404
+00:49:06,839 --> 00:49:13,920
+things and at the same time there are many
+things going on in the environment and our
+
+405
+00:49:13,920 --> 00:49:20,680
+sense organs continuously sensing the environment
+or heart continue to beat until something
+
+406
+00:49:20,680 --> 00:49:26,900
+unusual happens, which will trigger a high
+energy then a transition will be made into
+
+407
+00:49:26,900 --> 00:49:38,250
+the conscious mode. But when quantum jump
+performs prematurely, it means the threshold
+
+408
+00:49:38,250 --> 00:49:50,250
+is abnormally low, like Dr Duvvuri introduced
+mental disorders on Monday's lecture for phobia.
+
+409
+00:49:50,250 --> 00:49:58,600
+Let's say acrophobia the fear of heights got
+triggered at a much lower threshold. This
+
+410
+00:49:58,600 --> 00:50:08,070
+must be treated. At this moment the patient
+can only be treated, targeting symptoms. But
+
+411
+00:50:08,070 --> 00:50:13,620
+in the future, hopefully we can get down to
+the source. And this is precisely what the
+
+412
+00:50:13,620 --> 00:50:22,420
+next lecture will cover ---where is consciousness.
+Let's defer the discussion to next Monday.
+
+413
+00:50:22,420 --> 00:50:31,550
+In closing the first half of the lecture:
+we were born with a lot of sophisticated skills---metabolism
+
+414
+00:50:31,550 --> 00:50:38,840
+heartbeat and so so forth. They all operate
+in unconsciousness mode. Then because we need
+
+415
+00:50:38,840 --> 00:50:46,010
+to adapt, we need to survive, we learn knowledge
+and we learn skills. Once we are familiar
+
+416
+00:50:46,010 --> 00:50:52,810
+with the skills they become our second nature.
+We can then perform the skills habitually.
+
+417
+00:50:52,810 --> 00:51:02,740
+However, our learned knowledge and skills
+is never written back to the DNA. That's very
+
+418
+00:51:02,740 --> 00:51:12,520
+ironic, so our next generation they have to
+learn reading, they have to learn biking all
+
+419
+00:51:12,520 --> 00:51:20,599
+over again. Evolution will not be helpful
+for our future generations to be able to born
+
+420
+00:51:20,599 --> 00:51:28,880
+with the biking and the driving skills. This,
+we can also address why in the next lecture
+
+421
+00:51:28,880 --> 00:51:40,120
+through a thorough investigation on the evolution
+theory. Now we get to how to model subjective
+
+422
+00:51:40,120 --> 00:51:50,560
+consciousness. We know in machine learning
+one of the most important constructs is distance
+
+423
+00:51:50,560 --> 00:51:59,890
+function. We measure similarity. Machine learning
+tasks, for example, clustering or classification,
+
+424
+00:51:59,890 --> 00:52:07,380
+we need to measure similarity between instances.
+We also need to be able to quantify differential.
+
+425
+00:52:07,380 --> 00:52:16,210
+Here this example shows classification in
+machine learning. I argue all the classification
+
+426
+00:52:16,210 --> 00:52:25,070
+problems in machine learning considers a nearest-neighbor
+problem. In this example we have two known
+
+427
+00:52:25,070 --> 00:52:33,079
+classes: one, rectangle blue, and the other
+one is a triangle red. Now we have our unknown
+
+428
+00:52:33,079 --> 00:52:39,410
+instance. We don't know its label sitting
+in the middle of the circle, which is round
+
+429
+00:52:39,410 --> 00:52:43,710
+green. How should we determine the color and
+the shape
+
+430
+00:52:43,710 --> 00:52:50,750
+of the unknown (unlabeled) instance? Suppose
+we draw nearest neighbors using circle. We
+
+431
+00:52:50,750 --> 00:52:57,650
+have two circles here---one in solid line
+one in dashes. The solid line circle is smaller.
+
+432
+00:52:57,650 --> 00:53:06,080
+In that small neighborhood we basically look
+into the labels of those instances. Here we
+
+433
+00:53:06,080 --> 00:53:12,670
+have three, two triangles and one rectangle.
+And we perform a majority vote. They (the
+
+434
+00:53:12,670 --> 00:53:18,480
+neighbors) say: the instance
+in the middle we are going to use red color
+
+435
+00:53:18,480 --> 00:53:26,040
+and triangle to label it. When we expand the
+nearest neighbor to be larger, and now we
+
+436
+00:53:26,040 --> 00:53:34,400
+have five instances. Majority vote for us
+in this case, we get "blue rectangle". I argue
+
+437
+00:53:34,400 --> 00:53:40,490
+all machine learning algorithms, regardless
+whether it's a CNN top (neuron) level, or
+
+438
+00:53:40,490 --> 00:53:47,030
+support vector machines, and so on so forth.
+All have the concepts of nearest neighbor,
+
+439
+00:53:47,030 --> 00:53:53,619
+and you measure similarity at the end is sort
+of like a voting scheme. The label of the
+
+440
+00:53:53,619 --> 00:54:01,440
+unknown instance is then obtained. So we have
+two important measures, we need to be able
+
+441
+00:54:01,440 --> 00:54:09,849
+to quantify---the first one is: what is the
+distance? how to measure distance between
+
+442
+00:54:09,849 --> 00:54:20,500
+two instances? the second measure is what
+is the definition of nearest neighbor. Let's
+
+443
+00:54:20,500 --> 00:54:29,270
+investigate further. Let's examine how do
+we find nearest neighbor instances. Given
+
+444
+00:54:29,270 --> 00:54:37,210
+a point here we have this round blue dot in
+the middle. Suppose we kind of simplify the
+
+445
+00:54:37,210 --> 00:54:44,530
+problem setting. Each instance has only two
+attributes and one in the x dimension the
+
+446
+00:54:44,530 --> 00:54:51,270
+other one in the y dimension. The value of
+each dimension ranges from zero to one. If
+
+447
+00:54:51,270 --> 00:54:58,750
+I want to find my nearest neighbor(s), i need
+to give it a range. If i say range is everything
+
+448
+00:54:58,750 --> 00:55:06,140
+then you have to sequentially scan all your
+data items. This is definitely not very efficient.
+
+449
+00:55:06,140 --> 00:55:14,280
+So, in data structures we have different tree
+structures. The purpose of the three structures
+
+450
+00:55:14,280 --> 00:55:22,290
+is for efficient lookup. For range query in
+this case, we'd like to be able to scan minimum
+
+451
+00:55:22,290 --> 00:55:31,270
+amount of data to find all the nearest neighbors.
+In this example here, suppose we say my nearest
+
+452
+00:55:31,270 --> 00:55:37,630
+neighbor i can define to be a half of the
+value. So f value is a fraction, and let's
+
+453
+00:55:37,630 --> 00:55:44,740
+say it's 50 percent. Dimension here is equal
+to two. So nearest neighbor is 25% of the
+
+454
+00:55:44,740 --> 00:55:54,040
+area of the entire feature space. When d value,
+d is the dimensionality of the data, and it's
+
+455
+00:55:54,040 --> 00:56:03,420
+getting larger and larger. Suppose we say
+fraction is equal to 0.9. And 0.9 when the
+
+456
+00:56:03,420 --> 00:56:15,100
+dimension goes to about 100, then the volume
+basically is the fraction power of d, approximates
+
+457
+00:56:15,100 --> 00:56:21,359
+to zero (0.9^100~0).
+This means the instance in the middle cannot
+
+458
+00:56:21,359 --> 00:56:29,470
+find any nearest neighbors! All the so-called
+nearest neighbors are very far away because
+
+459
+00:56:29,470 --> 00:56:39,190
+the fraction of your search, range query,
+is already 90%. How do we mitigate this problem?
+
+460
+00:56:39,190 --> 00:56:43,940
+How to address this problem? There has been
+many methods. I'm not going to get into details.
+
+461
+00:56:43,940 --> 00:56:51,099
+In the first lecture we talked about dimension
+reduction, we talked about all these different
+
+462
+00:56:51,099 --> 00:56:55,210
+methods. Then we said well maybe transfer
+learning may be pre-training, maybe other
+
+463
+00:56:55,210 --> 00:57:00,400
+means.
+We try to... the the good thing is all the
+
+464
+00:57:00,400 --> 00:57:06,970
+data they don't just randomly spread out in
+the future space. The objects tend to have
+
+465
+00:57:06,970 --> 00:57:16,230
+similar attributes, and therefore, we are
+looking at the problem of clusters of objects.
+
+466
+00:57:16,230 --> 00:57:21,410
+Similar objects are highly clustered in the
+feature space. So, that saves the day for
+
+467
+00:57:21,410 --> 00:57:24,210
+this
+classification problem. If we can find just
+
+468
+00:57:24,210 --> 00:57:30,040
+a few clusters, then do attention. right?
+We talk about top-down attention. At the top
+
+469
+00:57:30,040 --> 00:57:35,790
+we say there are this uniform distribution
+situations we are dead. But there are 20 or
+
+470
+00:57:35,790 --> 00:57:42,130
+30 classes out there, and let's look at two
+or three most likely clusters and we then
+
+471
+00:57:42,130 --> 00:57:48,839
+we zoom in our attention to it look into each
+of these clusters. We may suffer from a lower
+
+472
+00:57:48,839 --> 00:57:56,931
+recall because we may miss some good clusters.
+But the searching speed will be higher. Once
+
+473
+00:57:56,931 --> 00:58:02,690
+we get into the clusters, the precision of
+course is not an issue.
+
+474
+00:58:02,690 --> 00:58:12,191
+Now, distance function. This is a very essential
+topic for AI and at the end i'd like you to
+
+475
+00:58:12,191 --> 00:58:16,730
+think about do we have the right distance
+function today?
+
+476
+00:58:16,730 --> 00:58:23,160
+Do you remember when we talked about NLP,
+the history of NLP, we said well we need to
+
+477
+00:58:23,160 --> 00:58:27,589
+quantify the distance, similarity, between
+words, and we said
+
+478
+00:58:27,589 --> 00:58:35,380
+well we have problems of synonym and polysemy.
+Synonym may be easier you can do clustering
+
+479
+00:58:35,380 --> 00:58:40,619
+but polysemy can be more challenging.
+Although clustering can handle the problem,
+
+480
+00:58:40,619 --> 00:58:46,420
+but for polysemy, we need to deal with it
+very carefully (is) when we have contextual
+
+481
+00:58:46,420 --> 00:58:51,290
+information.
+So let's look at distance functions in the
+
+482
+00:58:51,290 --> 00:58:57,420
+past. How we choose our distance function?
+In Minkowski function basically if we have
+
+483
+00:58:57,420 --> 00:59:05,470
+two objects x and y and each object has k
+attributes, k can be ranging from one to maybe
+
+484
+00:59:05,470 --> 00:59:14,119
+one thousand, and then we just say objects
+x and y, we go through their attributes and
+
+485
+00:59:14,119 --> 00:59:21,490
+compare all the attribute differences then
+sum them up. There are different ways to quantify
+
+486
+00:59:21,490 --> 00:59:27,270
+this sum. The first way is saying oh i want
+to square the sum because i don't want to
+
+487
+00:59:27,270 --> 00:59:32,569
+worry about negative positive. I just want
+to do a square of distance then i sum them
+
+488
+00:59:32,569 --> 00:59:37,390
+together. The second method is, again i don't
+care about positive negative, i just care
+
+489
+00:59:37,390 --> 00:59:42,950
+about distance, i do this absolute value.
+The third one is that, well you have squared
+
+490
+00:59:42,950 --> 00:59:48,140
+why not have different kind of exponential
+number just have q in general then you just
+
+491
+00:59:48,140 --> 00:59:56,580
+normalize using 1/q. We call the first one
+Euclidean distance, second one Manhattan distance,
+
+492
+00:59:56,580 --> 01:00:03,700
+and last one Minkowski. function in general.
+For the manhattan distance they call that
+
+493
+01:00:03,700 --> 01:00:09,370
+because it's like a street-block distance.
+You look at every dimension, you don't do
+
+494
+01:00:09,370 --> 01:00:18,990
+a square. Euclidean you use a straight line:
+straight-line distance between two points.
+
+495
+01:00:18,990 --> 01:00:26,210
+Which method is better for vision? According
+to all the empirical studies in the past,
+
+496
+01:00:26,210 --> 01:00:34,040
+Manhattan function seems to work better. Although
+intuitively you want to say maybe Euclidean
+
+497
+01:00:34,040 --> 01:00:39,240
+makes more sense right i just want to know
+the straight-line distance between two points.
+
+498
+01:00:39,240 --> 01:00:46,760
+But the trouble of Euclidean is the square
+over there. When you have a square means when
+
+499
+01:00:46,760 --> 01:00:53,970
+you have a minority number of attributes that
+they have large differences, then they will
+
+500
+01:00:53,970 --> 01:01:01,730
+impact your distance function non-proportionally.
+For example, suppose you have one or
+
+501
+01:01:01,730 --> 01:01:06,850
+two outliers, and they have a difference of
+20. The rest of the attributes difference
+
+502
+01:01:06,850 --> 01:01:14,030
+is only, let's say, 0.2. then this 20 or 10
+when they you have an exponential over there,
+
+503
+01:01:14,030 --> 01:01:20,980
+power of 2, then those two attributes will
+dominate your similarity measurement. Therefore,
+
+504
+01:01:20,980 --> 01:01:27,550
+manhattan is better, you don't have the problem.
+And some folks even use q equal to 1/2, right?
+
+505
+01:01:27,550 --> 01:01:32,790
+Say, well one is good, one is better than
+two, why not just a half?
+
+506
+01:01:32,790 --> 01:01:39,660
+We want to normalize the distance to make
+sure all the attributes enjoy equal importance.
+
+507
+01:01:39,660 --> 01:01:47,230
+But that's really empirical study to figure
+out. The second family of function is called
+
+508
+01:01:47,230 --> 01:01:53,619
+cosine function. You must heard about this
+really often. In high dimensional space people
+
+509
+01:01:53,619 --> 01:01:58,980
+tend to use this one because computationally
+you just do a dot product, and you can get
+
+510
+01:01:58,980 --> 01:02:06,760
+a distance function (measure). And..., but.
+Let's think about attention and consciousness
+
+511
+01:02:06,760 --> 01:02:14,339
+now. What we have depicted so far, let's just
+think about the Euclidean distance function.
+
+512
+01:02:14,339 --> 01:02:27,150
+The distance function, do you think it works
+in unconsciousness mode or consciousness mode?
+
+513
+01:02:27,150 --> 01:02:35,030
+Because once the distance function is already
+there, if i ask you a question of: "Do you
+
+514
+01:02:35,030 --> 01:02:44,599
+think New York and LA, are they similar or
+not?" You cannot process using your consciousness.
+
+515
+01:02:44,599 --> 01:02:49,180
+You have to obey the distance function. The
+distance function would say, there are many
+
+516
+01:02:49,180 --> 01:02:53,720
+attributes when you want to compare those
+two cities, and you can compare every single
+
+517
+01:02:53,720 --> 01:02:59,109
+attribute and you sum together. That's your
+answer. There's no subjectivity, right? But,
+
+518
+01:02:59,109 --> 01:03:03,112
+that's not the way
+humans compare similarity between objects.
+
+519
+01:03:03,112 --> 01:03:13,600
+These (on the slide) are the progress in psychology
+or psychiatry in the last 100 years. First
+
+520
+01:03:13,600 --> 01:03:23,920
+of all in 1928, psychiatrists believe objects
+are similar in all respects. This is Minkowski
+
+521
+01:03:23,920 --> 01:03:29,390
+function. You consider all attributes, the
+only difference is the exponent, square or
+
+522
+01:03:29,390 --> 01:03:43,849
+q. After 50 years and we have a new theory
+by Tversky---objects are similar in some respects
+
+523
+01:03:43,849 --> 01:03:49,109
+not all respects. Certain respects you can
+ignore. It came out with weighted Minkowski
+
+524
+01:03:49,109 --> 01:03:53,930
+function. You have to put a weight in front
+of each attribute. Certain weights can be
+
+525
+01:03:53,930 --> 01:03:57,560
+lower and certain
+weights can be higher. If you don't care about,
+
+526
+01:03:57,560 --> 01:04:04,900
+let's say, once you have worn a mask, the
+face recognition system should just dismiss
+
+527
+01:04:04,900 --> 01:04:09,849
+whatever in the second region (beneath nose).
+I don't know why apple takes so long to come
+
+528
+01:04:09,849 --> 01:04:17,000
+up with the new face recognition system. Now
+you can unlock your phone even with your mask
+
+529
+01:04:17,000 --> 01:04:21,660
+on. But to me (it) still fails. I don't know
+what the (iPhone) algorithm was working on?
+
+530
+01:04:21,660 --> 01:04:30,859
+But you can say it definitely downplays whatever
+beneath your eyes. Similarity, in 1994, Goldstone
+
+531
+01:04:30,859 --> 01:04:36,250
+saying similarity is a process of determining
+the respects rather than using predefined
+
+532
+01:04:36,250 --> 01:04:42,742
+respects. And this really flips consciousness
+and unconsciousness. (Function) one and two,
+
+533
+01:04:42,742 --> 01:04:46,910
+the paradigm is really unconsciousness.
+You are given a function and you don't even
+
+534
+01:04:46,910 --> 01:04:53,470
+need to think. That's it. But Goldstone saying
+no no no. You are in a conscious state, you
+
+535
+01:04:53,470 --> 01:04:59,829
+are determining the respects, not respects
+already determined for you. Therefore, in
+
+536
+01:04:59,829 --> 01:05:06,309
+this example I put in one of our publications,
+which was quite interesting. The question
+
+537
+01:05:06,309 --> 01:05:14,440
+is: "pick two cities similar to San Francisco."
+I assume, let's don't do this experiment here
+
+538
+01:05:14,440 --> 01:05:23,050
+because time imitation. But my assumption:
+out of you, you may pick different sets (of
+
+539
+01:05:23,050 --> 01:05:24,180
+cities).  
+
+540
+01:05:24,180 --> 01:05:32,960
+Why? because in my case, when I do comparison
+I don't have a function to start with. Although
+
+541
+01:05:32,960 --> 01:05:36,339
+there are possible attributes down there (on
+the slide) : location, climate, demographics,
+
+542
+01:05:36,339 --> 01:05:43,130
+culture, and so on so forth. But, only when
+i realize the objects i want to compare, let's
+
+543
+01:05:43,130 --> 01:05:50,530
+say, i start to compare San Francisco and
+New York, and the respects surface on my consciousness.
+
+544
+01:05:50,530 --> 01:05:56,650
+I say oh San Francisco New York, they are
+similar in maybe traffic. Definitely not similar
+
+545
+01:05:56,650 --> 01:05:59,230
+in location, (since) they are one east coast and
+
+546
+01:05:59,230 --> 01:06:03,109
+one west coast. And of course if the context
+is different, oh they are both in the US,
+
+547
+01:06:03,109 --> 01:06:09,140
+then that's a different story. The cultural
+mixtures, they are similar, that they have
+
+548
+01:06:09,140 --> 01:06:12,320
+multiple cultures.
+
+549
+01:06:12,320 --> 01:06:19,200
+The attributes come out when you have the
+objects surfaced. Let's say Los Angeles, or
+
+550
+01:06:19,200 --> 01:06:26,479
+Tokyo. Let's say Los Angeles is similar to
+San Francisco. Los Angeles and and San Francisco,
+
+551
+01:06:26,479 --> 01:06:30,809
+location wise they are close. But when you
+say San Francisco and Tokyo, they say no no,
+
+552
+01:06:30,809 --> 01:06:35,970
+they are very far apart. But some people still
+consider San Francisco is similar to Tokyo
+
+553
+01:06:35,970 --> 01:06:42,540
+because it's a metropolitan city and San Francisco
+has a Japan town and Tokyo definitely has
+
+554
+01:06:42,540 --> 01:06:47,430
+a lot of Japanese goods and culture.
+
+555
+01:06:47,430 --> 01:06:56,990
+So, this comparison is really subjective,
+and which respects you want to focus on is
+
+556
+01:06:56,990 --> 01:07:05,391
+a consciousness operation rather than unconsciousness.
+This really makes a huge difference when we're
+
+557
+01:07:05,391 --> 01:07:11,930
+looking forward and when we want to quantify
+similarity for the machine learning task.
+
+558
+01:07:11,930 --> 01:07:20,010
+"Similarity is quantified only a pair of objects
+being compared are realized." This is the
+
+559
+01:07:20,010 --> 01:07:26,780
+key sentence. You cannot predefine the distance
+function. How do we implement it?
+
+560
+01:07:26,780 --> 01:07:34,450
+We implemented 20 years ago with my student.
+On the right-hand side you can see there are
+
+561
+01:07:34,450 --> 01:07:41,059
+m objects, and if you want to compare them
+whether they are similar or not, based on
+
+562
+01:07:41,059 --> 01:07:50,260
+their values here. You probably say, well,
+for every pair the the common bits got flipped
+
+563
+01:07:50,260 --> 01:07:57,339
+to one, every pair is only two. Only minority.
+So you say no, they are not very similar.
+
+564
+01:07:57,339 --> 01:08:04,940
+But on the left-hand side example, you say
+oh a1, a2, a3 could be similar because when
+
+565
+01:08:04,940 --> 01:08:14,050
+you do voting, majority voting, between two,
+between each pair, they have three attributes
+
+566
+01:08:14,050 --> 01:08:20,279
+similar---they have majority attributes similar.
+They are not identical,
+
+567
+01:08:20,279 --> 01:08:27,970
+but they have three attributes similar. So,
+at the end our finding is the following: if
+
+568
+01:08:27,970 --> 01:08:35,180
+you look at this next picture and this is
+way before this data augmentation (AlexNet,
+
+569
+01:08:35,180 --> 01:08:43,180
+2012) was performed. In year 2001, my student
+Beitao, he said, well, giving me these 5000
+
+570
+01:08:43,180 --> 01:08:50,310
+images i'm going to do conversion on those
+images, including converting jpeg to GIF,
+
+571
+01:08:50,310 --> 01:08:56,000
+and we crop images, we rotate images, and
+then we scale certain images. When we crop
+
+572
+01:08:56,000 --> 01:09:02,319
+the images we make sure that the gist of image
+remaining in the image. Like, say, a barbecue,
+
+573
+01:09:02,319 --> 01:09:09,899
+you keep the bbq relevant objects or features
+still in the cropped image. Then we say we
+
+574
+01:09:09,899 --> 01:09:18,048
+quantify every image---we do feature extraction
+with three type of features, color, texture,
+
+575
+01:09:18,049 --> 01:09:24,500
+and the shape. If you look at the picture
+here we have 144 attributes for every image
+
+576
+01:09:24,500 --> 01:09:30,880
+(x-axis). Then we say okay we compare the
+original image with converted images, transform
+
+577
+01:09:30,880 --> 01:09:35,189
+images. The first one (a) compared with GIF
+images,
+
+578
+01:09:35,189 --> 01:09:40,798
+basically we just changed the format. The
+bottom one (c) rotated images, and on the
+
+579
+01:09:40,799 --> 01:09:49,640
+bottom-right (d): scaled images. Then you
+look at the channels here, we have 144 attributes.
+
+580
+01:09:49,640 --> 01:09:55,690
+If we consider 0.02 (y-axis difference)
+
+581
+01:09:55,690 --> 01:10:03,110
+to be the similarity threshold
+we are willing to accept. Even in the GIF
+
+582
+01:10:03,110 --> 01:10:09,730
+conversion we can harvest maybe
+a half of them, about 70 or 80 (attributes)
+
+583
+01:10:09,730 --> 01:10:14,110
+in converted images to say: wow, they have
+sufficient number of attributes similar to
+
+584
+01:10:14,110 --> 01:10:19,130
+the original image. If you look at rotated
+images. Rotated images is very simple because
+
+585
+01:10:19,130 --> 01:10:25,179
+in a rotated image certain features wouldn't
+change. It happens the first 108 features
+
+586
+01:10:25,179 --> 01:10:32,590
+are color features. If we rotate an image,
+using any color histograms, the (color) features
+
+587
+01:10:32,590 --> 01:10:40,050
+would not change. Here you can say the differences
+between colors are very small. And the scale
+
+588
+01:10:40,050 --> 01:10:44,420
+images, color pretty much remain the same.
+Color distribution remains the same, but texture
+
+589
+01:10:44,420 --> 01:10:51,429
+and shape may be different. And similarly,
+cropped images you have more varieties, right?
+
+590
+01:10:51,429 --> 01:10:58,590
+So let's say if we want to increase the threshold
+to 0.1 (y-axis) and even in the cropped images
+
+591
+01:10:58,590 --> 01:11:04,050
+you can find sufficient number of similar
+objects because they have sufficient number
+
+592
+01:11:04,050 --> 01:11:10,330
+of similar attributes. The idea to formulate
+a distance function here, then is that we
+
+593
+01:11:10,330 --> 01:11:16,390
+actually just want to have (similar) majority,
+we don't care about which attributes. So,
+
+594
+01:11:16,390 --> 01:11:23,610
+for GIF images you see similar attributes:
+some in colors, some in shape, and some maybe
+
+595
+01:11:23,610 --> 01:11:33,090
+in texture. For cropped images the channels
+with small differences are also distributed
+
+596
+01:11:33,090 --> 01:11:39,400
+in different features. Although in rotated
+images, similar features tend to be in the
+
+597
+01:11:39,400 --> 01:11:43,890
+color channel. But once you say oh let me
+give you a threshold let's say if you have
+
+598
+01:11:43,890 --> 01:11:51,460
+108 attributes similar out of 144, i declare
+those two images are similar. Otherwise, i
+
+599
+01:11:51,460 --> 01:11:56,120
+say those two images
+are not similar. Just using this heuristic,
+
+600
+01:11:56,120 --> 01:12:03,830
+we can detect all these kinds of transformed
+images of the original image, very very accurately.
+
+601
+01:12:03,830 --> 01:12:10,410
+And when we competed with other state-of-the-art
+results 20 years ago, we outperformed all
+
+602
+01:12:10,410 --> 01:12:18,360
+other methods, by just doing this very simple
+change. The only question is how do you determine
+
+603
+01:12:18,360 --> 01:12:21,969
+the threshold (of similarity on y-axis)? The
+threshold
+
+604
+01:12:21,969 --> 01:12:28,760
+should be 0.2 or 0.4 or 0.1? With some top-down
+hints,
+
+605
+01:12:28,760 --> 01:12:38,410
+this can be resolved. You just say  i already
+told you the cropped images were cropped non-substantially.
+
+606
+01:12:38,410 --> 01:12:43,160
+They should be similar to origin image or
+you say scaled images should be the same as
+
+607
+01:12:43,160 --> 01:12:50,790
+the original image, you tell me that then
+i can do reverse engineering to find out,
+
+608
+01:12:50,790 --> 01:12:57,920
+okay, given this particular set of attributes,
+and given 144 features, how should i set the
+
+609
+01:12:57,920 --> 01:13:03,970
+threshold value so that i will accept enough
+number of channels to be similar and declare
+
+610
+01:13:03,970 --> 01:13:10,900
+those objects to be similar.
+And to write down the formula, the formula
+
+611
+01:13:10,900 --> 01:13:17,960
+was not too challenging. Basically, we only
+have these m and r two attributes, and we
+
+612
+01:13:17,960 --> 01:13:25,719
+have this delta m, which denotes the smallest
+of m sigmas. You find the smallest m sigma's,
+
+613
+01:13:25,719 --> 01:13:32,270
+m differences, and m is the threshold I just
+mentioned about. So m all the 144, should
+
+614
+01:13:32,270 --> 01:13:39,340
+m be 85 or 108? That should be done through
+data mining. Once you have m then distance
+
+615
+01:13:39,340 --> 01:13:46,860
+can be quantified using this we call Dynamic
+Partial function. Dynamic means every pair
+
+616
+01:13:46,860 --> 01:13:52,920
+of objects the distance function to compute
+similarity would be different;
+
+617
+01:13:52,920 --> 01:13:59,190
+partial means you don't need to weight all
+attributes in the distance function. You only
+
+618
+01:13:59,190 --> 01:14:07,530
+pick the smallest deltas, or the smallest
+attribute differences, to be into your distance
+
+619
+01:14:07,530 --> 01:14:14,800
+function. Although this method works so well,
+but it's computational intensive. You need
+
+620
+01:14:14,800 --> 01:14:22,500
+to have all objects compared in a pairwise
+manner. Therefore, I leave you the last slide,
+
+621
+01:14:22,500 --> 01:14:29,230
+and this could be some really interesting
+long-term research. You look at our attention
+
+622
+01:14:29,230 --> 01:14:38,780
+model today. It's not good enough if you consider
+top-down attention. The attention model today
+
+623
+01:14:38,780 --> 01:14:45,320
+is only doing bottom-up attention, because
+we started from the lower-layer neurons then
+
+624
+01:14:45,320 --> 01:14:49,550
+we aggregate information eventually we have
+a list of, we call features,
+
+625
+01:14:49,550 --> 01:14:58,630
+high level features learned at the top. Then
+we do attention, and finally we get our target
+
+626
+01:14:58,630 --> 01:15:07,710
+task formulated. Here at the top level our
+distance function is pretty much weighted
+
+627
+01:15:07,710 --> 01:15:14,870
+Minkowski function. Should that distance function
+be modified so therefore we can do kind of
+
+628
+01:15:14,870 --> 01:15:21,862
+pairwise realizations support subjective similarity
+measures, and support dynamic to (adapt to)
+
+629
+01:15:21,862 --> 01:15:29,400
+the contextual information. I think the answer
+should be yes. This is an opportunity i consider
+
+630
+01:15:29,400 --> 01:15:37,960
+quantifiable to put system 2 above system
+1.
+
+631
+01:15:37,960 --> 01:15:47,500
+This pretty much concludes the the lecture
+today: what is consciousness. Next lecture
+
+632
+01:15:47,500 --> 01:15:55,310
+we'll talk about where is consciousness. You
+may still feel what is consciousness, after
+
+633
+01:15:55,310 --> 01:16:05,800
+today's lecture even with Kaku's intuitions,
+with schrodinger's quantum mechanics and the
+
+634
+01:16:05,800 --> 01:16:12,480
+second law of thermodynamics, you still don't
+feel easy about it. But when we learn more
+
+635
+01:16:12,480 --> 01:16:19,350
+about where is consciousness, i think we can
+feel slightly more comfortable, and that will
+
+636
+01:16:19,350 --> 01:16:29,270
+be (covered) next Monday. Next Wednesday Dr.
+Duvvuri will come back to wrap up his psychology
+
+637
+01:16:29,270 --> 01:16:38,630
+or psychiatry perspectives on abnormality
+and normality of of the mental state.
+
+638
+01:16:38,630 --> 01:16:47,429
+Any questions you can send me after the lecture
+and hopefully you have made good progress
+
+639
+01:16:47,429 --> 01:16:54,240
+on your project. I will see you next week.
+Thank you!
+

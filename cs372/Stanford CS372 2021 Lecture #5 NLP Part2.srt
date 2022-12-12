@@ -1,0 +1,8404 @@
+1
+00:00:05,359 --> 00:00:06,799
+good morning
+
+2
+00:00:06,799 --> 00:00:09,200
+everyone
+
+3
+00:00:09,200 --> 00:00:11,840
+last time we started presenting the
+
+4
+00:00:11,840 --> 00:00:15,679
+history of nature language processing
+
+5
+00:00:15,679 --> 00:00:17,680
+and we started
+
+6
+00:00:17,680 --> 00:00:20,000
+presenting the first epoch
+
+7
+00:00:20,000 --> 00:00:22,000
+and engineering features
+
+8
+00:00:22,000 --> 00:00:22,720
+so
+
+9
+00:00:22,720 --> 00:00:24,800
+today i'm going to continue to go
+
+10
+00:00:24,800 --> 00:00:26,960
+through the history until
+
+11
+00:00:26,960 --> 00:00:29,519
+last year and hopefully we can get into
+
+12
+00:00:29,519 --> 00:00:32,479
+some future discussions if not we can
+
+13
+00:00:32,479 --> 00:00:35,520
+wrap up nlp in the next lecture
+
+14
+00:00:35,520 --> 00:00:38,160
+and meanwhile i'd like to encourage you
+
+15
+00:00:38,160 --> 00:00:39,120
+to
+
+16
+00:00:39,120 --> 00:00:41,360
+finalize your
+
+17
+00:00:41,360 --> 00:00:43,040
+project proposal
+
+18
+00:00:43,040 --> 00:00:46,239
+and we can have the proposal decided
+
+19
+00:00:46,239 --> 00:00:50,239
+by this week or latest the next tuesday
+
+20
+00:00:50,239 --> 00:00:51,760
+okay so
+
+21
+00:00:51,760 --> 00:00:52,960
+after
+
+22
+00:00:52,960 --> 00:00:54,800
+about 20 minutes into a lecture i will
+
+23
+00:00:54,800 --> 00:00:55,680
+pause
+
+24
+00:00:55,680 --> 00:00:58,000
+for a few minutes so you can raise
+
+25
+00:00:58,000 --> 00:00:59,120
+questions
+
+26
+00:00:59,120 --> 00:01:01,120
+and at any time please enter your
+
+27
+00:01:01,120 --> 00:01:04,559
+questions into the chat room
+
+28
+00:01:04,720 --> 00:01:06,080
+so
+
+29
+00:01:06,080 --> 00:01:09,600
+we divide the nlp history into
+
+30
+00:01:09,600 --> 00:01:11,200
+three major parts
+
+31
+00:01:11,200 --> 00:01:13,920
+and then we have this frontier research
+
+32
+00:01:13,920 --> 00:01:15,759
+and the last time we started with the
+
+33
+00:01:15,759 --> 00:01:17,680
+hand engineering models based on
+
+34
+00:01:17,680 --> 00:01:19,119
+heuristics
+
+35
+00:01:19,119 --> 00:01:22,080
+and we motivated
+
+36
+00:01:22,080 --> 00:01:24,880
+nature language is unique to human being
+
+37
+00:01:24,880 --> 00:01:27,520
+and from the dna structures
+
+38
+00:01:27,520 --> 00:01:29,520
+the only difference from us
+
+39
+00:01:29,520 --> 00:01:32,880
+from our predecessor chimpanzees just
+
+40
+00:01:32,880 --> 00:01:35,119
+the second pair of dna
+
+41
+00:01:35,119 --> 00:01:37,600
+but however with that difference
+
+42
+00:01:37,600 --> 00:01:39,439
+we are able to
+
+43
+00:01:39,439 --> 00:01:42,159
+accumulate knowledges and also based on
+
+44
+00:01:42,159 --> 00:01:43,759
+the existing knowledge
+
+45
+00:01:43,759 --> 00:01:45,920
+and we do exploration to create novel
+
+46
+00:01:45,920 --> 00:01:47,280
+ideas
+
+47
+00:01:47,280 --> 00:01:50,799
+and this is only unique to human other
+
+48
+00:01:50,799 --> 00:01:52,240
+species
+
+49
+00:01:52,240 --> 00:01:54,399
+after they were born they have to start
+
+50
+00:01:54,399 --> 00:01:56,000
+learning from scratch
+
+51
+00:01:56,000 --> 00:01:59,119
+of course i our dna may already give us
+
+52
+00:01:59,119 --> 00:02:00,560
+some priors
+
+53
+00:02:00,560 --> 00:02:02,399
+and if you listen to
+
+54
+00:02:02,399 --> 00:02:05,360
+uh professor chomsky's lectures
+
+55
+00:02:05,360 --> 00:02:07,920
+and he he will probably say but this is
+
+56
+00:02:07,920 --> 00:02:10,239
+an interesting hypothesis he made
+
+57
+00:02:10,239 --> 00:02:12,239
+he considered language
+
+58
+00:02:12,239 --> 00:02:14,720
+is something like a liver
+
+59
+00:02:14,720 --> 00:02:16,800
+so when we are born
+
+60
+00:02:16,800 --> 00:02:18,319
+we have this
+
+61
+00:02:18,319 --> 00:02:20,959
+language organ this guy prior so we
+
+62
+00:02:20,959 --> 00:02:23,440
+could pick up language very very quickly
+
+63
+00:02:23,440 --> 00:02:25,520
+not because we are working extremely
+
+64
+00:02:25,520 --> 00:02:28,720
+hard to pick up languages but because we
+
+65
+00:02:28,720 --> 00:02:32,319
+already have this intrinsic capability
+
+66
+00:02:32,319 --> 00:02:33,840
+already been
+
+67
+00:02:33,840 --> 00:02:35,519
+pre-programmed
+
+68
+00:02:35,519 --> 00:02:36,480
+so
+
+69
+00:02:36,480 --> 00:02:38,879
+you can probably tell
+
+70
+00:02:38,879 --> 00:02:41,840
+virtually everyone even just a
+
+71
+00:02:41,840 --> 00:02:44,080
+primary school graduate they can speak
+
+72
+00:02:44,080 --> 00:02:46,000
+language without any problems
+
+73
+00:02:46,000 --> 00:02:47,599
+but to further
+
+74
+00:02:47,599 --> 00:02:50,160
+to do writing and to prepare your
+
+75
+00:02:50,160 --> 00:02:51,920
+writing of course we need additional
+
+76
+00:02:51,920 --> 00:02:52,879
+training
+
+77
+00:02:52,879 --> 00:02:55,040
+but just spoken language it doesn't seem
+
+78
+00:02:55,040 --> 00:02:57,519
+to take a lot of effort for us to be
+
+79
+00:02:57,519 --> 00:02:58,800
+able to start to
+
+80
+00:02:58,800 --> 00:03:01,200
+make conversations
+
+81
+00:03:01,200 --> 00:03:03,599
+so we had this example last time we say
+
+82
+00:03:03,599 --> 00:03:07,120
+okay suppose i went to kyoto
+
+83
+00:03:07,120 --> 00:03:09,519
+and i have seen a lot of different
+
+84
+00:03:09,519 --> 00:03:12,480
+sceneries and i want to convey what i
+
+85
+00:03:12,480 --> 00:03:14,959
+have seen to my friends or family
+
+86
+00:03:14,959 --> 00:03:15,840
+and
+
+87
+00:03:15,840 --> 00:03:18,239
+the only way i could do it if this is
+
+88
+00:03:18,239 --> 00:03:20,640
+about a thousand years ago even 200
+
+89
+00:03:20,640 --> 00:03:23,120
+years ago there was no photography right
+
+90
+00:03:23,120 --> 00:03:25,120
+i mean unless i can just say i
+
+91
+00:03:25,120 --> 00:03:28,159
+do a painting i show my my wife saying
+
+92
+00:03:28,159 --> 00:03:30,319
+well this is the beautiful scenery in
+
+93
+00:03:30,319 --> 00:03:33,040
+tokyo otherwise i have to use speech
+
+94
+00:03:33,040 --> 00:03:34,720
+today is much easier because we have
+
+95
+00:03:34,720 --> 00:03:37,440
+images we have videos but
+
+96
+00:03:37,440 --> 00:03:40,720
+500 years ago no right so language is
+
+97
+00:03:40,720 --> 00:03:43,360
+only the mechanism for us to communicate
+
+98
+00:03:43,360 --> 00:03:45,040
+what we have seen
+
+99
+00:03:45,040 --> 00:03:48,640
+so so when we convey in language
+
+100
+00:03:48,640 --> 00:03:51,519
+the perception obtained by the audience
+
+101
+00:03:51,519 --> 00:03:53,840
+may be different from our intent
+
+102
+00:03:53,840 --> 00:03:54,879
+so
+
+103
+00:03:54,879 --> 00:03:57,360
+gradually the language need be further
+
+104
+00:03:57,360 --> 00:04:00,080
+refined and refined
+
+105
+00:04:00,080 --> 00:04:03,280
+and if we look at this picture
+
+106
+00:04:03,280 --> 00:04:07,599
+we will talk about consciousness uh in
+
+107
+00:04:07,599 --> 00:04:09,200
+in week nine
+
+108
+00:04:09,200 --> 00:04:10,959
+but this is a preview
+
+109
+00:04:10,959 --> 00:04:11,760
+so
+
+110
+00:04:11,760 --> 00:04:14,879
+by psychologist we can divide our
+
+111
+00:04:14,879 --> 00:04:16,880
+conscious state into three
+
+112
+00:04:16,880 --> 00:04:18,639
+unconsciousness
+
+113
+00:04:18,639 --> 00:04:21,040
+like our heartbeat is ongoing in
+
+114
+00:04:21,040 --> 00:04:24,080
+unconsciousness state pre-consciousness
+
+115
+00:04:24,080 --> 00:04:26,160
+and in the consciousness so today i'm
+
+116
+00:04:26,160 --> 00:04:27,600
+not going to get into details but you
+
+117
+00:04:27,600 --> 00:04:30,320
+can think about how we position vision
+
+118
+00:04:30,320 --> 00:04:32,080
+and language
+
+119
+00:04:32,080 --> 00:04:33,680
+when we position
+
+120
+00:04:33,680 --> 00:04:34,880
+vision
+
+121
+00:04:34,880 --> 00:04:36,720
+on this two-dimensional space on the
+
+122
+00:04:36,720 --> 00:04:39,280
+left-hand side i say micro if we want to
+
+123
+00:04:39,280 --> 00:04:40,240
+plot
+
+124
+00:04:40,240 --> 00:04:42,400
+various applications on the on the graph
+
+125
+00:04:42,400 --> 00:04:44,240
+we can do that but today we just look at
+
+126
+00:04:44,240 --> 00:04:46,080
+the right-hand side macro
+
+127
+00:04:46,080 --> 00:04:48,880
+we compare vision and the languages
+
+128
+00:04:48,880 --> 00:04:50,720
+where do you think vision should be
+
+129
+00:04:50,720 --> 00:04:51,840
+placed
+
+130
+00:04:51,840 --> 00:04:55,120
+should region be in subconsciousness
+
+131
+00:04:55,120 --> 00:04:56,720
+pre-consciousness
+
+132
+00:04:56,720 --> 00:05:00,160
+or consciousness
+
+133
+00:05:00,320 --> 00:05:01,680
+right let's just say it's an interesting
+
+134
+00:05:01,680 --> 00:05:04,320
+question and i'm not going to
+
+135
+00:05:04,320 --> 00:05:06,560
+give you the reasonings but
+
+136
+00:05:06,560 --> 00:05:09,680
+this is what most of people believe
+
+137
+00:05:09,680 --> 00:05:12,000
+vision is
+
+138
+00:05:12,000 --> 00:05:14,639
+unconsciously unconscious state
+
+139
+00:05:14,639 --> 00:05:15,759
+but
+
+140
+00:05:15,759 --> 00:05:18,080
+it's also
+
+141
+00:05:18,080 --> 00:05:20,240
+in pre-consciousness thing
+
+142
+00:05:20,240 --> 00:05:22,479
+and one example is you
+
+143
+00:05:22,479 --> 00:05:24,479
+suppose you are looking in a garden
+
+144
+00:05:24,479 --> 00:05:26,160
+right and you are thinking about other
+
+145
+00:05:26,160 --> 00:05:27,199
+things
+
+146
+00:05:27,199 --> 00:05:29,280
+but when
+
+147
+00:05:29,280 --> 00:05:31,440
+a chimpanzee would
+
+148
+00:05:31,440 --> 00:05:32,720
+that definitely wouldn't be chimpanzee
+
+149
+00:05:32,720 --> 00:05:35,759
+but animal comes comes over and you can
+
+150
+00:05:35,759 --> 00:05:38,320
+you can see the animals but then you
+
+151
+00:05:38,320 --> 00:05:39,759
+realize suddenly you realize okay
+
+152
+00:05:39,759 --> 00:05:41,840
+something's going on so our perception
+
+153
+00:05:41,840 --> 00:05:44,479
+is ongoing even we are not really
+
+154
+00:05:44,479 --> 00:05:47,039
+interpreting the situations so it's
+
+155
+00:05:47,039 --> 00:05:48,880
+probably in the unconscious or
+
+156
+00:05:48,880 --> 00:05:51,520
+subconscious state and when we are
+
+157
+00:05:51,520 --> 00:05:53,919
+alerted and then we get into a conscious
+
+158
+00:05:53,919 --> 00:05:56,240
+state so conscious state of course
+
+159
+00:05:56,240 --> 00:05:58,960
+language plays a big role right so
+
+160
+00:05:58,960 --> 00:06:00,960
+this is the intuition behind where where
+
+161
+00:06:00,960 --> 00:06:02,319
+we place them
+
+162
+00:06:02,319 --> 00:06:03,680
+uh
+
+163
+00:06:03,680 --> 00:06:05,440
+definitely we can do even much more
+
+164
+00:06:05,440 --> 00:06:08,400
+let's say ethics where should we place
+
+165
+00:06:08,400 --> 00:06:09,520
+ethics
+
+166
+00:06:09,520 --> 00:06:10,800
+and uh
+
+167
+00:06:10,800 --> 00:06:13,520
+when we talk about the robots today uh
+
+168
+00:06:13,520 --> 00:06:14,960
+they don't have
+
+169
+00:06:14,960 --> 00:06:17,440
+ethics a robot cannot come with sins
+
+170
+00:06:17,440 --> 00:06:20,080
+right so but if we want to put ethics
+
+171
+00:06:20,080 --> 00:06:21,680
+into a robot
+
+172
+00:06:21,680 --> 00:06:25,360
+how can we approach the problem from
+
+173
+00:06:25,360 --> 00:06:27,680
+this kind of two-dimensional diagram and
+
+174
+00:06:27,680 --> 00:06:30,880
+those will be discussed in lecture 15.
+
+175
+00:06:30,880 --> 00:06:33,600
+so come back to the past so we started
+
+176
+00:06:33,600 --> 00:06:35,919
+to say okay uh
+
+177
+00:06:35,919 --> 00:06:37,039
+before
+
+178
+00:06:37,039 --> 00:06:39,840
+year 2003 the
+
+179
+00:06:39,840 --> 00:06:41,840
+word representation is done by using
+
+180
+00:06:41,840 --> 00:06:44,479
+this one hot vector and one half vector
+
+181
+00:06:44,479 --> 00:06:46,160
+the major shortcoming is you can you
+
+182
+00:06:46,160 --> 00:06:48,240
+just cannot compute similarity okay
+
+183
+00:06:48,240 --> 00:06:49,680
+that's given
+
+184
+00:06:49,680 --> 00:06:50,880
+so
+
+185
+00:06:50,880 --> 00:06:53,840
+the remedy was people using this kind of
+
+186
+00:06:53,840 --> 00:06:55,199
+handcraft
+
+187
+00:06:55,199 --> 00:06:58,160
+graphs or structures to try to encode
+
+188
+00:06:58,160 --> 00:06:59,440
+similarity
+
+189
+00:06:59,440 --> 00:07:01,360
+and in this particular
+
+190
+00:07:01,360 --> 00:07:04,800
+work done by princeton warned that
+
+191
+00:07:04,800 --> 00:07:06,880
+a lot of researchers encode this
+
+192
+00:07:06,880 --> 00:07:10,319
+hierarchy of is a relationship so you
+
+193
+00:07:10,319 --> 00:07:13,759
+look a picture at the bottom dog man cat
+
+194
+00:07:13,759 --> 00:07:15,199
+they are
+
+195
+00:07:15,199 --> 00:07:17,520
+animal an animal
+
+196
+00:07:17,520 --> 00:07:21,599
+is an organism and so on so forth right
+
+197
+00:07:21,599 --> 00:07:22,319
+and
+
+198
+00:07:22,319 --> 00:07:25,280
+later they consider well how can we
+
+199
+00:07:25,280 --> 00:07:27,919
+depict has a relationship
+
+200
+00:07:27,919 --> 00:07:31,199
+a hospital has nurses and adulterers
+
+201
+00:07:31,199 --> 00:07:32,639
+right so
+
+202
+00:07:32,639 --> 00:07:36,080
+again that will require a lot of
+
+203
+00:07:36,080 --> 00:07:37,599
+hand engineering work
+
+204
+00:07:37,599 --> 00:07:38,319
+and
+
+205
+00:07:38,319 --> 00:07:40,880
+you must know about this kind of uh uh
+
+206
+00:07:40,880 --> 00:07:42,880
+tagging right entity relationship
+
+207
+00:07:42,880 --> 00:07:44,000
+tagging
+
+208
+00:07:44,000 --> 00:07:47,120
+a word is a verb a noun that's fine but
+
+209
+00:07:47,120 --> 00:07:50,400
+this word is a it's a location or a name
+
+210
+00:07:50,400 --> 00:07:52,960
+that's just a heavily involving human
+
+211
+00:07:52,960 --> 00:07:54,800
+involvement and it's definitely not
+
+212
+00:07:54,800 --> 00:07:58,000
+scalable and proven encounters not only
+
+213
+00:07:58,000 --> 00:08:00,240
+similarity cannot be precisely
+
+214
+00:08:00,240 --> 00:08:02,160
+quantified we could say
+
+215
+00:08:02,160 --> 00:08:02,960
+men
+
+216
+00:08:02,960 --> 00:08:05,759
+and the cat they both belongs to mammal
+
+217
+00:08:05,759 --> 00:08:06,639
+but
+
+218
+00:08:06,639 --> 00:08:10,800
+what is a similar score 0.3 or 0.7 so
+
+219
+00:08:10,800 --> 00:08:12,800
+it's not really precise and it's not
+
+220
+00:08:12,800 --> 00:08:14,960
+context but context based
+
+221
+00:08:14,960 --> 00:08:15,680
+and
+
+222
+00:08:15,680 --> 00:08:18,080
+another problem is it's a polysomy
+
+223
+00:08:18,080 --> 00:08:20,000
+problem right four in tokyo can be
+
+224
+00:08:20,000 --> 00:08:22,000
+interpreted in different ways so all
+
+225
+00:08:22,000 --> 00:08:24,000
+these problems need to be addressed so
+
+226
+00:08:24,000 --> 00:08:26,240
+in summary there are two major problems
+
+227
+00:08:26,240 --> 00:08:28,160
+over the last fifty years and all the
+
+228
+00:08:28,160 --> 00:08:30,720
+researchers try to uh try to overcome
+
+229
+00:08:30,720 --> 00:08:34,640
+one is a synonym synonymy a word can
+
+230
+00:08:34,640 --> 00:08:36,479
+have
+
+231
+00:08:36,479 --> 00:08:38,080
+multiple words can have the same can
+
+232
+00:08:38,080 --> 00:08:40,320
+share the same meaning car and the moto
+
+233
+00:08:40,320 --> 00:08:42,399
+automobile for example
+
+234
+00:08:42,399 --> 00:08:44,399
+so even more challenging will be like
+
+235
+00:08:44,399 --> 00:08:46,640
+say i say mercedes-benz
+
+236
+00:08:46,640 --> 00:08:48,240
+and the toyota
+
+237
+00:08:48,240 --> 00:08:50,519
+so do you think they are
+
+238
+00:08:50,519 --> 00:08:54,000
+synonymous cinnamons or not right the
+
+239
+00:08:54,000 --> 00:08:56,399
+answer is tricky you say well in the
+
+240
+00:08:56,399 --> 00:08:58,959
+context of car
+
+241
+00:08:58,959 --> 00:09:01,279
+in the context of luxury cars they are
+
+242
+00:09:01,279 --> 00:09:04,240
+not similar but in the context of cars
+
+243
+00:09:04,240 --> 00:09:05,760
+they are similar
+
+244
+00:09:05,760 --> 00:09:07,920
+so
+
+245
+00:09:08,399 --> 00:09:12,080
+cinnamon can also be context dependent
+
+246
+00:09:12,080 --> 00:09:14,560
+the strength of similarity
+
+247
+00:09:14,560 --> 00:09:17,360
+and polysamy is even even a worse
+
+248
+00:09:17,360 --> 00:09:19,519
+problem right potato chips or computer
+
+249
+00:09:19,519 --> 00:09:20,399
+chips
+
+250
+00:09:20,399 --> 00:09:21,440
+and
+
+251
+00:09:21,440 --> 00:09:23,440
+even in one sentence
+
+252
+00:09:23,440 --> 00:09:27,120
+the word chip or the word for
+
+253
+00:09:27,120 --> 00:09:28,000
+can
+
+254
+00:09:28,000 --> 00:09:31,040
+appear twice and each one means
+
+255
+00:09:31,040 --> 00:09:33,040
+different things let's say i go to a
+
+256
+00:09:33,040 --> 00:09:36,000
+bank which is located located in the
+
+257
+00:09:36,000 --> 00:09:38,320
+bank of charles river right the bank
+
+258
+00:09:38,320 --> 00:09:40,560
+itself has two meaning the first one is
+
+259
+00:09:40,560 --> 00:09:42,800
+this commercial bank the second one is
+
+260
+00:09:42,800 --> 00:09:46,080
+the bank of a river and chip could be
+
+261
+00:09:46,080 --> 00:09:48,080
+the same thing right you say uh can you
+
+262
+00:09:48,080 --> 00:09:50,320
+chip in some money so we can go go to
+
+263
+00:09:50,320 --> 00:09:54,080
+buy some potato chips right
+
+264
+00:09:54,320 --> 00:09:56,880
+so how to solve the problem initially
+
+265
+00:09:56,880 --> 00:09:59,040
+researchers using this kind of
+
+266
+00:09:59,040 --> 00:10:02,880
+word called curious matrix and we
+
+267
+00:10:02,880 --> 00:10:04,959
+describe a very simple one last time we
+
+268
+00:10:04,959 --> 00:10:06,880
+need to decide this is a two dimensional
+
+269
+00:10:06,880 --> 00:10:07,920
+matrix
+
+270
+00:10:07,920 --> 00:10:10,480
+we need to decide what are our own rows
+
+271
+00:10:10,480 --> 00:10:13,200
+and what should be in the columns and
+
+272
+00:10:13,200 --> 00:10:15,519
+then what should be put in the cells
+
+273
+00:10:15,519 --> 00:10:17,760
+and the simple one is we just say okay
+
+274
+00:10:17,760 --> 00:10:20,560
+we put all the documents uh
+
+275
+00:10:20,560 --> 00:10:22,640
+on this column level
+
+276
+00:10:22,640 --> 00:10:24,800
+and all words maybe three hundred
+
+277
+00:10:24,800 --> 00:10:26,079
+thousand words
+
+278
+00:10:26,079 --> 00:10:29,200
+as this is a low right then we say okay
+
+279
+00:10:29,200 --> 00:10:31,600
+this particular document one which words
+
+280
+00:10:31,600 --> 00:10:32,720
+appeared
+
+281
+00:10:32,720 --> 00:10:35,040
+and then when a word appear you can
+
+282
+00:10:35,040 --> 00:10:37,519
+count on how many times a word appears
+
+283
+00:10:37,519 --> 00:10:40,399
+so if one's against just put one and
+
+284
+00:10:40,399 --> 00:10:43,040
+maybe this uh against in document seven
+
+285
+00:10:43,040 --> 00:10:46,320
+three times we put a three over there so
+
+286
+00:10:46,320 --> 00:10:49,360
+this is similar from it so so this is a
+
+287
+00:10:49,360 --> 00:10:52,640
+very simple uh concurrence matrix but we
+
+288
+00:10:52,640 --> 00:10:56,000
+can utilize the vector documents seven
+
+289
+00:10:56,000 --> 00:10:59,440
+is depicted by a battery of words we can
+
+290
+00:10:59,440 --> 00:11:00,959
+simply use a vector to compute
+
+291
+00:11:00,959 --> 00:11:03,519
+similarity cosine distance function
+
+292
+00:11:03,519 --> 00:11:06,640
+or any kind of
+
+293
+00:11:07,279 --> 00:11:09,519
+nuclear distance function or other other
+
+294
+00:11:09,519 --> 00:11:11,760
+similar functions
+
+295
+00:11:11,760 --> 00:11:14,079
+but again this is not really fine grain
+
+296
+00:11:14,079 --> 00:11:17,040
+so definitely we are moving to be more
+
+297
+00:11:17,040 --> 00:11:18,880
+and more fine grain in the last few
+
+298
+00:11:18,880 --> 00:11:19,839
+years
+
+299
+00:11:19,839 --> 00:11:21,040
+and uh
+
+300
+00:11:21,040 --> 00:11:23,680
+with this uh word counting
+
+301
+00:11:23,680 --> 00:11:25,760
+so we already moving us
+
+302
+00:11:25,760 --> 00:11:28,079
+from this
+
+303
+00:11:28,079 --> 00:11:30,000
+not considering contextual information
+
+304
+00:11:30,000 --> 00:11:32,000
+at all to consider contextual
+
+305
+00:11:32,000 --> 00:11:34,640
+information we see a document right so
+
+306
+00:11:34,640 --> 00:11:36,720
+we are moving up we like to be able to
+
+307
+00:11:36,720 --> 00:11:39,680
+move to the right upper corner so we
+
+308
+00:11:39,680 --> 00:11:42,480
+took the first step
+
+309
+00:11:42,480 --> 00:11:43,279
+so
+
+310
+00:11:43,279 --> 00:11:46,800
+the memory of merely occurrence
+
+311
+00:11:46,800 --> 00:11:48,399
+again i mentioned
+
+312
+00:11:48,399 --> 00:11:51,200
+is a relationship is there but has a
+
+313
+00:11:51,200 --> 00:11:52,880
+relationship
+
+314
+00:11:52,880 --> 00:11:54,959
+is not encoded
+
+315
+00:11:54,959 --> 00:11:57,760
+so we need to solve the problem of
+
+316
+00:11:57,760 --> 00:12:00,959
+tsunami and the polygamy the bmw example
+
+317
+00:12:00,959 --> 00:12:03,040
+has been given to you
+
+318
+00:12:03,040 --> 00:12:03,839
+and
+
+319
+00:12:03,839 --> 00:12:06,160
+this was another example eddie plays
+
+320
+00:12:06,160 --> 00:12:10,320
+piano in a play right the play
+
+321
+00:12:10,320 --> 00:12:13,040
+two plays uh they they mean different
+
+322
+00:12:13,040 --> 00:12:14,560
+things
+
+323
+00:12:14,560 --> 00:12:15,600
+and uh
+
+324
+00:12:15,600 --> 00:12:19,440
+a very famous problem in this particular
+
+325
+00:12:19,440 --> 00:12:21,920
+dimension two-dimensional matrix is
+
+326
+00:12:21,920 --> 00:12:23,360
+called
+
+327
+00:12:23,360 --> 00:12:25,440
+market basket problem
+
+328
+00:12:25,440 --> 00:12:27,200
+you must have heard about this if you
+
+329
+00:12:27,200 --> 00:12:29,519
+are majoring in computer science so the
+
+330
+00:12:29,519 --> 00:12:31,279
+the problem is
+
+331
+00:12:31,279 --> 00:12:34,000
+we go to market we do shopping what we
+
+332
+00:12:34,000 --> 00:12:35,920
+put in the shopping carts
+
+333
+00:12:35,920 --> 00:12:36,800
+we
+
+334
+00:12:36,800 --> 00:12:39,440
+put in the data structure you say i
+
+335
+00:12:39,440 --> 00:12:42,720
+went to trader joe i bought carols about
+
+336
+00:12:42,720 --> 00:12:44,800
+milk i bought potato
+
+337
+00:12:44,800 --> 00:12:48,720
+so initially this market basket problem
+
+338
+00:12:48,720 --> 00:12:50,959
+was trying to
+
+339
+00:12:50,959 --> 00:12:52,480
+help the supermarket
+
+340
+00:12:52,480 --> 00:12:54,639
+to decide their promotion
+
+341
+00:12:54,639 --> 00:12:56,079
+so if say
+
+342
+00:12:56,079 --> 00:12:58,959
+if a lot of people they bought milk at
+
+343
+00:12:58,959 --> 00:13:00,639
+the same time they will they will buy
+
+344
+00:13:00,639 --> 00:13:03,760
+beer so you can do some sort of
+
+345
+00:13:03,760 --> 00:13:06,399
+promotion scheme so one famous promotion
+
+346
+00:13:06,399 --> 00:13:09,600
+scheme was during weekends and a lot of
+
+347
+00:13:09,600 --> 00:13:11,760
+men would be urged by their wives to go
+
+348
+00:13:11,760 --> 00:13:14,320
+to sioux market to pick up diapers for
+
+349
+00:13:14,320 --> 00:13:15,600
+for the kids
+
+350
+00:13:15,600 --> 00:13:16,560
+and
+
+351
+00:13:16,560 --> 00:13:18,639
+the man i think us right some of us
+
+352
+00:13:18,639 --> 00:13:21,120
+would say well i like to watch sports so
+
+353
+00:13:21,120 --> 00:13:23,760
+i would buy beer and maybe potato chips
+
+354
+00:13:23,760 --> 00:13:26,480
+at the same time and the supermarket
+
+355
+00:13:26,480 --> 00:13:28,639
+do these frequent items say mining they
+
+356
+00:13:28,639 --> 00:13:30,560
+say well this is association between
+
+357
+00:13:30,560 --> 00:13:32,720
+diaper and the beer that was really
+
+358
+00:13:32,720 --> 00:13:34,000
+interesting in the beginning when they
+
+359
+00:13:34,000 --> 00:13:35,600
+found out so
+
+360
+00:13:35,600 --> 00:13:38,079
+they say okay let me do a
+
+361
+00:13:38,079 --> 00:13:39,120
+diaper
+
+362
+00:13:39,120 --> 00:13:43,360
+sales right 30 off and you can imagine
+
+363
+00:13:43,360 --> 00:13:45,920
+my wife would say yeah go for it edward
+
+364
+00:13:45,920 --> 00:13:47,199
+diaper is off
+
+365
+00:13:47,199 --> 00:13:48,959
+it's own discount they go go go to buy
+
+366
+00:13:48,959 --> 00:13:51,360
+get it then i look at the beer and beer
+
+367
+00:13:51,360 --> 00:13:53,920
+they secretly raise the price by 30
+
+368
+00:13:53,920 --> 00:13:56,160
+right so at the end the supermarket
+
+369
+00:13:56,160 --> 00:13:58,560
+makes even more money and
+
+370
+00:13:58,560 --> 00:14:00,720
+i i cannot say i don't go right so
+
+371
+00:14:00,720 --> 00:14:02,880
+that's the scheme another one is if you
+
+372
+00:14:02,880 --> 00:14:04,720
+have experienced experience going to
+
+373
+00:14:04,720 --> 00:14:06,000
+costco
+
+374
+00:14:06,000 --> 00:14:06,880
+and
+
+375
+00:14:06,880 --> 00:14:08,000
+so
+
+376
+00:14:08,000 --> 00:14:09,199
+suppose i
+
+377
+00:14:09,199 --> 00:14:12,560
+buy merchant one and two and they are at
+
+378
+00:14:12,560 --> 00:14:13,760
+adjacent
+
+379
+00:14:13,760 --> 00:14:16,639
+aisles and by next time i go there
+
+380
+00:14:16,639 --> 00:14:18,240
+i couldn't find the second item but the
+
+381
+00:14:18,240 --> 00:14:20,320
+second it was move away so this is
+
+382
+00:14:20,320 --> 00:14:22,079
+another trick they say okay most of
+
+383
+00:14:22,079 --> 00:14:24,079
+people buy one and two so i like to
+
+384
+00:14:24,079 --> 00:14:27,040
+shelf them as far away as possible so
+
+385
+00:14:27,040 --> 00:14:29,760
+therefore you have to walk uh to look
+
+386
+00:14:29,760 --> 00:14:32,720
+for the things and then along the way
+
+387
+00:14:32,720 --> 00:14:35,279
+like as bad as i am i will pick
+
+388
+00:14:35,279 --> 00:14:36,959
+something originally i i actually i
+
+389
+00:14:36,959 --> 00:14:39,680
+don't need to buy so so many times i go
+
+390
+00:14:39,680 --> 00:14:41,680
+home my wife would say why why do you
+
+391
+00:14:41,680 --> 00:14:43,360
+buy this i didn't ask you to buy this i
+
+392
+00:14:43,360 --> 00:14:44,959
+said well it sounds it looks interesting
+
+393
+00:14:44,959 --> 00:14:46,880
+so this is another way using this kind
+
+394
+00:14:46,880 --> 00:14:48,320
+of market basket
+
+395
+00:14:48,320 --> 00:14:51,519
+kind of mechanism can address the
+
+396
+00:14:51,519 --> 00:14:53,839
+promotion in the supermarket but in
+
+397
+00:14:53,839 --> 00:14:56,560
+general this could be looked at as this
+
+398
+00:14:56,560 --> 00:14:58,560
+kind of association rule prediction
+
+399
+00:14:58,560 --> 00:15:00,639
+suppose uh
+
+400
+00:15:00,639 --> 00:15:03,360
+a user has seen three photos
+
+401
+00:15:03,360 --> 00:15:05,920
+right and we like to recommend the
+
+402
+00:15:05,920 --> 00:15:08,800
+fourth photo for the user and how should
+
+403
+00:15:08,800 --> 00:15:10,800
+we do it we say okay
+
+404
+00:15:10,800 --> 00:15:14,399
+which photo has high associations with
+
+405
+00:15:14,399 --> 00:15:17,120
+the previous three so you mine the data
+
+406
+00:15:17,120 --> 00:15:20,160
+of all the usage pattern in the past
+
+407
+00:15:20,160 --> 00:15:22,720
+then you say okay suppose
+
+408
+00:15:22,720 --> 00:15:26,000
+a person look at a b and c now i want to
+
+409
+00:15:26,000 --> 00:15:27,519
+add this d
+
+410
+00:15:27,519 --> 00:15:29,680
+and which d will give this probability
+
+411
+00:15:29,680 --> 00:15:31,680
+condition probably the largest value
+
+412
+00:15:31,680 --> 00:15:34,000
+right so you look into
+
+413
+00:15:34,000 --> 00:15:37,120
+the user's access patterns other uses ss
+
+414
+00:15:37,120 --> 00:15:39,199
+pattern in the past then come up with
+
+415
+00:15:39,199 --> 00:15:41,440
+this very very simple bayesian
+
+416
+00:15:41,440 --> 00:15:43,040
+interpretation
+
+417
+00:15:43,040 --> 00:15:43,920
+and
+
+418
+00:15:43,920 --> 00:15:45,839
+there are some theory behind it i don't
+
+419
+00:15:45,839 --> 00:15:48,320
+i don't need to cover today but this is
+
+420
+00:15:48,320 --> 00:15:52,000
+a very popular scheme uh for very simple
+
+421
+00:15:52,000 --> 00:15:54,880
+ads matching or merchandise
+
+422
+00:15:54,880 --> 00:15:56,480
+recommendation
+
+423
+00:15:56,480 --> 00:15:59,680
+and the it's a small trick is this nabc
+
+424
+00:15:59,680 --> 00:16:02,160
+need to be slightly large if this nabc
+
+425
+00:16:02,160 --> 00:16:03,519
+abc pattern
+
+426
+00:16:03,519 --> 00:16:05,360
+it doesn't happen it does happen but
+
+427
+00:16:05,360 --> 00:16:07,680
+doesn't happen very frankly frequently
+
+428
+00:16:07,680 --> 00:16:10,480
+this is called the support it is too low
+
+429
+00:16:10,480 --> 00:16:13,680
+so you cannot trust this prediction but
+
+430
+00:16:13,680 --> 00:16:15,920
+if you have a abc
+
+431
+00:16:15,920 --> 00:16:19,040
+happen very frequently so to predict d
+
+432
+00:16:19,040 --> 00:16:21,360
+and that makes a lot of sense okay
+
+433
+00:16:21,360 --> 00:16:24,399
+so how can we accomplish uh this kind of
+
+434
+00:16:24,399 --> 00:16:25,839
+heuristic what's what is the
+
+435
+00:16:25,839 --> 00:16:28,160
+implementation surprisingly it's very
+
+436
+00:16:28,160 --> 00:16:29,199
+simple
+
+437
+00:16:29,199 --> 00:16:31,839
+so it's just a two dimensional matrix
+
+438
+00:16:31,839 --> 00:16:34,079
+and on these two dimensional matrices
+
+439
+00:16:34,079 --> 00:16:36,399
+like we mentioned about in this call
+
+440
+00:16:36,399 --> 00:16:38,639
+called curse matrix we need to decide
+
+441
+00:16:38,639 --> 00:16:40,800
+what's on the xs essay and what is on
+
+442
+00:16:40,800 --> 00:16:42,000
+the on the y
+
+443
+00:16:42,000 --> 00:16:43,600
+and you can do a lot of different things
+
+444
+00:16:43,600 --> 00:16:44,880
+you can say okay
+
+445
+00:16:44,880 --> 00:16:46,079
+on this
+
+446
+00:16:46,079 --> 00:16:48,399
+column we have different images we have
+
+447
+00:16:48,399 --> 00:16:50,399
+different documents news
+
+448
+00:16:50,399 --> 00:16:51,759
+ads
+
+449
+00:16:51,759 --> 00:16:54,480
+on these rows we have every individual
+
+450
+00:16:54,480 --> 00:16:57,920
+users right and the mission is when
+
+451
+00:16:57,920 --> 00:17:01,120
+a user click on a particular object we
+
+452
+00:17:01,120 --> 00:17:02,639
+put on a cell
+
+453
+00:17:02,639 --> 00:17:03,600
+one
+
+454
+00:17:03,600 --> 00:17:04,559
+if not
+
+455
+00:17:04,559 --> 00:17:05,679
+zero
+
+456
+00:17:05,679 --> 00:17:08,319
+and then the mission is to predict the
+
+457
+00:17:08,319 --> 00:17:11,919
+missing value in this matrix right so
+
+458
+00:17:11,919 --> 00:17:13,599
+let me see whether the next slide would
+
+459
+00:17:13,599 --> 00:17:16,880
+hey yes the missing values so we say for
+
+460
+00:17:16,880 --> 00:17:19,679
+user number one should we recommend this
+
+461
+00:17:19,679 --> 00:17:23,039
+first image or the sixth
+
+462
+00:17:23,039 --> 00:17:25,439
+and we don't know so what can we do we
+
+463
+00:17:25,439 --> 00:17:27,839
+look at other users
+
+464
+00:17:27,839 --> 00:17:29,440
+also assets
+
+465
+00:17:29,440 --> 00:17:32,240
+number three four and five so similar
+
+466
+00:17:32,240 --> 00:17:35,200
+users right suppose i consider this
+
+467
+00:17:35,200 --> 00:17:37,520
+person the second user is a similar user
+
+468
+00:17:37,520 --> 00:17:39,600
+as myself so
+
+469
+00:17:39,600 --> 00:17:41,039
+the first
+
+470
+00:17:41,039 --> 00:17:43,120
+object no i'm not going to recommend
+
+471
+00:17:43,120 --> 00:17:45,760
+because second user did not click on it
+
+472
+00:17:45,760 --> 00:17:46,480
+but
+
+473
+00:17:46,480 --> 00:17:49,200
+he or she click on the sixth one so i'm
+
+474
+00:17:49,200 --> 00:17:52,160
+going to recommend that one to uh to to
+
+475
+00:17:52,160 --> 00:17:54,720
+to this user and this is aggregation
+
+476
+00:17:54,720 --> 00:17:56,320
+right because i saw it as accounting if
+
+477
+00:17:56,320 --> 00:17:58,960
+you have a lot of users
+
+478
+00:17:58,960 --> 00:18:02,000
+one two three i'm sorry ss two three and
+
+479
+00:18:02,000 --> 00:18:04,000
+four at the same time they will access
+
+480
+00:18:04,000 --> 00:18:06,880
+number six yes you go go go forward to
+
+481
+00:18:06,880 --> 00:18:08,480
+do the recommendation
+
+482
+00:18:08,480 --> 00:18:10,320
+so the flexibility
+
+483
+00:18:10,320 --> 00:18:11,919
+you can just put anything virtually
+
+484
+00:18:11,919 --> 00:18:15,039
+anything on s and anything on the y as
+
+485
+00:18:15,039 --> 00:18:17,919
+long as they have so light correlations
+
+486
+00:18:17,919 --> 00:18:18,799
+right
+
+487
+00:18:18,799 --> 00:18:20,320
+and
+
+488
+00:18:20,320 --> 00:18:24,960
+we can show even more examples uh later
+
+489
+00:18:24,960 --> 00:18:27,520
+but this is the cheapest
+
+490
+00:18:27,520 --> 00:18:30,240
+most rudimental collaborative filtering
+
+491
+00:18:30,240 --> 00:18:32,559
+algorithm out there has been used by
+
+492
+00:18:32,559 --> 00:18:34,400
+many many
+
+493
+00:18:34,400 --> 00:18:36,799
+companies the major reason is
+
+494
+00:18:36,799 --> 00:18:38,400
+is computationally
+
+495
+00:18:38,400 --> 00:18:43,520
+not very intensive and in year 2207
+
+496
+00:18:43,520 --> 00:18:45,840
+we made the algorithm wrong on parallel
+
+497
+00:18:45,840 --> 00:18:48,080
+machines so we paralyzed the
+
+498
+00:18:48,080 --> 00:18:49,600
+mechanism
+
+499
+00:18:49,600 --> 00:18:52,880
+and you see berkeley adopted into its uh
+
+500
+00:18:52,880 --> 00:18:55,679
+it's open source
+
+501
+00:18:55,679 --> 00:18:56,799
+so
+
+502
+00:18:56,799 --> 00:18:59,120
+my question is okay then we have we
+
+503
+00:18:59,120 --> 00:19:01,039
+solve the problems
+
+504
+00:19:01,039 --> 00:19:03,600
+the answer is not really entirely right
+
+505
+00:19:03,600 --> 00:19:05,520
+so the problem number one is we haven't
+
+506
+00:19:05,520 --> 00:19:07,840
+encoded strength of interest
+
+507
+00:19:07,840 --> 00:19:09,440
+oftentimes i click
+
+508
+00:19:09,440 --> 00:19:11,600
+an article i look at an article within a
+
+509
+00:19:11,600 --> 00:19:13,919
+few seconds i i just go away it's called
+
+510
+00:19:13,919 --> 00:19:15,919
+a bounce because i i say well i get
+
+511
+00:19:15,919 --> 00:19:18,000
+trapped so there are a lot of this kind
+
+512
+00:19:18,000 --> 00:19:20,000
+of uh
+
+513
+00:19:20,000 --> 00:19:22,799
+click bait right you put some beautiful
+
+514
+00:19:22,799 --> 00:19:25,840
+pictures on the page and
+
+515
+00:19:25,840 --> 00:19:28,160
+to kind of seduce people to click and
+
+516
+00:19:28,160 --> 00:19:29,679
+people click on the page and they say
+
+517
+00:19:29,679 --> 00:19:32,000
+well it's not what you said and nowadays
+
+518
+00:19:32,000 --> 00:19:34,080
+a lot of news will put question mark
+
+519
+00:19:34,080 --> 00:19:36,160
+behind a statement rather than saying
+
+520
+00:19:36,160 --> 00:19:38,559
+well this is a summary of the news they
+
+521
+00:19:38,559 --> 00:19:39,919
+don't do that because you do a summary
+
+522
+00:19:39,919 --> 00:19:42,160
+on the news if you do a perfect job no
+
+523
+00:19:42,160 --> 00:19:43,840
+one will click so they put some
+
+524
+00:19:43,840 --> 00:19:45,840
+ambiguous statement
+
+525
+00:19:45,840 --> 00:19:48,160
+well what happens do you know then you
+
+526
+00:19:48,160 --> 00:19:49,600
+you get
+
+527
+00:19:49,600 --> 00:19:51,280
+enticed to click
+
+528
+00:19:51,280 --> 00:19:53,440
+and the second challenge is the matches
+
+529
+00:19:53,440 --> 00:19:55,679
+tend to be quite sparse right so you
+
+530
+00:19:55,679 --> 00:19:58,320
+consider all the merchants in costco so
+
+531
+00:19:58,320 --> 00:20:00,640
+how many sales would you say one or how
+
+532
+00:20:00,640 --> 00:20:02,559
+many sales would you say two or three
+
+533
+00:20:02,559 --> 00:20:05,120
+most of the sales will be just a zero
+
+534
+00:20:05,120 --> 00:20:07,679
+and number three will be semantics right
+
+535
+00:20:07,679 --> 00:20:09,919
+just give you an example let's say uh
+
+536
+00:20:09,919 --> 00:20:12,559
+suppose i have i'm a new company and i
+
+537
+00:20:12,559 --> 00:20:14,720
+haven't gotten a lot of
+
+538
+00:20:14,720 --> 00:20:17,679
+advertisements from vendors suppose i
+
+539
+00:20:17,679 --> 00:20:20,720
+only have bmw's advertisement
+
+540
+00:20:20,720 --> 00:20:21,600
+and
+
+541
+00:20:21,600 --> 00:20:23,919
+i probably
+
+542
+00:20:23,919 --> 00:20:25,919
+maybe i have mercedes-benz or maybe two
+
+543
+00:20:25,919 --> 00:20:27,039
+or three
+
+544
+00:20:27,039 --> 00:20:29,919
+but let's say you click on mercedes-benz
+
+545
+00:20:29,919 --> 00:20:31,600
+and uh suppose i don't have
+
+546
+00:20:31,600 --> 00:20:33,840
+mercedes-benz advertisement but i have
+
+547
+00:20:33,840 --> 00:20:37,679
+bmw i can say oh this is the luxury car
+
+548
+00:20:37,679 --> 00:20:40,080
+so i don't have to match you
+
+549
+00:20:40,080 --> 00:20:43,360
+by your keyword i can match you by your
+
+550
+00:20:43,360 --> 00:20:47,360
+semantics right that will broaden my my
+
+551
+00:20:47,360 --> 00:20:50,159
+ads offerings so that's one example of
+
+552
+00:20:50,159 --> 00:20:52,480
+having a semantic layer can be very
+
+553
+00:20:52,480 --> 00:20:53,600
+useful
+
+554
+00:20:53,600 --> 00:20:56,000
+and so this leads to
+
+555
+00:20:56,000 --> 00:20:59,039
+the major breakthrough in early year
+
+556
+00:20:59,039 --> 00:21:01,679
+2000 this is done by michael jordan's
+
+557
+00:21:01,679 --> 00:21:02,400
+group
+
+558
+00:21:02,400 --> 00:21:04,960
+at berkeley and angel ning was one of
+
+559
+00:21:04,960 --> 00:21:05,760
+the
+
+560
+00:21:05,760 --> 00:21:06,880
+authors
+
+561
+00:21:06,880 --> 00:21:09,919
+so the idea was okay we want to create a
+
+562
+00:21:09,919 --> 00:21:12,320
+latent layer between
+
+563
+00:21:12,320 --> 00:21:15,360
+words and the documents again we don't
+
+564
+00:21:15,360 --> 00:21:17,760
+have to put words and documents on two
+
+565
+00:21:17,760 --> 00:21:20,000
+accesses you can put other things but
+
+566
+00:21:20,000 --> 00:21:22,080
+this example here is we like to be able
+
+567
+00:21:22,080 --> 00:21:24,320
+to recommend users user may do a search
+
+568
+00:21:24,320 --> 00:21:26,720
+and we want to match with documents
+
+569
+00:21:26,720 --> 00:21:27,600
+so
+
+570
+00:21:27,600 --> 00:21:30,400
+two examples on the top right so suppose
+
+571
+00:21:30,400 --> 00:21:33,360
+you do a search like iphone crack where
+
+572
+00:21:33,360 --> 00:21:36,240
+you do a search like apple pie right
+
+573
+00:21:36,240 --> 00:21:38,880
+iphone crack doesn't have apple in there
+
+574
+00:21:38,880 --> 00:21:40,559
+and on the other hand apple pipe has
+
+575
+00:21:40,559 --> 00:21:43,200
+apple in there but this apple is not
+
+576
+00:21:43,200 --> 00:21:46,799
+the i.t apple this is fruit apple
+
+577
+00:21:46,799 --> 00:21:49,520
+so you'll be good so at the bottom we
+
+578
+00:21:49,520 --> 00:21:51,440
+see if it's good if we can build a
+
+579
+00:21:51,440 --> 00:21:53,919
+latent layer and the characters are very
+
+580
+00:21:53,919 --> 00:21:56,080
+small but the latent layer you can see
+
+581
+00:21:56,080 --> 00:21:58,159
+this we have four different categories
+
+582
+00:21:58,159 --> 00:21:59,120
+here
+
+583
+00:21:59,120 --> 00:22:00,640
+from it
+
+584
+00:22:00,640 --> 00:22:01,600
+food
+
+585
+00:22:01,600 --> 00:22:03,760
+and history
+
+586
+00:22:03,760 --> 00:22:06,080
+and this is another one i couldn't read
+
+587
+00:22:06,080 --> 00:22:07,280
+so
+
+588
+00:22:07,280 --> 00:22:10,080
+you say okay the first one i t iphone
+
+589
+00:22:10,080 --> 00:22:12,559
+crack belongs to it
+
+590
+00:22:12,559 --> 00:22:15,520
+and the apple pie actually should be
+
+591
+00:22:15,520 --> 00:22:18,320
+food then when we do search
+
+592
+00:22:18,320 --> 00:22:21,120
+then this because of this semantic layer
+
+593
+00:22:21,120 --> 00:22:24,559
+the accurate responses or the accurate
+
+594
+00:22:24,559 --> 00:22:27,039
+results can be returned okay
+
+595
+00:22:27,039 --> 00:22:28,880
+and the second thing is we need to
+
+596
+00:22:28,880 --> 00:22:31,919
+encode strength into the cells we don't
+
+597
+00:22:31,919 --> 00:22:34,400
+say just binary zero one we say oh you
+
+598
+00:22:34,400 --> 00:22:37,520
+often access this particular document or
+
+599
+00:22:37,520 --> 00:22:39,919
+this kind of document so we bump out the
+
+600
+00:22:39,919 --> 00:22:41,039
+numbers
+
+601
+00:22:41,039 --> 00:22:42,559
+and lda
+
+602
+00:22:42,559 --> 00:22:46,240
+the algorithm basically is extremely
+
+603
+00:22:46,240 --> 00:22:48,480
+simple we have this two dimensional
+
+604
+00:22:48,480 --> 00:22:50,320
+space two dimensional code called
+
+605
+00:22:50,320 --> 00:22:52,960
+current matrix and this example here is
+
+606
+00:22:52,960 --> 00:22:55,440
+a document and words again you can have
+
+607
+00:22:55,440 --> 00:22:58,159
+document users right and then we say we
+
+608
+00:22:58,159 --> 00:23:02,240
+want to factorize these matches into two
+
+609
+00:23:02,240 --> 00:23:03,840
+sub matrices
+
+610
+00:23:03,840 --> 00:23:06,400
+and the right hand side matrix is the
+
+611
+00:23:06,400 --> 00:23:10,559
+semantical matrix so look at these words
+
+612
+00:23:10,559 --> 00:23:12,720
+and topics right basically you we can
+
+613
+00:23:12,720 --> 00:23:14,240
+cluster words
+
+614
+00:23:14,240 --> 00:23:16,000
+into topics
+
+615
+00:23:16,000 --> 00:23:18,320
+so this is good because suppose we
+
+616
+00:23:18,320 --> 00:23:21,520
+cluster play play this word under the
+
+617
+00:23:21,520 --> 00:23:25,200
+topic sports or we closer play
+
+618
+00:23:25,200 --> 00:23:28,880
+under the topic instrument right so
+
+619
+00:23:28,880 --> 00:23:31,919
+different cluster if the word play falls
+
+620
+00:23:31,919 --> 00:23:34,799
+in under different topics then you know
+
+621
+00:23:34,799 --> 00:23:37,919
+the semantics of this particular word
+
+622
+00:23:37,919 --> 00:23:41,279
+and a word can appear on multiple topics
+
+623
+00:23:41,279 --> 00:23:43,840
+so this is not a strict class ring the
+
+624
+00:23:43,840 --> 00:23:47,039
+membership can be quite flexible
+
+625
+00:23:47,039 --> 00:23:48,960
+and the bottom layer
+
+626
+00:23:48,960 --> 00:23:51,039
+is also important this is basically
+
+627
+00:23:51,039 --> 00:23:53,520
+doing classification right so you have
+
+628
+00:23:53,520 --> 00:23:54,640
+news
+
+629
+00:23:54,640 --> 00:23:57,200
+one dimension would be news or documents
+
+630
+00:23:57,200 --> 00:23:58,960
+the other dimension would be the
+
+631
+00:23:58,960 --> 00:24:00,240
+categories
+
+632
+00:24:00,240 --> 00:24:04,159
+of your news sports politics so you look
+
+633
+00:24:04,159 --> 00:24:06,640
+at this algorithm the output very very
+
+634
+00:24:06,640 --> 00:24:07,679
+useful
+
+635
+00:24:07,679 --> 00:24:12,640
+and the the complexity is about n square
+
+636
+00:24:12,640 --> 00:24:14,320
+so let's look at the
+
+637
+00:24:14,320 --> 00:24:16,000
+example this is a
+
+638
+00:24:16,000 --> 00:24:21,039
+example experiment run on 37k documents
+
+639
+00:24:21,039 --> 00:24:25,440
+and the documents consists of 26k words
+
+640
+00:24:25,440 --> 00:24:27,200
+and we set
+
+641
+00:24:27,200 --> 00:24:29,440
+the latent layer number to be
+
+642
+00:24:29,440 --> 00:24:33,200
+1700 topics okay the 1700 here is the
+
+643
+00:24:33,200 --> 00:24:35,279
+tricky thing you see how many dollar
+
+644
+00:24:35,279 --> 00:24:36,720
+documents you get
+
+645
+00:24:36,720 --> 00:24:38,480
+uh you cannot decide right just call the
+
+646
+00:24:38,480 --> 00:24:41,120
+document in and uh how many words are
+
+647
+00:24:41,120 --> 00:24:43,520
+there is it's accounting
+
+648
+00:24:43,520 --> 00:24:45,120
+these these two numbers are given these
+
+649
+00:24:45,120 --> 00:24:47,039
+two parameters are given but how many
+
+650
+00:24:47,039 --> 00:24:49,840
+topics is very tricky and if you can
+
+651
+00:24:49,840 --> 00:24:52,559
+recall like k-mean k-means is an
+
+652
+00:24:52,559 --> 00:24:54,480
+unsupervised classroom algorithm you
+
+653
+00:24:54,480 --> 00:24:57,440
+want to cluster your objects into k
+
+654
+00:24:57,440 --> 00:25:01,360
+clusters without any uh labels in those
+
+655
+00:25:01,360 --> 00:25:03,840
+kind of situation how to determine k is
+
+656
+00:25:03,840 --> 00:25:06,799
+is rather tricky and here uh
+
+657
+00:25:06,799 --> 00:25:08,159
+we don't have time to get into how to
+
+658
+00:25:08,159 --> 00:25:11,360
+decide k equal to 700 but most of people
+
+659
+00:25:11,360 --> 00:25:13,760
+just try and narrow suppose okay 1700
+
+660
+00:25:13,760 --> 00:25:16,320
+around 700 are article topics coming
+
+661
+00:25:16,320 --> 00:25:19,440
+from libraries okay so you get this 1700
+
+662
+00:25:19,440 --> 00:25:22,159
+clusters and this is a list of example
+
+663
+00:25:22,159 --> 00:25:24,720
+classes we get right so when we we talk
+
+664
+00:25:24,720 --> 00:25:27,120
+about semantics or latent layer each
+
+665
+00:25:27,120 --> 00:25:29,919
+latent layer is represented by a set of
+
+666
+00:25:29,919 --> 00:25:31,120
+words
+
+667
+00:25:31,120 --> 00:25:33,200
+let's look into what's in there
+
+668
+00:25:33,200 --> 00:25:34,159
+so
+
+669
+00:25:34,159 --> 00:25:35,760
+on the left hand side we have this
+
+670
+00:25:35,760 --> 00:25:38,880
+character here but you look at the other
+
+671
+00:25:38,880 --> 00:25:41,360
+words in the same cluster characters
+
+672
+00:25:41,360 --> 00:25:44,880
+okay you say form copy and paper or you
+
+673
+00:25:44,880 --> 00:25:47,279
+say okay this is probably alphabetics
+
+674
+00:25:47,279 --> 00:25:49,440
+right and the same character when we go
+
+675
+00:25:49,440 --> 00:25:52,640
+to the second column or character play
+
+676
+00:25:52,640 --> 00:25:55,279
+stage oh this is a character in a movie
+
+677
+00:25:55,279 --> 00:25:58,400
+in a play okay so in different cluster
+
+678
+00:25:58,400 --> 00:26:00,480
+the worst meaning depending on the
+
+679
+00:26:00,480 --> 00:26:03,120
+context is different and the play okay
+
+680
+00:26:03,120 --> 00:26:05,840
+we shift to another cluster play here
+
+681
+00:26:05,840 --> 00:26:09,279
+you see chord you see score
+
+682
+00:26:09,279 --> 00:26:10,400
+this could be
+
+683
+00:26:10,400 --> 00:26:13,919
+uh play in the g in a gym or maybe play
+
+684
+00:26:13,919 --> 00:26:17,039
+tennis right and the core we move to the
+
+685
+00:26:17,039 --> 00:26:20,240
+next one chord case jury evidence oh
+
+686
+00:26:20,240 --> 00:26:21,840
+this is uh
+
+687
+00:26:21,840 --> 00:26:25,760
+related to law to a trial right and then
+
+688
+00:26:25,760 --> 00:26:27,440
+evidence moved to
+
+689
+00:26:27,440 --> 00:26:29,120
+the right-hand side again
+
+690
+00:26:29,120 --> 00:26:31,760
+correlate with experimental scientists
+
+691
+00:26:31,760 --> 00:26:33,600
+and tests this is a scientific
+
+692
+00:26:33,600 --> 00:26:36,000
+experiment and so on and so forth
+
+693
+00:26:36,000 --> 00:26:37,120
+so
+
+694
+00:26:37,120 --> 00:26:39,600
+how to use it utilize it so every
+
+695
+00:26:39,600 --> 00:26:42,400
+cluster has a has a id
+
+696
+00:26:42,400 --> 00:26:45,520
+so when we go back to parse the the
+
+697
+00:26:45,520 --> 00:26:49,039
+documents we assign every word with its
+
+698
+00:26:49,039 --> 00:26:52,559
+id number right so play here the top one
+
+699
+00:26:52,559 --> 00:26:54,640
+we get 082
+
+700
+00:26:54,640 --> 00:26:58,480
+cluster from 82 and a player a play in
+
+701
+00:26:58,480 --> 00:27:01,760
+the middle document zero seven seven and
+
+702
+00:27:01,760 --> 00:27:03,679
+finally one six six
+
+703
+00:27:03,679 --> 00:27:06,320
+so this is fantastic we get this through
+
+704
+00:27:06,320 --> 00:27:08,720
+this very simple
+
+705
+00:27:08,720 --> 00:27:12,159
+matrix factorization we get
+
+706
+00:27:12,159 --> 00:27:13,440
+semantics
+
+707
+00:27:13,440 --> 00:27:14,480
+right
+
+708
+00:27:14,480 --> 00:27:17,679
+context-based semantics so it seems like
+
+709
+00:27:17,679 --> 00:27:20,480
+this policymaker problem got resolved
+
+710
+00:27:20,480 --> 00:27:22,799
+and this is really great
+
+711
+00:27:22,799 --> 00:27:24,399
+but there's one shortcoming which i
+
+712
+00:27:24,399 --> 00:27:27,279
+would enumerate again is
+
+713
+00:27:27,279 --> 00:27:28,399
+the play
+
+714
+00:27:28,399 --> 00:27:30,960
+in article suppose i the example i gave
+
+715
+00:27:30,960 --> 00:27:32,000
+you this
+
+716
+00:27:32,000 --> 00:27:32,799
+i
+
+717
+00:27:32,799 --> 00:27:36,240
+play piano in a play or whatever so if
+
+718
+00:27:36,240 --> 00:27:37,840
+you have
+
+719
+00:27:37,840 --> 00:27:38,559
+two
+
+720
+00:27:38,559 --> 00:27:40,640
+the one word in a in the same document
+
+721
+00:27:40,640 --> 00:27:42,480
+but they can mean different things in
+
+722
+00:27:42,480 --> 00:27:45,120
+different sentences the granularity of
+
+723
+00:27:45,120 --> 00:27:49,520
+the lda is two cores but this is in oda
+
+724
+00:27:49,520 --> 00:27:51,840
+the disambiguation is only done in the
+
+725
+00:27:51,840 --> 00:27:54,480
+in the document level not done
+
+726
+00:27:54,480 --> 00:27:58,080
+in a sentence level okay so this is uh
+
+727
+00:27:58,080 --> 00:28:01,360
+something definitely can be improved
+
+728
+00:28:01,360 --> 00:28:04,159
+and so issue summarize
+
+729
+00:28:04,159 --> 00:28:05,520
+uh for
+
+730
+00:28:05,520 --> 00:28:08,480
+polysomy is is cost grant
+
+731
+00:28:08,480 --> 00:28:10,559
+and therefore
+
+732
+00:28:10,559 --> 00:28:12,320
+those are two examples i already talked
+
+733
+00:28:12,320 --> 00:28:15,600
+about and we need better mechanism
+
+734
+00:28:15,600 --> 00:28:17,840
+and for synonymous synonym
+
+735
+00:28:17,840 --> 00:28:20,960
+like four could be autumn for could be
+
+736
+00:28:20,960 --> 00:28:23,600
+dropped right the tokyo fall and could
+
+737
+00:28:23,600 --> 00:28:26,480
+be star marquee fall or the tree fall
+
+738
+00:28:26,480 --> 00:28:29,679
+and then in this situation again
+
+739
+00:28:29,679 --> 00:28:31,440
+we cannot really
+
+740
+00:28:31,440 --> 00:28:33,120
+quantify these different kind of
+
+741
+00:28:33,120 --> 00:28:36,399
+synonyms in this lda scheme
+
+742
+00:28:36,399 --> 00:28:39,039
+so in short we need to have finer
+
+743
+00:28:39,039 --> 00:28:41,919
+granularity
+
+744
+00:28:42,080 --> 00:28:44,720
+so now we get into the second epoch
+
+745
+00:28:44,720 --> 00:28:49,039
+and this is five years this is 2013. uh
+
+746
+00:28:49,039 --> 00:28:52,080
+last time i motivated the
+
+747
+00:28:52,080 --> 00:28:54,799
+nlp community did not really get into
+
+748
+00:28:54,799 --> 00:28:56,960
+deep learning until after they have seen
+
+749
+00:28:56,960 --> 00:29:00,000
+the vision community was so successful
+
+750
+00:29:00,000 --> 00:29:03,919
+so in year 2013 a team of berkeley uh
+
+751
+00:29:03,919 --> 00:29:06,240
+people started saying well well we can
+
+752
+00:29:06,240 --> 00:29:08,880
+can we encode uh contextual information
+
+753
+00:29:08,880 --> 00:29:12,399
+you know in the in the final grant so
+
+754
+00:29:12,399 --> 00:29:13,760
+this is a very
+
+755
+00:29:13,760 --> 00:29:16,799
+important treaty by harris proposed in
+
+756
+00:29:16,799 --> 00:29:18,960
+1954.
+
+757
+00:29:18,960 --> 00:29:21,840
+uh the treaty was very straightforward
+
+758
+00:29:21,840 --> 00:29:24,880
+the the meaning of a word need to really
+
+759
+00:29:24,880 --> 00:29:26,399
+uh look at
+
+760
+00:29:26,399 --> 00:29:29,440
+your context right or the word meaning
+
+761
+00:29:29,440 --> 00:29:31,760
+depends on your neighbors
+
+762
+00:29:31,760 --> 00:29:33,120
+or you can say
+
+763
+00:29:33,120 --> 00:29:35,440
+your character depends on the friends
+
+764
+00:29:35,440 --> 00:29:37,919
+you make right so that makes a lot of
+
+765
+00:29:37,919 --> 00:29:40,880
+sense but it takes how many years for us
+
+766
+00:29:40,880 --> 00:29:43,919
+to be able to finally encode context
+
+767
+00:29:43,919 --> 00:29:46,240
+into the sentence
+
+768
+00:29:46,240 --> 00:29:49,840
+over 60 years so we get started with the
+
+769
+00:29:49,840 --> 00:29:51,440
+the history
+
+770
+00:29:51,440 --> 00:29:53,200
+so now we're going to go go to this
+
+771
+00:29:53,200 --> 00:29:56,080
+world to vet so world of ways is
+
+772
+00:29:56,080 --> 00:29:58,080
+this happened after neural nets started
+
+773
+00:29:58,080 --> 00:30:01,200
+to be adopted by the nlp community the
+
+774
+00:30:01,200 --> 00:30:04,320
+the idea was this one harvester was
+
+775
+00:30:04,320 --> 00:30:06,960
+really bad so suppose we can
+
+776
+00:30:06,960 --> 00:30:09,679
+classify words into multiple classes in
+
+777
+00:30:09,679 --> 00:30:11,840
+this toy example we have
+
+778
+00:30:11,840 --> 00:30:14,159
+dog cat and bird and on the right hand
+
+779
+00:30:14,159 --> 00:30:16,240
+side we have flower tree and apple when
+
+780
+00:30:16,240 --> 00:30:18,720
+we plot these words onto a two
+
+781
+00:30:18,720 --> 00:30:20,559
+dimensional simple two dimensional space
+
+782
+00:30:20,559 --> 00:30:22,480
+because only on two dimensional we can
+
+783
+00:30:22,480 --> 00:30:25,760
+visualize we hope similar words can be
+
+784
+00:30:25,760 --> 00:30:29,360
+in the nearest neighbors so hopefully uh
+
+785
+00:30:29,360 --> 00:30:30,399
+the
+
+786
+00:30:30,399 --> 00:30:32,880
+yellow color ones and green color ones
+
+787
+00:30:32,880 --> 00:30:34,640
+and orange color ones
+
+788
+00:30:34,640 --> 00:30:37,200
+they are clustered so they can they
+
+789
+00:30:37,200 --> 00:30:39,360
+should be nearest neighbors in in this
+
+790
+00:30:39,360 --> 00:30:42,399
+embedding space okay and that's a wish
+
+791
+00:30:42,399 --> 00:30:43,760
+and then
+
+792
+00:30:43,760 --> 00:30:44,799
+the the
+
+793
+00:30:44,799 --> 00:30:46,880
+scientists at google
+
+794
+00:30:46,880 --> 00:30:48,240
+this is what this was discovered
+
+795
+00:30:48,240 --> 00:30:50,240
+actually by luck right so they say i
+
+796
+00:30:50,240 --> 00:30:52,799
+want to put neural net and to just kind
+
+797
+00:30:52,799 --> 00:30:54,720
+of interpret
+
+798
+00:30:54,720 --> 00:30:56,799
+documents whatsoever
+
+799
+00:30:56,799 --> 00:30:59,120
+and in these two papers what they come
+
+800
+00:30:59,120 --> 00:31:01,279
+up with two different schemes
+
+801
+00:31:01,279 --> 00:31:03,519
+the first one is called continuous back
+
+802
+00:31:03,519 --> 00:31:06,399
+of words the second one is a ski gram
+
+803
+00:31:06,399 --> 00:31:08,640
+the basic idea if if you look at the
+
+804
+00:31:08,640 --> 00:31:10,640
+example at the bottom is if i have a
+
+805
+00:31:10,640 --> 00:31:13,919
+sentence i have let's say five words and
+
+806
+00:31:13,919 --> 00:31:17,120
+i want to just skip i want to just get
+
+807
+00:31:17,120 --> 00:31:18,720
+rid of the middle world
+
+808
+00:31:18,720 --> 00:31:19,760
+so
+
+809
+00:31:19,760 --> 00:31:22,240
+the mission of the training becomes can
+
+810
+00:31:22,240 --> 00:31:24,159
+you train the machinery which can guess
+
+811
+00:31:24,159 --> 00:31:26,640
+the missing word right so this is called
+
+812
+00:31:26,640 --> 00:31:28,399
+continuous continuous spec of back of
+
+813
+00:31:28,399 --> 00:31:30,080
+word so once you have guessed the
+
+814
+00:31:30,080 --> 00:31:32,799
+middleware then this uh sentence can
+
+815
+00:31:32,799 --> 00:31:34,960
+continue to flow the other one is called
+
+816
+00:31:34,960 --> 00:31:38,159
+skeegram so suppose this is the word i'm
+
+817
+00:31:38,159 --> 00:31:40,799
+given they say play can you come up come
+
+818
+00:31:40,799 --> 00:31:43,519
+up with some nearest neighboring words
+
+819
+00:31:43,519 --> 00:31:46,000
+right so this this mechanism looks
+
+820
+00:31:46,000 --> 00:31:49,360
+slightly harder so we we just focus on
+
+821
+00:31:49,360 --> 00:31:51,279
+the left one the right hand side will go
+
+822
+00:31:51,279 --> 00:31:53,679
+through the similar computational
+
+823
+00:31:53,679 --> 00:31:54,960
+processes
+
+824
+00:31:54,960 --> 00:31:57,519
+so the left one the input
+
+825
+00:31:57,519 --> 00:31:58,480
+will be
+
+826
+00:31:58,480 --> 00:31:59,840
+one half
+
+827
+00:31:59,840 --> 00:32:02,480
+and the output here wt will also be
+
+828
+00:32:02,480 --> 00:32:03,919
+one-half letters
+
+829
+00:32:03,919 --> 00:32:06,960
+so this example here is our input is the
+
+830
+00:32:06,960 --> 00:32:07,919
+cat
+
+831
+00:32:07,919 --> 00:32:08,880
+blank
+
+832
+00:32:08,880 --> 00:32:11,679
+on the roof or our own floor
+
+833
+00:32:11,679 --> 00:32:15,120
+and we want the desired output to be set
+
+834
+00:32:15,120 --> 00:32:17,679
+because that's the ground truth right we
+
+835
+00:32:17,679 --> 00:32:19,760
+just remove the middle word and later we
+
+836
+00:32:19,760 --> 00:32:21,840
+will come back when we talk about birth
+
+837
+00:32:21,840 --> 00:32:23,440
+this is kind of mask
+
+838
+00:32:23,440 --> 00:32:26,799
+mask language model so we get rid of the
+
+839
+00:32:26,799 --> 00:32:30,159
+middle one and then we try to guess it
+
+840
+00:32:30,159 --> 00:32:32,320
+and then this is just we have made so
+
+841
+00:32:32,320 --> 00:32:33,919
+many different sentences we just
+
+842
+00:32:33,919 --> 00:32:37,120
+continue to input into this mechanism
+
+843
+00:32:37,120 --> 00:32:39,440
+and the window size can be adjusted can
+
+844
+00:32:39,440 --> 00:32:41,519
+be in that particular example the window
+
+845
+00:32:41,519 --> 00:32:44,399
+size is four we can have 10 or whatever
+
+846
+00:32:44,399 --> 00:32:46,480
+right it's kind of flexible
+
+847
+00:32:46,480 --> 00:32:48,559
+and the input again one half battery
+
+848
+00:32:48,559 --> 00:32:50,799
+looks really ugly and the hidden layer
+
+849
+00:32:50,799 --> 00:32:53,200
+finally this output layer also won't
+
+850
+00:32:53,200 --> 00:32:54,480
+have vector
+
+851
+00:32:54,480 --> 00:32:56,240
+and in the middle they have this hidden
+
+852
+00:32:56,240 --> 00:32:57,519
+layer
+
+853
+00:32:57,519 --> 00:33:01,039
+and they only have one hidden layer and
+
+854
+00:33:01,039 --> 00:33:02,559
+for sure it is
+
+855
+00:33:02,559 --> 00:33:04,640
+accidental right people like to put
+
+856
+00:33:04,640 --> 00:33:07,440
+hundreds of hidden layers if not tens of
+
+857
+00:33:07,440 --> 00:33:09,840
+hidden layers in the middle to perfect
+
+858
+00:33:09,840 --> 00:33:12,960
+the result but for some reason by acid
+
+859
+00:33:12,960 --> 00:33:14,640
+then whatever they only put this one
+
+860
+00:33:14,640 --> 00:33:16,720
+hidden layer and the dimension in the
+
+861
+00:33:16,720 --> 00:33:19,120
+beginning was 512 and later they
+
+862
+00:33:19,120 --> 00:33:21,600
+increased to 10 24. so what they
+
+863
+00:33:21,600 --> 00:33:25,120
+discovered was okay so yeah we get this
+
+864
+00:33:25,120 --> 00:33:26,799
+new one that right you get
+
+865
+00:33:26,799 --> 00:33:29,600
+these weighting matrix by having many
+
+866
+00:33:29,600 --> 00:33:32,320
+many training data events eventually we
+
+867
+00:33:32,320 --> 00:33:36,480
+trend these weighting matches of this w
+
+868
+00:33:36,480 --> 00:33:39,039
+v n and wmv
+
+869
+00:33:39,039 --> 00:33:39,840
+so
+
+870
+00:33:39,840 --> 00:33:42,080
+these the dimension of one half vector
+
+871
+00:33:42,080 --> 00:33:45,519
+suppose v is let's say 300 000 and i
+
+872
+00:33:45,519 --> 00:33:49,919
+just mentioned by 12 or 1024 right and
+
+873
+00:33:49,919 --> 00:33:52,159
+then on the right hand side you like to
+
+874
+00:33:52,159 --> 00:33:53,360
+be able to
+
+875
+00:33:53,360 --> 00:33:56,320
+get this latent layer to produce your
+
+876
+00:33:56,320 --> 00:33:58,960
+final prediction and that would be
+
+877
+00:33:58,960 --> 00:34:01,679
+another matrix so this prediction will
+
+878
+00:34:01,679 --> 00:34:04,399
+go through a soft max
+
+879
+00:34:04,399 --> 00:34:06,320
+because at the end we wouldn't actually
+
+880
+00:34:06,320 --> 00:34:08,399
+get zero and one right we will get a
+
+881
+00:34:08,399 --> 00:34:11,119
+list of probability and then we use
+
+882
+00:34:11,119 --> 00:34:13,679
+softmax to magnify magnify
+
+883
+00:34:13,679 --> 00:34:14,639
+the
+
+884
+00:34:14,639 --> 00:34:16,719
+the word with highest probability then
+
+885
+00:34:16,719 --> 00:34:19,440
+we would produce now word representation
+
+886
+00:34:19,440 --> 00:34:21,918
+using one half vector okay
+
+887
+00:34:21,918 --> 00:34:23,918
+so hopefully the idea was not extremely
+
+888
+00:34:23,918 --> 00:34:25,199
+complicated
+
+889
+00:34:25,199 --> 00:34:27,918
+so the advantage at the end we take is
+
+890
+00:34:27,918 --> 00:34:30,239
+oh thank you for giving us this
+
+891
+00:34:30,239 --> 00:34:32,239
+v multiply n
+
+892
+00:34:32,239 --> 00:34:33,280
+matrix
+
+893
+00:34:33,280 --> 00:34:35,359
+and using this matrix
+
+894
+00:34:35,359 --> 00:34:37,440
+if this is an end of trending this
+
+895
+00:34:37,440 --> 00:34:39,280
+matrix will give us
+
+896
+00:34:39,280 --> 00:34:40,960
+one half vector
+
+897
+00:34:40,960 --> 00:34:42,399
+map to
+
+898
+00:34:42,399 --> 00:34:45,119
+embedding vector uh this mapping and
+
+899
+00:34:45,119 --> 00:34:47,359
+mapping matrix
+
+900
+00:34:47,359 --> 00:34:49,918
+you you look at this mattress here
+
+901
+00:34:49,918 --> 00:34:52,639
+and for this cad word category is the
+
+902
+00:34:52,639 --> 00:34:56,399
+second word so if we multiply the matrix
+
+903
+00:34:56,399 --> 00:34:59,359
+by our one half vector basically we are
+
+904
+00:34:59,359 --> 00:35:02,800
+indexing into this uh waiting matches to
+
+905
+00:35:02,800 --> 00:35:04,960
+get the embedding out of it so the
+
+906
+00:35:04,960 --> 00:35:07,520
+embedding in this case for cat will be
+
+907
+00:35:07,520 --> 00:35:10,800
+2.4 2.6 and so on and so forth to 1.8
+
+908
+00:35:10,800 --> 00:35:16,160
+the dimension is only 512 or 1024 okay
+
+909
+00:35:16,160 --> 00:35:18,079
+for some reason they eventually they
+
+910
+00:35:18,079 --> 00:35:20,000
+didn't use these two numbers
+
+911
+00:35:20,000 --> 00:35:21,359
+uh
+
+912
+00:35:21,359 --> 00:35:22,960
+this i'm curious if you are interested
+
+913
+00:35:22,960 --> 00:35:25,599
+you can type in your guess what is the
+
+914
+00:35:25,599 --> 00:35:27,440
+the the current numbers
+
+915
+00:35:27,440 --> 00:35:28,640
+uh
+
+916
+00:35:28,640 --> 00:35:31,760
+we we are using in this world of act uh
+
+917
+00:35:31,760 --> 00:35:33,760
+just just for fun you type in the the
+
+918
+00:35:33,760 --> 00:35:34,880
+chat room
+
+919
+00:35:34,880 --> 00:35:37,280
+uh between
+
+920
+00:35:37,280 --> 00:35:39,760
+between one and uh the value is between
+
+921
+00:35:39,760 --> 00:35:42,880
+one and one thousand right
+
+922
+00:35:42,880 --> 00:35:43,760
+uh
+
+923
+00:35:43,760 --> 00:35:46,079
+let's continue in about one to two
+
+924
+00:35:46,079 --> 00:35:48,320
+slides the number will be revealed just
+
+925
+00:35:48,320 --> 00:35:50,480
+for fun
+
+926
+00:35:50,480 --> 00:35:51,520
+okay
+
+927
+00:35:51,520 --> 00:35:53,680
+so
+
+928
+00:35:54,560 --> 00:35:57,760
+we we look at this this is a way to get
+
+929
+00:35:57,760 --> 00:35:59,280
+the the v
+
+930
+00:35:59,280 --> 00:36:01,280
+and this is the way to get
+
+931
+00:36:01,280 --> 00:36:03,760
+to get cat this is the multiplication to
+
+932
+00:36:03,760 --> 00:36:06,880
+get this on then eventually we can
+
+933
+00:36:06,880 --> 00:36:09,760
+predict this this set value
+
+934
+00:36:09,760 --> 00:36:11,200
+and
+
+935
+00:36:11,200 --> 00:36:13,680
+this is again this is a mechanism i just
+
+936
+00:36:13,680 --> 00:36:16,000
+mentioned that you said using this uh
+
+937
+00:36:16,000 --> 00:36:16,800
+uh
+
+938
+00:36:16,800 --> 00:36:19,920
+one half vector to index your
+
+939
+00:36:19,920 --> 00:36:22,079
+embedding or embedding
+
+940
+00:36:22,079 --> 00:36:24,000
+so the right hand side shows the answer
+
+941
+00:36:24,000 --> 00:36:26,160
+right so the original space is three
+
+942
+00:36:26,160 --> 00:36:28,480
+hundred thousand and uh
+
+943
+00:36:28,480 --> 00:36:30,000
+the dimension
+
+944
+00:36:30,000 --> 00:36:32,320
+is actually
+
+945
+00:36:32,320 --> 00:36:36,079
+very funny it's 768.
+
+946
+00:36:36,079 --> 00:36:39,119
+what is 768
+
+947
+00:36:39,119 --> 00:36:41,119
+5 12 plus
+
+948
+00:36:41,119 --> 00:36:43,520
+10 24 divided by 2.
+
+949
+00:36:43,520 --> 00:36:45,520
+why they came up with this number
+
+950
+00:36:45,520 --> 00:36:47,920
+i don't know right so they are just
+
+951
+00:36:47,920 --> 00:36:50,320
+magics somewhere
+
+952
+00:36:50,320 --> 00:36:53,280
+so let me look at the chair to see
+
+953
+00:36:53,280 --> 00:36:55,680
+yeah okay that's good numbers three
+
+954
+00:36:55,680 --> 00:36:57,520
+hundred and five twelve
+
+955
+00:36:57,520 --> 00:37:01,359
+so 768 but it works really great i bet
+
+956
+00:37:01,359 --> 00:37:03,359
+those researchers have done some uh
+
+957
+00:37:03,359 --> 00:37:05,280
+comparisons offline
+
+958
+00:37:05,280 --> 00:37:08,240
+when they publish the paper so turn out
+
+959
+00:37:08,240 --> 00:37:12,160
+768 but i just wondering why not 720a or
+
+960
+00:37:12,160 --> 00:37:15,760
+788 so i don't see signs here right i
+
+961
+00:37:15,760 --> 00:37:18,400
+see empirical results here
+
+962
+00:37:18,400 --> 00:37:20,240
+um
+
+963
+00:37:20,240 --> 00:37:23,200
+okay now the the fun thing starts based
+
+964
+00:37:23,200 --> 00:37:24,880
+on this embedding
+
+965
+00:37:24,880 --> 00:37:27,720
+you can put this dimension is let's say
+
+966
+00:37:27,720 --> 00:37:30,960
+768 still the dimension is very high but
+
+967
+00:37:30,960 --> 00:37:32,720
+they are able to project
+
+968
+00:37:32,720 --> 00:37:35,359
+uh this vector onto a two-dimensional
+
+969
+00:37:35,359 --> 00:37:37,920
+space to visualize and this example here
+
+970
+00:37:37,920 --> 00:37:40,560
+is once after projection we can do this
+
+971
+00:37:40,560 --> 00:37:43,280
+kind of interesting uh mathematics king
+
+972
+00:37:43,280 --> 00:37:47,599
+minus man plus woman equal to queen
+
+973
+00:37:47,599 --> 00:37:50,400
+this is interesting right the king is
+
+974
+00:37:50,400 --> 00:37:51,920
+typically i mean
+
+975
+00:37:51,920 --> 00:37:55,680
+that's true the king is male and
+
+976
+00:37:55,680 --> 00:37:56,720
+minus
+
+977
+00:37:56,720 --> 00:37:59,040
+gender plus another gender will become
+
+978
+00:37:59,040 --> 00:38:00,720
+queen
+
+979
+00:38:00,720 --> 00:38:02,880
+and this is another example published in
+
+980
+00:38:02,880 --> 00:38:05,119
+the paper so this is a relationship
+
+981
+00:38:05,119 --> 00:38:08,880
+between a capital and a nation
+
+982
+00:38:08,880 --> 00:38:10,480
+and
+
+983
+00:38:10,480 --> 00:38:14,240
+some folks using this relationship to
+
+984
+00:38:14,240 --> 00:38:17,200
+perform all these different algebra like
+
+985
+00:38:17,200 --> 00:38:19,920
+german is equal to berlin minus rome
+
+986
+00:38:19,920 --> 00:38:23,440
+plus italy and you can do this kind of
+
+987
+00:38:23,440 --> 00:38:24,320
+uh
+
+988
+00:38:24,320 --> 00:38:27,200
+hotter minus heart equal to bigger
+
+989
+00:38:27,200 --> 00:38:29,040
+minus big like this degree kind of
+
+990
+00:38:29,040 --> 00:38:31,680
+situation can be quantified in this
+
+991
+00:38:31,680 --> 00:38:33,440
+interesting way
+
+992
+00:38:33,440 --> 00:38:34,560
+so
+
+993
+00:38:34,560 --> 00:38:35,359
+um
+
+994
+00:38:35,359 --> 00:38:37,440
+this is really solving
+
+995
+00:38:37,440 --> 00:38:39,920
+the similarity problem in a very
+
+996
+00:38:39,920 --> 00:38:42,160
+attractive manner right
+
+997
+00:38:42,160 --> 00:38:44,079
+so this is give us a much better
+
+998
+00:38:44,079 --> 00:38:45,920
+representation rather than just one half
+
+999
+00:38:45,920 --> 00:38:48,560
+vector as the input and nowadays
+
+1000
+00:38:48,560 --> 00:38:50,320
+virtually everyone
+
+1001
+00:38:50,320 --> 00:38:52,320
+doing this embedding first
+
+1002
+00:38:52,320 --> 00:38:55,119
+then they start the training
+
+1003
+00:38:55,119 --> 00:38:56,400
+and uh
+
+1004
+00:38:56,400 --> 00:38:58,400
+slightly later
+
+1005
+00:38:58,400 --> 00:39:00,400
+we will show the input
+
+1006
+00:39:00,400 --> 00:39:02,720
+from this one half vector they say the
+
+1007
+00:39:02,720 --> 00:39:06,880
+cast sit on the floor so when we convert
+
+1008
+00:39:06,880 --> 00:39:10,320
+cat we convert k into embedding vector
+
+1009
+00:39:10,320 --> 00:39:12,480
+the word to back but also we want to
+
+1010
+00:39:12,480 --> 00:39:13,599
+encode
+
+1011
+00:39:13,599 --> 00:39:16,240
+the position of this word they say oh
+
+1012
+00:39:16,240 --> 00:39:18,720
+cat is the second word or third word we
+
+1013
+00:39:18,720 --> 00:39:20,880
+need to be able to encode
+
+1014
+00:39:20,880 --> 00:39:23,440
+the position later the other side when
+
+1015
+00:39:23,440 --> 00:39:26,640
+they get the information they know where
+
+1016
+00:39:26,640 --> 00:39:28,720
+the words come from so this is in
+
+1017
+00:39:28,720 --> 00:39:31,839
+attention uh lecture i would talk into
+
+1018
+00:39:31,839 --> 00:39:33,599
+details right so this is a
+
+1019
+00:39:33,599 --> 00:39:35,119
+representation
+
+1020
+00:39:35,119 --> 00:39:37,599
+transformation so we again come back to
+
+1021
+00:39:37,599 --> 00:39:39,760
+look at this progress picture now we
+
+1022
+00:39:39,760 --> 00:39:41,920
+have this predictive model not just word
+
+1023
+00:39:41,920 --> 00:39:43,760
+count we are trying to predict the
+
+1024
+00:39:43,760 --> 00:39:45,760
+missing words or we are predicting
+
+1025
+00:39:45,760 --> 00:39:47,680
+either the missing word in the middle or
+
+1026
+00:39:47,680 --> 00:39:49,280
+or the surrounding neighbor neighboring
+
+1027
+00:39:49,280 --> 00:39:51,760
+words the both mechanism will give us a
+
+1028
+00:39:51,760 --> 00:39:54,160
+better representation and
+
+1029
+00:39:54,160 --> 00:39:55,680
+sort of like this is the beginning of
+
+1030
+00:39:55,680 --> 00:39:58,000
+considering context
+
+1031
+00:39:58,000 --> 00:40:00,079
+but if we want to push ourselves so so
+
+1032
+00:40:00,079 --> 00:40:01,839
+this whole sequence is very logical
+
+1033
+00:40:01,839 --> 00:40:04,880
+right so at this point you say oh okay
+
+1034
+00:40:04,880 --> 00:40:06,560
+have we have we done have we hit the
+
+1035
+00:40:06,560 --> 00:40:08,800
+home run so everything is done right
+
+1036
+00:40:08,800 --> 00:40:10,560
+uh not really
+
+1037
+00:40:10,560 --> 00:40:13,040
+still we can do even better
+
+1038
+00:40:13,040 --> 00:40:13,920
+so
+
+1039
+00:40:13,920 --> 00:40:17,440
+we kind of look at this uh uh
+
+1040
+00:40:17,440 --> 00:40:20,480
+accomplishments from this water bag
+
+1041
+00:40:20,480 --> 00:40:22,480
+for cinnamon cinnamon
+
+1042
+00:40:22,480 --> 00:40:23,599
+synonymy
+
+1043
+00:40:23,599 --> 00:40:26,079
+good it's good it's pretty good but for
+
+1044
+00:40:26,079 --> 00:40:28,000
+policemen still
+
+1045
+00:40:28,000 --> 00:40:29,920
+it's still called scram
+
+1046
+00:40:29,920 --> 00:40:32,800
+uh because for every word in this world
+
+1047
+00:40:32,800 --> 00:40:34,079
+to vet
+
+1048
+00:40:34,079 --> 00:40:37,280
+it only has one index right it's really
+
+1049
+00:40:37,280 --> 00:40:39,040
+easy to to see
+
+1050
+00:40:39,040 --> 00:40:41,280
+once you get this vector on the right
+
+1051
+00:40:41,280 --> 00:40:43,599
+upper corner suppose i have this word
+
+1052
+00:40:43,599 --> 00:40:46,000
+called play you come into this matrix
+
+1053
+00:40:46,000 --> 00:40:48,560
+there's only one representation for the
+
+1054
+00:40:48,560 --> 00:40:52,560
+play so it's even worse than lda
+
+1055
+00:40:52,560 --> 00:40:55,839
+so wow this is bad right so how do we
+
+1056
+00:40:55,839 --> 00:40:58,160
+solve the problem then we sort like we
+
+1057
+00:40:58,160 --> 00:41:01,680
+make progress on cinnamons but we we
+
+1058
+00:41:01,680 --> 00:41:03,599
+have this guy kind of digress
+
+1059
+00:41:03,599 --> 00:41:06,800
+degradation on polysomy so we go back to
+
+1060
+00:41:06,800 --> 00:41:09,760
+harris to say hey harris please help us
+
+1061
+00:41:09,760 --> 00:41:12,240
+and harris told us the same thing i told
+
+1062
+00:41:12,240 --> 00:41:15,440
+you for 60 70 years how come you guys
+
+1063
+00:41:15,440 --> 00:41:17,520
+just couldn't figure it out you got a
+
+1064
+00:41:17,520 --> 00:41:18,560
+solution
+
+1065
+00:41:18,560 --> 00:41:20,720
+so the scientists come back to withdraw
+
+1066
+00:41:20,720 --> 00:41:22,960
+the solution on the board they say oh we
+
+1067
+00:41:22,960 --> 00:41:25,040
+have done this word to that and what do
+
+1068
+00:41:25,040 --> 00:41:27,280
+that what's the input one input is this
+
+1069
+00:41:27,280 --> 00:41:30,079
+one half vector and thank you to give me
+
+1070
+00:41:30,079 --> 00:41:32,560
+this uh embedded vector
+
+1071
+00:41:32,560 --> 00:41:33,680
+but
+
+1072
+00:41:33,680 --> 00:41:34,400
+hey
+
+1073
+00:41:34,400 --> 00:41:37,440
+just put a contest as a second argument
+
+1074
+00:41:37,440 --> 00:41:39,599
+okay it's not very complex okay this
+
+1075
+00:41:39,599 --> 00:41:43,040
+harris already told us contest contest
+
+1076
+00:41:43,040 --> 00:41:44,880
+okay finally
+
+1077
+00:41:44,880 --> 00:41:46,839
+in year about 20
+
+1078
+00:41:46,839 --> 00:41:50,160
+2014 exactly 60 years after
+
+1079
+00:41:50,160 --> 00:41:52,640
+our grandparent told us to do the right
+
+1080
+00:41:52,640 --> 00:41:53,520
+thing
+
+1081
+00:41:53,520 --> 00:41:55,599
+finally the community say okay okay
+
+1082
+00:41:55,599 --> 00:41:57,359
+let's put contest
+
+1083
+00:41:57,359 --> 00:42:00,000
+in the computational model
+
+1084
+00:42:00,000 --> 00:42:01,040
+so
+
+1085
+00:42:01,040 --> 00:42:03,200
+there are two major works
+
+1086
+00:42:03,200 --> 00:42:05,280
+one is the sequence to sequence the
+
+1087
+00:42:05,280 --> 00:42:06,880
+second wise attention we heard about
+
+1088
+00:42:06,880 --> 00:42:09,119
+attention right so attention invented
+
+1089
+00:42:09,119 --> 00:42:10,960
+the word is coined by chris manning's
+
+1090
+00:42:10,960 --> 00:42:14,720
+team in stanford but only took off in
+
+1091
+00:42:14,720 --> 00:42:16,640
+year 27
+
+1092
+00:42:16,640 --> 00:42:20,880
+2017 and 2018 and once uh the uh
+
+1093
+00:42:20,880 --> 00:42:23,520
+google folks and implement this uh
+
+1094
+00:42:23,520 --> 00:42:26,400
+transformer model so so let's look at
+
+1095
+00:42:26,400 --> 00:42:28,960
+the design steps so this is a problem we
+
+1096
+00:42:28,960 --> 00:42:31,200
+have seen so far so let's go to this
+
+1097
+00:42:31,200 --> 00:42:33,520
+data driven representation learning so
+
+1098
+00:42:33,520 --> 00:42:35,599
+this far still the community is doing a
+
+1099
+00:42:35,599 --> 00:42:37,119
+lot of traditional model pre-processing
+
+1100
+00:42:37,119 --> 00:42:38,880
+similarity dimensional reduction but
+
+1101
+00:42:38,880 --> 00:42:41,119
+data driven there are driven sequence
+
+1102
+00:42:41,119 --> 00:42:42,880
+sequence sequence model
+
+1103
+00:42:42,880 --> 00:42:45,040
+details are in these two papers so we
+
+1104
+00:42:45,040 --> 00:42:46,640
+look at this example
+
+1105
+00:42:46,640 --> 00:42:48,480
+and this example shows how
+
+1106
+00:42:48,480 --> 00:42:51,440
+this sequence to sequence or we call
+
+1107
+00:42:51,440 --> 00:42:55,040
+recurrent neural net rnn model works
+
+1108
+00:42:55,040 --> 00:42:58,000
+okay so why we call rnn once we see the
+
+1109
+00:42:58,000 --> 00:43:00,240
+picture we probably can figure out so
+
+1110
+00:43:00,240 --> 00:43:02,079
+this is a translation problem on the
+
+1111
+00:43:02,079 --> 00:43:03,680
+left-hand side we have input tokens
+
+1112
+00:43:03,680 --> 00:43:05,359
+three so it works
+
+1113
+00:43:05,359 --> 00:43:07,520
+then our sequence to sequence model
+
+1114
+00:43:07,520 --> 00:43:10,079
+eventually would generate four words
+
+1115
+00:43:10,079 --> 00:43:11,760
+right suppose some of you thought about
+
+1116
+00:43:11,760 --> 00:43:13,920
+france french and generate some english
+
+1117
+00:43:13,920 --> 00:43:16,000
+words and vice versa the lens could be
+
+1118
+00:43:16,000 --> 00:43:18,400
+different and the sequence to sequence
+
+1119
+00:43:18,400 --> 00:43:21,359
+model in the middle take all the input
+
+1120
+00:43:21,359 --> 00:43:23,760
+and generate output
+
+1121
+00:43:23,760 --> 00:43:25,520
+so let's look at
+
+1122
+00:43:25,520 --> 00:43:28,640
+even finer grain the middle the middle
+
+1123
+00:43:28,640 --> 00:43:32,000
+box uh we look at we open it up we see
+
+1124
+00:43:32,000 --> 00:43:35,760
+an encoder and then we see a decoder and
+
+1125
+00:43:35,760 --> 00:43:38,400
+let's focus on the interface between
+
+1126
+00:43:38,400 --> 00:43:41,520
+this encoder and the decoder okay
+
+1127
+00:43:41,520 --> 00:43:44,000
+so this animation we put word one two
+
+1128
+00:43:44,000 --> 00:43:46,720
+three into it we generate context we
+
+1129
+00:43:46,720 --> 00:43:49,440
+shift context to decoder we generate
+
+1130
+00:43:49,440 --> 00:43:51,200
+four words
+
+1131
+00:43:51,200 --> 00:43:53,520
+so if we want to be critical to this
+
+1132
+00:43:53,520 --> 00:43:55,040
+architecture
+
+1133
+00:43:55,040 --> 00:43:57,200
+we will say the following right we say
+
+1134
+00:43:57,200 --> 00:43:59,680
+okay you have this input
+
+1135
+00:43:59,680 --> 00:44:01,200
+one half vector
+
+1136
+00:44:01,200 --> 00:44:04,160
+we convert this wahabiter into
+
+1137
+00:44:04,160 --> 00:44:06,480
+uh word embedding
+
+1138
+00:44:06,480 --> 00:44:09,359
+that's great so not so far so good
+
+1139
+00:44:09,359 --> 00:44:11,680
+then we utilize
+
+1140
+00:44:11,680 --> 00:44:14,319
+this world embedding to start to conduct
+
+1141
+00:44:14,319 --> 00:44:15,920
+training step number one we general
+
+1142
+00:44:15,920 --> 00:44:18,079
+hidden state number one step number two
+
+1143
+00:44:18,079 --> 00:44:20,079
+hidden state two
+
+1144
+00:44:20,079 --> 00:44:22,720
+then we get hidden state three when we
+
+1145
+00:44:22,720 --> 00:44:24,720
+put hidden state in the middle and input
+
+1146
+00:44:24,720 --> 00:44:27,359
+to the decoder then we generate our
+
+1147
+00:44:27,359 --> 00:44:29,760
+output i'm a student
+
+1148
+00:44:29,760 --> 00:44:32,480
+the key here the key shortcoming here is
+
+1149
+00:44:32,480 --> 00:44:35,760
+we only input hidden state three into a
+
+1150
+00:44:35,760 --> 00:44:37,040
+decoder
+
+1151
+00:44:37,040 --> 00:44:38,960
+hidden three one and two
+
+1152
+00:44:38,960 --> 00:44:41,599
+we did not utilize them and this is a
+
+1153
+00:44:41,599 --> 00:44:42,960
+traditional call
+
+1154
+00:44:42,960 --> 00:44:45,520
+long distance dependency we lost the
+
+1155
+00:44:45,520 --> 00:44:47,680
+long distance dependency and this
+
+1156
+00:44:47,680 --> 00:44:51,520
+picture shows the the mathematics and it
+
+1157
+00:44:51,520 --> 00:44:53,520
+can clarify really well
+
+1158
+00:44:53,520 --> 00:44:56,480
+so the bottom encoder we take care of
+
+1159
+00:44:56,480 --> 00:44:59,599
+input on the top we do this output in
+
+1160
+00:44:59,599 --> 00:45:01,920
+the translation situation
+
+1161
+00:45:01,920 --> 00:45:05,520
+so hidden layer generation on the top
+
+1162
+00:45:05,520 --> 00:45:07,440
+uh the hidden layer t
+
+1163
+00:45:07,440 --> 00:45:09,599
+when we generate it it's a function
+
+1164
+00:45:09,599 --> 00:45:11,839
+depending on hidden layer t minus one
+
+1165
+00:45:11,839 --> 00:45:12,800
+that's that's fine that's
+
+1166
+00:45:12,800 --> 00:45:14,480
+straightforward depending on the
+
+1167
+00:45:14,480 --> 00:45:15,920
+previous output
+
+1168
+00:45:15,920 --> 00:45:18,880
+y t minus one that's very logical when
+
+1169
+00:45:18,880 --> 00:45:19,920
+you try to
+
+1170
+00:45:19,920 --> 00:45:22,480
+produce the translation you already
+
+1171
+00:45:22,480 --> 00:45:24,160
+gotten the previous word you get the
+
+1172
+00:45:24,160 --> 00:45:26,079
+previous words content hidden hidden
+
+1173
+00:45:26,079 --> 00:45:29,280
+layer you want to produce the next word
+
+1174
+00:45:29,280 --> 00:45:30,240
+but
+
+1175
+00:45:30,240 --> 00:45:33,200
+the context given is only c
+
+1176
+00:45:33,200 --> 00:45:36,640
+c is the last hidden layer produced by
+
+1177
+00:45:36,640 --> 00:45:40,319
+the encoder okay so this c is that is
+
+1178
+00:45:40,319 --> 00:45:42,800
+the problem and then we look at this
+
+1179
+00:45:42,800 --> 00:45:44,480
+inferencing eventually once we have
+
+1180
+00:45:44,480 --> 00:45:46,800
+gotten this ht
+
+1181
+00:45:46,800 --> 00:45:49,040
+and we use ht
+
+1182
+00:45:49,040 --> 00:45:52,079
+and yt minus one and c to predict the
+
+1183
+00:45:52,079 --> 00:45:53,280
+next word
+
+1184
+00:45:53,280 --> 00:45:56,640
+so again here we only use this last
+
+1185
+00:45:56,640 --> 00:45:59,119
+hidden layer of the input
+
+1186
+00:45:59,119 --> 00:46:01,280
+we have this long distance dependency
+
+1187
+00:46:01,280 --> 00:46:04,240
+problem we lost a lot of information
+
+1188
+00:46:04,240 --> 00:46:05,200
+so
+
+1189
+00:46:05,200 --> 00:46:07,839
+all the researchers are very logical
+
+1190
+00:46:07,839 --> 00:46:09,440
+right they say oh
+
+1191
+00:46:09,440 --> 00:46:11,680
+so i miss some long distance information
+
+1192
+00:46:11,680 --> 00:46:13,839
+how can we solve the problem so i'm
+
+1193
+00:46:13,839 --> 00:46:15,839
+going to encode this information in the
+
+1194
+00:46:15,839 --> 00:46:19,280
+model right so they say okay so we have
+
+1195
+00:46:19,280 --> 00:46:21,599
+this shortcoming only get this
+
+1196
+00:46:21,599 --> 00:46:24,400
+final hidden state and then we have this
+
+1197
+00:46:24,400 --> 00:46:27,040
+vanishing gradient because all these
+
+1198
+00:46:27,040 --> 00:46:28,480
+long decent ones
+
+1199
+00:46:28,480 --> 00:46:30,640
+once they aggregate uh the heuristic
+
+1200
+00:46:30,640 --> 00:46:32,640
+whatever into the final hidden state
+
+1201
+00:46:32,640 --> 00:46:35,119
+most of them are lost right so okay
+
+1202
+00:46:35,119 --> 00:46:37,359
+let's insert something
+
+1203
+00:46:37,359 --> 00:46:38,720
+in the middle
+
+1204
+00:46:38,720 --> 00:46:40,560
+so this something is called
+
+1205
+00:46:40,560 --> 00:46:43,920
+uh short-term memory right this is lstm
+
+1206
+00:46:43,920 --> 00:46:46,319
+stands for long-term short-term memory
+
+1207
+00:46:46,319 --> 00:46:48,640
+so some memory can be long-term and
+
+1208
+00:46:48,640 --> 00:46:51,440
+summary will be short-term
+
+1209
+00:46:51,440 --> 00:46:53,200
+so without getting into much detail so
+
+1210
+00:46:53,200 --> 00:46:54,160
+let's say
+
+1211
+00:46:54,160 --> 00:46:57,520
+for translation for
+
+1212
+00:46:57,520 --> 00:46:59,040
+nature language
+
+1213
+00:46:59,040 --> 00:47:01,280
+what kind of states we would like to
+
+1214
+00:47:01,280 --> 00:47:03,680
+keep right so i say okay maybe we want
+
+1215
+00:47:03,680 --> 00:47:06,160
+to keep three different states the first
+
+1216
+00:47:06,160 --> 00:47:07,440
+day is
+
+1217
+00:47:07,440 --> 00:47:08,319
+the
+
+1218
+00:47:08,319 --> 00:47:10,480
+subject we want to know
+
+1219
+00:47:10,480 --> 00:47:12,720
+the subject type if the subject is
+
+1220
+00:47:12,720 --> 00:47:15,280
+female male that would determine uh how
+
+1221
+00:47:15,280 --> 00:47:17,680
+can i deal with the verb right do i want
+
+1222
+00:47:17,680 --> 00:47:20,400
+to put s behind it and the second is
+
+1223
+00:47:20,400 --> 00:47:24,319
+time is the past future or present that
+
+1224
+00:47:24,319 --> 00:47:28,000
+will impact the tense of my verb right
+
+1225
+00:47:28,000 --> 00:47:29,920
+so those are just two very
+
+1226
+00:47:29,920 --> 00:47:32,079
+simple examples and of course they are
+
+1227
+00:47:32,079 --> 00:47:35,359
+much more complex in situations which i
+
+1228
+00:47:35,359 --> 00:47:36,400
+will give
+
+1229
+00:47:36,400 --> 00:47:39,280
+a couple examples shortly so
+
+1230
+00:47:39,280 --> 00:47:41,359
+so the good thing about having this uh
+
+1231
+00:47:41,359 --> 00:47:43,920
+long-term short-term memory is suppose i
+
+1232
+00:47:43,920 --> 00:47:46,240
+want to generate a translation
+
+1233
+00:47:46,240 --> 00:47:48,800
+and uh you don't depend on just the last
+
+1234
+00:47:48,800 --> 00:47:51,520
+hidden layer you say oh i'm going to go
+
+1235
+00:47:51,520 --> 00:47:54,640
+back to your entire sentence to see
+
+1236
+00:47:54,640 --> 00:47:58,000
+what is your subject if your subject is
+
+1237
+00:47:58,000 --> 00:48:01,040
+i then i know i'm not going to give
+
+1238
+00:48:01,040 --> 00:48:02,880
+the form of the verb will be the
+
+1239
+00:48:02,880 --> 00:48:05,599
+original form if your subject's he or
+
+1240
+00:48:05,599 --> 00:48:07,280
+she i need to
+
+1241
+00:48:07,280 --> 00:48:09,760
+do to put something behind the original
+
+1242
+00:48:09,760 --> 00:48:10,559
+verb
+
+1243
+00:48:10,559 --> 00:48:11,839
+so
+
+1244
+00:48:11,839 --> 00:48:14,640
+then you keep on progressing this uh
+
+1245
+00:48:14,640 --> 00:48:17,680
+long-term short-term memory and
+
+1246
+00:48:17,680 --> 00:48:19,280
+every piece of
+
+1247
+00:48:19,280 --> 00:48:20,559
+data
+
+1248
+00:48:20,559 --> 00:48:22,400
+in the cell so you can have multiple
+
+1249
+00:48:22,400 --> 00:48:24,480
+states i enumerate three different
+
+1250
+00:48:24,480 --> 00:48:27,040
+states but you can have even more so the
+
+1251
+00:48:27,040 --> 00:48:29,440
+state once they say okay yesterday when
+
+1252
+00:48:29,440 --> 00:48:31,839
+you start to say yesterday the state of
+
+1253
+00:48:31,839 --> 00:48:34,800
+the tense is modified so we have we say
+
+1254
+00:48:34,800 --> 00:48:38,160
+we forget about the previous tense state
+
+1255
+00:48:38,160 --> 00:48:39,839
+we change the state to
+
+1256
+00:48:39,839 --> 00:48:41,920
+maybe future or past right yesterday is
+
+1257
+00:48:41,920 --> 00:48:44,240
+the past they say oh yesterday i forgot
+
+1258
+00:48:44,240 --> 00:48:46,720
+to bring my my book to the lecture and
+
+1259
+00:48:46,720 --> 00:48:49,280
+tomorrow i will bring my book so when
+
+1260
+00:48:49,280 --> 00:48:52,160
+you say yesterday the tense was passed
+
+1261
+00:48:52,160 --> 00:48:54,480
+then when you when i look at will
+
+1262
+00:48:54,480 --> 00:48:57,359
+right away in the gate right in the
+
+1263
+00:48:57,359 --> 00:48:59,839
+register whatever i'm going to modify
+
+1264
+00:48:59,839 --> 00:49:02,319
+the state into the future so this is a
+
+1265
+00:49:02,319 --> 00:49:05,200
+very rudimental example but hopefully
+
+1266
+00:49:05,200 --> 00:49:07,359
+you get a sense the reason we're not
+
+1267
+00:49:07,359 --> 00:49:09,520
+going to get your details is
+
+1268
+00:49:09,520 --> 00:49:11,280
+no one is using this
+
+1269
+00:49:11,280 --> 00:49:14,079
+anymore and then the reason is be
+
+1270
+00:49:14,079 --> 00:49:15,200
+the following
+
+1271
+00:49:15,200 --> 00:49:18,240
+so for our rnn model sequence to
+
+1272
+00:49:18,240 --> 00:49:20,559
+sequence we already talked about the two
+
+1273
+00:49:20,559 --> 00:49:22,160
+major shortcomings
+
+1274
+00:49:22,160 --> 00:49:22,960
+for
+
+1275
+00:49:22,960 --> 00:49:25,760
+lstm with rnn
+
+1276
+00:49:25,760 --> 00:49:27,920
+the the major problem is cannot be
+
+1277
+00:49:27,920 --> 00:49:31,520
+parallely trend okay and and also it's
+
+1278
+00:49:31,520 --> 00:49:33,119
+very cumbersome
+
+1279
+00:49:33,119 --> 00:49:35,359
+suppose it could solve the problem well
+
+1280
+00:49:35,359 --> 00:49:36,559
+but it just
+
+1281
+00:49:36,559 --> 00:49:37,839
+cannot be
+
+1282
+00:49:37,839 --> 00:49:40,319
+unrolled to take a take advantage of
+
+1283
+00:49:40,319 --> 00:49:41,680
+gpus
+
+1284
+00:49:41,680 --> 00:49:44,160
+and this is definitely a huge problem so
+
+1285
+00:49:44,160 --> 00:49:46,800
+remember i motivated when i at google
+
+1286
+00:49:46,800 --> 00:49:48,240
+doing this kind of paleo algorithm
+
+1287
+00:49:48,240 --> 00:49:50,480
+research i was ridiculed because the
+
+1288
+00:49:50,480 --> 00:49:53,119
+algorithm algorithm itself if it cannot
+
+1289
+00:49:53,119 --> 00:49:55,680
+be paralyzed nobody will use it right so
+
+1290
+00:49:55,680 --> 00:49:58,640
+here the similar situation yes lstm can
+
+1291
+00:49:58,640 --> 00:50:00,319
+solve the problem to a certain degree
+
+1292
+00:50:00,319 --> 00:50:02,640
+including this uh
+
+1293
+00:50:02,640 --> 00:50:04,640
+nearest neighbors context rather than
+
+1294
+00:50:04,640 --> 00:50:06,640
+far distance context but is really
+
+1295
+00:50:06,640 --> 00:50:09,200
+expensive to to trend
+
+1296
+00:50:09,200 --> 00:50:10,240
+and so
+
+1297
+00:50:10,240 --> 00:50:13,200
+then came out is a transformer using a
+
+1298
+00:50:13,200 --> 00:50:16,160
+tension and this really revolutionized
+
+1299
+00:50:16,160 --> 00:50:18,559
+uh the entire field
+
+1300
+00:50:18,559 --> 00:50:19,440
+so
+
+1301
+00:50:19,440 --> 00:50:22,480
+we remaining of the lecture with our
+
+1302
+00:50:22,480 --> 00:50:25,040
+time another 30 minutes we cover
+
+1303
+00:50:25,040 --> 00:50:27,040
+transformer gpt
+
+1304
+00:50:27,040 --> 00:50:30,480
+and the birth and their uh
+
+1305
+00:50:30,480 --> 00:50:34,079
+kind of fine-tuning kind of mechanisms
+
+1306
+00:50:34,079 --> 00:50:36,880
+so i pause a little bit here uh to kind
+
+1307
+00:50:36,880 --> 00:50:40,760
+to see whether we have questions
+
+1308
+00:50:50,079 --> 00:50:53,359
+so again you can enter questions in a
+
+1309
+00:50:53,359 --> 00:50:56,319
+chat room okay
+
+1310
+00:50:56,960 --> 00:50:59,520
+okay let's get into transformer and i
+
+1311
+00:50:59,520 --> 00:51:01,520
+don't have the transformer picture here
+
+1312
+00:51:01,520 --> 00:51:02,640
+but
+
+1313
+00:51:02,640 --> 00:51:05,359
+you know the movie transformer right
+
+1314
+00:51:05,359 --> 00:51:07,280
+so this is an interesting article
+
+1315
+00:51:07,280 --> 00:51:09,680
+written about
+
+1316
+00:51:09,680 --> 00:51:11,359
+three years ago
+
+1317
+00:51:11,359 --> 00:51:15,119
+and they say what drop your rnn and lstm
+
+1318
+00:51:15,119 --> 00:51:16,800
+because they are not good this is really
+
+1319
+00:51:16,800 --> 00:51:19,680
+straightforward sentence right
+
+1320
+00:51:19,680 --> 00:51:22,319
+in fact and i when i talk to my
+
+1321
+00:51:22,319 --> 00:51:24,000
+colleagues i say if you don't know
+
+1322
+00:51:24,000 --> 00:51:25,359
+anything about nature language
+
+1323
+00:51:25,359 --> 00:51:29,119
+processing before year 2018 you are not
+
+1324
+00:51:29,119 --> 00:51:30,720
+missing anything
+
+1325
+00:51:30,720 --> 00:51:32,800
+so it's not a happy statement or it's a
+
+1326
+00:51:32,800 --> 00:51:34,079
+sad statement
+
+1327
+00:51:34,079 --> 00:51:36,000
+and to me was a happy statement because
+
+1328
+00:51:36,000 --> 00:51:39,359
+i did not know nlp whatsoever before
+
+1329
+00:51:39,359 --> 00:51:42,960
+2018 and and i picked up nlp just in the
+
+1330
+00:51:42,960 --> 00:51:44,480
+last two three years
+
+1331
+00:51:44,480 --> 00:51:46,800
+and i i'm i'm doing okay because all
+
+1332
+00:51:46,800 --> 00:51:50,400
+those heuristic algorithms like lstm
+
+1333
+00:51:50,400 --> 00:51:52,160
+if you want me to do a lecture on my
+
+1334
+00:51:52,160 --> 00:51:55,200
+lstm today i probably couldn't do it
+
+1335
+00:51:55,200 --> 00:51:58,240
+because i didn't dig into the code in in
+
+1336
+00:51:58,240 --> 00:52:01,119
+greater details but if i only need to
+
+1337
+00:52:01,119 --> 00:52:03,040
+learn transformer and the subsequent
+
+1338
+00:52:03,040 --> 00:52:05,920
+materials and that's that's uh okay
+
+1339
+00:52:05,920 --> 00:52:08,000
+that's uh attractable
+
+1340
+00:52:08,000 --> 00:52:11,280
+okay so let's dive in attention model
+
+1341
+00:52:11,280 --> 00:52:14,800
+written by a google group so the
+
+1342
+00:52:14,800 --> 00:52:18,160
+mechanism is very simple this is a very
+
+1343
+00:52:18,160 --> 00:52:19,760
+famous picture
+
+1344
+00:52:19,760 --> 00:52:22,160
+and we see this on the left hand side we
+
+1345
+00:52:22,160 --> 00:52:25,119
+have this encoder on the right hand side
+
+1346
+00:52:25,119 --> 00:52:26,960
+we have this architecture of
+
+1347
+00:52:26,960 --> 00:52:28,240
+decoder
+
+1348
+00:52:28,240 --> 00:52:29,359
+and
+
+1349
+00:52:29,359 --> 00:52:31,040
+this particular picture
+
+1350
+00:52:31,040 --> 00:52:32,960
+is specifically for
+
+1351
+00:52:32,960 --> 00:52:35,200
+the google's purpose they are looking
+
+1352
+00:52:35,200 --> 00:52:38,160
+into translation right so later we will
+
+1353
+00:52:38,160 --> 00:52:40,319
+talk about the language model
+
+1354
+00:52:40,319 --> 00:52:42,640
+traditional language model is given and
+
+1355
+00:52:42,640 --> 00:52:45,680
+characters you want to generate m plus
+
+1356
+00:52:45,680 --> 00:52:48,160
+and google the first
+
+1357
+00:52:48,160 --> 00:52:49,520
+sort like
+
+1358
+00:52:49,520 --> 00:52:52,559
+model they came out with called mask
+
+1359
+00:52:52,559 --> 00:52:54,319
+language model it's a different language
+
+1360
+00:52:54,319 --> 00:52:55,760
+model so
+
+1361
+00:52:55,760 --> 00:52:58,000
+a language model is not really a common
+
+1362
+00:52:58,000 --> 00:53:00,400
+term it's a specific term saying okay
+
+1363
+00:53:00,400 --> 00:53:02,319
+when i say language model it means you
+
+1364
+00:53:02,319 --> 00:53:04,000
+are generating the next sentence based
+
+1365
+00:53:04,000 --> 00:53:06,960
+on previous previous words right so this
+
+1366
+00:53:06,960 --> 00:53:09,599
+is can be more clear shortly so for
+
+1367
+00:53:09,599 --> 00:53:12,559
+translation we have input sentence we
+
+1368
+00:53:12,559 --> 00:53:15,520
+eventually want to generate output
+
+1369
+00:53:15,520 --> 00:53:16,880
+and here
+
+1370
+00:53:16,880 --> 00:53:20,240
+i give you an example mentally input
+
+1371
+00:53:20,240 --> 00:53:22,960
+maybe in french an output in the
+
+1372
+00:53:22,960 --> 00:53:24,319
+beginning
+
+1373
+00:53:24,319 --> 00:53:26,800
+would be just a start character right
+
+1374
+00:53:26,800 --> 00:53:28,480
+nothing start
+
+1375
+00:53:28,480 --> 00:53:31,760
+and then after we process the input
+
+1376
+00:53:31,760 --> 00:53:33,200
+we get this
+
+1377
+00:53:33,200 --> 00:53:35,440
+array of attention which i will depict
+
+1378
+00:53:35,440 --> 00:53:37,440
+shortly and this
+
+1379
+00:53:37,440 --> 00:53:41,119
+array of attention will be inputted to
+
+1380
+00:53:41,119 --> 00:53:43,440
+the middle layer middle attention layer
+
+1381
+00:53:43,440 --> 00:53:44,880
+of the decoder
+
+1382
+00:53:44,880 --> 00:53:48,240
+right so this is the only place
+
+1383
+00:53:48,240 --> 00:53:51,040
+the decoder and encoder talk to each
+
+1384
+00:53:51,040 --> 00:53:53,680
+other okay talk to each other means you
+
+1385
+00:53:53,680 --> 00:53:55,280
+do backward propagation back here
+
+1386
+00:53:55,280 --> 00:53:56,960
+eventually in the training phase you
+
+1387
+00:53:56,960 --> 00:53:59,200
+modify the parameters and then you do
+
+1388
+00:53:59,200 --> 00:54:02,559
+four forward uh training uh in in
+
+1389
+00:54:02,559 --> 00:54:03,920
+between here
+
+1390
+00:54:03,920 --> 00:54:05,520
+so
+
+1391
+00:54:05,520 --> 00:54:07,440
+that was the motivation we came up with
+
+1392
+00:54:07,440 --> 00:54:10,480
+encoder and decoder and the position
+
+1393
+00:54:10,480 --> 00:54:12,960
+encoding was critical because when you
+
+1394
+00:54:12,960 --> 00:54:14,400
+input
+
+1395
+00:54:14,400 --> 00:54:17,280
+a window of words into the encoder
+
+1396
+00:54:17,280 --> 00:54:19,520
+decoder eventually you need to position
+
+1397
+00:54:19,520 --> 00:54:22,559
+which words is where right so encoding
+
+1398
+00:54:22,559 --> 00:54:24,400
+scheme fourier transform
+
+1399
+00:54:24,400 --> 00:54:27,119
+is very straightforward we just consider
+
+1400
+00:54:27,119 --> 00:54:29,200
+you'll be given no research can be
+
+1401
+00:54:29,200 --> 00:54:30,880
+further down over there
+
+1402
+00:54:30,880 --> 00:54:32,880
+and attention
+
+1403
+00:54:32,880 --> 00:54:34,319
+simply speaking
+
+1404
+00:54:34,319 --> 00:54:36,799
+involves in three data structures
+
+1405
+00:54:36,799 --> 00:54:40,000
+one is a value vector
+
+1406
+00:54:40,000 --> 00:54:42,880
+and the second thing is the key or index
+
+1407
+00:54:42,880 --> 00:54:46,160
+into the value vector and the queue is
+
+1408
+00:54:46,160 --> 00:54:47,359
+the query
+
+1409
+00:54:47,359 --> 00:54:49,680
+the query you want to ask information
+
+1410
+00:54:49,680 --> 00:54:52,319
+from the value vector so example very
+
+1411
+00:54:52,319 --> 00:54:54,240
+simple example here is i have three
+
+1412
+00:54:54,240 --> 00:54:58,720
+values 150 175 and 45 and i have no idea
+
+1413
+00:54:58,720 --> 00:55:01,200
+what they are but i have a key
+
+1414
+00:55:01,200 --> 00:55:03,280
+vector key would say oh they are
+
+1415
+00:55:03,280 --> 00:55:06,640
+actually a weight height an h
+
+1416
+00:55:06,640 --> 00:55:09,520
+so now if i do a query on weight and i
+
+1417
+00:55:09,520 --> 00:55:11,440
+will get 150.
+
+1418
+00:55:11,440 --> 00:55:12,559
+so
+
+1419
+00:55:12,559 --> 00:55:14,079
+here you can say
+
+1420
+00:55:14,079 --> 00:55:16,160
+how can we get 150
+
+1421
+00:55:16,160 --> 00:55:19,280
+so you can you can see quite clearly i
+
+1422
+00:55:19,280 --> 00:55:22,559
+have to do a dot product between query
+
+1423
+00:55:22,559 --> 00:55:25,040
+and the key right when i do a dot
+
+1424
+00:55:25,040 --> 00:55:27,680
+product between query and key i know oh
+
+1425
+00:55:27,680 --> 00:55:29,200
+you want to know
+
+1426
+00:55:29,200 --> 00:55:30,160
+weight
+
+1427
+00:55:30,160 --> 00:55:33,359
+so weight indeed i cover that in my
+
+1428
+00:55:33,359 --> 00:55:35,920
+value vector so that will be the first
+
+1429
+00:55:35,920 --> 00:55:38,960
+element so go to the value vector fetch
+
+1430
+00:55:38,960 --> 00:55:41,119
+the first element to return to the
+
+1431
+00:55:41,119 --> 00:55:43,599
+caller to the carrier okay
+
+1432
+00:55:43,599 --> 00:55:46,160
+so this should should be very
+
+1433
+00:55:46,160 --> 00:55:48,559
+straightforward and uh
+
+1434
+00:55:48,559 --> 00:55:50,400
+this is one
+
+1435
+00:55:50,400 --> 00:55:51,359
+simple
+
+1436
+00:55:51,359 --> 00:55:53,760
+attention block right so
+
+1437
+00:55:53,760 --> 00:55:55,839
+we have uh
+
+1438
+00:55:55,839 --> 00:55:58,799
+multiply q and a k
+
+1439
+00:55:58,799 --> 00:56:01,200
+to then we scaled it and why we want to
+
+1440
+00:56:01,200 --> 00:56:04,480
+scale that is again an empirical result
+
+1441
+00:56:04,480 --> 00:56:06,960
+we don't want the value to be too large
+
+1442
+00:56:06,960 --> 00:56:09,520
+and so the formula is without product q
+
+1443
+00:56:09,520 --> 00:56:10,559
+and k
+
+1444
+00:56:10,559 --> 00:56:14,319
+to get the index then we get a mask then
+
+1445
+00:56:14,319 --> 00:56:17,119
+we get into the value a vector
+
+1446
+00:56:17,119 --> 00:56:19,359
+multiplied by this value vector and we
+
+1447
+00:56:19,359 --> 00:56:23,200
+do a soft mesh we get our results right
+
+1448
+00:56:23,200 --> 00:56:24,559
+suppose we have
+
+1449
+00:56:24,559 --> 00:56:26,240
+multiple heads
+
+1450
+00:56:26,240 --> 00:56:27,280
+and
+
+1451
+00:56:27,280 --> 00:56:29,200
+eventually we just aggregate either
+
+1452
+00:56:29,200 --> 00:56:33,760
+concatenate in parallel or we do a
+
+1453
+00:56:33,760 --> 00:56:36,079
+sum and wait is sum at the end at the
+
+1454
+00:56:36,079 --> 00:56:37,359
+top level
+
+1455
+00:56:37,359 --> 00:56:39,040
+so there could be two different ways to
+
+1456
+00:56:39,040 --> 00:56:40,559
+deal with
+
+1457
+00:56:40,559 --> 00:56:42,480
+multiple output
+
+1458
+00:56:42,480 --> 00:56:43,680
+so
+
+1459
+00:56:43,680 --> 00:56:46,480
+we can talk about multiple hats uh in
+
+1460
+00:56:46,480 --> 00:56:48,079
+intense slides
+
+1461
+00:56:48,079 --> 00:56:49,119
+okay so
+
+1462
+00:56:49,119 --> 00:56:51,839
+this mechanism hopefully is quite
+
+1463
+00:56:51,839 --> 00:56:53,280
+straightforward right just just this
+
+1464
+00:56:53,280 --> 00:56:57,280
+formula attention given q k and v
+
+1465
+00:56:57,280 --> 00:56:59,920
+we do us soft max first of all do a dot
+
+1466
+00:56:59,920 --> 00:57:02,319
+product between q and k
+
+1467
+00:57:02,319 --> 00:57:04,160
+and divided by a scaling factor because
+
+1468
+00:57:04,160 --> 00:57:05,839
+we want we don't want the number to be
+
+1469
+00:57:05,839 --> 00:57:06,880
+too large
+
+1470
+00:57:06,880 --> 00:57:08,559
+and then we multiply
+
+1471
+00:57:08,559 --> 00:57:10,640
+with the value of enter
+
+1472
+00:57:10,640 --> 00:57:12,960
+and we get get again get the result and
+
+1473
+00:57:12,960 --> 00:57:15,280
+result again the magnitude can be over
+
+1474
+00:57:15,280 --> 00:57:17,920
+the places we do a soft max so we want
+
+1475
+00:57:17,920 --> 00:57:20,079
+to make sure the value eventually at the
+
+1476
+00:57:20,079 --> 00:57:24,319
+end will be between zero and one okay
+
+1477
+00:57:24,799 --> 00:57:27,200
+and then okay then we just just again we
+
+1478
+00:57:27,200 --> 00:57:29,680
+look at the translation uh suppose we
+
+1479
+00:57:29,680 --> 00:57:32,240
+have french words one two and three and
+
+1480
+00:57:32,240 --> 00:57:35,280
+up will be english word one and two
+
+1481
+00:57:35,280 --> 00:57:39,839
+so input output vo embedding or to react
+
+1482
+00:57:39,839 --> 00:57:42,240
+and the position encoding keeps sequence
+
+1483
+00:57:42,240 --> 00:57:43,520
+positions
+
+1484
+00:57:43,520 --> 00:57:45,599
+and each attention block takes three
+
+1485
+00:57:45,599 --> 00:57:47,040
+input v
+
+1486
+00:57:47,040 --> 00:57:48,799
+k and q
+
+1487
+00:57:48,799 --> 00:57:52,000
+and since v is a vector of all hidden
+
+1488
+00:57:52,000 --> 00:57:54,480
+states of the input token
+
+1489
+00:57:54,480 --> 00:57:58,720
+an output sees the entire input sequence
+
+1490
+00:57:58,720 --> 00:58:00,240
+so we solve the
+
+1491
+00:58:00,240 --> 00:58:02,799
+long distance dependency problem by
+
+1492
+00:58:02,799 --> 00:58:05,200
+having this attention vector
+
+1493
+00:58:05,200 --> 00:58:07,680
+so if the vector let's say the size the
+
+1494
+00:58:07,680 --> 00:58:09,119
+size of vector is
+
+1495
+00:58:09,119 --> 00:58:10,559
+12.
+
+1496
+00:58:10,559 --> 00:58:12,960
+you can see 12 states
+
+1497
+00:58:12,960 --> 00:58:16,319
+right you can see either before or after
+
+1498
+00:58:16,319 --> 00:58:18,720
+not necessarily just before
+
+1499
+00:58:18,720 --> 00:58:20,160
+and
+
+1500
+00:58:20,160 --> 00:58:23,280
+you can see even bigger window like uh
+
+1501
+00:58:23,280 --> 00:58:25,599
+in the burst situation they divide the
+
+1502
+00:58:25,599 --> 00:58:29,280
+buffer of 512 into two buffers
+
+1503
+00:58:29,280 --> 00:58:33,760
+uh 256 and 256. and one question i put
+
+1504
+00:58:33,760 --> 00:58:35,680
+forward if you can think of is
+
+1505
+00:58:35,680 --> 00:58:38,000
+why 512.
+
+1506
+00:58:38,000 --> 00:58:39,839
+if i process a document let's say i want
+
+1507
+00:58:39,839 --> 00:58:41,280
+to do translation
+
+1508
+00:58:41,280 --> 00:58:42,960
+you say 512
+
+1509
+00:58:42,960 --> 00:58:46,160
+and i say okay maybe okay right but you
+
+1510
+00:58:46,160 --> 00:58:49,760
+say well if i do qna i want to do q a on
+
+1511
+00:58:49,760 --> 00:58:52,480
+a particular scientific subject and your
+
+1512
+00:58:52,480 --> 00:58:54,400
+input is a question you say the question
+
+1513
+00:58:54,400 --> 00:58:57,839
+can only have 512 characters i probably
+
+1514
+00:58:57,839 --> 00:59:00,480
+would say good i don't i don't have
+
+1515
+00:59:00,480 --> 00:59:01,760
+i don't i wouldn't have a sentence too
+
+1516
+00:59:01,760 --> 00:59:02,880
+long
+
+1517
+00:59:02,880 --> 00:59:05,040
+a question too long but you say the
+
+1518
+00:59:05,040 --> 00:59:06,640
+right hand side should be
+
+1519
+00:59:06,640 --> 00:59:08,400
+all the information
+
+1520
+00:59:08,400 --> 00:59:10,319
+possibly have the answer
+
+1521
+00:59:10,319 --> 00:59:12,559
+512 you must be kidding my fighter is
+
+1522
+00:59:12,559 --> 00:59:14,160
+just too small
+
+1523
+00:59:14,160 --> 00:59:15,280
+so
+
+1524
+00:59:15,280 --> 00:59:17,200
+why 512
+
+1525
+00:59:17,200 --> 00:59:20,319
+think about it then we come back
+
+1526
+00:59:20,319 --> 00:59:22,319
+so attention mechanism
+
+1527
+00:59:22,319 --> 00:59:25,040
+uh the decision layer basically do a
+
+1528
+00:59:25,040 --> 00:59:27,599
+query dot product to the memory layer
+
+1529
+00:59:27,599 --> 00:59:31,200
+and the values so you do see all the
+
+1530
+00:59:31,200 --> 00:59:33,839
+values in the buffer and through this
+
+1531
+00:59:33,839 --> 00:59:35,520
+attention mechanism the right hand side
+
+1532
+00:59:35,520 --> 00:59:36,799
+is example
+
+1533
+00:59:36,799 --> 00:59:39,200
+and you have this the monkey ate the
+
+1534
+00:59:39,200 --> 00:59:41,920
+banana because it was too
+
+1535
+00:59:41,920 --> 00:59:43,200
+hungry
+
+1536
+00:59:43,200 --> 00:59:45,200
+so this it
+
+1537
+00:59:45,200 --> 00:59:48,720
+is it the banana or the it the monkey
+
+1538
+00:59:48,720 --> 00:59:51,280
+eventually by trending and you can see
+
+1539
+00:59:51,280 --> 00:59:52,160
+the
+
+1540
+00:59:52,160 --> 00:59:54,319
+the weight the attention
+
+1541
+00:59:54,319 --> 00:59:55,280
+it
+
+1542
+00:59:55,280 --> 00:59:58,000
+the thicker the darker color means the
+
+1543
+00:59:58,000 --> 01:00:00,319
+attention probability so we went through
+
+1544
+01:00:00,319 --> 01:00:02,480
+this song max right the attention bob is
+
+1545
+01:00:02,480 --> 01:00:03,760
+higher for
+
+1546
+01:00:03,760 --> 01:00:06,240
+monkey the monkey but much slower for
+
+1547
+01:00:06,240 --> 01:00:07,440
+banana
+
+1548
+01:00:07,440 --> 01:00:08,160
+so
+
+1549
+01:00:08,160 --> 01:00:10,559
+this attention eventually tell us it
+
+1550
+01:00:10,559 --> 01:00:14,799
+here it is the monkey okay
+
+1551
+01:00:14,799 --> 01:00:17,359
+so the next example
+
+1552
+01:00:17,359 --> 01:00:19,760
+is even more interesting we say the
+
+1553
+01:00:19,760 --> 01:00:22,640
+animal didn't cross the street because
+
+1554
+01:00:22,640 --> 01:00:25,920
+it was too tired
+
+1555
+01:00:25,920 --> 01:00:26,720
+so
+
+1556
+01:00:26,720 --> 01:00:29,520
+here you can say oh the attention pace
+
+1557
+01:00:29,520 --> 01:00:32,000
+to the animal so the animal was too
+
+1558
+01:00:32,000 --> 01:00:33,040
+tired
+
+1559
+01:00:33,040 --> 01:00:36,960
+but we're just changing the tire to wide
+
+1560
+01:00:36,960 --> 01:00:39,760
+it was too wide on the right hand side
+
+1561
+01:00:39,760 --> 01:00:42,799
+and attention is so so smart looking at
+
+1562
+01:00:42,799 --> 01:00:43,839
+say oh
+
+1563
+01:00:43,839 --> 01:00:46,480
+the animal cannot be too wide
+
+1564
+01:00:46,480 --> 01:00:48,960
+right the emini mode the street can be
+
+1565
+01:00:48,960 --> 01:00:50,319
+too wide
+
+1566
+01:00:50,319 --> 01:00:53,520
+so it's rather clever
+
+1567
+01:00:53,520 --> 01:00:54,799
+it's really
+
+1568
+01:00:54,799 --> 01:00:56,960
+look at the context in the in the
+
+1569
+01:00:56,960 --> 01:00:58,720
+sentence level
+
+1570
+01:00:58,720 --> 01:00:59,599
+and
+
+1571
+01:00:59,599 --> 01:01:02,480
+the context every words will be looking
+
+1572
+01:01:02,480 --> 01:01:05,040
+to not just the last word
+
+1573
+01:01:05,040 --> 01:01:05,760
+so
+
+1574
+01:01:05,760 --> 01:01:07,599
+pretty much we have this
+
+1575
+01:01:07,599 --> 01:01:09,920
+problem solved i would say
+
+1576
+01:01:09,920 --> 01:01:12,640
+if you can consider that there will be
+
+1577
+01:01:12,640 --> 01:01:14,480
+a missing missing problem need to be
+
+1578
+01:01:14,480 --> 01:01:15,599
+addressed
+
+1579
+01:01:15,599 --> 01:01:18,799
+and you can elevate uh
+
+1580
+01:01:18,799 --> 01:01:20,960
+the nature language processing to the
+
+1581
+01:01:20,960 --> 01:01:22,640
+next level
+
+1582
+01:01:22,640 --> 01:01:25,119
+so so here i'm going to give you a real
+
+1583
+01:01:25,119 --> 01:01:26,720
+real world joke
+
+1584
+01:01:26,720 --> 01:01:29,920
+and when i was at the uc i'm writing my
+
+1585
+01:01:29,920 --> 01:01:34,000
+first uh paper and we are classifying
+
+1586
+01:01:34,000 --> 01:01:37,040
+a wired animal from uh domestic animal
+
+1587
+01:01:37,040 --> 01:01:39,119
+something like that so i had to miss
+
+1588
+01:01:39,119 --> 01:01:40,799
+this misspelling of
+
+1589
+01:01:40,799 --> 01:01:43,200
+wild i i spare in the wide
+
+1590
+01:01:43,200 --> 01:01:45,680
+so my secretary just made a joke with me
+
+1591
+01:01:45,680 --> 01:01:48,000
+saying oh animal is white
+
+1592
+01:01:48,000 --> 01:01:50,559
+or edward must be
+
+1593
+01:01:50,559 --> 01:01:51,760
+kidding so
+
+1594
+01:01:51,760 --> 01:01:54,319
+indeed i i i have this chromatic
+
+1595
+01:01:54,319 --> 01:01:56,480
+writing arrow typo i i did
+
+1596
+01:01:56,480 --> 01:02:00,079
+white so to me then this uh nlp wouldn't
+
+1597
+01:02:00,079 --> 01:02:03,119
+work because i was saying the animal is
+
+1598
+01:02:03,119 --> 01:02:07,839
+very fat like elephant or something
+
+1599
+01:02:08,160 --> 01:02:10,240
+okay this is uh the last slide was an
+
+1600
+01:02:10,240 --> 01:02:13,039
+example sorry i come back here so see
+
+1601
+01:02:13,039 --> 01:02:15,520
+this is how the attention works every
+
+1602
+01:02:15,520 --> 01:02:16,400
+word
+
+1603
+01:02:16,400 --> 01:02:18,880
+pays attention to all other words not
+
+1604
+01:02:18,880 --> 01:02:21,359
+just itself right so and then we have
+
+1605
+01:02:21,359 --> 01:02:24,400
+multiple layers of attention so like the
+
+1606
+01:02:24,400 --> 01:02:26,160
+transformer layer
+
+1607
+01:02:26,160 --> 01:02:29,280
+the encoder state they have so many
+
+1608
+01:02:29,280 --> 01:02:31,440
+layers i think maybe 60 some layers and
+
+1609
+01:02:31,440 --> 01:02:35,559
+decoding state also has
+
+1610
+01:02:36,000 --> 01:02:37,920
+maybe about 20 or
+
+1611
+01:02:37,920 --> 01:02:41,200
+30 30 layers so there's no limitation of
+
+1612
+01:02:41,200 --> 01:02:43,520
+how many layers you want to put there
+
+1613
+01:02:43,520 --> 01:02:46,240
+depending on the task and the accuracy
+
+1614
+01:02:46,240 --> 01:02:48,799
+would you like to accomplish so the
+
+1615
+01:02:48,799 --> 01:02:49,920
+reasoned
+
+1616
+01:02:49,920 --> 01:02:51,920
+monster generated by
+
+1617
+01:02:51,920 --> 01:02:54,480
+open ai do you know how many parameters
+
+1618
+01:02:54,480 --> 01:02:56,480
+are in there so the more layers you have
+
+1619
+01:02:56,480 --> 01:02:58,640
+of course the the more parameters you
+
+1620
+01:02:58,640 --> 01:03:00,319
+get right there are a few things
+
+1621
+01:03:00,319 --> 01:03:03,280
+determining your parameters one is your
+
+1622
+01:03:03,280 --> 01:03:04,799
+window size
+
+1623
+01:03:04,799 --> 01:03:05,760
+so the
+
+1624
+01:03:05,760 --> 01:03:08,079
+vertically how many characters you want
+
+1625
+01:03:08,079 --> 01:03:09,119
+to see
+
+1626
+01:03:09,119 --> 01:03:11,359
+at the same time the second thing is how
+
+1627
+01:03:11,359 --> 01:03:13,760
+many hats you want to have right the
+
+1628
+01:03:13,760 --> 01:03:15,760
+third thing is how many layers you want
+
+1629
+01:03:15,760 --> 01:03:19,119
+to stack your your this attention block
+
+1630
+01:03:19,119 --> 01:03:21,920
+right so attention block uh as
+
+1631
+01:03:21,920 --> 01:03:24,000
+illustrated in the in the
+
+1632
+01:03:24,000 --> 01:03:26,319
+in about four pictures ago encoder has
+
+1633
+01:03:26,319 --> 01:03:28,160
+two of three and decoder has another two
+
+1634
+01:03:28,160 --> 01:03:30,480
+or three okay so
+
+1635
+01:03:30,480 --> 01:03:33,039
+the more complex your model the better
+
+1636
+01:03:33,039 --> 01:03:36,000
+accuracy or the better kind of results
+
+1637
+01:03:36,000 --> 01:03:38,160
+you will be obtained but the cost will
+
+1638
+01:03:38,160 --> 01:03:40,720
+be the number of parameters the number
+
+1639
+01:03:40,720 --> 01:03:43,359
+of parameters decides the computational
+
+1640
+01:03:43,359 --> 01:03:44,559
+complexity
+
+1641
+01:03:44,559 --> 01:03:46,640
+and will demand a lot of
+
+1642
+01:03:46,640 --> 01:03:49,440
+computation powers or gpus
+
+1643
+01:03:49,440 --> 01:03:52,799
+in the case of gpg3 maybe today we may
+
+1644
+01:03:52,799 --> 01:03:55,760
+not have time to gain the gpd3 but gp3
+
+1645
+01:03:55,760 --> 01:03:56,559
+has
+
+1646
+01:03:56,559 --> 01:03:59,440
+500 billion parameters
+
+1647
+01:03:59,440 --> 01:04:01,359
+and it's reaching
+
+1648
+01:04:01,359 --> 01:04:04,240
+1 trillion i i bet there are companies
+
+1649
+01:04:04,240 --> 01:04:06,240
+working on 1 3 and even
+
+1650
+01:04:06,240 --> 01:04:07,920
+5 trillion models
+
+1651
+01:04:07,920 --> 01:04:09,920
+so we have
+
+1652
+01:04:09,920 --> 01:04:12,000
+if you look at the scenario right now
+
+1653
+01:04:12,000 --> 01:04:14,160
+the data we are having
+
+1654
+01:04:14,160 --> 01:04:16,720
+already been fully utilized and people
+
+1655
+01:04:16,720 --> 01:04:18,160
+just trying to
+
+1656
+01:04:18,160 --> 01:04:19,200
+increase
+
+1657
+01:04:19,200 --> 01:04:22,720
+the depth of the the attention layers to
+
+1658
+01:04:22,720 --> 01:04:27,039
+try to increase the number of neurons
+
+1659
+01:04:27,039 --> 01:04:29,599
+a prediction was once we get into
+
+1660
+01:04:29,599 --> 01:04:32,559
+multiple trillion the number of neurons
+
+1661
+01:04:32,559 --> 01:04:34,559
+in the model could be equivalent to the
+
+1662
+01:04:34,559 --> 01:04:37,760
+number of neurons in human brain
+
+1663
+01:04:37,760 --> 01:04:39,359
+in gpd2
+
+1664
+01:04:39,359 --> 01:04:42,559
+the number of neurons in gb2 gb2 is
+
+1665
+01:04:42,559 --> 01:04:44,799
+equivalent to the number of neurons in a
+
+1666
+01:04:44,799 --> 01:04:45,599
+b
+
+1667
+01:04:45,599 --> 01:04:46,480
+okay
+
+1668
+01:04:46,480 --> 01:04:48,640
+so you just keep on increasing but i
+
+1669
+01:04:48,640 --> 01:04:50,319
+don't know whether the effectiveness
+
+1670
+01:04:50,319 --> 01:04:53,119
+will be able to increase
+
+1671
+01:04:53,119 --> 01:04:55,520
+so much i had attention
+
+1672
+01:04:55,520 --> 01:04:56,559
+uh
+
+1673
+01:04:56,559 --> 01:04:58,319
+it's a mechanism
+
+1674
+01:04:58,319 --> 01:05:00,960
+to try to a uh do a divine conquer
+
+1675
+01:05:00,960 --> 01:05:02,720
+suppose i have this uh
+
+1676
+01:05:02,720 --> 01:05:05,839
+input window which is very very long i
+
+1677
+01:05:05,839 --> 01:05:08,480
+like to be able to chop into uh short
+
+1678
+01:05:08,480 --> 01:05:09,520
+segments
+
+1679
+01:05:09,520 --> 01:05:11,440
+and then we i can compute
+
+1680
+01:05:11,440 --> 01:05:13,920
+impale a little and then eventually the
+
+1681
+01:05:13,920 --> 01:05:16,079
+higher level can can give me this kind
+
+1682
+01:05:16,079 --> 01:05:18,480
+of cross attention i wouldn't be able to
+
+1683
+01:05:18,480 --> 01:05:21,359
+lose the information i really need
+
+1684
+01:05:21,359 --> 01:05:24,079
+and another motivation of this multi
+
+1685
+01:05:24,079 --> 01:05:25,760
+multihack is you can really take
+
+1686
+01:05:25,760 --> 01:05:27,160
+advantage of
+
+1687
+01:05:27,160 --> 01:05:29,760
+paleocomputation because uh
+
+1688
+01:05:29,760 --> 01:05:32,559
+the heads operate independently on the
+
+1689
+01:05:32,559 --> 01:05:34,720
+data right they share the same huge
+
+1690
+01:05:34,720 --> 01:05:37,359
+matches and here we look at query key
+
+1691
+01:05:37,359 --> 01:05:40,160
+and values and conceptually they are in
+
+1692
+01:05:40,160 --> 01:05:42,000
+three or logically they are in three
+
+1693
+01:05:42,000 --> 01:05:43,359
+different matrices
+
+1694
+01:05:43,359 --> 01:05:44,960
+but the real implementation they
+
+1695
+01:05:44,960 --> 01:05:47,200
+actually put into one physical
+
+1696
+01:05:47,200 --> 01:05:50,240
+matrix input in the memory and then you
+
+1697
+01:05:50,240 --> 01:05:51,599
+have this
+
+1698
+01:05:51,599 --> 01:05:53,839
+access to different regions of memory to
+
+1699
+01:05:53,839 --> 01:05:56,400
+deal with the situation
+
+1700
+01:05:56,400 --> 01:05:59,280
+so remember i mentioned this 512 right
+
+1701
+01:05:59,280 --> 01:06:01,359
+why vital
+
+1702
+01:06:01,359 --> 01:06:05,200
+so here is a good time to maybe to think
+
+1703
+01:06:05,200 --> 01:06:06,880
+about why because
+
+1704
+01:06:06,880 --> 01:06:09,200
+suppose we i want to map
+
+1705
+01:06:09,200 --> 01:06:11,440
+from input to output
+
+1706
+01:06:11,440 --> 01:06:14,160
+right so input is 5 12. the output
+
+1707
+01:06:14,160 --> 01:06:16,960
+should be 5 12 and so on and so forth
+
+1708
+01:06:16,960 --> 01:06:20,000
+so this 512 to 512 mapping if i want to
+
+1709
+01:06:20,000 --> 01:06:22,400
+do a tension to look at the entire
+
+1710
+01:06:22,400 --> 01:06:24,240
+window either multihat or eventual
+
+1711
+01:06:24,240 --> 01:06:27,200
+aggregate information together
+
+1712
+01:06:27,200 --> 01:06:28,720
+we definitely need to have this 512
+
+1713
+01:06:28,720 --> 01:06:31,599
+multiplied by 512.
+
+1714
+01:06:31,599 --> 01:06:33,680
+memory space
+
+1715
+01:06:33,680 --> 01:06:34,640
+and
+
+1716
+01:06:34,640 --> 01:06:38,079
+if you increase to 10 24 times 10 24
+
+1717
+01:06:38,079 --> 01:06:39,359
+it's doable
+
+1718
+01:06:39,359 --> 01:06:43,440
+so after birth there was a model which
+
+1719
+01:06:43,440 --> 01:06:46,319
+my company is using that is 1024 called
+
+1720
+01:06:46,319 --> 01:06:48,079
+bart bart
+
+1721
+01:06:48,079 --> 01:06:49,280
+indeed
+
+1722
+01:06:49,280 --> 01:06:52,559
+for many tasks 12 24 get much better
+
+1723
+01:06:52,559 --> 01:06:54,160
+results right
+
+1724
+01:06:54,160 --> 01:06:56,799
+another example is i gave you this q a
+
+1725
+01:06:56,799 --> 01:06:58,720
+but another example would be document
+
+1726
+01:06:58,720 --> 01:07:00,319
+summarization
+
+1727
+01:07:00,319 --> 01:07:04,000
+and if we want to do news summarization
+
+1728
+01:07:04,000 --> 01:07:07,280
+a news a piece of news is more than 5 12
+
+1729
+01:07:07,280 --> 01:07:10,160
+characters but typically can be under 10
+
+1730
+01:07:10,160 --> 01:07:14,000
+24. so if we do summarization just on on
+
+1731
+01:07:14,000 --> 01:07:16,079
+512 we have to chop a document into
+
+1732
+01:07:16,079 --> 01:07:18,400
+multiple segments and that's not really
+
+1733
+01:07:18,400 --> 01:07:23,760
+good right so 1024 wonderful but why not
+
+1734
+01:07:23,760 --> 01:07:25,359
+one million
+
+1735
+01:07:25,359 --> 01:07:27,520
+and this is called reformer
+
+1736
+01:07:27,520 --> 01:07:29,039
+was done by
+
+1737
+01:07:29,039 --> 01:07:31,520
+google about two years ago
+
+1738
+01:07:31,520 --> 01:07:33,280
+maybe one year ago i don't remember a
+
+1739
+01:07:33,280 --> 01:07:34,799
+time precisely
+
+1740
+01:07:34,799 --> 01:07:36,480
+but reformer you have this one million
+
+1741
+01:07:36,480 --> 01:07:39,039
+times one media window or one million
+
+1742
+01:07:39,039 --> 01:07:41,200
+times one million mattress it cannot be
+
+1743
+01:07:41,200 --> 01:07:44,319
+put in the physical memory so then
+
+1744
+01:07:44,319 --> 01:07:46,000
+subsequently there are
+
+1745
+01:07:46,000 --> 01:07:49,200
+a few of you work try to do this matrix
+
+1746
+01:07:49,200 --> 01:07:50,480
+reduction
+
+1747
+01:07:50,480 --> 01:07:52,240
+and my team
+
+1748
+01:07:52,240 --> 01:07:54,839
+we using this
+
+1749
+01:07:54,839 --> 01:07:59,039
+uh incomplete scholastic factorization
+
+1750
+01:07:59,039 --> 01:08:01,039
+and that's a very
+
+1751
+01:08:01,039 --> 01:08:04,640
+uh principle method in linear algebra we
+
+1752
+01:08:04,640 --> 01:08:06,319
+reduce the dimension
+
+1753
+01:08:06,319 --> 01:08:08,079
+from n
+
+1754
+01:08:08,079 --> 01:08:10,880
+to square root of n so that makes the
+
+1755
+01:08:10,880 --> 01:08:11,839
+the
+
+1756
+01:08:11,839 --> 01:08:14,319
+matrix it's much smaller can fit into
+
+1757
+01:08:14,319 --> 01:08:16,399
+the memory without losing a lot of
+
+1758
+01:08:16,399 --> 01:08:17,839
+information
+
+1759
+01:08:17,839 --> 01:08:18,640
+so
+
+1760
+01:08:18,640 --> 01:08:20,080
+the 512
+
+1761
+01:08:20,080 --> 01:08:23,040
+window is not really limited by
+
+1762
+01:08:23,040 --> 01:08:26,960
+the logic of the algorithm is limited by
+
+1763
+01:08:26,960 --> 01:08:29,439
+computer resources and because the
+
+1764
+01:08:29,439 --> 01:08:31,920
+memory memory size keep on getting
+
+1765
+01:08:31,920 --> 01:08:32,960
+increased
+
+1766
+01:08:32,960 --> 01:08:36,238
+so nowadays 10 24 is okay but going
+
+1767
+01:08:36,238 --> 01:08:39,198
+beyond 1024 we have to conduct
+
+1768
+01:08:39,198 --> 01:08:41,040
+approximation
+
+1769
+01:08:41,040 --> 01:08:43,439
+so let's recap this everything using
+
+1770
+01:08:43,439 --> 01:08:44,960
+example
+
+1771
+01:08:44,960 --> 01:08:47,600
+example translation right so we have
+
+1772
+01:08:47,600 --> 01:08:51,520
+this encoder decoder architecture on the
+
+1773
+01:08:51,520 --> 01:08:52,960
+encoder architecture on the left-hand
+
+1774
+01:08:52,960 --> 01:08:55,359
+side a decoder on the right-hand side
+
+1775
+01:08:55,359 --> 01:08:56,158
+and
+
+1776
+01:08:56,158 --> 01:08:58,799
+we going through the process let's look
+
+1777
+01:08:58,799 --> 01:09:00,158
+at final grant
+
+1778
+01:09:00,158 --> 01:09:02,560
+the first word comes in sorry this
+
+1779
+01:09:02,560 --> 01:09:05,040
+animation okay i couldn't see the top
+
+1780
+01:09:05,040 --> 01:09:07,920
+bar so the first word comes in
+
+1781
+01:09:07,920 --> 01:09:10,238
+you start to generate the first one on
+
+1782
+01:09:10,238 --> 01:09:12,479
+the right hand side and on the left hand
+
+1783
+01:09:12,479 --> 01:09:14,719
+side you just continue to generate the
+
+1784
+01:09:14,719 --> 01:09:18,080
+third one and then the fourth one
+
+1785
+01:09:18,080 --> 01:09:20,479
+and you can do this animation
+
+1786
+01:09:20,479 --> 01:09:22,238
+at home too
+
+1787
+01:09:22,238 --> 01:09:25,279
+to really get a feel to see the details
+
+1788
+01:09:25,279 --> 01:09:27,439
+and when i post pdf sometimes animation
+
+1789
+01:09:27,439 --> 01:09:30,080
+doesn't come out but i will precisely
+
+1790
+01:09:30,080 --> 01:09:33,040
+cite the sources of all these animations
+
+1791
+01:09:33,040 --> 01:09:35,439
+those are not created by me those are on
+
+1792
+01:09:35,439 --> 01:09:37,759
+the website you can look at those
+
+1793
+01:09:37,759 --> 01:09:40,960
+individual tutorials
+
+1794
+01:09:42,640 --> 01:09:45,439
+and this is a complexity of information
+
+1795
+01:09:45,439 --> 01:09:46,960
+path length
+
+1796
+01:09:46,960 --> 01:09:48,719
+and so self-attention
+
+1797
+01:09:48,719 --> 01:09:51,600
+uh the complexity per layer n squared
+
+1798
+01:09:51,600 --> 01:09:53,279
+multiplied by d
+
+1799
+01:09:53,279 --> 01:09:55,520
+so n squared is really the window size
+
+1800
+01:09:55,520 --> 01:09:57,760
+problem like second sequence length and
+
+1801
+01:09:57,760 --> 01:10:01,280
+this is the bottom neck of the memory
+
+1802
+01:10:01,280 --> 01:10:03,280
+and the at the bottom you see this is
+
+1803
+01:10:03,280 --> 01:10:06,000
+self attention restricted restricted
+
+1804
+01:10:06,000 --> 01:10:06,800
+means
+
+1805
+01:10:06,800 --> 01:10:08,880
+okay you even you have to give me n i'm
+
+1806
+01:10:08,880 --> 01:10:11,120
+not going to look into the entire end
+
+1807
+01:10:11,120 --> 01:10:13,199
+i'm going to do a sub sampling i only
+
+1808
+01:10:13,199 --> 01:10:16,480
+want to look into r right so this can
+
+1809
+01:10:16,480 --> 01:10:20,239
+reduce the memory requirement but how to
+
+1810
+01:10:20,239 --> 01:10:22,640
+reduce from n to r and most of people
+
+1811
+01:10:22,640 --> 01:10:24,159
+just say i'm not going to look into this
+
+1812
+01:10:24,159 --> 01:10:26,239
+entire sentence i would entire 512
+
+1813
+01:10:26,239 --> 01:10:27,600
+buffer i'm going to just look into
+
+1814
+01:10:27,600 --> 01:10:30,320
+substances like maybe seven or ten
+
+1815
+01:10:30,320 --> 01:10:33,199
+characters and that will limit the the
+
+1816
+01:10:33,199 --> 01:10:36,960
+the power of this uh potential mechanism
+
+1817
+01:10:36,960 --> 01:10:38,080
+and uh
+
+1818
+01:10:38,080 --> 01:10:40,000
+in recent papers some people come up
+
+1819
+01:10:40,000 --> 01:10:40,880
+with this something called a
+
+1820
+01:10:40,880 --> 01:10:42,480
+multi-resolution
+
+1821
+01:10:42,480 --> 01:10:45,040
+so you could have n by n at the same
+
+1822
+01:10:45,040 --> 01:10:47,760
+time you could do sub sampling and sub
+
+1823
+01:10:47,760 --> 01:10:49,840
+sampling can be done in a sequential
+
+1824
+01:10:49,840 --> 01:10:52,640
+manner or you can do it in in a random
+
+1825
+01:10:52,640 --> 01:10:55,040
+manner right
+
+1826
+01:10:55,040 --> 01:10:58,239
+so there are a lot of we can say hacks
+
+1827
+01:10:58,239 --> 01:11:00,880
+behind it and i typically i don't care
+
+1828
+01:11:00,880 --> 01:11:02,960
+about those hacks right we care about
+
+1829
+01:11:02,960 --> 01:11:06,000
+principles and hex basically just saying
+
+1830
+01:11:06,000 --> 01:11:06,880
+oh
+
+1831
+01:11:06,880 --> 01:11:09,199
+we have this uh trunk the tree trunk is
+
+1832
+01:11:09,199 --> 01:11:11,920
+there i'm going to make it faster i'm
+
+1833
+01:11:11,920 --> 01:11:14,400
+trying to make it uh
+
+1834
+01:11:14,400 --> 01:11:16,719
+slightly more accurate right so a lot of
+
+1835
+01:11:16,719 --> 01:11:18,400
+people popping in paper say oh i get
+
+1836
+01:11:18,400 --> 01:11:20,239
+this 0.2
+
+1837
+01:11:20,239 --> 01:11:22,640
+higher accuracy but
+
+1838
+01:11:22,640 --> 01:11:24,719
+those are not really interesting because
+
+1839
+01:11:24,719 --> 01:11:27,440
+it could be data dependent improvement
+
+1840
+01:11:27,440 --> 01:11:29,840
+but speed yes speed is liquid is
+
+1841
+01:11:29,840 --> 01:11:31,840
+critical especially the inferencing
+
+1842
+01:11:31,840 --> 01:11:33,920
+speed
+
+1843
+01:11:33,920 --> 01:11:35,520
+so bird and
+
+1844
+01:11:35,520 --> 01:11:38,000
+gpt
+
+1845
+01:11:38,400 --> 01:11:41,280
+so birth lgbt we talk about their
+
+1846
+01:11:41,280 --> 01:11:43,600
+language models are different
+
+1847
+01:11:43,600 --> 01:11:46,400
+for gpt it's a traditional language
+
+1848
+01:11:46,400 --> 01:11:49,120
+model left to right
+
+1849
+01:11:49,120 --> 01:11:53,199
+and for birth is bi-directional
+
+1850
+01:11:53,199 --> 01:11:55,840
+why do they want to do bi-directional
+
+1851
+01:11:55,840 --> 01:11:57,679
+we look at why
+
+1852
+01:11:57,679 --> 01:12:00,320
+because the mass language model depends
+
+1853
+01:12:00,320 --> 01:12:03,520
+on that to be more efficient
+
+1854
+01:12:03,520 --> 01:12:04,719
+so
+
+1855
+01:12:04,719 --> 01:12:06,880
+the key element here but we talk if you
+
+1856
+01:12:06,880 --> 01:12:08,480
+keep on talking about small data
+
+1857
+01:12:08,480 --> 01:12:11,679
+learning in the first two lectures
+
+1858
+01:12:11,679 --> 01:12:14,640
+and the breakthrough for this mask
+
+1859
+01:12:14,640 --> 01:12:17,760
+language model is you no longer
+
+1860
+01:12:17,760 --> 01:12:20,320
+need label training data because the
+
+1861
+01:12:20,320 --> 01:12:24,080
+data itself is your teacher right so you
+
+1862
+01:12:24,080 --> 01:12:26,560
+say computer vision if you do
+
+1863
+01:12:26,560 --> 01:12:30,000
+compression then you do decompression or
+
+1864
+01:12:30,000 --> 01:12:32,080
+encoding decoding
+
+1865
+01:12:32,080 --> 01:12:34,239
+using this minimizing
+
+1866
+01:12:34,239 --> 01:12:37,760
+snr as your objective function you
+
+1867
+01:12:37,760 --> 01:12:39,520
+actually you don't need supervision
+
+1868
+01:12:39,520 --> 01:12:42,320
+because data itself is your ground truth
+
+1869
+01:12:42,320 --> 01:12:44,480
+right you do compression then you
+
+1870
+01:12:44,480 --> 01:12:46,320
+decompress back to
+
+1871
+01:12:46,320 --> 01:12:47,280
+as
+
+1872
+01:12:47,280 --> 01:12:49,440
+original as possible that's your ground
+
+1873
+01:12:49,440 --> 01:12:52,560
+truth likewise in the end of nlp i think
+
+1874
+01:12:52,560 --> 01:12:54,320
+i have to appreciate those google photos
+
+1875
+01:12:54,320 --> 01:12:55,920
+come up with this
+
+1876
+01:12:55,920 --> 01:12:58,320
+mask language model they say okay i'm
+
+1877
+01:12:58,320 --> 01:13:00,719
+going to pretty missing words you give
+
+1878
+01:13:00,719 --> 01:13:03,760
+me an article i'm going to take away
+
+1879
+01:13:03,760 --> 01:13:06,480
+m percent of words so again this n is
+
+1880
+01:13:06,480 --> 01:13:08,800
+the magic and you say why not five
+
+1881
+01:13:08,800 --> 01:13:11,520
+percent why not 20 percent 150.
+
+1882
+01:13:11,520 --> 01:13:14,000
+if we take away many men too many words
+
+1883
+01:13:14,000 --> 01:13:16,000
+of course the guessing cannot be done
+
+1884
+01:13:16,000 --> 01:13:16,960
+well
+
+1885
+01:13:16,960 --> 01:13:19,280
+and if we guess only just two or three
+
+1886
+01:13:19,280 --> 01:13:21,520
+words it's not very powerful so again
+
+1887
+01:13:21,520 --> 01:13:24,000
+this is a magic of 15
+
+1888
+01:13:24,000 --> 01:13:26,800
+so you have this document you take away
+
+1889
+01:13:26,800 --> 01:13:30,800
+15 of words randomly and you try to
+
+1890
+01:13:30,800 --> 01:13:33,360
+build this attention model to guess the
+
+1891
+01:13:33,360 --> 01:13:35,760
+missing words so once you have done this
+
+1892
+01:13:35,760 --> 01:13:38,080
+for a very large corpus
+
+1893
+01:13:38,080 --> 01:13:39,840
+because you don't need label your
+
+1894
+01:13:39,840 --> 01:13:42,080
+document itself is your label right so
+
+1895
+01:13:42,080 --> 01:13:44,400
+this you you are so called self
+
+1896
+01:13:44,400 --> 01:13:47,440
+supervised learning so this big data is
+
+1897
+01:13:47,440 --> 01:13:50,480
+no longer you you need human to labels
+
+1898
+01:13:50,480 --> 01:13:53,520
+but the data itself is its own teacher
+
+1899
+01:13:53,520 --> 01:13:55,520
+this is really fantastic revolution i
+
+1900
+01:13:55,520 --> 01:13:56,719
+think this is more even more
+
+1901
+01:13:56,719 --> 01:13:58,400
+revolutionary
+
+1902
+01:13:58,400 --> 01:14:01,840
+than the attention model itself
+
+1903
+01:14:02,400 --> 01:14:03,760
+okay so
+
+1904
+01:14:03,760 --> 01:14:06,800
+the google did two things one
+
+1905
+01:14:06,800 --> 01:14:09,040
+the mask language model is different
+
+1906
+01:14:09,040 --> 01:14:12,080
+from the traditional alm language model
+
+1907
+01:14:12,080 --> 01:14:14,400
+the second is they have this another
+
+1908
+01:14:14,400 --> 01:14:16,560
+task because they divide
+
+1909
+01:14:16,560 --> 01:14:18,000
+512
+
+1910
+01:14:18,000 --> 01:14:20,400
+uh character buffers into two sub
+
+1911
+01:14:20,400 --> 01:14:21,440
+buffers
+
+1912
+01:14:21,440 --> 01:14:23,840
+and the first buffer is the first
+
+1913
+01:14:23,840 --> 01:14:26,159
+sentence the second buffer is the next
+
+1914
+01:14:26,159 --> 01:14:28,400
+sentence so every time they provide
+
+1915
+01:14:28,400 --> 01:14:30,320
+input into
+
+1916
+01:14:30,320 --> 01:14:32,719
+the bird training the transformer they
+
+1917
+01:14:32,719 --> 01:14:36,560
+provide two sentences and their
+
+1918
+01:14:36,560 --> 01:14:39,679
+optimization objectives in addition to
+
+1919
+01:14:39,679 --> 01:14:42,960
+predicting the missing words accurately
+
+1920
+01:14:42,960 --> 01:14:46,080
+they do a hack they say oh can you
+
+1921
+01:14:46,080 --> 01:14:48,960
+predict whether the second sentence is
+
+1922
+01:14:48,960 --> 01:14:52,000
+the next sentence of the first
+
+1923
+01:14:52,000 --> 01:14:55,360
+i i found it is mysterious but
+
+1924
+01:14:55,360 --> 01:14:57,199
+but it actually improved accuracy
+
+1925
+01:14:57,199 --> 01:15:00,400
+according to google by two percent right
+
+1926
+01:15:00,400 --> 01:15:02,320
+it's kind of funny because if you look
+
+1927
+01:15:02,320 --> 01:15:04,320
+at poorly written articles
+
+1928
+01:15:04,320 --> 01:15:06,480
+even you you read a paper you say i'm
+
+1929
+01:15:06,480 --> 01:15:09,760
+going to swap some sentences i move the
+
+1930
+01:15:09,760 --> 01:15:12,239
+first sentence or second sentence to be
+
+1931
+01:15:12,239 --> 01:15:14,640
+third or fourth and i move sometimes up
+
+1932
+01:15:14,640 --> 01:15:15,679
+and down
+
+1933
+01:15:15,679 --> 01:15:18,000
+some pretty return papers
+
+1934
+01:15:18,000 --> 01:15:19,760
+i wouldn't say poorly written not so
+
+1935
+01:15:19,760 --> 01:15:22,960
+well written paper not that logical
+
+1936
+01:15:22,960 --> 01:15:24,800
+kind of engaging papers
+
+1937
+01:15:24,800 --> 01:15:26,960
+they still read pretty well if you could
+
+1938
+01:15:26,960 --> 01:15:29,040
+go to news i would i would argue the
+
+1939
+01:15:29,040 --> 01:15:30,560
+same thing right
+
+1940
+01:15:30,560 --> 01:15:31,920
+so
+
+1941
+01:15:31,920 --> 01:15:34,480
+for the language model i'm coming back
+
+1942
+01:15:34,480 --> 01:15:37,600
+here gbt is really doing
+
+1943
+01:15:37,600 --> 01:15:40,560
+generating the next word the man then
+
+1944
+01:15:40,560 --> 01:15:43,199
+next one will be the man went the man
+
+1945
+01:15:43,199 --> 01:15:44,239
+want to
+
+1946
+01:15:44,239 --> 01:15:47,520
+and for the birth mass language model we
+
+1947
+01:15:47,520 --> 01:15:49,280
+take away
+
+1948
+01:15:49,280 --> 01:15:52,880
+random words in the sentences right so
+
+1949
+01:15:52,880 --> 01:15:54,400
+in the top sentence we have two
+
+1950
+01:15:54,400 --> 01:15:56,400
+sentences in the top input we have two
+
+1951
+01:15:56,400 --> 01:15:57,760
+sentences the man went to the
+
+1952
+01:15:57,760 --> 01:16:00,880
+supermarket he bought a can of milk so
+
+1953
+01:16:00,880 --> 01:16:04,150
+this is the example i say
+
+1954
+01:16:04,150 --> 01:16:05,360
+[Music]
+
+1955
+01:16:05,360 --> 01:16:07,760
+why you swapping a sentence
+
+1956
+01:16:07,760 --> 01:16:08,719
+uh
+
+1957
+01:16:08,719 --> 01:16:11,679
+would be a wrong thing i say if i say uh
+
+1958
+01:16:11,679 --> 01:16:14,320
+he wants to buy again of milk and the
+
+1959
+01:16:14,320 --> 01:16:16,640
+man went to the supermarket semantically
+
+1960
+01:16:16,640 --> 01:16:18,080
+it's the same right
+
+1961
+01:16:18,080 --> 01:16:20,239
+even more telling is the next one the
+
+1962
+01:16:20,239 --> 01:16:23,520
+man went to a supermarket mary walks his
+
+1963
+01:16:23,520 --> 01:16:25,840
+he stalks every day so if you switch a
+
+1964
+01:16:25,840 --> 01:16:27,920
+tool it's not impossible people writing
+
+1965
+01:16:27,920 --> 01:16:29,600
+sentences like this especially our
+
+1966
+01:16:29,600 --> 01:16:32,880
+diaries right so i have no idea why this
+
+1967
+01:16:32,880 --> 01:16:34,800
+is next here you say it's nice it's
+
+1968
+01:16:34,800 --> 01:16:38,640
+false but who knows
+
+1969
+01:16:38,640 --> 01:16:40,080
+it works
+
+1970
+01:16:40,080 --> 01:16:41,440
+okay
+
+1971
+01:16:41,440 --> 01:16:43,040
+so to recap
+
+1972
+01:16:43,040 --> 01:16:44,719
+the semi-supervised they call semi
+
+1973
+01:16:44,719 --> 01:16:46,840
+supervised actually it's just
+
+1974
+01:16:46,840 --> 01:16:48,400
+self-supervised
+
+1975
+01:16:48,400 --> 01:16:49,199
+and
+
+1976
+01:16:49,199 --> 01:16:51,280
+using self-supervised learning
+
+1977
+01:16:51,280 --> 01:16:52,800
+we pre-train
+
+1978
+01:16:52,800 --> 01:16:55,840
+this uh we call pre-trend model birth
+
+1979
+01:16:55,840 --> 01:16:58,239
+the bird has all the parameters based on
+
+1980
+01:16:58,239 --> 01:17:00,640
+the optimization of its next and
+
+1981
+01:17:00,640 --> 01:17:02,800
+guessing the missing words and we have
+
+1982
+01:17:02,800 --> 01:17:06,239
+this uh uh the weight matches everything
+
+1983
+01:17:06,239 --> 01:17:08,400
+being trend then on the right hand side
+
+1984
+01:17:08,400 --> 01:17:10,159
+we start to say oh
+
+1985
+01:17:10,159 --> 01:17:12,640
+so what did you want to do actually what
+
+1986
+01:17:12,640 --> 01:17:16,000
+is your target task you want to do q a
+
+1987
+01:17:16,000 --> 01:17:18,080
+and you want to do this uh
+
+1988
+01:17:18,080 --> 01:17:21,679
+annotation name entity annotation or you
+
+1989
+01:17:21,679 --> 01:17:24,880
+want to do classification okay now we
+
+1990
+01:17:24,880 --> 01:17:26,400
+want to collect
+
+1991
+01:17:26,400 --> 01:17:29,840
+uh your domain data your test data like
+
+1992
+01:17:29,840 --> 01:17:33,360
+here i would like to do this spam or not
+
+1993
+01:17:33,360 --> 01:17:36,000
+spam classification so give me your data
+
+1994
+01:17:36,000 --> 01:17:37,199
+data set
+
+1995
+01:17:37,199 --> 01:17:38,880
+here i want to
+
+1996
+01:17:38,880 --> 01:17:41,440
+want you to provide labels right because
+
+1997
+01:17:41,440 --> 01:17:43,280
+of pre-trained model
+
+1998
+01:17:43,280 --> 01:17:46,239
+we have this uh initial prior
+
+1999
+01:17:46,239 --> 01:17:48,560
+so this is a way we don't actually need
+
+2000
+01:17:48,560 --> 01:17:51,199
+to have a lot of label data so the label
+
+2001
+01:17:51,199 --> 01:17:53,199
+data of maybe a few thousand will be
+
+2002
+01:17:53,199 --> 01:17:56,239
+sufficient otherwise in the past we need
+
+2003
+01:17:56,239 --> 01:17:58,400
+tons of tons of data because we need to
+
+2004
+01:17:58,400 --> 01:17:59,679
+trend the
+
+2005
+01:17:59,679 --> 01:18:02,000
+bottom layers right the image in the
+
+2006
+01:18:02,000 --> 01:18:03,840
+image domain we have given this uh
+
+2007
+01:18:03,840 --> 01:18:06,400
+example of edges and contour as a bottom
+
+2008
+01:18:06,400 --> 01:18:08,480
+layer and we can do transfer learning
+
+2009
+01:18:08,480 --> 01:18:11,040
+here the same thing the birth picture
+
+2010
+01:18:11,040 --> 01:18:14,080
+model already trend all the base layers
+
+2011
+01:18:14,080 --> 01:18:15,840
+then here we just won't need to do fine
+
+2012
+01:18:15,840 --> 01:18:18,719
+tuning based on our supervised task on
+
+2013
+01:18:18,719 --> 01:18:20,080
+the top
+
+2014
+01:18:20,080 --> 01:18:23,679
+so let's look at fine tuning uh the
+
+2015
+01:18:23,679 --> 01:18:24,960
+first one
+
+2016
+01:18:24,960 --> 01:18:28,320
+just uh just say we enumerate a few uh
+
+2017
+01:18:28,320 --> 01:18:31,840
+very kind of dominant application uh
+
+2018
+01:18:31,840 --> 01:18:33,199
+recommendation information
+
+2019
+01:18:33,199 --> 01:18:34,800
+recommendation summary document
+
+2020
+01:18:34,800 --> 01:18:38,080
+classification q a mnd recognition
+
+2021
+01:18:38,080 --> 01:18:40,560
+sentiment essence saying so and so forth
+
+2022
+01:18:40,560 --> 01:18:42,640
+and this is one example of fine tuning
+
+2023
+01:18:42,640 --> 01:18:44,800
+want to generate class labels of a
+
+2024
+01:18:44,800 --> 01:18:47,440
+document right so input will be
+
+2025
+01:18:47,440 --> 01:18:50,159
+just the documents itself and then we
+
+2026
+01:18:50,159 --> 01:18:51,679
+input into the birth
+
+2027
+01:18:51,679 --> 01:18:54,320
+and then we provide labels on the top to
+
+2028
+01:18:54,320 --> 01:18:56,560
+do fine tuning so what fine tuning would
+
+2029
+01:18:56,560 --> 01:18:57,760
+do would be
+
+2030
+01:18:57,760 --> 01:19:00,239
+on the top of bird we may create a
+
+2031
+01:19:00,239 --> 01:19:02,800
+shallow neural nets so fine tuning space
+
+2032
+01:19:02,800 --> 01:19:05,040
+on this but the bottom layers we do fine
+
+2033
+01:19:05,040 --> 01:19:08,239
+tuning on the on the top layers of our
+
+2034
+01:19:08,239 --> 01:19:11,120
+so-called adaptive or fine-tuning layers
+
+2035
+01:19:11,120 --> 01:19:13,760
+of weights and eventually we train our
+
+2036
+01:19:13,760 --> 01:19:16,719
+uh model for the target task likewise we
+
+2037
+01:19:16,719 --> 01:19:19,280
+can do qa qa left hand side is a
+
+2038
+01:19:19,280 --> 01:19:21,120
+question right hand side is your
+
+2039
+01:19:21,120 --> 01:19:23,440
+paragraph we ask the question to say
+
+2040
+01:19:23,440 --> 01:19:26,320
+what is the weather tomorrow and then
+
+2041
+01:19:26,320 --> 01:19:28,800
+the output will be the start position of
+
+2042
+01:19:28,800 --> 01:19:31,600
+the answer and position of the answer
+
+2043
+01:19:31,600 --> 01:19:33,920
+and then the span the span will be seven
+
+2044
+01:19:33,920 --> 01:19:36,800
+characters whatever then you look into
+
+2045
+01:19:36,800 --> 01:19:38,719
+at the end actually if you have started
+
+2046
+01:19:38,719 --> 01:19:40,560
+an end you don't need spam but for some
+
+2047
+01:19:40,560 --> 01:19:42,640
+reason they put spent here you extract
+
+2048
+01:19:42,640 --> 01:19:45,760
+the answers out of the paragraph and
+
+2049
+01:19:45,760 --> 01:19:47,199
+this is quite limited because the
+
+2050
+01:19:47,199 --> 01:19:48,840
+paragraph here is only
+
+2051
+01:19:48,840 --> 01:19:53,280
+uh very short about 216 characters
+
+2052
+01:19:53,280 --> 01:19:55,600
+and this is uh
+
+2053
+01:19:55,600 --> 01:19:58,480
+sentence tagging we want to tag place
+
+2054
+01:19:58,480 --> 01:20:01,199
+and person on the sentence again we go
+
+2055
+01:20:01,199 --> 01:20:02,400
+through this
+
+2056
+01:20:02,400 --> 01:20:04,719
+fine tuning process so given the center
+
+2057
+01:20:04,719 --> 01:20:06,560
+eventually john lives in new york we
+
+2058
+01:20:06,560 --> 01:20:08,960
+know john is a person in new york those
+
+2059
+01:20:08,960 --> 01:20:11,600
+two are locations so there are many
+
+2060
+01:20:11,600 --> 01:20:14,880
+successful stories and this uh figure
+
+2061
+01:20:14,880 --> 01:20:18,320
+shows using verbal training model uh the
+
+2062
+01:20:18,320 --> 01:20:20,560
+results on many tasks
+
+2063
+01:20:20,560 --> 01:20:23,760
+and uh performs much superior results
+
+2064
+01:20:23,760 --> 01:20:26,320
+compared with you have this one vertical
+
+2065
+01:20:26,320 --> 01:20:28,639
+uh you do training by using using
+
+2066
+01:20:28,639 --> 01:20:30,960
+traditional cell supervised learning
+
+2067
+01:20:30,960 --> 01:20:32,639
+method right
+
+2068
+01:20:32,639 --> 01:20:34,960
+so definitely you see revolutionary
+
+2069
+01:20:34,960 --> 01:20:37,360
+results so nowadays people start with
+
+2070
+01:20:37,360 --> 01:20:39,840
+preschool model without having any
+
+2071
+01:20:39,840 --> 01:20:41,679
+questions asked
+
+2072
+01:20:41,679 --> 01:20:44,000
+so gpd2 using
+
+2073
+01:20:44,000 --> 01:20:46,320
+this traditional language model they are
+
+2074
+01:20:46,320 --> 01:20:48,719
+also performed very very very remarkably
+
+2075
+01:20:48,719 --> 01:20:52,800
+well i would say both gpt and the birth
+
+2076
+01:20:52,800 --> 01:20:55,679
+the concept is equivalent and just their
+
+2077
+01:20:55,679 --> 01:20:57,600
+language models are different and the
+
+2078
+01:20:57,600 --> 01:21:00,400
+results are very very similar both are
+
+2079
+01:21:00,400 --> 01:21:02,639
+very very powerful and the
+
+2080
+01:21:02,639 --> 01:21:04,800
+congratulations to the whole community
+
+2081
+01:21:04,800 --> 01:21:07,760
+finally we virtually get all the
+
+2082
+01:21:07,760 --> 01:21:10,320
+problems we enumerate in the beginning
+
+2083
+01:21:10,320 --> 01:21:11,440
+addressed
+
+2084
+01:21:11,440 --> 01:21:13,679
+like okay so next time we'll come back
+
+2085
+01:21:13,679 --> 01:21:17,040
+to see uh slightly more fragrant details
+
+2086
+01:21:17,040 --> 01:21:20,239
+but hopefully uh so far this lecture we
+
+2087
+01:21:20,239 --> 01:21:21,760
+provide this uh
+
+2088
+01:21:21,760 --> 01:21:26,239
+history in 1.5 lectures of nlp and we
+
+2089
+01:21:26,239 --> 01:21:27,040
+can
+
+2090
+01:21:27,040 --> 01:21:29,360
+comfortably move forward using the
+
+2091
+01:21:29,360 --> 01:21:31,760
+pre-training model of course the next
+
+2092
+01:21:31,760 --> 01:21:34,000
+question will be well
+
+2093
+01:21:34,000 --> 01:21:35,600
+wow there are so many preacher models
+
+2094
+01:21:35,600 --> 01:21:38,000
+which one i should use right and there i
+
+2095
+01:21:38,000 --> 01:21:39,600
+have this multi-model situation
+
+2096
+01:21:39,600 --> 01:21:41,840
+multilingual situation and i'm in the
+
+2097
+01:21:41,840 --> 01:21:44,400
+medicine so your purpose any model may
+
+2098
+01:21:44,400 --> 01:21:47,600
+not be applicable let's talk about them
+
+2099
+01:21:47,600 --> 01:21:49,679
+in the next lecture
+
+2100
+01:21:49,679 --> 01:21:54,840
+okay thank you so much uh questions
+
+2101
+01:22:03,760 --> 01:22:05,840
+i
+

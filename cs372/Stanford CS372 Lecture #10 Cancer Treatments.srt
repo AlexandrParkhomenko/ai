@@ -1,0 +1,9952 @@
+1
+00:00:02,399 --> 00:00:04,680
+good morning welcome back to cs
+
+2
+00:00:04,680 --> 00:00:08,480
+372 artificial intelligence for
+
+3
+00:00:08,480 --> 00:00:10,400
+disease diagnosis and the information
+
+4
+00:00:10,400 --> 00:00:12,320
+recommendations
+
+5
+00:00:12,320 --> 00:00:15,440
+and the last time dr melissa ko gave us
+
+6
+00:00:15,440 --> 00:00:16,480
+a lecture on
+
+7
+00:00:16,480 --> 00:00:20,080
+cancer causes and the diagnosis
+
+8
+00:00:20,080 --> 00:00:22,560
+and today we welcome melissa to come
+
+9
+00:00:22,560 --> 00:00:23,600
+back to give us
+
+10
+00:00:23,600 --> 00:00:26,640
+the second lecture on cancer focusing on
+
+11
+00:00:26,640 --> 00:00:29,439
+cancer treatment including radiology
+
+12
+00:00:29,439 --> 00:00:31,199
+surgery chemotherapy
+
+13
+00:00:31,199 --> 00:00:35,120
+and targeted therapy and immunotherapy
+
+14
+00:00:35,120 --> 00:00:38,399
+let's welcome melissa
+
+15
+00:00:38,399 --> 00:00:41,440
+awesome welcome back everyone so yeah we
+
+16
+00:00:41,440 --> 00:00:43,040
+will be continuing with sort of
+
+17
+00:00:43,040 --> 00:00:45,760
+the second half of what we spoke about
+
+18
+00:00:45,760 --> 00:00:46,879
+last week
+
+19
+00:00:46,879 --> 00:00:50,239
+so last week we really thought about
+
+20
+00:00:50,239 --> 00:00:53,360
+how is cancer caused how do we diagnose
+
+21
+00:00:53,360 --> 00:00:53,680
+it
+
+22
+00:00:53,680 --> 00:00:56,480
+and so really looking at what's going on
+
+23
+00:00:56,480 --> 00:00:58,800
+in our cells and in our dna that
+
+24
+00:00:58,800 --> 00:01:02,000
+leads to cancer and
+
+25
+00:01:02,000 --> 00:01:05,199
+thinking about those different features
+
+26
+00:01:05,199 --> 00:01:07,439
+of a cancer cell and maybe how that
+
+27
+00:01:07,439 --> 00:01:08,320
+might
+
+28
+00:01:08,320 --> 00:01:10,000
+contribute to what we're looking for in
+
+29
+00:01:10,000 --> 00:01:12,479
+cancer like diagnosing it as an earlier
+
+30
+00:01:12,479 --> 00:01:14,479
+stage versus a later stage as a more
+
+31
+00:01:14,479 --> 00:01:16,400
+aggressive cancer or a less aggressive
+
+32
+00:01:16,400 --> 00:01:17,360
+cancer
+
+33
+00:01:17,360 --> 00:01:19,759
+and ultimately i think it was clear from
+
+34
+00:01:19,759 --> 00:01:21,920
+that conversation that our goal when we
+
+35
+00:01:21,920 --> 00:01:23,920
+were diagnosing is ultimately that might
+
+36
+00:01:23,920 --> 00:01:24,799
+guide
+
+37
+00:01:24,799 --> 00:01:26,720
+better treatment so we're going to
+
+38
+00:01:26,720 --> 00:01:29,520
+continue that conversation today
+
+39
+00:01:29,520 --> 00:01:31,520
+so what i'm planning on talking about
+
+40
+00:01:31,520 --> 00:01:32,560
+today is
+
+41
+00:01:32,560 --> 00:01:34,159
+giving you a sense of a lot of the
+
+42
+00:01:34,159 --> 00:01:36,320
+existing treatments for cancer
+
+43
+00:01:36,320 --> 00:01:38,159
+so we have what i guess i'd call
+
+44
+00:01:38,159 --> 00:01:39,920
+traditional cancer treatments which are
+
+45
+00:01:39,920 --> 00:01:41,840
+probably the ones you've heard about
+
+46
+00:01:41,840 --> 00:01:46,240
+or seen in like popular media whenever
+
+47
+00:01:46,240 --> 00:01:48,240
+cancer comes up whether it be in a tv
+
+48
+00:01:48,240 --> 00:01:50,320
+show or a book
+
+49
+00:01:50,320 --> 00:01:51,920
+there's typical types of cancer
+
+50
+00:01:51,920 --> 00:01:53,600
+treatment that we've been using for many
+
+51
+00:01:53,600 --> 00:01:54,880
+many years
+
+52
+00:01:54,880 --> 00:01:57,520
+i'll talk about some more recent cancer
+
+53
+00:01:57,520 --> 00:01:59,119
+therapies
+
+54
+00:01:59,119 --> 00:02:01,200
+and then we'll talk a bit about what the
+
+55
+00:02:01,200 --> 00:02:03,200
+issue is with those therapies so what is
+
+56
+00:02:03,200 --> 00:02:04,560
+the issue with the therapies that we
+
+57
+00:02:04,560 --> 00:02:06,880
+usually use to treat cancer
+
+58
+00:02:06,880 --> 00:02:09,758
+how is it that cancers become resistant
+
+59
+00:02:09,758 --> 00:02:11,120
+to treatment
+
+60
+00:02:11,120 --> 00:02:13,200
+and what are some possible workarounds
+
+61
+00:02:13,200 --> 00:02:15,040
+for that and then i'll again
+
+62
+00:02:15,040 --> 00:02:17,599
+talk about um machine learning
+
+63
+00:02:17,599 --> 00:02:20,080
+applications so we'll think about how
+
+64
+00:02:20,080 --> 00:02:23,120
+could machine learning help with
+
+65
+00:02:23,120 --> 00:02:25,360
+discovering new drugs or discovering
+
+66
+00:02:25,360 --> 00:02:27,040
+better drugs or discovering more
+
+67
+00:02:27,040 --> 00:02:29,840
+effective combinations of drugs
+
+68
+00:02:29,840 --> 00:02:31,440
+and then i will talk a bit about
+
+69
+00:02:31,440 --> 00:02:33,440
+immunotherapy i know immunotherapy
+
+70
+00:02:33,440 --> 00:02:37,200
+is a big area of interest for
+
+71
+00:02:37,200 --> 00:02:41,680
+for a lot of us um i think compared to a
+
+72
+00:02:41,680 --> 00:02:42,160
+lot of
+
+73
+00:02:42,160 --> 00:02:44,640
+recent innovations with uh cancer
+
+74
+00:02:44,640 --> 00:02:46,160
+treatment and immunotherapy is sort of
+
+75
+00:02:46,160 --> 00:02:48,560
+just like a different approach
+
+76
+00:02:48,560 --> 00:02:51,120
+and i think before it was kind of like
+
+77
+00:02:51,120 --> 00:02:52,400
+you can imagine we drop
+
+78
+00:02:52,400 --> 00:02:54,720
+we developed drug a and we were kind of
+
+79
+00:02:54,720 --> 00:02:55,760
+incrementally
+
+80
+00:02:55,760 --> 00:02:59,200
+improving on drug a or just slightly
+
+81
+00:02:59,200 --> 00:03:01,920
+um you know pairing drug a with drug b
+
+82
+00:03:01,920 --> 00:03:04,319
+to slightly improve the efficacy
+
+83
+00:03:04,319 --> 00:03:06,000
+but immunotherapy is like let's just
+
+84
+00:03:06,000 --> 00:03:07,360
+take a new approach
+
+85
+00:03:07,360 --> 00:03:10,400
+and in some ways that maybe will be more
+
+86
+00:03:10,400 --> 00:03:12,000
+effective especially for certain
+
+87
+00:03:12,000 --> 00:03:12,959
+patients
+
+88
+00:03:12,959 --> 00:03:14,400
+so i'll talk a bit about immunotherapy
+
+89
+00:03:14,400 --> 00:03:17,040
+and then i'll just touch on um
+
+90
+00:03:17,040 --> 00:03:19,200
+areas of work and maybe areas that
+
+91
+00:03:19,200 --> 00:03:20,720
+connect to careers you might be
+
+92
+00:03:20,720 --> 00:03:22,560
+interested in and i did
+
+93
+00:03:22,560 --> 00:03:25,760
+try to consciously leave more time
+
+94
+00:03:25,760 --> 00:03:27,760
+so i think i have fewer slides and fewer
+
+95
+00:03:27,760 --> 00:03:29,040
+things to touch on than
+
+96
+00:03:29,040 --> 00:03:31,120
+last week so hopefully that'll give
+
+97
+00:03:31,120 --> 00:03:33,040
+space if we want to have a more open
+
+98
+00:03:33,040 --> 00:03:34,000
+conversation
+
+99
+00:03:34,000 --> 00:03:37,280
+and you can ask either about research or
+
+100
+00:03:37,280 --> 00:03:40,720
+about sort of transferable
+
+101
+00:03:40,720 --> 00:03:43,040
+skills or ideas if you're interested in
+
+102
+00:03:43,040 --> 00:03:45,040
+like the healthcare context or cancer
+
+103
+00:03:45,040 --> 00:03:46,799
+biology context
+
+104
+00:03:46,799 --> 00:03:49,680
+so that's the plan for today um let me
+
+105
+00:03:49,680 --> 00:03:51,760
+get started first off
+
+106
+00:03:51,760 --> 00:03:54,000
+before we kind of jump right into
+
+107
+00:03:54,000 --> 00:03:56,159
+talking about cancer treatments i did
+
+108
+00:03:56,159 --> 00:03:58,720
+want to talk a little bit about
+
+109
+00:03:58,720 --> 00:04:00,560
+again i think last time i gave an
+
+110
+00:04:00,560 --> 00:04:01,840
+example of like different
+
+111
+00:04:01,840 --> 00:04:03,439
+types of machine learning approaches so
+
+112
+00:04:03,439 --> 00:04:05,760
+like supervised versus unsupervised
+
+113
+00:04:05,760 --> 00:04:08,000
+learning how they relate to cancer like
+
+114
+00:04:08,000 --> 00:04:10,159
+what are the types of problems we think
+
+115
+00:04:10,159 --> 00:04:11,760
+about in the context of cancer when
+
+116
+00:04:11,760 --> 00:04:12,879
+we're thinking about
+
+117
+00:04:12,879 --> 00:04:15,200
+using clustering or using different
+
+118
+00:04:15,200 --> 00:04:17,519
+types of modeling like classification
+
+119
+00:04:17,519 --> 00:04:20,959
+regression um so those are kind of like
+
+120
+00:04:20,959 --> 00:04:22,960
+paradigms for like types of problems
+
+121
+00:04:22,960 --> 00:04:24,479
+you'd solve and how they relate to
+
+122
+00:04:24,479 --> 00:04:25,199
+cancer
+
+123
+00:04:25,199 --> 00:04:26,960
+but i also want to talk a little bit
+
+124
+00:04:26,960 --> 00:04:29,360
+methodology wise
+
+125
+00:04:29,360 --> 00:04:31,759
+one thing that comes up a lot in cancer
+
+126
+00:04:31,759 --> 00:04:32,560
+is this
+
+127
+00:04:32,560 --> 00:04:35,040
+you know well it comes up in machine
+
+128
+00:04:35,040 --> 00:04:36,720
+learning is this trade-off between
+
+129
+00:04:36,720 --> 00:04:39,440
+very complex and accurate models but
+
+130
+00:04:39,440 --> 00:04:40,080
+they become
+
+131
+00:04:40,080 --> 00:04:42,080
+models that you can't really scrutinize
+
+132
+00:04:42,080 --> 00:04:43,440
+like you don't know what's happening
+
+133
+00:04:43,440 --> 00:04:45,040
+under the hood it's just sort of a black
+
+134
+00:04:45,040 --> 00:04:45,840
+box
+
+135
+00:04:45,840 --> 00:04:47,600
+you feed in your inputs and you might
+
+136
+00:04:47,600 --> 00:04:48,960
+get really accurate
+
+137
+00:04:48,960 --> 00:04:51,040
+outputs whether that be a regression or
+
+138
+00:04:51,040 --> 00:04:52,479
+a classification
+
+139
+00:04:52,479 --> 00:04:54,080
+but you don't know what's happening per
+
+140
+00:04:54,080 --> 00:04:55,680
+se in the model
+
+141
+00:04:55,680 --> 00:04:57,360
+and so this actually comes up a lot when
+
+142
+00:04:57,360 --> 00:04:59,840
+we are working as researchers
+
+143
+00:04:59,840 --> 00:05:02,479
+in terms of how do we choose which model
+
+144
+00:05:02,479 --> 00:05:03,120
+to use
+
+145
+00:05:03,120 --> 00:05:05,919
+and it really kind of where we fall on
+
+146
+00:05:05,919 --> 00:05:08,000
+the spectrum of preferring accuracy and
+
+147
+00:05:08,000 --> 00:05:10,000
+giving up the interpretability versus
+
+148
+00:05:10,000 --> 00:05:11,919
+preferring interpretability and giving
+
+149
+00:05:11,919 --> 00:05:13,120
+up accuracy
+
+150
+00:05:13,120 --> 00:05:15,600
+kind of depends ultimately on our goal
+
+151
+00:05:15,600 --> 00:05:16,960
+as researchers
+
+152
+00:05:16,960 --> 00:05:19,360
+so for example as a cancer researcher if
+
+153
+00:05:19,360 --> 00:05:20,240
+your goal
+
+154
+00:05:20,240 --> 00:05:23,520
+is really to try to
+
+155
+00:05:23,520 --> 00:05:26,720
+reveal how cancer works
+
+156
+00:05:26,720 --> 00:05:29,039
+so this comes up a lot in sort of basic
+
+157
+00:05:29,039 --> 00:05:30,639
+research thinking about
+
+158
+00:05:30,639 --> 00:05:34,000
+how how is the cancer functioning does
+
+159
+00:05:34,000 --> 00:05:37,600
+um does the cancer function
+
+160
+00:05:37,600 --> 00:05:40,960
+um so in that sense when we're trying to
+
+161
+00:05:40,960 --> 00:05:42,160
+model a process
+
+162
+00:05:42,160 --> 00:05:45,039
+we're really interested in what are the
+
+163
+00:05:45,039 --> 00:05:45,759
+important
+
+164
+00:05:45,759 --> 00:05:48,560
+features what is leading to one outcome
+
+165
+00:05:48,560 --> 00:05:49,680
+over another
+
+166
+00:05:49,680 --> 00:05:51,840
+and so it's not just enough if your goal
+
+167
+00:05:51,840 --> 00:05:53,440
+is to understand the cancer
+
+168
+00:05:53,440 --> 00:05:56,000
+to say oh yeah you as a patient have the
+
+169
+00:05:56,000 --> 00:05:57,919
+aggressive cancer and you as a patient
+
+170
+00:05:57,919 --> 00:06:00,560
+have the less aggressive cancer we want
+
+171
+00:06:00,560 --> 00:06:02,400
+to know what's leading to that
+
+172
+00:06:02,400 --> 00:06:05,680
+distinguishing that distinction between
+
+173
+00:06:05,680 --> 00:06:06,720
+the two
+
+174
+00:06:06,720 --> 00:06:09,120
+is there a really important feature in
+
+175
+00:06:09,120 --> 00:06:10,720
+our cells is it a really important
+
+176
+00:06:10,720 --> 00:06:12,800
+mutation like we want to
+
+177
+00:06:12,800 --> 00:06:14,720
+be able to pull the model apart and
+
+178
+00:06:14,720 --> 00:06:16,639
+reveal what that feature
+
+179
+00:06:16,639 --> 00:06:20,160
+is and so a lot of like how does cancer
+
+180
+00:06:20,160 --> 00:06:21,600
+work kind of problems we
+
+181
+00:06:21,600 --> 00:06:24,639
+we tend towards these more simple models
+
+182
+00:06:24,639 --> 00:06:26,560
+but then of course i think there is the
+
+183
+00:06:26,560 --> 00:06:29,039
+clinical application which kind of falls
+
+184
+00:06:29,039 --> 00:06:30,639
+up here
+
+185
+00:06:30,639 --> 00:06:32,400
+which is where there are definitely
+
+186
+00:06:32,400 --> 00:06:34,319
+people whose ultimate goal is you know i
+
+187
+00:06:34,319 --> 00:06:34,720
+have
+
+188
+00:06:34,720 --> 00:06:36,880
+real-life patients humans dealing with
+
+189
+00:06:36,880 --> 00:06:39,280
+cancer i just want to be able to
+
+190
+00:06:39,280 --> 00:06:41,759
+have high certainty high accuracy and
+
+191
+00:06:41,759 --> 00:06:42,400
+telling them
+
+192
+00:06:42,400 --> 00:06:44,400
+oh you have this type of cancer this is
+
+193
+00:06:44,400 --> 00:06:46,479
+the best treatment regimen for you
+
+194
+00:06:46,479 --> 00:06:49,199
+and so when you're thinking about how to
+
+195
+00:06:49,199 --> 00:06:49,840
+approach
+
+196
+00:06:49,840 --> 00:06:52,479
+cancer research really knowing is your
+
+197
+00:06:52,479 --> 00:06:53,039
+goal to
+
+198
+00:06:53,039 --> 00:06:55,360
+understand cancer better or is your goal
+
+199
+00:06:55,360 --> 00:06:56,319
+just to
+
+200
+00:06:56,319 --> 00:06:59,280
+you know optimize something so that you
+
+201
+00:06:59,280 --> 00:07:02,240
+maximize the good for your patients
+
+202
+00:07:02,240 --> 00:07:03,680
+and that's something that we struggle
+
+203
+00:07:03,680 --> 00:07:06,960
+with we know that all like cancer is so
+
+204
+00:07:06,960 --> 00:07:08,639
+complicated that a lot of the more
+
+205
+00:07:08,639 --> 00:07:09,919
+simple models
+
+206
+00:07:09,919 --> 00:07:12,080
+are definitely over simplifications of
+
+207
+00:07:12,080 --> 00:07:14,160
+how cancer works but ultimately our goal
+
+208
+00:07:14,160 --> 00:07:15,680
+might be just trying to
+
+209
+00:07:15,680 --> 00:07:18,080
+pull apart like what are the mutations
+
+210
+00:07:18,080 --> 00:07:20,240
+that that contribute to cancer
+
+211
+00:07:20,240 --> 00:07:22,240
+and those kinds of things would be lost
+
+212
+00:07:22,240 --> 00:07:24,720
+if we used really complicated models
+
+213
+00:07:24,720 --> 00:07:26,160
+that make it really hard to figure out
+
+214
+00:07:26,160 --> 00:07:27,680
+what's going on
+
+215
+00:07:27,680 --> 00:07:29,919
+so this is a trade-off that we struggle
+
+216
+00:07:29,919 --> 00:07:31,599
+a lot with and it just kind of depends
+
+217
+00:07:31,599 --> 00:07:33,840
+as a researcher like what are you
+
+218
+00:07:33,840 --> 00:07:35,919
+ultimately trying to contribute to
+
+219
+00:07:35,919 --> 00:07:38,400
+by giving doctors the best tool and
+
+220
+00:07:38,400 --> 00:07:40,000
+giving the best tool for patients
+
+221
+00:07:40,000 --> 00:07:41,440
+or just like furthering our
+
+222
+00:07:41,440 --> 00:07:45,120
+understanding of the cancer
+
+223
+00:07:45,120 --> 00:07:48,400
+all right so let's return to our
+
+224
+00:07:48,400 --> 00:07:51,759
+case study from last week so you might
+
+225
+00:07:51,759 --> 00:07:53,440
+remember that last week what we talked
+
+226
+00:07:53,440 --> 00:07:55,680
+about was our neighbor sasha has been
+
+227
+00:07:55,680 --> 00:07:57,120
+diagnosed with stage
+
+228
+00:07:57,120 --> 00:08:00,319
+four pancreatic cancer so
+
+229
+00:08:00,319 --> 00:08:02,319
+you both know the stage of the cancer
+
+230
+00:08:02,319 --> 00:08:04,160
+and you also know the type of the cancer
+
+231
+00:08:04,160 --> 00:08:05,759
+it originated in the pancreas
+
+232
+00:08:05,759 --> 00:08:08,800
+if you remember last time one thing we
+
+233
+00:08:08,800 --> 00:08:10,240
+noticed was that
+
+234
+00:08:10,240 --> 00:08:12,240
+and what contributed to the diagnosis of
+
+235
+00:08:12,240 --> 00:08:14,240
+stage four was that it was affecting
+
+236
+00:08:14,240 --> 00:08:16,800
+the kidneys as well so it is a cancer
+
+237
+00:08:16,800 --> 00:08:19,280
+that has metastasized or it has spread
+
+238
+00:08:19,280 --> 00:08:21,759
+to another organ and so what i want you
+
+239
+00:08:21,759 --> 00:08:23,599
+to just spend a quiet moment
+
+240
+00:08:23,599 --> 00:08:25,599
+reflecting on and you can share your
+
+241
+00:08:25,599 --> 00:08:28,319
+ideas in the chat is
+
+242
+00:08:28,319 --> 00:08:30,240
+what treatment options do you know for
+
+243
+00:08:30,240 --> 00:08:32,399
+cancer and which ones do you think would
+
+244
+00:08:32,399 --> 00:08:35,360
+work or not work in the scenario so you
+
+245
+00:08:35,360 --> 00:08:36,880
+can just sort of recall what you've
+
+246
+00:08:36,880 --> 00:08:38,880
+heard about for cancer
+
+247
+00:08:38,880 --> 00:08:40,559
+and then think about which ones do you
+
+248
+00:08:40,559 --> 00:08:42,880
+think would be used here
+
+249
+00:08:42,880 --> 00:08:45,519
+and and may help versus ones that might
+
+250
+00:08:45,519 --> 00:08:46,800
+not help
+
+251
+00:08:46,800 --> 00:08:48,560
+so just take a quiet moment to think
+
+252
+00:08:48,560 --> 00:08:50,480
+about that and again share your answers
+
+253
+00:08:50,480 --> 00:08:55,839
+in chat
+
+254
+00:09:41,040 --> 00:09:43,680
+yeah so i see people mentioning
+
+255
+00:09:43,680 --> 00:09:44,959
+chemotherapy
+
+256
+00:09:44,959 --> 00:09:48,080
+and surgery um
+
+257
+00:09:48,080 --> 00:09:49,440
+so i'm seeing comments about
+
+258
+00:09:49,440 --> 00:09:51,760
+chemotherapy and how effective
+
+259
+00:09:51,760 --> 00:09:54,800
+it might be um again there's a lot of
+
+260
+00:09:54,800 --> 00:09:56,800
+trade-offs or chemotherapy itself
+
+261
+00:09:56,800 --> 00:09:58,800
+um chemotherapy is a very harsh
+
+262
+00:09:58,800 --> 00:10:00,240
+treatment which we'll talk about in a
+
+263
+00:10:00,240 --> 00:10:01,279
+second
+
+264
+00:10:01,279 --> 00:10:03,200
+um and then surgery think about surgery
+
+265
+00:10:03,200 --> 00:10:04,880
+um
+
+266
+00:10:04,880 --> 00:10:08,160
+surgery you would need to know where the
+
+267
+00:10:08,160 --> 00:10:10,079
+tumor is and you might clearly know
+
+268
+00:10:10,079 --> 00:10:11,440
+where the tumor is
+
+269
+00:10:11,440 --> 00:10:13,200
+with regards to the pancreas and maybe
+
+270
+00:10:13,200 --> 00:10:14,480
+even the kidney
+
+271
+00:10:14,480 --> 00:10:16,160
+but one thing that's never really clear
+
+272
+00:10:16,160 --> 00:10:18,000
+with a cancer that is late stage
+
+273
+00:10:18,000 --> 00:10:19,920
+and that has spread is is it somewhere
+
+274
+00:10:19,920 --> 00:10:21,680
+else and we just don't know it yet and
+
+275
+00:10:21,680 --> 00:10:24,000
+so that makes surgery really difficult
+
+276
+00:10:24,000 --> 00:10:26,079
+um and you can imagine with a very sick
+
+277
+00:10:26,079 --> 00:10:28,320
+patient you don't want to keep
+
+278
+00:10:28,320 --> 00:10:31,360
+putting them under the stress of
+
+279
+00:10:31,360 --> 00:10:35,600
+surgery awesome thank you for your ideas
+
+280
+00:10:35,600 --> 00:10:38,240
+so yes i think really thinking carefully
+
+281
+00:10:38,240 --> 00:10:39,519
+about what will work
+
+282
+00:10:39,519 --> 00:10:41,519
+at this stage in the game knowing that
+
+283
+00:10:41,519 --> 00:10:43,600
+the patient is probably
+
+284
+00:10:43,600 --> 00:10:46,240
+sick and will only get sicker knowing
+
+285
+00:10:46,240 --> 00:10:47,120
+that the cancer
+
+286
+00:10:47,120 --> 00:10:50,160
+isn't localized it has spread all of
+
+287
+00:10:50,160 --> 00:10:51,519
+those are kind of
+
+288
+00:10:51,519 --> 00:10:53,200
+information that will inform our
+
+289
+00:10:53,200 --> 00:10:55,680
+decision and generally speaking
+
+290
+00:10:55,680 --> 00:10:58,000
+when you're asking up if well if you're
+
+291
+00:10:58,000 --> 00:11:00,160
+faced with a patient who has
+
+292
+00:11:00,160 --> 00:11:02,079
+cancer and you you know the first
+
+293
+00:11:02,079 --> 00:11:04,320
+question we often ask is staging because
+
+294
+00:11:04,320 --> 00:11:06,160
+that tells us a little bit about
+
+295
+00:11:06,160 --> 00:11:09,120
+how bad it is you know how how far along
+
+296
+00:11:09,120 --> 00:11:11,680
+it is what is what are their chances
+
+297
+00:11:11,680 --> 00:11:13,279
+but really from the treatment
+
+298
+00:11:13,279 --> 00:11:15,519
+perspective it really guides what we're
+
+299
+00:11:15,519 --> 00:11:16,800
+going to do about it
+
+300
+00:11:16,800 --> 00:11:19,040
+and so this example here i believe this
+
+301
+00:11:19,040 --> 00:11:20,640
+is taken from
+
+302
+00:11:20,640 --> 00:11:23,600
+this is taken from colon cancer this
+
+303
+00:11:23,600 --> 00:11:25,279
+mapping is really showing you like what
+
+304
+00:11:25,279 --> 00:11:26,079
+would you do
+
+305
+00:11:26,079 --> 00:11:28,880
+if cancer was early versus what would
+
+306
+00:11:28,880 --> 00:11:30,079
+you do if cancer
+
+307
+00:11:30,079 --> 00:11:33,360
+is late stage and so what you can
+
+308
+00:11:33,360 --> 00:11:35,920
+actually kind of see from here is that
+
+309
+00:11:35,920 --> 00:11:38,560
+certain things become more of an option
+
+310
+00:11:38,560 --> 00:11:40,399
+at different stages and versus other
+
+311
+00:11:40,399 --> 00:11:41,120
+things sort of
+
+312
+00:11:41,120 --> 00:11:44,320
+fade out and so an example given give
+
+313
+00:11:44,320 --> 00:11:45,839
+here is that when uh
+
+314
+00:11:45,839 --> 00:11:47,760
+colon cancer is developing it's just
+
+315
+00:11:47,760 --> 00:11:49,839
+usually a small growth which we'll call
+
+316
+00:11:49,839 --> 00:11:50,880
+a polyp
+
+317
+00:11:50,880 --> 00:11:52,880
+and if you find that polyp early you
+
+318
+00:11:52,880 --> 00:11:54,240
+just cut the polyp out
+
+319
+00:11:54,240 --> 00:11:56,320
+like usually it's kind of a benign
+
+320
+00:11:56,320 --> 00:11:57,600
+growth i guess the way you could
+
+321
+00:11:57,600 --> 00:11:59,839
+visualize it is kind of like
+
+322
+00:11:59,839 --> 00:12:02,079
+the way you'd picture like a wart on the
+
+323
+00:12:02,079 --> 00:12:04,000
+surface of your skin just imagine that
+
+324
+00:12:04,000 --> 00:12:05,040
+on the surface
+
+325
+00:12:05,040 --> 00:12:07,279
+of the lining of your gut like that's
+
+326
+00:12:07,279 --> 00:12:09,440
+how we think of a polyp it's like it's a
+
+327
+00:12:09,440 --> 00:12:12,000
+abnormal growth but maybe it hasn't had
+
+328
+00:12:12,000 --> 00:12:13,200
+the chance to like really
+
+329
+00:12:13,200 --> 00:12:16,959
+it be invasive like in its own context
+
+330
+00:12:16,959 --> 00:12:17,600
+or beyond
+
+331
+00:12:17,600 --> 00:12:19,920
+its own context to other organs and so
+
+332
+00:12:19,920 --> 00:12:21,279
+you just cut it out
+
+333
+00:12:21,279 --> 00:12:23,200
+and so that's definitely the main option
+
+334
+00:12:23,200 --> 00:12:25,120
+that you would pursue early on there's
+
+335
+00:12:25,120 --> 00:12:26,720
+really no
+
+336
+00:12:26,720 --> 00:12:30,320
+reason at that point to use chemotherapy
+
+337
+00:12:30,320 --> 00:12:32,320
+or any of these additional lines of
+
+338
+00:12:32,320 --> 00:12:33,040
+treatment you
+
+339
+00:12:33,040 --> 00:12:35,839
+just cut it out versus as what you can
+
+340
+00:12:35,839 --> 00:12:38,079
+see in this diagram sort of as you go
+
+341
+00:12:38,079 --> 00:12:40,480
+further along this is the surgery option
+
+342
+00:12:40,480 --> 00:12:42,000
+you can see it kind of just
+
+343
+00:12:42,000 --> 00:12:43,920
+fades out here because when you're
+
+344
+00:12:43,920 --> 00:12:45,040
+dealing with
+
+345
+00:12:45,040 --> 00:12:48,079
+metastasized cancer again maybe you
+
+346
+00:12:48,079 --> 00:12:49,200
+could cut out
+
+347
+00:12:49,200 --> 00:12:52,639
+the main tumor or the tumors that you've
+
+348
+00:12:52,639 --> 00:12:53,760
+identified
+
+349
+00:12:53,760 --> 00:12:55,920
+but again it's a trade-off where if the
+
+350
+00:12:55,920 --> 00:12:57,680
+cancer is metastasized generally
+
+351
+00:12:57,680 --> 00:12:59,600
+speaking
+
+352
+00:12:59,600 --> 00:13:01,760
+surgery at that stage is not going to
+
+353
+00:13:01,760 --> 00:13:02,880
+cure the patient
+
+354
+00:13:02,880 --> 00:13:05,600
+it's more like is it worth it to maybe
+
+355
+00:13:05,600 --> 00:13:06,800
+alleviate their
+
+356
+00:13:06,800 --> 00:13:09,440
+symptoms like to relieve pain so if
+
+357
+00:13:09,440 --> 00:13:10,160
+there's a
+
+358
+00:13:10,160 --> 00:13:12,639
+giant tumor and you know that tumor is
+
+359
+00:13:12,639 --> 00:13:13,360
+metastasized
+
+360
+00:13:13,360 --> 00:13:15,040
+somewhere else the only reason why you
+
+361
+00:13:15,040 --> 00:13:16,800
+might consider surgery is if it's sort
+
+362
+00:13:16,800 --> 00:13:18,000
+of
+
+363
+00:13:18,000 --> 00:13:20,000
+you know if that in combination with
+
+364
+00:13:20,000 --> 00:13:21,760
+other things might
+
+365
+00:13:21,760 --> 00:13:23,360
+eliminate the entire cancer and
+
+366
+00:13:23,360 --> 00:13:25,360
+everywhere it's spread or if the patient
+
+367
+00:13:25,360 --> 00:13:26,959
+is suffering a lot you might consider
+
+368
+00:13:26,959 --> 00:13:28,240
+cutting out the tumor
+
+369
+00:13:28,240 --> 00:13:29,839
+just because it that tumor is probably
+
+370
+00:13:29,839 --> 00:13:31,680
+still a huge burden and leading to lots
+
+371
+00:13:31,680 --> 00:13:32,000
+of
+
+372
+00:13:32,000 --> 00:13:34,480
+uh effects on their health but you can
+
+373
+00:13:34,480 --> 00:13:36,160
+see in terms of really thinking about it
+
+374
+00:13:36,160 --> 00:13:36,480
+as
+
+375
+00:13:36,480 --> 00:13:38,880
+curative at that point surgery is no
+
+376
+00:13:38,880 --> 00:13:41,040
+longer curative so it kind of fades out
+
+377
+00:13:41,040 --> 00:13:42,639
+as an option
+
+378
+00:13:42,639 --> 00:13:45,199
+um radiation is similar um we'll talk
+
+379
+00:13:45,199 --> 00:13:46,639
+about radiation in a second but
+
+380
+00:13:46,639 --> 00:13:48,240
+radiation generally tends to be
+
+381
+00:13:48,240 --> 00:13:50,000
+something that kind of like
+
+382
+00:13:50,000 --> 00:13:51,839
+surgery you kind of want to point to a
+
+383
+00:13:51,839 --> 00:13:54,240
+specific space and say treat here
+
+384
+00:13:54,240 --> 00:13:56,079
+and so again radiation you don't want to
+
+385
+00:13:56,079 --> 00:13:58,079
+radiate the whole body you're trying to
+
+386
+00:13:58,079 --> 00:13:59,680
+target the radiation and we'll talk
+
+387
+00:13:59,680 --> 00:14:03,199
+about why we use radiation in a second
+
+388
+00:14:03,199 --> 00:14:05,760
+and then in terms of options that become
+
+389
+00:14:05,760 --> 00:14:06,560
+more
+
+390
+00:14:06,560 --> 00:14:09,760
+relevant as we get into later stages
+
+391
+00:14:09,760 --> 00:14:11,279
+chemotherapy is one of them so you can
+
+392
+00:14:11,279 --> 00:14:13,279
+see chemotherapy sort of fades in
+
+393
+00:14:13,279 --> 00:14:16,240
+as we go further along in staging and
+
+394
+00:14:16,240 --> 00:14:17,440
+then there are some more
+
+395
+00:14:17,440 --> 00:14:18,959
+targeted therapies that we use
+
+396
+00:14:18,959 --> 00:14:20,480
+especially for aggressive
+
+397
+00:14:20,480 --> 00:14:23,920
+and late stage cancer
+
+398
+00:14:23,920 --> 00:14:25,360
+and we'll talk about these different
+
+399
+00:14:25,360 --> 00:14:27,199
+targeted therapies here
+
+400
+00:14:27,199 --> 00:14:30,079
+compared to the general chemotherapy
+
+401
+00:14:30,079 --> 00:14:31,839
+which is probably the most common
+
+402
+00:14:31,839 --> 00:14:33,839
+treatment that you've heard about so
+
+403
+00:14:33,839 --> 00:14:35,440
+this anti-anagen
+
+404
+00:14:35,440 --> 00:14:37,839
+sorry anti-angiogenic therapy and this
+
+405
+00:14:37,839 --> 00:14:39,440
+anti-egfr therapy
+
+406
+00:14:39,440 --> 00:14:41,360
+those are targeted therapies and those
+
+407
+00:14:41,360 --> 00:14:42,720
+are ones that
+
+408
+00:14:42,720 --> 00:14:44,560
+might be used for more more than one
+
+409
+00:14:44,560 --> 00:14:46,160
+type of cancer but you might not have
+
+410
+00:14:46,160 --> 00:14:47,120
+heard about it in
+
+411
+00:14:47,120 --> 00:14:49,279
+any cancer context like these these
+
+412
+00:14:49,279 --> 00:14:51,279
+specific ones listed here aren't ones
+
+413
+00:14:51,279 --> 00:14:52,399
+that you see used in
+
+414
+00:14:52,399 --> 00:14:54,480
+every type of cancer you might have
+
+415
+00:14:54,480 --> 00:14:56,560
+heard about them in the context of
+
+416
+00:14:56,560 --> 00:14:59,760
+you know lung cancer or maybe brain
+
+417
+00:14:59,760 --> 00:15:00,480
+cancer
+
+418
+00:15:00,480 --> 00:15:02,079
+but you don't hear them with literally
+
+419
+00:15:02,079 --> 00:15:03,519
+every type of cancer
+
+420
+00:15:03,519 --> 00:15:04,720
+and that's because there is some
+
+421
+00:15:04,720 --> 00:15:08,079
+specificity involved
+
+422
+00:15:08,079 --> 00:15:09,600
+all right so let's talk a little bit
+
+423
+00:15:09,600 --> 00:15:13,040
+about how these treatments work
+
+424
+00:15:13,040 --> 00:15:15,360
+so what i can just say is that in
+
+425
+00:15:15,360 --> 00:15:16,480
+general most
+
+426
+00:15:16,480 --> 00:15:18,720
+classic cancer treatments the way they
+
+427
+00:15:18,720 --> 00:15:19,519
+work
+
+428
+00:15:19,519 --> 00:15:21,040
+this might seem obvious but we're going
+
+429
+00:15:21,040 --> 00:15:23,120
+to kind of dig into this a little more
+
+430
+00:15:23,120 --> 00:15:23,680
+is that
+
+431
+00:15:23,680 --> 00:15:25,680
+they the way they work is they're either
+
+432
+00:15:25,680 --> 00:15:27,360
+physically removing the tumor in the
+
+433
+00:15:27,360 --> 00:15:28,240
+tumor cells
+
+434
+00:15:28,240 --> 00:15:30,480
+which you know is the case for surgery
+
+435
+00:15:30,480 --> 00:15:32,079
+or they're inducing what we call
+
+436
+00:15:32,079 --> 00:15:35,440
+cytotoxic effects on the cancer cell
+
+437
+00:15:35,440 --> 00:15:37,839
+so surgery over here you just cut it out
+
+438
+00:15:37,839 --> 00:15:38,480
+you cut out
+
+439
+00:15:38,480 --> 00:15:40,560
+the tissue there's definitely a
+
+440
+00:15:40,560 --> 00:15:41,680
+challenge where you're trying to think
+
+441
+00:15:41,680 --> 00:15:43,680
+of the margins of like
+
+442
+00:15:43,680 --> 00:15:47,279
+how big is this tumor how much will this
+
+443
+00:15:47,279 --> 00:15:49,199
+affect the patient negatively if
+
+444
+00:15:49,199 --> 00:15:51,360
+i've cut out such a big part of their
+
+445
+00:15:51,360 --> 00:15:52,240
+body
+
+446
+00:15:52,240 --> 00:15:54,720
+um and you don't want to like miss some
+
+447
+00:15:54,720 --> 00:15:56,320
+by accident so that's definitely the
+
+448
+00:15:56,320 --> 00:15:58,320
+struggle with surgery
+
+449
+00:15:58,320 --> 00:16:01,680
+versus the cytotoxic effect really is
+
+450
+00:16:01,680 --> 00:16:03,519
+taking advantage of you know we talked a
+
+451
+00:16:03,519 --> 00:16:04,720
+bit about
+
+452
+00:16:04,720 --> 00:16:08,320
+cells and dna and the goal of cytotoxic
+
+453
+00:16:08,320 --> 00:16:10,639
+effects is that you're killing cancer
+
+454
+00:16:10,639 --> 00:16:12,000
+cells specifically
+
+455
+00:16:12,000 --> 00:16:14,639
+and trying not to harm normal healthy
+
+456
+00:16:14,639 --> 00:16:15,440
+cells
+
+457
+00:16:15,440 --> 00:16:17,759
+which is challenging as we'll talk about
+
+458
+00:16:17,759 --> 00:16:18,560
+in a second
+
+459
+00:16:18,560 --> 00:16:20,800
+but basically we're either cutting out
+
+460
+00:16:20,800 --> 00:16:22,399
+and removing the tumor tissue from the
+
+461
+00:16:22,399 --> 00:16:23,199
+body
+
+462
+00:16:23,199 --> 00:16:26,240
+or we're trying to induce cell death in
+
+463
+00:16:26,240 --> 00:16:29,440
+the tumor cells specifically
+
+464
+00:16:29,440 --> 00:16:32,480
+so how do we induce cell death so
+
+465
+00:16:32,480 --> 00:16:35,040
+radiation is one way as i said radiation
+
+466
+00:16:35,040 --> 00:16:36,639
+is something that generally has to be
+
+467
+00:16:36,639 --> 00:16:38,639
+you want it to be targeted you don't
+
+468
+00:16:38,639 --> 00:16:39,920
+want to sort of be
+
+469
+00:16:39,920 --> 00:16:42,720
+introducing radiation to healthy parts
+
+470
+00:16:42,720 --> 00:16:44,000
+of the body
+
+471
+00:16:44,000 --> 00:16:46,480
+um radiation has been talked about in
+
+472
+00:16:46,480 --> 00:16:48,639
+terms of oh we use it for
+
+473
+00:16:48,639 --> 00:16:51,040
+diagnostics like we take an x-ray and we
+
+474
+00:16:51,040 --> 00:16:51,680
+might see
+
+475
+00:16:51,680 --> 00:16:53,600
+something that looks abnormal right so
+
+476
+00:16:53,600 --> 00:16:55,759
+we both use it on the end of
+
+477
+00:16:55,759 --> 00:16:57,360
+you know when we first have a patient
+
+478
+00:16:57,360 --> 00:16:58,800
+coming into the clinic we might use this
+
+479
+00:16:58,800 --> 00:17:00,800
+to diagnose that there's something wrong
+
+480
+00:17:00,800 --> 00:17:01,680
+and
+
+481
+00:17:01,680 --> 00:17:03,920
+lead to the diagnosis of cancer but
+
+482
+00:17:03,920 --> 00:17:05,760
+we're also using it on the treatment end
+
+483
+00:17:05,760 --> 00:17:07,760
+where we're taking this radiation and in
+
+484
+00:17:07,760 --> 00:17:10,400
+really high concentrated strong
+
+485
+00:17:10,400 --> 00:17:12,959
+doses we aim it at where we think the
+
+486
+00:17:12,959 --> 00:17:14,000
+tumor is
+
+487
+00:17:14,000 --> 00:17:17,280
+and when radiation hits the tumor
+
+488
+00:17:17,280 --> 00:17:20,319
+um it basically is inducing
+
+489
+00:17:20,319 --> 00:17:22,959
+damage to the dna so i think i showed
+
+490
+00:17:22,959 --> 00:17:24,880
+last time the example of
+
+491
+00:17:24,880 --> 00:17:29,039
+um a mutagen like a cancer-causing agent
+
+492
+00:17:29,039 --> 00:17:31,360
+was radiation so when your skin for
+
+493
+00:17:31,360 --> 00:17:33,360
+example is exposed to a lot of
+
+494
+00:17:33,360 --> 00:17:36,000
+sun it gets a lot of uv radiation and
+
+495
+00:17:36,000 --> 00:17:36,880
+especially if you
+
+496
+00:17:36,880 --> 00:17:39,600
+are prone to getting a lot of sunburns
+
+497
+00:17:39,600 --> 00:17:40,320
+that's sort of
+
+498
+00:17:40,320 --> 00:17:43,360
+representing that this this your cells
+
+499
+00:17:43,360 --> 00:17:44,480
+and your skin are getting
+
+500
+00:17:44,480 --> 00:17:46,880
+a lot of radiation dosages and it's
+
+501
+00:17:46,880 --> 00:17:48,160
+probably actually hurting
+
+502
+00:17:48,160 --> 00:17:51,120
+those cells because like basically the
+
+503
+00:17:51,120 --> 00:17:53,200
+radiation hits your dna and can cause
+
+504
+00:17:53,200 --> 00:17:55,360
+that dna to mutate
+
+505
+00:17:55,360 --> 00:17:57,440
+when that happens in our body our cells
+
+506
+00:17:57,440 --> 00:17:58,799
+will usually
+
+507
+00:17:58,799 --> 00:18:00,400
+spot that there's something wrong and
+
+508
+00:18:00,400 --> 00:18:01,919
+try to repair
+
+509
+00:18:01,919 --> 00:18:04,559
+the damage but if you have an incredibly
+
+510
+00:18:04,559 --> 00:18:05,520
+high dosage
+
+511
+00:18:05,520 --> 00:18:08,080
+of radiation all at once generally
+
+512
+00:18:08,080 --> 00:18:09,760
+speaking there'll be so much damage to
+
+513
+00:18:09,760 --> 00:18:10,559
+the dna
+
+514
+00:18:10,559 --> 00:18:12,240
+that it's kind of hard for the cells to
+
+515
+00:18:12,240 --> 00:18:14,320
+repair and they actually will tend to
+
+516
+00:18:14,320 --> 00:18:15,760
+make the decision
+
+517
+00:18:15,760 --> 00:18:19,440
+to basically kill a compromised cell
+
+518
+00:18:19,440 --> 00:18:20,960
+like if there's a cell that's highly
+
+519
+00:18:20,960 --> 00:18:23,520
+mutated it is beyond repair
+
+520
+00:18:23,520 --> 00:18:25,760
+that cell will generally speaking die it
+
+521
+00:18:25,760 --> 00:18:27,440
+won't be able to recover from that much
+
+522
+00:18:27,440 --> 00:18:28,880
+damage
+
+523
+00:18:28,880 --> 00:18:31,440
+so here you can just imagine we're
+
+524
+00:18:31,440 --> 00:18:33,919
+taking high doses of radiation we aim it
+
+525
+00:18:33,919 --> 00:18:36,000
+at where we think the tumor is and we
+
+526
+00:18:36,000 --> 00:18:36,400
+sort of
+
+527
+00:18:36,400 --> 00:18:39,039
+shoot the radiation there induce mass
+
+528
+00:18:39,039 --> 00:18:41,360
+amounts of dna damage in those cancer
+
+529
+00:18:41,360 --> 00:18:42,880
+cells and those cancer cells
+
+530
+00:18:42,880 --> 00:18:44,400
+generally speaking might not be able to
+
+531
+00:18:44,400 --> 00:18:46,080
+recover from it
+
+532
+00:18:46,080 --> 00:18:49,520
+um so of course again that becomes
+
+533
+00:18:49,520 --> 00:18:51,039
+less of an option if the tumor isn't
+
+534
+00:18:51,039 --> 00:18:52,480
+localized because we don't want to just
+
+535
+00:18:52,480 --> 00:18:54,240
+radiate the whole patient right if the
+
+536
+00:18:54,240 --> 00:18:55,679
+cancer cells have sort of spread
+
+537
+00:18:55,679 --> 00:18:56,000
+everywhere
+
+538
+00:18:56,000 --> 00:18:57,360
+and we don't know where we are we don't
+
+539
+00:18:57,360 --> 00:18:59,520
+want to introduce that radiation
+
+540
+00:18:59,520 --> 00:19:00,880
+anywhere right because that's going to
+
+541
+00:19:00,880 --> 00:19:03,360
+be harming and mutating
+
+542
+00:19:03,360 --> 00:19:06,160
+normal cells too if we don't focus it so
+
+543
+00:19:06,160 --> 00:19:07,919
+again that becomes less of an option in
+
+544
+00:19:07,919 --> 00:19:10,000
+late stage
+
+545
+00:19:10,000 --> 00:19:11,600
+um if there are any questions i have the
+
+546
+00:19:11,600 --> 00:19:13,120
+chat open but you can also
+
+547
+00:19:13,120 --> 00:19:14,960
+click the raise hand button and i'm
+
+548
+00:19:14,960 --> 00:19:17,039
+happy to answer questions as i go you
+
+549
+00:19:17,039 --> 00:19:17,760
+don't have to
+
+550
+00:19:17,760 --> 00:19:19,600
+just wait to the end i'll keep an eye if
+
+551
+00:19:19,600 --> 00:19:22,320
+i see any
+
+552
+00:19:23,280 --> 00:19:24,480
+all right and let's talk about
+
+553
+00:19:24,480 --> 00:19:26,480
+chemotherapy chemotherapy is actually
+
+554
+00:19:26,480 --> 00:19:28,400
+pretty similar it's just the delivery
+
+555
+00:19:28,400 --> 00:19:30,080
+mechanisms very different
+
+556
+00:19:30,080 --> 00:19:32,880
+um i'll say generally speaking a lot of
+
+557
+00:19:32,880 --> 00:19:34,480
+chemotherapies actually
+
+558
+00:19:34,480 --> 00:19:37,039
+mess with our dna mess with dna's
+
+559
+00:19:37,039 --> 00:19:38,160
+ability to
+
+560
+00:19:38,160 --> 00:19:40,400
+replicate itself so if a cell is
+
+561
+00:19:40,400 --> 00:19:41,440
+dividing
+
+562
+00:19:41,440 --> 00:19:43,360
+it needs to make a second copy of its
+
+563
+00:19:43,360 --> 00:19:44,960
+dna so that the two
+
+564
+00:19:44,960 --> 00:19:47,360
+resulting daughter cells both have their
+
+565
+00:19:47,360 --> 00:19:48,880
+own copy of dna
+
+566
+00:19:48,880 --> 00:19:50,960
+and so if that process is messed with
+
+567
+00:19:50,960 --> 00:19:52,160
+then those cells just
+
+568
+00:19:52,160 --> 00:19:54,080
+don't divide or they divide and they run
+
+569
+00:19:54,080 --> 00:19:55,760
+into issues and that might either
+
+570
+00:19:55,760 --> 00:19:57,679
+stall them in the middle of dividing or
+
+571
+00:19:57,679 --> 00:19:59,280
+they might die because they can't
+
+572
+00:19:59,280 --> 00:20:00,799
+recover they're kind of like stuck and
+
+573
+00:20:00,799 --> 00:20:03,120
+they kind of can't fix it so at some
+
+574
+00:20:03,120 --> 00:20:04,240
+point they will
+
+575
+00:20:04,240 --> 00:20:05,840
+those cells will just die because they
+
+576
+00:20:05,840 --> 00:20:08,320
+can't resolve the issue
+
+577
+00:20:08,320 --> 00:20:09,840
+and then some of these chemotherapies
+
+578
+00:20:09,840 --> 00:20:11,520
+will mess with cell cycle which again is
+
+579
+00:20:11,520 --> 00:20:13,360
+that process of cells dividing
+
+580
+00:20:13,360 --> 00:20:15,280
+so there's a particular drug for example
+
+581
+00:20:15,280 --> 00:20:17,440
+that messes with the ability
+
+582
+00:20:17,440 --> 00:20:20,240
+of the cells to sort of partition
+
+583
+00:20:20,240 --> 00:20:22,080
+themselves like they're trying to move
+
+584
+00:20:22,080 --> 00:20:23,919
+things around so that they can split
+
+585
+00:20:23,919 --> 00:20:25,200
+into two cells
+
+586
+00:20:25,200 --> 00:20:28,240
+and basically the the physical things
+
+587
+00:20:28,240 --> 00:20:29,240
+that help with the
+
+588
+00:20:29,240 --> 00:20:31,760
+manipulations and pulling things apart
+
+589
+00:20:31,760 --> 00:20:33,280
+actually just stops working and so
+
+590
+00:20:33,280 --> 00:20:34,480
+they're just kind of frozen
+
+591
+00:20:34,480 --> 00:20:36,640
+in place so there's lots of different
+
+592
+00:20:36,640 --> 00:20:38,000
+chemotherapies that basically
+
+593
+00:20:38,000 --> 00:20:39,840
+mess with these processes they mess with
+
+594
+00:20:39,840 --> 00:20:41,440
+our dna they mess with
+
+595
+00:20:41,440 --> 00:20:43,679
+making more dna they mess with cells
+
+596
+00:20:43,679 --> 00:20:45,280
+dividing
+
+597
+00:20:45,280 --> 00:20:48,400
+and as then as that kind of implies
+
+598
+00:20:48,400 --> 00:20:51,039
+that's kind of a problem because
+
+599
+00:20:51,039 --> 00:20:53,760
+healthy cells have dna too healthy cells
+
+600
+00:20:53,760 --> 00:20:55,840
+replicate themselves too
+
+601
+00:20:55,840 --> 00:20:57,679
+um and so this really hints at why
+
+602
+00:20:57,679 --> 00:21:00,240
+chemotherapy has so many side effects
+
+603
+00:21:00,240 --> 00:21:02,559
+because when you're introducing a drug
+
+604
+00:21:02,559 --> 00:21:04,320
+and i'm just showing a drug here this
+
+605
+00:21:04,320 --> 00:21:07,600
+is um cisplatin specifically
+
+606
+00:21:07,600 --> 00:21:09,840
+it's a very commonly used chemotherapy
+
+607
+00:21:09,840 --> 00:21:11,919
+it's used with
+
+608
+00:21:11,919 --> 00:21:14,559
+breast cancer probably also lung cancer
+
+609
+00:21:14,559 --> 00:21:16,159
+lots of different cancers use cis
+
+610
+00:21:16,159 --> 00:21:17,520
+platins or or
+
+611
+00:21:17,520 --> 00:21:19,919
+related drugs like carboplatin which is
+
+612
+00:21:19,919 --> 00:21:22,159
+just a different chemical formulation
+
+613
+00:21:22,159 --> 00:21:24,559
+but all of these drugs basically go in
+
+614
+00:21:24,559 --> 00:21:26,480
+and stick to your dna
+
+615
+00:21:26,480 --> 00:21:28,880
+and that causes dna damage so you can
+
+616
+00:21:28,880 --> 00:21:30,640
+see here with this uh little
+
+617
+00:21:30,640 --> 00:21:32,960
+this little chemical here it's going in
+
+618
+00:21:32,960 --> 00:21:34,080
+and it's basically
+
+619
+00:21:34,080 --> 00:21:36,320
+sticking itself physically like it's
+
+620
+00:21:36,320 --> 00:21:38,720
+chemically reacting with our dna
+
+621
+00:21:38,720 --> 00:21:42,000
+and this in the mind of the cell is
+
+622
+00:21:42,000 --> 00:21:45,200
+damage it's basically messing with
+
+623
+00:21:45,200 --> 00:21:47,520
+your dna structure and so if we were
+
+624
+00:21:47,520 --> 00:21:48,400
+trying to
+
+625
+00:21:48,400 --> 00:21:51,600
+read this dna or trying to copy this dna
+
+626
+00:21:51,600 --> 00:21:53,840
+we would run into issues because the
+
+627
+00:21:53,840 --> 00:21:55,760
+chemical structure of the dna is
+
+628
+00:21:55,760 --> 00:21:56,880
+different
+
+629
+00:21:56,880 --> 00:22:00,559
+um and so this is particularly potent
+
+630
+00:22:00,559 --> 00:22:02,880
+for cancer cells um cancer cells are
+
+631
+00:22:02,880 --> 00:22:04,080
+kind of
+
+632
+00:22:04,080 --> 00:22:06,720
+how do i describe them they're kind of
+
+633
+00:22:06,720 --> 00:22:07,120
+like
+
+634
+00:22:07,120 --> 00:22:09,360
+cancer cells may come across as very
+
+635
+00:22:09,360 --> 00:22:11,760
+powerful in terms of all these
+
+636
+00:22:11,760 --> 00:22:13,360
+additional abilities and the fact that
+
+637
+00:22:13,360 --> 00:22:15,840
+they sort of um
+
+638
+00:22:15,840 --> 00:22:18,559
+conquer the environment they're in like
+
+639
+00:22:18,559 --> 00:22:19,520
+they basically
+
+640
+00:22:19,520 --> 00:22:22,559
+can kind of uh you know hijack certain
+
+641
+00:22:22,559 --> 00:22:23,200
+processes
+
+642
+00:22:23,200 --> 00:22:24,640
+you know steal blood vessels steal
+
+643
+00:22:24,640 --> 00:22:26,480
+resources but they kind of also just
+
+644
+00:22:26,480 --> 00:22:27,600
+like
+
+645
+00:22:27,600 --> 00:22:30,320
+rule over the normal cells around them
+
+646
+00:22:30,320 --> 00:22:31,679
+because the normal cells around them
+
+647
+00:22:31,679 --> 00:22:33,440
+obey all these rules and the cancer
+
+648
+00:22:33,440 --> 00:22:34,880
+cells obey no rules
+
+649
+00:22:34,880 --> 00:22:36,960
+so they seem very powerful but cancer
+
+650
+00:22:36,960 --> 00:22:39,280
+cells also kind of are skirting the line
+
+651
+00:22:39,280 --> 00:22:40,559
+where they are so
+
+652
+00:22:40,559 --> 00:22:43,039
+that they themselves are so warped and
+
+653
+00:22:43,039 --> 00:22:44,000
+mutated
+
+654
+00:22:44,000 --> 00:22:45,760
+in some ways they actually can be very
+
+655
+00:22:45,760 --> 00:22:48,080
+fragile and so when you're
+
+656
+00:22:48,080 --> 00:22:49,919
+giving them dna damage sometimes they're
+
+657
+00:22:49,919 --> 00:22:51,760
+like yes more mutations like this makes
+
+658
+00:22:51,760 --> 00:22:53,440
+me more powerful but then too many and
+
+659
+00:22:53,440 --> 00:22:54,000
+they actually
+
+660
+00:22:54,000 --> 00:22:56,559
+don't have the normal means of resolving
+
+661
+00:22:56,559 --> 00:22:57,120
+them
+
+662
+00:22:57,120 --> 00:22:58,640
+and so they can actually be more
+
+663
+00:22:58,640 --> 00:23:00,480
+sensitive to things that mess with cell
+
+664
+00:23:00,480 --> 00:23:02,159
+cycle or mess with their dna
+
+665
+00:23:02,159 --> 00:23:04,320
+because they just they've lost the means
+
+666
+00:23:04,320 --> 00:23:06,240
+to repair those so they were kind of
+
+667
+00:23:06,240 --> 00:23:07,600
+super powerful and then they got too
+
+668
+00:23:07,600 --> 00:23:09,280
+much of it and then they just sort of
+
+669
+00:23:09,280 --> 00:23:11,360
+give up eat more easily because they
+
+670
+00:23:11,360 --> 00:23:12,960
+just can't fix it
+
+671
+00:23:12,960 --> 00:23:15,200
+um but yeah this is also a problem for
+
+672
+00:23:15,200 --> 00:23:16,480
+healthy cells too
+
+673
+00:23:16,480 --> 00:23:18,799
+having this sort of compound go around
+
+674
+00:23:18,799 --> 00:23:19,840
+and bind
+
+675
+00:23:19,840 --> 00:23:22,080
+to dna and especially mess with dna in
+
+676
+00:23:22,080 --> 00:23:23,360
+cells that divide
+
+677
+00:23:23,360 --> 00:23:25,280
+that's what leads to a lot of the side
+
+678
+00:23:25,280 --> 00:23:28,320
+effects that we see with chemotherapy
+
+679
+00:23:28,320 --> 00:23:29,679
+when we're thinking about treating
+
+680
+00:23:29,679 --> 00:23:31,120
+patients with chemotherapy it's
+
+681
+00:23:31,120 --> 00:23:32,400
+basically
+
+682
+00:23:32,400 --> 00:23:35,919
+this really careful balance that's
+
+683
+00:23:35,919 --> 00:23:37,600
+sensitive to the patient
+
+684
+00:23:37,600 --> 00:23:40,159
+it senses the patient's age and like
+
+685
+00:23:40,159 --> 00:23:41,520
+coexisting
+
+686
+00:23:41,520 --> 00:23:43,840
+health conditions like if a patient has
+
+687
+00:23:43,840 --> 00:23:45,919
+cancer but they also have
+
+688
+00:23:45,919 --> 00:23:48,400
+um they're also older or maybe they also
+
+689
+00:23:48,400 --> 00:23:50,559
+have diabetes they have other
+
+690
+00:23:50,559 --> 00:23:52,559
+conditions um when we're trying to
+
+691
+00:23:52,559 --> 00:23:54,320
+figure out how much chemotherapy to give
+
+692
+00:23:54,320 --> 00:23:55,919
+them they're sort of this instinct to
+
+693
+00:23:55,919 --> 00:23:56,640
+give
+
+694
+00:23:56,640 --> 00:23:58,320
+tons of chemotherapy right like they're
+
+695
+00:23:58,320 --> 00:23:59,679
+fighting this battle with cancer and
+
+696
+00:23:59,679 --> 00:24:00,799
+we're trying to
+
+697
+00:24:00,799 --> 00:24:02,480
+kill as much of the cancer cells as
+
+698
+00:24:02,480 --> 00:24:04,080
+possible but basically
+
+699
+00:24:04,080 --> 00:24:06,720
+as we ramp up the the dosage of the
+
+700
+00:24:06,720 --> 00:24:08,559
+chemo we just get more and more
+
+701
+00:24:08,559 --> 00:24:10,000
+negative side effects and there are some
+
+702
+00:24:10,000 --> 00:24:12,640
+patients where literally if we just kept
+
+703
+00:24:12,640 --> 00:24:14,960
+giving them chemo the chemo would end up
+
+704
+00:24:14,960 --> 00:24:16,880
+killing them because the chemo
+
+705
+00:24:16,880 --> 00:24:19,120
+does things like it harms the lining of
+
+706
+00:24:19,120 --> 00:24:21,440
+their gut it harms
+
+707
+00:24:21,440 --> 00:24:23,679
+their ability to produce blood cells so
+
+708
+00:24:23,679 --> 00:24:25,440
+they become very anemic
+
+709
+00:24:25,440 --> 00:24:28,480
+um all of these things are like symptoms
+
+710
+00:24:28,480 --> 00:24:30,400
+that you may have heard cancer or sorry
+
+711
+00:24:30,400 --> 00:24:31,360
+cancer patients
+
+712
+00:24:31,360 --> 00:24:33,760
+experience and that's being caused by
+
+713
+00:24:33,760 --> 00:24:34,720
+the chemo
+
+714
+00:24:34,720 --> 00:24:36,559
+like of course the cancer is hurting
+
+715
+00:24:36,559 --> 00:24:38,880
+them and is causing issues but a lot of
+
+716
+00:24:38,880 --> 00:24:41,120
+the sort of hair loss
+
+717
+00:24:41,120 --> 00:24:45,039
+nausea and vomiting anemia
+
+718
+00:24:45,039 --> 00:24:47,520
+skin issues like a lot of those are
+
+719
+00:24:47,520 --> 00:24:49,360
+coming from actually the chemo
+
+720
+00:24:49,360 --> 00:24:50,880
+and so we're trying to give them high
+
+721
+00:24:50,880 --> 00:24:53,120
+dosages to be an effective treatment
+
+722
+00:24:53,120 --> 00:24:54,640
+against the cancer but then we often
+
+723
+00:24:54,640 --> 00:24:56,640
+have to hold back because of what the
+
+724
+00:24:56,640 --> 00:24:58,880
+patient can tolerate right
+
+725
+00:24:58,880 --> 00:25:00,960
+both in terms of like quality of life
+
+726
+00:25:00,960 --> 00:25:03,279
+tolerate but also in terms of literally
+
+727
+00:25:03,279 --> 00:25:05,360
+too much could actually end up killing
+
+728
+00:25:05,360 --> 00:25:06,720
+them if it's just you know
+
+729
+00:25:06,720 --> 00:25:09,200
+constantly eroding at their gut and
+
+730
+00:25:09,200 --> 00:25:10,960
+constantly eroding at their ability to
+
+731
+00:25:10,960 --> 00:25:14,159
+produce blood cells um
+
+732
+00:25:14,159 --> 00:25:15,679
+if there are any questions just let me
+
+733
+00:25:15,679 --> 00:25:18,640
+know let's talk a little bit
+
+734
+00:25:18,640 --> 00:25:21,120
+about newer treatments so we talked
+
+735
+00:25:21,120 --> 00:25:22,720
+about surgery
+
+736
+00:25:22,720 --> 00:25:26,400
+radiation chemotherapy let's talk about
+
+737
+00:25:26,400 --> 00:25:28,720
+targeted therapy right because i think
+
+738
+00:25:28,720 --> 00:25:29,679
+one thing we can
+
+739
+00:25:29,679 --> 00:25:31,200
+realize with chemo is that it's just
+
+740
+00:25:31,200 --> 00:25:33,520
+sort of this um
+
+741
+00:25:33,520 --> 00:25:35,440
+it's sort of this like shotgun spray
+
+742
+00:25:35,440 --> 00:25:37,760
+like it's a very aggressive
+
+743
+00:25:37,760 --> 00:25:39,840
+treatment and it kind of just hits
+
+744
+00:25:39,840 --> 00:25:41,840
+there's all of this collateral damage
+
+745
+00:25:41,840 --> 00:25:43,760
+that's going on because of the nature of
+
+746
+00:25:43,760 --> 00:25:44,960
+chemo it's like
+
+747
+00:25:44,960 --> 00:25:47,120
+to kill cancer we're going to target dna
+
+748
+00:25:47,120 --> 00:25:48,880
+it's like well that's a feature shared
+
+749
+00:25:48,880 --> 00:25:50,080
+with all cells
+
+750
+00:25:50,080 --> 00:25:52,640
+so that's kind of a problematic approach
+
+751
+00:25:52,640 --> 00:25:54,799
+so targeted therapy is trying to be
+
+752
+00:25:54,799 --> 00:25:58,000
+a little more um like you know narrow
+
+753
+00:25:58,000 --> 00:26:00,159
+the scope look for a specific feature
+
+754
+00:26:00,159 --> 00:26:00,960
+that maybe is
+
+755
+00:26:00,960 --> 00:26:03,679
+more unique to cancer cells or again is
+
+756
+00:26:03,679 --> 00:26:04,960
+something that just
+
+757
+00:26:04,960 --> 00:26:07,360
+doesn't hit literally every cell in the
+
+758
+00:26:07,360 --> 00:26:08,159
+body
+
+759
+00:26:08,159 --> 00:26:10,080
+and so targeted therapy the real goal
+
+760
+00:26:10,080 --> 00:26:11,440
+there is that um
+
+761
+00:26:11,440 --> 00:26:14,240
+by being more specific you just limit
+
+762
+00:26:14,240 --> 00:26:15,200
+the amount of
+
+763
+00:26:15,200 --> 00:26:17,520
+um you know side effects that the
+
+764
+00:26:17,520 --> 00:26:19,600
+patient has to deal with and maybe you
+
+765
+00:26:19,600 --> 00:26:20,159
+can then
+
+766
+00:26:20,159 --> 00:26:22,159
+up the dosage because the side effects
+
+767
+00:26:22,159 --> 00:26:24,080
+are more tolerable it's less harmful to
+
+768
+00:26:24,080 --> 00:26:25,039
+the body
+
+769
+00:26:25,039 --> 00:26:27,120
+and again you can then be more
+
+770
+00:26:27,120 --> 00:26:30,960
+aggressive towards the cancer itself
+
+771
+00:26:33,679 --> 00:26:36,080
+yeah in terms of thinking how to
+
+772
+00:26:36,080 --> 00:26:37,679
+personalize
+
+773
+00:26:37,679 --> 00:26:39,919
+um i would say that there are cases
+
+774
+00:26:39,919 --> 00:26:42,799
+where you can imagine that
+
+775
+00:26:42,799 --> 00:26:46,240
+um when making
+
+776
+00:26:46,240 --> 00:26:48,240
+i mean it's such a tough question when
+
+777
+00:26:48,240 --> 00:26:49,600
+you're like how much chemo do i give
+
+778
+00:26:49,600 --> 00:26:50,559
+this patient right
+
+779
+00:26:50,559 --> 00:26:52,400
+and you're taking into account all of
+
+780
+00:26:52,400 --> 00:26:53,919
+these features about their current
+
+781
+00:26:53,919 --> 00:26:54,640
+health
+
+782
+00:26:54,640 --> 00:26:56,240
+but you're trying to make a prediction
+
+783
+00:26:56,240 --> 00:26:57,520
+right because you don't want to be in
+
+784
+00:26:57,520 --> 00:26:58,480
+the case where you
+
+785
+00:26:58,480 --> 00:27:01,200
+went real easy on the chemo and it
+
+786
+00:27:01,200 --> 00:27:03,039
+actually wasn't super effective and the
+
+787
+00:27:03,039 --> 00:27:05,600
+patient's cancer just kept growing
+
+788
+00:27:05,600 --> 00:27:07,520
+kept spreading right like that that is
+
+789
+00:27:07,520 --> 00:27:09,360
+such a uh
+
+790
+00:27:09,360 --> 00:27:11,600
+a terrible position to be in to realize
+
+791
+00:27:11,600 --> 00:27:13,279
+oh i should have been more aggressive
+
+792
+00:27:13,279 --> 00:27:15,760
+because the cancer was continuing to get
+
+793
+00:27:15,760 --> 00:27:18,840
+worse in the meantime um so in that
+
+794
+00:27:18,840 --> 00:27:20,000
+sense
+
+795
+00:27:20,000 --> 00:27:22,480
+having more data to influence that just
+
+796
+00:27:22,480 --> 00:27:23,600
+that choice to be like
+
+797
+00:27:23,600 --> 00:27:25,919
+okay because of everything we know about
+
+798
+00:27:25,919 --> 00:27:27,600
+you whether that be
+
+799
+00:27:27,600 --> 00:27:29,760
+the sequencing the genetics of your
+
+800
+00:27:29,760 --> 00:27:32,000
+cancer or some other data just like
+
+801
+00:27:32,000 --> 00:27:34,000
+knowing your circumstances and other
+
+802
+00:27:34,000 --> 00:27:36,159
+patients who are like you if that could
+
+803
+00:27:36,159 --> 00:27:37,440
+tell us
+
+804
+00:27:37,440 --> 00:27:39,200
+yes it's really difficult but we just
+
+805
+00:27:39,200 --> 00:27:40,720
+have to be more aggressive
+
+806
+00:27:40,720 --> 00:27:43,440
+up front like we know that if we don't
+
+807
+00:27:43,440 --> 00:27:45,600
+chances are very likely that it just
+
+808
+00:27:45,600 --> 00:27:48,000
+we might as well not treat it all i
+
+809
+00:27:48,000 --> 00:27:49,840
+think that kind of information could be
+
+810
+00:27:49,840 --> 00:27:51,120
+very useful because
+
+811
+00:27:51,120 --> 00:27:53,520
+currently yeah it's a regretful position
+
+812
+00:27:53,520 --> 00:27:55,440
+to be in if you
+
+813
+00:27:55,440 --> 00:27:57,919
+kind of ease up on the chemo but it just
+
+814
+00:27:57,919 --> 00:27:58,960
+ultimately isn't
+
+815
+00:27:58,960 --> 00:28:00,399
+helping the patient at all right like
+
+816
+00:28:00,399 --> 00:28:01,840
+you don't want to have them go through
+
+817
+00:28:01,840 --> 00:28:02,480
+the
+
+818
+00:28:02,480 --> 00:28:05,360
+the stress of chemo and not have it add
+
+819
+00:28:05,360 --> 00:28:06,640
+additional
+
+820
+00:28:06,640 --> 00:28:10,559
+you know quality time in their life um
+
+821
+00:28:10,559 --> 00:28:12,559
+i will speak a bit in general about how
+
+822
+00:28:12,559 --> 00:28:14,880
+chemo doesn't tend to be curative
+
+823
+00:28:14,880 --> 00:28:16,960
+for most patients usually the
+
+824
+00:28:16,960 --> 00:28:19,039
+conversation that's being had is how
+
+825
+00:28:19,039 --> 00:28:21,840
+much can we add to their life like
+
+826
+00:28:21,840 --> 00:28:22,960
+chances are
+
+827
+00:28:22,960 --> 00:28:24,960
+if it's a very late stage cancer they
+
+828
+00:28:24,960 --> 00:28:27,360
+will probably die to that cancer
+
+829
+00:28:27,360 --> 00:28:28,720
+but you're hoping that you can add
+
+830
+00:28:28,720 --> 00:28:30,399
+several months or maybe even
+
+831
+00:28:30,399 --> 00:28:32,559
+a couple of years to their remaining
+
+832
+00:28:32,559 --> 00:28:35,360
+life by treating with chemo
+
+833
+00:28:35,360 --> 00:28:36,559
+so that's kind of the trade-off it's
+
+834
+00:28:36,559 --> 00:28:37,840
+like you don't want to give them chemo
+
+835
+00:28:37,840 --> 00:28:38,399
+and have them
+
+836
+00:28:38,399 --> 00:28:41,039
+suffer and not actually add any time to
+
+837
+00:28:41,039 --> 00:28:42,240
+their life
+
+838
+00:28:42,240 --> 00:28:45,039
+so if we had the data to know based on
+
+839
+00:28:45,039 --> 00:28:46,720
+this patient based on the features of
+
+840
+00:28:46,720 --> 00:28:48,799
+their tumor based on their
+
+841
+00:28:48,799 --> 00:28:51,120
+their patient level features we know we
+
+842
+00:28:51,120 --> 00:28:53,039
+should be more aggressive or
+
+843
+00:28:53,039 --> 00:28:54,960
+less aggressive like don't make them
+
+844
+00:28:54,960 --> 00:28:56,720
+suffer chemo if it's not going to help
+
+845
+00:28:56,720 --> 00:28:58,159
+them in the end that's the kind of
+
+846
+00:28:58,159 --> 00:29:01,440
+decisions you might want to make
+
+847
+00:29:03,039 --> 00:29:04,640
+all right so let's talk a little bit
+
+848
+00:29:04,640 --> 00:29:06,320
+about targeted therapy
+
+849
+00:29:06,320 --> 00:29:08,399
+um so targeted therapy is something
+
+850
+00:29:08,399 --> 00:29:09,760
+that's thrown around a lot
+
+851
+00:29:09,760 --> 00:29:12,799
+it actually isn't super new in the sense
+
+852
+00:29:12,799 --> 00:29:13,120
+of
+
+853
+00:29:13,120 --> 00:29:16,399
+we discovered some really early targeted
+
+854
+00:29:16,399 --> 00:29:18,080
+therapies just based on our
+
+855
+00:29:18,080 --> 00:29:19,200
+understanding
+
+856
+00:29:19,200 --> 00:29:23,919
+of um normal human biology
+
+857
+00:29:23,919 --> 00:29:25,919
+and that helped us discover some
+
+858
+00:29:25,919 --> 00:29:27,200
+particularly useful
+
+859
+00:29:27,200 --> 00:29:29,440
+targets but since those early
+
+860
+00:29:29,440 --> 00:29:31,200
+discoveries a lot of the target
+
+861
+00:29:31,200 --> 00:29:33,039
+therapies we've discovered have to be
+
+862
+00:29:33,039 --> 00:29:35,600
+more involved like we've had to turn to
+
+863
+00:29:35,600 --> 00:29:36,799
+big data to
+
+864
+00:29:36,799 --> 00:29:40,000
+discover new targets so the classical
+
+865
+00:29:40,000 --> 00:29:42,159
+targets for targeted therapy were
+
+866
+00:29:42,159 --> 00:29:44,159
+actually things that are related
+
+867
+00:29:44,159 --> 00:29:47,200
+to um hormones
+
+868
+00:29:47,200 --> 00:29:50,640
+and and sexual development so if you
+
+869
+00:29:50,640 --> 00:29:53,760
+think about what hormones do
+
+870
+00:29:53,760 --> 00:29:56,880
+in in like the typical human body
+
+871
+00:29:56,880 --> 00:29:58,880
+whether um biologically male or
+
+872
+00:29:58,880 --> 00:30:01,440
+biologically female the way a lot of sex
+
+873
+00:30:01,440 --> 00:30:02,399
+hormones work
+
+874
+00:30:02,399 --> 00:30:04,799
+is that when they sort of kick into gear
+
+875
+00:30:04,799 --> 00:30:06,320
+during puberty
+
+876
+00:30:06,320 --> 00:30:09,039
+they enact a ton of changes in the body
+
+877
+00:30:09,039 --> 00:30:09,600
+right
+
+878
+00:30:09,600 --> 00:30:11,919
+when these hormones sort of ramp up and
+
+879
+00:30:11,919 --> 00:30:13,840
+are being expressed more and they're
+
+880
+00:30:13,840 --> 00:30:15,039
+moving through the body
+
+881
+00:30:15,039 --> 00:30:17,600
+in people's teenage years it leads to
+
+882
+00:30:17,600 --> 00:30:18,880
+the development
+
+883
+00:30:18,880 --> 00:30:20,880
+of you know the sex organs but it's
+
+884
+00:30:20,880 --> 00:30:22,080
+basically
+
+885
+00:30:22,080 --> 00:30:24,320
+switching on all these pathways for a
+
+886
+00:30:24,320 --> 00:30:25,120
+lot of
+
+887
+00:30:25,120 --> 00:30:27,520
+tissue and cells to develop right it's
+
+888
+00:30:27,520 --> 00:30:28,960
+basically saying okay
+
+889
+00:30:28,960 --> 00:30:32,399
+time to create these new organs or
+
+890
+00:30:32,399 --> 00:30:34,399
+develop these organs and it basically
+
+891
+00:30:34,399 --> 00:30:37,039
+ramps up growth and it ramps up cell
+
+892
+00:30:37,039 --> 00:30:37,679
+division
+
+893
+00:30:37,679 --> 00:30:40,399
+in those tissues and so our bodies have
+
+894
+00:30:40,399 --> 00:30:40,960
+this sort of
+
+895
+00:30:40,960 --> 00:30:42,960
+natural programmed way by which you know
+
+896
+00:30:42,960 --> 00:30:44,000
+obviously as we
+
+897
+00:30:44,000 --> 00:30:46,080
+grow older we just like grow bigger and
+
+898
+00:30:46,080 --> 00:30:48,640
+taller but also that's like a very
+
+899
+00:30:48,640 --> 00:30:51,360
+key moment in our in our species
+
+900
+00:30:51,360 --> 00:30:52,559
+development where
+
+901
+00:30:52,559 --> 00:30:55,200
+we just suddenly will develop new
+
+902
+00:30:55,200 --> 00:30:57,679
+tissues and grow new tissues
+
+903
+00:30:57,679 --> 00:31:00,159
+and so there are lots of cancers that
+
+904
+00:31:00,159 --> 00:31:00,880
+arise
+
+905
+00:31:00,880 --> 00:31:03,600
+in sex organs that sort of hijack that
+
+906
+00:31:03,600 --> 00:31:04,080
+normal
+
+907
+00:31:04,080 --> 00:31:06,880
+process so for example in the uh in
+
+908
+00:31:06,880 --> 00:31:08,559
+breast cancer i mean in
+
+909
+00:31:08,559 --> 00:31:11,519
+normal woman development it's like when
+
+910
+00:31:11,519 --> 00:31:13,120
+the hormones start that actually
+
+911
+00:31:13,120 --> 00:31:14,720
+kick-starts the development of the
+
+912
+00:31:14,720 --> 00:31:16,559
+breast so like breast tissue starts to
+
+913
+00:31:16,559 --> 00:31:18,640
+divide and proliferate
+
+914
+00:31:18,640 --> 00:31:21,600
+and so when you have a breast cancer
+
+915
+00:31:21,600 --> 00:31:23,679
+it's actually using that pathway to sort
+
+916
+00:31:23,679 --> 00:31:23,919
+of
+
+917
+00:31:23,919 --> 00:31:26,480
+tell itself to keep growing and dividing
+
+918
+00:31:26,480 --> 00:31:28,240
+so it's like what happened in puberty to
+
+919
+00:31:28,240 --> 00:31:29,760
+lead to growth of that tissue
+
+920
+00:31:29,760 --> 00:31:31,679
+cancer is using that pathway to just
+
+921
+00:31:31,679 --> 00:31:33,679
+tell itself continuously to grow and
+
+922
+00:31:33,679 --> 00:31:37,200
+divide and so that's a very
+
+923
+00:31:37,200 --> 00:31:40,720
+precise pathway that's specific to
+
+924
+00:31:40,720 --> 00:31:43,120
+cells that relate to the sex organs it's
+
+925
+00:31:43,120 --> 00:31:43,760
+not
+
+926
+00:31:43,760 --> 00:31:45,679
+true of all cells right like not all
+
+927
+00:31:45,679 --> 00:31:46,799
+cells in your body
+
+928
+00:31:46,799 --> 00:31:50,159
+are using for example estrogen in that
+
+929
+00:31:50,159 --> 00:31:51,039
+way
+
+930
+00:31:51,039 --> 00:31:54,159
+and so when someone realized hey these
+
+931
+00:31:54,159 --> 00:31:56,880
+breast cancer tumors seem to be
+
+932
+00:31:56,880 --> 00:31:59,200
+expressing a lot of
+
+933
+00:31:59,200 --> 00:32:01,360
+estrogen receptor like they're they're
+
+934
+00:32:01,360 --> 00:32:03,519
+they're really responsive to this
+
+935
+00:32:03,519 --> 00:32:04,640
+hormone
+
+936
+00:32:04,640 --> 00:32:07,760
+um that made them realize oh if we block
+
+937
+00:32:07,760 --> 00:32:10,399
+this the signaling the messaging through
+
+938
+00:32:10,399 --> 00:32:12,000
+this hormone receptor
+
+939
+00:32:12,000 --> 00:32:14,720
+um so that it stops basically picking up
+
+940
+00:32:14,720 --> 00:32:16,720
+on any amount of estrogen and telling
+
+941
+00:32:16,720 --> 00:32:18,320
+itself divide divide forever keep
+
+942
+00:32:18,320 --> 00:32:19,200
+dividing
+
+943
+00:32:19,200 --> 00:32:21,600
+um if we block that it is something that
+
+944
+00:32:21,600 --> 00:32:23,120
+the tumor is very
+
+945
+00:32:23,120 --> 00:32:26,240
+reliant on like it really uses that uh
+
+946
+00:32:26,240 --> 00:32:29,600
+hormone receptor to power its ability to
+
+947
+00:32:29,600 --> 00:32:30,640
+keep dividing
+
+948
+00:32:30,640 --> 00:32:32,240
+but that's not true of all of the
+
+949
+00:32:32,240 --> 00:32:34,159
+healthy cells i mean it's true of some
+
+950
+00:32:34,159 --> 00:32:36,080
+of the healthy cells like there are some
+
+951
+00:32:36,080 --> 00:32:38,000
+normal cells especially in a woman's
+
+952
+00:32:38,000 --> 00:32:39,200
+body that do
+
+953
+00:32:39,200 --> 00:32:41,760
+respond to estrogen but it's not true of
+
+954
+00:32:41,760 --> 00:32:43,360
+literally every cell in her body right
+
+955
+00:32:43,360 --> 00:32:45,840
+literally every cell in her body has dna
+
+956
+00:32:45,840 --> 00:32:47,600
+so if we target dna that's a huge
+
+957
+00:32:47,600 --> 00:32:49,840
+problem but if we target this estrogen
+
+958
+00:32:49,840 --> 00:32:50,960
+receptor it's just
+
+959
+00:32:50,960 --> 00:32:53,840
+more specific the the the eligible
+
+960
+00:32:53,840 --> 00:32:55,200
+population is a lot
+
+961
+00:32:55,200 --> 00:32:58,159
+smaller of who would be affected and so
+
+962
+00:32:58,159 --> 00:33:00,240
+that's what they basically did was they
+
+963
+00:33:00,240 --> 00:33:03,440
+created what we call these estrogen
+
+964
+00:33:03,440 --> 00:33:04,720
+blockers
+
+965
+00:33:04,720 --> 00:33:07,440
+an example of that is tamoxifen so
+
+966
+00:33:07,440 --> 00:33:09,120
+tamoxifen is something that
+
+967
+00:33:09,120 --> 00:33:12,960
+kind of looks like estrogen
+
+968
+00:33:12,960 --> 00:33:14,799
+and when it's flowing through someone's
+
+969
+00:33:14,799 --> 00:33:16,640
+body if someone's undergoing
+
+970
+00:33:16,640 --> 00:33:18,240
+treatment for breast cancer and they
+
+971
+00:33:18,240 --> 00:33:19,760
+know they have a cancer
+
+972
+00:33:19,760 --> 00:33:23,120
+that is reliant on estrogen which is not
+
+973
+00:33:23,120 --> 00:33:24,000
+true of every breast
+
+974
+00:33:24,000 --> 00:33:27,440
+cancer but if they test and they know
+
+975
+00:33:27,440 --> 00:33:29,039
+hey you have breast cancer and you
+
+976
+00:33:29,039 --> 00:33:31,279
+specifically have estrogen
+
+977
+00:33:31,279 --> 00:33:33,600
+dependent breast cancer it has a large
+
+978
+00:33:33,600 --> 00:33:34,640
+amount of this
+
+979
+00:33:34,640 --> 00:33:36,799
+estrogen receptor because it mutated in
+
+980
+00:33:36,799 --> 00:33:38,720
+a way to have tons of it
+
+981
+00:33:38,720 --> 00:33:40,559
+if they identify that about the tumor
+
+982
+00:33:40,559 --> 00:33:41,840
+then they know that they're a good
+
+983
+00:33:41,840 --> 00:33:43,519
+candidate for this specific
+
+984
+00:33:43,519 --> 00:33:45,760
+treatment this targeted therapy and so
+
+985
+00:33:45,760 --> 00:33:47,760
+you add the estrogen
+
+986
+00:33:47,760 --> 00:33:50,799
+mimic this tamoxifen it'll bind to the
+
+987
+00:33:50,799 --> 00:33:52,399
+estrogen receptor but it doesn't
+
+988
+00:33:52,399 --> 00:33:53,200
+actually send
+
+989
+00:33:53,200 --> 00:33:55,360
+the signal it basically blocks the
+
+990
+00:33:55,360 --> 00:33:57,120
+ability of that receptor to
+
+991
+00:33:57,120 --> 00:33:59,840
+respond to normal estrogen because it's
+
+992
+00:33:59,840 --> 00:34:01,440
+kind of sitting in its spot
+
+993
+00:34:01,440 --> 00:34:03,679
+and blocking their ability to talk to
+
+994
+00:34:03,679 --> 00:34:05,200
+each other
+
+995
+00:34:05,200 --> 00:34:06,640
+and so generally speaking if there's a
+
+996
+00:34:06,640 --> 00:34:08,480
+cancer again that's really reliant on
+
+997
+00:34:08,480 --> 00:34:10,079
+this estrogen signaling
+
+998
+00:34:10,079 --> 00:34:12,000
+it can no longer send those signals and
+
+999
+00:34:12,000 --> 00:34:13,679
+chances are its ability to
+
+1000
+00:34:13,679 --> 00:34:16,560
+divide and grow will be stalled and in
+
+1001
+00:34:16,560 --> 00:34:17,839
+some cases without that
+
+1002
+00:34:17,839 --> 00:34:22,079
+kind of uh continuous
+
+1003
+00:34:22,079 --> 00:34:25,520
+encouragement the cells might also die
+
+1004
+00:34:25,520 --> 00:34:27,199
+this is maybe one thing that isn't super
+
+1005
+00:34:27,199 --> 00:34:28,719
+apparent about cells but
+
+1006
+00:34:28,719 --> 00:34:32,480
+if you ever go on to study and research
+
+1007
+00:34:32,480 --> 00:34:35,679
+cell biology um we grow lots of cells
+
+1008
+00:34:35,679 --> 00:34:38,639
+in cultures and dishes but that's not
+
+1009
+00:34:38,639 --> 00:34:40,159
+actually very typical of
+
+1010
+00:34:40,159 --> 00:34:42,159
+normal cells generally speaking if you
+
+1011
+00:34:42,159 --> 00:34:44,320
+extract cells from a person and put them
+
+1012
+00:34:44,320 --> 00:34:45,199
+in a dish
+
+1013
+00:34:45,199 --> 00:34:47,839
+they won't grow because they don't have
+
+1014
+00:34:47,839 --> 00:34:49,440
+the environment they expect
+
+1015
+00:34:49,440 --> 00:34:51,359
+and the environment they expect is both
+
+1016
+00:34:51,359 --> 00:34:53,280
+the interactions with their neighboring
+
+1017
+00:34:53,280 --> 00:34:54,079
+cells
+
+1018
+00:34:54,079 --> 00:34:56,320
+who like tell them reassuring things but
+
+1019
+00:34:56,320 --> 00:34:57,200
+there's also
+
+1020
+00:34:57,200 --> 00:35:00,400
+like um signals that our bodies produce
+
+1021
+00:35:00,400 --> 00:35:02,240
+that sort of flow everywhere
+
+1022
+00:35:02,240 --> 00:35:05,280
+that help reassure ourselves basically
+
+1023
+00:35:05,280 --> 00:35:06,640
+i i don't know how to describe this
+
+1024
+00:35:06,640 --> 00:35:08,240
+other than saying like our cells get
+
+1025
+00:35:08,240 --> 00:35:09,119
+really lonely
+
+1026
+00:35:09,119 --> 00:35:10,640
+like if you just extract the cell and
+
+1027
+00:35:10,640 --> 00:35:12,240
+put in a dish without
+
+1028
+00:35:12,240 --> 00:35:14,400
+all of the messaging that it expects and
+
+1029
+00:35:14,400 --> 00:35:15,520
+all of the communication with its
+
+1030
+00:35:15,520 --> 00:35:17,119
+neighbors those cells will actually die
+
+1031
+00:35:17,119 --> 00:35:18,079
+because they don't
+
+1032
+00:35:18,079 --> 00:35:21,680
+have that constant messaging around them
+
+1033
+00:35:21,680 --> 00:35:23,760
+so cancer cells can be similar where you
+
+1034
+00:35:23,760 --> 00:35:25,200
+sort of starve
+
+1035
+00:35:25,200 --> 00:35:27,040
+the messaging that they're expecting and
+
+1036
+00:35:27,040 --> 00:35:28,839
+they'll actually die without that
+
+1037
+00:35:28,839 --> 00:35:31,040
+messaging
+
+1038
+00:35:31,040 --> 00:35:32,960
+and so we have used this very
+
+1039
+00:35:32,960 --> 00:35:35,119
+effectively again specifically in
+
+1040
+00:35:35,119 --> 00:35:35,839
+patients
+
+1041
+00:35:35,839 --> 00:35:39,040
+who use estrogen receptor um
+
+1042
+00:35:39,040 --> 00:35:41,280
+so if they we test their tumor and we're
+
+1043
+00:35:41,280 --> 00:35:42,800
+like oh your tumor is
+
+1044
+00:35:42,800 --> 00:35:44,880
+dependent on estrogen it has a lot of
+
+1045
+00:35:44,880 --> 00:35:46,960
+this receptor being expressed
+
+1046
+00:35:46,960 --> 00:35:49,359
+those patients will do very well with
+
+1047
+00:35:49,359 --> 00:35:51,359
+tamoxifen with these this particular
+
+1048
+00:35:51,359 --> 00:35:52,240
+therapy
+
+1049
+00:35:52,240 --> 00:35:53,920
+if they don't express a lot of this
+
+1050
+00:35:53,920 --> 00:35:55,680
+estrogen receptor their tumor
+
+1051
+00:35:55,680 --> 00:35:58,800
+isn't using the estrogen pathway and so
+
+1052
+00:35:58,800 --> 00:36:00,880
+the the treatment doesn't make any
+
+1053
+00:36:00,880 --> 00:36:02,240
+difference to them
+
+1054
+00:36:02,240 --> 00:36:05,119
+and so at the diagnosis stage you would
+
+1055
+00:36:05,119 --> 00:36:07,119
+diagnose someone for example a woman
+
+1056
+00:36:07,119 --> 00:36:07,440
+with
+
+1057
+00:36:07,440 --> 00:36:09,839
+breast cancer but you would also then
+
+1058
+00:36:09,839 --> 00:36:10,800
+genotype you
+
+1059
+00:36:10,800 --> 00:36:13,680
+test the genetics of her tumor to figure
+
+1060
+00:36:13,680 --> 00:36:14,560
+out is she
+
+1061
+00:36:14,560 --> 00:36:17,839
+er positive is she dependent on estrogen
+
+1062
+00:36:17,839 --> 00:36:21,359
+or is she not in terms of her tumor
+
+1063
+00:36:21,359 --> 00:36:22,640
+and i just want to say this has been
+
+1064
+00:36:22,640 --> 00:36:25,040
+really powerful because for some women
+
+1065
+00:36:25,040 --> 00:36:28,800
+who we anticipate might be very
+
+1066
+00:36:28,800 --> 00:36:32,240
+sensitive to developing breast cancer
+
+1067
+00:36:32,240 --> 00:36:35,839
+you can actually give these women
+
+1068
+00:36:35,839 --> 00:36:39,040
+tamoxifen preemptively as a preventative
+
+1069
+00:36:39,040 --> 00:36:40,960
+measure so before they even get breast
+
+1070
+00:36:40,960 --> 00:36:42,720
+cancer if a woman
+
+1071
+00:36:42,720 --> 00:36:44,880
+because of her family history or her
+
+1072
+00:36:44,880 --> 00:36:47,200
+lifestyle or other factors if a woman is
+
+1073
+00:36:47,200 --> 00:36:47,599
+very
+
+1074
+00:36:47,599 --> 00:36:50,480
+likely to develop a severe breast cancer
+
+1075
+00:36:50,480 --> 00:36:52,320
+you can tell her to take tamoxifen
+
+1076
+00:36:52,320 --> 00:36:54,320
+early and she just will be less likely
+
+1077
+00:36:54,320 --> 00:36:56,720
+to to develop it in her lifetime
+
+1078
+00:36:56,720 --> 00:36:59,119
+so this is a very effective and again
+
+1079
+00:36:59,119 --> 00:37:00,800
+targeted therapy it's not like there's
+
+1080
+00:37:00,800 --> 00:37:01,920
+no side effects
+
+1081
+00:37:01,920 --> 00:37:04,720
+but the side effects are less severe
+
+1082
+00:37:04,720 --> 00:37:05,680
+compared to
+
+1083
+00:37:05,680 --> 00:37:07,760
+a treatment that literally targets all
+
+1084
+00:37:07,760 --> 00:37:10,160
+dna
+
+1085
+00:37:11,520 --> 00:37:12,960
+are there any other questions up until
+
+1086
+00:37:12,960 --> 00:37:15,440
+this point
+
+1087
+00:37:20,839 --> 00:37:23,200
+okay
+
+1088
+00:37:23,200 --> 00:37:24,960
+all right so let's talk a bit about
+
+1089
+00:37:24,960 --> 00:37:27,599
+discovering new targeted therapies
+
+1090
+00:37:27,599 --> 00:37:29,040
+um and so i'm gonna walk you through
+
+1091
+00:37:29,040 --> 00:37:30,720
+this diagram and explain what it's
+
+1092
+00:37:30,720 --> 00:37:31,440
+showing
+
+1093
+00:37:31,440 --> 00:37:34,560
+but i'm gonna just give you a couple of
+
+1094
+00:37:34,560 --> 00:37:36,160
+ways that we've sort of tried to
+
+1095
+00:37:36,160 --> 00:37:36,880
+discover
+
+1096
+00:37:36,880 --> 00:37:38,960
+new targeted therapies because again you
+
+1097
+00:37:38,960 --> 00:37:40,880
+can imagine in the prior case with the
+
+1098
+00:37:40,880 --> 00:37:42,800
+woman who has breast cancer if we
+
+1099
+00:37:42,800 --> 00:37:45,440
+test her her cancer and we realize oh
+
+1100
+00:37:45,440 --> 00:37:46,960
+it's estrogen dependent
+
+1101
+00:37:46,960 --> 00:37:49,040
+we've created this new option for her
+
+1102
+00:37:49,040 --> 00:37:51,040
+right she might be very responsive to
+
+1103
+00:37:51,040 --> 00:37:52,160
+tamoxifen
+
+1104
+00:37:52,160 --> 00:37:54,000
+but imagine the patients who test
+
+1105
+00:37:54,000 --> 00:37:55,680
+negative like what do we tell them they
+
+1106
+00:37:55,680 --> 00:37:56,320
+basically
+
+1107
+00:37:56,320 --> 00:37:58,560
+don't have that option it's harder to
+
+1108
+00:37:58,560 --> 00:38:00,000
+treat their cancer so we're trying to
+
+1109
+00:38:00,000 --> 00:38:01,280
+think about what is
+
+1110
+00:38:01,280 --> 00:38:03,520
+what is true about their tumor that
+
+1111
+00:38:03,520 --> 00:38:05,200
+gives us a new way to treat
+
+1112
+00:38:05,200 --> 00:38:07,200
+them specifically that maybe isn't true
+
+1113
+00:38:07,200 --> 00:38:08,560
+of the women who
+
+1114
+00:38:08,560 --> 00:38:11,359
+use tamoxifen instead so we're trying to
+
+1115
+00:38:11,359 --> 00:38:14,160
+discover these new targeted therapies um
+
+1116
+00:38:14,160 --> 00:38:15,680
+the ones involving hormones were a
+
+1117
+00:38:15,680 --> 00:38:17,280
+little easier because it was
+
+1118
+00:38:17,280 --> 00:38:20,560
+it it leveraged what we already knew
+
+1119
+00:38:20,560 --> 00:38:21,200
+about how
+
+1120
+00:38:21,200 --> 00:38:22,960
+certain tissues work especially those
+
+1121
+00:38:22,960 --> 00:38:24,640
+related to sex organs
+
+1122
+00:38:24,640 --> 00:38:26,720
+but now everything else is sort of more
+
+1123
+00:38:26,720 --> 00:38:28,000
+of like this open
+
+1124
+00:38:28,000 --> 00:38:30,640
+search for anything that might be the
+
+1125
+00:38:30,640 --> 00:38:33,760
+achilles heel of a given cancer
+
+1126
+00:38:33,760 --> 00:38:35,680
+and so there's a couple ways we think
+
+1127
+00:38:35,680 --> 00:38:37,359
+about identifying
+
+1128
+00:38:37,359 --> 00:38:40,560
+um new targeted therapies so one thing i
+
+1129
+00:38:40,560 --> 00:38:41,280
+will mention
+
+1130
+00:38:41,280 --> 00:38:43,040
+is when we're thinking about targeted
+
+1131
+00:38:43,040 --> 00:38:45,119
+therapies you can imagine and i think i
+
+1132
+00:38:45,119 --> 00:38:46,000
+showed the inner
+
+1133
+00:38:46,000 --> 00:38:48,880
+ring last time in terms of a diagram is
+
+1134
+00:38:48,880 --> 00:38:50,800
+that there's all of these
+
+1135
+00:38:50,800 --> 00:38:54,320
+facets of cancer part of cancer is that
+
+1136
+00:38:54,320 --> 00:38:56,960
+it you know is able to divide forever
+
+1137
+00:38:56,960 --> 00:38:58,560
+part of cancer is that it's able to
+
+1138
+00:38:58,560 --> 00:39:00,480
+invade and metastasize
+
+1139
+00:39:00,480 --> 00:39:02,560
+another part of cancer is that things
+
+1140
+00:39:02,560 --> 00:39:04,560
+that would normally trigger a healthy
+
+1141
+00:39:04,560 --> 00:39:06,560
+cell to die such as you know breaking
+
+1142
+00:39:06,560 --> 00:39:07,359
+the rules
+
+1143
+00:39:07,359 --> 00:39:10,400
+um or not enough food to go around
+
+1144
+00:39:10,400 --> 00:39:13,119
+cancer cells have evolved to overcome
+
+1145
+00:39:13,119 --> 00:39:13,680
+that
+
+1146
+00:39:13,680 --> 00:39:15,920
+messaging and so they're able to resist
+
+1147
+00:39:15,920 --> 00:39:16,880
+cell death
+
+1148
+00:39:16,880 --> 00:39:18,720
+and so all of those that inner ring is
+
+1149
+00:39:18,720 --> 00:39:20,720
+showing these traits that are
+
+1150
+00:39:20,720 --> 00:39:23,520
+true of cancer cells and so what's being
+
+1151
+00:39:23,520 --> 00:39:25,520
+shown along the outer ring
+
+1152
+00:39:25,520 --> 00:39:27,839
+is showing examples of treatments that
+
+1153
+00:39:27,839 --> 00:39:28,880
+are basically trying to
+
+1154
+00:39:28,880 --> 00:39:32,720
+target that feature so for example if
+
+1155
+00:39:32,720 --> 00:39:35,119
+cancer cells are able to invade and
+
+1156
+00:39:35,119 --> 00:39:36,560
+metastasize
+
+1157
+00:39:36,560 --> 00:39:38,480
+there might be an inhibitor of a
+
+1158
+00:39:38,480 --> 00:39:40,079
+specific protein or
+
+1159
+00:39:40,079 --> 00:39:43,440
+enzyme that has a role in
+
+1160
+00:39:43,440 --> 00:39:45,680
+cells ability to move around or a cell's
+
+1161
+00:39:45,680 --> 00:39:47,599
+ability to go from one place
+
+1162
+00:39:47,599 --> 00:39:50,320
+and like land and survive that journey
+
+1163
+00:39:50,320 --> 00:39:52,880
+and land in another tissue
+
+1164
+00:39:52,880 --> 00:39:54,160
+so what's being shown around the outer
+
+1165
+00:39:54,160 --> 00:39:56,000
+ring are examples of targeted
+
+1166
+00:39:56,000 --> 00:39:59,839
+drugs that are aimed at that trait
+
+1167
+00:39:59,839 --> 00:40:03,119
+like if cells if cancer cells can change
+
+1168
+00:40:03,119 --> 00:40:04,880
+their metabolism let's target their
+
+1169
+00:40:04,880 --> 00:40:05,440
+ability
+
+1170
+00:40:05,440 --> 00:40:08,000
+to change their metabolism and so that's
+
+1171
+00:40:08,000 --> 00:40:08,560
+sort of
+
+1172
+00:40:08,560 --> 00:40:13,040
+one very targeted approach
+
+1173
+00:40:13,680 --> 00:40:15,440
+yeah sahil that's a great question do we
+
+1174
+00:40:15,440 --> 00:40:17,520
+layer targeted drugs on top of each
+
+1175
+00:40:17,520 --> 00:40:17,920
+other
+
+1176
+00:40:17,920 --> 00:40:21,119
+um we do we absolutely do um
+
+1177
+00:40:21,119 --> 00:40:22,960
+so one thing that might not have been
+
+1178
+00:40:22,960 --> 00:40:24,400
+obvious from
+
+1179
+00:40:24,400 --> 00:40:28,079
+um from that first slide i showed
+
+1180
+00:40:28,079 --> 00:40:29,920
+you actually let me go back to it very
+
+1181
+00:40:29,920 --> 00:40:31,119
+briefly
+
+1182
+00:40:31,119 --> 00:40:34,640
+um from this sort of staging diagram and
+
+1183
+00:40:34,640 --> 00:40:36,079
+thinking about the treatments
+
+1184
+00:40:36,079 --> 00:40:38,800
+something that might be not so obvious
+
+1185
+00:40:38,800 --> 00:40:39,440
+is that
+
+1186
+00:40:39,440 --> 00:40:42,000
+there are times where we kind of will
+
+1187
+00:40:42,000 --> 00:40:43,760
+try one treatment and then when that
+
+1188
+00:40:43,760 --> 00:40:45,520
+doesn't work we just go to the next one
+
+1189
+00:40:45,520 --> 00:40:47,200
+so that's a lot of this sort of first
+
+1190
+00:40:47,200 --> 00:40:49,440
+line second line is deciding oh you know
+
+1191
+00:40:49,440 --> 00:40:51,040
+we'll try this first if that doesn't
+
+1192
+00:40:51,040 --> 00:40:52,160
+work we'll go to the next
+
+1193
+00:40:52,160 --> 00:40:55,440
+option but there are cases where
+
+1194
+00:40:55,440 --> 00:40:57,680
+um we've done research and we realized
+
+1195
+00:40:57,680 --> 00:40:59,520
+certain things are really effective
+
+1196
+00:40:59,520 --> 00:41:01,359
+in conjunction with each other and
+
+1197
+00:41:01,359 --> 00:41:02,880
+assuming that
+
+1198
+00:41:02,880 --> 00:41:04,720
+two drugs which generally speaking then
+
+1199
+00:41:04,720 --> 00:41:06,400
+brings two different sets of side
+
+1200
+00:41:06,400 --> 00:41:06,960
+effects
+
+1201
+00:41:06,960 --> 00:41:09,280
+if those still are tolerable there are
+
+1202
+00:41:09,280 --> 00:41:11,440
+cases where we know that the combination
+
+1203
+00:41:11,440 --> 00:41:12,960
+is more effective
+
+1204
+00:41:12,960 --> 00:41:15,440
+um and we will actually talk about why
+
+1205
+00:41:15,440 --> 00:41:17,200
+we tend towards combinations
+
+1206
+00:41:17,200 --> 00:41:20,319
+um there's sort of like a a theoretical
+
+1207
+00:41:20,319 --> 00:41:22,640
+reason why combinations do really work
+
+1208
+00:41:22,640 --> 00:41:24,720
+well um that we'll talk about but yeah
+
+1209
+00:41:24,720 --> 00:41:26,880
+we there are cases where we just sort of
+
+1210
+00:41:26,880 --> 00:41:28,400
+go from one to the next and i think that
+
+1211
+00:41:28,400 --> 00:41:30,160
+tends to be where
+
+1212
+00:41:30,160 --> 00:41:34,800
+the two together are intolerable or um
+
+1213
+00:41:34,800 --> 00:41:37,040
+there's still this hope oh if this one
+
+1214
+00:41:37,040 --> 00:41:38,800
+really works we don't even like we can
+
+1215
+00:41:38,800 --> 00:41:40,160
+save that other option
+
+1216
+00:41:40,160 --> 00:41:42,160
+till later so that we just have more
+
+1217
+00:41:42,160 --> 00:41:43,440
+options so like
+
+1218
+00:41:43,440 --> 00:41:46,560
+let's exhaust this one first um yeah but
+
+1219
+00:41:46,560 --> 00:41:47,599
+there is a lot of research where
+
+1220
+00:41:47,599 --> 00:41:48,000
+clinical
+
+1221
+00:41:48,000 --> 00:41:50,560
+trials are just basically like let's try
+
+1222
+00:41:50,560 --> 00:41:51,520
+a plus b
+
+1223
+00:41:51,520 --> 00:41:54,240
+or let's try a plus b plus c um that's
+
+1224
+00:41:54,240 --> 00:41:55,680
+definitely something that's always
+
+1225
+00:41:55,680 --> 00:41:58,480
+being researched
+
+1226
+00:41:59,680 --> 00:42:02,960
+all right um i think i will actually
+
+1227
+00:42:02,960 --> 00:42:05,839
+skip this next one and go to here
+
+1228
+00:42:05,839 --> 00:42:07,760
+because i think this is very relevant to
+
+1229
+00:42:07,760 --> 00:42:08,640
+how
+
+1230
+00:42:08,640 --> 00:42:10,079
+when you're when you are someone who's
+
+1231
+00:42:10,079 --> 00:42:12,160
+very data oriented i think
+
+1232
+00:42:12,160 --> 00:42:15,599
+this mean this strategy of identifying
+
+1233
+00:42:15,599 --> 00:42:18,240
+targeted therapies might resonate a lot
+
+1234
+00:42:18,240 --> 00:42:20,960
+which is to say there's been a lot of
+
+1235
+00:42:20,960 --> 00:42:21,599
+work
+
+1236
+00:42:21,599 --> 00:42:24,720
+where people as they are
+
+1237
+00:42:24,720 --> 00:42:27,920
+collecting all of these different tumor
+
+1238
+00:42:27,920 --> 00:42:28,560
+samples
+
+1239
+00:42:28,560 --> 00:42:30,319
+and sequencing all of them they're
+
+1240
+00:42:30,319 --> 00:42:31,920
+really interested in okay well what
+
+1241
+00:42:31,920 --> 00:42:33,520
+mutations are really
+
+1242
+00:42:33,520 --> 00:42:36,480
+common either across all cancers or in
+
+1243
+00:42:36,480 --> 00:42:38,000
+certain types of cancer so if you
+
+1244
+00:42:38,000 --> 00:42:39,760
+collected a lot of different
+
+1245
+00:42:39,760 --> 00:42:43,200
+lung tumors what is like the
+
+1246
+00:42:43,200 --> 00:42:45,599
+general profile of a lung tumor what
+
+1247
+00:42:45,599 --> 00:42:47,280
+tends to be mutated
+
+1248
+00:42:47,280 --> 00:42:49,680
+um and the idea is that if you identify
+
+1249
+00:42:49,680 --> 00:42:50,400
+certain things that
+
+1250
+00:42:50,400 --> 00:42:53,040
+tend to be mutated you would think okay
+
+1251
+00:42:53,040 --> 00:42:53,760
+well then
+
+1252
+00:42:53,760 --> 00:42:55,680
+is that a target if there's something
+
+1253
+00:42:55,680 --> 00:42:57,599
+that's mutated and often is like
+
+1254
+00:42:57,599 --> 00:43:00,160
+acting abnormally in cancer if i target
+
+1255
+00:43:00,160 --> 00:43:00,880
+it
+
+1256
+00:43:00,880 --> 00:43:03,520
+um specifically like the mutant or the
+
+1257
+00:43:03,520 --> 00:43:05,200
+overactive version
+
+1258
+00:43:05,200 --> 00:43:06,800
+that might be an option for treatment
+
+1259
+00:43:06,800 --> 00:43:09,599
+for can for patients who test positive
+
+1260
+00:43:09,599 --> 00:43:11,680
+for that mutation as well
+
+1261
+00:43:11,680 --> 00:43:13,040
+and i want to be clear that's not true
+
+1262
+00:43:13,040 --> 00:43:15,599
+of all patients so for example here you
+
+1263
+00:43:15,599 --> 00:43:16,079
+can see
+
+1264
+00:43:16,079 --> 00:43:19,200
+this was true of like 13
+
+1265
+00:43:19,200 --> 00:43:21,280
+of patients but the idea is that you can
+
+1266
+00:43:21,280 --> 00:43:23,440
+imagine oh if a patient comes into the
+
+1267
+00:43:23,440 --> 00:43:25,680
+clinic we might test for this one
+
+1268
+00:43:25,680 --> 00:43:27,920
+this one and this one and you know
+
+1269
+00:43:27,920 --> 00:43:28,720
+together
+
+1270
+00:43:28,720 --> 00:43:31,680
+that might account for 30 to 40 to 50
+
+1271
+00:43:31,680 --> 00:43:33,200
+percent of patients
+
+1272
+00:43:33,200 --> 00:43:35,520
+have at least one of them and so we
+
+1273
+00:43:35,520 --> 00:43:36,880
+might test them for all of these
+
+1274
+00:43:36,880 --> 00:43:38,960
+mutations to then point to like
+
+1275
+00:43:38,960 --> 00:43:41,520
+should you take drug a or drug b or drug
+
+1276
+00:43:41,520 --> 00:43:44,720
+c that target each of these mutations
+
+1277
+00:43:44,720 --> 00:43:46,240
+and so there's been a lot of work where
+
+1278
+00:43:46,240 --> 00:43:48,800
+we've sequenced so many tumors to try to
+
+1279
+00:43:48,800 --> 00:43:50,400
+basically be able to develop
+
+1280
+00:43:50,400 --> 00:43:53,200
+like hey a subset of lung cancer
+
+1281
+00:43:53,200 --> 00:43:54,079
+patients are eligible
+
+1282
+00:43:54,079 --> 00:43:56,000
+for this we've developed a drug that now
+
+1283
+00:43:56,000 --> 00:43:57,520
+targets this so we'll
+
+1284
+00:43:57,520 --> 00:43:59,200
+we'll genotype them when they get
+
+1285
+00:43:59,200 --> 00:44:02,160
+diagnosed to point them to this therapy
+
+1286
+00:44:02,160 --> 00:44:03,839
+so this is something that has happened a
+
+1287
+00:44:03,839 --> 00:44:05,760
+lot as long as we've
+
+1288
+00:44:05,760 --> 00:44:07,359
+had sequencing available and been
+
+1289
+00:44:07,359 --> 00:44:09,280
+sequencing tumors we've been working on
+
+1290
+00:44:09,280 --> 00:44:11,200
+trying to figure out
+
+1291
+00:44:11,200 --> 00:44:14,560
+what mutations are targets
+
+1292
+00:44:14,560 --> 00:44:16,240
+but i wanted to be very clear though
+
+1293
+00:44:16,240 --> 00:44:19,359
+that all of these different options
+
+1294
+00:44:19,359 --> 00:44:22,960
+don't tend to work so well in practice
+
+1295
+00:44:22,960 --> 00:44:27,040
+um generally speaking once a patient is
+
+1296
+00:44:27,040 --> 00:44:27,680
+at
+
+1297
+00:44:27,680 --> 00:44:29,599
+a later stage so the cancer has
+
+1298
+00:44:29,599 --> 00:44:31,200
+metastasized
+
+1299
+00:44:31,200 --> 00:44:33,040
+i think i forgot to emphasize this but
+
+1300
+00:44:33,040 --> 00:44:34,800
+when you're at a later stage
+
+1301
+00:44:34,800 --> 00:44:38,160
+in in cancer and the cancer has spread
+
+1302
+00:44:38,160 --> 00:44:41,680
+we often use a lot of these therapies
+
+1303
+00:44:41,680 --> 00:44:43,119
+like these targeted therapies or
+
+1304
+00:44:43,119 --> 00:44:45,119
+chemotherapies because the idea is that
+
+1305
+00:44:45,119 --> 00:44:47,280
+they go throughout the entire body
+
+1306
+00:44:47,280 --> 00:44:49,599
+right when you're a patient who's being
+
+1307
+00:44:49,599 --> 00:44:51,040
+given cisplatin
+
+1308
+00:44:51,040 --> 00:44:53,040
+um you'll get it usually for like an iv
+
+1309
+00:44:53,040 --> 00:44:55,280
+drip or maybe you take a pill
+
+1310
+00:44:55,280 --> 00:44:57,040
+that sort of just goes throughout your
+
+1311
+00:44:57,040 --> 00:44:58,560
+whole body like it's flowing
+
+1312
+00:44:58,560 --> 00:45:00,640
+in your blood going throughout your
+
+1313
+00:45:00,640 --> 00:45:01,599
+whole body
+
+1314
+00:45:01,599 --> 00:45:03,599
+and the idea is you take those types of
+
+1315
+00:45:03,599 --> 00:45:04,640
+treatments those
+
+1316
+00:45:04,640 --> 00:45:07,200
+systemic treatments because your cancer
+
+1317
+00:45:07,200 --> 00:45:08,560
+spreads such that
+
+1318
+00:45:08,560 --> 00:45:10,160
+yeah we know that there's a tumor and we
+
+1319
+00:45:10,160 --> 00:45:12,160
+can you know target that tumor
+
+1320
+00:45:12,160 --> 00:45:14,079
+but the cancer cells could kind of be
+
+1321
+00:45:14,079 --> 00:45:15,760
+anywhere and so you're taking the
+
+1322
+00:45:15,760 --> 00:45:17,520
+systemic treatment to hopefully kill
+
+1323
+00:45:17,520 --> 00:45:20,800
+the cells wherever they might be
+
+1324
+00:45:20,800 --> 00:45:22,319
+hopefully you'll hit the tumor cells
+
+1325
+00:45:22,319 --> 00:45:24,480
+wherever they have ended up
+
+1326
+00:45:24,480 --> 00:45:27,440
+and so later stage patients usually what
+
+1327
+00:45:27,440 --> 00:45:27,839
+we
+
+1328
+00:45:27,839 --> 00:45:30,000
+point them to is chemotherapy or a
+
+1329
+00:45:30,000 --> 00:45:31,760
+targeted therapy they might be eligible
+
+1330
+00:45:31,760 --> 00:45:32,319
+for
+
+1331
+00:45:32,319 --> 00:45:33,680
+because it will go throughout their
+
+1332
+00:45:33,680 --> 00:45:36,079
+whole body but again these are patients
+
+1333
+00:45:36,079 --> 00:45:36,400
+who
+
+1334
+00:45:36,400 --> 00:45:39,520
+are at those later stages surgery was
+
+1335
+00:45:39,520 --> 00:45:41,359
+not a curative option for them so we
+
+1336
+00:45:41,359 --> 00:45:43,200
+point them to chemo or we point them to
+
+1337
+00:45:43,200 --> 00:45:44,240
+targeted therapy
+
+1338
+00:45:44,240 --> 00:45:46,079
+but i will just say again i mentioned
+
+1339
+00:45:46,079 --> 00:45:48,319
+this this doesn't tend to be curative
+
+1340
+00:45:48,319 --> 00:45:51,440
+it's more like it buys them more time
+
+1341
+00:45:51,440 --> 00:45:53,920
+um generally speaking we tend to see
+
+1342
+00:45:53,920 --> 00:45:55,440
+curves like this one
+
+1343
+00:45:55,440 --> 00:45:57,040
+what this curve is showing you is sort
+
+1344
+00:45:57,040 --> 00:45:59,680
+of out of a total number of patients how
+
+1345
+00:45:59,680 --> 00:46:01,760
+many were still alive after a certain
+
+1346
+00:46:01,760 --> 00:46:03,440
+point of time when they've been
+
+1347
+00:46:03,440 --> 00:46:07,280
+um when they've been diagnosed
+
+1348
+00:46:07,280 --> 00:46:09,040
+they've tried the localized treatments
+
+1349
+00:46:09,040 --> 00:46:11,839
+and then they get on a targeted therapy
+
+1350
+00:46:11,839 --> 00:46:15,119
+um or a chemotherapy what you can see is
+
+1351
+00:46:15,119 --> 00:46:17,040
+that all of the curves collapsed to zero
+
+1352
+00:46:17,040 --> 00:46:17,520
+right
+
+1353
+00:46:17,520 --> 00:46:19,839
+ultimately all of the patients in both
+
+1354
+00:46:19,839 --> 00:46:20,560
+cohorts
+
+1355
+00:46:20,560 --> 00:46:22,560
+died but what happened to the patients
+
+1356
+00:46:22,560 --> 00:46:24,319
+who got the targeted therapy
+
+1357
+00:46:24,319 --> 00:46:27,119
+versus the ones who didn't is that it
+
+1358
+00:46:27,119 --> 00:46:28,079
+was shifted
+
+1359
+00:46:28,079 --> 00:46:29,760
+so we've shifted the curve to the right
+
+1360
+00:46:29,760 --> 00:46:32,079
+which just means that they get more time
+
+1361
+00:46:32,079 --> 00:46:34,480
+they get some number of months and lucky
+
+1362
+00:46:34,480 --> 00:46:36,000
+cases they get some number of years
+
+1363
+00:46:36,000 --> 00:46:37,599
+where they continue to survive but
+
+1364
+00:46:37,599 --> 00:46:38,640
+ultimately
+
+1365
+00:46:38,640 --> 00:46:42,240
+it doesn't cure them of their cancer
+
+1366
+00:46:42,240 --> 00:46:44,000
+and i'll just say that the closest we've
+
+1367
+00:46:44,000 --> 00:46:45,520
+come to that so far
+
+1368
+00:46:45,520 --> 00:46:47,760
+has been things like immunotherapy which
+
+1369
+00:46:47,760 --> 00:46:49,359
+is where a lot of the excitement has
+
+1370
+00:46:49,359 --> 00:46:50,319
+come from
+
+1371
+00:46:50,319 --> 00:46:51,680
+and so i'm just going to compare these
+
+1372
+00:46:51,680 --> 00:46:53,599
+two curves which is
+
+1373
+00:46:53,599 --> 00:46:55,680
+on this side it's as you've seen here
+
+1374
+00:46:55,680 --> 00:46:57,920
+where it's like there's a shift
+
+1375
+00:46:57,920 --> 00:47:00,000
+there's a shift but ultimately both of
+
+1376
+00:47:00,000 --> 00:47:01,040
+them collapse
+
+1377
+00:47:01,040 --> 00:47:03,680
+to zero and so in both cases all
+
+1378
+00:47:03,680 --> 00:47:04,400
+patients
+
+1379
+00:47:04,400 --> 00:47:06,400
+die it's just a matter of some of them
+
+1380
+00:47:06,400 --> 00:47:08,079
+get more time
+
+1381
+00:47:08,079 --> 00:47:09,680
+what's being shown here on the right and
+
+1382
+00:47:09,680 --> 00:47:12,240
+this is in the case of immunotherapy
+
+1383
+00:47:12,240 --> 00:47:14,480
+is um you don't necessarily see this
+
+1384
+00:47:14,480 --> 00:47:15,359
+shift
+
+1385
+00:47:15,359 --> 00:47:18,240
+but there are a subset of patients again
+
+1386
+00:47:18,240 --> 00:47:20,160
+what this is showing here is of the
+
+1387
+00:47:20,160 --> 00:47:22,880
+hundred percent of patients who were in
+
+1388
+00:47:22,880 --> 00:47:24,720
+the cohort originally
+
+1389
+00:47:24,720 --> 00:47:27,040
+if all of them die the curve collapses
+
+1390
+00:47:27,040 --> 00:47:28,480
+down to zero
+
+1391
+00:47:28,480 --> 00:47:30,400
+but what you'll see here is that this
+
+1392
+00:47:30,400 --> 00:47:32,160
+curve actually doesn't collapse all the
+
+1393
+00:47:32,160 --> 00:47:33,440
+way to zero so this is
+
+1394
+00:47:33,440 --> 00:47:36,079
+shown here in the purple this doesn't
+
+1395
+00:47:36,079 --> 00:47:38,079
+collapse to zero and so there's a subset
+
+1396
+00:47:38,079 --> 00:47:39,839
+of patients who just keep
+
+1397
+00:47:39,839 --> 00:47:42,960
+living and so for them essentially
+
+1398
+00:47:42,960 --> 00:47:45,760
+they've been cured or they're like they
+
+1399
+00:47:45,760 --> 00:47:47,359
+they are sort of the exception
+
+1400
+00:47:47,359 --> 00:47:48,960
+versus everyone else who they had more
+
+1401
+00:47:48,960 --> 00:47:50,880
+time but they never they still ended up
+
+1402
+00:47:50,880 --> 00:47:51,680
+dying
+
+1403
+00:47:51,680 --> 00:47:54,000
+these patients just keep living and it's
+
+1404
+00:47:54,000 --> 00:47:55,280
+not all of them
+
+1405
+00:47:55,280 --> 00:47:58,240
+it doesn't work for all of them but this
+
+1406
+00:47:58,240 --> 00:47:59,760
+in and of itself is just a
+
+1407
+00:47:59,760 --> 00:48:02,160
+change in what we've tended to expect
+
+1408
+00:48:02,160 --> 00:48:03,920
+right with every additional treatment
+
+1409
+00:48:03,920 --> 00:48:05,440
+it's kind of been like oh i can shift it
+
+1410
+00:48:05,440 --> 00:48:08,720
+even more but it still collapses to zero
+
+1411
+00:48:08,720 --> 00:48:10,319
+that's been the dichotomy that we've
+
+1412
+00:48:10,319 --> 00:48:11,760
+been used to is
+
+1413
+00:48:11,760 --> 00:48:13,680
+the original curve versus a shifted
+
+1414
+00:48:13,680 --> 00:48:16,079
+curve and how far we shift it
+
+1415
+00:48:16,079 --> 00:48:18,000
+versus thinking about are there patients
+
+1416
+00:48:18,000 --> 00:48:20,240
+that just keep living
+
+1417
+00:48:20,240 --> 00:48:21,760
+so that's been a lot of the excitement
+
+1418
+00:48:21,760 --> 00:48:23,839
+around chemotherapy but i did want to
+
+1419
+00:48:23,839 --> 00:48:24,480
+touch on
+
+1420
+00:48:24,480 --> 00:48:27,839
+why some patients or why is it so hard
+
+1421
+00:48:27,839 --> 00:48:28,880
+to cure patients
+
+1422
+00:48:28,880 --> 00:48:30,559
+why is it that with all of these
+
+1423
+00:48:30,559 --> 00:48:32,559
+targeted therapies ultimately all
+
+1424
+00:48:32,559 --> 00:48:34,240
+patients still die
+
+1425
+00:48:34,240 --> 00:48:37,119
+um sorry i should be clear that's not
+
+1426
+00:48:37,119 --> 00:48:39,040
+the case in literally every cancer there
+
+1427
+00:48:39,040 --> 00:48:40,319
+are some cancers where we
+
+1428
+00:48:40,319 --> 00:48:42,240
+can cure them with target therapy it's
+
+1429
+00:48:42,240 --> 00:48:44,720
+just that tends to be the exception
+
+1430
+00:48:44,720 --> 00:48:46,640
+rather than the other way around so
+
+1431
+00:48:46,640 --> 00:48:48,480
+rather than saying oh target therapy is
+
+1432
+00:48:48,480 --> 00:48:49,760
+cure most patients but there's some
+
+1433
+00:48:49,760 --> 00:48:50,319
+patients who
+
+1434
+00:48:50,319 --> 00:48:52,079
+can't help it tends to be that target
+
+1435
+00:48:52,079 --> 00:48:53,520
+therapies
+
+1436
+00:48:53,520 --> 00:48:55,119
+don't cure most patients but there are a
+
+1437
+00:48:55,119 --> 00:48:57,359
+couple of exceptions where it does
+
+1438
+00:48:57,359 --> 00:48:59,920
+um and so some of you may have heard of
+
+1439
+00:48:59,920 --> 00:49:00,880
+there's this drug
+
+1440
+00:49:00,880 --> 00:49:04,000
+called uh glebec and it is specifically
+
+1441
+00:49:04,000 --> 00:49:06,559
+used in a type of blood cancer i believe
+
+1442
+00:49:06,559 --> 00:49:08,880
+the cancer is used in this cml
+
+1443
+00:49:08,880 --> 00:49:10,559
+and so in that very particular type of
+
+1444
+00:49:10,559 --> 00:49:12,720
+cancer for patients who are eligible for
+
+1445
+00:49:12,720 --> 00:49:14,240
+that targeted therapy
+
+1446
+00:49:14,240 --> 00:49:16,400
+it actually works really really well
+
+1447
+00:49:16,400 --> 00:49:18,160
+like a lot of those patients tend to be
+
+1448
+00:49:18,160 --> 00:49:21,359
+cured or survive many years um some of
+
+1449
+00:49:21,359 --> 00:49:22,640
+them might relapse
+
+1450
+00:49:22,640 --> 00:49:24,400
+after a long period of time but there
+
+1451
+00:49:24,400 --> 00:49:26,079
+are some patients who just seem to keep
+
+1452
+00:49:26,079 --> 00:49:28,000
+living with this drug
+
+1453
+00:49:28,000 --> 00:49:29,920
+um so i don't want to say like it
+
+1454
+00:49:29,920 --> 00:49:31,680
+literally never works i would just say
+
+1455
+00:49:31,680 --> 00:49:33,440
+by and large and especially for a lot of
+
+1456
+00:49:33,440 --> 00:49:35,359
+the most common types of cancer like
+
+1457
+00:49:35,359 --> 00:49:38,480
+lung cancer or breast cancer or cancer
+
+1458
+00:49:38,480 --> 00:49:40,240
+of the brain
+
+1459
+00:49:40,240 --> 00:49:42,720
+we tend to see this type of pattern more
+
+1460
+00:49:42,720 --> 00:49:43,599
+where
+
+1461
+00:49:43,599 --> 00:49:45,119
+you know it helps for a while but it
+
+1462
+00:49:45,119 --> 00:49:47,520
+ultimately can't cure them
+
+1463
+00:49:47,520 --> 00:49:49,040
+um and i just want to talk about why
+
+1464
+00:49:49,040 --> 00:49:50,720
+that is and really
+
+1465
+00:49:50,720 --> 00:49:53,119
+the theoretical point of view for why
+
+1466
+00:49:53,119 --> 00:49:54,079
+this is the case
+
+1467
+00:49:54,079 --> 00:49:57,280
+is actually evolution so you may have
+
+1468
+00:49:57,280 --> 00:49:59,200
+learned about evolution in the context
+
+1469
+00:49:59,200 --> 00:50:02,800
+of like species of things like
+
+1470
+00:50:02,800 --> 00:50:05,760
+animals or plants or people or bacteria
+
+1471
+00:50:05,760 --> 00:50:06,880
+and the idea is that
+
+1472
+00:50:06,880 --> 00:50:10,240
+with evolution these
+
+1473
+00:50:10,240 --> 00:50:12,640
+different populations of living things
+
+1474
+00:50:12,640 --> 00:50:14,000
+like i think the common example is like
+
+1475
+00:50:14,000 --> 00:50:16,000
+oh the gazelle and the gazelle needs to
+
+1476
+00:50:16,000 --> 00:50:17,599
+outrun the lion
+
+1477
+00:50:17,599 --> 00:50:20,079
+um and the idea is oh the gazelle would
+
+1478
+00:50:20,079 --> 00:50:20,800
+evolve
+
+1479
+00:50:20,800 --> 00:50:24,240
+ways to be able to better elude the lion
+
+1480
+00:50:24,240 --> 00:50:25,839
+right so they can survive and they can
+
+1481
+00:50:25,839 --> 00:50:27,680
+reproduce and so if there's
+
+1482
+00:50:27,680 --> 00:50:30,000
+a way they can evolve better camouflage
+
+1483
+00:50:30,000 --> 00:50:31,359
+if they can evolve to run
+
+1484
+00:50:31,359 --> 00:50:33,440
+faster all of those things would
+
+1485
+00:50:33,440 --> 00:50:35,200
+contribute to them being more likely to
+
+1486
+00:50:35,200 --> 00:50:36,000
+survive
+
+1487
+00:50:36,000 --> 00:50:38,640
+attacks by lion and so their genetics
+
+1488
+00:50:38,640 --> 00:50:40,559
+sort of slowly evolve over time to
+
+1489
+00:50:40,559 --> 00:50:41,200
+select
+
+1490
+00:50:41,200 --> 00:50:44,000
+for if a mutation arises that like leads
+
+1491
+00:50:44,000 --> 00:50:46,079
+to a coat that's harder for the lion to
+
+1492
+00:50:46,079 --> 00:50:46,640
+see
+
+1493
+00:50:46,640 --> 00:50:49,440
+that gets selected for and that becomes
+
+1494
+00:50:49,440 --> 00:50:51,520
+more common in the population of gazelle
+
+1495
+00:50:51,520 --> 00:50:52,000
+because that
+
+1496
+00:50:52,000 --> 00:50:53,920
+gazelle basically lives when whereas
+
+1497
+00:50:53,920 --> 00:50:55,200
+others might die
+
+1498
+00:50:55,200 --> 00:50:58,480
+and they pass on that mutation um cancer
+
+1499
+00:50:58,480 --> 00:51:00,800
+works very similarly in the sense of you
+
+1500
+00:51:00,800 --> 00:51:02,319
+have to think of it as
+
+1501
+00:51:02,319 --> 00:51:06,000
+a tumor is a collection of cells
+
+1502
+00:51:06,000 --> 00:51:08,720
+each cell has its own dna granted they
+
+1503
+00:51:08,720 --> 00:51:09,119
+all
+
+1504
+00:51:09,119 --> 00:51:11,200
+originated from your body so they share
+
+1505
+00:51:11,200 --> 00:51:12,720
+a lot of dna
+
+1506
+00:51:12,720 --> 00:51:15,839
+but as cancers start to become cancerous
+
+1507
+00:51:15,839 --> 00:51:17,920
+they're basically accumulating mutations
+
+1508
+00:51:17,920 --> 00:51:19,839
+and each cell is its own
+
+1509
+00:51:19,839 --> 00:51:22,640
+agent like each cell may have come from
+
+1510
+00:51:22,640 --> 00:51:23,440
+another cell
+
+1511
+00:51:23,440 --> 00:51:26,079
+but during the lifetime of that cell
+
+1512
+00:51:26,079 --> 00:51:27,200
+they can continue
+
+1513
+00:51:27,200 --> 00:51:30,480
+to mutate because of you know the cancer
+
+1514
+00:51:30,480 --> 00:51:32,240
+cells just make a lot of mistakes
+
+1515
+00:51:32,240 --> 00:51:33,839
+the cancer cells are being exposed to
+
+1516
+00:51:33,839 --> 00:51:36,720
+all of these dna mutating
+
+1517
+00:51:36,720 --> 00:51:39,599
+substances um and so each cell is kind
+
+1518
+00:51:39,599 --> 00:51:40,240
+of like its
+
+1519
+00:51:40,240 --> 00:51:42,880
+own agent that is unlike that is
+
+1520
+00:51:42,880 --> 00:51:43,920
+undergoing changes
+
+1521
+00:51:43,920 --> 00:51:46,960
+and if an uh mutation arises in one of
+
+1522
+00:51:46,960 --> 00:51:47,760
+those cells
+
+1523
+00:51:47,760 --> 00:51:50,720
+that is advantageous it becomes selected
+
+1524
+00:51:50,720 --> 00:51:52,319
+for
+
+1525
+00:51:52,319 --> 00:51:55,200
+so when we're thinking of a cancer
+
+1526
+00:51:55,200 --> 00:51:58,160
+cancers arise from a single cell
+
+1527
+00:51:58,160 --> 00:52:00,880
+that accumulates some mutations and
+
+1528
+00:52:00,880 --> 00:52:02,319
+generally leads to that cell
+
+1529
+00:52:02,319 --> 00:52:04,319
+growing and dividing more than it's
+
+1530
+00:52:04,319 --> 00:52:05,520
+supposed to
+
+1531
+00:52:05,520 --> 00:52:06,800
+and when it grows and divides more than
+
+1532
+00:52:06,800 --> 00:52:08,880
+it's supposed to it ends up creating a
+
+1533
+00:52:08,880 --> 00:52:11,119
+population right because that growth
+
+1534
+00:52:11,119 --> 00:52:12,640
+all of the cells that descended from
+
+1535
+00:52:12,640 --> 00:52:14,640
+that growth there's a collection of them
+
+1536
+00:52:14,640 --> 00:52:17,760
+right and each of those has a chance to
+
+1537
+00:52:17,760 --> 00:52:18,720
+mutate
+
+1538
+00:52:18,720 --> 00:52:20,880
+so in this collection there might be a
+
+1539
+00:52:20,880 --> 00:52:22,079
+certain cell that
+
+1540
+00:52:22,079 --> 00:52:25,040
+randomly gets a mutation that allows it
+
+1541
+00:52:25,040 --> 00:52:26,720
+to then do something that it was
+
+1542
+00:52:26,720 --> 00:52:28,640
+unable to do before so for example this
+
+1543
+00:52:28,640 --> 00:52:30,079
+could allow it to
+
+1544
+00:52:30,079 --> 00:52:33,200
+invade physically into a new space that
+
+1545
+00:52:33,200 --> 00:52:35,599
+it couldn't survive in before
+
+1546
+00:52:35,599 --> 00:52:38,880
+and as it invades it you know makes a
+
+1547
+00:52:38,880 --> 00:52:40,319
+home in that new space
+
+1548
+00:52:40,319 --> 00:52:42,319
+it continues to grow and divide and so
+
+1549
+00:52:42,319 --> 00:52:43,920
+it again it creates this
+
+1550
+00:52:43,920 --> 00:52:47,359
+population of cells and each cell
+
+1551
+00:52:47,359 --> 00:52:50,640
+has a chance to divide and each cell has
+
+1552
+00:52:50,640 --> 00:52:51,440
+a chance to
+
+1553
+00:52:51,440 --> 00:52:54,720
+mutate and so if it mutates it can gain
+
+1554
+00:52:54,720 --> 00:52:56,160
+a new ability
+
+1555
+00:52:56,160 --> 00:52:58,880
+it can become selected for and again
+
+1556
+00:52:58,880 --> 00:53:00,720
+create its own new population so it
+
+1557
+00:53:00,720 --> 00:53:02,720
+basically just continues to evolve from
+
+1558
+00:53:02,720 --> 00:53:03,680
+there
+
+1559
+00:53:03,680 --> 00:53:05,200
+and that's what we actually see when we
+
+1560
+00:53:05,200 --> 00:53:08,079
+try to treat so this tx basically stands
+
+1561
+00:53:08,079 --> 00:53:09,599
+for treatment
+
+1562
+00:53:09,599 --> 00:53:12,880
+um when we're treating basically at that
+
+1563
+00:53:12,880 --> 00:53:14,240
+point in time
+
+1564
+00:53:14,240 --> 00:53:16,559
+let me clear this so when we're treating
+
+1565
+00:53:16,559 --> 00:53:17,920
+at that point in time
+
+1566
+00:53:17,920 --> 00:53:20,960
+we see this sort of collection of cells
+
+1567
+00:53:20,960 --> 00:53:22,960
+that makes up the tumor and it's a very
+
+1568
+00:53:22,960 --> 00:53:24,480
+diverse collection which is
+
+1569
+00:53:24,480 --> 00:53:25,680
+what's being shown with all these
+
+1570
+00:53:25,680 --> 00:53:28,000
+different colors and when we're trying
+
+1571
+00:53:28,000 --> 00:53:29,839
+to treat them we're trying to kill all
+
+1572
+00:53:29,839 --> 00:53:32,240
+of them and maybe we're very
+
+1573
+00:53:32,240 --> 00:53:34,720
+successful at killing most of these but
+
+1574
+00:53:34,720 --> 00:53:35,680
+maybe there is
+
+1575
+00:53:35,680 --> 00:53:38,559
+one cell that has mutation that means it
+
+1576
+00:53:38,559 --> 00:53:40,559
+doesn't respond to the treatment
+
+1577
+00:53:40,559 --> 00:53:43,280
+we've killed all of its competition that
+
+1578
+00:53:43,280 --> 00:53:45,599
+cell is selected for it is the one
+
+1579
+00:53:45,599 --> 00:53:48,880
+gazelle that outran the lion and so left
+
+1580
+00:53:48,880 --> 00:53:50,880
+to its own devices it basically keeps
+
+1581
+00:53:50,880 --> 00:53:52,559
+dividing and all of its
+
+1582
+00:53:52,559 --> 00:53:55,280
+uh cells that it creates all carry that
+
+1583
+00:53:55,280 --> 00:53:57,200
+resistance mutation
+
+1584
+00:53:57,200 --> 00:53:58,880
+and so that's what we tend to see in
+
+1585
+00:53:58,880 --> 00:54:00,960
+cancer is that we'll treat
+
+1586
+00:54:00,960 --> 00:54:03,520
+um with a targeted therapy the tumor
+
+1587
+00:54:03,520 --> 00:54:05,280
+looks like it's responding because it'll
+
+1588
+00:54:05,280 --> 00:54:06,960
+generally stop growing it might even
+
+1589
+00:54:06,960 --> 00:54:07,839
+regress
+
+1590
+00:54:07,839 --> 00:54:09,280
+so the tumor looks like it's getting
+
+1591
+00:54:09,280 --> 00:54:10,960
+smaller and smaller
+
+1592
+00:54:10,960 --> 00:54:13,200
+but then at some point we sort of killed
+
+1593
+00:54:13,200 --> 00:54:15,119
+all of the cells that were sensitive to
+
+1594
+00:54:15,119 --> 00:54:15,920
+the drug
+
+1595
+00:54:15,920 --> 00:54:19,280
+but there might be some number of cells
+
+1596
+00:54:19,280 --> 00:54:21,680
+that have a resistance mutation
+
+1597
+00:54:21,680 --> 00:54:23,760
+and so at that point they don't shrink
+
+1598
+00:54:23,760 --> 00:54:24,720
+any further
+
+1599
+00:54:24,720 --> 00:54:26,559
+and actually they start to grow back
+
+1600
+00:54:26,559 --> 00:54:28,960
+because the drug makes no difference
+
+1601
+00:54:28,960 --> 00:54:30,480
+them they basically don't see
+
+1602
+00:54:30,480 --> 00:54:32,480
+or don't respond to the drug so we see
+
+1603
+00:54:32,480 --> 00:54:33,760
+that with patients where the tumor
+
+1604
+00:54:33,760 --> 00:54:34,960
+regresses
+
+1605
+00:54:34,960 --> 00:54:37,920
+stops responding and it starts regrowing
+
+1606
+00:54:37,920 --> 00:54:38,480
+and that is
+
+1607
+00:54:38,480 --> 00:54:40,079
+very typical because basically their
+
+1608
+00:54:40,079 --> 00:54:44,240
+cancer has evolved at that point
+
+1609
+00:54:44,480 --> 00:54:47,760
+are there any questions about that
+
+1610
+00:54:49,599 --> 00:54:52,880
+so my question is again refer back to
+
+1611
+00:54:52,880 --> 00:54:55,119
+the kovi situation we know the
+
+1612
+00:54:55,119 --> 00:54:58,400
+rna keeps on mutate mutating
+
+1613
+00:54:58,400 --> 00:55:00,880
+yes so are we eventually going to face
+
+1614
+00:55:00,880 --> 00:55:02,400
+this kind of dilemma
+
+1615
+00:55:02,400 --> 00:55:05,280
+because of this mutation the current
+
+1616
+00:55:05,280 --> 00:55:07,040
+vaccine may not work
+
+1617
+00:55:07,040 --> 00:55:10,799
+so you mentioned about the shape of uh
+
+1618
+00:55:10,799 --> 00:55:15,119
+the the virus may be the same but
+
+1619
+00:55:15,119 --> 00:55:18,640
+who knows i i i don't have any
+
+1620
+00:55:18,640 --> 00:55:21,280
+information to do any prediction yeah i
+
+1621
+00:55:21,280 --> 00:55:22,319
+mean that's a really interesting
+
+1622
+00:55:22,319 --> 00:55:22,799
+question
+
+1623
+00:55:22,799 --> 00:55:25,119
+i will say one thing to keep in mind is
+
+1624
+00:55:25,119 --> 00:55:26,960
+generally speaking
+
+1625
+00:55:26,960 --> 00:55:30,240
+the repertoire that a virus has to work
+
+1626
+00:55:30,240 --> 00:55:30,960
+with
+
+1627
+00:55:30,960 --> 00:55:33,599
+tends to be a bit smaller than a cancer
+
+1628
+00:55:33,599 --> 00:55:34,000
+cell
+
+1629
+00:55:34,000 --> 00:55:36,079
+right like a cancer cell basically has
+
+1630
+00:55:36,079 --> 00:55:38,079
+all of the genes that you do and then
+
+1631
+00:55:38,079 --> 00:55:38,960
+starts to like
+
+1632
+00:55:38,960 --> 00:55:41,040
+use them in very creative ways right
+
+1633
+00:55:41,040 --> 00:55:42,720
+like it takes your existing genes and
+
+1634
+00:55:42,720 --> 00:55:44,160
+maybe expresses them in new
+
+1635
+00:55:44,160 --> 00:55:45,520
+configurations
+
+1636
+00:55:45,520 --> 00:55:47,200
+or mutates them so it's expressing like
+
+1637
+00:55:47,200 --> 00:55:50,160
+a different version um
+
+1638
+00:55:50,160 --> 00:55:53,599
+viruses have a much smaller genomes
+
+1639
+00:55:53,599 --> 00:55:55,440
+so they generally speaking have a little
+
+1640
+00:55:55,440 --> 00:55:57,760
+less to work with like the amount they
+
+1641
+00:55:57,760 --> 00:55:58,720
+can mutate
+
+1642
+00:55:58,720 --> 00:56:01,440
+and kind of change what we're working
+
+1643
+00:56:01,440 --> 00:56:02,640
+with is smaller
+
+1644
+00:56:02,640 --> 00:56:05,280
+um i think what more people tend to be
+
+1645
+00:56:05,280 --> 00:56:07,200
+worried about and what leads to really
+
+1646
+00:56:07,200 --> 00:56:08,400
+big issues is when
+
+1647
+00:56:08,400 --> 00:56:11,599
+viruses sort of combine um
+
+1648
+00:56:11,599 --> 00:56:14,960
+so i'm trying to think of the picture
+
+1649
+00:56:14,960 --> 00:56:16,880
+there's this really great picture of it
+
+1650
+00:56:16,880 --> 00:56:18,400
+actually let me just
+
+1651
+00:56:18,400 --> 00:56:21,119
+try to show it
+
+1652
+00:56:22,000 --> 00:56:23,760
+um so there's this really great picture
+
+1653
+00:56:23,760 --> 00:56:25,200
+so when you're thinking about a virus
+
+1654
+00:56:25,200 --> 00:56:26,079
+right
+
+1655
+00:56:26,079 --> 00:56:27,920
+um and i'm just gonna draw like spikes
+
+1656
+00:56:27,920 --> 00:56:29,920
+on the outside because this is basically
+
+1657
+00:56:29,920 --> 00:56:32,160
+the spikes are important because the
+
+1658
+00:56:32,160 --> 00:56:33,760
+spikes are basically how
+
+1659
+00:56:33,760 --> 00:56:36,559
+if it runs into a human cell it's
+
+1660
+00:56:36,559 --> 00:56:37,359
+basically
+
+1661
+00:56:37,359 --> 00:56:39,119
+looking for something on the human cell
+
+1662
+00:56:39,119 --> 00:56:41,119
+that it can
+
+1663
+00:56:41,119 --> 00:56:43,839
+grab onto and is the means by which it
+
+1664
+00:56:43,839 --> 00:56:44,880
+invades
+
+1665
+00:56:44,880 --> 00:56:48,000
+so if this is a virus if this protein
+
+1666
+00:56:48,000 --> 00:56:51,200
+is specific to this feature and this
+
+1667
+00:56:51,200 --> 00:56:53,359
+tends to be the case for kovid that it's
+
+1668
+00:56:53,359 --> 00:56:56,400
+something that's common in your lungs
+
+1669
+00:56:56,400 --> 00:56:58,000
+it basically can bind to that and that's
+
+1670
+00:56:58,000 --> 00:57:00,400
+its entry route is that it it binds to
+
+1671
+00:57:00,400 --> 00:57:02,400
+those types of cells and it enters right
+
+1672
+00:57:02,400 --> 00:57:05,200
+so someone who's getting infected by a
+
+1673
+00:57:05,200 --> 00:57:07,280
+virus it's like oh just having the virus
+
+1674
+00:57:07,280 --> 00:57:08,640
+interact with your skin
+
+1675
+00:57:08,640 --> 00:57:10,240
+for example isn't enough because the
+
+1676
+00:57:10,240 --> 00:57:12,400
+thing it binds to isn't on your skin
+
+1677
+00:57:12,400 --> 00:57:14,960
+it's a specific feature on your cells
+
+1678
+00:57:14,960 --> 00:57:16,880
+that are common in your lungs or in your
+
+1679
+00:57:16,880 --> 00:57:17,760
+like
+
+1680
+00:57:17,760 --> 00:57:20,720
+the track to leading to your lungs um so
+
+1681
+00:57:20,720 --> 00:57:21,440
+what i'll say
+
+1682
+00:57:21,440 --> 00:57:24,559
+is that the amount of genetics that's in
+
+1683
+00:57:24,559 --> 00:57:25,040
+here
+
+1684
+00:57:25,040 --> 00:57:27,359
+tends to be pretty limited for viruses
+
+1685
+00:57:27,359 --> 00:57:28,640
+compared to cells
+
+1686
+00:57:28,640 --> 00:57:31,599
+so first off that just means like
+
+1687
+00:57:31,599 --> 00:57:33,520
+probability wise if you're dealing with
+
+1688
+00:57:33,520 --> 00:57:35,280
+something i don't actually know how long
+
+1689
+00:57:35,280 --> 00:57:36,400
+the covid
+
+1690
+00:57:36,400 --> 00:57:38,640
+genome is like just compared to human
+
+1691
+00:57:38,640 --> 00:57:40,240
+where it's like oh we have you know
+
+1692
+00:57:40,240 --> 00:57:41,040
+three
+
+1693
+00:57:41,040 --> 00:57:44,319
+billion bases to work with it's much
+
+1694
+00:57:44,319 --> 00:57:45,359
+shorter
+
+1695
+00:57:45,359 --> 00:57:47,599
+for actually let me look it up copied
+
+1696
+00:57:47,599 --> 00:57:50,480
+genome length
+
+1697
+00:57:50,480 --> 00:57:53,760
+um it is thirty
+
+1698
+00:57:53,760 --> 00:57:58,799
+thousand three thousand thirty k
+
+1699
+00:57:58,799 --> 00:58:01,200
+so compared to three billion it's a lot
+
+1700
+00:58:01,200 --> 00:58:02,079
+smaller
+
+1701
+00:58:02,079 --> 00:58:05,440
+um and so the amount that it can mutate
+
+1702
+00:58:05,440 --> 00:58:06,240
+tends to be
+
+1703
+00:58:06,240 --> 00:58:08,319
+quite limited like it doesn't sort of
+
+1704
+00:58:08,319 --> 00:58:09,920
+have as many of the endless
+
+1705
+00:58:09,920 --> 00:58:12,000
+possibilities for what it can do
+
+1706
+00:58:12,000 --> 00:58:13,920
+i think the thing to also consider is
+
+1707
+00:58:13,920 --> 00:58:15,040
+that
+
+1708
+00:58:15,040 --> 00:58:16,960
+i think there's a lot of concern around
+
+1709
+00:58:16,960 --> 00:58:18,240
+it mutating
+
+1710
+00:58:18,240 --> 00:58:21,520
+these outer proteins so that what
+
+1711
+00:58:21,520 --> 00:58:23,920
+our immune cells right our immune cells
+
+1712
+00:58:23,920 --> 00:58:26,799
+are supposed to develop these receptors
+
+1713
+00:58:26,799 --> 00:58:30,480
+that can find these viruses
+
+1714
+00:58:30,480 --> 00:58:32,079
+and the idea is if they change their
+
+1715
+00:58:32,079 --> 00:58:33,839
+spots then our immune cells can't do
+
+1716
+00:58:33,839 --> 00:58:35,119
+that anymore
+
+1717
+00:58:35,119 --> 00:58:37,280
+um but i think a thing to keep in mind
+
+1718
+00:58:37,280 --> 00:58:39,200
+is these outer proteins are
+
+1719
+00:58:39,200 --> 00:58:41,359
+serving a purpose for the virus like it
+
+1720
+00:58:41,359 --> 00:58:43,920
+literally can't change its spots to be
+
+1721
+00:58:43,920 --> 00:58:46,160
+any color any shape because at some
+
+1722
+00:58:46,160 --> 00:58:48,240
+point if it changes too much it actually
+
+1723
+00:58:48,240 --> 00:58:49,599
+can't bind to the lung
+
+1724
+00:58:49,599 --> 00:58:53,119
+cells anymore sorry i apologize if i can
+
+1725
+00:58:53,119 --> 00:58:53,839
+hear that
+
+1726
+00:58:53,839 --> 00:58:56,319
+um so i think that's a problem for the
+
+1727
+00:58:56,319 --> 00:58:57,599
+virus where it's like there are some
+
+1728
+00:58:57,599 --> 00:58:59,040
+mutations that might make it
+
+1729
+00:58:59,040 --> 00:59:02,880
+really good at evading our are prompted
+
+1730
+00:59:02,880 --> 00:59:05,680
+our vaccine immune response but that
+
+1731
+00:59:05,680 --> 00:59:07,920
+also might make it worse at infecting
+
+1732
+00:59:07,920 --> 00:59:10,640
+right or it might change who it infects
+
+1733
+00:59:10,640 --> 00:59:11,920
+um i mean i think that might be
+
+1734
+00:59:11,920 --> 00:59:13,200
+something to be concerned about is that
+
+1735
+00:59:13,200 --> 00:59:13,680
+if it
+
+1736
+00:59:13,680 --> 00:59:15,760
+somehow very effectively changes who it
+
+1737
+00:59:15,760 --> 00:59:17,520
+infects it just means that the like
+
+1738
+00:59:17,520 --> 00:59:19,599
+yes our vaccine won't work as well but i
+
+1739
+00:59:19,599 --> 00:59:21,040
+think also then the
+
+1740
+00:59:21,040 --> 00:59:22,880
+the disease it leads to will be
+
+1741
+00:59:22,880 --> 00:59:25,040
+different right like the disease we know
+
+1742
+00:59:25,040 --> 00:59:28,000
+is because it infects on lung cells so
+
+1743
+00:59:28,000 --> 00:59:30,079
+if that changes its target it's gonna be
+
+1744
+00:59:30,079 --> 00:59:32,559
+a different disease in some sense
+
+1745
+00:59:32,559 --> 00:59:34,319
+um so that's what i would keep in mind
+
+1746
+00:59:34,319 --> 00:59:36,240
+is just it's smaller it doesn't have
+
+1747
+00:59:36,240 --> 00:59:38,799
+like the potential to mutate literally
+
+1748
+00:59:38,799 --> 00:59:40,319
+in any way because it's kind of facing
+
+1749
+00:59:40,319 --> 00:59:41,599
+this trade-off
+
+1750
+00:59:41,599 --> 00:59:43,520
+it's like oh if it evades the immune
+
+1751
+00:59:43,520 --> 00:59:45,520
+destruction it just might also not be as
+
+1752
+00:59:45,520 --> 00:59:47,680
+good at being a virus
+
+1753
+00:59:47,680 --> 00:59:49,680
+uh those are the things i would consider
+
+1754
+00:59:49,680 --> 00:59:51,680
+i think one of the concerns people have
+
+1755
+00:59:51,680 --> 00:59:52,319
+had is
+
+1756
+00:59:52,319 --> 00:59:55,599
+what it's it's um it's something that
+
+1757
+00:59:55,599 --> 00:59:56,400
+happened
+
+1758
+00:59:56,400 --> 00:59:59,280
+with the i believe that's what happened
+
+1759
+00:59:59,280 --> 01:00:00,640
+with the 1918
+
+1760
+01:00:00,640 --> 01:00:02,400
+flu which is the concern of a
+
+1761
+01:00:02,400 --> 01:00:04,799
+co-infection that leads to exchange
+
+1762
+01:00:04,799 --> 01:00:06,880
+between two viruses
+
+1763
+01:00:06,880 --> 01:00:09,760
+so generally speaking when a cell a
+
+1764
+01:00:09,760 --> 01:00:10,640
+human cell
+
+1765
+01:00:10,640 --> 01:00:13,760
+or an animal cell is infected by
+
+1766
+01:00:13,760 --> 01:00:16,160
+two different virus particles at the
+
+1767
+01:00:16,160 --> 01:00:17,599
+same time
+
+1768
+01:00:17,599 --> 01:00:19,920
+um what can happen is the way these
+
+1769
+01:00:19,920 --> 01:00:21,920
+viruses often work is that they kind of
+
+1770
+01:00:21,920 --> 01:00:22,720
+just basically
+
+1771
+01:00:22,720 --> 01:00:26,079
+inject their genetic material into the
+
+1772
+01:00:26,079 --> 01:00:28,400
+cell and make the cell do what it wants
+
+1773
+01:00:28,400 --> 01:00:30,240
+and often what it wants is it wants the
+
+1774
+01:00:30,240 --> 01:00:32,079
+cell to become a factory to make more
+
+1775
+01:00:32,079 --> 01:00:33,119
+virus
+
+1776
+01:00:33,119 --> 01:00:35,440
+but if you have a co-infection so two
+
+1777
+01:00:35,440 --> 01:00:37,760
+different viruses at the same time
+
+1778
+01:00:37,760 --> 01:00:40,480
+their dna both gets plopped in here and
+
+1779
+01:00:40,480 --> 01:00:41,760
+in generally speaking
+
+1780
+01:00:41,760 --> 01:00:44,559
+it's not like it knows which dna came
+
+1781
+01:00:44,559 --> 01:00:44,880
+from
+
+1782
+01:00:44,880 --> 01:00:47,520
+who and so what can happen is you can
+
+1783
+01:00:47,520 --> 01:00:49,359
+end up with a virus that's kind of like
+
+1784
+01:00:49,359 --> 01:00:53,280
+a hybrid between these two viruses
+
+1785
+01:00:53,280 --> 01:00:54,720
+and i think that's something that people
+
+1786
+01:00:54,720 --> 01:00:56,319
+are concerned about with
+
+1787
+01:00:56,319 --> 01:00:58,400
+viruses in general not specific to cova
+
+1788
+01:00:58,400 --> 01:00:59,839
+just in general
+
+1789
+01:00:59,839 --> 01:01:02,160
+usually this hybrid virus can sometimes
+
+1790
+01:01:02,160 --> 01:01:04,160
+be the worst of both worlds
+
+1791
+01:01:04,160 --> 01:01:05,760
+so i think that's something that people
+
+1792
+01:01:05,760 --> 01:01:07,680
+might be concerned about
+
+1793
+01:01:07,680 --> 01:01:10,319
+but generally speaking like we deal with
+
+1794
+01:01:10,319 --> 01:01:11,599
+this with the flu
+
+1795
+01:01:11,599 --> 01:01:14,319
+every year is that it changes its spots
+
+1796
+01:01:14,319 --> 01:01:15,119
+enough
+
+1797
+01:01:15,119 --> 01:01:18,799
+that it avoids our vaccine response but
+
+1798
+01:01:18,799 --> 01:01:20,559
+i think there's only so much it can
+
+1799
+01:01:20,559 --> 01:01:21,119
+change
+
+1800
+01:01:21,119 --> 01:01:24,480
+that like i just don't know if
+
+1801
+01:01:24,480 --> 01:01:28,319
+covid variant in future years
+
+1802
+01:01:28,319 --> 01:01:29,520
+i don't know if we'll have endless
+
+1803
+01:01:29,520 --> 01:01:30,960
+variants or even then i don't know if
+
+1804
+01:01:30,960 --> 01:01:32,559
+the variance will just keep getting
+
+1805
+01:01:32,559 --> 01:01:36,799
+worse they just might be different um
+
+1806
+01:01:36,799 --> 01:01:38,480
+yeah i'm sorry i think it's very hard to
+
+1807
+01:01:38,480 --> 01:01:40,880
+say but those are just some of my early
+
+1808
+01:01:40,880 --> 01:01:41,920
+thoughts
+
+1809
+01:01:41,920 --> 01:01:47,040
+thank you so much yeah no problem um
+
+1810
+01:01:48,000 --> 01:01:49,760
+so let me see sorry i'm just looking
+
+1811
+01:01:49,760 --> 01:01:53,839
+ahead at stuff
+
+1812
+01:01:53,839 --> 01:01:55,839
+um i think this is a good place for just
+
+1813
+01:01:55,839 --> 01:01:56,960
+one well
+
+1814
+01:01:56,960 --> 01:02:00,559
+actually we go to 10 right
+
+1815
+01:02:01,280 --> 01:02:06,799
+is that accurate edward oh you're muted
+
+1816
+01:02:06,799 --> 01:02:09,760
+we we end at about 9 50 but we can't go
+
+1817
+01:02:09,760 --> 01:02:10,240
+to
+
+1818
+01:02:10,240 --> 01:02:11,839
+oh no no i don't i don't believe in
+
+1819
+01:02:11,839 --> 01:02:14,079
+keeping people beyond
+
+1820
+01:02:14,079 --> 01:02:16,319
+um so i'm trying to think about what
+
+1821
+01:02:16,319 --> 01:02:18,559
+would be more interesting for people
+
+1822
+01:02:18,559 --> 01:02:21,359
+to hear about are people more interested
+
+1823
+01:02:21,359 --> 01:02:22,400
+in hearing about
+
+1824
+01:02:22,400 --> 01:02:24,480
+immunotherapy or do they just want sort
+
+1825
+01:02:24,480 --> 01:02:26,000
+of an example
+
+1826
+01:02:26,000 --> 01:02:29,119
+of algorithms being used to guide
+
+1827
+01:02:29,119 --> 01:02:31,599
+treatments
+
+1828
+01:02:32,079 --> 01:02:33,520
+people can sort of either weigh in
+
+1829
+01:02:33,520 --> 01:02:35,119
+verbally or they can weigh in in the
+
+1830
+01:02:35,119 --> 01:02:36,799
+chat but they'd be more interested in
+
+1831
+01:02:36,799 --> 01:02:38,559
+immunotherapy or
+
+1832
+01:02:38,559 --> 01:02:43,119
+applications of ml in treatments
+
+1833
+01:02:46,720 --> 01:02:48,799
+all right i'm hearing applications of ml
+
+1834
+01:02:48,799 --> 01:02:50,640
+okay so let me give
+
+1835
+01:02:50,640 --> 01:02:53,839
+one example um
+
+1836
+01:02:53,839 --> 01:02:58,079
+that was actually research i worked on
+
+1837
+01:02:59,920 --> 01:03:03,200
+so let's go to
+
+1838
+01:03:03,200 --> 01:03:06,799
+here all right so let's talk a little
+
+1839
+01:03:06,799 --> 01:03:08,640
+bit about examples of this kind of
+
+1840
+01:03:08,640 --> 01:03:10,960
+research so again we face this really
+
+1841
+01:03:10,960 --> 01:03:13,440
+difficult issue where we have
+
+1842
+01:03:13,440 --> 01:03:16,240
+patience we're trying to figure out what
+
+1843
+01:03:16,240 --> 01:03:17,760
+therapies would work
+
+1844
+01:03:17,760 --> 01:03:21,039
+better in them often better just means
+
+1845
+01:03:21,039 --> 01:03:23,280
+longer survival times it doesn't often
+
+1846
+01:03:23,280 --> 01:03:24,319
+mean cures
+
+1847
+01:03:24,319 --> 01:03:26,319
+but even then we still think that's a
+
+1848
+01:03:26,319 --> 01:03:28,720
+worthwhile area to pursue
+
+1849
+01:03:28,720 --> 01:03:30,640
+and so i have several examples that are
+
+1850
+01:03:30,640 --> 01:03:32,160
+shown in my slides but i'm actually
+
+1851
+01:03:32,160 --> 01:03:33,440
+going to focus on the one
+
+1852
+01:03:33,440 --> 01:03:36,480
+that i worked on um so the one that i
+
+1853
+01:03:36,480 --> 01:03:37,920
+worked on
+
+1854
+01:03:37,920 --> 01:03:39,920
+um one thing i have to establish about
+
+1855
+01:03:39,920 --> 01:03:41,440
+the thing that i worked on
+
+1856
+01:03:41,440 --> 01:03:44,640
+is that we are dealing with sort of
+
+1857
+01:03:44,640 --> 01:03:47,760
+two levels of data in this data set what
+
+1858
+01:03:47,760 --> 01:03:49,039
+we have
+
+1859
+01:03:49,039 --> 01:03:52,480
+is um like first off what we have is
+
+1860
+01:03:52,480 --> 01:03:55,039
+basically a collection of cancer cells
+
+1861
+01:03:55,039 --> 01:03:57,359
+but what i'll tell you is that what can
+
+1862
+01:03:57,359 --> 01:03:59,760
+be the case for this type of data
+
+1863
+01:03:59,760 --> 01:04:01,280
+is that we're collecting single cell
+
+1864
+01:04:01,280 --> 01:04:02,960
+data where we basically measure and
+
+1865
+01:04:02,960 --> 01:04:03,520
+profile
+
+1866
+01:04:03,520 --> 01:04:06,319
+each individual cell but what you can
+
+1867
+01:04:06,319 --> 01:04:09,039
+imagine is when you're doing
+
+1868
+01:04:09,039 --> 01:04:12,400
+research on patients you can have
+
+1869
+01:04:12,400 --> 01:04:16,000
+this data collected from every single
+
+1870
+01:04:16,000 --> 01:04:17,680
+patient that you work with
+
+1871
+01:04:17,680 --> 01:04:19,039
+and so you have kind of two levels of
+
+1872
+01:04:19,039 --> 01:04:20,720
+data you have the level of data that's
+
+1873
+01:04:20,720 --> 01:04:22,880
+like each individual patient
+
+1874
+01:04:22,880 --> 01:04:24,559
+but then if you're collecting a sample
+
+1875
+01:04:24,559 --> 01:04:26,559
+from them and and uh
+
+1876
+01:04:26,559 --> 01:04:29,680
+characterizing their sample with
+
+1877
+01:04:29,680 --> 01:04:32,720
+single cell data you actually get
+
+1878
+01:04:32,720 --> 01:04:34,559
+two levels of individual there's the
+
+1879
+01:04:34,559 --> 01:04:37,359
+individual cell
+
+1880
+01:04:37,359 --> 01:04:40,000
+that came from an individual patient so
+
+1881
+01:04:40,000 --> 01:04:41,359
+there's a population of patients
+
+1882
+01:04:41,359 --> 01:04:42,640
+and for each patient they have their own
+
+1883
+01:04:42,640 --> 01:04:44,160
+population of cells that we're working
+
+1884
+01:04:44,160 --> 01:04:45,039
+with
+
+1885
+01:04:45,039 --> 01:04:46,240
+and so that's something that leads to a
+
+1886
+01:04:46,240 --> 01:04:48,160
+lot of interesting like
+
+1887
+01:04:48,160 --> 01:04:50,480
+multi-level problem solving where you're
+
+1888
+01:04:50,480 --> 01:04:51,839
+like oh i'm trying to
+
+1889
+01:04:51,839 --> 01:04:54,319
+predict something for the patient on the
+
+1890
+01:04:54,319 --> 01:04:57,200
+basis of the diversity of cancer cells
+
+1891
+01:04:57,200 --> 01:04:58,240
+they have
+
+1892
+01:04:58,240 --> 01:04:59,839
+so if you're used to working with data
+
+1893
+01:04:59,839 --> 01:05:01,359
+where it's like oh for every single
+
+1894
+01:05:01,359 --> 01:05:03,920
+patient i have these rows
+
+1895
+01:05:03,920 --> 01:05:05,920
+and on the columns i have different
+
+1896
+01:05:05,920 --> 01:05:08,000
+features about them
+
+1897
+01:05:08,000 --> 01:05:10,160
+it actually becomes that this is a
+
+1898
+01:05:10,160 --> 01:05:11,839
+tabular data set you have
+
+1899
+01:05:11,839 --> 01:05:14,240
+for every single person each person has
+
+1900
+01:05:14,240 --> 01:05:16,160
+their own tabular data set for every
+
+1901
+01:05:16,160 --> 01:05:18,559
+cell that you collected from them
+
+1902
+01:05:18,559 --> 01:05:20,960
+and so again this is like a multi-level
+
+1903
+01:05:20,960 --> 01:05:23,280
+problem-solving step
+
+1904
+01:05:23,280 --> 01:05:24,640
+but i just want to give you a glimpse
+
+1905
+01:05:24,640 --> 01:05:26,640
+into how we deal with the single cell
+
+1906
+01:05:26,640 --> 01:05:28,240
+data so just like
+
+1907
+01:05:28,240 --> 01:05:29,920
+ignoring the individual we can't that it
+
+1908
+01:05:29,920 --> 01:05:31,599
+came from let's just focus on these
+
+1909
+01:05:31,599 --> 01:05:33,280
+single cells
+
+1910
+01:05:33,280 --> 01:05:36,960
+so i was working in a lab where we had a
+
+1911
+01:05:36,960 --> 01:05:40,240
+means by which we could take these cells
+
+1912
+01:05:40,240 --> 01:05:43,280
+and sample them and basically measure
+
+1913
+01:05:43,280 --> 01:05:45,599
+multiple features in each individual
+
+1914
+01:05:45,599 --> 01:05:46,319
+cell
+
+1915
+01:05:46,319 --> 01:05:48,240
+we were measuring it on the protein
+
+1916
+01:05:48,240 --> 01:05:50,000
+level so again we talked
+
+1917
+01:05:50,000 --> 01:05:51,280
+last time about like measuring their
+
+1918
+01:05:51,280 --> 01:05:53,359
+genetics measuring what their rna
+
+1919
+01:05:53,359 --> 01:05:54,559
+they're producing and then measuring the
+
+1920
+01:05:54,559 --> 01:05:56,000
+protein they've produced
+
+1921
+01:05:56,000 --> 01:05:57,599
+we were measuring protein they've
+
+1922
+01:05:57,599 --> 01:06:00,400
+produced so we took these cells
+
+1923
+01:06:00,400 --> 01:06:02,319
+and what we did is that we exposed them
+
+1924
+01:06:02,319 --> 01:06:03,760
+to a couple different
+
+1925
+01:06:03,760 --> 01:06:06,720
+treatments that are very commonly used
+
+1926
+01:06:06,720 --> 01:06:07,920
+to treat
+
+1927
+01:06:07,920 --> 01:06:10,000
+this particular type of cancer so the
+
+1928
+01:06:10,000 --> 01:06:11,760
+cancer i was dealing with is called
+
+1929
+01:06:11,760 --> 01:06:14,480
+multiple myeloma it is a cancer of the
+
+1930
+01:06:14,480 --> 01:06:15,280
+blood
+
+1931
+01:06:15,280 --> 01:06:17,039
+um so you would can't you would collect
+
+1932
+01:06:17,039 --> 01:06:19,440
+cells from their blood or from their
+
+1933
+01:06:19,440 --> 01:06:20,799
+bone marrow
+
+1934
+01:06:20,799 --> 01:06:23,359
+and so we take these cells and we expose
+
+1935
+01:06:23,359 --> 01:06:24,240
+them to the most
+
+1936
+01:06:24,240 --> 01:06:26,160
+common treatments that are used for this
+
+1937
+01:06:26,160 --> 01:06:27,599
+particular type of cancer because
+
+1938
+01:06:27,599 --> 01:06:30,319
+our interest was looking at different
+
+1939
+01:06:30,319 --> 01:06:31,359
+time points like
+
+1940
+01:06:31,359 --> 01:06:34,480
+before treatment during treatment
+
+1941
+01:06:34,480 --> 01:06:35,599
+sorry i'm gonna get rid of my little
+
+1942
+01:06:35,599 --> 01:06:38,079
+doodle um and after treatment
+
+1943
+01:06:38,079 --> 01:06:40,559
+we wanted to see okay what's happening
+
+1944
+01:06:40,559 --> 01:06:41,119
+like
+
+1945
+01:06:41,119 --> 01:06:44,240
+starting cells cells in progress of
+
+1946
+01:06:44,240 --> 01:06:46,079
+being exposed to drug and you know
+
+1947
+01:06:46,079 --> 01:06:48,559
+responding to that drug and then cells
+
+1948
+01:06:48,559 --> 01:06:50,240
+at the very end where it's kind of very
+
+1949
+01:06:50,240 --> 01:06:51,920
+clear that some cells have died and some
+
+1950
+01:06:51,920 --> 01:06:53,520
+cells have lived and so those
+
+1951
+01:06:53,520 --> 01:06:56,240
+living cells are resistant for some
+
+1952
+01:06:56,240 --> 01:06:58,079
+reason or another
+
+1953
+01:06:58,079 --> 01:06:59,839
+and so we had a means by which we could
+
+1954
+01:06:59,839 --> 01:07:02,400
+collect cells at these different time
+
+1955
+01:07:02,400 --> 01:07:03,200
+points
+
+1956
+01:07:03,200 --> 01:07:07,039
+and measure up to 40 proteins
+
+1957
+01:07:07,039 --> 01:07:09,599
+in each individual cell so again the
+
+1958
+01:07:09,599 --> 01:07:10,960
+data format was like
+
+1959
+01:07:10,960 --> 01:07:14,160
+each row was a different cell collected
+
+1960
+01:07:14,160 --> 01:07:15,680
+at a different time points you have to
+
+1961
+01:07:15,680 --> 01:07:16,160
+remember
+
+1962
+01:07:16,160 --> 01:07:19,200
+each cell which time point it came from
+
+1963
+01:07:19,200 --> 01:07:21,599
+and then on the columns was like amount
+
+1964
+01:07:21,599 --> 01:07:22,640
+of protein a
+
+1965
+01:07:22,640 --> 01:07:25,039
+amount of protein b amount of protein c
+
+1966
+01:07:25,039 --> 01:07:26,240
+and so forth
+
+1967
+01:07:26,240 --> 01:07:28,160
+so that's the data set we collected you
+
+1968
+01:07:28,160 --> 01:07:30,079
+can imagine it's like a tabular data set
+
+1969
+01:07:30,079 --> 01:07:31,039
+of cells
+
+1970
+01:07:31,039 --> 01:07:33,920
+maybe for each separate time point in
+
+1971
+01:07:33,920 --> 01:07:36,319
+each separate treatment as well
+
+1972
+01:07:36,319 --> 01:07:39,440
+and what i was interested in doing um
+
+1973
+01:07:39,440 --> 01:07:41,680
+again methods wise it wasn't the most
+
+1974
+01:07:41,680 --> 01:07:43,599
+like sophisticated method but again
+
+1975
+01:07:43,599 --> 01:07:45,119
+we're always dealing with this trade-off
+
+1976
+01:07:45,119 --> 01:07:46,640
+where it's like the more complex the
+
+1977
+01:07:46,640 --> 01:07:48,079
+method is the more we don't actually
+
+1978
+01:07:48,079 --> 01:07:48,799
+understand
+
+1979
+01:07:48,799 --> 01:07:51,599
+what is happening under the hood so the
+
+1980
+01:07:51,599 --> 01:07:52,160
+way we
+
+1981
+01:07:52,160 --> 01:07:53,680
+worked with this was actually we wanted
+
+1982
+01:07:53,680 --> 01:07:55,599
+to do a classification
+
+1983
+01:07:55,599 --> 01:07:58,400
+which was to sort of determine what
+
+1984
+01:07:58,400 --> 01:07:59,280
+cells
+
+1985
+01:07:59,280 --> 01:08:01,599
+are ultimately the ones that die with
+
+1986
+01:08:01,599 --> 01:08:04,079
+drug which is the sensitive cell
+
+1987
+01:08:04,079 --> 01:08:06,079
+versus the cells that don't die of drug
+
+1988
+01:08:06,079 --> 01:08:07,280
+those are the resistant
+
+1989
+01:08:07,280 --> 01:08:09,520
+cells so if you have this data where
+
+1990
+01:08:09,520 --> 01:08:11,039
+you've treated them with drug and some
+
+1991
+01:08:11,039 --> 01:08:12,559
+of the cells are alive and some of the
+
+1992
+01:08:12,559 --> 01:08:14,240
+cells are dead after drug treatment
+
+1993
+01:08:14,240 --> 01:08:18,158
+so again um resistant versus sensitive
+
+1994
+01:08:18,158 --> 01:08:20,799
+we wanted to use a classification model
+
+1995
+01:08:20,799 --> 01:08:22,839
+to figure out well what are these
+
+1996
+01:08:22,839 --> 01:08:25,439
+features that lead to cells that tend to
+
+1997
+01:08:25,439 --> 01:08:27,040
+be alive or tend to be dead
+
+1998
+01:08:27,040 --> 01:08:30,399
+at the last time point and so we were
+
+1999
+01:08:30,399 --> 01:08:32,560
+interested in basically identifying
+
+2000
+01:08:32,560 --> 01:08:35,839
+the most strong features that lead to
+
+2001
+01:08:35,839 --> 01:08:38,399
+cells being classified as sensitive
+
+2002
+01:08:38,399 --> 01:08:41,198
+versus resistant
+
+2003
+01:08:41,198 --> 01:08:42,479
+so if you're not familiar with how
+
+2004
+01:08:42,479 --> 01:08:45,439
+random force models work um
+
+2005
+01:08:45,439 --> 01:08:47,439
+you don't get one single tree so i've
+
+2006
+01:08:47,439 --> 01:08:49,040
+drawn a single tree here for the
+
+2007
+01:08:49,040 --> 01:08:50,479
+classification where it's like oh
+
+2008
+01:08:50,479 --> 01:08:52,960
+depending on the levels of this protein
+
+2009
+01:08:52,960 --> 01:08:54,560
+you would go into this bucket versus
+
+2010
+01:08:54,560 --> 01:08:56,000
+this bucket when you're dealing with a
+
+2011
+01:08:56,000 --> 01:08:58,000
+random forest it's a forest so there's
+
+2012
+01:08:58,000 --> 01:08:59,520
+too many of those trees you don't have
+
+2013
+01:08:59,520 --> 01:09:02,719
+one single tree or one consensus tree
+
+2014
+01:09:02,719 --> 01:09:06,238
+but you do get a sense of what tends
+
+2015
+01:09:06,238 --> 01:09:09,520
+to be an effective split um
+
+2016
+01:09:09,520 --> 01:09:10,799
+i wrote gate here because that's the
+
+2017
+01:09:10,799 --> 01:09:12,880
+word we use a lot in biology is the
+
+2018
+01:09:12,880 --> 01:09:14,719
+gating based on expression like high
+
+2019
+01:09:14,719 --> 01:09:16,399
+expression versus low expression of a
+
+2020
+01:09:16,399 --> 01:09:17,198
+protein
+
+2021
+01:09:17,198 --> 01:09:18,640
+but you can think of it as like the
+
+2022
+01:09:18,640 --> 01:09:21,120
+split in each level of the tree
+
+2023
+01:09:21,120 --> 01:09:23,759
+so something that tends to pop up a lot
+
+2024
+01:09:23,759 --> 01:09:24,960
+like let's say
+
+2025
+01:09:24,960 --> 01:09:27,520
+marker x does a really good job of
+
+2026
+01:09:27,520 --> 01:09:29,120
+splitting between cells that are
+
+2027
+01:09:29,120 --> 01:09:30,319
+resistant versus cells that are
+
+2028
+01:09:30,319 --> 01:09:31,279
+sensitive
+
+2029
+01:09:31,279 --> 01:09:33,198
+um in a random force model you can see
+
+2030
+01:09:33,198 --> 01:09:34,640
+what tends to be a good
+
+2031
+01:09:34,640 --> 01:09:37,920
+splitter and those become like
+
+2032
+01:09:37,920 --> 01:09:40,479
+more important variables so they're
+
+2033
+01:09:40,479 --> 01:09:42,399
+weighted more highly
+
+2034
+01:09:42,399 --> 01:09:43,439
+and so even though you don't get a
+
+2035
+01:09:43,439 --> 01:09:46,000
+single tree you do get that information
+
+2036
+01:09:46,000 --> 01:09:47,679
+and so we got that information and what
+
+2037
+01:09:47,679 --> 01:09:50,719
+we saw was that there were clearly
+
+2038
+01:09:50,719 --> 01:09:52,799
+a most important marker for
+
+2039
+01:09:52,799 --> 01:09:54,480
+distinguishing cells that live in cells
+
+2040
+01:09:54,480 --> 01:09:55,440
+that die
+
+2041
+01:09:55,440 --> 01:09:57,199
+and it actually tended to be pretty
+
+2042
+01:09:57,199 --> 01:09:59,040
+similar between these two drugs that
+
+2043
+01:09:59,040 --> 01:09:59,360
+work
+
+2044
+01:09:59,360 --> 01:10:01,840
+in wildly different ways like the
+
+2045
+01:10:01,840 --> 01:10:03,520
+biology of what these two drugs are
+
+2046
+01:10:03,520 --> 01:10:05,440
+doing is incredibly different
+
+2047
+01:10:05,440 --> 01:10:07,600
+and yet the same two features were the
+
+2048
+01:10:07,600 --> 01:10:10,480
+most powerful for making the cells
+
+2049
+01:10:10,480 --> 01:10:12,400
+more likely to be resistant or more
+
+2050
+01:10:12,400 --> 01:10:14,239
+likely to be sensitive to both of these
+
+2051
+01:10:14,239 --> 01:10:15,679
+drugs
+
+2052
+01:10:15,679 --> 01:10:17,840
+and so again if you're thinking about
+
+2053
+01:10:17,840 --> 01:10:20,400
+the goal of this project is to identify
+
+2054
+01:10:20,400 --> 01:10:22,159
+what makes a cell more likely to be
+
+2055
+01:10:22,159 --> 01:10:24,960
+resistant and ultimately the practical
+
+2056
+01:10:24,960 --> 01:10:26,800
+application of that is if you know what
+
+2057
+01:10:26,800 --> 01:10:28,400
+makes that cell
+
+2058
+01:10:28,400 --> 01:10:30,080
+special from the get-go like if you know
+
+2059
+01:10:30,080 --> 01:10:32,400
+oh ultimately this patient will probably
+
+2060
+01:10:32,400 --> 01:10:34,159
+relapse because there are these cells
+
+2061
+01:10:34,159 --> 01:10:36,080
+that have a lot of these proteins and
+
+2062
+01:10:36,080 --> 01:10:37,760
+that for some reason makes them more
+
+2063
+01:10:37,760 --> 01:10:39,840
+hardy like more resistant
+
+2064
+01:10:39,840 --> 01:10:42,400
+if you know that ahead of time your goal
+
+2065
+01:10:42,400 --> 01:10:44,480
+would be oh can we like preempt that
+
+2066
+01:10:44,480 --> 01:10:45,280
+somehow right
+
+2067
+01:10:45,280 --> 01:10:47,120
+if we can kind of cut them off at the
+
+2068
+01:10:47,120 --> 01:10:48,880
+pass we know that those cells will
+
+2069
+01:10:48,880 --> 01:10:50,239
+ultimately probably
+
+2070
+01:10:50,239 --> 01:10:52,880
+not respond to the drug can we add
+
+2071
+01:10:52,880 --> 01:10:54,719
+something additional so they
+
+2072
+01:10:54,719 --> 01:10:57,840
+they they'll kind of like we hit most of
+
+2073
+01:10:57,840 --> 01:10:59,120
+them with the first drug
+
+2074
+01:10:59,120 --> 01:11:00,880
+but the second drug kind of hits the
+
+2075
+01:11:00,880 --> 01:11:02,560
+ones who would have responded
+
+2076
+01:11:02,560 --> 01:11:03,920
+or would have failed to respond the
+
+2077
+01:11:03,920 --> 01:11:06,080
+first time we still eliminate them with
+
+2078
+01:11:06,080 --> 01:11:07,440
+the second
+
+2079
+01:11:07,440 --> 01:11:10,000
+like line of attack um and so that's
+
+2080
+01:11:10,000 --> 01:11:12,159
+what we've decided to pursue which was
+
+2081
+01:11:12,159 --> 01:11:15,360
+that we had a specific therapy against
+
+2082
+01:11:15,360 --> 01:11:17,840
+mcl1 which is one of these two top
+
+2083
+01:11:17,840 --> 01:11:19,280
+features
+
+2084
+01:11:19,280 --> 01:11:21,360
+and so what we did is we showed that if
+
+2085
+01:11:21,360 --> 01:11:22,640
+you co-treat
+
+2086
+01:11:22,640 --> 01:11:26,719
+with a therapy against mcl1 so that's
+
+2087
+01:11:26,719 --> 01:11:28,320
+what's actually shown here on the far
+
+2088
+01:11:28,320 --> 01:11:31,360
+right if you co-treat with them they're
+
+2089
+01:11:31,360 --> 01:11:32,000
+very
+
+2090
+01:11:32,000 --> 01:11:34,480
+synergistic and i want to be clear to
+
+2091
+01:11:34,480 --> 01:11:36,560
+define what synergistic means for
+
+2092
+01:11:36,560 --> 01:11:39,120
+cancer biology what synergistic means
+
+2093
+01:11:39,120 --> 01:11:41,040
+for cancer biology is that
+
+2094
+01:11:41,040 --> 01:11:43,679
+the effects of the drugs are not
+
+2095
+01:11:43,679 --> 01:11:44,640
+additive
+
+2096
+01:11:44,640 --> 01:11:47,199
+so if one drug kills 10 and another drug
+
+2097
+01:11:47,199 --> 01:11:48,320
+kills 30
+
+2098
+01:11:48,320 --> 01:11:49,600
+it's not like you just add those
+
+2099
+01:11:49,600 --> 01:11:52,960
+percentages together it's actually that
+
+2100
+01:11:52,960 --> 01:11:54,640
+you kill more than you would have
+
+2101
+01:11:54,640 --> 01:11:56,560
+expected than if you just added the two
+
+2102
+01:11:56,560 --> 01:11:59,199
+together that's when it's synergistic
+
+2103
+01:11:59,199 --> 01:12:02,159
+and what we found was that using this
+
+2104
+01:12:02,159 --> 01:12:04,080
+inhibitor against mcl1 which was that
+
+2105
+01:12:04,080 --> 01:12:06,400
+highly predictive feature
+
+2106
+01:12:06,400 --> 01:12:08,800
+using that in concert with the original
+
+2107
+01:12:08,800 --> 01:12:09,679
+drug was
+
+2108
+01:12:09,679 --> 01:12:11,520
+very synergistic it was like we killed
+
+2109
+01:12:11,520 --> 01:12:12,800
+the original cells with
+
+2110
+01:12:12,800 --> 01:12:15,280
+dexamethasone and we killed some cells
+
+2111
+01:12:15,280 --> 01:12:16,640
+that would have been left over with the
+
+2112
+01:12:16,640 --> 01:12:18,480
+mcl1 inhibitor but we also just
+
+2113
+01:12:18,480 --> 01:12:19,040
+generally
+
+2114
+01:12:19,040 --> 01:12:20,960
+killed more than just the two of them
+
+2115
+01:12:20,960 --> 01:12:23,600
+added together
+
+2116
+01:12:23,600 --> 01:12:25,360
+i just wanted to say that these other
+
+2117
+01:12:25,360 --> 01:12:27,199
+two were just other examples of
+
+2118
+01:12:27,199 --> 01:12:28,719
+treatments that are kind of similar to
+
+2119
+01:12:28,719 --> 01:12:30,640
+mcl one and they kind of help but they
+
+2120
+01:12:30,640 --> 01:12:32,320
+don't help to the same extent
+
+2121
+01:12:32,320 --> 01:12:34,560
+as mcl one because that was what we
+
+2122
+01:12:34,560 --> 01:12:36,080
+identified as the
+
+2123
+01:12:36,080 --> 01:12:40,239
+key feature of our resistance cells
+
+2124
+01:12:40,239 --> 01:12:42,080
+and i just want to share we did find
+
+2125
+01:12:42,080 --> 01:12:43,760
+that that ultimately was true of
+
+2126
+01:12:43,760 --> 01:12:46,000
+patients as well is that patients just
+
+2127
+01:12:46,000 --> 01:12:46,960
+did better
+
+2128
+01:12:46,960 --> 01:12:50,080
+with the two treatments as opposed to
+
+2129
+01:12:50,080 --> 01:12:51,760
+with any treatment alone like we had
+
+2130
+01:12:51,760 --> 01:12:54,000
+more killing of cancer cells
+
+2131
+01:12:54,000 --> 01:12:56,320
+but i do want to really highlight again
+
+2132
+01:12:56,320 --> 01:12:58,480
+and this is a continuous problem
+
+2133
+01:12:58,480 --> 01:13:00,880
+this middle bar here these middle
+
+2134
+01:13:00,880 --> 01:13:03,120
+samples these dots are showing for each
+
+2135
+01:13:03,120 --> 01:13:05,520
+patient how many cancer cells did we
+
+2136
+01:13:05,520 --> 01:13:07,760
+kill with the combined treatment
+
+2137
+01:13:07,760 --> 01:13:09,920
+and you can see that each point tends to
+
+2138
+01:13:09,920 --> 01:13:10,800
+be lower
+
+2139
+01:13:10,800 --> 01:13:13,760
+than either treatment alone so these are
+
+2140
+01:13:13,760 --> 01:13:16,080
+just one treatment at a time
+
+2141
+01:13:16,080 --> 01:13:17,679
+and you can see for example this purple
+
+2142
+01:13:17,679 --> 01:13:19,120
+dot we
+
+2143
+01:13:19,120 --> 01:13:21,199
+it actually this this treatment actually
+
+2144
+01:13:21,199 --> 01:13:23,280
+led to more cells being alive which was
+
+2145
+01:13:23,280 --> 01:13:24,080
+interesting
+
+2146
+01:13:24,080 --> 01:13:26,800
+uh versus this treatment killed some
+
+2147
+01:13:26,800 --> 01:13:28,159
+some of the cells
+
+2148
+01:13:28,159 --> 01:13:30,400
+with the two together we tended to kill
+
+2149
+01:13:30,400 --> 01:13:31,600
+more cells
+
+2150
+01:13:31,600 --> 01:13:33,920
+but it also tended to be more than just
+
+2151
+01:13:33,920 --> 01:13:34,880
+the addition
+
+2152
+01:13:34,880 --> 01:13:38,080
+it would kill like multiplicatively
+
+2153
+01:13:38,080 --> 01:13:40,159
+um but i do want to point out that most
+
+2154
+01:13:40,159 --> 01:13:42,239
+of these don't actually go to zero
+
+2155
+01:13:42,239 --> 01:13:43,280
+and i think that's a very important
+
+2156
+01:13:43,280 --> 01:13:45,520
+thing to highlight is that we again kill
+
+2157
+01:13:45,520 --> 01:13:48,320
+more cancer cells but we don't usually
+
+2158
+01:13:48,320 --> 01:13:48,800
+kill
+
+2159
+01:13:48,800 --> 01:13:50,400
+all of the cancer cells and that's where
+
+2160
+01:13:50,400 --> 01:13:53,040
+we draw the line between being curative
+
+2161
+01:13:53,040 --> 01:13:55,960
+versus just helping prolong life
+
+2162
+01:13:55,960 --> 01:13:58,480
+[Music]
+
+2163
+01:13:58,480 --> 01:14:00,239
+all right i think realistically that's
+
+2164
+01:14:00,239 --> 01:14:01,520
+all i had time
+
+2165
+01:14:01,520 --> 01:14:03,360
+to talk about i thought i had less to
+
+2166
+01:14:03,360 --> 01:14:05,040
+talk about but i didn't
+
+2167
+01:14:05,040 --> 01:14:07,040
+um so i think i wanted to just put this
+
+2168
+01:14:07,040 --> 01:14:09,280
+slide up and just like open it up for
+
+2169
+01:14:09,280 --> 01:14:12,719
+questions broader questions um i just
+
+2170
+01:14:12,719 --> 01:14:14,480
+wanted to put this here that if you're
+
+2171
+01:14:14,480 --> 01:14:16,719
+interested in careers that relate to
+
+2172
+01:14:16,719 --> 01:14:20,000
+cancer biology and ai applications
+
+2173
+01:14:20,000 --> 01:14:22,719
+there are a lot of options um so i just
+
+2174
+01:14:22,719 --> 01:14:24,800
+put a couple of different
+
+2175
+01:14:24,800 --> 01:14:27,120
+companies or non-profit institutes that
+
+2176
+01:14:27,120 --> 01:14:29,440
+i know have actively recruited a lot of
+
+2177
+01:14:29,440 --> 01:14:31,440
+computational biologists recently
+
+2178
+01:14:31,440 --> 01:14:33,280
+or computational folks who work on
+
+2179
+01:14:33,280 --> 01:14:35,040
+biology problems
+
+2180
+01:14:35,040 --> 01:14:37,120
+there's a lot of issues around again
+
+2181
+01:14:37,120 --> 01:14:38,080
+trying to
+
+2182
+01:14:38,080 --> 01:14:40,320
+you know create the best algorithm to
+
+2183
+01:14:40,320 --> 01:14:42,080
+know how to stratify
+
+2184
+01:14:42,080 --> 01:14:44,719
+patients or just be able to dive into
+
+2185
+01:14:44,719 --> 01:14:45,440
+the data and
+
+2186
+01:14:45,440 --> 01:14:48,080
+better understand how cancer functions
+
+2187
+01:14:48,080 --> 01:14:50,400
+or a specific type of cancer functions
+
+2188
+01:14:50,400 --> 01:14:52,239
+all of those are really active areas of
+
+2189
+01:14:52,239 --> 01:14:54,320
+research and of course
+
+2190
+01:14:54,320 --> 01:14:57,280
+in current usa i know that kovid is
+
+2191
+01:14:57,280 --> 01:14:58,320
+dominating
+
+2192
+01:14:58,320 --> 01:15:01,440
+health interests right now but i will
+
+2193
+01:15:01,440 --> 01:15:03,440
+say that's kind of anomalous like for so
+
+2194
+01:15:03,440 --> 01:15:05,679
+long america has been sort of this first
+
+2195
+01:15:05,679 --> 01:15:07,280
+world country where we don't
+
+2196
+01:15:07,280 --> 01:15:09,280
+think a lot about infectious disease
+
+2197
+01:15:09,280 --> 01:15:11,280
+with like a couple of exceptions
+
+2198
+01:15:11,280 --> 01:15:13,280
+cancer has by and large been like the
+
+2199
+01:15:13,280 --> 01:15:14,640
+thing that dominates
+
+2200
+01:15:14,640 --> 01:15:16,800
+the american consciousness in terms of
+
+2201
+01:15:16,800 --> 01:15:17,840
+health and that's
+
+2202
+01:15:17,840 --> 01:15:19,360
+we've just kind of been in a weird time
+
+2203
+01:15:19,360 --> 01:15:21,120
+where that's actually not true
+
+2204
+01:15:21,120 --> 01:15:23,040
+but that's been true for like decades
+
+2205
+01:15:23,040 --> 01:15:24,960
+like i think the war on cancer started
+
+2206
+01:15:24,960 --> 01:15:26,560
+in like 1950
+
+2207
+01:15:26,560 --> 01:15:28,800
+and we've been fighting it ever since to
+
+2208
+01:15:28,800 --> 01:15:29,920
+try to understand
+
+2209
+01:15:29,920 --> 01:15:32,400
+how to cure cancer so i think this is a
+
+2210
+01:15:32,400 --> 01:15:34,480
+very active area if you're interested in
+
+2211
+01:15:34,480 --> 01:15:35,920
+it um
+
+2212
+01:15:35,920 --> 01:15:37,600
+it really draws on a lot of different
+
+2213
+01:15:37,600 --> 01:15:39,360
+understandings of modeling and
+
+2214
+01:15:39,360 --> 01:15:41,040
+the different types of data you'll work
+
+2215
+01:15:41,040 --> 01:15:42,480
+with
+
+2216
+01:15:42,480 --> 01:15:44,159
+yeah definitely this is a very critical
+
+2217
+01:15:44,159 --> 01:15:46,560
+area so so one quick question i have is
+
+2218
+01:15:46,560 --> 01:15:49,120
+one of my colleagues jeff huber started
+
+2219
+01:15:49,120 --> 01:15:50,840
+a company called grail
+
+2220
+01:15:50,840 --> 01:15:53,920
+g-r-a-i-l the the mission was to detect
+
+2221
+01:15:53,920 --> 01:15:54,480
+cancer
+
+2222
+01:15:54,480 --> 01:15:57,280
+early so do you know anything about the
+
+2223
+01:15:57,280 --> 01:15:57,840
+work
+
+2224
+01:15:57,840 --> 01:16:01,280
+at grey grail um i'm not familiar with
+
+2225
+01:16:01,280 --> 01:16:02,080
+it
+
+2226
+01:16:02,080 --> 01:16:05,440
+i'm just like looking it up so yeah to
+
+2227
+01:16:05,440 --> 01:16:06,960
+be able to detect early
+
+2228
+01:16:06,960 --> 01:16:10,320
+uh seems to be very useful right
+
+2229
+01:16:10,320 --> 01:16:13,440
+like in my age i will be very happy to
+
+2230
+01:16:13,440 --> 01:16:15,520
+be able to do some kind of early
+
+2231
+01:16:15,520 --> 01:16:18,800
+detection yeah yeah that's a great point
+
+2232
+01:16:18,800 --> 01:16:20,640
+um i didn't even bring it up
+
+2233
+01:16:20,640 --> 01:16:23,199
+but there's an entire world of cancer
+
+2234
+01:16:23,199 --> 01:16:24,080
+screening
+
+2235
+01:16:24,080 --> 01:16:26,480
+which we consider different like cancer
+
+2236
+01:16:26,480 --> 01:16:28,480
+diagnosis versus cancer screening cancer
+
+2237
+01:16:28,480 --> 01:16:30,719
+diagnosis is where you have a reason to
+
+2238
+01:16:30,719 --> 01:16:32,480
+suspect there's cancer right like you're
+
+2239
+01:16:32,480 --> 01:16:33,360
+like oh
+
+2240
+01:16:33,360 --> 01:16:35,120
+you have symptoms like you're coming
+
+2241
+01:16:35,120 --> 01:16:36,960
+into the office the doctor's office for
+
+2242
+01:16:36,960 --> 01:16:38,000
+a reason
+
+2243
+01:16:38,000 --> 01:16:40,080
+and so the issue of diagnosis is like
+
+2244
+01:16:40,080 --> 01:16:41,280
+yeah you don't want to
+
+2245
+01:16:41,280 --> 01:16:43,360
+misdiagnose you don't want to you want
+
+2246
+01:16:43,360 --> 01:16:45,199
+to understand what's happening as best
+
+2247
+01:16:45,199 --> 01:16:47,280
+as you can that involves staging or like
+
+2248
+01:16:47,280 --> 01:16:48,800
+how aggressive their cancer is or if
+
+2249
+01:16:48,800 --> 01:16:50,400
+it's a certain subtype
+
+2250
+01:16:50,400 --> 01:16:53,199
+so that's diagnosis screening is where
+
+2251
+01:16:53,199 --> 01:16:55,120
+you find cancer where you have no reason
+
+2252
+01:16:55,120 --> 01:16:55,920
+to suspect
+
+2253
+01:16:55,920 --> 01:16:57,920
+the person has cancer and so that
+
+2254
+01:16:57,920 --> 01:16:59,360
+actually usually tends to be
+
+2255
+01:16:59,360 --> 01:17:01,520
+imaging related things so like for for
+
+2256
+01:17:01,520 --> 01:17:02,880
+for women it's like
+
+2257
+01:17:02,880 --> 01:17:06,120
+mammograms for general population like
+
+2258
+01:17:06,120 --> 01:17:07,840
+colonoscopies like
+
+2259
+01:17:07,840 --> 01:17:09,760
+there's lots of ways we try to screen
+
+2260
+01:17:09,760 --> 01:17:11,199
+for cancer ahead of time but a lot of
+
+2261
+01:17:11,199 --> 01:17:11,520
+them
+
+2262
+01:17:11,520 --> 01:17:15,040
+are intense like resource intensive
+
+2263
+01:17:15,040 --> 01:17:17,120
+and a lot of them are imaging based so i
+
+2264
+01:17:17,120 --> 01:17:18,320
+do know i'm just looking at
+
+2265
+01:17:18,320 --> 01:17:20,080
+grail it's like there is a lot of
+
+2266
+01:17:20,080 --> 01:17:22,640
+interest to see if you could
+
+2267
+01:17:22,640 --> 01:17:25,679
+detect the hints of cancer from a blood
+
+2268
+01:17:25,679 --> 01:17:26,560
+sample like
+
+2269
+01:17:26,560 --> 01:17:28,480
+taking blood and testing blood is like
+
+2270
+01:17:28,480 --> 01:17:30,480
+one of the most like common workflows in
+
+2271
+01:17:30,480 --> 01:17:31,360
+healthcare
+
+2272
+01:17:31,360 --> 01:17:32,880
+so if you could just like take blood and
+
+2273
+01:17:32,880 --> 01:17:33,920
+you're like yeah i'm going to test your
+
+2274
+01:17:33,920 --> 01:17:35,760
+cholesterol but i'm also going to like
+
+2275
+01:17:35,760 --> 01:17:37,679
+see if you have cancer like that would
+
+2276
+01:17:37,679 --> 01:17:39,840
+be very easy to integrate into
+
+2277
+01:17:39,840 --> 01:17:40,640
+healthcare
+
+2278
+01:17:40,640 --> 01:17:43,840
+pipeline like it wouldn't be as onerous
+
+2279
+01:17:43,840 --> 01:17:44,320
+as
+
+2280
+01:17:44,320 --> 01:17:45,920
+currently we just have to bring people
+
+2281
+01:17:45,920 --> 01:17:47,760
+in and do a colonoscopy which takes a
+
+2282
+01:17:47,760 --> 01:17:48,320
+lot
+
+2283
+01:17:48,320 --> 01:17:51,280
+of resources um yeah so i know there is
+
+2284
+01:17:51,280 --> 01:17:53,199
+a lot of interest there i think a lot of
+
+2285
+01:17:53,199 --> 01:17:54,159
+times though what i
+
+2286
+01:17:54,159 --> 01:17:58,400
+imagine for those types of um problems
+
+2287
+01:17:58,400 --> 01:18:00,320
+in trying to solve those problems is
+
+2288
+01:18:00,320 --> 01:18:01,920
+it's partially a hardware issue like
+
+2289
+01:18:01,920 --> 01:18:02,960
+it's harshly like
+
+2290
+01:18:02,960 --> 01:18:05,679
+do we have technology that's sensitive
+
+2291
+01:18:05,679 --> 01:18:07,280
+enough to be able to pick up on the
+
+2292
+01:18:07,280 --> 01:18:08,239
+signal
+
+2293
+01:18:08,239 --> 01:18:09,920
+and then on the software side it's like
+
+2294
+01:18:09,920 --> 01:18:12,080
+okay if we have this really dim
+
+2295
+01:18:12,080 --> 01:18:14,960
+signal and it's a mishmash of like it's
+
+2296
+01:18:14,960 --> 01:18:17,120
+very noisy can we still
+
+2297
+01:18:17,120 --> 01:18:19,280
+tell that it's something significant so
+
+2298
+01:18:19,280 --> 01:18:21,199
+i think that's still just an active area
+
+2299
+01:18:21,199 --> 01:18:22,480
+both on the
+
+2300
+01:18:22,480 --> 01:18:24,560
+engineering side and also on the data
+
+2301
+01:18:24,560 --> 01:18:28,159
+side okay thank you
+
+2302
+01:18:28,560 --> 01:18:30,080
+are there any other questions i can
+
+2303
+01:18:30,080 --> 01:18:32,400
+answer
+
+2304
+01:18:34,880 --> 01:18:36,560
+do blood tests currently screen for
+
+2305
+01:18:36,560 --> 01:18:37,920
+blood cancer um
+
+2306
+01:18:37,920 --> 01:18:40,400
+i don't know how routine it is it is
+
+2307
+01:18:40,400 --> 01:18:41,120
+something that
+
+2308
+01:18:41,120 --> 01:18:44,239
+tends to be very obvious um
+
+2309
+01:18:44,239 --> 01:18:46,640
+if someone has a blood-based cancer if
+
+2310
+01:18:46,640 --> 01:18:48,080
+you take a blood test
+
+2311
+01:18:48,080 --> 01:18:51,440
+um it both can affect
+
+2312
+01:18:51,440 --> 01:18:54,480
+the way your blood behaves so for
+
+2313
+01:18:54,480 --> 01:18:55,840
+example the way that you
+
+2314
+01:18:55,840 --> 01:18:58,400
+you form like clots like if you bleed
+
+2315
+01:18:58,400 --> 01:18:58,880
+like
+
+2316
+01:18:58,880 --> 01:19:00,880
+the ability of the blood to clot the way
+
+2317
+01:19:00,880 --> 01:19:02,080
+that we'd expect it to
+
+2318
+01:19:02,080 --> 01:19:04,480
+is changed so a nurse might be like wow
+
+2319
+01:19:04,480 --> 01:19:05,440
+this blood is not
+
+2320
+01:19:05,440 --> 01:19:07,360
+like this blood is behaving kind of
+
+2321
+01:19:07,360 --> 01:19:09,679
+abnormally um but also if they do any
+
+2322
+01:19:09,679 --> 01:19:11,600
+kind of test that involves a smear where
+
+2323
+01:19:11,600 --> 01:19:12,880
+they just like
+
+2324
+01:19:12,880 --> 01:19:14,640
+splay out the blood and they look under
+
+2325
+01:19:14,640 --> 01:19:16,719
+a microscope if you have a blood cancer
+
+2326
+01:19:16,719 --> 01:19:17,840
+they would be able to see that right
+
+2327
+01:19:17,840 --> 01:19:19,440
+away i just don't know that every single
+
+2328
+01:19:19,440 --> 01:19:20,840
+type of test
+
+2329
+01:19:20,840 --> 01:19:23,120
+involves looking under the microscope
+
+2330
+01:19:23,120 --> 01:19:24,400
+but those tend to be really
+
+2331
+01:19:24,400 --> 01:19:27,679
+um obvious yeah
+
+2332
+01:19:27,679 --> 01:19:29,840
+blood cancers though tend to be very
+
+2333
+01:19:29,840 --> 01:19:30,880
+like they tend to
+
+2334
+01:19:30,880 --> 01:19:32,640
+manifest quickly and have symptoms
+
+2335
+01:19:32,640 --> 01:19:37,840
+quickly um
+
+2336
+01:19:41,120 --> 01:19:43,440
+yeah i think health and physical
+
+2337
+01:19:43,440 --> 01:19:44,880
+examinations i think that's really
+
+2338
+01:19:44,880 --> 01:19:46,960
+interesting because again
+
+2339
+01:19:46,960 --> 01:19:49,679
+things like colonoscopies or prostate
+
+2340
+01:19:49,679 --> 01:19:50,640
+exams can
+
+2341
+01:19:50,640 --> 01:19:53,120
+help with early detection but like it's
+
+2342
+01:19:53,120 --> 01:19:53,679
+a very
+
+2343
+01:19:53,679 --> 01:19:55,679
+private experience and so a lot of
+
+2344
+01:19:55,679 --> 01:19:57,360
+people just don't want to get
+
+2345
+01:19:57,360 --> 01:19:58,880
+screened like they're like oh i don't
+
+2346
+01:19:58,880 --> 01:20:01,040
+want cancer but i also
+
+2347
+01:20:01,040 --> 01:20:03,040
+either like it's a lot of resources you
+
+2348
+01:20:03,040 --> 01:20:04,480
+need good health care access but a lot
+
+2349
+01:20:04,480 --> 01:20:05,360
+of people also just
+
+2350
+01:20:05,360 --> 01:20:07,920
+don't want to go get the screenings done
+
+2351
+01:20:07,920 --> 01:20:09,360
+because they're very invasive
+
+2352
+01:20:09,360 --> 01:20:12,320
+or if they feel personally invasive so
+
+2353
+01:20:12,320 --> 01:20:13,280
+that's also an
+
+2354
+01:20:13,280 --> 01:20:14,719
+issue as well so like something like a
+
+2355
+01:20:14,719 --> 01:20:16,320
+blood test i think is very normal to
+
+2356
+01:20:16,320 --> 01:20:17,920
+people and i think they would be more
+
+2357
+01:20:17,920 --> 01:20:18,880
+willing to
+
+2358
+01:20:18,880 --> 01:20:22,320
+to be part of that procedure
+
+2359
+01:20:22,320 --> 01:20:25,760
+um yeah i don't know if there's ways to
+
+2360
+01:20:25,760 --> 01:20:26,159
+detect
+
+2361
+01:20:26,159 --> 01:20:28,080
+other types of cancer from blood imaging
+
+2362
+01:20:28,080 --> 01:20:29,760
+um technically if you have a
+
+2363
+01:20:29,760 --> 01:20:34,080
+late stage um one way that cancer
+
+2364
+01:20:34,080 --> 01:20:36,239
+might be spreading from one place to
+
+2365
+01:20:36,239 --> 01:20:38,400
+another is through the blood
+
+2366
+01:20:38,400 --> 01:20:41,440
+but it's very rare um i mean it's very
+
+2367
+01:20:41,440 --> 01:20:42,400
+rare to see
+
+2368
+01:20:42,400 --> 01:20:44,239
+right like so if you have a cancer
+
+2369
+01:20:44,239 --> 01:20:45,760
+that's started in one organ and it's
+
+2370
+01:20:45,760 --> 01:20:47,440
+metastasizing to another organ and the
+
+2371
+01:20:47,440 --> 01:20:48,719
+way it's doing so is by
+
+2372
+01:20:48,719 --> 01:20:51,600
+transit through the blood so technically
+
+2373
+01:20:51,600 --> 01:20:53,120
+in your blood somewhere there might be
+
+2374
+01:20:53,120 --> 01:20:54,960
+transiting cancer cells
+
+2375
+01:20:54,960 --> 01:20:56,159
+i just think that the chances that
+
+2376
+01:20:56,159 --> 01:20:58,320
+you'll like extract some blood look
+
+2377
+01:20:58,320 --> 01:21:00,320
+under a microscope and see that cancer
+
+2378
+01:21:00,320 --> 01:21:01,199
+cell is still
+
+2379
+01:21:01,199 --> 01:21:03,440
+fairly rare like there's so many blood
+
+2380
+01:21:03,440 --> 01:21:04,320
+cells
+
+2381
+01:21:04,320 --> 01:21:06,480
+like they're you've kind of drowned out
+
+2382
+01:21:06,480 --> 01:21:08,080
+any of these rare
+
+2383
+01:21:08,080 --> 01:21:09,760
+spreading cancer cells but yes
+
+2384
+01:21:09,760 --> 01:21:10,880
+technically there are these things
+
+2385
+01:21:10,880 --> 01:21:11,280
+called
+
+2386
+01:21:11,280 --> 01:21:13,440
+circulating tumor cells so the common
+
+2387
+01:21:13,440 --> 01:21:15,840
+name is ctcs
+
+2388
+01:21:15,840 --> 01:21:17,199
+and there's been interest in either
+
+2389
+01:21:17,199 --> 01:21:18,880
+finding them but again they're very rare
+
+2390
+01:21:18,880 --> 01:21:20,159
+so it's hard for researchers to
+
+2391
+01:21:20,159 --> 01:21:22,080
+specifically get them even if they're
+
+2392
+01:21:22,080 --> 01:21:24,480
+trying to pick them up um and so that's
+
+2393
+01:21:24,480 --> 01:21:26,159
+not even to diagnose like you you
+
+2394
+01:21:26,159 --> 01:21:27,360
+already know the person has cancer
+
+2395
+01:21:27,360 --> 01:21:28,480
+you're just trying to catch them
+
+2396
+01:21:28,480 --> 01:21:30,000
+that's very challenging but i think
+
+2397
+01:21:30,000 --> 01:21:31,840
+there is interest again it kind of hints
+
+2398
+01:21:31,840 --> 01:21:33,120
+at this company grail
+
+2399
+01:21:33,120 --> 01:21:36,239
+is that um when you have ctcs like these
+
+2400
+01:21:36,239 --> 01:21:38,480
+circulating tumor cells in the blood
+
+2401
+01:21:38,480 --> 01:21:40,880
+they very often break like they very
+
+2402
+01:21:40,880 --> 01:21:42,560
+often will just die in transit because
+
+2403
+01:21:42,560 --> 01:21:44,800
+they're undergoing so much like
+
+2404
+01:21:44,800 --> 01:21:46,719
+pressure like the blood that flows
+
+2405
+01:21:46,719 --> 01:21:48,560
+through fast at such high pressure
+
+2406
+01:21:48,560 --> 01:21:51,360
+that cells often will break apart um if
+
+2407
+01:21:51,360 --> 01:21:52,080
+they're not
+
+2408
+01:21:52,080 --> 01:21:53,679
+blood cells blood cells are designed to
+
+2409
+01:21:53,679 --> 01:21:55,600
+do it but you know a cell in your from
+
+2410
+01:21:55,600 --> 01:21:57,520
+your lungs isn't designed to
+
+2411
+01:21:57,520 --> 01:21:59,600
+to withstand that type of pressure and
+
+2412
+01:21:59,600 --> 01:22:01,520
+so those cells will break open
+
+2413
+01:22:01,520 --> 01:22:03,600
+and their dna and their contents will
+
+2414
+01:22:03,600 --> 01:22:05,760
+then be flying around in your blood
+
+2415
+01:22:05,760 --> 01:22:07,760
+and so a company like grail is trying to
+
+2416
+01:22:07,760 --> 01:22:09,199
+find the fragments
+
+2417
+01:22:09,199 --> 01:22:12,239
+of a cancer cell in your blood
+
+2418
+01:22:12,239 --> 01:22:14,000
+um that's a little more likely that you
+
+2419
+01:22:14,000 --> 01:22:15,679
+might like pick up on hey there's some
+
+2420
+01:22:15,679 --> 01:22:16,639
+rogue dna
+
+2421
+01:22:16,639 --> 01:22:19,120
+in this blood sample like that that is
+
+2422
+01:22:19,120 --> 01:22:20,400
+something you might be looking for
+
+2423
+01:22:20,400 --> 01:22:20,880
+instead
+
+2424
+01:22:20,880 --> 01:22:23,600
+rather than imaging and seeing a cancer
+
+2425
+01:22:23,600 --> 01:22:25,840
+cell
+
+2426
+01:22:28,000 --> 01:22:31,199
+uh what am i most excited about um
+
+2427
+01:22:31,199 --> 01:22:32,880
+i do think immunotherapy is very
+
+2428
+01:22:32,880 --> 01:22:35,040
+exciting as i said i mean my
+
+2429
+01:22:35,040 --> 01:22:37,040
+my my thesis work was on targeted
+
+2430
+01:22:37,040 --> 01:22:38,400
+therapies but it was kind of
+
+2431
+01:22:38,400 --> 01:22:40,400
+disheartening because like
+
+2432
+01:22:40,400 --> 01:22:42,880
+the evolution paradigm is so powerful
+
+2433
+01:22:42,880 --> 01:22:45,199
+right like the diversity of life we see
+
+2434
+01:22:45,199 --> 01:22:47,840
+on this planet is because of evolution
+
+2435
+01:22:47,840 --> 01:22:49,199
+and the fact that
+
+2436
+01:22:49,199 --> 01:22:51,440
+you can see such clever evolution like
+
+2437
+01:22:51,440 --> 01:22:53,120
+it's supposed to be a completely random
+
+2438
+01:22:53,120 --> 01:22:55,040
+process and yet you see
+
+2439
+01:22:55,040 --> 01:22:56,960
+living things adapting to the most
+
+2440
+01:22:56,960 --> 01:22:59,120
+ridiculous circumstances on this earth
+
+2441
+01:22:59,120 --> 01:23:01,679
+like evolves to eat this one thing and
+
+2442
+01:23:01,679 --> 01:23:03,520
+live in this one place and adapt this
+
+2443
+01:23:03,520 --> 01:23:03,840
+one
+
+2444
+01:23:03,840 --> 01:23:06,960
+crazy weather pattern and so
+
+2445
+01:23:06,960 --> 01:23:08,960
+knowing that that's the power of
+
+2446
+01:23:08,960 --> 01:23:10,880
+evolution and that cancer cells are
+
+2447
+01:23:10,880 --> 01:23:11,920
+really
+
+2448
+01:23:11,920 --> 01:23:14,639
+in tune with that power um is a little
+
+2449
+01:23:14,639 --> 01:23:16,080
+disheartening when you work on targeted
+
+2450
+01:23:16,080 --> 01:23:17,840
+therapy because you're kind of
+
+2451
+01:23:17,840 --> 01:23:20,560
+very outpaced in terms of what you do
+
+2452
+01:23:20,560 --> 01:23:22,000
+versus immunotherapy
+
+2453
+01:23:22,000 --> 01:23:25,120
+is using your cells to fight these
+
+2454
+01:23:25,120 --> 01:23:26,400
+cancer cells like your cells
+
+2455
+01:23:26,400 --> 01:23:27,600
+unfortunately have kind of been
+
+2456
+01:23:27,600 --> 01:23:28,480
+suppressed
+
+2457
+01:23:28,480 --> 01:23:30,719
+during cancer like for some reason the
+
+2458
+01:23:30,719 --> 01:23:31,840
+cancer has
+
+2459
+01:23:31,840 --> 01:23:34,159
+evaded your immune system but if you
+
+2460
+01:23:34,159 --> 01:23:36,239
+could empower your immune system immune
+
+2461
+01:23:36,239 --> 01:23:38,239
+systems are a little more
+
+2462
+01:23:38,239 --> 01:23:40,159
+flexible or adaptable than like a
+
+2463
+01:23:40,159 --> 01:23:41,600
+chemical compound
+
+2464
+01:23:41,600 --> 01:23:43,440
+and so i think that's exciting if we can
+
+2465
+01:23:43,440 --> 01:23:45,440
+somehow empower our own immune system
+
+2466
+01:23:45,440 --> 01:23:47,280
+because our own immune system
+
+2467
+01:23:47,280 --> 01:23:49,360
+is flexible it's not just sort of do we
+
+2468
+01:23:49,360 --> 01:23:51,440
+see compound or not does compound bind
+
+2469
+01:23:51,440 --> 01:23:52,560
+to target or not
+
+2470
+01:23:52,560 --> 01:23:55,040
+there's like more to it yeah so i think
+
+2471
+01:23:55,040 --> 01:23:58,239
+that's what i'm most excited about
+
+2472
+01:23:58,719 --> 01:24:03,840
+yeah any other questions
+
+2473
+01:24:07,679 --> 01:24:11,280
+okay so if you have more questions to
+
+2474
+01:24:11,280 --> 01:24:13,360
+ask melisa just
+
+2475
+01:24:13,360 --> 01:24:16,000
+enter to select or just send or send
+
+2476
+01:24:16,000 --> 01:24:16,639
+email to
+
+2477
+01:24:16,639 --> 01:24:20,400
+melissa directly i really like to
+
+2478
+01:24:20,400 --> 01:24:21,600
+appreciate
+
+2479
+01:24:21,600 --> 01:24:24,080
+the insightful and edifying lectures
+
+2480
+01:24:24,080 --> 01:24:24,719
+given by
+
+2481
+01:24:24,719 --> 01:24:27,040
+melissa and it's always my pleasure to
+
+2482
+01:24:27,040 --> 01:24:28,400
+listen to your lectures
+
+2483
+01:24:28,400 --> 01:24:30,239
+even this is the third time every time i
+
+2484
+01:24:30,239 --> 01:24:31,760
+can learn something from you
+
+2485
+01:24:31,760 --> 01:24:34,639
+it's really wonderful so thank you thank
+
+2486
+01:24:34,639 --> 01:24:35,760
+you very much
+
+2487
+01:24:35,760 --> 01:24:38,719
+yes awesome thank you yeah feel free to
+
+2488
+01:24:38,719 --> 01:24:43,360
+be in touch i put my email in the chat
+

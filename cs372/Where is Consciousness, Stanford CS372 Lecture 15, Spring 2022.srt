@@ -1,0 +1,1997 @@
+1
+00:00:08,560 --> 00:00:16,960
+hi welcome back to cs372. today is lecture 
+15. we cover where is consciousness.  
+
+2
+00:00:18,320 --> 00:00:26,160
+if you look at the roadmap of our lectures, and 
+we are in the final lecture series of the quarter  
+
+3
+00:00:27,280 --> 00:00:34,720
+on consciousness and mind. and this is 
+the third lecture. in the last lecture  
+
+4
+00:00:34,720 --> 00:00:41,600
+i covered what is consciousness. and 
+i first motivated why did we study  
+
+5
+00:00:41,600 --> 00:00:48,480
+this particular subject: the reason was because 
+our current ai hits some limitations including  
+
+6
+00:00:49,040 --> 00:00:56,960
+generalization problem and we cannot explain 
+causality and so on so forth. therefore like  
+
+7
+00:00:56,960 --> 00:01:04,319
+yoshua bengio was saying we need to start to 
+study system two. and system two is pretty much  
+
+8
+00:01:04,319 --> 00:01:13,360
+depicting consciousness. therefore we can model 
+human thinking and we think logically sequentially  
+
+9
+00:01:13,360 --> 00:01:23,840
+and we do planning and reasoning. okay and we have 
+been arguing whether system two or consciousness  
+
+10
+00:01:23,840 --> 00:01:32,320
+is computation all the way. and some scholars 
+consider so and some scholars do not consider  
+
+11
+00:01:33,440 --> 00:01:41,680
+the same. when we get into where is consciousness, 
+hopefully there will be more evidence to support  
+
+12
+00:01:41,680 --> 00:01:52,000
+one or the other. let's quickly review what 
+is consciousness. there were many definitions  
+
+13
+00:01:52,720 --> 00:02:00,480
+but i consider the ones who (which) can be
+supported by science to be more promising.  
+
+14
+00:02:01,600 --> 00:02:07,840
+In particular, the proposal made 
+by (Michio) kaku, a physicist at  
+
+15
+00:02:08,720 --> 00:02:14,960
+NYU, and he proposed that consciousness 
+needs to consider time and space, which are  
+
+16
+00:02:15,600 --> 00:02:25,760
+evident and also the number of feedback loops. 
+feedback loop means sensing and the response.  
+
+17
+00:02:26,880 --> 00:02:33,440
+flowers (plants) may have just limited number 
+of feedback loops including temperature and  
+
+18
+00:02:33,440 --> 00:02:41,920
+water. for pets at home e.g., cats and dogs, 
+they may have feedback loops for threats  
+
+19
+00:02:42,480 --> 00:02:49,280
+and for their hunger and interactions 
+with their masters. and human has numerous 
+
+20
+00:02:49,280 --> 00:02:57,440
+feedback loops: we have five, six sensing 
+organs--- we have our mouth, eyes, ears, skin---  
+
+21
+00:02:58,000 --> 00:03:04,080
+sensing sensations all the time. and when the 
+(sensation) energy level reaches a certain 
+
+22
+00:03:04,080 --> 00:03:09,520
+threshold, as Schrodinger said, we 
+would transition into the consciousness  
+
+23
+00:03:09,520 --> 00:03:15,440
+state. we try to handle these external
+events and challenges. and we have emotion  
+
+24
+00:03:16,000 --> 00:03:20,800
+and other people have emotion. we 
+conduct learning and we receive 
+
+25
+00:03:20,800 --> 00:03:28,240
+feedback on our learning for progress evaluation. 
+so many many feedbacks that make a human 
+
+26
+00:03:28,240 --> 00:03:37,440
+being the most sophisticated being on earth. so 
+quickly review this stimulus response diagram.  
+
+27
+00:03:39,280 --> 00:03:44,640
+we started from stimulus.
+to human being we started from  
+
+28
+00:03:44,640 --> 00:03:53,760
+the sensory circuits, and we can perceive sights, 
+and we can hear sounds, smell odor or fragrance,  
+
+29
+00:03:54,400 --> 00:04:02,800
+and taste different food, and so and so forth. 
+the sensual qualities, as we discussed last time,  
+
+30
+00:04:02,800 --> 00:04:10,240
+will be brought to our nerve system---our 
+brain. our brain consists of billions of neurons  
+
+31
+00:04:10,240 --> 00:04:16,480
+divided roughly into two parts: our 
+cerebellum manages unconsciousness,
+
+32
+00:04:17,040 --> 00:04:23,440
+and our cerebrum manages consciousness. and 
+eventually consciousness or conscious state  
+
+33
+00:04:24,080 --> 00:04:28,240
+makes a decision on the 
+corresponding responses to the 
+
+34
+00:04:28,240 --> 00:04:32,960
+stimulus. then we we finish 
+this stimulus-response pathway  
+
+35
+00:04:35,680 --> 00:04:44,480
+another definition, or sort of discussion made
+by a physicist, is made by Erwin Schrodinger.  
+
+36
+00:04:45,520 --> 00:04:53,280
+I found his "what is life" book to be really 
+intriguing. he talked about evolution,  
+
+37
+00:04:53,280 --> 00:04:59,120
+he considered consciousness has something to 
+do with learning and adaptation. and physically  
+
+38
+00:04:59,680 --> 00:05:07,920
+the transition between consciousness and the 
+unconsciousness can be explained by physics laws. 
+
+39
+00:05:09,600 --> 00:05:16,000
+for the human state to transition from 
+unconsciousness to consciousness and  
+
+40
+00:05:16,000 --> 00:05:21,680
+schrodinger says it's pretty similar to 
+quantum jumps: when atoms could be in  
+
+41
+00:05:21,680 --> 00:05:26,320
+different states and only when the 
+energy reaches a certain threshold  
+
+42
+00:05:26,320 --> 00:05:30,640
+then the quantum jump may occur 
+or occur with a probability.  
+
+43
+00:05:31,520 --> 00:05:39,280
+and likewise our sensing organs, let's say our 
+skin we sense some itchiness but not severe, 
+
+44
+00:05:40,160 --> 00:05:46,640
+it doesn't really trigger a response. but only 
+when the itchiness reaches a certain threshold  
+
+45
+00:05:47,680 --> 00:05:56,240
+or consciousness aware about the itchiness and 
+we start scratching our skin. but on the other  
+
+46
+00:05:56,240 --> 00:06:03,760
+hand we talk about transition from consciousness 
+to unconsciousness Schrodinger uses the second law  
+
+47
+00:06:03,760 --> 00:06:11,120
+of thermodynamics to depict the phenomenon. 
+the second law says in the close system and  
+
+48
+00:06:11,120 --> 00:06:18,560
+the entropy in the close system will continue to 
+increase until the entropy is maximized and when  
+
+49
+00:06:18,560 --> 00:06:28,320
+that happens the system is in the inert state. 
+the example i gave a few times, like driving or  
+
+50
+00:06:29,520 --> 00:06:36,400
+we learn how to walk. initially we need to really 
+pay attention to these activities in a learning  
+
+51
+00:06:36,400 --> 00:06:42,400
+mode. but eventually they became routine 
+and habitual to us and they will fade into  
+
+52
+00:06:42,960 --> 00:06:49,840
+unconscious state, and only until some 
+unexpected event happens, for instance, an
+
+53
+00:06:50,400 --> 00:06:57,760
+unexpected pedestrian shows up in front of us, 
+then we are brought back to the conscious state to  
+
+54
+00:06:57,760 --> 00:07:06,960
+deal with this kind of novel challenge. we have to 
+plan to react to try not to hurt this pedestrian.
+
+55
+00:07:09,600 --> 00:07:17,920
+Observations: we talk about the transitions, we 
+talk about needs and wants, and we will expand  
+
+56
+00:07:17,920 --> 00:07:25,600
+the discussion shortly. we last time talked 
+about top-down attention is in consciousness  
+
+57
+00:07:25,600 --> 00:07:31,920
+and bottom-up is from unconsciousness into 
+consciousness and finally unconsciousness  
+
+58
+00:07:31,920 --> 00:07:41,440
+is loaded with inherited skills. when we were 
+born and we already can do very sophisticated  
+
+59
+00:07:41,440 --> 00:07:49,360
+organ operations. even let's say you ask us to 
+start to learn how to operate our heartbeats  
+
+60
+00:07:49,360 --> 00:07:56,480
+or changing heart-beat rhythms i think it 
+probably cannot be learned. so the tough skills we  
+
+61
+00:07:57,200 --> 00:08:04,000
+inherited through dna, and at the same 
+time all the learned skills on the earth:  
+
+62
+00:08:04,000 --> 00:08:10,320
+like we learned how to bike and swim, they never 
+got written back to DNA. so we don't pass the  
+
+63
+00:08:10,320 --> 00:08:16,720
+DNA of swimming to our children, they just have 
+to relearn everything we learned from afresh.  
+
+64
+00:08:18,000 --> 00:08:27,040
+so this is rather interesting and ironic and this 
+is touching the notion that i talked about wants  
+
+65
+00:08:27,600 --> 00:08:34,160
+and the needs. it seems to be (i just briefly 
+talked about discussed here), it seems to be what  
+
+66
+00:08:36,000 --> 00:08:43,200
+what are essential to survival, or what are the 
+needs, respond to needs will pass through DNA  
+
+67
+00:08:43,200 --> 00:08:51,520
+to our offspring. but what are optional, like 
+our wants to have a new iphone our wants to  
+
+68
+00:08:51,520 --> 00:08:58,880
+be happy living in the better house, and those 
+are really not passing along through the DNA. 
+
+69
+00:09:01,680 --> 00:09:05,680
+Look at another problem, unconscious to 
+conscious, last time we didn't talk about it  
+
+70
+00:09:06,240 --> 00:09:13,040
+was unconsciously, different organs 
+or sensory circuits are collecting  
+
+71
+00:09:13,840 --> 00:09:20,160
+information simultaneously.
+Our eyes, our nose, and skin, they collect 
+
+72
+00:09:20,720 --> 00:09:30,240
+respective signals at the same time. But only 
+one consciousness at one time. in other words,  
+
+73
+00:09:31,280 --> 00:09:35,840
+the consciousness is working single-threaded.  
+
+74
+00:09:37,440 --> 00:09:44,000
+the question here is actually twofold: 1) is 
+this kind of limitation of human we can only do  
+
+75
+00:09:44,960 --> 00:09:50,000
+one thing at a time? we only have one self, 
+we cannot have multiple selfs or multiple  
+
+76
+00:09:50,000 --> 00:09:57,520
+consciousness existing at the same time. if 
+this is a limitation to a human, suppose we  
+
+77
+00:09:57,520 --> 00:10:03,840
+want to build a robot, do you think a robot can 
+have multiple consciousness at the same time?
+
+78
+00:10:05,760 --> 00:10:08,560
+so this is your homework number one.  
+
+79
+00:10:09,200 --> 00:10:12,640
+the assignment will be given 
+to you at the end of today.
+
+80
+00:10:14,000 --> 00:10:19,360
+We have two questions about cancer and two 
+questions about consciousness. The first question  
+
+81
+00:10:19,360 --> 00:10:27,680
+here is why one self and one consciousness?
+My own hints are the the following.  
+
+82
+00:10:29,120 --> 00:10:33,200
+I remember in the 90s i worked on the 
+first generation of multiprocessor  
+
+83
+00:10:33,200 --> 00:10:37,040
+at DEC (Digital Equipment Corporation)
+even let's say we started with four cpus  
+
+84
+00:10:37,680 --> 00:10:45,040
+and we need to have this called spin lock on 
+the top to try to synchronize those cpus. you  
+
+85
+00:10:45,040 --> 00:10:51,840
+can consider it's like a scheduler on the top. 
+and from the notion of writing to the memory or  
+
+86
+00:10:51,840 --> 00:10:58,720
+writing to a file, you know we always want to be 
+able to ensure consistency. consistency means that  
+
+87
+00:10:58,720 --> 00:11:04,000
+there is an earthly order of events. you write 
+something you read something... if the order  
+
+88
+00:11:04,000 --> 00:11:10,800
+gets messed up, then inconsistency may happen. 
+let's say you withdraw certain amount of money  
+
+89
+00:11:10,800 --> 00:11:17,760
+then you pay for certain merchants. if the order 
+is out of sync then someone will lose money.
+
+90
+00:11:18,640 --> 00:11:26,080
+So even simultaneously many things can be 
+going on in the background, there should be  
+
+91
+00:11:26,080 --> 00:11:32,640
+one central scheduler. In the multi-processor 
+situation we have to do synchronization. 
+
+92
+00:11:34,240 --> 00:11:40,080
+The second notion is that 
+human may be constrained by our  
+
+93
+00:11:40,080 --> 00:11:45,200
+physical situation because we only have one 
+body. we only have one pair of eyes, and we have  
+
+94
+00:11:46,480 --> 00:11:52,960
+two hands and two legs. Even we say our sensation 
+on the left-hand side and on the right-hand side,  
+
+95
+00:11:54,720 --> 00:12:01,040
+both are urgent or need to act on some 
+responses, but physical body can only 
+
+96
+00:12:01,680 --> 00:12:05,920
+do one thing at a time, (e.g., 
+turning right or turning left).
+
+97
+00:12:05,920 --> 00:12:08,080
+We argue this could be the limitation of 
+
+98
+00:12:08,800 --> 00:12:16,160
+one body of a person. when we implement 
+on a robot do we have the same constraint?  
+
+99
+00:12:17,120 --> 00:12:27,520
+This is the question i think encouraging you to 
+discuss and express your thoughts. Next, where is 
+
+100
+00:12:27,520 --> 00:12:35,280
+consciousness? Karl Deisseroth (a Stanford 
+professor), today pretty much we're presenting his  
+
+101
+00:12:36,000 --> 00:12:42,800
+findings and his research results. 
+He considers "knowing where" is  
+
+102
+00:12:42,800 --> 00:12:48,720
+very important. Just like everyone,
+we agree that we live on this earth,  
+
+103
+00:12:48,720 --> 00:12:55,680
+we have this 3D Cartesian space. And we have 
+the notion of time. If we don't have memory  
+
+104
+00:12:55,680 --> 00:13:01,200
+then time may not exist. Memory is essential 
+for us to conduct reasoning, and therefore,  
+
+105
+00:13:01,760 --> 00:13:09,120
+time is a byproduct of the memory. And 
+then Deisseroth talks about values, and 
+
+106
+00:13:09,840 --> 00:13:17,280
+values are important for human to 
+evolve and for human to get rewards,  
+
+107
+00:13:17,280 --> 00:13:25,280
+so we do planning to get maximum rewards. I will 
+come back to talk about value shortly. Values,  
+
+108
+00:13:25,840 --> 00:13:34,240
+there are two sets of different values: one set 
+of values is for survival and even those could  
+
+109
+00:13:34,240 --> 00:13:42,560
+be brutal. Let's say i'm really hungry or a lion 
+is very hungry. A lion has to hunt another animal  
+
+110
+00:13:43,280 --> 00:13:51,760
+and that's the intrinsic value or "needs" of 
+lions. and you may judge lions to be brutal, but  
+
+111
+00:13:52,400 --> 00:13:55,600
+from the evolution perspective, the 
+value assessment should be neutral. 
+
+112
+00:13:56,640 --> 00:14:01,840
+However, from the moral perspective we 
+are not judging "needs", we judge "wants". 
+
+113
+00:14:01,840 --> 00:14:08,960
+You say oh you have no problem to survive but you 
+are stealing things from other people. those are  
+
+114
+00:14:09,600 --> 00:14:17,040
+kind of distinct values once that is intrinsic,
+the other side is so like for "wants."  
+
+115
+00:14:17,040 --> 00:14:24,240
+Different! Let's come back to visit those. But 
+why do we need to know where is consciousness?
+
+116
+00:14:24,800 --> 00:14:31,920
+And to be able to visualize consciousness, 
+visualize the stimulus to neurons, 
+
+117
+00:14:31,920 --> 00:14:40,720
+and also responses generated by neurons, we can do 
+quite a few remarkable things. In the next slide  
+
+118
+00:14:40,720 --> 00:14:46,160
+we get into details and but let's first
+talk about a mechanism discovered by  
+
+119
+00:14:47,040 --> 00:14:51,840
+Deisseroth in a very surprised manner. It is the
+communication mechanism between neurons.  
+
+120
+00:14:54,320 --> 00:15:00,000
+Neuroscientists always thought neuron 
+communication should be local. Consider  
+
+121
+00:15:00,560 --> 00:15:09,280
+our skin we feel itchiness. Itchiness, let's say 
+on my palm. Palm is very small, relatively small,  
+
+122
+00:15:09,280 --> 00:15:15,760
+compared with my entire body, maybe five percent 
+of my body. So the neurons get into communication  
+
+123
+00:15:15,760 --> 00:15:22,560
+of this itchiness shouldn't be very very vast, 
+right? We consider to be maybe okay five percent,  
+
+124
+00:15:22,560 --> 00:15:28,720
+ten percent of the neurons. But it turns out 
+there is a broadcast effect: the broadcast  
+
+125
+00:15:28,720 --> 00:15:36,880
+effect means although sensations may be regional, 
+but when the sensations is about to raise into 
+
+126
+00:15:36,880 --> 00:15:43,440
+the conscious state, yet it broadcasts to all the
+neurons. Other neurons may be managing other  
+
+127
+00:15:44,400 --> 00:15:51,840
+sensory circuits. the reason of doing so is 
+because we only have one consciousness, and the  
+
+128
+00:15:51,840 --> 00:16:01,360
+consciousness is only single-threaded. We cannot 
+ask our consciousness to deal with two sensory  
+
+129
+00:16:01,360 --> 00:16:06,000
+circuits at the same time. Let's say walking 
+to the left and running to the right. Broadcast  
+
+130
+00:16:06,640 --> 00:16:13,440
+seems to be a mechanism to just let everyone 
+know the current situation so some can back down  
+
+131
+00:16:13,440 --> 00:16:19,200
+a little bit and some can just move forward. 
+In a sense, it is a kind of prioritization  
+
+132
+00:16:19,760 --> 00:16:30,720
+based on urgency, or based on intrinsic values.
+OK. This is the book, this is the foundation of  
+
+133
+00:16:30,720 --> 00:16:41,440
+of today's lecture "where is consciousness". 
+Karl Deisseroth published this book last year.  
+
+134
+00:16:41,440 --> 00:16:51,200
+This is a distinguished book not only in its 
+scientific content but also literature excellence.  
+
+135
+00:16:52,480 --> 00:16:56,720
+As we talked about which is 
+also mentioned by Deisseroth,  
+
+136
+00:16:59,600 --> 00:17:08,720
+we want to visualize our brain, we want to find 
+out causality. And Deisseroth's team in around  
+
+137
+00:17:08,720 --> 00:17:16,880
+2001 to 2005, they invented a new technology 
+called optogenetics. I will talk about this  
+
+138
+00:17:16,880 --> 00:17:23,840
+method compared with the traditional electrode 
+method. Which one is probably more flexible?  
+
+139
+00:17:24,400 --> 00:17:32,480
+Why optogenetics becomes, or is becoming 
+the mainstream recently. It's also critical  
+
+140
+00:17:32,480 --> 00:17:43,120
+to go back to revisit values. Intrinsic value
+is required by evolution survival, and extrinsic  
+
+141
+00:17:43,120 --> 00:17:51,360
+one is optional and then moral assessment will 
+be involved and that will be covered in the next  
+
+142
+00:17:51,360 --> 00:17:59,840
+lecture: ethics. You may be surprised that we will 
+be able to quantify certain ethical behaviors,  
+
+143
+00:18:00,720 --> 00:18:05,840
+even that we can quantify sins. OK, let's defer 
+(discussing ethics) until the next lecture.
+
+144
+00:18:07,600 --> 00:18:16,240
+For intrinsic values and we have a set of 
+mental disorders covered by Deisseroth.  
+
+145
+00:18:17,200 --> 00:18:24,800
+A mental disorder, what we call disorder, 
+means our needs, it goes to one direction but  
+
+146
+00:18:25,440 --> 00:18:32,240
+our mental reaction/mental response goes to 
+the other direction or the opposite direction.  
+
+147
+00:18:33,200 --> 00:18:39,600
+One example is eating disorder, to which we will 
+give a tremendous treatment in this lecture.  
+
+148
+00:18:40,480 --> 00:18:47,520
+Our intrinsic value will say oh we have needs to 
+eat when we are hungry; otherwise, we'll be dead.
+
+149
+00:18:48,080 --> 00:18:55,040
+We are thirsty we have to drink. But 
+for eating disorder patients, they defy  
+
+150
+00:18:55,040 --> 00:19:05,040
+these fundamental needs and the challenging 
+issue for a psychiatrist is to find out why.  
+
+151
+00:19:05,840 --> 00:19:12,000
+If you don't know why then the 
+diagnosis is really really ambiguous  
+
+152
+00:19:12,560 --> 00:19:19,120
+and the treatment is virtually impossible. 
+Before we get into more details let's  
+
+153
+00:19:20,320 --> 00:19:26,720
+review how the brain structure works 
+and so get us get some foundations. 
+
+154
+00:19:28,080 --> 00:19:34,160
+Our brain consists of about 16 billion neurons 
+(in cerebral cortex) or probably even more  
+
+155
+00:19:34,880 --> 00:19:38,240
+(in total, about 86 billions). The neurons 
+interact with each other, connect to 
+
+156
+00:19:38,240 --> 00:19:48,800
+each other through uh synapses. Let's go into 
+details to understand how it works and then we can  
+
+157
+00:19:48,800 --> 00:19:54,800
+understand how these different visualization tools 
+and why one is more effective than the other. 
+
+158
+00:19:56,320 --> 00:20:06,160
+We see a neuron on the bottom left the input to 
+the neuron is a number of dendrites and you can  
+
+159
+00:20:06,160 --> 00:20:14,560
+consider dendrites to be the branches of a tree or 
+the root branches of a tree, which get nutrition  
+
+160
+00:20:14,560 --> 00:20:22,640
+from the soil. Likewise the dendrites here they 
+are input ports getting signals, electrical  
+
+161
+00:20:22,640 --> 00:20:30,080
+signals or chemical signals, from their upstream 
+neurons---can be thousands of neurons. And then  
+
+162
+00:20:30,880 --> 00:20:39,200
+the information eventually converts to electricity 
+in the soma. Soma is the main body of the neuron  
+
+163
+00:20:39,920 --> 00:20:46,480
+and then the electricity flows through the axon 
+pipe and reaches eventually to axon terminal. 
+
+164
+00:20:47,120 --> 00:20:56,160
+The synonym of axon terminal is synaptic terminal 
+and you can consider that as an output port.  
+
+165
+00:20:58,080 --> 00:21:06,720
+On the right hand side we see this how the input 
+and output works in this synapse. The output  
+
+166
+00:21:06,720 --> 00:21:15,920
+ports, axon terminals, emit either electricity 
+or chemicals. when the emission is in chemical  
+
+167
+00:21:15,920 --> 00:21:24,720
+then there's a gap between the output ports
+and the input dendrites. Here we can ignore  
+
+168
+00:21:24,720 --> 00:21:31,840
+the chemical transmission because eventually 
+when chemical reaches the other side, the next  
+
+169
+00:21:31,840 --> 00:21:38,320
+neuron, or the downstream neurons, the signals 
+will be converted to be electrical anyway. So  
+
+170
+00:21:38,320 --> 00:21:46,480
+we can in general thinking about only electrical 
+information getting passed around between neurons. 
+
+171
+00:21:48,320 --> 00:21:56,240
+Today treatments to mental disorders only 
+mitigate symptoms not really addressing the causes  
+
+172
+00:21:56,240 --> 00:22:04,000
+because we simply don't know the causes. Suppose 
+we can collect neuron activities of a disorder.  
+
+173
+00:22:04,000 --> 00:22:11,760
+Then, both precision diagnosis and precision 
+treatment will be possible. But how can we collect  
+
+174
+00:22:11,760 --> 00:22:18,880
+neuron activities? Given a disease and we need 
+to have visualization instruments. There have  
+
+175
+00:22:18,880 --> 00:22:27,360
+been two visualization technologies developed for 
+visualizing neurons. The first one is electrode,  
+
+176
+00:22:27,360 --> 00:22:35,840
+which was developed about a century ago, and 
+the second one is optogenetics. Electrode  
+
+177
+00:22:35,840 --> 00:22:44,560
+injects current into neurons. There are two major 
+metrics to measure the effectiveness of electrode  
+
+178
+00:22:44,560 --> 00:22:52,160
+technologies. One dimension is temporal dynamics, 
+or how long the current can be applied to neurons;  
+
+179
+00:22:52,160 --> 00:22:58,320
+the second one is the spatial resolution, or how 
+many neurons will be covered by this stimulation.  
+
+180
+00:22:58,880 --> 00:23:04,160
+Of course we would like to have fine grained 
+control or fine grained stimulation. Therefore,  
+
+181
+00:23:04,160 --> 00:23:11,280
+they call this resolution or the spot size should 
+be as small as possible. And unfortunately,  
+
+182
+00:23:11,280 --> 00:23:18,320
+according to the survey of Hong and Lieber 
+done in 2019, although the spot size can be  
+
+183
+00:23:18,320 --> 00:23:24,080
+further reduced, and this is really similar 
+to the Moore's law on the speedup of CPU,
+
+184
+00:23:24,960 --> 00:23:32,080
+the reduction of spatial resolution can 
+also be further achieved by about 10%  
+
+185
+00:23:32,080 --> 00:23:40,800
+every year. But the sensitivity of the neuron 
+to electricity can be an issue. The duration  
+
+186
+00:23:40,800 --> 00:23:47,760
+of electricity exposure cannot be too long. For 
+monitoring a mental disease, typically we need  
+
+187
+00:23:47,760 --> 00:23:56,160
+to cover the patient for days or even weeks.
+Therefore, maybe using light is less invasive. 
+
+188
+00:23:57,520 --> 00:24:03,040
+Indeed using light not only we can 
+have better resolution and we can have  
+
+189
+00:24:03,040 --> 00:24:11,040
+longer temporal coverage. Also, light can
+reach deeper neurons without much trouble.  
+
+190
+00:24:12,800 --> 00:24:22,720
+This optogenetics technology was developed by 
+Karl Deisseroth in early 2000s, and later MIT  
+
+191
+00:24:22,720 --> 00:24:32,320
+professor Ed Boyden also joins the effort. The 
+basic technology is the following. First of all,
+
+192
+00:24:32,320 --> 00:24:40,400
+it was motivated by the fact there are certain 
+bacterias swimming under water and they would  
+
+193
+00:24:40,400 --> 00:24:46,960
+swim toward light,. Once light can shine on the 
+bacterias, the light turns into electricity,  
+
+194
+00:24:46,960 --> 00:24:53,040
+and the bacteria gains their energy. The same 
+idea if we can apply (plant) this kind of  
+
+195
+00:24:53,600 --> 00:24:59,840
+photosynthetic photo-sensory 
+molecules' DNA into the neurons,  
+
+196
+00:25:00,400 --> 00:25:06,800
+then potentially we can shine light on a neuron 
+and the the neuron would be (kind of) triggered,  
+
+197
+00:25:06,800 --> 00:25:10,560
+or the neuron would generate electricity 
+and pass to the downstream neurons.
+
+198
+00:25:11,520 --> 00:25:21,200
+The light can then be used to turn on and turn 
+off these neurons. There can be some remarkable  
+
+199
+00:25:21,200 --> 00:25:28,240
+resolutions done. The first one is that we can 
+target individual neurons, the second one is  
+
+200
+00:25:28,240 --> 00:25:35,120
+we can target different types of neurons by doing 
+gene therapy. Of course there are limitations,  
+
+201
+00:25:35,120 --> 00:25:39,440
+which we will cover in the end of 
+the lecture. There have been some  
+
+202
+00:25:40,160 --> 00:25:47,440
+promises: there are several animal trials going 
+on and the two clinical trials already ongoing:  
+
+203
+00:25:47,440 --> 00:25:54,720
+one for blindness treatment the other one for 
+retna degeneration treatment. The following is  
+
+204
+00:25:55,280 --> 00:26:03,520
+a short video instructed by Boyden on this 
+optogenetics technology. Let's take a listen.
+
+205
+00:26:07,760 --> 00:26:10,640
+Brain is made of maybe thousands 
+of different kinds of cells called  
+
+206
+00:26:10,640 --> 00:26:15,040
+neurons that are built into very dense 
+international networks that communicate  
+
+207
+00:26:15,040 --> 00:26:20,160
+each of these neurons compute to use electricity 
+this cycle implements behavior and thought and  
+
+208
+00:26:20,160 --> 00:26:23,760
+emotion all these different kinds of things we 
+also think that deficits and these electrical  
+
+209
+00:26:23,760 --> 00:26:27,920
+computations underline many brain disorders that 
+affect over a billion people around the world  
+
+210
+00:26:29,920 --> 00:26:34,400
+in optogenetics what we're doing is repeating 
+molecules that convert light and electricity  
+
+211
+00:26:34,400 --> 00:26:38,080
+into neurons to cells of the brain 
+they're only sharing a bite on those  
+
+212
+00:26:38,080 --> 00:26:42,000
+neurons light gets converted to electricity 
+and allows us to turn on or off those cells  
+
+213
+00:26:42,560 --> 00:26:48,080
+the goal here is to find a way to control the 
+electrical activity in some cells and not others  
+
+214
+00:26:48,080 --> 00:26:53,360
+network to do that we had to turn to the natural 
+world it turns out that dropping all the kingdoms  
+
+215
+00:26:53,360 --> 00:26:58,640
+of life in plants and funguses and bacteria and 
+so on you can find photosynthetic or photo-sensory  
+
+216
+00:26:58,640 --> 00:27:03,920
+molecules that convert light and electricity so 
+we borrow these molecules from nature and using  
+
+217
+00:27:03,920 --> 00:27:08,560
+tricks from the field of gene therapy we can 
+put them into neurons now these molecules can  
+
+218
+00:27:08,560 --> 00:27:12,960
+convert light to electricity and they do it 
+just in the neurons that we want to control  
+
+219
+00:27:12,960 --> 00:27:18,240
+and not all their neighbors so we can deliver 
+these molecules to some cells throughout others  
+
+220
+00:27:18,240 --> 00:27:21,760
+and then we shine light on the network we 
+can turn on or off that subset of the cells  
+
+221
+00:27:22,400 --> 00:27:27,040
+if we can turn on or off the set of cells 
+that's embedded within this sense matrix  
+
+222
+00:27:27,040 --> 00:27:31,600
+we can figure out how do they contribute to a 
+behavior for example if we can turn on a set of  
+
+223
+00:27:31,600 --> 00:27:36,000
+cells we can figure out what kinds of behaviors 
+can it initiate if we can turn off the set of  
+
+224
+00:27:36,000 --> 00:27:41,520
+cells then we can delete it momentarily and 
+figure what is necessary for so by being able  
+
+225
+00:27:41,520 --> 00:27:45,760
+to dial in information in the cells in the brain 
+and to delete them we can try to figure out how  
+
+226
+00:27:45,760 --> 00:27:51,040
+they contribute to networks and the behaviors 
+and diseases that arise from brain computations  
+
+227
+00:27:51,040 --> 00:27:56,000
+we can cut down the exact set of cells that 
+are contributing to a specific disease state  
+
+228
+00:27:56,000 --> 00:28:01,600
+or which when activated or shut down will remedy 
+that disease state that's very important because  
+
+229
+00:28:01,600 --> 00:28:06,640
+right now a lot of drugs are developed that target 
+molecules but molecules are found throughout  
+
+230
+00:28:06,640 --> 00:28:10,800
+the brain and in fact many cells in their brain 
+might be very molecularly similar to one another  
+
+231
+00:28:11,440 --> 00:28:15,840
+if we can target circuits in the brain though we 
+might be able to develop much more specific drugs  
+
+232
+00:28:16,720 --> 00:28:20,720
+imagine if we could hunt down the exact set of 
+cells in the brain that would activate a remedy  
+
+233
+00:28:20,720 --> 00:28:25,360
+of brain disorder and then we can go in and look 
+at the exact molecules of those cells maybe we can  
+
+234
+00:28:25,360 --> 00:28:30,400
+find drug targets that are much more specific 
+than existing ones you might also imagine that  
+
+235
+00:28:30,400 --> 00:28:34,400
+we can use option genetics to directly control 
+brain circuits in patients with brain disorders  
+
+236
+00:28:35,200 --> 00:28:39,200
+electricity is used to stimulate the brain 
+and deep brain stimulation if instead we can  
+
+237
+00:28:39,200 --> 00:28:44,320
+actually aim light at certain cells and turn 
+them on or off we might be much more specific  
+
+238
+00:28:44,320 --> 00:28:48,480
+rather than use electricity to turn on and 
+off the cells of the brain and have many  
+
+239
+00:28:48,480 --> 00:28:52,640
+kinds of cells activated you know the ones we 
+want to affect as well as all their neighbors  
+
+240
+00:28:53,360 --> 00:28:57,680
+if we can make just one disease-associated 
+subset associated with light  
+
+241
+00:28:57,680 --> 00:29:01,120
+and we can turn them on or off and be able 
+to treat them with much more specificity...
+
+242
+00:29:05,200 --> 00:29:11,840
+Once we have collected massive amount of training 
+data, which consists of neural activities and  
+
+243
+00:29:12,480 --> 00:29:17,600
+also the target diseases, we can turn 
+this data into a classification problem.  
+
+244
+00:29:17,600 --> 00:29:21,440
+The training data has X and Y. 
+An x (in X) instance consists of  
+
+245
+00:29:21,440 --> 00:29:27,680
+neurons, their locations and their 
+activities, temporal and spatial, and y
+
+246
+00:29:27,680 --> 00:29:35,920
+is the dependent disorders. Given a lot of 
+data then we can train a function f and then  
+
+247
+00:29:35,920 --> 00:29:43,680
+remarkable things can be performed. The first part 
+is diagnosis. Given a set of unseen data X, we can  
+
+248
+00:29:43,680 --> 00:29:50,800
+say well what is the disease of this patient. And 
+also of a non-disease (normal person), we see a  
+
+249
+00:29:50,800 --> 00:29:56,880
+certain pattern. We then know precisely which 
+neurons need to be turned off. This could be  
+
+250
+00:29:56,880 --> 00:30:02,880
+a much more precise treatment procedure 
+developed for mitigating mental disorders.  
+
+251
+00:30:04,000 --> 00:30:10,640
+I have used the term disorder several times.
+When we say disorder means something is not  
+
+252
+00:30:10,640 --> 00:30:19,200
+normal. When we claim some behavior is abnormal,
+we have to have a standard showing normality.
+
+253
+00:30:20,480 --> 00:30:28,960
+The disorder can happen biologically or morally. 
+A moral disorder could imply non-ethical  
+
+254
+00:30:28,960 --> 00:30:34,480
+or illegal behaviors. Here we don't 
+talk about morality until the next  
+
+255
+00:30:34,480 --> 00:30:42,800
+lecture (lecture #17). We focus on biological 
+disorders. According to renowned biologists,  
+
+256
+00:30:42,800 --> 00:30:50,400
+when we talk about a biological disorder, 
+we have to talk in the evolutionary terms. 
+
+257
+00:30:51,280 --> 00:30:58,800
+And accordingly, for example, the quote from Peter 
+Medawar (upper-left). He said "for a biologist  
+
+258
+00:30:58,800 --> 00:31:05,440
+the alternative to thinking in 
+evolution terms is not to think at all." 
+
+259
+00:31:06,480 --> 00:31:11,840
+Thus, let's revisit the term evolution. I
+think we heard about this term before.  
+
+260
+00:31:12,880 --> 00:31:20,960
+Some of us may have some misunderstanding. 
+Now, about evolution as related to genomics. 
+
+261
+00:31:21,840 --> 00:31:28,560
+evolution refers to the process by which living 
+organisms change over time through changes in  
+
+262
+00:31:28,560 --> 00:31:35,360
+the genome. Such evolutionary changes result 
+from mutations that produce genomic variation  
+
+263
+00:31:36,160 --> 00:31:42,640
+giving rise to individuals whose biological 
+functions or physical traits are altered.  
+
+264
+00:31:44,160 --> 00:31:50,720
+The part that causes confusion is 
+mutations. The question is: first  
+
+265
+00:31:51,760 --> 00:31:59,840
+is a mutation a random process or a mutation 
+has a mission to adapt to the environment. 
+
+266
+00:32:01,280 --> 00:32:09,760
+in other words is mutation a process of 
+passiveness? or mutation actively tries  
+
+267
+00:32:09,760 --> 00:32:17,600
+to adapt an individual's biological functions and
+physical traits to fit the changing environment?
+
+268
+00:32:19,040 --> 00:32:27,840
+The fact is that the mutation itself is purely 
+random. It is independent of the environment.  
+
+269
+00:32:29,520 --> 00:32:36,080
+Individuals that are better adapted 
+tend to survive and produce more  
+
+270
+00:32:36,080 --> 00:32:43,280
+offspring, while the less well adapted 
+tend to die or produce fewer offspring.
+
+271
+00:32:45,600 --> 00:32:53,360
+Let's use an example to illustrate the random 
+process of mutation. Hundreds years ago a brown  
+
+272
+00:32:53,360 --> 00:33:03,120
+hill at the new Mexico state. The mice over 
+there, their color was in light brown. About  
+
+273
+00:33:03,120 --> 00:33:12,440
+100 years ago a volcano eruption happened over 
+there, and the dark lava covered the land. Within  
+
+274
+00:33:13,360 --> 00:33:21,120
+about 30 years almost all mice turn their color 
+into dark, the same color as the color of lava. 
+
+275
+00:33:23,600 --> 00:33:32,000
+Do you consider the mutation is targeted to be 
+darker color so therefore the new generation can  
+
+276
+00:33:32,000 --> 00:33:40,800
+survive better? The answer is not really. Mutation 
+is purely random. One of, say, 100 by chance would  
+
+277
+00:33:40,800 --> 00:33:46,000
+turn into dark and the rest will be probably other 
+colors, or may tend to (remain to) be light brown.  
+
+278
+00:33:46,800 --> 00:33:55,680
+And because the background of the hill becomes 
+dark, dark mice cannot be seen by the predators,  
+
+279
+00:33:55,680 --> 00:34:01,280
+by the eagles, so they can survive 
+much better. According to statistics,  
+
+280
+00:34:02,000 --> 00:34:07,040
+if the survival of dark mice is just 
+ten percent better than the brown mice.  
+
+281
+00:34:08,320 --> 00:34:15,520
+Just after about 20 years, all the mice on the 
+hill would turn into the dark color. This is the  
+
+282
+00:34:15,520 --> 00:34:22,560
+power of just purely random mutation, and 
+the selection is done by the environment. 
+
+283
+00:34:24,080 --> 00:34:30,640
+Mutation has no intelligence to target 
+the mutation to fit the environment.
+
+284
+00:34:33,360 --> 00:34:39,680
+Now we have the evolution under our belt, we 
+can come back to talk in biological terms.  
+
+285
+00:34:41,199 --> 00:34:48,719
+Evolution teaches us the fittest survives, and 
+it's a nature law that survival of a species  
+
+286
+00:34:48,719 --> 00:34:53,679
+requires survival of the current 
+generation and the reproduction  
+
+287
+00:34:53,679 --> 00:35:03,040
+of the future generations. For survival we 
+ask ourselves is hunger a normal sensation? 
+
+288
+00:35:04,400 --> 00:35:14,320
+Is eating a normal response to hunger? If 
+we want to survive, then defying eating is  
+
+289
+00:35:14,320 --> 00:35:24,720
+not a normal behavior. Therefore, defying 
+eating, eating disorder is not a normal behavior.  
+
+290
+00:35:26,560 --> 00:35:34,160
+Using evolution to judge whether 
+biologically defying hunger is normal  
+
+291
+00:35:34,160 --> 00:35:44,400
+or abnormal makes a lot of sense. Why do we use 
+eating disorder as an example to study neural  
+
+292
+00:35:45,600 --> 00:35:53,360
+visualization? It's because eating disorder 
+is  probably the most sophisticated disorder,  
+
+293
+00:35:54,480 --> 00:36:03,760
+and also it's the most deadly and costly. There 
+are about nine percent of the world population  
+
+294
+00:36:04,400 --> 00:36:07,920
+suffering from some forms of eating disorder.  
+
+295
+00:36:09,600 --> 00:36:16,320
+As the next step, we would like to 
+visualize which part of the brain manages  
+
+296
+00:36:16,320 --> 00:36:24,320
+hunger, and after we have this hunger 
+sensation appears on our consciousness, 
+
+297
+00:36:25,280 --> 00:36:32,960
+which part of our brain, which set 
+of neurons, defies hunger? If we can  
+
+298
+00:36:33,680 --> 00:36:40,720
+locate the neurons defying hunger, maybe 
+we can find treatments by turning them off.  
+
+299
+00:36:42,160 --> 00:36:48,480
+In the middle of our brain there's a structure 
+called Hypothalamus, which manages our survival  
+
+300
+00:36:48,480 --> 00:36:55,760
+functions. If you look at the picture on the 
+screen it's an orange structure buried in the  
+
+301
+00:36:55,760 --> 00:37:03,680
+middle. The functions it manages include releasing 
+hormones, maintaining our daily physiological  
+
+302
+00:37:03,680 --> 00:37:11,440
+cycles, and controlling our appetite including 
+thirst hunger, and also managing our sleep.  
+
+303
+00:37:12,480 --> 00:37:19,360
+Hypothalamus also manages our sexual behavior, 
+emotional responses, and body temperature.
+
+304
+00:37:20,160 --> 00:37:25,360
+Again all these are basic survival 
+functions (our biological needs)  
+
+305
+00:37:25,360 --> 00:37:33,360
+and with optogenetics we can successfully 
+identify the neurons in this region, which  
+
+306
+00:37:33,360 --> 00:37:40,400
+manages each of these functions. 
+So precisely for eating disorder,  
+
+307
+00:37:40,400 --> 00:37:47,840
+we can identify the neurons which manages 
+appetite and neuroscientists already show that
+
+308
+00:37:48,400 --> 00:37:58,080
+they can successfully turn on or off the mice 
+neurons for hunger. But here turning on or off  
+
+309
+00:37:58,800 --> 00:38:06,880
+the neurons for managing appetite is not helpful 
+for curing eating disorder because if we turn  
+
+310
+00:38:06,880 --> 00:38:15,600
+hunger off, just getting the situation worse. And 
+keeping the hunger sensation up, the person is not  
+
+311
+00:38:15,600 --> 00:38:25,200
+going to eat anyway. Let's visit these competing 
+forces that cause eating disorder. First of all, 
+
+312
+00:38:25,840 --> 00:38:32,800
+Hypothalamus, which manages appetite broadcasts 
+the hunger sensation to all the neurons.  
+
+313
+00:38:34,640 --> 00:38:41,200
+It's a conscious decision for the individual 
+to defy the eating needs because of  
+
+314
+00:38:41,920 --> 00:38:47,280
+his/her value system---for the sake of 
+beauty, the person insists in not eating.
+
+315
+00:38:48,720 --> 00:38:54,880
+Only the person with strong will 
+would persist this defiance. 
+
+316
+00:38:56,080 --> 00:39:05,680
+And in time this defiance is able to collect 
+or recruit sufficient armies in other areas  
+
+317
+00:39:05,680 --> 00:39:14,080
+of the brain to join this resistance.
+We call this army as the "second self."  
+
+318
+00:39:15,280 --> 00:39:24,640
+The second self competes with the first self, 
+constantly fighting for eating or not eating.  
+
+319
+00:39:25,760 --> 00:39:32,640
+Let us now making some observations. First 
+of all a patient with eating disorder  
+
+320
+00:39:33,200 --> 00:39:39,120
+was first convinced of that losing 
+weight is positive and rewarding;  
+
+321
+00:39:40,480 --> 00:39:46,960
+then the person turns defying hunger 
+into a mission and a challenge,  
+
+322
+00:39:48,640 --> 00:39:52,800
+and neurons are then recruited to tackle these
+
+323
+00:39:53,440 --> 00:40:02,320
+challenges. There's a strong correlation 
+between a top performer at school or at work  
+
+324
+00:40:03,200 --> 00:40:09,200
+with a person suffering from eating disorder, 
+because both top performer and eating disorder  
+
+325
+00:40:09,200 --> 00:40:17,200
+patient, they are goal oriented, they are 
+strong-willed, they can formulate plans,  
+
+326
+00:40:17,760 --> 00:40:24,160
+and they can persist to tackle the 
+challenge. Through neuron visualization,  
+
+327
+00:40:24,160 --> 00:40:29,840
+we (Deisseroth's team) have two findings.
+The first finding is: although the structure of  
+
+328
+00:40:29,840 --> 00:40:37,840
+hypothalamus manages the hunger sensation and it 
+broadcasts the hunger signal to all the neurons.
+
+329
+00:40:38,800 --> 00:40:44,960
+the neurons that participate in defying 
+hunger is only a small minority. 
+
+330
+00:40:46,880 --> 00:40:55,520
+If we can somehow turn off these resistant 
+neurons, we can perhaps cure eating disorder.
+
+331
+00:40:57,120 --> 00:41:04,960
+And also for other mental conditions, 
+like the stress regulating brain area  
+
+332
+00:41:04,960 --> 00:41:11,600
+becomes larger in patients of depression 
+and the bipolar. We may be able to  
+
+333
+00:41:12,480 --> 00:41:20,720
+manipulate the neurons responsible for 
+stress regulation to mitigate the illness.
+
+334
+00:41:22,960 --> 00:41:30,880
+Now we understand mental disorders 
+much better, and we appreciate  
+
+335
+00:41:30,880 --> 00:41:39,040
+these visualization tools, which can let 
+us identify each neuron's functionality  
+
+336
+00:41:39,040 --> 00:41:50,480
+either positive or negative with respect to their 
+biological function. And next we come back to our  
+
+337
+00:41:51,680 --> 00:41:58,320
+central mission: where is consciousness? 
+the question we impose in the middle.  
+
+338
+00:42:00,480 --> 00:42:05,520
+Fortunately through visualization,
+neuroscientists already  
+
+339
+00:42:06,240 --> 00:42:11,040
+are able to roughly identify the brain 
+regions that manage our consciousness.
+
+340
+00:42:12,480 --> 00:42:22,800
+The method of visualization is the following. 
+First, we can assume the area manages  
+
+341
+00:42:22,800 --> 00:42:29,840
+consciousness can be constantly busy 
+and can be task independently busy. 
+
+342
+00:42:31,120 --> 00:42:37,040
+And secondly, if a person is put 
+into a meditation state---thinking  
+
+343
+00:42:37,920 --> 00:42:47,840
+nothing and be very calm. If still there's an area 
+of neurons being active, then that particular area  
+
+344
+00:42:48,480 --> 00:42:57,840
+may be the managing neurons and they could 
+possibly be the region's managing consciousness.
+
+345
+00:43:00,720 --> 00:43:08,640
+Neuroscientists have already identified two areas 
+in the brain where consciousness are managed  
+
+346
+00:43:08,640 --> 00:43:21,040
+or you can say consciousness resides. The first 
+area is in this blue rectangle area which is our  
+
+347
+00:43:21,040 --> 00:43:30,320
+Prefrontal cortex, and the second area is 
+in the red circle its name is Retrosplenial  
+
+348
+00:43:31,440 --> 00:43:41,200
+cortex. These two cortexes work in concert to 
+manage our consciousness. The scientists right now  
+
+349
+00:43:41,200 --> 00:43:49,840
+continue conducting experiments on lab animals to 
+see turning on or off neurons in these two areas,  
+
+350
+00:43:50,400 --> 00:43:58,240
+what would be the effect to the animal 
+behaviors. Now, we have located consciousness,  
+
+351
+00:43:59,280 --> 00:44:06,480
+and we would like to probe further questions.
+The first question is "is consciousness  
+
+352
+00:44:07,040 --> 00:44:14,400
+computational only?" There was a debate between 
+Roger Penrose and Yoshua Bengio  (via me).
+
+353
+00:44:14,400 --> 00:44:21,760
+Yoshua considers that consciousness should be 
+computation all the way, and Penrose agrees that  
+
+354
+00:44:21,760 --> 00:44:29,840
+our cerebellum, which manages unconsciousness, 
+is computational only; but he disagrees that our  
+
+355
+00:44:29,840 --> 00:44:39,120
+consciousness is merely computational. My question 
+is if it's not a computational, then what is it?
+
+356
+00:44:41,520 --> 00:44:47,920
+We could conduct further visualization 
+to see the neuron patterns in these two  
+
+357
+00:44:47,920 --> 00:44:51,440
+areas (prefrontal and retrosplenial cortexes).
+For computational activities, there could  
+
+358
+00:44:51,440 --> 00:44:58,560
+be one (or some) unique neuron activity 
+patterns. If the consciousness area also  
+
+359
+00:44:59,200 --> 00:45:06,800
+exhibits the same pattern, then yes we can 
+consider consciousness is only computational. 
+
+360
+00:45:06,800 --> 00:45:15,360
+But if there are other patterns emerge, 
+then there is a possibility that there  
+
+361
+00:45:15,360 --> 00:45:20,320
+are other activities going on.
+We can then conduct further investigation.
+
+362
+00:45:22,720 --> 00:45:30,640
+For optogenetics this technology is not 
+without challenges. Before we can widely  
+
+363
+00:45:30,640 --> 00:45:37,680
+use the technology to be a therapeutic 
+tool, we need to tackle a list of  
+
+364
+00:45:38,640 --> 00:45:44,800
+obstacles listed on the slide. I'm 
+not going to get into details and  
+
+365
+00:45:44,800 --> 00:45:51,360
+if you conduct research in the area 
+you can look into the problems and  
+
+366
+00:45:52,080 --> 00:45:59,840
+potential solutions. Finally i'd like to challenge 
+you guys with discussion question number two. 
+
+367
+00:46:01,600 --> 00:46:09,600
+We know evolution involves in satisfying 
+our fundamental needs, otherwise a species  
+
+368
+00:46:09,600 --> 00:46:19,680
+would extinct. For wants and we consider 
+those are optional---those are luxuries.  
+
+369
+00:46:21,200 --> 00:46:29,600
+To preserve a species requires satisfying 
+the needs managed by hypothalamus including  
+
+370
+00:46:29,600 --> 00:46:33,840
+maintaining organ operations,
+maintaining our body temperature,  
+
+371
+00:46:34,480 --> 00:46:41,840
+balancing body hormones, managing 
+eating, drinking, rest, and sleep. 
+
+372
+00:46:43,440 --> 00:46:49,040
+My question is "how about the 
+wants?" All wants should be optional. 
+
+373
+00:46:50,320 --> 00:46:57,360
+"Is crying a need or crying a want?" We know  
+
+374
+00:46:57,360 --> 00:47:06,000
+subjective values like having good grades 
+should be a want. If we all have poor grades,  
+
+375
+00:47:06,880 --> 00:47:17,200
+human species can still survive. But crying is an 
+interesting trait. From the theory of evolution,
+
+376
+00:47:18,080 --> 00:47:27,440
+crying does not help us to survive. 
+But why crying is a common trait.
+
+377
+00:47:29,840 --> 00:47:42,960
+One hint is the notion of evolution bottleneck, 
+which was explained by Deisseroth as follows.
+
+378
+00:47:45,040 --> 00:47:53,840
+About 70,000 years ago there was a major volcano 
+eruption occurred on earth, and that eruption  
+
+379
+00:47:53,840 --> 00:48:03,200
+caused not only earthquake tsunami but also much 
+ash dust and vapor in the air covered the sun  
+
+380
+00:48:03,200 --> 00:48:11,520
+for six years and also disrupted the seasonal 
+rain. So lots of people vanished during the  
+
+381
+00:48:11,520 --> 00:48:20,560
+disaster. The earth suffered from a huge reduction 
+in population. You could consider this is a  
+
+382
+00:48:21,920 --> 00:48:30,880
+biased sampling process. In the extreme case 
+let's think about this Noah Ark. Noah just  
+
+383
+00:48:30,880 --> 00:48:40,320
+selected a pair of animals for all the species 
+and the pair got selected is a minority sample  
+
+384
+00:48:40,320 --> 00:48:50,080
+of the original species population and this 
+sampling is highly unrepresentative so suppose  
+
+385
+00:48:50,080 --> 00:48:59,520
+you pick a pair which happened to have the trait 
+of crying, and crying was not the popular traits  
+
+386
+00:48:59,520 --> 00:49:04,800
+of the particular species. Then we (human) 
+get into this so-called founder's effect.  
+
+387
+00:49:06,160 --> 00:49:14,480
+This may be the reason we have some traits right 
+now which are not really equipped for survival.  
+
+388
+00:49:15,920 --> 00:49:20,480
+They are with us because of 
+this biased selection process.  
+
+389
+00:49:22,400 --> 00:49:28,080
+The slide shows a biased sampling 
+example. The population with a lot of  
+
+390
+00:49:29,360 --> 00:49:37,120
+white dots representing people without disease. 
+But with the small samples (right-hand side) 
+
+391
+00:49:37,120 --> 00:49:45,360
+maybe the selected instances all suffer from 
+disorders. So, when we today talking about  
+
+392
+00:49:45,360 --> 00:49:53,280
+some people may have disorders and ourselves may 
+be normal and we have to be quite careful because  
+
+393
+00:49:53,280 --> 00:50:01,760
+the truth may be the opposite. This kind of 
+"founder effect" should make us more humble....  
+
+394
+00:50:03,200 --> 00:50:10,240
+And further reading I include two very good 
+books. One is again Deisseroth's Projections  
+
+395
+00:50:10,960 --> 00:50:14,080
+and Roger Penrose's Emperor's New Mind. 
+
+396
+00:50:15,440 --> 00:50:23,840
+Roger's book depicts his vision about what 
+is consciousness and where is consciousness.
+
+397
+00:50:25,280 --> 00:50:33,760
+In the next lecture dr duvvuri will come back 
+to continue the coverage of psychiatry topics.  
+
+398
+00:50:35,920 --> 00:50:46,400
+The final lecture of the series i will cover 
+ethics, love, and mind. My attempt is to quantify  
+
+399
+00:50:47,120 --> 00:50:55,680
+these three elements so therefore when we build 
+a robot we can build a robot with good ethics,  
+
+400
+00:50:56,400 --> 00:51:07,200
+loving, and rich mind. Thank you for attending 
+today's lecture. Hopefully your project  
+
+401
+00:51:07,200 --> 00:51:16,640
+is in good progress, and i see you on Wednesday.
+
