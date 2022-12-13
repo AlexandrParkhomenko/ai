@@ -4,6 +4,7 @@
 | Algebraic Decision Diagram | ADD | алгебраическая диаграмма решений | АДР |
 | Artificial Neural Networks | ANN | искусственная нейронная сеть | ИНС |
 | Affiliation Graph Model | AGM | Аффилированная графовая модель | АГМ |
+| Bayesian Additive Regression Trees | BART | Деревья байесовской аддитивной регрессии | ДБАР* |
 | Bayesian Chain Classifier | BCC | байесовская цепь (классификатор) | БЦ |
 | Bayesian Constraint-based Causal Discovery | BCCD | байесовский причинно-следственный анализ с учетом ограничений | БПСА |
 | Bayesian Network | BN | байесовская сеть | БС |
