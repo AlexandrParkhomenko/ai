@@ -25,7 +25,7 @@ course                                              | |  course name            
   [cs225a](https://web.stanford.edu/class/cs225a/)  |★| Experimental Robotics                                  | Экспериментальная робототехника
   [cs228 ](https://web.stanford.edu/class/cs228/)   | | Probabilistic Graphical Models                         | [Вероятностные графические модели](https://github.com/AlexandrParkhomenko/ai/tree/main/cs228)
   [cs229 ](https://web.stanford.edu/class/cs229/)   |★| Machine Learning                                       | Машинное обучение
-[cs229t/m](http://web.stanford.edu/class/stats214/) |★| Statistical Learning Theory                            | [Статистическая теория обучения](https://github.com/AlexandrParkhomenko/ai/tree/main/cs229m)
+  [cs229m](http://web.stanford.edu/class/stats214/) |★| Statistical Learning Theory                            | [Статистическая теория обучения](https://github.com/AlexandrParkhomenko/ai/tree/main/cs229m)
   [cs230 ](https://web.stanford.edu/class/cs230/)   |★| Deep Learning                                          | Глубокое обучение
   [cs231a](https://web.stanford.edu/class/cs231a/)  |★| Computer Vision: From 3D Reconstruction to Recognition | Компьютерное зрение: от 3D-реконструкции до распознавания
    cs231n[](https://web.stanford.edu/class/cs231n/) |★| Convolutional Neural Networks for Visual Recognition   | [Сверточные нейронные сети для визуального распознавания](https://github.com/AlexandrParkhomenko/ai/tree/main/cs231n/ru)
