@@ -2,8 +2,8 @@
 ## Statistical Learning
 ### [Lectures](https://www.youtube.com/watch?v=LvySJGj-88U&list=PLoROMvodv4rOzrYsAxzQyHb8n_RWNuS1e) by Trevor Hastie, Robert Tibshirani, Daniela Witten, James Gareth
 
-- 1.1 [Opening Remarks](https://youtu.be/LvySJGj-88U)
-    - [8 Years Later (Second Edition of the Course)](https://youtu.be/9vlDVxG4ulA)
+- 1.1.1 [Opening Remarks](https://youtu.be/LvySJGj-88U)
+  1.1.2 [8 Years Later. Second Edition of the Course](https://youtu.be/9vlDVxG4ulA)
 - 1.2 [Examples and Framework](https://youtu.be/B9s8rpdNxU0)
 - 2.1 [Introduction to Regression Models](https://youtu.be/ox0cKk7h4o0)
 - 2.2 [Dimensionality and Structured Models](https://youtu.be/uFwbrdvrAJs)
