@@ -36,7 +36,7 @@ course                                              | |  course name            
  [cs273a](https://web.stanford.edu/class/cs273a/)   |★| A Computational Tour of the Human Genome               | Вычислительный тур по геному человека
  [cs279 ](https://web.stanford.edu/class/cs279/)    |★| Computational Biology: <br>Structure and Organization of Biomolecules and Cells | Вычислительная биология: <br>Структура и организация биомолекул и клеток
  [cs326 ](https://web.stanford.edu/class/cs326/)    |★| Topics in Advanced Robotic Manipulation                | Темы продвинутого манипулирования роботами
- cs327a[](https://web.stanford.edu/class/cs327a/)   |★| Advanced Robotic Manipulation                          | [Продвинутая робототехника](https://github.com/AlexandrParkhomenko/ai/tree/main/cs327)
+ cs327a[](https://web.stanford.edu/class/cs327a/)   |★| Advanced Robotic Manipulation                          | [Продвинутая робототехника](https://github.com/AlexandrParkhomenko/ai/tree/main/cs327a)
  [cs330 ](https://web.stanford.edu/class/cs330/)    |★| Deep Multi-Task and Meta Learning                      | Глубокое многозадачное и мета-обучение
  [cs331b](https://web.stanford.edu/class/cs331b/)   |★| Representation Learning in Computer Vision             | Репрезентативное обучение в компьютерном зрении
  [cs336 ](https://web.stanford.edu/class/cs336/)    | | Robot Perception and Decision-Making                   | Восприятие робота и принятие решений
