@@ -1,0 +1,1356 @@
+1
+00:00:04,340 --> 00:00:06,855
+Uh, hi, everyone. My name's Jiaxuan,
+
+2
+00:00:06,855 --> 00:00:08,835
+and I'm the head TA of this course.
+
+3
+00:00:08,835 --> 00:00:11,490
+And really an amazing experience to work
+
+4
+00:00:11,490 --> 00:00:14,160
+with you guys and I hope you learn a lot from the course.
+
+5
+00:00:14,160 --> 00:00:16,530
+Uh, today I'm excited to present, uh,
+
+6
+00:00:16,530 --> 00:00:19,850
+my recent, uh, research, Design Space of Graph Neural Networks.
+
+7
+00:00:19,850 --> 00:00:24,270
+[NOISE] So in this lecture,
+
+8
+00:00:24,270 --> 00:00:27,485
+uh, we cover some key questions for GNN design.
+
+9
+00:00:27,485 --> 00:00:30,320
+Uh, specifically, we want to answer how to
+
+10
+00:00:30,320 --> 00:00:33,410
+find a good GNN design for a specific GNN task.
+
+11
+00:00:33,410 --> 00:00:37,285
+Uh, this problem is really important, but also challenging, uh,
+
+12
+00:00:37,285 --> 00:00:42,665
+because domain experts want to use state-of-art GNN on their specific task.
+
+13
+00:00:42,665 --> 00:00:46,640
+However, there are tons of possible GNN architectures.
+
+14
+00:00:46,640 --> 00:00:48,350
+Uh, for example, in this lecture,
+
+15
+00:00:48,350 --> 00:00:49,595
+we have covered GCN,
+
+16
+00:00:49,595 --> 00:00:51,740
+GraphSAGE, GAT, GIN, etc.
+
+17
+00:00:51,740 --> 00:00:54,275
+Uh, the issue here is that
+
+18
+00:00:54,275 --> 00:00:59,110
+the best GNN design in one task can perform badly for another task.
+
+19
+00:00:59,110 --> 00:01:03,590
+And redo the hyperparameter grid search for each new task is not feasible.
+
+20
+00:01:03,590 --> 00:01:06,895
+And I'm sure you have some hands-on experience in your, uh,
+
+21
+00:01:06,895 --> 00:01:08,450
+final project and, you know,
+
+22
+00:01:08,450 --> 00:01:11,470
+tuning the hyperparameter of GNNs is notoriously hard.
+
+23
+00:01:11,470 --> 00:01:14,085
+Uh, In this lecture, our, uh,
+
+24
+00:01:14,085 --> 00:01:16,280
+key contribution in this work is that
+
+25
+00:01:16,280 --> 00:01:20,065
+the first systematic study for a GNN design space and task space.
+
+26
+00:01:20,065 --> 00:01:23,520
+And in addition, we also released the called platform GraphGym,
+
+27
+00:01:23,520 --> 00:01:27,680
+uh, which is a powerful platform for exploring different GNN designs and tasks.
+
+28
+00:01:27,680 --> 00:01:31,500
+[NOISE] Uh, to begin,
+
+29
+00:01:31,500 --> 00:01:34,940
+we first introduce the terminology that we'll use in this, uh, lecture.
+
+30
+00:01:34,940 --> 00:01:39,055
+Um, so a design means a concrete model instantiation.
+
+31
+00:01:39,055 --> 00:01:43,265
+For example, a four-layer GraphSAGE is a specific design.
+
+32
+00:01:43,265 --> 00:01:46,055
+Design dimensions characterize a design.
+
+33
+00:01:46,055 --> 00:01:49,655
+For example, a design dimension could be the number of layers,
+
+34
+00:01:49,655 --> 00:01:52,220
+L, which could take values among 4,
+
+35
+00:01:52,220 --> 00:01:54,385
+uh, 2, 4, 6, 8.
+
+36
+00:01:54,385 --> 00:01:59,255
+And design choice is the actual selective value in the design dimensions.
+
+37
+00:01:59,255 --> 00:02:02,330
+For example, the number of layers, L equals 2.
+
+38
+00:02:02,330 --> 00:02:05,990
+Design space, uh, consists of a Cartesian product of
+
+39
+00:02:05,990 --> 00:02:11,330
+all the design dimensions relate to enumerate all the possible designs within the space.
+
+40
+00:02:11,330 --> 00:02:14,375
+A task is the, a- a- a specific type of interest,
+
+41
+00:02:14,375 --> 00:02:15,890
+which could be, for example,
+
+42
+00:02:15,890 --> 00:02:18,140
+uh, node classification on Cora data set,
+
+43
+00:02:18,140 --> 00:02:20,690
+graph classification on ENZYMES data set.
+
+44
+00:02:20,690 --> 00:02:25,560
+And the task space consists of all the tasks that we care about.
+
+45
+00:02:26,870 --> 00:02:30,840
+And in this paper we introduced the notion of GNN design space,
+
+46
+00:02:30,840 --> 00:02:32,145
+and actually, we have, uh,
+
+47
+00:02:32,145 --> 00:02:34,845
+go into much deta- detail in the previous lecture,
+
+48
+00:02:34,845 --> 00:02:36,900
+so here we'll just do a quick recap.
+
+49
+00:02:36,900 --> 00:02:39,930
+Uh, so in the d- GNN design space,
+
+50
+00:02:39,930 --> 00:02:41,310
+we consider first, uh,
+
+51
+00:02:41,310 --> 00:02:43,245
+the intra-layer, uh, design.
+
+52
+00:02:43,245 --> 00:02:47,060
+And we have introduced that a GNN layer can be understood as,
+
+53
+00:02:47,060 --> 00:02:49,820
+uh, two parts, the transformation function,
+
+54
+00:02:49,820 --> 00:02:51,625
+and the aggregation function.
+
+55
+00:02:51,625 --> 00:02:56,230
+And, uh, here we propose a general instantiation under this perspective.
+
+56
+00:02:56,230 --> 00:02:59,700
+So concretely, it contains four different dimensions.
+
+57
+00:02:59,700 --> 00:03:01,445
+Uh, so we have, uh,
+
+58
+00:03:01,445 --> 00:03:03,080
+whether to add BatchNorm,
+
+59
+00:03:03,080 --> 00:03:04,490
+uh, whether to add dropout,
+
+60
+00:03:04,490 --> 00:03:08,120
+uh, the exact selection of the acti- activation function,
+
+61
+00:03:08,120 --> 00:03:11,370
+and the selection of the aggregation function.
+
+62
+00:03:13,430 --> 00:03:18,090
+Next, uh, we are going to design the inter-layer connectivity.
+
+63
+00:03:18,090 --> 00:03:20,750
+And the lecture, we have also introduced, uh,
+
+64
+00:03:20,750 --> 00:03:23,635
+different ways of organizing GNN layers.
+
+65
+00:03:23,635 --> 00:03:25,935
+And in- in this, uh, in this work, uh,
+
+66
+00:03:25,935 --> 00:03:27,735
+we consider adding some, uh,
+
+67
+00:03:27,735 --> 00:03:29,760
+pre-process layers and post-process layer,
+
+68
+00:03:29,760 --> 00:03:32,700
+uh, in addition to the GNN layers, uh,
+
+69
+00:03:32,700 --> 00:03:34,452
+which can, uh, jointly,
+
+70
+00:03:34,452 --> 00:03:37,420
+uh, form a complete graph neural network.
+
+71
+00:03:37,420 --> 00:03:42,010
+So the intuition of adding pre-process layer is that it could pretty important,
+
+72
+00:03:42,010 --> 00:03:45,415
+uh, when expressing node feature encoders are needed.
+
+73
+00:03:45,415 --> 00:03:50,270
+So for example, when our nodes are extracted from images or text,
+
+74
+00:03:50,270 --> 00:03:51,800
+we'll be consider using some, uh,
+
+75
+00:03:51,800 --> 00:03:54,095
+expressive, say, convolutional neural networks
+
+76
+00:03:54,095 --> 00:03:57,490
+or transformers to encode these node features.
+
+77
+00:03:57,490 --> 00:03:59,190
+And then we may also add
+
+78
+00:03:59,190 --> 00:04:03,425
+some post-process layer after applying graph neural network computation,
+
+79
+00:04:03,425 --> 00:04:06,515
+which are important when we are going to say
+
+80
+00:04:06,515 --> 00:04:09,685
+a reason or transformation over node embeddings.
+
+81
+00:04:09,685 --> 00:04:12,270
+And some example, uh, are, say, uh,
+
+82
+00:04:12,270 --> 00:04:14,125
+doing gra- graph classification,
+
+83
+00:04:14,125 --> 00:04:17,680
+or some applications around are not expressed.
+
+84
+00:04:17,680 --> 00:04:19,440
+And the core, uh,
+
+85
+00:04:19,440 --> 00:04:22,950
+core of the graph neural network are, uh, GNN layers.
+
+86
+00:04:22,950 --> 00:04:27,165
+And there we consider different strategies to add skip connections.
+
+87
+00:04:27,165 --> 00:04:29,880
+And we found that this really helps improve,
+
+88
+00:04:29,880 --> 00:04:32,380
+uh, deep GNNs performance.
+
+89
+00:04:33,760 --> 00:04:39,615
+Uh, then finally, we'll cover different learning configurations for GNNs.
+
+90
+00:04:39,615 --> 00:04:42,270
+And actually, this is often neglected,
+
+91
+00:04:42,270 --> 00:04:44,100
+uh, in current literature, uh,
+
+92
+00:04:44,100 --> 00:04:45,510
+but in practice, we found that
+
+93
+00:04:45,510 --> 00:04:49,380
+these learning configurations have high impact on- on a GNN's performance.
+
+94
+00:04:49,380 --> 00:04:51,275
+So specifically, we'll consider, uh,
+
+95
+00:04:51,275 --> 00:04:53,625
+the batch size, the learning rate,
+
+96
+00:04:53,625 --> 00:04:55,350
+the optimizer for gradient update,
+
+97
+00:04:55,350 --> 00:04:59,200
+and- and how many epochs do we train our models.
+
+98
+00:05:01,760 --> 00:05:04,005
+So in summary, uh,
+
+99
+00:05:04,005 --> 00:05:07,350
+we have proposed a general GNN design space that consist of,
+
+100
+00:05:07,350 --> 00:05:11,175
+uh intra-layer design, inter-layer design, and learning configuration.
+
+101
+00:05:11,175 --> 00:05:14,454
+And If you com, uh, consider all the possible combinations,
+
+102
+00:05:14,454 --> 00:05:16,185
+this really lead to a huge space,
+
+103
+00:05:16,185 --> 00:05:17,490
+so it contains, uh,
+
+104
+00:05:17,490 --> 00:05:21,180
+315,000 possible GNN designs.
+
+105
+00:05:21,180 --> 00:05:25,260
+And, um, to clarify,
+
+106
+00:05:25,260 --> 00:05:27,175
+our purpose here, uh,
+
+107
+00:05:27,175 --> 00:05:30,275
+is that we don't want to and what cannot cover
+
+108
+00:05:30,275 --> 00:05:33,165
+all the possible GNN designs because for example,
+
+109
+00:05:33,165 --> 00:05:35,430
+we can even add more, uh, design dimension,
+
+110
+00:05:35,430 --> 00:05:37,100
+say rather to add attention,
+
+111
+00:05:37,100 --> 00:05:39,365
+how many attention it has to use, and etc.
+
+112
+00:05:39,365 --> 00:05:42,565
+So this space is really a very- very huge.
+
+113
+00:05:42,565 --> 00:05:46,100
+So what we're trying to do is to propose a mindset transition.
+
+114
+00:05:46,100 --> 00:05:48,365
+So we want to demonstrate that studying
+
+115
+00:05:48,365 --> 00:05:51,860
+a design space is more effective than studying individual GNN designs,
+
+116
+00:05:51,860 --> 00:05:55,010
+such as, uh, uh, considering- only considering GraphSAGE,
+
+117
+00:05:55,010 --> 00:05:57,540
+GAT, those individual designs.
+
+118
+00:05:59,960 --> 00:06:03,495
+So after introducing the GNN design space,
+
+119
+00:06:03,495 --> 00:06:05,925
+we'll then introduce the GNN task space.
+
+120
+00:06:05,925 --> 00:06:07,935
+And we'll categorize GNN task,
+
+121
+00:06:07,935 --> 00:06:10,260
+uh, into different, uh, categories.
+
+122
+00:06:10,260 --> 00:06:15,455
+Um, so the common practice is to categorize GNN task into node classification,
+
+123
+00:06:15,455 --> 00:06:18,115
+edge, uh, prediction, and graph level prediction tasks.
+
+124
+00:06:18,115 --> 00:06:21,680
+And we have covered how do we do this in previous lectures.
+
+125
+00:06:21,680 --> 00:06:25,640
+Although this, uh, this technology is reasonable, it is not precise.
+
+126
+00:06:25,640 --> 00:06:30,095
+So for example, if we consider a node prediction and we could do say,
+
+127
+00:06:30,095 --> 00:06:32,555
+predict node clustering coefficient.
+
+128
+00:06:32,555 --> 00:06:34,170
+Another task could be, uh,
+
+129
+00:06:34,170 --> 00:06:37,985
+we will predict a node subject area in a citation network.
+
+130
+00:06:37,985 --> 00:06:41,510
+So although these tasks are all node classification, uh,
+
+131
+00:06:41,510 --> 00:06:45,540
+they are completely, uh, completely different in terms of their semantic meaning.
+
+132
+00:06:45,540 --> 00:06:48,825
+However, creating a precise taxono- ta-
+
+133
+00:06:48,825 --> 00:06:52,610
+taxonomy of GNN tasks is very hard because first, uh,
+
+134
+00:06:52,610 --> 00:06:55,570
+this is really subjective how you want to categorize different task,
+
+135
+00:06:55,570 --> 00:06:59,740
+and second there is normal GNN task can always merge and you cannot,
+
+136
+00:06:59,740 --> 00:07:04,625
+uh, uh, predict the future of the- the unknown, uh, GNN tasks.
+
+137
+00:07:04,625 --> 00:07:09,500
+So our innovation here is to propose a quantitative task similarity metric.
+
+138
+00:07:09,500 --> 00:07:14,000
+And our purpose here is to understand GNN task and, uh,
+
+139
+00:07:14,000 --> 00:07:19,600
+uh, uh result we can transfer the best GNN models across different tasks.
+
+140
+00:07:21,000 --> 00:07:23,200
+And- so here's a concrete,
+
+141
+00:07:23,200 --> 00:07:24,475
+uh, our innovation, uh,
+
+142
+00:07:24,475 --> 00:07:25,990
+where we propose, uh,
+
+143
+00:07:25,990 --> 00:07:28,285
+quantitative task similarity metric.
+
+144
+00:07:28,285 --> 00:07:33,160
+So to do this, uh, we will first select a notion called anchor models.
+
+145
+00:07:33,160 --> 00:07:34,885
+So here's a concrete example.
+
+146
+00:07:34,885 --> 00:07:36,190
+Suppose we want to, uh,
+
+147
+00:07:36,190 --> 00:07:38,590
+measure the similarity between tasks A, B,
+
+148
+00:07:38,590 --> 00:07:43,180
+and C, and then the anchor models are M_1 through M_5.
+
+149
+00:07:43,180 --> 00:07:48,130
+The second step is that we'll characterize a task by ranking the performance,
+
+150
+00:07:48,130 --> 00:07:49,675
+uh, of anchor models.
+
+151
+00:07:49,675 --> 00:07:53,905
+So here I say task A have the ranking of say, 1, 2, 3, 4, 5.
+
+152
+00:07:53,905 --> 00:07:55,480
+Task B have the ranking, uh,
+
+153
+00:07:55,480 --> 00:07:58,690
+which is different, which is a 1, 3, 2, 4, 5.
+
+154
+00:07:58,690 --> 00:08:01,195
+And task C again has another ranking
+
+155
+00:08:01,195 --> 00:08:04,615
+among the anchor models in terms of their performance.
+
+156
+00:08:04,615 --> 00:08:08,020
+And our argue-, uh, the key insight here is that, uh,
+
+157
+00:08:08,020 --> 00:08:11,200
+the task with simi- similarity rankings,
+
+158
+00:08:11,200 --> 00:08:14,020
+uh, similar rankings are considered as similar.
+
+159
+00:08:14,020 --> 00:08:15,480
+So for example, um,
+
+160
+00:08:15,480 --> 00:08:18,925
+here we can see the similarity between the rankings of,
+
+161
+00:08:18,925 --> 00:08:21,475
+uh, task A and task B is pretty high.
+
+162
+00:08:21,475 --> 00:08:24,835
+And the similarity between task A and C is pretty low.
+
+163
+00:08:24,835 --> 00:08:30,235
+And this way, we can give a quantitative measure between different- different tasks.
+
+164
+00:08:30,235 --> 00:08:34,850
+Uh, the next question is that how do we select the anchor models?
+
+165
+00:08:35,270 --> 00:08:38,250
+So more concretely, we will do, uh,
+
+166
+00:08:38,250 --> 00:08:40,830
+three steps to select the anchor models.
+
+167
+00:08:40,830 --> 00:08:45,225
+Uh, first, we'll pick a small dataset that it easy to work on.
+
+168
+00:08:45,225 --> 00:08:48,345
+And second, we'll randomly sample N models
+
+169
+00:08:48,345 --> 00:08:51,820
+from our design space and we'll run them on our dataset.
+
+170
+00:08:51,820 --> 00:08:54,100
+For example, we can sample 100 models,
+
+171
+00:08:54,100 --> 00:08:56,830
+uh, from our entire design space.
+
+172
+00:08:56,830 --> 00:09:02,095
+The third step is that we'll sort these models based on their performance and then we'll
+
+173
+00:09:02,095 --> 00:09:04,120
+evenly select M models as
+
+174
+00:09:04,120 --> 00:09:07,810
+the anchor models whose performance range from the worst to the best.
+
+175
+00:09:07,810 --> 00:09:09,505
+So for example, we have picked,
+
+176
+00:09:09,505 --> 00:09:11,305
+uh, random 100 models,
+
+177
+00:09:11,305 --> 00:09:15,550
+we will sort them by their performance and then say we'll pick the top model as
+
+178
+00:09:15,550 --> 00:09:19,840
+the first anchor set- anchor model and then set the 10th percentile,
+
+179
+00:09:19,840 --> 00:09:22,090
+uh, model as the second anchor model.
+
+180
+00:09:22,090 --> 00:09:25,630
+And then up to the worst model among 100 models.
+
+181
+00:09:25,630 --> 00:09:27,235
+And our goal here,
+
+182
+00:09:27,235 --> 00:09:30,745
+is really to come up with a wide spectrum of models.
+
+183
+00:09:30,745 --> 00:09:33,340
+And our integration is that a bad model in
+
+184
+00:09:33,340 --> 00:09:36,175
+one task could actually be great for another task.
+
+185
+00:09:36,175 --> 00:09:37,735
+And we have verified this,
+
+186
+00:09:37,735 --> 00:09:40,040
+uh, with our experiments results.
+
+187
+00:09:40,710 --> 00:09:44,050
+Contrarily, we co- can collect, uh,
+
+188
+00:09:44,050 --> 00:09:46,030
+32 tasks, uh, which are,
+
+189
+00:09:46,030 --> 00:09:48,115
+uh, nodes and graph classification tasks.
+
+190
+00:09:48,115 --> 00:09:51,220
+And we have six real-world node classification tasks, uh,
+
+191
+00:09:51,220 --> 00:09:53,710
+12 synthetic node classification tasks, uh,
+
+192
+00:09:53,710 --> 00:09:58,165
+including a predicting node clustering coefficient, and node PageRank.
+
+193
+00:09:58,165 --> 00:10:01,555
+And then we also have six real-world graph classification tasks
+
+194
+00:10:01,555 --> 00:10:03,940
+and eight synthetic graph classification tasks,
+
+195
+00:10:03,940 --> 00:10:08,150
+uh, including, uh, predicting graph average path lengths.
+
+196
+00:10:09,060 --> 00:10:12,550
+The final topic we will cover is that having defined, uh,
+
+197
+00:10:12,550 --> 00:10:14,635
+our GNN design space and task space,
+
+198
+00:10:14,635 --> 00:10:16,795
+how do we evaluate the GNN designs?
+
+199
+00:10:16,795 --> 00:10:19,180
+For example, we want to answer the question like, uh,
+
+200
+00:10:19,180 --> 00:10:23,335
+is graph- is BatchNorm generally useful for GNNs?
+
+201
+00:10:23,335 --> 00:10:26,905
+Um, here the common practice is just to pick one model,
+
+202
+00:10:26,905 --> 00:10:28,210
+for example, a five layer,
+
+203
+00:10:28,210 --> 00:10:31,360
+64-dimensional GCN, and compare two models,
+
+204
+00:10:31,360 --> 00:10:34,225
+uh, with or without BatchNorm.
+
+205
+00:10:34,225 --> 00:10:36,190
+Uh, our approach here is that,
+
+206
+00:10:36,190 --> 00:10:37,660
+uh, is more rigorous.
+
+207
+00:10:37,660 --> 00:10:38,740
+Uh, that is, uh,
+
+208
+00:10:38,740 --> 00:10:43,240
+we know that we have defined 300,000 models and 32 tasks,
+
+209
+00:10:43,240 --> 00:10:45,550
+and this data leads to, uh, uh,
+
+210
+00:10:45,550 --> 00:10:48,084
+about 10 million model-task combinations.
+
+211
+00:10:48,084 --> 00:10:50,620
+And what we are gonna do is to first sample from
+
+212
+00:10:50,620 --> 00:10:53,680
+the 10 million possible model-task combinations and we'll
+
+213
+00:10:53,680 --> 00:10:57,385
+rank the models with BatchNorm equals true or false.
+
+214
+00:10:57,385 --> 00:11:00,940
+The next question is that how do we make it scalable and convincing?
+
+215
+00:11:00,940 --> 00:11:04,870
+[NOISE] And more concretely,
+
+216
+00:11:04,870 --> 00:11:06,460
+our proposed approach called,
+
+217
+00:11:06,460 --> 00:11:08,290
+uh, controlled random search.
+
+218
+00:11:08,290 --> 00:11:10,705
+So the first step, is to sample
+
+219
+00:11:10,705 --> 00:11:14,185
+random model-task configurations from the entire design space.
+
+220
+00:11:14,185 --> 00:11:17,635
+And we perturb the BatchNorm equals true or false.
+
+221
+00:11:17,635 --> 00:11:20,320
+So for example, uh, we have different, uh,
+
+222
+00:11:20,320 --> 00:11:22,000
+uh, models with different,
+
+223
+00:11:22,000 --> 00:11:23,470
+uh, GNN designs, such as, uh,
+
+224
+00:11:23,470 --> 00:11:26,020
+ReLu activation, PReLu activation,
+
+225
+00:11:26,020 --> 00:11:27,610
+and different number of layers,
+
+226
+00:11:27,610 --> 00:11:31,735
+different la- layer connectivity and they're applied to different GNN tasks.
+
+227
+00:11:31,735 --> 00:11:33,250
+What we're going to do is that,
+
+228
+00:11:33,250 --> 00:11:36,565
+we will fix the all- the rest of design and task dimensions,
+
+229
+00:11:36,565 --> 00:11:40,330
+but only perturb its BatchNorm dimensions into true or false.
+
+230
+00:11:40,330 --> 00:11:43,540
+And in the meantime, we will control the computational budget for
+
+231
+00:11:43,540 --> 00:11:47,580
+all the models so that this comparison is really rigorous.
+
+232
+00:11:47,580 --> 00:11:52,500
+And then we will rank BatchNorm equals true or false by their performance.
+
+233
+00:11:52,500 --> 00:11:54,290
+Here, lower ranking is better.
+
+234
+00:11:54,290 --> 00:11:56,560
+So for example, we can see, okay, uh,
+
+235
+00:11:56,560 --> 00:12:01,510
+in one application BatchNorm equals true have validation accuracy of 0.75, uh,
+
+236
+00:12:01,510 --> 00:12:03,550
+but false with only, uh,
+
+237
+00:12:03,550 --> 00:12:07,315
+0.54, which means that BatchNorm equals true is better.
+
+238
+00:12:07,315 --> 00:12:09,565
+So it has a lower ranking of 1.
+
+239
+00:12:09,565 --> 00:12:12,265
+And sometimes there could be a tie because the two,
+
+240
+00:12:12,265 --> 00:12:15,504
+uh, choices are pretty close in terms of their performance.
+
+241
+00:12:15,504 --> 00:12:18,430
+The final step is to plot average or
+
+242
+00:12:18,430 --> 00:12:21,745
+distribution of the ranking of the BatchNorm equals true or false.
+
+243
+00:12:21,745 --> 00:12:26,320
+So for example, here we see the average ranking of the BatchNorm is true is lower,
+
+244
+00:12:26,320 --> 00:12:31,390
+which means that, uh, in general BatchNorm is equals true often provokes better.
+
+245
+00:12:31,390 --> 00:12:33,820
+So to summarize, um, here,
+
+246
+00:12:33,820 --> 00:12:38,410
+we really propose an approach to convincingly evaluate any new design dimensions.
+
+247
+00:12:38,410 --> 00:12:39,910
+And for example, we can use
+
+248
+00:12:39,910 --> 00:12:44,180
+the same strategy to evaluate a new GNN layer that we propose.
+
+249
+00:12:45,930 --> 00:12:48,925
+So here are the, uh, key results.
+
+250
+00:12:48,925 --> 00:12:52,915
+First, we will demonstrate a general guideline for GNN designs.
+
+251
+00:12:52,915 --> 00:12:57,340
+So, uh, we showed that certain design choices exhibit clear advantages.
+
+252
+00:12:57,340 --> 00:13:00,130
+So we'll first look at those intralayer designs.
+
+253
+00:13:00,130 --> 00:13:02,470
+Um, the first, uh, conclusion that,
+
+254
+00:13:02,470 --> 00:13:05,335
+uh, BatchNorm equals true, are generally better.
+
+255
+00:13:05,335 --> 00:13:09,055
+And our explanation is that GNNs are hard to optimize,
+
+256
+00:13:09,055 --> 00:13:11,215
+therefore, batch normalization can really help,
+
+257
+00:13:11,215 --> 00:13:12,895
+um, the gradient update.
+
+258
+00:13:12,895 --> 00:13:15,580
+And then we found that dropout equals 0,
+
+259
+00:13:15,580 --> 00:13:17,980
+which means no dropout is often better.
+
+260
+00:13:17,980 --> 00:13:20,920
+Because we found that GNNs actually experience
+
+261
+00:13:20,920 --> 00:13:23,440
+under fitting more often than over fitting.
+
+262
+00:13:23,440 --> 00:13:25,405
+So BatchNorm-, uh, sorry.
+
+263
+00:13:25,405 --> 00:13:29,590
+So our drop out doesn't-, uh, it doesn't help too much.
+
+264
+00:13:29,590 --> 00:13:31,390
+And then we found that, uh,
+
+265
+00:13:31,390 --> 00:13:34,510
+PRelu activation actually really stands out.
+
+266
+00:13:34,510 --> 00:13:37,795
+And this is our new findings in this paper and, ah,
+
+267
+00:13:37,795 --> 00:13:41,725
+versus the common practice of only using the ReLu activation.
+
+268
+00:13:41,725 --> 00:13:44,410
+And finally, we found that sum aggregation is always
+
+269
+00:13:44,410 --> 00:13:47,005
+better because we have explained in the lecture,
+
+270
+00:13:47,005 --> 00:13:51,380
+that sum is the most expressive agg- aggregator that we could have.
+
+271
+00:13:52,860 --> 00:13:56,335
+And then we'll go on to look at the inter-layer designs.
+
+272
+00:13:56,335 --> 00:14:01,300
+Um, first, we found that the optimal number of layers is really hard to decide.
+
+273
+00:14:01,300 --> 00:14:04,210
+You can see their rankings are pretty, uh, even.
+
+274
+00:14:04,210 --> 00:14:09,370
+And we argue that this is really highly dependent on the task that we have.
+
+275
+00:14:09,370 --> 00:14:11,530
+And also we find that, uh,
+
+276
+00:14:11,530 --> 00:14:14,095
+sk- skip connections can really enable
+
+277
+00:14:14,095 --> 00:14:18,380
+hierarchical node representation therefore is much desired.
+
+278
+00:14:19,530 --> 00:14:23,200
+And finally, we will look at the learning configurations.
+
+279
+00:14:23,200 --> 00:14:27,460
+We found that the optimal batch size and learning rate is also hard to decide.
+
+280
+00:14:27,460 --> 00:14:29,980
+And therefore it's highly dependent on the task.
+
+281
+00:14:29,980 --> 00:14:35,570
+And we found that the Adam optimizer and training more epochs are generally better.
+
+282
+00:14:36,930 --> 00:14:40,945
+The second key result is the understanding of GNN tasks.
+
+283
+00:14:40,945 --> 00:14:45,535
+First, we found that GNN designs in different tasks vary significantly.
+
+284
+00:14:45,535 --> 00:14:49,765
+So this motivates that studying the task space is really crucial.
+
+285
+00:14:49,765 --> 00:14:51,580
+So if we look at design,
+
+286
+00:14:51,580 --> 00:14:53,645
+um, tradeoff in different tasks,
+
+287
+00:14:53,645 --> 00:14:56,200
+like BZR proteins and smallworld,
+
+288
+00:14:56,200 --> 00:14:57,965
+sometimes max aggregation is better,
+
+289
+00:14:57,965 --> 00:15:00,680
+sometimes mean is better and sometimes sum is better.
+
+290
+00:15:00,680 --> 00:15:02,555
+And similarly for a number of layers,
+
+291
+00:15:02,555 --> 00:15:04,370
+sometimes a eight-layer is better,
+
+292
+00:15:04,370 --> 00:15:08,100
+sometimes two-layer is better, uh, and etc.
+
+293
+00:15:09,360 --> 00:15:14,270
+So this, uh, argues that our GNN task space is pretty helpful.
+
+294
+00:15:14,270 --> 00:15:19,980
+So what we're going to do is to compute pairwise similarities between all GNN tasks.
+
+295
+00:15:19,980 --> 00:15:22,770
+So, uh, recall how we compute GNN task.
+
+296
+00:15:22,770 --> 00:15:26,210
+We will measure the similarity based on anchor model performance.
+
+297
+00:15:26,210 --> 00:15:31,295
+And then, uh, the argument is that our task similarity computation is really cheap.
+
+298
+00:15:31,295 --> 00:15:36,510
+And we found that using 12-anchor models is already a good approximation.
+
+299
+00:15:37,980 --> 00:15:43,265
+And our key result is that the proposed GNN task space is pretty informative.
+
+300
+00:15:43,265 --> 00:15:46,410
+So we identify two group of GNN task.
+
+301
+00:15:46,410 --> 00:15:49,010
+Group A relies on feature information.
+
+302
+00:15:49,010 --> 00:15:51,740
+Uh, and these are some node cla- or graph
+
+303
+00:15:51,740 --> 00:15:55,535
+classification task where input graphs have high dimensional features.
+
+304
+00:15:55,535 --> 00:16:01,080
+And Group B, our task relies on structural information where nods have fewer of,
+
+305
+00:16:01,080 --> 00:16:06,000
+uh, features but predictions are highly dependent on the graph structure.
+
+306
+00:16:07,470 --> 00:16:11,080
+And then we'll do PCA and do dimension,
+
+307
+00:16:11,080 --> 00:16:14,105
+uh, reduction, uh, to visualize this in 2D space.
+
+308
+00:16:14,105 --> 00:16:19,890
+And indeed we verified that similar tasks can have similar best architecture designs.
+
+309
+00:16:22,060 --> 00:16:25,040
+And finally, we will go on to transfer,
+
+310
+00:16:25,040 --> 00:16:27,065
+uh, our approach to novel task.
+
+311
+00:16:27,065 --> 00:16:29,750
+So here we conduct a case study that is to generalize
+
+312
+00:16:29,750 --> 00:16:33,445
+the best models to unseen OGB task and to,
+
+313
+00:16:33,445 --> 00:16:35,905
+uh, that the observation that the OGB, uh,
+
+314
+00:16:35,905 --> 00:16:39,380
+molecule, uh, prediction task is unique from other tasks.
+
+315
+00:16:39,380 --> 00:16:40,850
+So it's 20 times larger,
+
+316
+00:16:40,850 --> 00:16:44,070
+highly imbalanced, and requires out-of-distribution generalization.
+
+317
+00:16:44,070 --> 00:16:47,760
+So this is really a novel task compared to the tasks that we have seen.
+
+318
+00:16:47,760 --> 00:16:52,015
+And here's a concrete step to apply our approach to a novel task.
+
+319
+00:16:52,015 --> 00:16:54,290
+So the first step is to measure 12,
+
+320
+00:16:54,290 --> 00:16:57,065
+uh, anchor model performance on a new task.
+
+321
+00:16:57,065 --> 00:17:01,815
+And then we're going to compute similarity between the new task and the existing task.
+
+322
+00:17:01,815 --> 00:17:04,730
+Finally, we'll recommend the best design
+
+323
+00:17:04,730 --> 00:17:08,370
+from the existing task with the highest similarity.
+
+324
+00:17:08,460 --> 00:17:10,990
+So here are the concrete results.
+
+325
+00:17:10,990 --> 00:17:12,880
+Um, so we'll pick two models,
+
+326
+00:17:12,880 --> 00:17:15,474
+uh, using our task similarity metric.
+
+327
+00:17:15,474 --> 00:17:20,274
+So task A is highly similar to OGB and task B are not similar to OGB.
+
+328
+00:17:20,275 --> 00:17:24,560
+And our finding is that transferring the best model from task A,
+
+329
+00:17:24,560 --> 00:17:27,109
+really achieves SOTA performance on OGB.
+
+330
+00:17:27,109 --> 00:17:31,310
+However, uh, transfer the best model from task B performs badly on OGB.
+
+331
+00:17:31,310 --> 00:17:36,330
+So this really, uh, illustrates that the proposed task metric is really helpful.
+
+332
+00:17:36,330 --> 00:17:41,880
+And our task space can really guide the best model transfer to node tasks.
+
+333
+00:17:42,870 --> 00:17:45,430
+To summarize- to summary,
+
+334
+00:17:45,430 --> 00:17:46,790
+uh, in this paper,
+
+335
+00:17:46,790 --> 00:17:51,875
+we proposed the first systematic investigation of general guidelines for GNN design.
+
+336
+00:17:51,875 --> 00:17:54,370
+And the understandings of GNN tasks as well
+
+337
+00:17:54,370 --> 00:17:56,960
+as transferring best GNN designs across tasks.
+
+338
+00:17:56,960 --> 00:18:01,800
+In addition, we also released GraphGym as an easy to use code platform for GNNs.
+
+339
+00:18:01,800 --> 00:18:04,730
+Uh, thank you for your attention.
+

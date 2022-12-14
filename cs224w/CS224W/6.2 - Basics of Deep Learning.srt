@@ -1,0 +1,2380 @@
+1
+00:00:04,130 --> 00:00:07,125
+So what we are going to, uh,
+
+2
+00:00:07,125 --> 00:00:10,260
+discuss today is, uh, three topics.
+
+3
+00:00:10,260 --> 00:00:13,469
+First, I'm going to give a basic overview
+
+4
+00:00:13,469 --> 00:00:17,070
+of rudimentary deep learning neural network concepts.
+
+5
+00:00:17,070 --> 00:00:20,235
+Uh, and this will be important so that we all get on the same page.
+
+6
+00:00:20,235 --> 00:00:23,400
+And then I'm going to spend majority of the time talking about
+
+7
+00:00:23,400 --> 00:00:26,625
+deep learning for graphs and this concept of graph neural networks.
+
+8
+00:00:26,625 --> 00:00:30,270
+And then I'm going to discuss two specific, uh, architectures.
+
+9
+00:00:30,270 --> 00:00:34,275
+One is called graph convolutional networks and the other one is called,
+
+10
+00:00:34,275 --> 00:00:36,780
+uh, GraphSAGE, uh, to give you some intuition.
+
+11
+00:00:36,780 --> 00:00:38,460
+And then through, uh,
+
+12
+00:00:38,460 --> 00:00:40,820
+uh- through then series of the next lectures,
+
+13
+00:00:40,820 --> 00:00:43,580
+we are then going to go more in- deeper into the theory,
+
+14
+00:00:43,580 --> 00:00:46,380
+more go- deeper into different applications, different,
+
+15
+00:00:46,380 --> 00:00:50,120
+uh- different architectures, different design choices, um, and so on.
+
+16
+00:00:50,120 --> 00:00:53,320
+So we are going to talk about this graph neural networks topic,
+
+17
+00:00:53,320 --> 00:00:54,930
+uh, for the- for the next,
+
+18
+00:00:54,930 --> 00:00:56,525
+uh, couple of lectures.
+
+19
+00:00:56,525 --> 00:00:59,405
+So let's talk about, uh,
+
+20
+00:00:59,405 --> 00:01:02,060
+basics or do a quick tutorial introduction,
+
+21
+00:01:02,060 --> 00:01:04,555
+uh, to deep learning and deep neural networks.
+
+22
+00:01:04,555 --> 00:01:07,325
+So we will think of machine learning,
+
+23
+00:01:07,325 --> 00:01:10,410
+uh, supervised learning as an optimization problem.
+
+24
+00:01:10,410 --> 00:01:13,250
+So the idea is that we are given some inputs x,
+
+25
+00:01:13,250 --> 00:01:17,395
+and the goal is to predict or to produce outputs, uh, y.
+
+26
+00:01:17,395 --> 00:01:21,245
+And these outputs y we will call labels or classes and so on.
+
+27
+00:01:21,245 --> 00:01:24,015
+Um, and x can be represented in different ways.
+
+28
+00:01:24,015 --> 00:01:26,555
+X can be a vector of real numbers.
+
+29
+00:01:26,555 --> 00:01:28,310
+X can be a sequence,
+
+30
+00:01:28,310 --> 00:01:29,750
+like a natural language sequence,
+
+31
+00:01:29,750 --> 00:01:32,650
+sequence of word, sequence of tokens, voices.
+
+32
+00:01:32,650 --> 00:01:34,310
+It can be matrices,
+
+33
+00:01:34,310 --> 00:01:36,680
+meaning it can be a fixed size matrix like a-
+
+34
+00:01:36,680 --> 00:01:39,620
+the images that are already sized to be the same size.
+
+35
+00:01:39,620 --> 00:01:42,445
+Or it can be also an entire graph,
+
+36
+00:01:42,445 --> 00:01:43,995
+um, or a node in a graph,
+
+37
+00:01:43,995 --> 00:01:45,525
+which is what we will be, uh,
+
+38
+00:01:45,525 --> 00:01:47,610
+interested in, uh, later down,
+
+39
+00:01:47,610 --> 00:01:49,065
+uh, in the lecture today.
+
+40
+00:01:49,065 --> 00:01:52,730
+And then, right, the goal is that we want to map this abstract x,
+
+41
+00:01:52,730 --> 00:01:55,140
+whatever it is into the label y.
+
+42
+00:01:55,140 --> 00:01:57,375
+So we wanna be able to predict, uh, the label y.
+
+43
+00:01:57,375 --> 00:01:59,415
+And we are going to, uh,
+
+44
+00:01:59,415 --> 00:02:01,880
+need to learn this function that makes this mapping.
+
+45
+00:02:01,880 --> 00:02:06,955
+And we are going to formulate learning of this function as an optimization problem.
+
+46
+00:02:06,955 --> 00:02:10,280
+So we formulated as an optimization problem in
+
+47
+00:02:10,280 --> 00:02:13,640
+a sense that we say this function f that we are interested in,
+
+48
+00:02:13,640 --> 00:02:16,580
+that will take input x and produ- produce output
+
+49
+00:02:16,580 --> 00:02:19,820
+y would be parameterized by some parameters Theta.
+
+50
+00:02:19,820 --> 00:02:23,900
+And our goal will be that we will define this notion of a loss,
+
+51
+00:02:23,900 --> 00:02:25,880
+um, that we will say what is
+
+52
+00:02:25,880 --> 00:02:29,080
+the discrepancy between the predicted value and the true value?
+
+53
+00:02:29,080 --> 00:02:32,055
+So there are two important,
+
+54
+00:02:32,055 --> 00:02:33,690
+uh, things here, right?
+
+55
+00:02:33,690 --> 00:02:37,260
+Is that first, we are going to say, let's minimize, uh,
+
+56
+00:02:37,260 --> 00:02:39,705
+over these model parameters, uh,
+
+57
+00:02:39,705 --> 00:02:41,960
+Theta such that this discrepancy,
+
+58
+00:02:41,960 --> 00:02:43,749
+this loss is minimized.
+
+59
+00:02:43,749 --> 00:02:46,440
+So, uh, Theta is a set of parameters,
+
+60
+00:02:46,440 --> 00:02:47,850
+uh, we want to optimize.
+
+61
+00:02:47,850 --> 00:02:51,515
+Uh, you know, this could be a scalar value,
+
+62
+00:02:51,515 --> 00:02:53,465
+a vector, an entire matrix,
+
+63
+00:02:53,465 --> 00:02:55,090
+or a set of matrices.
+
+64
+00:02:55,090 --> 00:02:56,250
+Uh, and for example,
+
+65
+00:02:56,250 --> 00:02:57,780
+if you think in these, uh- uh,
+
+66
+00:02:57,780 --> 00:03:03,675
+laws-based framework, um, our, um, uh, deep,
+
+67
+00:03:03,675 --> 00:03:05,910
+uh- shallow encoders like, uh,
+
+68
+00:03:05,910 --> 00:03:07,470
+DeepWalk and node2vec ,
+
+69
+00:03:07,470 --> 00:03:09,575
+they're- in their- in those- those cases,
+
+70
+00:03:09,575 --> 00:03:12,380
+our parameter matrix Theta was really
+
+71
+00:03:12,380 --> 00:03:16,250
+the embedding matrix z in the shallower encoder case, right?
+
+72
+00:03:16,250 --> 00:03:18,575
+So- so Theta is just a generic, uh,
+
+73
+00:03:18,575 --> 00:03:21,805
+symbol to describe the parameters of the model.
+
+74
+00:03:21,805 --> 00:03:23,690
+And then loss function, as I said,
+
+75
+00:03:23,690 --> 00:03:26,690
+measures the or quantifies the discrepancy
+
+76
+00:03:26,690 --> 00:03:29,900
+between the predicted value and the re- and the, uh, true value.
+
+77
+00:03:29,900 --> 00:03:31,175
+So for example, um,
+
+78
+00:03:31,175 --> 00:03:33,289
+if you think about a regression,
+
+79
+00:03:33,289 --> 00:03:35,725
+so predicting real value numbers,
+
+80
+00:03:35,725 --> 00:03:38,370
+then y is the correct prediction,
+
+81
+00:03:38,370 --> 00:03:40,860
+f of x is the prediction,
+
+82
+00:03:40,860 --> 00:03:42,315
+what our modulary terms,
+
+83
+00:03:42,315 --> 00:03:44,685
+and L2 loss is simply ,
+
+84
+00:03:44,685 --> 00:03:49,040
+uh,a square, uh, of the distance- of the difference between the two numbers, right?
+
+85
+00:03:49,040 --> 00:03:53,070
+So we would say, I want to- I want to find the model parameters Theta
+
+86
+00:03:53,070 --> 00:03:57,470
+so- so- such that the sum of the squares of the differences is as small as possible,
+
+87
+00:03:57,470 --> 00:04:00,905
+square differences between the true value and the predicted value.
+
+88
+00:04:00,905 --> 00:04:05,310
+And of course, there are many different types of losses one may want to,
+
+89
+00:04:05,310 --> 00:04:07,160
+uh, use depending on the problem,
+
+90
+00:04:07,160 --> 00:04:09,080
+whether it's a regression wets- whether it's like
+
+91
+00:04:09,080 --> 00:04:11,180
+classification, whether it is, you know,
+
+92
+00:04:11,180 --> 00:04:14,240
+this, uh, um- whether it is a ranking task,
+
+93
+00:04:14,240 --> 00:04:16,390
+whether it's a classification task.
+
+94
+00:04:16,390 --> 00:04:19,665
+Um, and, uh, here's the link where you can,
+
+95
+00:04:19,665 --> 00:04:23,030
+uh, uh, talk- learn more about various types of losses.
+
+96
+00:04:23,030 --> 00:04:25,405
+Um, I won't go more into details of this,
+
+97
+00:04:25,405 --> 00:04:26,940
+but, you know, we mostly work with,
+
+98
+00:04:26,940 --> 00:04:29,010
+uh, L2 loss, which is used for,
+
+99
+00:04:29,010 --> 00:04:30,860
+uh, regression most often.
+
+100
+00:04:30,860 --> 00:04:32,270
+So when we are trying to predict, uh,
+
+101
+00:04:32,270 --> 00:04:34,760
+real values, uh, or cross entropy loss,
+
+102
+00:04:34,760 --> 00:04:36,125
+which I'm going to define later,
+
+103
+00:04:36,125 --> 00:04:37,670
+which is all about classification,
+
+104
+00:04:37,670 --> 00:04:38,960
+which is like classifying, you know,
+
+105
+00:04:38,960 --> 00:04:41,020
+single colors, for example.
+
+106
+00:04:41,020 --> 00:04:45,140
+So now let me give you an example of a loss function, right?
+
+107
+00:04:45,140 --> 00:04:49,690
+One common, uh, loss function that we are interested in is called a cross entropy.
+
+108
+00:04:49,690 --> 00:04:54,170
+Um, and let's say that we are talking about multiclass classification,
+
+109
+00:04:54,170 --> 00:04:56,270
+so we can have multiple color- colors.
+
+110
+00:04:56,270 --> 00:04:59,425
+So in this case, let say we have five classes- five different colors.
+
+111
+00:04:59,425 --> 00:05:02,570
+So, uh, this means that we are going to encode the-
+
+112
+00:05:02,570 --> 00:05:06,695
+the color using what is called one-hot encoding,
+
+113
+00:05:06,695 --> 00:05:08,470
+which means that we will say, aha,
+
+114
+00:05:08,470 --> 00:05:10,250
+now what we are trying to predict,
+
+115
+00:05:10,250 --> 00:05:14,540
+we are trying to predict a vector of dimensionality five, where, you know,
+
+116
+00:05:14,540 --> 00:05:16,670
+the first they mentioned perhaps corresponds to blue,
+
+117
+00:05:16,670 --> 00:05:18,145
+second corresponds to red,
+
+118
+00:05:18,145 --> 00:05:19,570
+third corresponds to green,
+
+119
+00:05:19,570 --> 00:05:22,030
+fourth corresponds to black and I don't know,
+
+120
+00:05:22,030 --> 00:05:24,250
+uh, the last corresponds to white, right?
+
+121
+00:05:24,250 --> 00:05:29,095
+So now I have- and if I given node of interest is- is green,
+
+122
+00:05:29,095 --> 00:05:32,420
+then, you know, the third entry of this vector is set to one.
+
+123
+00:05:32,420 --> 00:05:36,145
+So this is now how I encode the, uh- uh,
+
+124
+00:05:36,145 --> 00:05:41,150
+the, the- the colors in using this what is called one-hot encoding because there's 1,
+
+125
+00:05:41,150 --> 00:05:42,910
+1 and the rest is zero,
+
+126
+00:05:42,910 --> 00:05:44,750
+and then I can say, aha,
+
+127
+00:05:44,750 --> 00:05:48,020
+what I am going to do is I'm going to model this now in some sense,
+
+128
+00:05:48,020 --> 00:05:51,305
+probability distribution over colors, um, using,
+
+129
+00:05:51,305 --> 00:05:56,580
+uh, a function f, that will be a softmax of some function g. Um,
+
+130
+00:05:56,580 --> 00:05:58,000
+and, you know, lecture 3,
+
+131
+00:05:58,000 --> 00:05:59,945
+we defined the notion of soft max,
+
+132
+00:05:59,945 --> 00:06:03,425
+which is simply you go over to the ne- over the entries,
+
+133
+00:06:03,425 --> 00:06:05,870
+you expo- exponentiate them, and,
+
+134
+00:06:05,870 --> 00:06:08,450
+uh, you make sure that they sum up to one, right?
+
+135
+00:06:08,450 --> 00:06:10,190
+So for example, in our case,
+
+136
+00:06:10,190 --> 00:06:11,630
+maybe f of x, uh,
+
+137
+00:06:11,630 --> 00:06:13,550
+after we put in, uh,
+
+138
+00:06:13,550 --> 00:06:16,130
+f, uh, de- denote x,
+
+139
+00:06:16,130 --> 00:06:18,365
+we would produce the set of numbers
+
+140
+00:06:18,365 --> 00:06:21,140
+where basically you would say 100 probability point, you know,
+
+141
+00:06:21,140 --> 00:06:22,400
+we think the color is blue,
+
+142
+00:06:22,400 --> 00:06:26,500
+which points three-eighths and had read 0.40 is green and so on and so forth.
+
+143
+00:06:26,500 --> 00:06:31,350
+So now, what we wanna do is we want to measure the quality of this prediction, right?
+
+144
+00:06:31,350 --> 00:06:34,415
+We wanna say, what is the discrepancy between
+
+145
+00:06:34,415 --> 00:06:39,955
+the predicted probability of being green and the- the item truly being green.
+
+146
+00:06:39,955 --> 00:06:44,160
+And the way we computed this is no- is- is, uh, denoted, uh,
+
+147
+00:06:44,160 --> 00:06:46,625
+or called cross entropy loss,
+
+148
+00:06:46,625 --> 00:06:47,960
+where basically we are seeing,
+
+149
+00:06:47,960 --> 00:06:50,480
+let's sum up over all the classes.
+
+150
+00:06:50,480 --> 00:06:51,540
+Um, you know, here,
+
+151
+00:06:51,540 --> 00:06:52,730
+we have five classes,
+
+152
+00:06:52,730 --> 00:06:54,095
+so C goes up to five.
+
+153
+00:06:54,095 --> 00:06:55,620
+We say white is y_i?
+
+154
+00:06:55,620 --> 00:06:57,890
+What is the true probability of
+
+155
+00:06:57,890 --> 00:07:01,490
+that class times the lock predicted probability of that plus, right?
+
+156
+00:07:01,490 --> 00:07:05,780
+So in this sense, what this means is y is the actual and
+
+157
+00:07:05,780 --> 00:07:10,805
+f of x is the predicted value of the ith glass or the ith color.
+
+158
+00:07:10,805 --> 00:07:12,995
+And to intuition is the lower the loss,
+
+159
+00:07:12,995 --> 00:07:15,860
+the closer the pred- prediction is to one-hot, right?
+
+160
+00:07:15,860 --> 00:07:18,140
+If- if the value here would be one,
+
+161
+00:07:18,140 --> 00:07:20,620
+then log of one is zero.
+
+162
+00:07:20,620 --> 00:07:23,585
+So we made the correct prediction.
+
+163
+00:07:23,585 --> 00:07:27,740
+So now that we have a loss- defined the loss or
+
+164
+00:07:27,740 --> 00:07:32,540
+a discrepancy over any individual example or an individual data point,
+
+165
+00:07:32,540 --> 00:07:35,615
+we can then define the notion of a total loss,
+
+166
+00:07:35,615 --> 00:07:39,964
+which is just a loss summed up over all the training examples.
+
+167
+00:07:39,964 --> 00:07:45,560
+So it's a total amount of discrepancy between the predicted value and the true value,
+
+168
+00:07:45,560 --> 00:07:49,095
+summed up over all the training examples, right?
+
+169
+00:07:49,095 --> 00:07:50,700
+And what we want, right,
+
+170
+00:07:50,700 --> 00:07:52,805
+we want to find our function f,
+
+171
+00:07:52,805 --> 00:07:55,100
+our parameters to function f Theta,
+
+172
+00:07:55,100 --> 00:08:00,905
+so that this total discrepancy between the true values and predicted values is minimized.
+
+173
+00:08:00,905 --> 00:08:02,030
+And in this case,
+
+174
+00:08:02,030 --> 00:08:06,260
+we measure the discrepancy, uh, ah, for each,
+
+175
+00:08:06,260 --> 00:08:11,660
+uh, data point, for each prediction using this notion of a cross entropy loss.
+
+176
+00:08:11,660 --> 00:08:14,495
+So that's essentially, uh, the idea.
+
+177
+00:08:14,495 --> 00:08:20,209
+So now that we have defined the notion of loss and we have defined the notion, uh,
+
+178
+00:08:20,209 --> 00:08:22,400
+of the optimization problem,
+
+179
+00:08:22,400 --> 00:08:25,580
+basically trying to model parameters that minimize the loss.
+
+180
+00:08:25,580 --> 00:08:26,930
+The next question is,
+
+181
+00:08:26,930 --> 00:08:30,035
+how do we optimize this objective function, right?
+
+182
+00:08:30,035 --> 00:08:35,740
+And a classic way to- to minimize objective functions goes through,
+
+183
+00:08:35,740 --> 00:08:40,580
+uh, various kinds of more or less advanced notions of gradient descent.
+
+184
+00:08:40,580 --> 00:08:42,385
+So this notion of a gradient,
+
+185
+00:08:42,385 --> 00:08:43,520
+notion of a derivative,
+
+186
+00:08:43,520 --> 00:08:46,910
+the becomes central and most important, right?
+
+187
+00:08:46,910 --> 00:08:49,295
+So recall that gradient vector, uh,
+
+188
+00:08:49,295 --> 00:08:53,419
+at the given point is a direction and the rate of fastest,
+
+189
+00:08:53,419 --> 00:08:54,920
+uh, increase of a function.
+
+190
+00:08:54,920 --> 00:08:57,155
+So I can say, aha, I have my loss function,
+
+191
+00:08:57,155 --> 00:09:00,260
+and now I can ask my loss function, I can evaluate it,
+
+192
+00:09:00,260 --> 00:09:03,665
+um, with respect to my parameters,
+
+193
+00:09:03,665 --> 00:09:06,200
+and I can- this will tell me if I'm right- if
+
+194
+00:09:06,200 --> 00:09:09,050
+my parameters have a certain value right now, um,
+
+195
+00:09:09,050 --> 00:09:10,970
+what is the direction in which,
+
+196
+00:09:10,970 --> 00:09:12,650
+um, this, uh- this,
+
+197
+00:09:12,650 --> 00:09:15,230
+uh objective function, this loss function would,
+
+198
+00:09:15,230 --> 00:09:18,285
+um- would increase the fastest.
+
+199
+00:09:18,285 --> 00:09:22,240
+And- and that is very important because this means
+
+200
+00:09:22,240 --> 00:09:26,110
+then that I can think about what is called a directional derivative,
+
+201
+00:09:26,110 --> 00:09:29,920
+which is a multi- of a multivariable function, like for example,
+
+202
+00:09:29,920 --> 00:09:31,945
+the loss function, which is um,
+
+203
+00:09:31,945 --> 00:09:35,125
+where the variable are our model parameters theta.
+
+204
+00:09:35,125 --> 00:09:39,310
+Basically, it, uh, it basically tells us that alo- at a given point,
+
+205
+00:09:39,310 --> 00:09:44,320
+along a given vector represents instantaneous rate of change of a function along,
+
+206
+00:09:44,320 --> 00:09:45,580
+uh, at that vector.
+
+207
+00:09:45,580 --> 00:09:49,630
+So this means that I can now say given my current parameters,
+
+208
+00:09:49,630 --> 00:09:56,650
+in which direction should I change them such that the loss will decrease the most,
+
+209
+00:09:56,650 --> 00:09:58,435
+and that's essentially, uh,
+
+210
+00:09:58,435 --> 00:09:59,710
+what we are trying to do, right.
+
+211
+00:09:59,710 --> 00:10:02,500
+We would say we have a current estimate of our parameters,
+
+212
+00:10:02,500 --> 00:10:05,350
+let's compute the directional derivative of
+
+213
+00:10:05,350 --> 00:10:09,490
+our loss function surface or up that point where we are,
+
+214
+00:10:09,490 --> 00:10:12,730
+and then we are going to move into the direction, um,
+
+215
+00:10:12,730 --> 00:10:18,879
+of the fastest decrease of the loss and hopefully reach some good local,
+
+216
+00:10:18,879 --> 00:10:21,865
+uh, solution or a global minimum solution.
+
+217
+00:10:21,865 --> 00:10:26,350
+So gradient evaluated for the given point is the direction or derivative,
+
+218
+00:10:26,350 --> 00:10:31,345
+um, that gives me the direction of the largest increase, right.
+
+219
+00:10:31,345 --> 00:10:34,060
+Um, we are not interested in the increase,
+
+220
+00:10:34,060 --> 00:10:36,479
+we are interested in the decrease,
+
+221
+00:10:36,479 --> 00:10:40,140
+so we are going to walk in the direction opposite of the gradient.
+
+222
+00:10:40,140 --> 00:10:41,925
+We are going to walk- walk down,
+
+223
+00:10:41,925 --> 00:10:45,410
+not walk up, in terms of the gradient, uh, update.
+
+224
+00:10:45,410 --> 00:10:48,160
+Right. So a way how we think about this is to use
+
+225
+00:10:48,160 --> 00:10:50,935
+the algorithm called gradient, uh, descent.
+
+226
+00:10:50,935 --> 00:10:53,500
+This is the most basic version and then everything just kind of,
+
+227
+00:10:53,500 --> 00:10:55,330
+uh, uses the same intuition,
+
+228
+00:10:55,330 --> 00:10:57,055
+but it's just an improved over this.
+
+229
+00:10:57,055 --> 00:11:00,205
+And essentially, what this is saying is let me, uh,
+
+230
+00:11:00,205 --> 00:11:03,565
+repeatedly update the weights or the parameters of the model
+
+231
+00:11:03,565 --> 00:11:07,030
+in the opposite direction of the gradients until I converge, right.
+
+232
+00:11:07,030 --> 00:11:11,530
+So I say I have my current estimate of the grade- of the parameters,
+
+233
+00:11:11,530 --> 00:11:15,505
+let me evaluate the gradient, uh,
+
+234
+00:11:15,505 --> 00:11:19,030
+the derivative of the loss function at that, uh,
+
+235
+00:11:19,030 --> 00:11:22,990
+set of parameters at that point where my parameters currently are.
+
+236
+00:11:22,990 --> 00:11:27,790
+And then, you know, let me make a step in the direction that is opposite of the gradient.
+
+237
+00:11:27,790 --> 00:11:29,350
+So that's why I had minus here.
+
+238
+00:11:29,350 --> 00:11:31,210
+And this constant eta,
+
+239
+00:11:31,210 --> 00:11:32,860
+this is the learning rate, right?
+
+240
+00:11:32,860 --> 00:11:35,395
+It says how big of a step I wanna make.
+
+241
+00:11:35,395 --> 00:11:38,305
+And then this gives me the new updated set of parameters.
+
+242
+00:11:38,305 --> 00:11:40,300
+And now again, I put them here,
+
+243
+00:11:40,300 --> 00:11:41,575
+I evaluate the gradient,
+
+244
+00:11:41,575 --> 00:11:44,080
+and- and, uh, I make an- an update.
+
+245
+00:11:44,080 --> 00:11:46,450
+So basically in training, we say that, you know,
+
+246
+00:11:46,450 --> 00:11:49,465
+we optimize this Theta parameters iteratively,
+
+247
+00:11:49,465 --> 00:11:52,990
+and one iteration is one step of gradient descent.
+
+248
+00:11:52,990 --> 00:11:55,810
+And as I said, uh, eta here,
+
+249
+00:11:55,810 --> 00:12:01,510
+is the learning rate which is a hyperparameter that controls the size of a step, right.
+
+250
+00:12:01,510 --> 00:12:05,605
+Uh, and the idea is that usually at the beginning you could make bigger steps.
+
+251
+00:12:05,605 --> 00:12:07,300
+But as you get closer to the minimum,
+
+252
+00:12:07,300 --> 00:12:11,020
+you wanna make smaller steps because you don't wanna overstep.
+
+253
+00:12:11,020 --> 00:12:13,630
+You don't wanna kind of jump over the value,
+
+254
+00:12:13,630 --> 00:12:15,760
+you want to slowly descend into the value.
+
+255
+00:12:15,760 --> 00:12:17,380
+If you think of a function like this, right,
+
+256
+00:12:17,380 --> 00:12:19,435
+you don't want to kind of jump across.
+
+257
+00:12:19,435 --> 00:12:24,040
+And an ideal termination condition is when the gradient is zero,
+
+258
+00:12:24,040 --> 00:12:27,010
+which means you got stuck in some local minimum
+
+259
+00:12:27,010 --> 00:12:30,325
+where the function is flat so you know you are at the bottom.
+
+260
+00:12:30,325 --> 00:12:33,580
+In practice, um, we would stop training if
+
+261
+00:12:33,580 --> 00:12:36,700
+it no longer improves the performance on the validation set.
+
+262
+00:12:36,700 --> 00:12:40,915
+So rather than stopping when the gradient is zero, in practice,
+
+263
+00:12:40,915 --> 00:12:44,695
+we have a separate validation set over which we
+
+264
+00:12:44,695 --> 00:12:48,865
+validate the predictions of the model but we don't use it to compute gradients,
+
+265
+00:12:48,865 --> 00:12:51,940
+and, um, as soon as our performance on that
+
+266
+00:12:51,940 --> 00:12:55,405
+validation set stops improving, we stop the training.
+
+267
+00:12:55,405 --> 00:12:56,590
+That's usually the case,
+
+268
+00:12:56,590 --> 00:12:57,670
+even though, you know,
+
+269
+00:12:57,670 --> 00:12:58,750
+it might be still, uh,
+
+270
+00:12:58,750 --> 00:13:03,085
+possible to keep, uh, optimizing your, uh, objective function.
+
+271
+00:13:03,085 --> 00:13:08,500
+So the problem with this general gradient descent idea is that
+
+272
+00:13:08,500 --> 00:13:13,270
+computing the exact gradient requires a pass over the entire data set.
+
+273
+00:13:13,270 --> 00:13:16,900
+Uh, this is the case because if you remember earlier when I defined the loss,
+
+274
+00:13:16,900 --> 00:13:19,540
+I said the loss measures the discrepancy between
+
+275
+00:13:19,540 --> 00:13:23,095
+the data point- the predicted value and the true value,
+
+276
+00:13:23,095 --> 00:13:27,700
+and the total loss is a sum of the losses over all the training examples.
+
+277
+00:13:27,700 --> 00:13:32,950
+So now, this means that this- even when you are computing the gradient of the loss,
+
+278
+00:13:32,950 --> 00:13:35,950
+it means you have to dis- kind of propagate the gradient
+
+279
+00:13:35,950 --> 00:13:39,160
+inside the sum over all the training examples.
+
+280
+00:13:39,160 --> 00:13:43,810
+So it mean- which- which means that when you compute the gradient, each discrepancy,
+
+281
+00:13:43,810 --> 00:13:46,105
+each training example evalu- uh,
+
+282
+00:13:46,105 --> 00:13:50,970
+and the loss evaluated at the training example will have some contribution to the,
+
+283
+00:13:50,970 --> 00:13:52,740
+uh, to the total gradients.
+
+284
+00:13:52,740 --> 00:13:57,450
+So it means that one iteration of gradient descent in this case would
+
+285
+00:13:57,450 --> 00:14:02,915
+allo- would require to make a pass over the entire, uh, training dataset.
+
+286
+00:14:02,915 --> 00:14:06,580
+Um, and this is problematic because modern data sets
+
+287
+00:14:06,580 --> 00:14:10,375
+often have or often contain billions of data points,
+
+288
+00:14:10,375 --> 00:14:13,780
+um, and this can become very expensive and very slow.
+
+289
+00:14:13,780 --> 00:14:16,555
+So the solution, the speedup,
+
+290
+00:14:16,555 --> 00:14:20,230
+is called stochastic gradient descent or SGD.
+
+291
+00:14:20,230 --> 00:14:25,270
+And the idea is that rather than computing the loss over all the training examples,
+
+292
+00:14:25,270 --> 00:14:28,795
+we are only going to s- to compute the loss
+
+293
+00:14:28,795 --> 00:14:32,570
+and the gradient of the loss over what is called a minibatch.
+
+294
+00:14:32,570 --> 00:14:36,615
+And the minibatch is simply some small subset of the data.
+
+295
+00:14:36,615 --> 00:14:39,345
+And this is what we will call an x.
+
+296
+00:14:39,345 --> 00:14:41,445
+So let me now, uh,
+
+297
+00:14:41,445 --> 00:14:44,235
+define a couple of very important concepts
+
+298
+00:14:44,235 --> 00:14:47,135
+that you are going to hear over and over again.
+
+299
+00:14:47,135 --> 00:14:51,655
+So first, we talked about the notion of batch,
+
+300
+00:14:51,655 --> 00:14:57,340
+which is a subset of the data over which we evaluate the gradient, right?
+
+301
+00:14:57,340 --> 00:15:00,475
+Rather than evaluating it over the entire training dataset,
+
+302
+00:15:00,475 --> 00:15:04,210
+we are going to evaluate it on a small subset of the training dataset,
+
+303
+00:15:04,210 --> 00:15:06,520
+maybe hundreds, maybe thousands examples.
+
+304
+00:15:06,520 --> 00:15:11,275
+Batch size is the number of data points in the minibatch, right.
+
+305
+00:15:11,275 --> 00:15:14,035
+Um, so this is, uh, uh, important.
+
+306
+00:15:14,035 --> 00:15:16,045
+Usually, we like to make batches bigger,
+
+307
+00:15:16,045 --> 00:15:21,085
+but bigger batches make the- make the optimization slower because for every step,
+
+308
+00:15:21,085 --> 00:15:22,525
+we need to compute, uh,
+
+309
+00:15:22,525 --> 00:15:24,865
+over, uh, larger batch size.
+
+310
+00:15:24,865 --> 00:15:30,220
+Iteration in terms of stochastic gradient descent is then one step of, uh,
+
+311
+00:15:30,220 --> 00:15:34,375
+stochastic gradient descent where we evaluate the gradient on a given minibatch,
+
+312
+00:15:34,375 --> 00:15:36,340
+and we call these an iteration.
+
+313
+00:15:36,340 --> 00:15:40,720
+And then an epoch is basically a full pass over the datasets.
+
+314
+00:15:40,720 --> 00:15:43,750
+So basically, it means we get processing batches 1, 2, 3,
+
+315
+00:15:43,750 --> 00:15:47,170
+4, 5 all the way until we exhaust the training dataset.
+
+316
+00:15:47,170 --> 00:15:49,915
+So if we have, I don't know, a million examples and, uh,
+
+317
+00:15:49,915 --> 00:15:51,385
+we have, I don't know,
+
+318
+00:15:51,385 --> 00:15:53,530
+uh, um, 100,000 batches,
+
+319
+00:15:53,530 --> 00:15:54,865
+each one of size 10,
+
+320
+00:15:54,865 --> 00:15:57,220
+so basically after we have pre-processed,
+
+321
+00:15:57,220 --> 00:16:00,385
+uh,100,000 batches, this is one- one epoch.
+
+322
+00:16:00,385 --> 00:16:02,740
+And then we go to the beginning and start from the,
+
+323
+00:16:02,740 --> 00:16:04,000
+uh, beginning again, right.
+
+324
+00:16:04,000 --> 00:16:09,040
+So the number of iterations is equal to the ratio of the dataset size,
+
+325
+00:16:09,040 --> 00:16:10,930
+uh, and the batch size.
+
+326
+00:16:10,930 --> 00:16:15,070
+And as I mentioned, if you create these batches, uh, uh,
+
+327
+00:16:15,070 --> 00:16:20,815
+uniformly at random, then SGD is unbiased estimator of the full gradient, right?
+
+328
+00:16:20,815 --> 00:16:24,355
+Um, of course, there is no guarantee on the rate of convergence.
+
+329
+00:16:24,355 --> 00:16:26,065
+And in practice, uh,
+
+330
+00:16:26,065 --> 00:16:29,185
+this means it requires tuning the learning rate.
+
+331
+00:16:29,185 --> 00:16:36,070
+And this SGD idea is kind of a common core idea that then many other, um,
+
+332
+00:16:36,070 --> 00:16:38,320
+optimizers, uh, improve on,
+
+333
+00:16:38,320 --> 00:16:41,290
+like ada- adagrad, adadelta,
+
+334
+00:16:41,290 --> 00:16:43,720
+M RMSprop and so on.
+
+335
+00:16:43,720 --> 00:16:49,045
+Essentially, all use this core idea of selecting the subsets of the- subset of data,
+
+336
+00:16:49,045 --> 00:16:52,240
+evaluating the gradient over it and making the steps.
+
+337
+00:16:52,240 --> 00:16:54,310
+Now- now the details, uh,
+
+338
+00:16:54,310 --> 00:16:56,770
+vary in terms of what data points you select,
+
+339
+00:16:56,770 --> 00:16:58,450
+how big of a step you make,
+
+340
+00:16:58,450 --> 00:17:00,760
+how do you decide on the step size,
+
+341
+00:17:00,760 --> 00:17:02,230
+um, and so on and so forth.
+
+342
+00:17:02,230 --> 00:17:07,194
+But essentially, this minibatch stochastic gradient descent is the core of,
+
+343
+00:17:07,194 --> 00:17:10,149
+um, optimization in deep learning.
+
+344
+00:17:10,150 --> 00:17:15,099
+So now that we have discussed the objective function,
+
+345
+00:17:15,099 --> 00:17:17,214
+we discussed the notion of a minibatch,
+
+346
+00:17:17,214 --> 00:17:20,574
+we discussed the notion of a stochastic gradient descent, now,
+
+347
+00:17:20,575 --> 00:17:21,640
+we need to, uh,
+
+348
+00:17:21,640 --> 00:17:24,609
+talk about how is- is this actually done?
+
+349
+00:17:24,609 --> 00:17:26,019
+How are these, um,
+
+350
+00:17:26,020 --> 00:17:29,305
+gradients, uh, computed, evaluated, right.
+
+351
+00:17:29,305 --> 00:17:32,440
+Because in the old days, pre-deep learning,
+
+352
+00:17:32,440 --> 00:17:35,590
+you actually had to write down the model with the set of equations
+
+353
+00:17:35,590 --> 00:17:39,100
+and then you have to do by hand computed these gradients essentially,
+
+354
+00:17:39,100 --> 00:17:41,020
+you know, like we did it in high school, uh,
+
+355
+00:17:41,020 --> 00:17:44,350
+many of you are computing the gradients by hand- by hand on the whiteboard.
+
+356
+00:17:44,350 --> 00:17:46,990
+So essentially, you would have to compute those gradients by
+
+357
+00:17:46,990 --> 00:17:49,810
+hand and then code them into your, uh,
+
+358
+00:17:49,810 --> 00:17:53,260
+software C++, Python, Matlab, whatever,
+
+359
+00:17:53,260 --> 00:17:55,285
+uh, to be then able to,
+
+360
+00:17:55,285 --> 00:17:56,860
+uh, run the optimization.
+
+361
+00:17:56,860 --> 00:18:00,025
+Um, and interestingly, you're writing deep learning.
+
+362
+00:18:00,025 --> 00:18:04,030
+In deep learning, this prediction functions f can be very complex, right?
+
+363
+00:18:04,030 --> 00:18:07,810
+It can be this complex multi-layer deep neural networks.
+
+364
+00:18:07,810 --> 00:18:10,810
+Uh, and what I'm going to show you now is that basically,
+
+365
+00:18:10,810 --> 00:18:13,030
+the benefit of these deep learning approaches is
+
+366
+00:18:13,030 --> 00:18:15,790
+that the gradient computation is actually very,
+
+367
+00:18:15,790 --> 00:18:17,710
+very simple and um,
+
+368
+00:18:17,710 --> 00:18:23,005
+it comes for free in a sense that as you- as you made more complex models,
+
+369
+00:18:23,005 --> 00:18:25,750
+you- the complexity of gradient computation
+
+370
+00:18:25,750 --> 00:18:28,524
+in terms of what you have to do as a- as a programmer,
+
+371
+00:18:28,524 --> 00:18:30,880
+um, uh, doesn't really affect you.
+
+372
+00:18:30,880 --> 00:18:32,815
+So the idea is the following, right?
+
+373
+00:18:32,815 --> 00:18:33,910
+Let's start with a very, uh,
+
+374
+00:18:33,910 --> 00:18:36,865
+simple function, uh, f, that, uh,
+
+375
+00:18:36,865 --> 00:18:40,315
+basically take the input x and multiplies it with W. So
+
+376
+00:18:40,315 --> 00:18:44,590
+our parameters Theta of the model is this, um, is this,
+
+377
+00:18:44,590 --> 00:18:48,430
+uh, object W. Now if f returns a scalar,
+
+378
+00:18:48,430 --> 00:18:50,290
+if f returns a single number,
+
+379
+00:18:50,290 --> 00:18:52,450
+then W should be a vector, right?
+
+380
+00:18:52,450 --> 00:18:55,420
+X is a vector times a vector gives me a scalar.
+
+381
+00:18:55,420 --> 00:18:58,300
+So then for example, the gradient,
+
+382
+00:18:58,300 --> 00:19:01,420
+with respect to, uh, uh,
+
+383
+00:19:01,420 --> 00:19:05,095
+v of f respect- respect to W, is simply, uh,
+
+384
+00:19:05,095 --> 00:19:08,950
+vector where- where we differentiate, uh,
+
+385
+00:19:08,950 --> 00:19:11,485
+f with respect to w_1,
+
+386
+00:19:11,485 --> 00:19:14,245
+w_2, w_3, which are the components of our, uh,
+
+387
+00:19:14,245 --> 00:19:16,245
+vector W. And this, um,
+
+388
+00:19:16,245 --> 00:19:20,870
+gradient is then simply the derivative evaluate at- at a particular,
+
+389
+00:19:20,870 --> 00:19:23,170
+specific point, uh, W. So basically,
+
+390
+00:19:23,170 --> 00:19:25,230
+we have to work out what these derivatives are,
+
+391
+00:19:25,230 --> 00:19:29,975
+then plug in the concrete number for w and, um, get to the value,
+
+392
+00:19:29,975 --> 00:19:34,760
+and that would be then the gradient of that point W. Now for example,
+
+393
+00:19:34,760 --> 00:19:36,809
+if f returns a vector,
+
+394
+00:19:36,809 --> 00:19:39,080
+so f is a more complex function,
+
+395
+00:19:39,080 --> 00:19:41,540
+then W would be a matrix, right.
+
+396
+00:19:41,540 --> 00:19:44,330
+We would have matrix times a vector, gives me a vector.
+
+397
+00:19:44,330 --> 00:19:46,355
+So, uh, in this case,
+
+398
+00:19:46,355 --> 00:19:49,515
+W would be what is called a weight matrix.
+
+399
+00:19:49,515 --> 00:19:52,485
+It is also called a Jacobian matrix.
+
+400
+00:19:52,485 --> 00:19:54,530
+And then the way you would compute the gradient is
+
+401
+00:19:54,530 --> 00:19:57,415
+exactly the same sum up but now you would take the derivate
+
+402
+00:19:57,415 --> 00:20:02,600
+with respect to every entry of that W. So with respect to w1 1,
+
+403
+00:20:02,600 --> 00:20:04,655
+w1 2, w1 3,
+
+404
+00:20:04,655 --> 00:20:06,410
+and then you know to end of the first level,
+
+405
+00:20:06,410 --> 00:20:08,060
+and then it'll be W2 1,
+
+406
+00:20:08,060 --> 00:20:09,560
+2 2 and so on, right.
+
+407
+00:20:09,560 --> 00:20:12,020
+But essentially it's, uh, it's the same,
+
+408
+00:20:12,020 --> 00:20:15,585
+so now the gradient would be, uh, the matrix.
+
+409
+00:20:15,585 --> 00:20:19,825
+Now, we just had this very simple, uh,
+
+410
+00:20:19,825 --> 00:20:24,970
+predictor that just states the input and multiplies it with the- with the W. But now,
+
+411
+00:20:24,970 --> 00:20:27,865
+what if we wanna create more complex predictors?
+
+412
+00:20:27,865 --> 00:20:30,695
+Imagine, uh, just for the sake of the example,
+
+413
+00:20:30,695 --> 00:20:33,350
+I wanna have this complex predictor, uh, f,
+
+414
+00:20:33,350 --> 00:20:35,975
+that now first takes input x,
+
+415
+00:20:35,975 --> 00:20:37,735
+multiplies it with W,
+
+416
+00:20:37,735 --> 00:20:41,080
+and then multi- w_1 and then multiplies it with w_2.
+
+417
+00:20:41,080 --> 00:20:43,850
+So this now seems kind of more complex because first,
+
+418
+00:20:43,850 --> 00:20:45,110
+we are multiplying with
+
+419
+00:20:45,110 --> 00:20:48,900
+a one weight- weight matrix and then we are multiplying with the second weight matrix.
+
+420
+00:20:48,900 --> 00:20:51,995
+In this case, parameters of the model are the two,
+
+421
+00:20:51,995 --> 00:20:54,505
+let say rate, uh, matrices.
+
+422
+00:20:54,505 --> 00:20:58,515
+And now what we'd like to do is we'd like to compute the derivative,
+
+423
+00:20:58,515 --> 00:21:01,110
+both with respect to W_1 and W_2.
+
+424
+00:21:01,110 --> 00:21:05,055
+And what happens here is that we can actually apply the chain rule, right?
+
+425
+00:21:05,055 --> 00:21:09,540
+The chain rule says if you take a deriva- if you wanna take a derivative of variable,
+
+426
+00:21:09,540 --> 00:21:13,950
+uh, uh, z with respect to some variable x, but, um, uh,
+
+427
+00:21:13,950 --> 00:21:15,720
+variable z depends on variable y,
+
+428
+00:21:15,720 --> 00:21:17,370
+then the way you can do it is you say, aha,
+
+429
+00:21:17,370 --> 00:21:19,875
+I take z with respect to y,
+
+430
+00:21:19,875 --> 00:21:22,350
+and then I have to take y and, uh,
+
+431
+00:21:22,350 --> 00:21:25,605
+they could- derivative with- of it with respect to x.
+
+432
+00:21:25,605 --> 00:21:29,940
+So basically, this is how I can apply this chain rule to create this, uh,
+
+433
+00:21:29,940 --> 00:21:32,325
+deriva- partial- these derivatives, um,
+
+434
+00:21:32,325 --> 00:21:35,895
+and- and chain them together based- based on the dependencies.
+
+435
+00:21:35,895 --> 00:21:37,080
+So in our case,
+
+436
+00:21:37,080 --> 00:21:41,700
+if I wanna take my function f and compute the derivative of it with respect to x,
+
+437
+00:21:41,700 --> 00:21:46,080
+I could first take the function and take a derivative of it with respect to
+
+438
+00:21:46,080 --> 00:21:53,370
+W_1x and then I think the W_1x and take a derivative of it with respect to, uh, x.
+
+439
+00:21:53,370 --> 00:21:56,175
+And the notion of, uh,
+
+440
+00:21:56,175 --> 00:21:59,490
+back-propagation uses the chain rule to propa-
+
+441
+00:21:59,490 --> 00:22:03,255
+propagate gradients of intermediate steps and,
+
+442
+00:22:03,255 --> 00:22:06,180
+uh, finally obtain the gradient with respect of
+
+443
+00:22:06,180 --> 00:22:09,240
+the loss with respect to the model parameters.
+
+444
+00:22:09,240 --> 00:22:11,100
+Um, and this is very, um, uh,
+
+445
+00:22:11,100 --> 00:22:15,945
+interesting because it means we can mechanically compute, uh, the gradients.
+
+446
+00:22:15,945 --> 00:22:17,175
+So let me, uh,
+
+447
+00:22:17,175 --> 00:22:18,540
+give you an example, right?
+
+448
+00:22:18,540 --> 00:22:21,480
+So it- we are still working with this simple,
+
+449
+00:22:21,480 --> 00:22:24,570
+uh, two layer linear network, right?
+
+450
+00:22:24,570 --> 00:22:26,880
+Here is kind of the neural network representation of this,
+
+451
+00:22:26,880 --> 00:22:28,050
+but essentially, it takes,
+
+452
+00:22:28,050 --> 00:22:30,300
+let say, two dimensional on input x,
+
+453
+00:22:30,300 --> 00:22:32,790
+multiply it- it with W_1.
+
+454
+00:22:32,790 --> 00:22:33,990
+This is happening here,
+
+455
+00:22:33,990 --> 00:22:36,210
+and then multiply it with W_2 here,
+
+456
+00:22:36,210 --> 00:22:38,055
+to get an output, right?
+
+457
+00:22:38,055 --> 00:22:39,720
+Imagine I have some loss function.
+
+458
+00:22:39,720 --> 00:22:42,060
+Let's say I have a, uh, L_2 loss,
+
+459
+00:22:42,060 --> 00:22:47,160
+a squared loss that sim- simply says- was a discrepancy between the predicted value,
+
+460
+00:22:47,160 --> 00:22:48,720
+uh, and the true value?
+
+461
+00:22:48,720 --> 00:22:50,745
+And then, um, you know,
+
+462
+00:22:50,745 --> 00:22:53,625
+I evaluate this over the minibatch- mini-batch B.
+
+463
+00:22:53,625 --> 00:22:56,700
+And then I also have the notion of a hidden layer, uh,
+
+464
+00:22:56,700 --> 00:22:59,490
+and hidden layer is an intermediate representation for,
+
+465
+00:22:59,490 --> 00:23:00,930
+uh, input x, right?
+
+466
+00:23:00,930 --> 00:23:02,730
+So here, I'm using this, uh,
+
+467
+00:23:02,730 --> 00:23:06,660
+h of x to be W1 times x to denote the hidden layer, right?
+
+468
+00:23:06,660 --> 00:23:09,945
+It's some transformation of x that is not yet,
+
+469
+00:23:09,945 --> 00:23:12,385
+uh, the final output, uh, of the network.
+
+470
+00:23:12,385 --> 00:23:15,560
+And then of course, then I can rewrite this to say f of x is,
+
+471
+00:23:15,560 --> 00:23:17,330
+you know, uh, h of x,
+
+472
+00:23:17,330 --> 00:23:21,810
+which is the first product and then evaluate it, uh, um,
+
+473
+00:23:21,810 --> 00:23:24,930
+on the- on the s- on the g of h, uh,
+
+474
+00:23:24,930 --> 00:23:28,680
+which is the multiplication with, uh, W_2.
+
+475
+00:23:28,680 --> 00:23:32,865
+What this means now, if I wanna do what is called a forward pass,
+
+476
+00:23:32,865 --> 00:23:36,105
+I start with x, I multiply with W_1,
+
+477
+00:23:36,105 --> 00:23:38,670
+and then I multiply with W_2 to get the output.
+
+478
+00:23:38,670 --> 00:23:41,190
+So the way I can think of this as I start from x,
+
+479
+00:23:41,190 --> 00:23:45,420
+I apply W_1 to- to basically compute h. Now I,
+
+480
+00:23:45,420 --> 00:23:48,210
+uh, take h to, uh, um,
+
+481
+00:23:48,210 --> 00:23:50,730
+and apply function G to it, which is again,
+
+482
+00:23:50,730 --> 00:23:54,090
+I multiply with W_2 and I- I get the- I get now
+
+483
+00:23:54,090 --> 00:23:58,110
+the output f. And now I want to evaluate f,
+
+484
+00:23:58,110 --> 00:24:00,030
+uh, with respect to the loss.
+
+485
+00:24:00,030 --> 00:24:01,560
+So we have this kind of, uh,
+
+486
+00:24:01,560 --> 00:24:03,810
+nesting or chaining of functions.
+
+487
+00:24:03,810 --> 00:24:06,060
+And if I wanna do back-propagation now,
+
+488
+00:24:06,060 --> 00:24:08,940
+back-propagation means I have to now compute the derivative,
+
+489
+00:24:08,940 --> 00:24:11,700
+the gradient, and I wanna work backward.
+
+490
+00:24:11,700 --> 00:24:15,465
+So what does this means is that if these are my model parameters,
+
+491
+00:24:15,465 --> 00:24:18,420
+I start from the loss and compute gradients backwards.
+
+492
+00:24:18,420 --> 00:24:20,730
+So I would start with a loss, for example,
+
+493
+00:24:20,730 --> 00:24:23,160
+and I'm interested to compute the gradient of the loss,
+
+494
+00:24:23,160 --> 00:24:24,825
+uh, with respect to W2.
+
+495
+00:24:24,825 --> 00:24:26,580
+Then I have to go from the loss,
+
+496
+00:24:26,580 --> 00:24:29,355
+compute- take the derivative with respect to f,
+
+497
+00:24:29,355 --> 00:24:30,870
+and then I have to take, uh,
+
+498
+00:24:30,870 --> 00:24:34,920
+f and take a derivative with respect to W2, right?
+
+499
+00:24:34,920 --> 00:24:38,160
+So I went from lost to f to W, uh,2.
+
+500
+00:24:38,160 --> 00:24:41,550
+While, for example, to compute the derivative of the loss,
+
+501
+00:24:41,550 --> 00:24:44,115
+uh, with the- with respect to W_1,
+
+502
+00:24:44,115 --> 00:24:48,150
+I have to take the- the loss compute f of
+
+503
+00:24:48,150 --> 00:24:52,800
+the derivative with respect to f. Take f compute the derivative with respect to W_2,
+
+504
+00:24:52,800 --> 00:24:55,680
+and then kind of take the result of that W_2,
+
+505
+00:24:55,680 --> 00:24:57,540
+take a derivative, uh,
+
+506
+00:24:57,540 --> 00:24:59,400
+with respect to, uh, W_1.
+
+507
+00:24:59,400 --> 00:25:03,270
+And you can see kind of how I'm working backwards and how, uh,
+
+508
+00:25:03,270 --> 00:25:04,785
+as I go deeper into the network,
+
+509
+00:25:04,785 --> 00:25:06,825
+I can kind of re-use,
+
+510
+00:25:06,825 --> 00:25:08,625
+uh, uh, previous computations.
+
+511
+00:25:08,625 --> 00:25:12,195
+And this is why this is called a back-propagation because I kind of- kind of, uh,
+
+512
+00:25:12,195 --> 00:25:15,465
+working backwards, um, uh,
+
+513
+00:25:15,465 --> 00:25:19,080
+from the output all the way towards the, uh- the input.
+
+514
+00:25:19,080 --> 00:25:23,370
+And this then tells me how to update my parameter values so that,
+
+515
+00:25:23,370 --> 00:25:27,510
+uh, the discrepancy, the value of the loss will be smaller.
+
+516
+00:25:27,510 --> 00:25:32,235
+Um, note that in- in my case that I showed you so far,
+
+517
+00:25:32,235 --> 00:25:35,145
+we used a very simple two layer neural network
+
+518
+00:25:35,145 --> 00:25:38,895
+which is- which if- if you look at it carefully, uh,
+
+519
+00:25:38,895 --> 00:25:40,890
+is still a linear, uh,
+
+520
+00:25:40,890 --> 00:25:43,920
+function because W_1 times W_2 is,
+
+521
+00:25:43,920 --> 00:25:46,920
+uh- is another matrix or- or- or a vector.
+
+522
+00:25:46,920 --> 00:25:49,140
+But basically, it means that by chaining things,
+
+523
+00:25:49,140 --> 00:25:51,900
+we did not get any more expressive power.
+
+524
+00:25:51,900 --> 00:25:54,825
+This was still a linear model, right?
+
+525
+00:25:54,825 --> 00:25:57,075
+So, um, in this case,
+
+526
+00:25:57,075 --> 00:25:58,305
+in this simple example,
+
+527
+00:25:58,305 --> 00:26:00,855
+f is still a linear model with respect to x.
+
+528
+00:26:00,855 --> 00:26:04,230
+Now ma- no matter how many weight matrices do we compose,
+
+529
+00:26:04,230 --> 00:26:05,880
+how many Ws do we have.
+
+530
+00:26:05,880 --> 00:26:09,810
+But if we introduce non-linearities, for example, um,
+
+531
+00:26:09,810 --> 00:26:12,990
+a rectified linear unit defined like this and here's how it looked
+
+532
+00:26:12,990 --> 00:26:16,770
+like or a sigmoid function defined like this and here is,
+
+533
+00:26:16,770 --> 00:26:18,435
+you know, the pictorial version of it.
+
+534
+00:26:18,435 --> 00:26:21,810
+Then, um, these things become much more interesting
+
+535
+00:26:21,810 --> 00:26:25,590
+because now, by introducing non-linearity,
+
+536
+00:26:25,590 --> 00:26:28,290
+so actually increase the expressivity, uh,
+
+537
+00:26:28,290 --> 00:26:31,125
+of our model and the more than Ws we chain,
+
+538
+00:26:31,125 --> 00:26:34,755
+um, the more, uh, expressive the model will be.
+
+539
+00:26:34,755 --> 00:26:39,660
+And this now leads us to the model that is called multi-layer perceptron.
+
+540
+00:26:39,660 --> 00:26:43,005
+And in each layer of a multi-layer perceptron,
+
+541
+00:26:43,005 --> 00:26:46,590
+we combine linear transformation with the non-linearity.
+
+542
+00:26:46,590 --> 00:26:47,820
+So meaning so far,
+
+543
+00:26:47,820 --> 00:26:50,445
+we talked about W times x.
+
+544
+00:26:50,445 --> 00:26:52,830
+What to do now is, uh,
+
+545
+00:26:52,830 --> 00:26:55,335
+also apply a non-linearity tool,
+
+546
+00:26:55,335 --> 00:26:56,895
+for example, a sigmoid, uh,
+
+547
+00:26:56,895 --> 00:27:00,930
+or a- or a, uh, RELU, uh, function.
+
+548
+00:27:00,930 --> 00:27:06,165
+Um, here b is just a bias to a- a constant to exclusively take it out.
+
+549
+00:27:06,165 --> 00:27:08,850
+One way is also to assume that the feature vector is
+
+550
+00:27:08,850 --> 00:27:12,105
+one- one element or one entry longer,
+
+551
+00:27:12,105 --> 00:27:14,055
+and that entry is always value one,
+
+552
+00:27:14,055 --> 00:27:17,025
+and then these buyers becomes kind of part of b,
+
+553
+00:27:17,025 --> 00:27:18,270
+be- becomes a, uh, uh,
+
+554
+00:27:18,270 --> 00:27:21,075
+uh- a row- a row in b.
+
+555
+00:27:21,075 --> 00:27:24,360
+So, um, this is- this is now how,
+
+556
+00:27:24,360 --> 00:27:25,890
+uh, multi-layered perceptron works.
+
+557
+00:27:25,890 --> 00:27:27,720
+It's the same as we had before,
+
+558
+00:27:27,720 --> 00:27:31,680
+but just I sent things through a non-linear, uh, activation function.
+
+559
+00:27:31,680 --> 00:27:36,900
+And now, you know, if I want- now I can take this access at a given layer and I can,
+
+560
+00:27:36,900 --> 00:27:41,715
+uh, keep, uh, uh, chaining them by- by multiplying with another W,
+
+561
+00:27:41,715 --> 00:27:43,065
+sending through another, uh,
+
+562
+00:27:43,065 --> 00:27:46,155
+non-linear layer, multiplying with another W,
+
+563
+00:27:46,155 --> 00:27:48,900
+another non-linear layer, and I can make deeper and
+
+564
+00:27:48,900 --> 00:27:52,200
+deeper and more and more complex, uh, neural networks.
+
+565
+00:27:52,200 --> 00:27:55,230
+But in terms of optimizing them because of the,
+
+566
+00:27:55,230 --> 00:27:57,330
+uh, chain rule we explained here.
+
+567
+00:27:57,330 --> 00:28:00,870
+Um, the gradient computations can basically be done, uh,
+
+568
+00:28:00,870 --> 00:28:05,100
+mechanistically by the deep learning framework and we don't need to worry
+
+569
+00:28:05,100 --> 00:28:09,675
+about actually writing them down or worrying about how to do optimization,
+
+570
+00:28:09,675 --> 00:28:13,185
+uh, you know, which is great and really speeds up the development of,
+
+571
+00:28:13,185 --> 00:28:15,540
+uh, machine learning algorithms.
+
+572
+00:28:15,540 --> 00:28:20,055
+So to summarize, we talked about how to define machine learning using
+
+573
+00:28:20,055 --> 00:28:24,960
+objective function of minimizing the loss with respect to model parameters.
+
+574
+00:28:24,960 --> 00:28:26,610
+Uh, f, as we said,
+
+575
+00:28:26,610 --> 00:28:29,115
+this probability function can be a simple linear layer,
+
+576
+00:28:29,115 --> 00:28:34,845
+just W times x or a multi-layered perceptron where it's W times x,
+
+577
+00:28:34,845 --> 00:28:37,530
+uh, passed through a non-linearity, or, you know,
+
+578
+00:28:37,530 --> 00:28:40,230
+some other more- more complex neural network.
+
+579
+00:28:40,230 --> 00:28:42,270
+Um, and the idea is that we sample a batch,
+
+580
+00:28:42,270 --> 00:28:44,145
+uh, of input, uh, x.
+
+581
+00:28:44,145 --> 00:28:45,495
+We call this a mini-batch.
+
+582
+00:28:45,495 --> 00:28:47,970
+We then do the forward propagation,
+
+583
+00:28:47,970 --> 00:28:49,410
+um, to compute, uh,
+
+584
+00:28:49,410 --> 00:28:50,835
+the value of loss.
+
+585
+00:28:50,835 --> 00:28:53,055
+And then we do the backward propagation,
+
+586
+00:28:53,055 --> 00:28:55,800
+where we obtain gradients of the loss with
+
+587
+00:28:55,800 --> 00:28:58,980
+respect to the model parameters using the chain rule.
+
+588
+00:28:58,980 --> 00:29:01,275
+And then that- now that we have computed
+
+589
+00:29:01,275 --> 00:29:05,055
+the gradients with respect to the model parameters,
+
+590
+00:29:05,055 --> 00:29:08,085
+we use stochastic gradient descent, um, uh,
+
+591
+00:29:08,085 --> 00:29:14,880
+over this mini-batches to optimize our parameters Theta over multiple iterations.
+
+592
+00:29:14,880 --> 00:29:16,110
+And this, uh, you know,
+
+593
+00:29:16,110 --> 00:29:18,495
+now concludes our, um,
+
+594
+00:29:18,495 --> 00:29:23,295
+deep learning tutorial, and what we are going to talk about next is actually,
+
+595
+00:29:23,295 --> 00:29:25,840
+uh, graph neural networks.
+

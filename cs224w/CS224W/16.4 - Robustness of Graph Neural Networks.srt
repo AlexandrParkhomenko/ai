@@ -1,0 +1,1820 @@
+1
+00:00:04,430 --> 00:00:06,780
+The second topic, uh,
+
+2
+00:00:06,780 --> 00:00:08,460
+I wanna discuss is,
+
+3
+00:00:08,460 --> 00:00:11,715
+I wanna talk about robustness of graph neural networks.
+
+4
+00:00:11,715 --> 00:00:15,420
+So that's, the question is how robust are these models against,
+
+5
+00:00:15,420 --> 00:00:17,370
+let's say, adversarial or,
+
+6
+00:00:17,370 --> 00:00:19,260
+uh, any other type of attack?
+
+7
+00:00:19,260 --> 00:00:22,800
+So, uh, this is motivated by kind
+
+8
+00:00:22,800 --> 00:00:26,265
+of more broader field of deep learning while in recent years,
+
+9
+00:00:26,265 --> 00:00:29,010
+we have- we have seen impressive performance of
+
+10
+00:00:29,010 --> 00:00:32,235
+deep-learning models in a variety of applications,
+
+11
+00:00:32,235 --> 00:00:34,530
+um, especially, let's say in computer vision,
+
+12
+00:00:34,530 --> 00:00:36,000
+natural language, and so on.
+
+13
+00:00:36,000 --> 00:00:39,030
+But what has been, uh, shown is that,
+
+14
+00:00:39,030 --> 00:00:42,820
+if these models are applied to the- to the real world, um,
+
+15
+00:00:42,820 --> 00:00:45,750
+and we have different types of actors in the real world,
+
+16
+00:00:45,750 --> 00:00:47,150
+then the question becomes,
+
+17
+00:00:47,150 --> 00:00:49,640
+how robust are these models to-, um,
+
+18
+00:00:49,640 --> 00:00:53,135
+uh, to various kinds of attacks?
+
+19
+00:00:53,135 --> 00:00:57,740
+And one example is a notion of an adversarial attack, where for example,
+
+20
+00:00:57,740 --> 00:01:01,130
+you can take the original input image and ask the neural network,
+
+21
+00:01:01,130 --> 00:01:03,965
+what do you think this is and the neural network is going to say,
+
+22
+00:01:03,965 --> 00:01:07,165
+"Oh, it's a- it's a- it's a panda."
+
+23
+00:01:07,165 --> 00:01:10,550
+But what do you can do then is very slightly perturb,
+
+24
+00:01:10,550 --> 00:01:12,670
+uh, values of the pixels.
+
+25
+00:01:12,670 --> 00:01:16,440
+Um, you know, just you- you- you- adds a bit of
+
+26
+00:01:16,440 --> 00:01:20,960
+noise and now the neural network will get totally confused and it will say,
+
+27
+00:01:20,960 --> 00:01:23,300
+"Oh, it's a- it's- it's a gibbon, right?
+
+28
+00:01:23,300 --> 00:01:26,750
+It's a monkey. So the point being is that to a human,
+
+29
+00:01:26,750 --> 00:01:28,610
+when you look at these, they both look like,
+
+30
+00:01:28,610 --> 00:01:30,455
+uh, images of a panda to us.
+
+31
+00:01:30,455 --> 00:01:34,010
+But by being very careful, uh, and systematic,
+
+32
+00:01:34,010 --> 00:01:37,825
+very adversarial, you can change the prediction of the neural network.
+
+33
+00:01:37,825 --> 00:01:39,290
+Um, and these types of
+
+34
+00:01:39,290 --> 00:01:44,330
+adversarial examples are also reported for natural language processing model,
+
+35
+00:01:44,330 --> 00:01:49,280
+audio processing and- and the point is that the adversary can very quickly,
+
+36
+00:01:49,280 --> 00:01:54,625
+um, change the prediction of our model by only slightly manipulating the input.
+
+37
+00:01:54,625 --> 00:01:58,315
+So, um, the existence of the- of
+
+38
+00:01:58,315 --> 00:02:01,670
+adversarial examples prevents reliable deployment
+
+39
+00:02:01,670 --> 00:02:03,565
+of deep-learning models in the real world.
+
+40
+00:02:03,565 --> 00:02:06,110
+Uh, because adversaries may try to actively
+
+41
+00:02:06,110 --> 00:02:10,235
+hack the deep-learning model and kind of, uh, sidestep it.
+
+42
+00:02:10,235 --> 00:02:14,330
+Um, and the model performance this way may- may be much,
+
+43
+00:02:14,330 --> 00:02:17,380
+much worse than what we'd expect, right?
+
+44
+00:02:17,380 --> 00:02:21,820
+Um, and like has been found is the deep-learning models are often not robust.
+
+45
+00:02:21,820 --> 00:02:26,605
+Um, and this is a very active area of research to mas- to make
+
+46
+00:02:26,605 --> 00:02:31,975
+these models robust against adversarial attacks or adversarial examples.
+
+47
+00:02:31,975 --> 00:02:37,640
+So, uh, let's look in this part of the lecture about how would you formalize
+
+48
+00:02:37,640 --> 00:02:40,130
+the notion of adversarial example to
+
+49
+00:02:40,130 --> 00:02:42,985
+graph neural networks and are graph neural networks
+
+50
+00:02:42,985 --> 00:02:45,455
+robust to adversarial examples?
+
+51
+00:02:45,455 --> 00:02:47,880
+Um, and the premise is that, um,
+
+52
+00:02:47,880 --> 00:02:51,230
+if common applications of graph neural networks,
+
+53
+00:02:51,230 --> 00:02:53,720
+uh, you know, uh, involve, let's say,
+
+54
+00:02:53,720 --> 00:02:56,840
+platforms that are accessible to the public or that there
+
+55
+00:02:56,840 --> 00:02:59,930
+is some financial monetary interest behind them,
+
+56
+00:02:59,930 --> 00:03:02,500
+then these types of attacks, uh, may happen.
+
+57
+00:03:02,500 --> 00:03:04,865
+So for example, in recommender systems,
+
+58
+00:03:04,865 --> 00:03:06,630
+social networks and social-, uh,
+
+59
+00:03:06,630 --> 00:03:10,940
+and search engines, there's always some types of actors, attackers,
+
+60
+00:03:10,940 --> 00:03:13,250
+who may wanna manipulate the system.
+
+61
+00:03:13,250 --> 00:03:17,225
+So the adversaries have incentive to manipulate
+
+62
+00:03:17,225 --> 00:03:21,530
+the input graphs and basically try to change or flip or hack,
+
+63
+00:03:21,530 --> 00:03:24,625
+the predictions of the graph neural network.
+
+64
+00:03:24,625 --> 00:03:28,170
+So how would we going to start- to set up,
+
+65
+00:03:28,170 --> 00:03:33,085
+um, the framework to study robustness of graph neural networks?
+
+66
+00:03:33,085 --> 00:03:36,125
+Um, to study robustness of graph neural networks,
+
+67
+00:03:36,125 --> 00:03:37,460
+we are going to, uh,
+
+68
+00:03:37,460 --> 00:03:39,740
+specifically consider the following setting,
+
+69
+00:03:39,740 --> 00:03:44,270
+we are going to look at semi-supervised node classification and we are going to
+
+70
+00:03:44,270 --> 00:03:48,970
+use the graph convolutional neural network model just as an example.
+
+71
+00:03:48,970 --> 00:03:50,090
+And the idea is, right,
+
+72
+00:03:50,090 --> 00:03:52,065
+we have a partially labeled graph.
+
+73
+00:03:52,065 --> 00:03:53,340
+So here's the example.
+
+74
+00:03:53,340 --> 00:03:54,400
+We have a graph, uh,
+
+75
+00:03:54,400 --> 00:03:57,105
+if you are thinking about node classification,
+
+76
+00:03:57,105 --> 00:04:00,105
+nodes have features, some nodes already have,
+
+77
+00:04:00,105 --> 00:04:03,660
+uh, labels, and we would like to predict, uh, labels, uh,
+
+78
+00:04:03,660 --> 00:04:05,220
+for the other nodes as I-,
+
+79
+00:04:05,220 --> 00:04:07,800
+uh, as I show, uh, here.
+
+80
+00:04:07,800 --> 00:04:10,660
+So, uh, then, um,
+
+81
+00:04:10,660 --> 00:04:12,800
+the question is the following, right?
+
+82
+00:04:12,800 --> 00:04:14,945
+Um, what we are going to do is,
+
+83
+00:04:14,945 --> 00:04:17,785
+we are going to first describe several,
+
+84
+00:04:17,785 --> 00:04:21,010
+um, types of attacks that the adversary may do.
+
+85
+00:04:21,010 --> 00:04:23,320
+Then we are going to talk about,
+
+86
+00:04:23,320 --> 00:04:25,645
+uh, you know, how a graph neural network, uh,
+
+87
+00:04:25,645 --> 00:04:29,500
+or a GCN, uh, how- how would- how would that-,
+
+88
+00:04:29,500 --> 00:04:31,895
+uh, how we could try to hack it?
+
+89
+00:04:31,895 --> 00:04:34,080
+Um, and this means that, um,
+
+90
+00:04:34,080 --> 00:04:37,505
+a- adversary- adversary needs to know what underlying model we are using.
+
+91
+00:04:37,505 --> 00:04:39,710
+And then we're going to mathematically formalize
+
+92
+00:04:39,710 --> 00:04:42,350
+the attack problem as an optimization problem.
+
+93
+00:04:42,350 --> 00:04:45,740
+And then I'll show some empirical results to show how
+
+94
+00:04:45,740 --> 00:04:50,140
+vulnerable GCNs are to adversarial attacks.
+
+95
+00:04:50,140 --> 00:04:53,460
+So let's first talk about what would,
+
+96
+00:04:53,460 --> 00:04:57,240
+uh, an attack to a graph, uh, look like?
+
+97
+00:04:57,240 --> 00:05:02,595
+Uh, and we are going to talk about direct in- and indirect attacks.
+
+98
+00:05:02,595 --> 00:05:04,280
+Uh, and in particular,
+
+99
+00:05:04,280 --> 00:05:06,530
+the way we are going to think about this is the following.
+
+100
+00:05:06,530 --> 00:05:08,855
+Let's say there is a target node t,
+
+101
+00:05:08,855 --> 00:05:12,575
+whose label pre- prediction we wanna change.
+
+102
+00:05:12,575 --> 00:05:16,010
+And let's say that there are some other nodes in the network,
+
+103
+00:05:16,010 --> 00:05:19,550
+um, uh, let's call them S that the attacker can modify.
+
+104
+00:05:19,550 --> 00:05:22,615
+So these are the nodes that the attacker controls.
+
+105
+00:05:22,615 --> 00:05:24,750
+And now, what can the-, you know,
+
+106
+00:05:24,750 --> 00:05:25,979
+what can the attacker-,
+
+107
+00:05:25,979 --> 00:05:27,960
+uh, what can the attacker do?
+
+108
+00:05:27,960 --> 00:05:31,705
+So let's say that there is a direct attack,
+
+109
+00:05:31,705 --> 00:05:36,770
+and a direct attack means that the attacker is the target node, right?
+
+110
+00:05:36,770 --> 00:05:39,005
+So the attacker owns the target node.
+
+111
+00:05:39,005 --> 00:05:41,000
+So what the attacker can then do,
+
+112
+00:05:41,000 --> 00:05:44,195
+the attacker can modify the target node features.
+
+113
+00:05:44,195 --> 00:05:47,420
+For example, they can change- change their social network profile.
+
+114
+00:05:47,420 --> 00:05:49,970
+They can change the website content.
+
+115
+00:05:49,970 --> 00:05:52,240
+They can also add connections,
+
+116
+00:05:52,240 --> 00:05:55,100
+um, from the target to other nodes in the network.
+
+117
+00:05:55,100 --> 00:05:56,840
+Like, you know, they can buy likes,
+
+118
+00:05:56,840 --> 00:05:58,160
+they can buy followers,
+
+119
+00:05:58,160 --> 00:05:59,345
+they can make frie-, uh,
+
+120
+00:05:59,345 --> 00:06:01,165
+friendships or things like that.
+
+121
+00:06:01,165 --> 00:06:04,580
+Um, and they can also of course decide to remove some connections.
+
+122
+00:06:04,580 --> 00:06:06,080
+You know, they can unfollow users.
+
+123
+00:06:06,080 --> 00:06:09,620
+They can drop friendships if that would allow them to flip
+
+124
+00:06:09,620 --> 00:06:14,080
+the classification label for that target node that they, uh, own.
+
+125
+00:06:14,080 --> 00:06:19,840
+So this is what we call a direct attack because the attacker owns the node,
+
+126
+00:06:19,840 --> 00:06:24,420
+the- the node that the attacker wants to flip is- is- is the attacker.
+
+127
+00:06:24,420 --> 00:06:27,770
+So for example, if you think about some kind of spam detection,
+
+128
+00:06:27,770 --> 00:06:30,110
+the attacker may want to say "Aha, you know,
+
+129
+00:06:30,110 --> 00:06:32,900
+the social network is classifying me as a spammer.
+
+130
+00:06:32,900 --> 00:06:34,940
+What do I need to change so that
+
+131
+00:06:34,940 --> 00:06:38,230
+the social network won't classify me as a spammer anymore?"
+
+132
+00:06:38,230 --> 00:06:40,370
+Um, and they may change their attributes,
+
+133
+00:06:40,370 --> 00:06:43,925
+they may change who they follow or they may- they may drop,
+
+134
+00:06:43,925 --> 00:06:46,400
+uh, some of the links in the network.
+
+135
+00:06:46,400 --> 00:06:51,800
+Um, there is also a- a second type of attack which we call an indirect attack.
+
+136
+00:06:51,800 --> 00:06:53,990
+And in an indirect attack,
+
+137
+00:06:53,990 --> 00:06:56,510
+a target node is not the attacker node.
+
+138
+00:06:56,510 --> 00:06:59,120
+So it means that, the attacker does not,
+
+139
+00:06:59,120 --> 00:07:01,655
+uh, account- does not control the target,
+
+140
+00:07:01,655 --> 00:07:04,215
+but the attacker can, uh,
+
+141
+00:07:04,215 --> 00:07:08,525
+control some other nodes in the network and the attacker can change,
+
+142
+00:07:08,525 --> 00:07:10,675
+let's say, the features of those nodes.
+
+143
+00:07:10,675 --> 00:07:14,645
+So, uh, the attacker can change the connections of those nodes and
+
+144
+00:07:14,645 --> 00:07:19,250
+attacker can also basically can add them or they can remove those connections.
+
+145
+00:07:19,250 --> 00:07:24,200
+And you know, what is a realistic example for this case, it is that,
+
+146
+00:07:24,200 --> 00:07:26,930
+for example, the attacker wants to, uh,
+
+147
+00:07:26,930 --> 00:07:28,490
+harm some other, let's say,
+
+148
+00:07:28,490 --> 00:07:29,975
+innocent node in the network.
+
+149
+00:07:29,975 --> 00:07:33,845
+So the attacker is going to- to change, um, uh,
+
+150
+00:07:33,845 --> 00:07:36,800
+the- the properties of the nodes it controls to
+
+151
+00:07:36,800 --> 00:07:40,880
+perhaps change the label of the target node they don't control.
+
+152
+00:07:40,880 --> 00:07:43,415
+So perhaps the target node is not a spammer,
+
+153
+00:07:43,415 --> 00:07:46,730
+but the attacker wants somebody to be excluded from the network.
+
+154
+00:07:46,730 --> 00:07:49,550
+So they want them to be labeled as a spammer.
+
+155
+00:07:49,550 --> 00:07:51,410
+So they are going to now change,
+
+156
+00:07:51,410 --> 00:07:53,000
+uh, the network structure,
+
+157
+00:07:53,000 --> 00:07:54,770
+the connections to the target node,
+
+158
+00:07:54,770 --> 00:07:56,900
+so that the neural network is going to,
+
+159
+00:07:56,900 --> 00:08:02,090
+uh, classify the target node differently even though the target node has no clue that,
+
+160
+00:08:02,090 --> 00:08:05,325
+uh, they are being, uh, under attack.
+
+161
+00:08:05,325 --> 00:08:09,340
+So how are we formalizing the adversarial attack?
+
+162
+00:08:09,340 --> 00:08:14,769
+The goal is that we wanna maximize something subject to some constraints,
+
+163
+00:08:14,769 --> 00:08:16,195
+and the idea will be that,
+
+164
+00:08:16,195 --> 00:08:20,895
+we wanna maximize the change of the target node, uh, label.
+
+165
+00:08:20,895 --> 00:08:25,205
+So we wanna change the target node label subject to very small,
+
+166
+00:08:25,205 --> 00:08:27,100
+uh, graph manipulation, right?
+
+167
+00:08:27,100 --> 00:08:31,930
+We wanna manipulate the underlying graph as little as possible such
+
+168
+00:08:31,930 --> 00:08:36,924
+that the class probabilities of the target node are going to change, right?
+
+169
+00:08:36,924 --> 00:08:40,514
+Basically, the idea is that if the graph manipulation is too large,
+
+170
+00:08:40,515 --> 00:08:42,530
+it will be easily detected,
+
+171
+00:08:42,530 --> 00:08:44,010
+um, by the-, uh,
+
+172
+00:08:44,010 --> 00:08:46,000
+by the- by the- by the agent,
+
+173
+00:08:46,000 --> 00:08:47,530
+by the social network and it will say,
+
+174
+00:08:47,530 --> 00:08:49,235
+"Hey, there is an attack going on."
+
+175
+00:08:49,235 --> 00:08:52,474
+But if a successful at- if an attack is successful,
+
+176
+00:08:52,474 --> 00:08:56,165
+then we should be able to change just a small number of edges,
+
+177
+00:08:56,165 --> 00:08:58,085
+maybe a few features here and there, uh,
+
+178
+00:08:58,085 --> 00:09:02,870
+and this will be kind of unnoticeably-small manipulation that is going to flip,
+
+179
+00:09:02,870 --> 00:09:05,250
+uh, the prediction, the- let's say,
+
+180
+00:09:05,250 --> 00:09:09,210
+the class label for the target node, uh, significantly.
+
+181
+00:09:09,210 --> 00:09:12,325
+So the way- the way we wanna think of this is we'll say,
+
+182
+00:09:12,325 --> 00:09:18,695
+perhaps there is a class or a label to which the target node gets, uh, classified
+
+183
+00:09:18,695 --> 00:09:22,710
+right now, so what we wanna do is we want to decrease the probability of
+
+184
+00:09:22,710 --> 00:09:25,260
+the correct class and we wanna- wanna increase
+
+185
+00:09:25,260 --> 00:09:27,955
+the probability of some other chosen class,
+
+186
+00:09:27,955 --> 00:09:29,100
+let's say class three,
+
+187
+00:09:29,100 --> 00:09:31,160
+uh, in our case.
+
+188
+00:09:31,160 --> 00:09:35,215
+So how are we going to formalize this mathematically?
+
+189
+00:09:35,215 --> 00:09:38,290
+We are going to say that we have the adjacency matrix of
+
+190
+00:09:38,290 --> 00:09:43,175
+the original graph and we have the feature information of nodes of the original graph.
+
+191
+00:09:43,175 --> 00:09:44,970
+And then we'll also have, uh,
+
+192
+00:09:44,970 --> 00:09:48,760
+A prime and X prime to be manipulated graphs.
+
+193
+00:09:48,760 --> 00:09:50,640
+So these are the graphs after the attack,
+
+194
+00:09:50,640 --> 00:09:52,655
+after we have manipulated them.
+
+195
+00:09:52,655 --> 00:09:55,785
+And we'll have the adjacency matrix and we'll have the feature matrix.
+
+196
+00:09:55,785 --> 00:10:01,400
+And our goal or assumption is that the two- that the manipulation is small, right?
+
+197
+00:10:01,400 --> 00:10:04,000
+Our goal is- that this manipulation, the changing
+
+198
+00:10:04,000 --> 00:10:07,700
+the adjacency matrix or a change in the node features is,
+
+199
+00:10:07,700 --> 00:10:09,700
+um, uh, unnoticeably small.
+
+200
+00:10:09,700 --> 00:10:14,225
+So basically we wanna preserve basic graph statistics like degree distribution,
+
+201
+00:10:14,225 --> 00:10:17,245
+uh, node feature statistics and so on.
+
+202
+00:10:17,245 --> 00:10:20,960
+And as I mentioned that the graph manipulation can either be direct,
+
+203
+00:10:20,960 --> 00:10:23,185
+changing the node and feat- and, uh,
+
+204
+00:10:23,185 --> 00:10:27,070
+features and connections of the target node or it can be indirect,
+
+205
+00:10:27,070 --> 00:10:29,830
+which means you're- we may want to change, um,
+
+206
+00:10:29,830 --> 00:10:32,760
+the connections and features of some other nodes in
+
+207
+00:10:32,760 --> 00:10:35,825
+the network with the hope to change the,
+
+208
+00:10:35,825 --> 00:10:38,380
+uh, label of the target node.
+
+209
+00:10:38,380 --> 00:10:43,445
+So, um, now that we said what- what we wanna do, let's formalize it.
+
+210
+00:10:43,445 --> 00:10:46,550
+So we're- we'll be given a target node v, um,
+
+211
+00:10:46,550 --> 00:10:50,485
+and let's us- what did the- what, uh,
+
+212
+00:10:50,485 --> 00:10:54,215
+the- the system is going to do, uh, you know,
+
+213
+00:10:54,215 --> 00:10:57,995
+let's say the social network is going to learn the original,
+
+214
+00:10:57,995 --> 00:11:01,270
+um, the classifier over the original graph, right?
+
+215
+00:11:01,270 --> 00:11:03,035
+So it's going to say, "Oh, let's, you know,
+
+216
+00:11:03,035 --> 00:11:06,595
+define this likelihood over the training data and let's optimize
+
+217
+00:11:06,595 --> 00:11:10,645
+our neural network model parameters over the training data."
+
+218
+00:11:10,645 --> 00:11:12,280
+And then, um, you know,
+
+219
+00:11:12,280 --> 00:11:14,025
+the- now that the model has been trained,
+
+220
+00:11:14,025 --> 00:11:16,090
+how is the prediction going to look like?
+
+221
+00:11:16,090 --> 00:11:19,475
+We'll say, a-ha, for this target node of interest v. Uh,
+
+222
+00:11:19,475 --> 00:11:23,705
+let's classify in- into the class that our predictor f,
+
+223
+00:11:23,705 --> 00:11:26,200
+our neural network parameters,
+
+224
+00:11:26,200 --> 00:11:30,325
+theta star that we have trained applied to this graph,
+
+225
+00:11:30,325 --> 00:11:32,230
+um, this is our prediction, right?
+
+226
+00:11:32,230 --> 00:11:35,285
+We are going to predict the class of- for this node v,
+
+227
+00:11:35,285 --> 00:11:37,445
+that has the highest predicted,
+
+228
+00:11:37,445 --> 00:11:40,435
+uh, probability, just kind of standard stuff.
+
+229
+00:11:40,435 --> 00:11:43,905
+Now, uh, the attacker comes into play.
+
+230
+00:11:43,905 --> 00:11:47,485
+So what the attacker is going to do, the attacker, um,
+
+231
+00:11:47,485 --> 00:11:49,720
+can-, um, what they can do is,
+
+232
+00:11:49,720 --> 00:11:52,750
+they cannot change the parameters of the model, right?
+
+233
+00:11:52,750 --> 00:11:55,210
+The- the model parameters,
+
+234
+00:11:55,210 --> 00:11:57,400
+uh, cannot be changed because, you know,
+
+235
+00:11:57,400 --> 00:11:58,870
+the social network, whoever,
+
+236
+00:11:58,870 --> 00:12:03,095
+the operator has already trained the model and has deployed it.
+
+237
+00:12:03,095 --> 00:12:06,000
+So the model parameters, um,
+
+238
+00:12:06,000 --> 00:12:07,975
+won't necessarily, uh, be able to be-,
+
+239
+00:12:07,975 --> 00:12:09,370
+uh, to be changed.
+
+240
+00:12:09,370 --> 00:12:14,890
+So, um, what we can- what we can do in this case is that the GCN, um,
+
+241
+00:12:14,890 --> 00:12:17,605
+we can- like the way we will think about it,
+
+242
+00:12:17,605 --> 00:12:20,470
+is that we are going to think about it, that the GCN will now be
+
+243
+00:12:20,470 --> 00:12:23,350
+learned over the manipulated graph, right?
+
+244
+00:12:23,350 --> 00:12:26,345
+So basically, we are going to change A to
+
+245
+00:12:26,345 --> 00:12:29,860
+be A prime and we are going to change X to be X prime.
+
+246
+00:12:29,860 --> 00:12:33,580
+Um, and now, the- the- we are going to train over
+
+247
+00:12:33,580 --> 00:12:38,030
+these manipulated graph and we are going to get a different set of parameters.
+
+248
+00:12:38,030 --> 00:12:41,270
+And then the GCN's prediction of the target grow-,
+
+249
+00:12:41,270 --> 00:12:43,010
+uh, node may change,
+
+250
+00:12:43,010 --> 00:12:46,835
+both because the input is different as well as because
+
+251
+00:12:46,835 --> 00:12:49,715
+the parameters we learned will be different because
+
+252
+00:12:49,715 --> 00:12:53,015
+we learned them on a different graph and with different node features.
+
+253
+00:12:53,015 --> 00:12:55,235
+And we want the prediction to change,
+
+254
+00:12:55,235 --> 00:12:57,550
+uh, after the graph is manipulated, right?
+
+255
+00:12:57,550 --> 00:13:00,200
+So we want the class for node v, uh,
+
+256
+00:13:00,200 --> 00:13:04,220
+after manipulation to be different than what did the class was,
+
+257
+00:13:04,220 --> 00:13:05,870
+uh, before the manipulation?
+
+258
+00:13:05,870 --> 00:13:07,700
+So we want to flip the,
+
+259
+00:13:07,700 --> 00:13:10,760
+um, uh, the- the class.
+
+260
+00:13:10,760 --> 00:13:12,880
+So the way we are going, uh,
+
+261
+00:13:12,880 --> 00:13:15,310
+to do this is the following, right?
+
+262
+00:13:15,310 --> 00:13:17,740
+The way we are going to do this is to say, uh,
+
+263
+00:13:17,740 --> 00:13:22,825
+we wanna change the predicted probability, uh,
+
+264
+00:13:22,825 --> 00:13:26,075
+for a- of a- of a class of a given node,
+
+265
+00:13:26,075 --> 00:13:31,140
+um, between the true class and the manipulated class, right?
+
+266
+00:13:31,140 --> 00:13:35,350
+So here I'm saying f is outputting the probability,
+
+267
+00:13:35,350 --> 00:13:38,575
+um, for a given node to be of a given class.
+
+268
+00:13:38,575 --> 00:13:42,545
+So here I want the predicted log probability of a newly predicted class,
+
+269
+00:13:42,545 --> 00:13:46,775
+uh, c star prime to be- to increase.
+
+270
+00:13:46,775 --> 00:13:49,520
+While, um, I want to, um,
+
+271
+00:13:49,520 --> 00:13:54,370
+decrease the predicted log probability of the originally, uh, predicted class.
+
+272
+00:13:54,370 --> 00:13:58,360
+We want this term to decrease and we want that term to dec- to increase.
+
+273
+00:13:58,360 --> 00:14:02,900
+So we are going to formulate this into this delta- function delta,
+
+274
+00:14:02,900 --> 00:14:07,150
+that is basically cha- changing the prediction on the target node, uh,
+
+275
+00:14:07,150 --> 00:14:08,965
+v. It is a change, uh,
+
+276
+00:14:08,965 --> 00:14:13,125
+in like- in- in likelihood of the,
+
+277
+00:14:13,125 --> 00:14:17,940
+uh, correct class versus likelihood of the manipulated class.
+
+278
+00:14:17,940 --> 00:14:21,080
+And the way we make this term, this delta high,
+
+279
+00:14:21,080 --> 00:14:26,945
+is to make this probability here as small as possible and we make this probability here,
+
+280
+00:14:26,945 --> 00:14:29,800
+um, as large, uh, as possible, right?
+
+281
+00:14:29,800 --> 00:14:33,620
+We want these to be close to 0 and we want this to be, uh, close to 1.
+
+282
+00:14:33,620 --> 00:14:35,000
+So we wanna increase,
+
+283
+00:14:35,000 --> 00:14:36,485
+uh, the first term,
+
+284
+00:14:36,485 --> 00:14:40,900
+the left term, and we wanna decrease, uh, the second term.
+
+285
+00:14:40,900 --> 00:14:45,335
+So the way we can write this out as an optimization problem,
+
+286
+00:14:45,335 --> 00:14:48,380
+we wanna say we wanna do the argmax
+
+287
+00:14:48,380 --> 00:14:52,260
+over the underlying graph structure and the feature vector,
+
+288
+00:14:52,260 --> 00:14:54,520
+where we wanna maximize this delta, right?
+
+289
+00:14:54,520 --> 00:14:58,565
+This delta function of the change in the prediction, uh, on the target,
+
+290
+00:14:58,565 --> 00:15:02,770
+subject to the constraint that the manipulation, um,
+
+291
+00:15:02,770 --> 00:15:05,075
+of the graph structure and the feature vector,
+
+292
+00:15:05,075 --> 00:15:07,735
+uh, is as small as possible.
+
+293
+00:15:07,735 --> 00:15:09,910
+And ideally, what we'd like to do is,
+
+294
+00:15:09,910 --> 00:15:11,695
+solve this optimization problem.
+
+295
+00:15:11,695 --> 00:15:16,510
+Uh, the challenge in optimization- in optimizing this objective if we are an,
+
+296
+00:15:16,510 --> 00:15:18,430
+uh, adversary, is that the,
+
+297
+00:15:18,430 --> 00:15:21,475
+um adjacency matrix A is a discrete object.
+
+298
+00:15:21,475 --> 00:15:24,550
+You cannot take gradients, um,
+
+299
+00:15:24,550 --> 00:15:28,030
+uh, against A to decide what edges to manipulate.
+
+300
+00:15:28,030 --> 00:15:30,250
+Um, and that's the first challenge,
+
+301
+00:15:30,250 --> 00:15:33,040
+and then the second challenge is that for every modification to,
+
+302
+00:15:33,040 --> 00:15:36,130
+um, to the adjacency matrix and the future vector,
+
+303
+00:15:36,130 --> 00:15:39,775
+we need to retrain the underlying graph neural network,
+
+304
+00:15:39,775 --> 00:15:41,830
+to see whether the,
+
+305
+00:15:41,830 --> 00:15:45,685
+prediction, uh, is- will flip, uh, or not.
+
+306
+00:15:45,685 --> 00:15:48,340
+And I won't go into more details here and, you know,
+
+307
+00:15:48,340 --> 00:15:49,660
+here's a paper, uh,
+
+308
+00:15:49,660 --> 00:15:50,890
+you can read, uh,
+
+309
+00:15:50,890 --> 00:15:52,750
+to learn, uh, more about this.
+
+310
+00:15:52,750 --> 00:15:54,535
+But essentially, the idea,
+
+311
+00:15:54,535 --> 00:15:55,855
+the idea here is,
+
+312
+00:15:55,855 --> 00:15:57,565
+that we wanna manipulate,
+
+313
+00:15:57,565 --> 00:16:00,730
+the graph structure and the future vector as little as possible,
+
+314
+00:16:00,730 --> 00:16:02,980
+so that the- so that the,
+
+315
+00:16:02,980 --> 00:16:05,320
+predicted label of target node v,
+
+316
+00:16:05,320 --> 00:16:06,685
+is going to change,
+
+317
+00:16:06,685 --> 00:16:09,250
+um, as much as possible.
+
+318
+00:16:09,250 --> 00:16:14,590
+So imagine we are now able to solve this, uh, optimization problem.
+
+319
+00:16:14,590 --> 00:16:16,299
+And we can ask ourselves,
+
+320
+00:16:16,299 --> 00:16:17,950
+how easy it is to find
+
+321
+00:16:17,950 --> 00:16:22,390
+these strategically placed edges and the changes in the future vector,
+
+322
+00:16:22,390 --> 00:16:24,160
+that lead- that would, uh,
+
+323
+00:16:24,160 --> 00:16:26,860
+let the model to completely wrongly,
+
+324
+00:16:26,860 --> 00:16:28,660
+make predictions on a given node.
+
+325
+00:16:28,660 --> 00:16:30,760
+So here we are working on a,
+
+326
+00:16:30,760 --> 00:16:35,710
+semi-supervised node classification task with graph convolutional neural network, uh,
+
+327
+00:16:35,710 --> 00:16:40,150
+model, on a paper citation network with 2,800 nodes,
+
+328
+00:16:40,150 --> 00:16:41,950
+and about 8,000 edges.
+
+329
+00:16:41,950 --> 00:16:45,970
+Um, and you know, this is a six way classification task.
+
+330
+00:16:45,970 --> 00:16:49,615
+In what we are doing here is we are looking at a set of nodes,
+
+331
+00:16:49,615 --> 00:16:52,225
+that belongs to the class, uh, six.
+
+332
+00:16:52,225 --> 00:16:54,790
+And we ran the graph neural network,
+
+333
+00:16:54,790 --> 00:16:56,800
+we trained it five times,
+
+334
+00:16:56,800 --> 00:16:58,660
+uh, from random starting points.
+
+335
+00:16:58,660 --> 00:17:00,160
+And here we are saying, you know,
+
+336
+00:17:00,160 --> 00:17:02,965
+what is the pre- pre- predicted probability of these nodes,
+
+337
+00:17:02,965 --> 00:17:04,329
+that belong to Class 6?
+
+338
+00:17:04,329 --> 00:17:06,549
+And you can see that, they have probability.
+
+339
+00:17:06,550 --> 00:17:10,300
+So- so our graph neural network is learning well.
+
+340
+00:17:10,300 --> 00:17:17,214
+Now, imagine, we are an attacker and we say we want this, um, Class 6.
+
+341
+00:17:17,214 --> 00:17:21,279
+So basically, uh, research papers that belong to Topic 6.
+
+342
+00:17:21,280 --> 00:17:24,670
+We wanna, manipulate the underlying graph structure,
+
+343
+00:17:24,670 --> 00:17:29,215
+to make them belong to Class, uh, 7, right?
+
+344
+00:17:29,215 --> 00:17:30,955
+So this means, we are eh,
+
+345
+00:17:30,955 --> 00:17:33,145
+going to change the adjacency matrix,
+
+346
+00:17:33,145 --> 00:17:34,510
+um, and the, um,
+
+347
+00:17:34,510 --> 00:17:38,320
+uh, see if we can flip, uh, their labels.
+
+348
+00:17:38,320 --> 00:17:42,370
+Um, and what is interesting is if you use this framework and ask,
+
+349
+00:17:42,370 --> 00:17:44,860
+how many edges do we need to manipulate,
+
+350
+00:17:44,860 --> 00:17:47,545
+in a direct adversarial attack,
+
+351
+00:17:47,545 --> 00:17:51,415
+it turns out that GCN's prediction will flip, um,
+
+352
+00:17:51,415 --> 00:17:54,775
+aft- only, after modifying just five edges,
+
+353
+00:17:54,775 --> 00:17:57,310
+atta- attached, to the target node.
+
+354
+00:17:57,310 --> 00:18:00,805
+So here I show you for a given target node, in, you know,
+
+355
+00:18:00,805 --> 00:18:02,710
+five different, uh, retrainings,
+
+356
+00:18:02,710 --> 00:18:04,735
+just kind of five different instances.
+
+357
+00:18:04,735 --> 00:18:06,535
+We see that every single time,
+
+358
+00:18:06,535 --> 00:18:10,690
+we were able to flip the label of this target node,
+
+359
+00:18:10,690 --> 00:18:11,815
+who was of, uh,
+
+360
+00:18:11,815 --> 00:18:14,905
+Class 6, to be now of Class 7.
+
+361
+00:18:14,905 --> 00:18:17,035
+Um, and the model is super confident,
+
+362
+00:18:17,035 --> 00:18:19,240
+that this node belongs to Class 7,
+
+363
+00:18:19,240 --> 00:18:21,100
+even in reality it is,
+
+364
+00:18:21,100 --> 00:18:23,960
+uh, in Class, uh, 6.
+
+365
+00:18:23,970 --> 00:18:27,820
+And to summarize, uh, this, uh,
+
+366
+00:18:27,820 --> 00:18:31,195
+robustness of graph neural networks against attacks,
+
+367
+00:18:31,195 --> 00:18:32,980
+uh, this is summarized here.
+
+368
+00:18:32,980 --> 00:18:38,290
+Where, um, 0 would mean- in classification margin intuitively,
+
+369
+00:18:38,290 --> 00:18:40,105
+you can, you can think a bit about,
+
+370
+00:18:40,105 --> 00:18:43,090
+how confident, um, is the,
+
+371
+00:18:43,090 --> 00:18:45,175
+is the- or how correct,
+
+372
+00:18:45,175 --> 00:18:48,790
+is- is the, um, is the classification.
+
+373
+00:18:48,790 --> 00:18:51,355
+So, if it's positive it means, the,
+
+374
+00:18:51,355 --> 00:18:53,650
+the classification is correct,
+
+375
+00:18:53,650 --> 00:18:55,300
+with a bid gap,
+
+376
+00:18:55,300 --> 00:18:58,015
+so we are very confident in correct classifications.
+
+377
+00:18:58,015 --> 00:19:01,120
+And if the, uh, classification margin is negative, it would mean,
+
+378
+00:19:01,120 --> 00:19:03,250
+we are wrong, and we are,
+
+379
+00:19:03,250 --> 00:19:04,930
+and we are wrong by a lot, right?
+
+380
+00:19:04,930 --> 00:19:08,740
+We assigned a high confidence to the wrong prediction.
+
+381
+00:19:08,740 --> 00:19:10,390
+And we see that, you know, um,
+
+382
+00:19:10,390 --> 00:19:15,010
+with no attacks, the graph neural net- this is individual nodes here.
+
+383
+00:19:15,010 --> 00:19:17,185
+We see that, for the majority of the nodes,
+
+384
+00:19:17,185 --> 00:19:19,510
+the graph neural network is able to make, uh,
+
+385
+00:19:19,510 --> 00:19:22,600
+correct prediction and it is very certain about its prediction.
+
+386
+00:19:22,600 --> 00:19:24,625
+And you know, the class- the prediction,
+
+387
+00:19:24,625 --> 00:19:26,800
+the prediction performance is not perfect.
+
+388
+00:19:26,800 --> 00:19:28,270
+So there are a few mistakes,
+
+389
+00:19:28,270 --> 00:19:30,550
+but those mistakes are also kind of borderline.
+
+390
+00:19:30,550 --> 00:19:31,795
+The, the network is,
+
+391
+00:19:31,795 --> 00:19:34,120
+unsure about the classes of this,
+
+392
+00:19:34,120 --> 00:19:35,635
+uh, of these nodes.
+
+393
+00:19:35,635 --> 00:19:38,670
+Now, if we apply, uh, a,
+
+394
+00:19:38,670 --> 00:19:41,860
+a direct adversarial attack,
+
+395
+00:19:41,860 --> 00:19:46,060
+um, then you can see how we can very easily change, um, the,
+
+396
+00:19:46,060 --> 00:19:49,600
+uh, the- the, the neural network to basically
+
+397
+00:19:49,600 --> 00:19:53,650
+always predict- to always make a mistake and be super confident uh,
+
+398
+00:19:53,650 --> 00:19:56,320
+that it- in the, in the wrong, uh, class,
+
+399
+00:19:56,320 --> 00:19:58,210
+so assign, high confidence in the,
+
+400
+00:19:58,210 --> 00:19:59,650
+in the wrong class.
+
+401
+00:19:59,650 --> 00:20:03,340
+So this is a direct attack- direct adversarial attack.
+
+402
+00:20:03,340 --> 00:20:05,920
+Uh, here is what would happen,
+
+403
+00:20:05,920 --> 00:20:08,275
+if the- if it's still a direct attack,
+
+404
+00:20:08,275 --> 00:20:10,240
+but it's a random attack.
+
+405
+00:20:10,240 --> 00:20:13,960
+Meaning, we don't adversarially strategically, change the,
+
+406
+00:20:13,960 --> 00:20:16,510
+the edges, but we add edges,
+
+407
+00:20:16,510 --> 00:20:18,370
+uh, at uh, random.
+
+408
+00:20:18,370 --> 00:20:22,270
+Um, and you see that basically the neural network will get confused,
+
+409
+00:20:22,270 --> 00:20:23,740
+but not so badly, right?
+
+410
+00:20:23,740 --> 00:20:25,315
+It, uh, still majority,
+
+411
+00:20:25,315 --> 00:20:27,400
+it is making correct predictions.
+
+412
+00:20:27,400 --> 00:20:29,320
+So definitely decreases performance,
+
+413
+00:20:29,320 --> 00:20:31,210
+but not so drastically.
+
+414
+00:20:31,210 --> 00:20:34,360
+If you look at uh, indirect attacks,
+
+415
+00:20:34,360 --> 00:20:36,400
+were we basically now manipulate uh,
+
+416
+00:20:36,400 --> 00:20:40,270
+other nodes in the network and see if we can change the label of the,
+
+417
+00:20:40,270 --> 00:20:42,235
+of the, uh, target node.
+
+418
+00:20:42,235 --> 00:20:43,555
+Here you see again,
+
+419
+00:20:43,555 --> 00:20:45,745
+we are able to do this, uh, quite well.
+
+420
+00:20:45,745 --> 00:20:47,770
+Meaning for quite a few of the nodes,
+
+421
+00:20:47,770 --> 00:20:49,300
+we are able to flip,
+
+422
+00:20:49,300 --> 00:20:51,265
+uh, the, uh, uh, label.
+
+423
+00:20:51,265 --> 00:20:52,645
+So what this means is,
+
+424
+00:20:52,645 --> 00:20:55,780
+adversarial direct attacks are very strong and they
+
+425
+00:20:55,780 --> 00:20:59,275
+can- they significantly worsen GNN performance.
+
+426
+00:20:59,275 --> 00:21:01,660
+Uh, random attack is much, much weaker,
+
+427
+00:21:01,660 --> 00:21:05,875
+than adversarial attack and somewhat decreases, the performance.
+
+428
+00:21:05,875 --> 00:21:07,990
+While indirect attack is,
+
+429
+00:21:07,990 --> 00:21:10,255
+uh, less effective than direct,
+
+430
+00:21:10,255 --> 00:21:12,370
+but more effective, uh, than, uh,
+
+431
+00:21:12,370 --> 00:21:15,085
+than direct, uh, random attack.
+
+432
+00:21:15,085 --> 00:21:17,440
+So, um, what do we conclude from this?
+
+433
+00:21:17,440 --> 00:21:20,440
+Is that- that if the, uh, um,
+
+434
+00:21:20,440 --> 00:21:24,760
+uh, adversary has access to the full network,
+
+435
+00:21:24,760 --> 00:21:27,745
+has access to the- to the data and can, manipulate it,
+
+436
+00:21:27,745 --> 00:21:31,990
+then it is very easy to change the predictions of this deep-learning,
+
+437
+00:21:31,990 --> 00:21:34,660
+uh, graph neural network, uh, models.
+
+438
+00:21:34,660 --> 00:21:39,400
+So to summarize, we studied the adversarial robustness of
+
+439
+00:21:39,400 --> 00:21:44,185
+graph convolutional neural networks applied to semi-supervised node classification.
+
+440
+00:21:44,185 --> 00:21:46,720
+We considered different attack strategies,
+
+441
+00:21:46,720 --> 00:21:50,200
+different attack possibilities, uh, in, in graphs.
+
+442
+00:21:50,200 --> 00:21:54,280
+We talked about direct attacks as well as indirect attacks.
+
+443
+00:21:54,280 --> 00:21:56,410
+Uh, we talked, uh, we then mathematically
+
+444
+00:21:56,410 --> 00:21:59,410
+formulated the adversarial attack as an optimization problem,
+
+445
+00:21:59,410 --> 00:22:01,600
+so this is the optimization problem,
+
+446
+00:22:01,600 --> 00:22:03,550
+that the adversary has to solve.
+
+447
+00:22:03,550 --> 00:22:08,560
+And we, looked at some examples to empirically demonstrate that, um,
+
+448
+00:22:08,560 --> 00:22:13,945
+er, GCN's prediction performance can be significantly harmed, by adversarial attacks.
+
+449
+00:22:13,945 --> 00:22:16,000
+So what we conclude is that, uh,
+
+450
+00:22:16,000 --> 00:22:19,285
+GCN is not robust against adversarial attack,
+
+451
+00:22:19,285 --> 00:22:22,480
+but it is somewhat robust to indirect attacks,
+
+452
+00:22:22,480 --> 00:22:24,625
+as well as to random, uh, noise.
+
+453
+00:22:24,625 --> 00:22:28,255
+And this topic of robustness of these types of, uh, methods,
+
+454
+00:22:28,255 --> 00:22:29,890
+is a topic of, uh,
+
+455
+00:22:29,890 --> 00:22:34,250
+active research, and a very fruitful, uh, research area.
+

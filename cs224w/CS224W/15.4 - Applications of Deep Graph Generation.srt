@@ -1,0 +1,1347 @@
+1
+00:00:00,000 --> 00:00:05,030
+
+
+2
+00:00:05,030 --> 00:00:07,220
+In the last part
+of this lecture,
+
+3
+00:00:07,220 --> 00:00:10,910
+I'm actually going to talk about
+an application of deep graph
+
+4
+00:00:10,910 --> 00:00:13,960
+generative models to
+molecule generation, right?
+
+5
+00:00:13,960 --> 00:00:17,660
+So basically, if you want to
+generate drug-like molecules,
+
+6
+00:00:17,660 --> 00:00:19,880
+you can use graph
+generative models.
+
+7
+00:00:19,880 --> 00:00:21,860
+So let me tell you about that.
+
+8
+00:00:21,860 --> 00:00:25,577
+
+
+9
+00:00:25,577 --> 00:00:27,410
+So what we are going
+to do is the following.
+
+10
+00:00:27,410 --> 00:00:29,720
+The question is,
+can we learn a model
+
+11
+00:00:29,720 --> 00:00:33,200
+that can generate valid and
+realistic molecules that
+
+12
+00:00:33,200 --> 00:00:35,560
+optimize some property?
+
+13
+00:00:35,560 --> 00:00:36,060
+Right.
+
+14
+00:00:36,060 --> 00:00:37,435
+So the way you
+can think of it is
+
+15
+00:00:37,435 --> 00:00:40,290
+that we want to have a model.
+
+16
+00:00:40,290 --> 00:00:42,650
+The model is going to
+output a given molecule.
+
+17
+00:00:42,650 --> 00:00:44,570
+This molecule has to be valid--
+
+18
+00:00:44,570 --> 00:00:47,960
+basically, it has to obey
+the rules of chemistry.
+
+19
+00:00:47,960 --> 00:00:50,140
+It also has to be
+realistic, right?
+
+20
+00:00:50,140 --> 00:00:52,612
+You cannot generate some
+Frankenstein type molecule.
+
+21
+00:00:52,612 --> 00:00:53,570
+It has to be realistic.
+
+22
+00:00:53,570 --> 00:00:55,440
+It has to look like a drug.
+
+23
+00:00:55,440 --> 00:00:59,060
+And we want it to
+optimize a given property.
+
+24
+00:00:59,060 --> 00:01:02,600
+For example, we want it
+to optimize drug likeness.
+
+25
+00:01:02,600 --> 00:01:05,660
+We want to optimize
+its solubility.
+
+26
+00:01:05,660 --> 00:01:10,670
+And the paper I'm going to
+talk about, or the method
+
+27
+00:01:10,670 --> 00:01:12,710
+is called Graph
+Convolutional Policy
+
+28
+00:01:12,710 --> 00:01:16,550
+Network for Goal-directed
+Molecular Graph Generation.
+
+29
+00:01:16,550 --> 00:01:17,480
+And it's linked here.
+
+30
+00:01:17,480 --> 00:01:20,520
+And you can read it if
+you want more details.
+
+31
+00:01:20,520 --> 00:01:23,690
+So, here is a high level
+overview of this paper,
+
+32
+00:01:23,690 --> 00:01:27,365
+and of this novel problem of
+optimal molecule generation,
+
+33
+00:01:27,365 --> 00:01:28,160
+right?
+
+34
+00:01:28,160 --> 00:01:32,120
+The goal here is to generate
+graphs that optimize a given
+
+35
+00:01:32,120 --> 00:01:36,650
+objective, like drug-likeness,
+that obey underlying rules--
+
+36
+00:01:36,650 --> 00:01:38,180
+meaning that the
+graphs are valid,
+
+37
+00:01:38,180 --> 00:01:43,070
+like chemical validity
+rules, like the bonds
+
+38
+00:01:43,070 --> 00:01:44,000
+and things like that--
+
+39
+00:01:44,000 --> 00:01:46,350
+and are learned from
+examples, meaning
+
+40
+00:01:46,350 --> 00:01:47,870
+they look realistic, right?
+
+41
+00:01:47,870 --> 00:01:51,695
+They imitate molecular graphs
+which we use for training,
+
+42
+00:01:51,695 --> 00:01:53,090
+right?
+
+43
+00:01:53,090 --> 00:01:56,660
+And we just talked
+a bit about how
+
+44
+00:01:56,660 --> 00:01:59,935
+do we imitate a given
+distribution of graphs.
+
+45
+00:01:59,935 --> 00:02:03,300
+But here the difference is,
+we don't want to only imitate,
+
+46
+00:02:03,300 --> 00:02:05,780
+we want to generate
+graphs that are valid,
+
+47
+00:02:05,780 --> 00:02:07,460
+and we want to
+generate graphs that
+
+48
+00:02:07,460 --> 00:02:10,850
+actually optimize a
+given criteria, a given
+
+49
+00:02:10,850 --> 00:02:13,760
+black box, right?
+
+50
+00:02:13,760 --> 00:02:16,670
+And here the important point
+is that the criteria is really
+
+51
+00:02:16,670 --> 00:02:17,750
+a black box, right?
+
+52
+00:02:17,750 --> 00:02:20,750
+It's this black box where
+the graph generation
+
+53
+00:02:20,750 --> 00:02:22,220
+will get some feedback, right?
+
+54
+00:02:22,220 --> 00:02:25,250
+The objectives
+like drug-likeness
+
+55
+00:02:25,250 --> 00:02:28,910
+are governed by physical
+laws, which to us will
+
+56
+00:02:28,910 --> 00:02:30,380
+be assumed they are unknown.
+
+57
+00:02:30,380 --> 00:02:33,620
+What I mean by that is we don't
+need them to be written down.
+
+58
+00:02:33,620 --> 00:02:36,020
+All we have to do is
+to have a black box.
+
+59
+00:02:36,020 --> 00:02:38,270
+If we give it a
+molecule, the black box
+
+60
+00:02:38,270 --> 00:02:39,980
+tells us how good
+that molecule is.
+
+61
+00:02:39,980 --> 00:02:41,730
+But we don't have to
+look into the box.
+
+62
+00:02:41,730 --> 00:02:43,430
+That's the important point.
+
+63
+00:02:43,430 --> 00:02:45,600
+So, how are we going to do this?
+
+64
+00:02:45,600 --> 00:02:49,100
+We are going to do this and cast
+it as a reinforcement learning
+
+65
+00:02:49,100 --> 00:02:49,980
+problem.
+
+66
+00:02:49,980 --> 00:02:51,647
+And the way with
+reinforcement learning,
+
+67
+00:02:51,647 --> 00:02:54,890
+the way that we formalize it is
+that we have a machine learning
+
+68
+00:02:54,890 --> 00:02:57,470
+agent that observes
+the environment,
+
+69
+00:02:57,470 --> 00:03:00,540
+takes an action to interact
+with the environment,
+
+70
+00:03:00,540 --> 00:03:03,440
+and then receives a
+positive or negative reward.
+
+71
+00:03:03,440 --> 00:03:07,280
+And then the agent wants
+to learn from this loop.
+
+72
+00:03:07,280 --> 00:03:09,560
+And the key idea is
+that agent can directly
+
+73
+00:03:09,560 --> 00:03:11,480
+learn from the
+environment, which
+
+74
+00:03:11,480 --> 00:03:14,360
+is a black box to
+the agent, right?
+
+75
+00:03:14,360 --> 00:03:16,460
+So we think that there
+is the environment.
+
+76
+00:03:16,460 --> 00:03:18,440
+The agent is taking
+actions, and it's
+
+77
+00:03:18,440 --> 00:03:19,880
+interacting with
+the environment,
+
+78
+00:03:19,880 --> 00:03:22,790
+and the environment is
+giving back some feedback,
+
+79
+00:03:22,790 --> 00:03:24,920
+some rewards to the agent.
+
+80
+00:03:24,920 --> 00:03:26,630
+And there are two
+types of the rewards,
+
+81
+00:03:26,630 --> 00:03:28,433
+there is the
+instantaneous reward
+
+82
+00:03:28,433 --> 00:03:30,350
+and then there is the
+long term reward, right?
+
+83
+00:03:30,350 --> 00:03:32,480
+In our case,
+instantaneous reward
+
+84
+00:03:32,480 --> 00:03:36,320
+will did I just add an
+atom to the molecule,
+
+85
+00:03:36,320 --> 00:03:40,610
+and I did it according to
+the rules of chemistry.
+
+86
+00:03:40,610 --> 00:03:42,200
+And then the long
+term reward will
+
+87
+00:03:42,200 --> 00:03:45,290
+be after we are done with
+generating the molecule, how
+
+88
+00:03:45,290 --> 00:03:46,460
+good was that molecule?
+
+89
+00:03:46,460 --> 00:03:49,620
+That's the long term reward.
+
+90
+00:03:49,620 --> 00:03:50,250
+OK.
+
+91
+00:03:50,250 --> 00:03:53,910
+So the solution to this
+goal-directed molecule
+
+92
+00:03:53,910 --> 00:03:57,330
+generation, we call it Graph
+Convolutional Policy Network
+
+93
+00:03:57,330 --> 00:03:59,160
+that combines graph
+representation
+
+94
+00:03:59,160 --> 00:04:01,050
+and reinforcement learning.
+
+95
+00:04:01,050 --> 00:04:04,500
+And the key component
+of GCPN is that we
+
+96
+00:04:04,500 --> 00:04:07,710
+are going to use a graph neural
+network to capture the graph
+
+97
+00:04:07,710 --> 00:04:09,660
+structure information,
+we are going
+
+98
+00:04:09,660 --> 00:04:11,940
+to use reinforcement
+learning to guide
+
+99
+00:04:11,940 --> 00:04:14,610
+the generation towards
+the desired objective,
+
+100
+00:04:14,610 --> 00:04:16,680
+and we are going to
+use supervised learning
+
+101
+00:04:16,680 --> 00:04:22,580
+to imitate examples on a given
+training data set, right?
+
+102
+00:04:22,580 --> 00:04:27,690
+We want our molecules
+to look realistic.
+
+103
+00:04:27,690 --> 00:04:31,770
+How does GCPN differ
+from GraphRNN?
+
+104
+00:04:31,770 --> 00:04:34,170
+First, what is the commonality?
+
+105
+00:04:34,170 --> 00:04:37,110
+The commonality is that these
+are both generative models
+
+106
+00:04:37,110 --> 00:04:40,590
+for graphs, and they
+try to kind of imitate
+
+107
+00:04:40,590 --> 00:04:44,820
+or they can be learned
+given a data set.
+
+108
+00:04:44,820 --> 00:04:47,820
+What are the main
+differences is that GCPN
+
+109
+00:04:47,820 --> 00:04:51,240
+is going to use a graph
+neural network to predict
+
+110
+00:04:51,240 --> 00:04:52,695
+the generation of
+the next action,
+
+111
+00:04:52,695 --> 00:04:59,340
+and while GraphRNN is using
+the hidden state of an RNN
+
+112
+00:04:59,340 --> 00:05:02,160
+to decide on the next action.
+
+113
+00:05:02,160 --> 00:05:04,530
+A graph neural network
+is more expressive
+
+114
+00:05:04,530 --> 00:05:07,080
+than a recurrent neural
+network, so that's
+
+115
+00:05:07,080 --> 00:05:09,210
+the benefit of
+the GCPN approach,
+
+116
+00:05:09,210 --> 00:05:13,500
+but on the negative
+side, the GNN
+
+117
+00:05:13,500 --> 00:05:16,200
+takes longer time to
+compute than an RNN.
+
+118
+00:05:16,200 --> 00:05:18,450
+So molecules
+generally are small,
+
+119
+00:05:18,450 --> 00:05:22,860
+so we can afford this more
+complex algorithm that
+
+120
+00:05:22,860 --> 00:05:24,780
+has bigger expressive
+power, and it
+
+121
+00:05:24,780 --> 00:05:26,800
+will-- is able to learn more.
+
+122
+00:05:26,800 --> 00:05:30,270
+So GCPN will then also
+use reinforcement learning
+
+123
+00:05:30,270 --> 00:05:33,120
+to direct graph generation
+towards our goal,
+
+124
+00:05:33,120 --> 00:05:34,800
+towards our black box.
+
+125
+00:05:34,800 --> 00:05:39,000
+And reinforcement learning will
+enable us this goal directed
+
+126
+00:05:39,000 --> 00:05:41,540
+graph generation.
+
+127
+00:05:41,540 --> 00:05:44,420
+So to give you an idea,
+both of these two,
+
+128
+00:05:44,420 --> 00:05:48,380
+both GCPN and GraphRNN are
+sequential graph generation
+
+129
+00:05:48,380 --> 00:05:49,220
+approaches.
+
+130
+00:05:49,220 --> 00:05:52,760
+But in the GraphRNN we
+predict the action based
+
+131
+00:05:52,760 --> 00:05:54,620
+on the RNN hidden state, right?
+
+132
+00:05:54,620 --> 00:05:57,830
+So the node gives the hidden
+state to the edge level RNN,
+
+133
+00:05:57,830 --> 00:05:59,720
+and then the hidden
+state is passed on,
+
+134
+00:05:59,720 --> 00:06:01,670
+and the edges have
+generated, and then
+
+135
+00:06:01,670 --> 00:06:05,040
+the hidden state goes back
+to the node level RNN, right?
+
+136
+00:06:05,040 --> 00:06:07,370
+So basically all the
+information, all the history
+
+137
+00:06:07,370 --> 00:06:10,790
+is captured in
+this hidden state.
+
+138
+00:06:10,790 --> 00:06:13,550
+And if you have
+generated 10,000 nodes,
+
+139
+00:06:13,550 --> 00:06:17,030
+this means this hidden state has
+been transformed 10,000 times,
+
+140
+00:06:17,030 --> 00:06:19,850
+and then for every edge
+it's also been transformed.
+
+141
+00:06:19,850 --> 00:06:25,640
+So it's a lot that this
+hidden state needs to capture.
+
+142
+00:06:25,640 --> 00:06:29,870
+So in a GCPN, we won't have
+this notion of a hidden state,
+
+143
+00:06:29,870 --> 00:06:34,760
+but we are going to use the
+GNN to basically give me
+
+144
+00:06:34,760 --> 00:06:36,300
+the embeddings of the nodes.
+
+145
+00:06:36,300 --> 00:06:39,260
+So I'm going to say, here is
+a partially generated graph,
+
+146
+00:06:39,260 --> 00:06:40,610
+and here is a new node.
+
+147
+00:06:40,610 --> 00:06:42,050
+What I'm going to
+do is I'm going
+
+148
+00:06:42,050 --> 00:06:45,560
+to embed each of the nodes in
+the partially generated graph,
+
+149
+00:06:45,560 --> 00:06:50,750
+and then I'm also going to have
+some embedding for the new node
+
+150
+00:06:50,750 --> 00:06:51,500
+number 4.
+
+151
+00:06:51,500 --> 00:06:53,150
+And then, based on
+these embeddings,
+
+152
+00:06:53,150 --> 00:06:55,610
+I'm now going to
+predict which node
+
+153
+00:06:55,610 --> 00:07:00,270
+number 4 should link to, right?
+
+154
+00:07:00,270 --> 00:07:01,890
+So this means that
+basically now I'm
+
+155
+00:07:01,890 --> 00:07:05,370
+not using the RNN to do this,
+but I'm using a graph neural
+
+156
+00:07:05,370 --> 00:07:08,040
+network to generate the
+state, and then I'm simply
+
+157
+00:07:08,040 --> 00:07:09,700
+doing link prediction.
+
+158
+00:07:09,700 --> 00:07:11,160
+So I'm kind of using--
+
+159
+00:07:11,160 --> 00:07:14,040
+predicting potential links
+using node embeddings
+
+160
+00:07:14,040 --> 00:07:18,043
+rather than to directly generate
+them based on the hidden state.
+
+161
+00:07:18,043 --> 00:07:18,960
+That's the difference.
+
+162
+00:07:18,960 --> 00:07:22,920
+And this would be much more
+scalable, sorry, much more
+
+163
+00:07:22,920 --> 00:07:26,820
+expressive, much more
+robust, but less scalable
+
+164
+00:07:26,820 --> 00:07:29,220
+because we have to now
+compute these embeddings
+
+165
+00:07:29,220 --> 00:07:31,290
+and then evaluate
+these link predictions
+
+166
+00:07:31,290 --> 00:07:33,610
+for every single action.
+
+167
+00:07:33,610 --> 00:07:36,670
+So the overview of GCPN
+is that it has these
+
+168
+00:07:36,670 --> 00:07:39,890
+following four steps, right?
+
+169
+00:07:39,890 --> 00:07:42,460
+First, we are going
+to insert the nodes.
+
+170
+00:07:42,460 --> 00:07:44,800
+Then we are going to
+use the GNN to predict
+
+171
+00:07:44,800 --> 00:07:47,350
+which nodes are going to
+connect with each other.
+
+172
+00:07:47,350 --> 00:07:50,890
+Then we are going
+to take an action,
+
+173
+00:07:50,890 --> 00:07:55,120
+and we are going to
+check chemical validity.
+
+174
+00:07:55,120 --> 00:07:56,560
+And then if the
+action is correct,
+
+175
+00:07:56,560 --> 00:07:58,160
+we say yes, you
+created a good edge,
+
+176
+00:07:58,160 --> 00:07:59,650
+you didn't create a good edge.
+
+177
+00:07:59,650 --> 00:08:03,370
+And then, after the model is
+done generating the graph,
+
+178
+00:08:03,370 --> 00:08:06,160
+we are going to compute
+the final reward.
+
+179
+00:08:06,160 --> 00:08:09,190
+We are going to ask
+the black box, what
+
+180
+00:08:09,190 --> 00:08:12,850
+do you think of the
+molecule we generated?
+
+181
+00:08:12,850 --> 00:08:16,130
+So a few questions
+about the reward--
+
+182
+00:08:16,130 --> 00:08:18,410
+we will have two rewards.
+
+183
+00:08:18,410 --> 00:08:20,770
+One will be the
+reward per step, which
+
+184
+00:08:20,770 --> 00:08:23,830
+will be basically to--
+whether the model has
+
+185
+00:08:23,830 --> 00:08:25,660
+learned to take a valid action.
+
+186
+00:08:25,660 --> 00:08:28,180
+Basically, at each step
+a small positive reward
+
+187
+00:08:28,180 --> 00:08:32,620
+will be awarded for taking a
+valid action-- so basically,
+
+188
+00:08:32,620 --> 00:08:35,289
+by respecting the
+rules of chemistry.
+
+189
+00:08:35,289 --> 00:08:40,299
+And the final reward will be
+proportionate to the-- the goal
+
+190
+00:08:40,299 --> 00:08:42,669
+is for it to optimize
+the desired property
+
+191
+00:08:42,669 --> 00:08:43,750
+of the molecule, right?
+
+192
+00:08:43,750 --> 00:08:47,290
+At the end, we are going
+to get huge positive reward
+
+193
+00:08:47,290 --> 00:08:51,100
+if the molecule is
+good, and a low reward,
+
+194
+00:08:51,100 --> 00:08:53,750
+or no reward if the
+molecule is bad, right?
+
+195
+00:08:53,750 --> 00:08:56,530
+And the total reward is
+going to be final reward
+
+196
+00:08:56,530 --> 00:08:58,865
+plus these stepwise rewards.
+
+197
+00:08:58,865 --> 00:09:02,610
+
+
+198
+00:09:02,610 --> 00:09:06,160
+And then, in terms of training
+the model, there are two parts.
+
+199
+00:09:06,160 --> 00:09:08,280
+First is the
+supervised training,
+
+200
+00:09:08,280 --> 00:09:11,460
+where we are going to train
+the policy by imitating
+
+201
+00:09:11,460 --> 00:09:15,162
+the actions given real observed
+graphs using the gradient.
+
+202
+00:09:15,162 --> 00:09:16,620
+So basically, here
+we are just kind
+
+203
+00:09:16,620 --> 00:09:20,400
+of going to try to
+learn our model how
+
+204
+00:09:20,400 --> 00:09:25,380
+to generate realistic molecules
+and not worry about optimizing
+
+205
+00:09:25,380 --> 00:09:26,220
+the structure yet.
+
+206
+00:09:26,220 --> 00:09:29,280
+So it's just about learning
+to generate proper molecules
+
+207
+00:09:29,280 --> 00:09:31,470
+and obey chemistry.
+
+208
+00:09:31,470 --> 00:09:33,690
+And then in the second
+part of the training
+
+209
+00:09:33,690 --> 00:09:36,360
+we are going to actually
+train a policy that
+
+210
+00:09:36,360 --> 00:09:37,650
+optimizes the reward.
+
+211
+00:09:37,650 --> 00:09:41,940
+And here we are going to use
+a standard policy gradient
+
+212
+00:09:41,940 --> 00:09:46,690
+algorithm that is kind of
+classical reinforcement
+
+213
+00:09:46,690 --> 00:09:47,190
+learning.
+
+214
+00:09:47,190 --> 00:09:50,160
+But the point is, we are going
+to have two steps of training,
+
+215
+00:09:50,160 --> 00:09:53,340
+one to learn the chemistry
+and then the second one
+
+216
+00:09:53,340 --> 00:09:56,300
+to learn how to
+optimize the reward.
+
+217
+00:09:56,300 --> 00:09:58,080
+And now if I want
+to show you this,
+
+218
+00:09:58,080 --> 00:10:00,350
+we will have the
+partially generated graph,
+
+219
+00:10:00,350 --> 00:10:05,120
+the GCPN is going to decide how
+to grow it one node at a time
+
+220
+00:10:05,120 --> 00:10:07,550
+and how to create connections.
+
+221
+00:10:07,550 --> 00:10:10,490
+We are going to get
+small positive reward
+
+222
+00:10:10,490 --> 00:10:14,450
+and the gradient
+based on the fact
+
+223
+00:10:14,450 --> 00:10:16,940
+that we have generated
+the graph correctly.
+
+224
+00:10:16,940 --> 00:10:19,990
+And this is going to
+loop until we decide
+
+225
+00:10:19,990 --> 00:10:21,770
+the molecule is generated.
+
+226
+00:10:21,770 --> 00:10:23,690
+Now that the molecule
+is generated,
+
+227
+00:10:23,690 --> 00:10:27,860
+we are going to ask our
+black box to tell us
+
+228
+00:10:27,860 --> 00:10:30,020
+how good is this molecule.
+
+229
+00:10:30,020 --> 00:10:33,170
+And then this final
+reward is going to be
+
+230
+00:10:33,170 --> 00:10:34,540
+also back-propagated, right?
+
+231
+00:10:34,540 --> 00:10:37,250
+So this generation is
+going to be trained
+
+232
+00:10:37,250 --> 00:10:39,200
+using the supervised
+learning, and then
+
+233
+00:10:39,200 --> 00:10:42,980
+this overall end-to-end
+with the delayed reward
+
+234
+00:10:42,980 --> 00:10:49,130
+will be trained in this
+kind of reinforcement
+
+235
+00:10:49,130 --> 00:10:51,230
+learning framework.
+
+236
+00:10:51,230 --> 00:10:53,240
+And what is the benefit
+of this approach
+
+237
+00:10:53,240 --> 00:10:58,160
+is that we can generate
+molecules that try
+
+238
+00:10:58,160 --> 00:11:00,320
+to optimize a given property.
+
+239
+00:11:00,320 --> 00:11:02,270
+So here I'm showing
+you different molecules
+
+240
+00:11:02,270 --> 00:11:07,160
+that optimize log P, which is
+a particular chemical property,
+
+241
+00:11:07,160 --> 00:11:10,250
+or here we are
+optimizing QED, which
+
+242
+00:11:10,250 --> 00:11:12,080
+is the quantum energy--
+again, something
+
+243
+00:11:12,080 --> 00:11:15,350
+that medicinal
+chemists worry about.
+
+244
+00:11:15,350 --> 00:11:17,870
+And you can see how these
+graphs that we generate
+
+245
+00:11:17,870 --> 00:11:19,910
+look like real molecules.
+
+246
+00:11:19,910 --> 00:11:22,610
+Another thing that this
+allows you to do-- it
+
+247
+00:11:22,610 --> 00:11:25,040
+allows you to take a
+partially-built molecule
+
+248
+00:11:25,040 --> 00:11:26,490
+and complete it.
+
+249
+00:11:26,490 --> 00:11:30,140
+So for example, you can start
+with some starting structure,
+
+250
+00:11:30,140 --> 00:11:32,420
+where here, log B--
+
+251
+00:11:32,420 --> 00:11:33,770
+I think it's solubility.
+
+252
+00:11:33,770 --> 00:11:36,470
+So basically you start with some
+very bad values of solubility,
+
+253
+00:11:36,470 --> 00:11:39,320
+and then you say, how do
+I complete this structure
+
+254
+00:11:39,320 --> 00:11:40,580
+to improve solubility?
+
+255
+00:11:40,580 --> 00:11:44,270
+And here you see how it went
+from minus 8 to minus 0.7,
+
+256
+00:11:44,270 --> 00:11:49,070
+and from minus 5 to minus
+2, by basically completing
+
+257
+00:11:49,070 --> 00:11:51,650
+the molecule, right?
+
+258
+00:11:51,650 --> 00:11:54,110
+So this is the point, is
+we can take, basically,
+
+259
+00:11:54,110 --> 00:11:58,610
+a partially built structure or
+finish it, or create a brand
+
+260
+00:11:58,610 --> 00:11:59,930
+new structure.
+
+261
+00:11:59,930 --> 00:12:03,300
+
+
+262
+00:12:03,300 --> 00:12:08,030
+So let me summarize the
+lecture of graph generation.
+
+263
+00:12:08,030 --> 00:12:11,300
+So complex graphs can be
+successfully generated
+
+264
+00:12:11,300 --> 00:12:15,560
+via sequential generation
+using deep learning.
+
+265
+00:12:15,560 --> 00:12:21,680
+Each step is a decision that is
+made based on the hidden state,
+
+266
+00:12:21,680 --> 00:12:27,260
+and this hidden state can
+either be implicit or explicit.
+
+267
+00:12:27,260 --> 00:12:30,230
+In the RNN, this
+vector representation
+
+268
+00:12:30,230 --> 00:12:32,660
+about keeping the
+state was implicit
+
+269
+00:12:32,660 --> 00:12:37,070
+because it was all in this
+hidden state, while in the GCPN
+
+270
+00:12:37,070 --> 00:12:41,600
+the state was explicit because
+it was computed directly
+
+271
+00:12:41,600 --> 00:12:50,960
+on the intermediate graphs and
+encoded by a neural network.
+
+272
+00:12:50,960 --> 00:12:54,440
+I also showed you possible
+tasks for GraphRNN.
+
+273
+00:12:54,440 --> 00:12:58,430
+We talked about imitating
+a given set of graphs.
+
+274
+00:12:58,430 --> 00:13:01,520
+For the second
+part, for GCPN, we
+
+275
+00:13:01,520 --> 00:13:04,850
+talked about optimizing
+graphs to a given goal.
+
+276
+00:13:04,850 --> 00:13:08,510
+I talked about the application
+to molecule generation
+
+277
+00:13:08,510 --> 00:13:12,020
+to try to generate molecules
+with optimal properties,
+
+278
+00:13:12,020 --> 00:13:16,160
+but you could apply this to any
+kind of graph generation task,
+
+279
+00:13:16,160 --> 00:13:19,020
+to any kind of
+property-- for example,
+
+280
+00:13:19,020 --> 00:13:22,280
+including generating
+realistic maps,
+
+281
+00:13:22,280 --> 00:13:27,560
+generating realistic cities,
+road networks, materials,
+
+282
+00:13:27,560 --> 00:13:29,980
+and things like that.
+
+283
+00:13:29,980 --> 00:13:35,000
+
+

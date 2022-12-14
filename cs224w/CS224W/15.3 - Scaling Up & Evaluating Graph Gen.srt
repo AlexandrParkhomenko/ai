@@ -1,0 +1,1534 @@
+1
+00:00:05,250 --> 00:00:07,800
+What I want to discuss
+next is how do we
+
+2
+00:00:07,800 --> 00:00:10,020
+make the RNN tractable?
+
+3
+00:00:10,020 --> 00:00:11,560
+And how do we evaluate it?
+
+4
+00:00:11,560 --> 00:00:15,150
+So we are first going to
+discuss about tractability.
+
+5
+00:00:15,150 --> 00:00:17,520
+How do we make our
+model more scalable?
+
+6
+00:00:17,520 --> 00:00:20,740
+And the issue is that
+in a graph in principle
+
+7
+00:00:20,740 --> 00:00:23,370
+any node can connect
+to any prior node.
+
+8
+00:00:23,370 --> 00:00:26,610
+So this means there
+might be a lot of steps
+
+9
+00:00:26,610 --> 00:00:29,640
+for edge generation, right?
+
+10
+00:00:29,640 --> 00:00:33,990
+When node 1,000 joins, we
+may need to generate now
+
+11
+00:00:33,990 --> 00:00:35,880
+1,000 possible edges, right?
+
+12
+00:00:35,880 --> 00:00:41,460
+Does it link to node 999, and
+then 998, all the way down
+
+13
+00:00:41,460 --> 00:00:44,335
+to node let's say
+number 1, right?
+
+14
+00:00:44,335 --> 00:00:45,960
+So this would mean
+that in principle we
+
+15
+00:00:45,960 --> 00:00:48,780
+need to generate a
+full adjacency matrix.
+
+16
+00:00:48,780 --> 00:00:52,590
+And this is complex,
+and it's like--
+
+17
+00:00:52,590 --> 00:00:55,890
+it leads to very kind of
+long-range edge dependencies.
+
+18
+00:00:55,890 --> 00:00:57,930
+Because you have to memorize--
+
+19
+00:00:57,930 --> 00:00:59,430
+the model needs
+to memorize a lot
+
+20
+00:00:59,430 --> 00:01:02,055
+in terms of what
+previous nodes were added
+
+21
+00:01:02,055 --> 00:01:05,510
+and which previous nodes does
+a new node want to connect to,
+
+22
+00:01:05,510 --> 00:01:06,360
+right?
+
+23
+00:01:06,360 --> 00:01:09,510
+So if you have a node
+ordering like I show you here,
+
+24
+00:01:09,510 --> 00:01:11,480
+then for example,
+the way you generate
+
+25
+00:01:11,480 --> 00:01:15,390
+this graph would be add node
+1, add node 2, add node 3,
+
+26
+00:01:15,390 --> 00:01:18,570
+and only now start
+creating edges, right?
+
+27
+00:01:18,570 --> 00:01:20,520
+Then this doesn't
+feel like natural, it
+
+28
+00:01:20,520 --> 00:01:22,890
+seems that like this
+when I added node 3,
+
+29
+00:01:22,890 --> 00:01:25,830
+I needed now to remember that
+1 and 2 were already added
+
+30
+00:01:25,830 --> 00:01:28,290
+and all that, right?
+
+31
+00:01:28,290 --> 00:01:31,200
+And the point is that a
+new node needs to link to--
+
+32
+00:01:31,200 --> 00:01:33,780
+can in principle link to
+any previous node, right?
+
+33
+00:01:33,780 --> 00:01:36,900
+Even node 5 could
+link to node number 1?
+
+34
+00:01:36,900 --> 00:01:39,960
+And the question is, how would
+we limit this complexity?
+
+35
+00:01:39,960 --> 00:01:42,960
+And how would we limit these
+long range dependencies, right?
+
+36
+00:01:42,960 --> 00:01:46,350
+Because this means that
+the hidden state of node 5
+
+37
+00:01:46,350 --> 00:01:50,730
+somehow has to remember that
+node 1 was added at all the--
+
+38
+00:01:50,730 --> 00:01:53,520
+at the beginning and
+that 5 should link to 1.
+
+39
+00:01:53,520 --> 00:01:58,300
+And that's a lot to kind
+of ask our model to do.
+
+40
+00:01:58,300 --> 00:02:02,620
+So if we can help it in any
+way that would definitely help.
+
+41
+00:02:02,620 --> 00:02:08,370
+So the way the insight
+is that we can take a--
+
+42
+00:02:08,370 --> 00:02:10,288
+because the insight
+is that we can come up
+
+43
+00:02:10,288 --> 00:02:14,160
+with an node ordering that makes
+our model much more tractable.
+
+44
+00:02:14,160 --> 00:02:17,590
+So the insight is that,
+rather than having
+
+45
+00:02:17,590 --> 00:02:21,150
+a random node ordering and
+having the model to worry
+
+46
+00:02:21,150 --> 00:02:23,490
+about long-range
+dependencies, we
+
+47
+00:02:23,490 --> 00:02:25,800
+are going to use a node
+ordering that helps
+
+48
+00:02:25,800 --> 00:02:27,540
+the model learn better.
+
+49
+00:02:27,540 --> 00:02:29,490
+And the node ordering
+we propose is
+
+50
+00:02:29,490 --> 00:02:31,800
+called the breadth-first
+search node ordering.
+
+51
+00:02:31,800 --> 00:02:34,500
+Basically, we are going to
+start at some random node
+
+52
+00:02:34,500 --> 00:02:35,220
+in the graph.
+
+53
+00:02:35,220 --> 00:02:37,620
+We are going to label
+it as node number 1.
+
+54
+00:02:37,620 --> 00:02:40,830
+We are going to label its
+nodes as, let's say 2 and 3.
+
+55
+00:02:40,830 --> 00:02:44,280
+Then their neighbors
+are 4 and 5, right?
+
+56
+00:02:44,280 --> 00:02:48,750
+And this leads now to a
+much more natural recipe
+
+57
+00:02:48,750 --> 00:02:49,960
+to generate the graph, right?
+
+58
+00:02:49,960 --> 00:02:54,150
+We are saying add node 1,
+add node 2, connect 2 to 1,
+
+59
+00:02:54,150 --> 00:02:57,870
+add 3 connect it with 1, add
+4 connect it with 2 and 3.
+
+60
+00:02:57,870 --> 00:03:01,953
+It's kind of much more nicely
+interwoven, these things are.
+
+61
+00:03:01,953 --> 00:03:03,870
+And if you say, how would
+you draw this graph?
+
+62
+00:03:03,870 --> 00:03:06,900
+You'd probably draw it this
+way, not some other way
+
+63
+00:03:06,900 --> 00:03:09,665
+that you first put all the nodes
+down and then connect them,
+
+64
+00:03:09,665 --> 00:03:10,470
+right?
+
+65
+00:03:10,470 --> 00:03:13,770
+So the BFS ordering,
+what does it buy us?
+
+66
+00:03:13,770 --> 00:03:17,310
+It buys us the following,
+because node 4 does not
+
+67
+00:03:17,310 --> 00:03:21,540
+connect to node 1, we
+know that no other node
+
+68
+00:03:21,540 --> 00:03:24,990
+is going to connect to
+1 from now on, right,
+
+69
+00:03:24,990 --> 00:03:28,360
+because it's a breadth-first
+search ordering.
+
+70
+00:03:28,360 --> 00:03:31,950
+So if for example, node 5
+were to connect to node 1,
+
+71
+00:03:31,950 --> 00:03:37,350
+then its ID wouldn't be 5, it
+would be less than 5, right?
+
+72
+00:03:37,350 --> 00:03:40,530
+So we know that all
+of node 1's neighbors
+
+73
+00:03:40,530 --> 00:03:44,460
+have already been traversed
+when a given node does not
+
+74
+00:03:44,460 --> 00:03:45,930
+link to it.
+
+75
+00:03:45,930 --> 00:03:48,165
+Therefore, node 5, and
+all the following nodes,
+
+76
+00:03:48,165 --> 00:03:51,150
+right, as I said, will
+never connect to node 1.
+
+77
+00:03:51,150 --> 00:03:52,570
+And why is this important?
+
+78
+00:03:52,570 --> 00:03:54,870
+Because this means
+that when node 5 comes
+
+79
+00:03:54,870 --> 00:03:58,680
+I don't need to worry about
+node 1 anymore, right?
+
+80
+00:03:58,680 --> 00:04:02,280
+Node 1 I can kind of forget, I
+need to have much less memory,
+
+81
+00:04:02,280 --> 00:04:03,750
+right?
+
+82
+00:04:03,750 --> 00:04:06,390
+I don't need memory, I only
+need memory of two steps
+
+83
+00:04:06,390 --> 00:04:09,180
+rather than memory of
+remembering what I did
+
+84
+00:04:09,180 --> 00:04:11,380
+all the way at the beginning.
+
+85
+00:04:11,380 --> 00:04:14,740
+So the BFS ordering,
+the key insight
+
+86
+00:04:14,740 --> 00:04:18,040
+is that node 5 will
+never connect to node 1.
+
+87
+00:04:18,040 --> 00:04:20,769
+And this means that we only
+need memory of two steps,
+
+88
+00:04:20,769 --> 00:04:23,530
+rather than the memory
+of n minus 1 steps where
+
+89
+00:04:23,530 --> 00:04:26,980
+n is the number of
+nodes in the network.
+
+90
+00:04:26,980 --> 00:04:29,350
+And this also means
+that it reduces
+
+91
+00:04:29,350 --> 00:04:31,720
+the number of possible
+orderings, right,
+
+92
+00:04:31,720 --> 00:04:34,720
+rather than considering all
+the possible orderings which
+
+93
+00:04:34,720 --> 00:04:36,280
+is n factorial of them.
+
+94
+00:04:36,280 --> 00:04:43,300
+We only have to kind of consider
+the number of distinct BFS
+
+95
+00:04:43,300 --> 00:04:44,020
+orderings.
+
+96
+00:04:44,020 --> 00:04:46,240
+And it also reduces
+the number of steps
+
+97
+00:04:46,240 --> 00:04:49,030
+for edge generation
+because of this insight
+
+98
+00:04:49,030 --> 00:04:52,030
+that we know that
+5 won't link to 1.
+
+99
+00:04:52,030 --> 00:04:53,380
+And this is important.
+
+100
+00:04:53,380 --> 00:04:56,320
+Because so far, I
+explained to you,
+
+101
+00:04:56,320 --> 00:05:00,220
+I said, the edge level
+RNN generates the column
+
+102
+00:05:00,220 --> 00:05:02,020
+of the adjacency matrix.
+
+103
+00:05:02,020 --> 00:05:05,740
+But if you take this
+BFS based ordering,
+
+104
+00:05:05,740 --> 00:05:09,490
+then the edge level
+RNN does not really
+
+105
+00:05:09,490 --> 00:05:14,290
+need to generate
+the entire column.
+
+106
+00:05:14,290 --> 00:05:16,270
+It can-- it only
+needs to generate
+
+107
+00:05:16,270 --> 00:05:18,220
+a small part of the
+column because we
+
+108
+00:05:18,220 --> 00:05:21,070
+know that the rest is 0, right?
+
+109
+00:05:21,070 --> 00:05:23,230
+So, rather than
+generating connectivity
+
+110
+00:05:23,230 --> 00:05:25,240
+to all previous
+nodes, and having
+
+111
+00:05:25,240 --> 00:05:28,900
+to remember all this with
+the proper node ordering,
+
+112
+00:05:28,900 --> 00:05:30,760
+we are guaranteed
+that all we need to do
+
+113
+00:05:30,760 --> 00:05:35,740
+is generate just a small band
+of this adjacency matrix.
+
+114
+00:05:35,740 --> 00:05:37,960
+And again, this
+doesn't prevent us
+
+115
+00:05:37,960 --> 00:05:41,380
+from generating any
+kind-- like graphs,
+
+116
+00:05:41,380 --> 00:05:43,300
+this is still fully
+general, it is just
+
+117
+00:05:43,300 --> 00:05:48,910
+exploiting the ability that
+we can re-number the nodes.
+
+118
+00:05:48,910 --> 00:05:52,730
+We can order the nodes in
+whatever order we want.
+
+119
+00:05:52,730 --> 00:05:56,110
+And because real
+graphs are sparse,
+
+120
+00:05:56,110 --> 00:05:59,440
+a favorable ordering
+gives us a lot of benefit
+
+121
+00:05:59,440 --> 00:06:01,570
+because it's much
+easier to learn
+
+122
+00:06:01,570 --> 00:06:04,300
+to generate just this
+blue part, than to learn
+
+123
+00:06:04,300 --> 00:06:07,240
+to generate this
+entire upper triangle
+
+124
+00:06:07,240 --> 00:06:10,000
+of the adjacency matrix.
+
+125
+00:06:10,000 --> 00:06:12,840
+So this was the
+discussion of how
+
+126
+00:06:12,840 --> 00:06:16,530
+do we scale up our model and
+its insight, that we can come up
+
+127
+00:06:16,530 --> 00:06:19,950
+or we can decide on the ordering
+and if you are smart about it,
+
+128
+00:06:19,950 --> 00:06:21,270
+it can really help us.
+
+129
+00:06:21,270 --> 00:06:23,170
+It could help the model learn.
+
+130
+00:06:23,170 --> 00:06:24,720
+The second thing I
+want to talk about
+
+131
+00:06:24,720 --> 00:06:28,950
+is, how do we evaluate
+graph generation, right?
+
+132
+00:06:28,950 --> 00:06:31,270
+And there are two ways
+how you can do it.
+
+133
+00:06:31,270 --> 00:06:32,790
+One is that we
+visually look at them
+
+134
+00:06:32,790 --> 00:06:34,260
+and see whether
+they are similar.
+
+135
+00:06:34,260 --> 00:06:36,480
+And that's good to
+get some intuition,
+
+136
+00:06:36,480 --> 00:06:39,090
+but we also want to define a
+statistical notion of graph
+
+137
+00:06:39,090 --> 00:06:40,140
+similarity.
+
+138
+00:06:40,140 --> 00:06:41,650
+And of course, you
+could try to say,
+
+139
+00:06:41,650 --> 00:06:44,310
+I'll take two graphs and I'll
+somehow align them one on top
+
+140
+00:06:44,310 --> 00:06:48,688
+of the other, but that is very
+expensive and for big graphs
+
+141
+00:06:48,688 --> 00:06:49,480
+you cannot do that.
+
+142
+00:06:49,480 --> 00:06:54,600
+So we have to define some kind
+of statistical measure of graph
+
+143
+00:06:54,600 --> 00:06:56,380
+similarity between two graphs.
+
+144
+00:06:56,380 --> 00:06:58,830
+So first, let me show
+you some visual examples
+
+145
+00:06:58,830 --> 00:07:01,750
+of what GraphRNN is able to do.
+
+146
+00:07:01,750 --> 00:07:06,420
+So what I'm showing here is
+three input training graphs.
+
+147
+00:07:06,420 --> 00:07:09,320
+These are the output
+graphs from GraphRNN,
+
+148
+00:07:09,320 --> 00:07:14,160
+and here are some output from
+three traditional generating
+
+149
+00:07:14,160 --> 00:07:14,660
+models.
+
+150
+00:07:14,660 --> 00:07:16,730
+This is the Kronecker
+graphs generating model,
+
+151
+00:07:16,730 --> 00:07:19,485
+this is the mixed membership
+stochastic block model,
+
+152
+00:07:19,485 --> 00:07:21,110
+and this is the
+preferential attachment
+
+153
+00:07:21,110 --> 00:07:24,350
+to the Barabasi-Albert model.
+
+154
+00:07:24,350 --> 00:07:28,550
+And what you notice
+is that GraphRNN,
+
+155
+00:07:28,550 --> 00:07:31,880
+if you give it grids it's
+going to generate you grids.
+
+156
+00:07:31,880 --> 00:07:34,640
+You see little mistakes because
+the model is stochastic,
+
+157
+00:07:34,640 --> 00:07:38,330
+so it may make some little
+mistakes, that's OK.
+
+158
+00:07:38,330 --> 00:07:41,100
+But you see that other
+models completely fail,
+
+159
+00:07:41,100 --> 00:07:42,950
+they are not able to
+generate the grid.
+
+160
+00:07:42,950 --> 00:07:46,220
+And this is not surprising
+because none of these models
+
+161
+00:07:46,220 --> 00:07:49,280
+was developed to generate grids.
+
+162
+00:07:49,280 --> 00:07:53,510
+They were developed
+to generate networks
+
+163
+00:07:53,510 --> 00:07:55,160
+for different types
+of properties.
+
+164
+00:07:55,160 --> 00:07:57,530
+So that's OK, right?
+
+165
+00:07:57,530 --> 00:08:00,230
+GraphRNN can generate the
+grid the others cannot.
+
+166
+00:08:00,230 --> 00:08:02,750
+What is interesting though,
+is, even if you for example
+
+167
+00:08:02,750 --> 00:08:06,290
+give GraphRNN examples
+of graphs with two
+
+168
+00:08:06,290 --> 00:08:09,470
+clusters with this kind
+of community structure,
+
+169
+00:08:09,470 --> 00:08:11,980
+GraphRNN is able to learn
+that these graphs have
+
+170
+00:08:11,980 --> 00:08:13,730
+that structure and is
+able to generate you
+
+171
+00:08:13,730 --> 00:08:15,630
+graphs with such a structure.
+
+172
+00:08:15,630 --> 00:08:16,130
+Why?
+
+173
+00:08:16,130 --> 00:08:19,880
+For example, Kronecker graphs or
+Barabasi-Albert, they cannot--
+
+174
+00:08:19,880 --> 00:08:22,820
+they were not done to
+generate graphs with community
+
+175
+00:08:22,820 --> 00:08:23,340
+structures.
+
+176
+00:08:23,340 --> 00:08:25,850
+So they cannot do that, but
+mixed membership's stochastic
+
+177
+00:08:25,850 --> 00:08:28,760
+block model was developed
+for community structure.
+
+178
+00:08:28,760 --> 00:08:31,370
+So it does a good job, right?
+
+179
+00:08:31,370 --> 00:08:34,115
+And what I want to say
+here is the following,
+
+180
+00:08:34,115 --> 00:08:37,820
+right, is that GraphRNN
+is super general, right?
+
+181
+00:08:37,820 --> 00:08:40,909
+It's basically able to
+take these input graphs
+
+182
+00:08:40,909 --> 00:08:44,000
+and learn about the
+structure and then
+
+183
+00:08:44,000 --> 00:08:46,730
+generate new graphs with
+similar structure, right?
+
+184
+00:08:46,730 --> 00:08:49,220
+You don't have to tell it,
+Hey, I have communities.
+
+185
+00:08:49,220 --> 00:08:50,360
+Hey, this is a grid.
+
+186
+00:08:50,360 --> 00:08:53,540
+You just give it the graph, and
+it will figure it out by itself
+
+187
+00:08:53,540 --> 00:08:55,970
+that the given graph
+is a grid and it
+
+188
+00:08:55,970 --> 00:08:59,150
+needs to generate a grid, or
+that it's a community structure
+
+189
+00:08:59,150 --> 00:09:00,890
+graph or anything else.
+
+190
+00:09:00,890 --> 00:09:05,450
+So it's quite remarkable that
+such a diversity of graphs,
+
+191
+00:09:05,450 --> 00:09:09,050
+the same model can
+cover and you don't even
+
+192
+00:09:09,050 --> 00:09:12,390
+have to tell it what
+the input graphs are.
+
+193
+00:09:12,390 --> 00:09:16,700
+So now, how about doing
+more rigorous comparison
+
+194
+00:09:16,700 --> 00:09:19,010
+about statistical
+similarity, right?
+
+195
+00:09:19,010 --> 00:09:20,540
+How do we do that, right?
+
+196
+00:09:20,540 --> 00:09:23,660
+we-- as I said we cannot do
+direct comparison between two
+
+197
+00:09:23,660 --> 00:09:25,910
+graphs, trying to
+do graph alignment,
+
+198
+00:09:25,910 --> 00:09:29,060
+because graph isomorphism
+testing as we have seen is
+
+199
+00:09:29,060 --> 00:09:32,810
+an NP, is a hard
+problem, let's say.
+
+200
+00:09:32,810 --> 00:09:35,570
+So the solution is to
+compare graph statistics,
+
+201
+00:09:35,570 --> 00:09:39,230
+and the typical graph statistics
+we have already discussed
+
+202
+00:09:39,230 --> 00:09:41,420
+would be like degree
+distribution, clustering
+
+203
+00:09:41,420 --> 00:09:47,300
+coefficient, or orbit count
+statistics from the graphlets
+
+204
+00:09:47,300 --> 00:09:50,060
+that I discussed, I think
+in lecture number two.
+
+205
+00:09:50,060 --> 00:09:51,890
+So the point would
+be that given a graph
+
+206
+00:09:51,890 --> 00:09:54,620
+we are going to describe it
+with a set of statistics,
+
+207
+00:09:54,620 --> 00:09:57,650
+and then we are going to
+say that the two graphs are
+
+208
+00:09:57,650 --> 00:10:01,370
+more similar if their
+corresponding statistics are
+
+209
+00:10:01,370 --> 00:10:02,630
+more similar.
+
+210
+00:10:02,630 --> 00:10:05,460
+And in our case, each
+of these statistics
+
+211
+00:10:05,460 --> 00:10:08,400
+we are going to think of it
+as a probability distribution.
+
+212
+00:10:08,400 --> 00:10:11,790
+And I'm going to explain
+why is this important.
+
+213
+00:10:11,790 --> 00:10:12,560
+OK.
+
+214
+00:10:12,560 --> 00:10:16,340
+So first, is that,
+given two statistics,
+
+215
+00:10:16,340 --> 00:10:19,760
+maybe two graph
+properties, maybe degree--
+
+216
+00:10:19,760 --> 00:10:22,450
+two degrees sequences,
+two degree distributions,
+
+217
+00:10:22,450 --> 00:10:24,840
+two orbit count distributions.
+
+218
+00:10:24,840 --> 00:10:28,670
+We want to compare this
+on sets of training graphs
+
+219
+00:10:28,670 --> 00:10:30,920
+as well as on the
+syntactic graphs.
+
+220
+00:10:30,920 --> 00:10:33,140
+You want to see how similar
+is a set of training
+
+221
+00:10:33,140 --> 00:10:35,930
+graphs to the set of
+synthetically generated graphs.
+
+222
+00:10:35,930 --> 00:10:39,020
+And we'd like to measure
+the level of similarity
+
+223
+00:10:39,020 --> 00:10:39,830
+between the two.
+
+224
+00:10:39,830 --> 00:10:42,140
+And we are going to
+do a 2-step approach.
+
+225
+00:10:42,140 --> 00:10:44,662
+In the first step, we are
+going to do the following.
+
+226
+00:10:44,662 --> 00:10:46,370
+We are going to take
+each of these graphs
+
+227
+00:10:46,370 --> 00:10:50,140
+and we are going to describe
+it with a set of statistics.
+
+228
+00:10:50,140 --> 00:10:51,890
+We'll say here is the
+degree distribution,
+
+229
+00:10:51,890 --> 00:10:53,890
+here is the clustering
+coefficient distribution.
+
+230
+00:10:53,890 --> 00:10:55,640
+And now, we'll take
+and we are going
+
+231
+00:10:55,640 --> 00:10:59,000
+to this for all the input
+graphs, training graphs,
+
+232
+00:10:59,000 --> 00:11:02,570
+as well as, for all
+the generated graphs.
+
+233
+00:11:02,570 --> 00:11:05,210
+And now, we are going to take,
+let's say, degree distribution
+
+234
+00:11:05,210 --> 00:11:08,000
+of a synthetic graph and degree
+distribution of a real graph,
+
+235
+00:11:08,000 --> 00:11:11,540
+and we want to see how much
+of these distribution differ.
+
+236
+00:11:11,540 --> 00:11:14,210
+And to measure--
+to quantify that we
+
+237
+00:11:14,210 --> 00:11:17,180
+are going to use something
+that we call the earth mover
+
+238
+00:11:17,180 --> 00:11:18,920
+distance.
+
+239
+00:11:18,920 --> 00:11:22,370
+And now, that we have compared
+the statistic individual
+
+240
+00:11:22,370 --> 00:11:23,310
+statistics.
+
+241
+00:11:23,310 --> 00:11:27,080
+Now, we need to aggregate
+and measure how--
+
+242
+00:11:27,080 --> 00:11:30,320
+once we have a measure of
+degree distribution similarity,
+
+243
+00:11:30,320 --> 00:11:32,720
+we have a measure of clustering
+coefficient similarities.
+
+244
+00:11:32,720 --> 00:11:34,370
+Now, we need to take
+these similarities
+
+245
+00:11:34,370 --> 00:11:41,630
+and further aggregate them to
+get the overall similarity.
+
+246
+00:11:41,630 --> 00:11:44,270
+And for this second
+level aggregation,
+
+247
+00:11:44,270 --> 00:11:46,880
+we are going to
+use what is called
+
+248
+00:11:46,880 --> 00:11:50,810
+the maximum mean discrepancy
+that will be based on the earth
+
+249
+00:11:50,810 --> 00:11:51,680
+mover distance.
+
+250
+00:11:51,680 --> 00:11:52,772
+So let me tell--
+
+251
+00:11:52,772 --> 00:11:54,980
+let me first define the
+earth mover distance and then
+
+252
+00:11:54,980 --> 00:11:57,490
+the MMD.
+
+253
+00:11:57,490 --> 00:12:00,130
+So the earth mover
+distance, kind of
+
+254
+00:12:00,130 --> 00:12:02,860
+tries to measure similarity
+between two distributions,
+
+255
+00:12:02,860 --> 00:12:04,990
+or similarity between
+two histograms.
+
+256
+00:12:04,990 --> 00:12:06,490
+And the way you
+can-- the intuition
+
+257
+00:12:06,490 --> 00:12:09,460
+is that, what is the
+minimum amount of effort,
+
+258
+00:12:09,460 --> 00:12:14,230
+minimum amount of Earth, minimum
+amount of probability mass
+
+259
+00:12:14,230 --> 00:12:16,730
+to move from one
+pile to the other,
+
+260
+00:12:16,730 --> 00:12:18,855
+so that one pile gets
+transformed to the other,
+
+261
+00:12:18,855 --> 00:12:19,355
+right?
+
+262
+00:12:19,355 --> 00:12:22,360
+So I say, I have a distribution,
+I have two distributions,
+
+263
+00:12:22,360 --> 00:12:23,290
+how much more?
+
+264
+00:12:23,290 --> 00:12:24,520
+How much mass?
+
+265
+00:12:24,520 --> 00:12:26,920
+How much of this yellow--
+
+266
+00:12:26,920 --> 00:12:29,170
+dirt, yellow earth,
+do I have to move
+
+267
+00:12:29,170 --> 00:12:31,090
+between these
+different pillars, so
+
+268
+00:12:31,090 --> 00:12:32,830
+that I will make
+it and transform it
+
+269
+00:12:32,830 --> 00:12:34,610
+into this type of distribution?
+
+270
+00:12:34,610 --> 00:12:37,210
+So if I have distributions
+that are very different,
+
+271
+00:12:37,210 --> 00:12:39,560
+then the earth mover
+distance would be high.
+
+272
+00:12:39,560 --> 00:12:42,430
+And if they are kind of similar,
+the earth mover distance
+
+273
+00:12:42,430 --> 00:12:43,540
+will be low.
+
+274
+00:12:43,540 --> 00:12:46,570
+And earth mover distance can
+be solved as an optimal flow,
+
+275
+00:12:46,570 --> 00:12:52,990
+and is found by using a linear
+program optimization problem.
+
+276
+00:12:52,990 --> 00:12:55,600
+We're basically saying, the
+amount of work I have to do
+
+277
+00:12:55,600 --> 00:13:02,830
+is, how do I take
+F and transform it.
+
+278
+00:13:02,830 --> 00:13:05,410
+How much earth do
+I have to move,
+
+279
+00:13:05,410 --> 00:13:09,670
+so that it minimizes
+the overall cost
+
+280
+00:13:09,670 --> 00:13:13,840
+didj between the probability
+distributions x and y.
+
+281
+00:13:13,840 --> 00:13:19,240
+So that's the intuition behind
+the earth mover distance
+
+282
+00:13:19,240 --> 00:13:20,760
+metric.
+
+283
+00:13:20,760 --> 00:13:23,280
+And then, the
+second part will be
+
+284
+00:13:23,280 --> 00:13:26,880
+that, we are going to use
+the maximum mean discrepancy,
+
+285
+00:13:26,880 --> 00:13:27,990
+or MMD.
+
+286
+00:13:27,990 --> 00:13:30,060
+And the idea of
+maximum discrepancy
+
+287
+00:13:30,060 --> 00:13:33,270
+is to represent distances
+between distributions,
+
+288
+00:13:33,270 --> 00:13:36,697
+as distances between mean
+embeddings of their features,
+
+289
+00:13:36,697 --> 00:13:37,620
+right?
+
+290
+00:13:37,620 --> 00:13:41,790
+And here I give you
+the formula for it.
+
+291
+00:13:41,790 --> 00:13:46,410
+But basically, the MMD between
+two distributions p and q,
+
+292
+00:13:46,410 --> 00:13:50,370
+you can think of it--
+is-- that this is the--
+
+293
+00:13:50,370 --> 00:13:53,910
+if I write it in terms
+of some kernel k,
+
+294
+00:13:53,910 --> 00:14:02,850
+it's kind of the expectation
+over these elements x and y
+
+295
+00:14:02,850 --> 00:14:06,540
+that are drawn from
+distribution p and q,
+
+296
+00:14:06,540 --> 00:14:10,350
+and taking the expectation over
+the distribution of p and q.
+
+297
+00:14:10,350 --> 00:14:12,720
+And of course, we need
+to have this kernel k.
+
+298
+00:14:12,720 --> 00:14:18,850
+In our case, the kernel
+will be the L2 distance.
+
+299
+00:14:18,850 --> 00:14:22,170
+So now, let me just summarize.
+
+300
+00:14:22,170 --> 00:14:23,860
+How do we put all this together?
+
+301
+00:14:23,860 --> 00:14:25,740
+We are given two sets
+of graphs and we want
+
+302
+00:14:25,740 --> 00:14:27,450
+to see how similar they are.
+
+303
+00:14:27,450 --> 00:14:30,510
+The way we are going to do
+this is, for every graph
+
+304
+00:14:30,510 --> 00:14:31,500
+we are compute--
+
+305
+00:14:31,500 --> 00:14:34,440
+we are going to
+compute its statistics.
+
+306
+00:14:34,440 --> 00:14:37,740
+We are then going to
+use earth mover distance
+
+307
+00:14:37,740 --> 00:14:41,220
+to measure to the discrepancy
+between the two statistics,
+
+308
+00:14:41,220 --> 00:14:43,680
+between the two distributions.
+
+309
+00:14:43,680 --> 00:14:47,520
+And then, we are going
+to apply the mean--
+
+310
+00:14:47,520 --> 00:14:51,240
+the maximum mean
+discrepancy to measure
+
+311
+00:14:51,240 --> 00:14:54,810
+the similarity between
+these sets of statistics.
+
+312
+00:14:54,810 --> 00:14:57,730
+Where the similarity
+between sets elements--
+
+313
+00:14:57,730 --> 00:15:00,960
+which means the
+individual distributions
+
+314
+00:15:00,960 --> 00:15:07,320
+in your statistics is computed
+with the earth mover distance.
+
+315
+00:15:07,320 --> 00:15:10,710
+And this means, for
+example, that, this way
+
+316
+00:15:10,710 --> 00:15:16,360
+we can rigorously evaluate
+the correspondence
+
+317
+00:15:16,360 --> 00:15:18,130
+between the
+particular statistic--
+
+318
+00:15:18,130 --> 00:15:20,170
+set of statistics on
+the training graph,
+
+319
+00:15:20,170 --> 00:15:23,670
+as well as, on the
+testing graphs.
+

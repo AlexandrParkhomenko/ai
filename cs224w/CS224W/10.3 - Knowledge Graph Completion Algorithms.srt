@@ -1,0 +1,2612 @@
+1
+00:00:04,010 --> 00:00:07,890
+So let's talk next about
+
+2
+00:00:07,890 --> 00:00:12,330
+knowledge graph completion tasks and various methods to accomplish,
+
+3
+00:00:12,330 --> 00:00:13,950
+uh, knowledge graph completion.
+
+4
+00:00:13,950 --> 00:00:16,650
+In particular, we'll talk about methods that are,
+
+5
+00:00:16,650 --> 00:00:19,230
+uh, that right now will have cryptic names,
+
+6
+00:00:19,230 --> 00:00:22,050
+but it will become, uh, clear: TransE,
+
+7
+00:00:22,050 --> 00:00:25,755
+TransR, DistMul, and, uh, ComplEx.
+
+8
+00:00:25,755 --> 00:00:28,620
+So I'll, I'll introduce what these methods are,
+
+9
+00:00:28,620 --> 00:00:30,600
+and we'll be in particular interested,
+
+10
+00:00:30,600 --> 00:00:34,575
+what kind of relationships can these methods capture and predict?
+
+11
+00:00:34,575 --> 00:00:36,960
+So let's think about,
+
+12
+00:00:36,960 --> 00:00:38,970
+uh, knowledge graph completion task.
+
+13
+00:00:38,970 --> 00:00:41,630
+Where basically we are given an enormous knowledge graph,
+
+14
+00:00:41,630 --> 00:00:42,680
+and the question is,
+
+15
+00:00:42,680 --> 00:00:45,920
+can we impute- can we predict missing information?
+
+16
+00:00:45,920 --> 00:00:48,400
+Because the knowledge graph is incomplete.
+
+17
+00:00:48,400 --> 00:00:52,850
+And the way the knowledge graph completion task works is that we are given the head node,
+
+18
+00:00:52,850 --> 00:00:54,860
+we are given the relation, uh,
+
+19
+00:00:54,860 --> 00:00:57,920
+type and we'd like to predict the missing tail.
+
+20
+00:00:57,920 --> 00:01:00,470
+So notice that this is slightly different from
+
+21
+00:01:00,470 --> 00:01:03,660
+classical link prediction task where nothing is given,
+
+22
+00:01:03,660 --> 00:01:07,160
+we just say, predict what links are missing in the entire graph.
+
+23
+00:01:07,160 --> 00:01:09,110
+Here we would actually say, aha,
+
+24
+00:01:09,110 --> 00:01:11,270
+we are interested in this particular node,
+
+25
+00:01:11,270 --> 00:01:13,850
+we are interested in this particular, uh,
+
+26
+00:01:13,850 --> 00:01:16,115
+relation type and we wanna ask,
+
+27
+00:01:16,115 --> 00:01:18,135
+you know, where is,
+
+28
+00:01:18,135 --> 00:01:19,715
+uh, this particular author?
+
+29
+00:01:19,715 --> 00:01:21,040
+Which other, let's say,
+
+30
+00:01:21,040 --> 00:01:23,570
+genres is this author connected to?
+
+31
+00:01:23,570 --> 00:01:27,260
+So for example, uh, JK Rowling, right, the, uh,
+
+32
+00:01:27,260 --> 00:01:29,765
+Harry Potter author is connected to,
+
+33
+00:01:29,765 --> 00:01:32,890
+let's say, uh, genre science fiction.
+
+34
+00:01:32,890 --> 00:01:34,575
+So that would basically be,
+
+35
+00:01:34,575 --> 00:01:36,090
+uh, something we would wanna predict.
+
+36
+00:01:36,090 --> 00:01:38,880
+So what we are given is the head node,
+
+37
+00:01:38,880 --> 00:01:43,180
+we are given the relation type and we wanna predict the tail.
+
+38
+00:01:43,180 --> 00:01:48,740
+Um, the way we are going to do this is we are going to do through node embeddings, right?
+
+39
+00:01:48,740 --> 00:01:52,760
+So every node, every entity in the knowledge graph will have an embedding.
+
+40
+00:01:52,760 --> 00:01:56,010
+And we are going just to use shallow embeddings.
+
+41
+00:01:56,010 --> 00:02:01,525
+So basically it means we will wanna learn an embedding vector for every,
+
+42
+00:02:01,525 --> 00:02:03,805
+uh, entity type in the, uh,
+
+43
+00:02:03,805 --> 00:02:07,040
+in the knowledge graph so that we can then do prediction well.
+
+44
+00:02:07,040 --> 00:02:08,345
+So the point is,
+
+45
+00:02:08,345 --> 00:02:10,865
+we won't be using GNNs,
+
+46
+00:02:10,865 --> 00:02:14,480
+um, we'll just assume we are doing shallow encodings.
+
+47
+00:02:14,480 --> 00:02:15,650
+But you could also, uh,
+
+48
+00:02:15,650 --> 00:02:18,310
+use GNNs if you would like.
+
+49
+00:02:18,310 --> 00:02:21,830
+So, uh, knowledge graph representation will be
+
+50
+00:02:21,830 --> 00:02:27,680
+such but knowledge graph is represented as a set of triples: head, relation, tail, right?
+
+51
+00:02:27,680 --> 00:02:29,125
+So head is the source,
+
+52
+00:02:29,125 --> 00:02:31,340
+relation is the type of a relation,
+
+53
+00:02:31,340 --> 00:02:33,890
+and tail is the endpoint of the relation.
+
+54
+00:02:33,890 --> 00:02:35,785
+So head could be, you know,
+
+55
+00:02:35,785 --> 00:02:37,870
+I know Barack Obama and, uh,
+
+56
+00:02:37,870 --> 00:02:42,460
+relation would be nationality and the tail would be United States.
+
+57
+00:02:42,460 --> 00:02:46,790
+So the key idea how we wanna do this is that we wanna model entities and the
+
+58
+00:02:46,790 --> 00:02:52,339
+relations as embedding points and vectors in the embedding space.
+
+59
+00:02:52,339 --> 00:02:55,430
+And we wanna associate entities
+
+60
+00:02:55,430 --> 00:02:58,835
+and relations with shallow embeddings, as I mentioned.
+
+61
+00:02:58,835 --> 00:03:03,190
+So we are not using GNNs just for simplicity to keep our life simple.
+
+62
+00:03:03,190 --> 00:03:07,835
+Um, and then the idea is that given a true triple: head, relation, tail,
+
+63
+00:03:07,835 --> 00:03:10,685
+the goal is that the embedding of head,
+
+64
+00:03:10,685 --> 00:03:14,620
+relation should be close to the embedding of the tail.
+
+65
+00:03:14,620 --> 00:03:18,380
+Um, so I know this is a bit abstract right now.
+
+66
+00:03:18,380 --> 00:03:21,120
+So let me give you, um,
+
+67
+00:03:21,120 --> 00:03:24,750
+explanations how can we embed head,
+
+68
+00:03:24,750 --> 00:03:29,220
+relation and how do we define this closeness, uh,
+
+69
+00:03:29,220 --> 00:03:31,605
+that the embedding of head,
+
+70
+00:03:31,605 --> 00:03:34,110
+relations should be close, uh, to the tail.
+
+71
+00:03:34,110 --> 00:03:36,480
+And really, all different methods we'll talk
+
+72
+00:03:36,480 --> 00:03:39,360
+about differ how these closeness and how this,
+
+73
+00:03:39,360 --> 00:03:42,240
+uh, embedding is produced.
+
+74
+00:03:42,240 --> 00:03:47,920
+The simplest idea, and the kind of the most natural one, is called TransE.
+
+75
+00:03:47,920 --> 00:03:52,715
+And Trans- TransE basically has this intuition of translation.
+
+76
+00:03:52,715 --> 00:03:56,455
+Where basically the idea is that for our triple: head, relation, tail,
+
+77
+00:03:56,455 --> 00:03:59,230
+we wanna learn the embedding of the head,
+
+78
+00:03:59,230 --> 00:04:01,345
+we wanna learn the embedding of the tail,
+
+79
+00:04:01,345 --> 00:04:06,420
+and we wanna learn also the embedding vector r. Um,
+
+80
+00:04:06,420 --> 00:04:10,050
+and we, and the idea would be that we want it-
+
+81
+00:04:10,050 --> 00:04:14,385
+we want to find these embeddings in such a way that head plus the, uh,
+
+82
+00:04:14,385 --> 00:04:18,540
+um, of- plus vector r is- gives me the, uh,
+
+83
+00:04:18,540 --> 00:04:23,040
+the point, uh, where the t is embedded, right?
+
+84
+00:04:23,040 --> 00:04:26,160
+So for example, if, uh, um, um,
+
+85
+00:04:26,160 --> 00:04:30,540
+Barack Obama, uh, nationality United States, then I want,
+
+86
+00:04:30,540 --> 00:04:34,330
+I want them to be embedded in such a way that if I start with the head,
+
+87
+00:04:34,330 --> 00:04:35,890
+we start with Barack Obama,
+
+88
+00:04:35,890 --> 00:04:38,860
+I move according to this relation vector r,
+
+89
+00:04:38,860 --> 00:04:42,445
+I would end at the point where United States is embedded.
+
+90
+00:04:42,445 --> 00:04:45,355
+And of course, I don't want this to only work for,
+
+91
+00:04:45,355 --> 00:04:46,810
+uh, let's say Barack Obama,
+
+92
+00:04:46,810 --> 00:04:52,140
+I'd like to w- this to work to be true for any person and their,
+
+93
+00:04:52,140 --> 00:04:53,920
+uh, their country of birth, right?
+
+94
+00:04:53,920 --> 00:04:56,485
+So for example, if in this graph, I don't know, um,
+
+95
+00:04:56,485 --> 00:04:57,790
+it would be, uh,
+
+96
+00:04:57,790 --> 00:04:58,900
+myself here as well,
+
+97
+00:04:58,900 --> 00:05:00,010
+maybe on a point here.
+
+98
+00:05:00,010 --> 00:05:03,085
+Then if I would move according to this vector r here,
+
+99
+00:05:03,085 --> 00:05:06,520
+I'm from Slovenia, so my nationality should be Slovenian.
+
+100
+00:05:06,520 --> 00:05:10,820
+So the, the country of Slovenia should be mapped somewhere here, right?
+
+101
+00:05:10,820 --> 00:05:14,595
+Basically I would apply the same translation and, uh,
+
+102
+00:05:14,595 --> 00:05:17,750
+hopefully the- the- the- the country that is
+
+103
+00:05:17,750 --> 00:05:20,855
+embedded close to that point is the country of my,
+
+104
+00:05:20,855 --> 00:05:22,830
+uh, nationality, all right?
+
+105
+00:05:22,830 --> 00:05:25,455
+So here's, uh, here's, uh, here's the idea.
+
+106
+00:05:25,455 --> 00:05:27,495
+So the scoring function, uh,
+
+107
+00:05:27,495 --> 00:05:33,050
+that would measure proximi- that would measure proximity between the head and tail,
+
+108
+00:05:33,050 --> 00:05:36,899
+would simply be head plus this vector r minus,
+
+109
+00:05:36,899 --> 00:05:38,160
+minus the tail, right?
+
+110
+00:05:38,160 --> 00:05:41,580
+It basically says what is the distance between h plus r,
+
+111
+00:05:41,580 --> 00:05:44,370
+uh, and, uh, the point, uh, t?
+
+112
+00:05:44,370 --> 00:05:47,765
+And here I could use, let's say Euclidean distance if I would like.
+
+113
+00:05:47,765 --> 00:05:50,675
+So this is what is Trans, uh, TransE.
+
+114
+00:05:50,675 --> 00:05:53,540
+Basically it wants to learn these translations
+
+115
+00:05:53,540 --> 00:05:56,960
+in the embedding space so that you can get from head,
+
+116
+00:05:56,960 --> 00:06:00,830
+according to a translation that's- that is the relation specific,
+
+117
+00:06:00,830 --> 00:06:02,840
+to the, uh, to the tail,
+
+118
+00:06:02,840 --> 00:06:05,270
+uh, of that, uh, relation.
+
+119
+00:06:05,270 --> 00:06:10,460
+Um, s- I will- I- I won't go into details basically of the learning algorithm.
+
+120
+00:06:10,460 --> 00:06:13,520
+But essentially the idea is that you wanna have entities and
+
+121
+00:06:13,520 --> 00:06:17,340
+relations that are first initialized, uh, uniformly, right?
+
+122
+00:06:17,340 --> 00:06:18,810
+You want an embedding for an entity,
+
+123
+00:06:18,810 --> 00:06:22,390
+you want to learn the translation vector for a relation.
+
+124
+00:06:22,390 --> 00:06:25,295
+You s- you- these are all the parameters of your model.
+
+125
+00:06:25,295 --> 00:06:29,645
+You would, you know, sample a positive example, a positive triplet.
+
+126
+00:06:29,645 --> 00:06:31,580
+You would, for example, sample ,uh,
+
+127
+00:06:31,580 --> 00:06:33,440
+what is called a corrupted triplet,
+
+128
+00:06:33,440 --> 00:06:34,895
+where you would have the head,
+
+129
+00:06:34,895 --> 00:06:36,170
+the relation the same,
+
+130
+00:06:36,170 --> 00:06:38,810
+but you would pick kind of a random tail.
+
+131
+00:06:38,810 --> 00:06:43,355
+You would pick a country that is not the- the- the true country, uh,
+
+132
+00:06:43,355 --> 00:06:45,410
+of nationality, and then you would say,
+
+133
+00:06:45,410 --> 00:06:46,940
+let me try to, uh,
+
+134
+00:06:46,940 --> 00:06:48,305
+find the embeddings, uh,
+
+135
+00:06:48,305 --> 00:06:50,090
+the values for head, relation,
+
+136
+00:06:50,090 --> 00:06:52,665
+and tail such that the distance between, uh,
+
+137
+00:06:52,665 --> 00:06:55,410
+the real tail and the corrupted tail,
+
+138
+00:06:55,410 --> 00:06:57,450
+uh, the real tail, uh,
+
+139
+00:06:57,450 --> 00:06:59,325
+and the embedding of h, uh,
+
+140
+00:06:59,325 --> 00:07:05,780
+plus r is smaller than the distance between the h plus r and the corrupted tail,
+
+141
+00:07:05,780 --> 00:07:08,195
+which basically means a country that is not,
+
+142
+00:07:08,195 --> 00:07:10,150
+uh, the true nationality.
+
+143
+00:07:10,150 --> 00:07:13,080
+And you can basically do, uh, the learning.
+
+144
+00:07:13,080 --> 00:07:16,055
+So now, uh, that we have done this,
+
+145
+00:07:16,055 --> 00:07:18,770
+this sounds like a great, very natural idea.
+
+146
+00:07:18,770 --> 00:07:21,980
+What is cool about it is that now we don't only think
+
+147
+00:07:21,980 --> 00:07:25,560
+of- of the embeddings as points in the space,
+
+148
+00:07:25,560 --> 00:07:30,620
+but we also learned this vector r that allows us to move or translate,
+
+149
+00:07:30,620 --> 00:07:32,210
+uh, between different points.
+
+150
+00:07:32,210 --> 00:07:34,400
+It allows us to move in a given direction.
+
+151
+00:07:34,400 --> 00:07:36,200
+Um, and of course the question is,
+
+152
+00:07:36,200 --> 00:07:41,250
+what kind of relationships is this type of approach able to, uh, learn?
+
+153
+00:07:41,250 --> 00:07:43,635
+And when I say what kind of relationships,
+
+154
+00:07:43,635 --> 00:07:47,560
+I really mean relationships with different, uh, properties.
+
+155
+00:07:47,560 --> 00:07:52,670
+For example, some properties might be symmetric or reciprocal, right?
+
+156
+00:07:52,670 --> 00:07:56,360
+If, uh, person 1 is a roommate of person 2,
+
+157
+00:07:56,360 --> 00:08:01,225
+then person 2 is also a roommate of person 1, right? It's mutual.
+
+158
+00:08:01,225 --> 00:08:06,410
+Um, for example, then there's- there might be relations that are called inverse, right?
+
+159
+00:08:06,410 --> 00:08:08,735
+If I am someone's advisor,
+
+160
+00:08:08,735 --> 00:08:12,410
+then that other person is my, uh, advisee, right?
+
+161
+00:08:12,410 --> 00:08:15,320
+So advisor and advisee are kind of inverse relations.
+
+162
+00:08:15,320 --> 00:08:17,254
+Whoever is in a relation of advisor,
+
+163
+00:08:17,254 --> 00:08:21,230
+in one way, advisee is in the other, uh, direction.
+
+164
+00:08:21,230 --> 00:08:22,970
+So the question then becomes,
+
+165
+00:08:22,970 --> 00:08:28,085
+can we corre- categorize this type of relation better than sort of relation properties?
+
+166
+00:08:28,085 --> 00:08:34,400
+And, uh, are these knowledge graph embedding methods like the TransE that I discussed?
+
+167
+00:08:34,400 --> 00:08:37,880
+Are they expressive enough to model these patterns?
+
+168
+00:08:37,880 --> 00:08:40,730
+So the- the relation patterns,
+
+169
+00:08:40,730 --> 00:08:43,924
+uh, we are going to discuss are, uh, four.
+
+170
+00:08:43,924 --> 00:08:47,750
+First is symmetric and antisymmetric relations, right?
+
+171
+00:08:47,750 --> 00:08:53,615
+Like, uh, family, roommate are what we call symmetric because they are reciprocal, right?
+
+172
+00:08:53,615 --> 00:08:54,830
+If I'm your roommate,
+
+173
+00:08:54,830 --> 00:08:56,060
+you are also my roommate.
+
+174
+00:08:56,060 --> 00:08:57,775
+It cannot be only one way.
+
+175
+00:08:57,775 --> 00:09:00,435
+Um, antisymmetric would be, uh,
+
+176
+00:09:00,435 --> 00:09:03,710
+would be part of hypernym, hyponym.
+
+177
+00:09:03,710 --> 00:09:05,720
+So it's basically one is with relation,
+
+178
+00:09:05,720 --> 00:09:07,130
+uh, with the other,
+
+179
+00:09:07,130 --> 00:09:09,080
+but not the other way.
+
+180
+00:09:09,080 --> 00:09:13,070
+Uh, inverse, uh, relations would be like advisor advisee.
+
+181
+00:09:13,070 --> 00:09:15,920
+Where if I'm related to you with one relation,
+
+182
+00:09:15,920 --> 00:09:19,970
+you are automatically related to me with the- with a different relation,
+
+183
+00:09:19,970 --> 00:09:23,010
+uh, then it would be, uh, transitive relations.
+
+184
+00:09:23,010 --> 00:09:24,845
+For example, uh, friend of,
+
+185
+00:09:24,845 --> 00:09:28,610
+which would be if x is friends with y and y is friend with z,
+
+186
+00:09:28,610 --> 00:09:32,670
+then, uh, x and z are also friends, right?
+
+187
+00:09:32,670 --> 00:09:36,165
+So this would be one way of having the notion of transitive relations.
+
+188
+00:09:36,165 --> 00:09:38,820
+Or if you think about relationship type,
+
+189
+00:09:38,820 --> 00:09:41,030
+trans- uh, those are also transitive.
+
+190
+00:09:41,030 --> 00:09:44,155
+That for example I say, my mother's husband is my father.
+
+191
+00:09:44,155 --> 00:09:46,185
+So, um, you know, that's,
+
+192
+00:09:46,185 --> 00:09:48,555
+uh, that- that's also saying, aha,
+
+193
+00:09:48,555 --> 00:09:51,000
+if- if you start with me and you- you
+
+194
+00:09:51,000 --> 00:09:53,720
+tra- you transform according to the mother relation,
+
+195
+00:09:53,720 --> 00:09:56,210
+and then you take the mother point and transform
+
+196
+00:09:56,210 --> 00:09:59,160
+according to the fa- husband relation, uh,
+
+197
+00:09:59,160 --> 00:10:02,540
+you should arrive to the same place if you take myself and
+
+198
+00:10:02,540 --> 00:10:06,080
+transfor- me- me according to the father relation, right?
+
+199
+00:10:06,080 --> 00:10:07,955
+The two, uh, the two,
+
+200
+00:10:07,955 --> 00:10:10,585
+uh, uh, the two embeddings should meet.
+
+201
+00:10:10,585 --> 00:10:15,755
+And then another important thing is that there are, uh, 1-to-N relations.
+
+202
+00:10:15,755 --> 00:10:17,735
+For example, student off, right.
+
+203
+00:10:17,735 --> 00:10:22,640
+I can, uh, have multiple students or I can have multiple advisees.
+
+204
+00:10:22,640 --> 00:10:26,045
+So I can have 1-to-N, uh, relations.
+
+205
+00:10:26,045 --> 00:10:29,180
+So these are different relation patterns we are going to consider,
+
+206
+00:10:29,180 --> 00:10:31,430
+and what we are going to do next,
+
+207
+00:10:31,430 --> 00:10:37,240
+is- is we are going to look whether TransE is able to capture these type of relations.
+
+208
+00:10:37,240 --> 00:10:42,025
+So, for example, let's first talk about, uh, antisymmetric relations.
+
+209
+00:10:42,025 --> 00:10:43,420
+Uh, what would this mean is,
+
+210
+00:10:43,420 --> 00:10:44,650
+uh, h is, uh,
+
+211
+00:10:44,650 --> 00:10:46,290
+related with t, uh,
+
+212
+00:10:46,290 --> 00:10:48,404
+t cannot be related,
+
+213
+00:10:48,404 --> 00:10:51,115
+uh, with h according to the same relation,
+
+214
+00:10:51,115 --> 00:10:53,035
+like, uh, part of,
+
+215
+00:10:53,035 --> 00:10:54,955
+uh, hyponym is an example.
+
+216
+00:10:54,955 --> 00:10:57,000
+And- and TransE captures this, right?
+
+217
+00:10:57,000 --> 00:10:58,440
+Because if I go from head,
+
+218
+00:10:58,440 --> 00:11:01,390
+um, according to the relation vector r,
+
+219
+00:11:01,390 --> 00:11:05,000
+I arrive to the tail but now we find that the tail and again,
+
+220
+00:11:05,000 --> 00:11:08,065
+apply this relation transformation, uh,
+
+221
+00:11:08,065 --> 00:11:12,145
+r, I don't get back to h. I get to some other point.
+
+222
+00:11:12,145 --> 00:11:15,625
+So this means that, uh, um, um,
+
+223
+00:11:15,625 --> 00:11:19,840
+TransE naturally captures this antisymmetry,
+
+224
+00:11:19,840 --> 00:11:23,555
+uh, of relations that have this property.
+
+225
+00:11:23,555 --> 00:11:25,880
+Another of the questions is,
+
+226
+00:11:25,880 --> 00:11:30,380
+can TransE capture inverse relations like advisor/advisee, right?
+
+227
+00:11:30,380 --> 00:11:34,700
+So if, uh, if h and t are related by r2, then,
+
+228
+00:11:34,700 --> 00:11:37,010
+you know, there's some other r1 that makes,
+
+229
+00:11:37,010 --> 00:11:39,680
+uh, tail and the head related, right?
+
+230
+00:11:39,680 --> 00:11:40,805
+Can we model, uh,
+
+231
+00:11:40,805 --> 00:11:43,280
+inverse relations? Yes, we can.
+
+232
+00:11:43,280 --> 00:11:48,440
+Uh, in simply the r2- the- the vector r2 should simply be the negative,
+
+233
+00:11:48,440 --> 00:11:50,240
+uh, of the vector r1.
+
+234
+00:11:50,240 --> 00:11:54,440
+So it means that from head according to r1, I move to tail.
+
+235
+00:11:54,440 --> 00:11:56,570
+Then if I wanna move from tail back to head,
+
+236
+00:11:56,570 --> 00:11:58,490
+I just move in the opposite direction.
+
+237
+00:11:58,490 --> 00:12:02,780
+So in TransE, this is naturally captured and naturally doable.
+
+238
+00:12:02,780 --> 00:12:05,675
+So inverse relationships are possible.
+
+239
+00:12:05,675 --> 00:12:09,590
+How about composite or transitive relations?
+
+240
+00:12:09,590 --> 00:12:14,765
+So I, uh, where I say if x and y are related and y and z are related,
+
+241
+00:12:14,765 --> 00:12:18,230
+then x and z should be related as well, right?
+
+242
+00:12:18,230 --> 00:12:21,560
+So in TransE you can simply do this by, uh,
+
+243
+00:12:21,560 --> 00:12:23,210
+by saying r3, uh,
+
+244
+00:12:23,210 --> 00:12:25,580
+is simply a summation of r1 and r2, right?
+
+245
+00:12:25,580 --> 00:12:29,795
+So if I go from x via r1 to y- to y,
+
+246
+00:12:29,795 --> 00:12:32,420
+and then I go from y via r2,
+
+247
+00:12:32,420 --> 00:12:34,205
+uh, to, uh, z,
+
+248
+00:12:34,205 --> 00:12:38,855
+then I can basically simply go from x to z according to,
+
+249
+00:12:38,855 --> 00:12:43,475
+uh, r3 and r3 is simply the vector r1 plus vector r2.
+
+250
+00:12:43,475 --> 00:12:45,665
+So again, we can do, uh,
+
+251
+00:12:45,665 --> 00:12:49,265
+composite relationships with TransE, uh, easily.
+
+252
+00:12:49,265 --> 00:12:56,615
+So how about some relationships types that are- uh that TransE cannot capture?
+
+253
+00:12:56,615 --> 00:12:59,870
+So for example, interestingly,
+
+254
+00:12:59,870 --> 00:13:03,605
+uh, TransE cannot capture symmetric relationships, right?
+
+255
+00:13:03,605 --> 00:13:06,995
+Relationships, uh, um, uh, where it's- uh,
+
+256
+00:13:06,995 --> 00:13:10,355
+where like family or roommate that are reciprocated, right?
+
+257
+00:13:10,355 --> 00:13:12,560
+Basically saying if, uh,
+
+258
+00:13:12,560 --> 00:13:15,005
+h- h- h is related with r to t,
+
+259
+00:13:15,005 --> 00:13:20,240
+then t should be related to h with r as well and- and the point is this right?
+
+260
+00:13:20,240 --> 00:13:23,060
+If you go from h according to r to t,
+
+261
+00:13:23,060 --> 00:13:27,560
+then what you'd like to do is apply the same r to t as well and get back to
+
+262
+00:13:27,560 --> 00:13:32,840
+h and the only able- way you are able to do this is to make r to be 0,
+
+263
+00:13:32,840 --> 00:13:36,635
+which basically means that h and t are embedded on top of each other.
+
+264
+00:13:36,635 --> 00:13:40,460
+But that is not good because h and t are different entities.
+
+265
+00:13:40,460 --> 00:13:43,805
+They are distinct entities with distinct properties.
+
+266
+00:13:43,805 --> 00:13:49,625
+So this means that TransE cannot embed and cannot do this kind of,
+
+267
+00:13:49,625 --> 00:13:51,740
+um, sy- uh, symmetric, uh,
+
+268
+00:13:51,740 --> 00:13:53,630
+reasoning or it cannot model,
+
+269
+00:13:53,630 --> 00:13:56,330
+uh, symmetric, uh, relations.
+
+270
+00:13:56,330 --> 00:13:59,360
+And then another part that, uh,
+
+271
+00:13:59,360 --> 00:14:03,145
+TransE cannot do is 1-to-N relations, right?
+
+272
+00:14:03,145 --> 00:14:07,110
+The idea is that if I have a head, um, uh,
+
+273
+00:14:07,110 --> 00:14:08,965
+and, uh, and, uh, relation,
+
+274
+00:14:08,965 --> 00:14:11,605
+and maybe this is a 1-to-N relation.
+
+275
+00:14:11,605 --> 00:14:15,960
+Uh, then basically I wanna- I wanna go from head according to relation r to t1
+
+276
+00:14:15,960 --> 00:14:20,510
+and I also wanna be able to go from head according to relation 1 to t2, right?
+
+277
+00:14:20,510 --> 00:14:22,430
+Both exist in the knowledge graph.
+
+278
+00:14:22,430 --> 00:14:24,080
+For example, student of, right?
+
+279
+00:14:24,080 --> 00:14:27,935
+I can be a mentor or I can have two students simultaneously.
+
+280
+00:14:27,935 --> 00:14:32,330
+And again, TransE cannot model this type of relations because again,
+
+281
+00:14:32,330 --> 00:14:37,490
+the only way for this to work would be that t1 and t2 map into the same vector, they
+
+282
+00:14:37,490 --> 00:14:39,410
+map into to the same point in
+
+283
+00:14:39,410 --> 00:14:43,280
+the embedding space so that when you go from h according to r,
+
+284
+00:14:43,280 --> 00:14:46,115
+you arrive to the same, uh, point.
+
+285
+00:14:46,115 --> 00:14:49,700
+But again, this is not- this is not good because this would mean that
+
+286
+00:14:49,700 --> 00:14:53,330
+t1 and t2 are the entities embedded in the same point.
+
+287
+00:14:53,330 --> 00:14:55,655
+So they are indistinguishable from one another.
+
+288
+00:14:55,655 --> 00:14:59,630
+But in reality t1 and t2 are completely different entities.
+
+289
+00:14:59,630 --> 00:15:03,980
+So this is what TransE cannot, uh, model.
+
+290
+00:15:03,980 --> 00:15:08,945
+So let's look at a different method called
+
+291
+00:15:08,945 --> 00:15:13,730
+TransR are that will allow us to fix some of these issues, all right?
+
+292
+00:15:13,730 --> 00:15:17,675
+So what we have seen so far is that the TransE models, uh,
+
+293
+00:15:17,675 --> 00:15:22,175
+trans- a translation of any relation in the same embedding space.
+
+294
+00:15:22,175 --> 00:15:26,330
+So the question is, can you design a new space for each relation and
+
+295
+00:15:26,330 --> 00:15:31,100
+do the translation in a relation-specific space?
+
+296
+00:15:31,100 --> 00:15:35,000
+And the method that proposed this idea is called TransR,
+
+297
+00:15:35,000 --> 00:15:38,810
+and it models entities as vectors in the entity space,
+
+298
+00:15:38,810 --> 00:15:43,310
+so entities as points and models each relation as a vector
+
+299
+00:15:43,310 --> 00:15:48,290
+in rela- in the relation space together with a relation specific,
+
+300
+00:15:48,290 --> 00:15:52,085
+uh, transformation or projection matrix.
+
+301
+00:15:52,085 --> 00:15:55,700
+So, um, let me give you the idea how this works.
+
+302
+00:15:55,700 --> 00:15:58,220
+So the idea is, as I said,
+
+303
+00:15:58,220 --> 00:16:00,905
+TransR models entities as points, uh,
+
+304
+00:16:00,905 --> 00:16:02,090
+and for every relation,
+
+305
+00:16:02,090 --> 00:16:04,130
+we are actually going to learn two things.
+
+306
+00:16:04,130 --> 00:16:06,860
+We are going to learn the translation, uh,
+
+307
+00:16:06,860 --> 00:16:10,940
+relation vector and we are going also to learn this projection matrix,
+
+308
+00:16:10,940 --> 00:16:13,310
+uh, M for every relation.
+
+309
+00:16:13,310 --> 00:16:14,690
+So the idea is, right,
+
+310
+00:16:14,690 --> 00:16:16,475
+if I want to,
+
+311
+00:16:16,475 --> 00:16:19,910
+uh- uh- what- the way I'm going to now predict relations.
+
+312
+00:16:19,910 --> 00:16:22,565
+If I say are h and t related, uh,
+
+313
+00:16:22,565 --> 00:16:25,000
+by relation r,
+
+314
+00:16:25,000 --> 00:16:27,460
+I'm first going to apply matrix, uh,
+
+315
+00:16:27,460 --> 00:16:30,790
+matrix M to both points and basically transform them
+
+316
+00:16:30,790 --> 00:16:34,255
+into a new space and then in this new transformed space,
+
+317
+00:16:34,255 --> 00:16:38,660
+I'm going to kind of apply the TransE, um, intuition.
+
+318
+00:16:38,660 --> 00:16:42,345
+So basically I'm going to use this vector to move around.
+
+319
+00:16:42,345 --> 00:16:45,100
+So, um, right, I basically,
+
+320
+00:16:45,100 --> 00:16:46,765
+take the original embedding.
+
+321
+00:16:46,765 --> 00:16:49,030
+I transform it according to the matrix M,
+
+322
+00:16:49,030 --> 00:16:50,380
+which basically means I scale it,
+
+323
+00:16:50,380 --> 00:16:52,255
+I rotate it, I translate it,
+
+324
+00:16:52,255 --> 00:16:55,590
+and then I apply my vector r, uh, in there.
+
+325
+00:16:55,590 --> 00:16:57,200
+So, uh, you know,
+
+326
+00:16:57,200 --> 00:16:58,880
+what will this buy me?
+
+327
+00:16:58,880 --> 00:17:04,280
+For example, what this buys me is that it allows me to model, uh, symmetric, um,
+
+328
+00:17:04,280 --> 00:17:06,515
+relations because imagine, uh,
+
+329
+00:17:06,515 --> 00:17:07,849
+again a symmetric, uh,
+
+330
+00:17:07,849 --> 00:17:10,714
+relation like roommate reciprocated right?
+
+331
+00:17:10,714 --> 00:17:15,004
+Then basically, I can run a roommate specific,
+
+332
+00:17:15,005 --> 00:17:19,520
+uh, function, uh, specific, uh, projection matrix,
+
+333
+00:17:19,520 --> 00:17:24,560
+uh, M that will take two different points and map them into the same,
+
+334
+00:17:24,560 --> 00:17:28,640
+uh, underlying point, into the relation specific, uh, space.
+
+335
+00:17:28,640 --> 00:17:31,745
+So it means that two people that are roommates,
+
+336
+00:17:31,745 --> 00:17:34,295
+um, will be able to be mapped into the same point.
+
+337
+00:17:34,295 --> 00:17:35,885
+So that now here, uh,
+
+338
+00:17:35,885 --> 00:17:37,700
+I'll be able basically to say,
+
+339
+00:17:37,700 --> 00:17:39,365
+uh, no translation needed,
+
+340
+00:17:39,365 --> 00:17:42,080
+r is 0 and I'm, um,
+
+341
+00:17:42,080 --> 00:17:43,970
+I have this, uh, symmetric,
+
+342
+00:17:43,970 --> 00:17:46,040
+uh, relationship, uh, right now.
+
+343
+00:17:46,040 --> 00:17:48,245
+So this is- what this allows us to do,
+
+344
+00:17:48,245 --> 00:17:51,470
+which for example, TransE was not able to do.
+
+345
+00:17:51,470 --> 00:17:55,265
+Um, how about anti-symmetric relations?
+
+346
+00:17:55,265 --> 00:17:58,190
+Um, again, we can easily do this, right?
+
+347
+00:17:58,190 --> 00:18:01,640
+Because for example, the translation matrix,
+
+348
+00:18:01,640 --> 00:18:05,225
+uh, can- can, if I have- if I take two different points,
+
+349
+00:18:05,225 --> 00:18:08,780
+the translation matrix can- can again transfer, uh,
+
+350
+00:18:08,780 --> 00:18:11,840
+into this relation specific spa- space in such a way
+
+351
+00:18:11,840 --> 00:18:15,290
+that the two points don't collide and then the same way as in TransE,
+
+352
+00:18:15,290 --> 00:18:17,885
+um, uh, we are able to do,
+
+353
+00:18:17,885 --> 00:18:19,370
+uh, the same thing here, right,
+
+354
+00:18:19,370 --> 00:18:22,175
+from head according to the relation I get to t,
+
+355
+00:18:22,175 --> 00:18:24,559
+but from t according to the relation,
+
+356
+00:18:24,559 --> 00:18:26,435
+I don't get back to, uh, head.
+
+357
+00:18:26,435 --> 00:18:27,800
+So this is also possible,
+
+358
+00:18:27,800 --> 00:18:33,390
+so it can model both symmetric as well as anti-symmetric, uh, relations.
+
+359
+00:18:33,390 --> 00:18:41,560
+Can, uh, uh, um, uh, this TransR also model 1-to-N relations, right?
+
+360
+00:18:41,560 --> 00:18:43,240
+Uh, like student of?
+
+361
+00:18:43,240 --> 00:18:46,060
+Uh, and actually again it turns out it can.
+
+362
+00:18:46,060 --> 00:18:48,850
+TransR can model this because again,
+
+363
+00:18:48,850 --> 00:18:54,280
+we have enough flexibility in the projection matrix r that can learn how to take,
+
+364
+00:18:54,280 --> 00:18:56,920
+let's say t_1 and t_2 and map them into
+
+365
+00:18:56,920 --> 00:19:00,970
+the same point so that when in this relation specific space,
+
+366
+00:19:00,970 --> 00:19:03,505
+I go from head according to the relation,
+
+367
+00:19:03,505 --> 00:19:08,620
+I arrive exactly to t_1 and t_2 that are embedded to the same position.
+
+368
+00:19:08,620 --> 00:19:10,270
+So in the original embedding,
+
+369
+00:19:10,270 --> 00:19:13,210
+these are two different points but in the, uh,
+
+370
+00:19:13,210 --> 00:19:15,775
+let's say the relation specific embedding
+
+371
+00:19:15,775 --> 00:19:19,345
+that is achieved by this transformation matrix M,
+
+372
+00:19:19,345 --> 00:19:24,025
+I can enforce t_1 and t_2 to be in the same point.
+
+373
+00:19:24,025 --> 00:19:28,180
+So these 1-to-N relations can naturally be captured.
+
+374
+00:19:28,180 --> 00:19:30,220
+So, um, this sounds great, right?
+
+375
+00:19:30,220 --> 00:19:32,335
+It seems we have kind of fixed, uh,
+
+376
+00:19:32,335 --> 00:19:33,880
+all the issues with,
+
+377
+00:19:33,880 --> 00:19:36,740
+uh, trans, uh, -TransE.
+
+378
+00:19:36,960 --> 00:19:41,410
+We can also do inverse relations because, uh,
+
+379
+00:19:41,410 --> 00:19:43,705
+the same as we were do- able to do them in TransE,
+
+380
+00:19:43,705 --> 00:19:45,700
+we can do them in TransR, right?
+
+381
+00:19:45,700 --> 00:19:47,860
+So basically we just, uh, uh,
+
+382
+00:19:47,860 --> 00:19:51,550
+-the transformation matrices for both relations have to be the same and then,
+
+383
+00:19:51,550 --> 00:19:55,570
+you know, one translation vector is the reciprocal or the inverse,
+
+384
+00:19:55,570 --> 00:19:58,660
+uh, of the other, uh, translation vector.
+
+385
+00:19:58,660 --> 00:20:01,390
+Um, what is the issue?
+
+386
+00:20:01,390 --> 00:20:04,315
+What trans - what tra- what does, uh,
+
+387
+00:20:04,315 --> 00:20:08,275
+TransR- what is it not able to do that TransE,
+
+388
+00:20:08,275 --> 00:20:09,565
+was able to do?
+
+389
+00:20:09,565 --> 00:20:13,030
+Is one thing: is composition relations, right?
+
+390
+00:20:13,030 --> 00:20:18,220
+In, in TransR, you cannot do this type of compositional relations, right?
+
+391
+00:20:18,220 --> 00:20:20,530
+Meaning, uh, remembering, uh,
+
+392
+00:20:20,530 --> 00:20:22,660
+uh, where you say, a-ha, if x,
+
+393
+00:20:22,660 --> 00:20:27,745
+x is related by y with r_1 and y is related with z with r_2,
+
+394
+00:20:27,745 --> 00:20:30,745
+then, uh, x and z are related by r_3.
+
+395
+00:20:30,745 --> 00:20:32,680
+This was very easy to do in, uh,
+
+396
+00:20:32,680 --> 00:20:34,330
+TransE because everything was in
+
+397
+00:20:34,330 --> 00:20:37,345
+the same space and you just kind of moved, uh, around.
+
+398
+00:20:37,345 --> 00:20:41,710
+Uh, but in TransR we cannot do these compositional relations.
+
+399
+00:20:41,710 --> 00:20:44,800
+Um, and the reason for this is that each relation has
+
+400
+00:20:44,800 --> 00:20:47,700
+a different space and we know how to
+
+401
+00:20:47,700 --> 00:20:51,405
+model from the original space to the relation-specific space,
+
+402
+00:20:51,405 --> 00:20:55,095
+but we don't know how to model between different, uh,
+
+403
+00:20:55,095 --> 00:20:57,475
+relation-specific, uh, spaces.
+
+404
+00:20:57,475 --> 00:21:02,695
+So these relation-specific spaces are not naturally, uh, compositional.
+
+405
+00:21:02,695 --> 00:21:05,275
+So, uh, this means that the, uh,
+
+406
+00:21:05,275 --> 00:21:07,645
+compositional relations, uh, TransR,
+
+407
+00:21:07,645 --> 00:21:10,510
+uh, cannot, uh, do.
+
+408
+00:21:10,510 --> 00:21:15,160
+So, um, this was second method, uh, we discussed.
+
+409
+00:21:15,160 --> 00:21:17,020
+So let's now talk, uh,
+
+410
+00:21:17,020 --> 00:21:19,600
+about the third method as well that,
+
+411
+00:21:19,600 --> 00:21:24,235
+uh, is, uh, -that is based on what is called bilinear modeling.
+
+412
+00:21:24,235 --> 00:21:25,690
+Um, and so far,
+
+413
+00:21:25,690 --> 00:21:28,285
+right, we were using, uh,
+
+414
+00:21:28,285 --> 00:21:30,715
+the scoring function simply as a,
+
+415
+00:21:30,715 --> 00:21:32,800
+as a distance in the embedding space.
+
+416
+00:21:32,800 --> 00:21:38,455
+Like in TransE and TransR we said the head plus relation should be close to the tail.
+
+417
+00:21:38,455 --> 00:21:42,325
+But, um, now what if we change, uh,
+
+418
+00:21:42,325 --> 00:21:44,200
+the embedding, uh, the,
+
+419
+00:21:44,200 --> 00:21:46,840
+the way we're scoring different relations?
+
+420
+00:21:46,840 --> 00:21:49,720
+What if we change this function n-l, f?
+
+421
+00:21:49,720 --> 00:21:53,860
+But it won't be, uh, distance anymore but something more interesting.
+
+422
+00:21:53,860 --> 00:21:58,045
+So for example, uh, this DistMult, uh,
+
+423
+00:21:58,045 --> 00:22:03,490
+is simply saying let's embed entities and relations as vectors in the,
+
+424
+00:22:03,490 --> 00:22:05,530
+uh, in the embedding space.
+
+425
+00:22:05,530 --> 00:22:07,225
+Kind of similar to TransE.
+
+426
+00:22:07,225 --> 00:22:09,415
+But let's use a different, uh,
+
+427
+00:22:09,415 --> 00:22:13,315
+scoring function rather than using the distance, uh, as in TransE.
+
+428
+00:22:13,315 --> 00:22:14,860
+Uh, let's use, uh,
+
+429
+00:22:14,860 --> 00:22:17,935
+this type of scoring function where we basically just, uh,
+
+430
+00:22:17,935 --> 00:22:22,090
+have this bi- bi-linear model when we say the score is simply,
+
+431
+00:22:22,090 --> 00:22:24,730
+a coordinate wise product of h,
+
+432
+00:22:24,730 --> 00:22:26,590
+r, and t, right?
+
+433
+00:22:26,590 --> 00:22:27,730
+So the idea is if I have,
+
+434
+00:22:27,730 --> 00:22:29,710
+uh, h, uh, r and t,
+
+435
+00:22:29,710 --> 00:22:32,050
+I simply multiply these things, uh,
+
+436
+00:22:32,050 --> 00:22:33,700
+uh, entry by entry,
+
+437
+00:22:33,700 --> 00:22:35,680
+sum it up, and that is my score.
+
+438
+00:22:35,680 --> 00:22:37,900
+And the idea is if, uh,
+
+439
+00:22:37,900 --> 00:22:40,450
+head relation tail, uh, is true,
+
+440
+00:22:40,450 --> 00:22:42,580
+then the score should be high and otherwise,
+
+441
+00:22:42,580 --> 00:22:45,550
+the sh- the score, uh, should below.
+
+442
+00:22:45,550 --> 00:22:47,770
+The way you can think of
+
+443
+00:22:47,770 --> 00:22:52,660
+this scoring function is that you can think of it as a hyperplane,
+
+444
+00:22:52,660 --> 00:22:55,090
+uh, in the embedding space.
+
+445
+00:22:55,090 --> 00:22:58,150
+So basically, wha-the way you can think of it is you can think of it
+
+446
+00:22:58,150 --> 00:23:02,100
+as cosine similarity between h times r,
+
+447
+00:23:02,100 --> 00:23:09,435
+uh, and t. And cosine similarity is simply a cosine of the angle between two vectors.
+
+448
+00:23:09,435 --> 00:23:14,570
+Um, and what this means is that if the two vectors are orthogonal,
+
+449
+00:23:14,570 --> 00:23:17,335
+then the cosine similarity will be 0,
+
+450
+00:23:17,335 --> 00:23:20,050
+and if two vectors are completely aligned, uh,
+
+451
+00:23:20,050 --> 00:23:23,560
+the cosine, uh, similarity will be, uh, will be 1.
+
+452
+00:23:23,560 --> 00:23:26,800
+Uh, another thing that is important is that because
+
+453
+00:23:26,800 --> 00:23:30,370
+this now defines like a hyperplane in the embedding space,
+
+454
+00:23:30,370 --> 00:23:34,195
+this dot product can either be positive or it could be negative.
+
+455
+00:23:34,195 --> 00:23:36,355
+And whether it's positive or negative,
+
+456
+00:23:36,355 --> 00:23:38,005
+this tells me whether the,
+
+457
+00:23:38,005 --> 00:23:42,280
+the point lives, lies on the left-hand side or whether it lies
+
+458
+00:23:42,280 --> 00:23:47,020
+on the right-hand side of the, um, of the hyperplane.
+
+459
+00:23:47,020 --> 00:23:52,945
+And hyperplane is really defined as a vector that is, um, uh,
+
+460
+00:23:52,945 --> 00:24:00,010
+that is orthogonal to this hyperplane and this vector is simply h times r, right?
+
+461
+00:24:00,010 --> 00:24:02,380
+So basically h times r, uh,
+
+462
+00:24:02,380 --> 00:24:05,410
+defines a hyperplane that is orthogonal, uh,
+
+463
+00:24:05,410 --> 00:24:08,095
+orthogonal to it and then,
+
+464
+00:24:08,095 --> 00:24:10,165
+uh, the, the tails, uh,
+
+465
+00:24:10,165 --> 00:24:13,570
+that, that are related to h according to relation r should
+
+466
+00:24:13,570 --> 00:24:17,920
+fall on the same side of the hyper- hyperplane as this,
+
+467
+00:24:17,920 --> 00:24:20,395
+uh, um, uh, uh, normal vector is,
+
+468
+00:24:20,395 --> 00:24:24,595
+and tails that are not related to it should fall on the other side,
+
+469
+00:24:24,595 --> 00:24:25,915
+uh, of the hyperplane.
+
+470
+00:24:25,915 --> 00:24:31,630
+So that's, uh, the intuition and the idea how this DistMult, uh, works.
+
+471
+00:24:31,630 --> 00:24:35,320
+So can it do 1-to-N relations?
+
+472
+00:24:35,320 --> 00:24:36,775
+uh, yes it can.
+
+473
+00:24:36,775 --> 00:24:41,125
+Uh, the reason, the reason for this is because we can think again of, of a,
+
+474
+00:24:41,125 --> 00:24:43,540
+of a, of a hyperplane and if,
+
+475
+00:24:43,540 --> 00:24:46,495
+uh, if, uh, I have 1-to-N relations,
+
+476
+00:24:46,495 --> 00:24:53,680
+then t_1 and t_2 should fall on the same side or should fall on the same distance on or,
+
+477
+00:24:53,680 --> 00:24:57,445
+uh, from the, uh, hhyperplane and that's easy to achieve.
+
+478
+00:24:57,445 --> 00:25:00,025
+Um, in terms of symmetric relations,
+
+479
+00:25:00,025 --> 00:25:01,285
+again, we can, uh,
+
+480
+00:25:01,285 --> 00:25:02,740
+naturally model this, uh,
+
+481
+00:25:02,740 --> 00:25:06,130
+because, uh, multiplication is commutative, right?
+
+482
+00:25:06,130 --> 00:25:09,385
+So we can flip the order in which we multiply things and we'll get,
+
+483
+00:25:09,385 --> 00:25:10,915
+we'll get to the same value.
+
+484
+00:25:10,915 --> 00:25:12,445
+So because, uh, um,
+
+485
+00:25:12,445 --> 00:25:14,905
+summation and multiplication are commutative,
+
+486
+00:25:14,905 --> 00:25:17,470
+um, this is, uh, naturally true.
+
+487
+00:25:17,470 --> 00:25:22,330
+Uh, however, the limitation are anti-symmetric relations, right?
+
+488
+00:25:22,330 --> 00:25:26,185
+Like a hypernym, part of where uh, uh and, uh,
+
+489
+00:25:26,185 --> 00:25:31,375
+the-the idea here is that DistMult cannot model antisymmetric relations.
+
+490
+00:25:31,375 --> 00:25:33,055
+Um, again, because of the, uh,
+
+491
+00:25:33,055 --> 00:25:36,430
+commutativity, uh, of, uh, summation and,
+
+492
+00:25:36,430 --> 00:25:42,160
+and product, it means you get symmetry but you don't get, uh, antisymmetry, right?
+
+493
+00:25:42,160 --> 00:25:45,550
+Um, h times r times t will always be the same
+
+494
+00:25:45,550 --> 00:25:50,545
+as t times r times h and that's, that's the issue.
+
+495
+00:25:50,545 --> 00:25:53,965
+So, uh, we can- DistMult cannot do that.
+
+496
+00:25:53,965 --> 00:25:58,990
+And then the other thing DistMult cannot do is modeling inverse relations, right?
+
+497
+00:25:58,990 --> 00:26:04,120
+If, uh, uh, h and t are related with r_2 then they should also be related,
+
+498
+00:26:04,120 --> 00:26:06,460
+uh, in the different direction with r_1.
+
+499
+00:26:06,460 --> 00:26:08,785
+Like advisor, advisee type of relation.
+
+500
+00:26:08,785 --> 00:26:11,710
+Um, and the reason, uh, um, uh,
+
+501
+00:26:11,710 --> 00:26:14,650
+DistMult cannot, uh, model this is,
+
+502
+00:26:14,650 --> 00:26:16,360
+uh, because, uh, uh,
+
+503
+00:26:16,360 --> 00:26:19,435
+for- because of the fact that it does not model rel- uh,
+
+504
+00:26:19,435 --> 00:26:21,520
+inverse relations so the only way
+
+505
+00:26:21,520 --> 00:26:26,275
+to model inverse relation would be that r_2 and r_1 are equal.
+
+506
+00:26:26,275 --> 00:26:30,910
+But semantically this does not make sense because then the embedding of
+
+507
+00:26:30,910 --> 00:26:35,755
+the relation advisor is the same as the embedding of the relation advisee.
+
+508
+00:26:35,755 --> 00:26:38,860
+So basically this would mean that if I'm your advisor,
+
+509
+00:26:38,860 --> 00:26:41,695
+you are my advisee but at the same time,
+
+510
+00:26:41,695 --> 00:26:44,725
+if I say, are you my advisor as well,
+
+511
+00:26:44,725 --> 00:26:47,545
+the answer would be yes and am I your advisee,
+
+512
+00:26:47,545 --> 00:26:49,210
+the answer would be yes as well.
+
+513
+00:26:49,210 --> 00:26:54,760
+So it will be like two symmetric relations rather than a inverse relation.
+
+514
+00:26:54,760 --> 00:26:59,380
+So this is where, uh, DistMult fails [NOISE].
+
+515
+00:26:59,380 --> 00:27:02,695
+Um, and then the last place, uh, where, uh,
+
+516
+00:27:02,695 --> 00:27:04,750
+DistMult fails is, uh,
+
+517
+00:27:04,750 --> 00:27:07,300
+composition, uh, relations, right?
+
+518
+00:27:07,300 --> 00:27:11,560
+And the problem is that DistMult defines hyperplane for,
+
+519
+00:27:11,560 --> 00:27:13,240
+uh, each, uh, head, er,
+
+520
+00:27:13,240 --> 00:27:18,070
+relation pair and the union of hyperplanes induced by this,
+
+521
+00:27:18,070 --> 00:27:24,670
+er, by this composition of relations cannot be expressed by a single, uh, hyperplane.
+
+522
+00:27:24,670 --> 00:27:27,220
+So kind of, you know, a union or an intersection of
+
+523
+00:27:27,220 --> 00:27:31,030
+hyperplanes is not a hyperplane, uh, anymore.
+
+524
+00:27:31,030 --> 00:27:34,839
+So that's why- th- that's the intuition why composition relations,
+
+525
+00:27:34,839 --> 00:27:37,105
+uh, are also not possible.
+
+526
+00:27:37,105 --> 00:27:43,060
+So the last method I want to talk to you about is called complEx.
+
+527
+00:27:43,060 --> 00:27:46,780
+And the idea here- the reason why I want to do this is that we don't
+
+528
+00:27:46,780 --> 00:27:51,685
+necessarily have to embed points into the simple Euclidean er,
+
+529
+00:27:51,685 --> 00:27:54,535
+you know, er, real, uh, space.
+
+530
+00:27:54,535 --> 00:27:55,825
+We can also, um,
+
+531
+00:27:55,825 --> 00:27:58,630
+have complex vector, uh, embeddings.
+
+532
+00:27:58,630 --> 00:28:01,030
+We can embed them in complex spaces, right?
+
+533
+00:28:01,030 --> 00:28:05,980
+So ComplEx embeds entities using in the complex vector space, right?
+
+534
+00:28:05,980 --> 00:28:08,560
+Where every- every point now has, uh,
+
+535
+00:28:08,560 --> 00:28:12,535
+two, er- it has an imaginary part and a real part.
+
+536
+00:28:12,535 --> 00:28:15,670
+And the one concept from, um, com- uh,
+
+537
+00:28:15,670 --> 00:28:18,700
+ComplEx algebra that is important to keep in mind is
+
+538
+00:28:18,700 --> 00:28:22,120
+this concept of co- complex conjugate, where you basically say,
+
+539
+00:28:22,120 --> 00:28:28,540
+if u is a complex number with a real part a and imaginary part, uh, b,
+
+540
+00:28:28,540 --> 00:28:33,520
+then a complex conjugate of it is simply that it's not plus b times i,
+
+541
+00:28:33,520 --> 00:28:35,410
+but is minus b times i.
+
+542
+00:28:35,410 --> 00:28:37,285
+And this, uh, notion of
+
+543
+00:28:37,285 --> 00:28:41,170
+complex conjugate will be important as we analyze, uh, this model.
+
+544
+00:28:41,170 --> 00:28:46,645
+So the way you can now think of this is that in ComplEx we can actually use, um,
+
+545
+00:28:46,645 --> 00:28:49,570
+the scoring function that is simply, uh,
+
+546
+00:28:49,570 --> 00:28:52,405
+similar to the, uh- to the ComplEx- uh,
+
+547
+00:28:52,405 --> 00:28:54,280
+to the scoring function in DistMult.
+
+548
+00:28:54,280 --> 00:29:00,145
+But we are only then taking the real part of the- of the ComplEx function because,
+
+549
+00:29:00,145 --> 00:29:03,355
+uh, this is- er, this will give me a complex number.
+
+550
+00:29:03,355 --> 00:29:05,455
+So I wi- want to only take,
+
+551
+00:29:05,455 --> 00:29:07,750
+uh, the real, uh, part of it.
+
+552
+00:29:07,750 --> 00:29:10,240
+So let's quickly analyze,
+
+553
+00:29:10,240 --> 00:29:11,545
+uh, this approach as well.
+
+554
+00:29:11,545 --> 00:29:14,575
+So can it model antisymmetric relations?
+
+555
+00:29:14,575 --> 00:29:15,900
+Uh, yes, it can.
+
+556
+00:29:15,900 --> 00:29:17,985
+Uh, the way- the way we,
+
+557
+00:29:17,985 --> 00:29:21,330
+uh- we can do this is that basically we can achieve that for,
+
+558
+00:29:21,330 --> 00:29:25,005
+uh, different, uh, um, uh, relations.
+
+559
+00:29:25,005 --> 00:29:29,355
+Uh, we get basically high or low value of our scoring function, uh,
+
+560
+00:29:29,355 --> 00:29:31,050
+basically due to the, uh,
+
+561
+00:29:31,050 --> 00:29:34,455
+asymmetric modeling of complex, uh, conjugates.
+
+562
+00:29:34,455 --> 00:29:36,345
+Because here we are using,
+
+563
+00:29:36,345 --> 00:29:38,465
+uh, the complex, uh, conjugate.
+
+564
+00:29:38,465 --> 00:29:41,065
+Uh, can we model symmetric relations?
+
+565
+00:29:41,065 --> 00:29:43,600
+Again, um, yes, yes,
+
+566
+00:29:43,600 --> 00:29:48,400
+we can because we can simply say the imaginary part of the relation, uh,
+
+567
+00:29:48,400 --> 00:29:50,695
+to be 0, um, and then, uh,
+
+568
+00:29:50,695 --> 00:29:54,235
+because everything works in- in- in- in the real part, uh,
+
+569
+00:29:54,235 --> 00:29:55,600
+we are able to model, uh,
+
+570
+00:29:55,600 --> 00:29:58,540
+symmetric relations, um, as well.
+
+571
+00:29:58,540 --> 00:30:02,560
+And then, you know, can we mo- can complex model,
+
+572
+00:30:02,560 --> 00:30:05,260
+uh, symmetri- uh, inverse relations as well?
+
+573
+00:30:05,260 --> 00:30:06,850
+Uh, yes, it can.
+
+574
+00:30:06,850 --> 00:30:09,775
+How? By setting, uh, r- um, uh,
+
+575
+00:30:09,775 --> 00:30:12,775
+by setting r_2 to be, uh,
+
+576
+00:30:12,775 --> 00:30:15,940
+com- complex conjugate of, uh, r_1.
+
+577
+00:30:15,940 --> 00:30:18,340
+Um, and this basically means that, uh,
+
+578
+00:30:18,340 --> 00:30:21,625
+the real part of the two er, will be, uh,
+
+579
+00:30:21,625 --> 00:30:25,420
+exactly, uh, the same because what differs is only,
+
+580
+00:30:25,420 --> 00:30:27,580
+uh, the complex, uh, part.
+
+581
+00:30:27,580 --> 00:30:29,965
+So that is, um,
+
+582
+00:30:29,965 --> 00:30:34,420
+uh, in terms of modeling inverse, uh, relations.
+
+583
+00:30:34,420 --> 00:30:38,290
+Uh, how about composition and 1-toN relations?
+
+584
+00:30:38,290 --> 00:30:44,020
+Um, because, uh, ComplEx shares this property with DistMult,
+
+585
+00:30:44,020 --> 00:30:46,795
+meaning it uses the same, uh, scoring function,
+
+586
+00:30:46,795 --> 00:30:51,790
+then it turns out that ComplEx also cannot model composition relations as well as,
+
+587
+00:30:51,790 --> 00:30:53,200
+uh, 1-to-N uh,
+
+588
+00:30:53,200 --> 00:30:57,385
+relations because it uses kind of a very similar, uh, scoring function.
+
+589
+00:30:57,385 --> 00:31:01,270
+So this basically now concludes, uh,
+
+590
+00:31:01,270 --> 00:31:05,035
+our discussion of different knowledge graph embedding,
+
+591
+00:31:05,035 --> 00:31:07,495
+uh, methods for knowledge graph completion.
+
+592
+00:31:07,495 --> 00:31:09,730
+We- we went through four of them.
+
+593
+00:31:09,730 --> 00:31:11,140
+We went through TransE,
+
+594
+00:31:11,140 --> 00:31:15,010
+TransR, DistMult and ComplEx.
+
+595
+00:31:15,010 --> 00:31:20,140
+And what is interesting is that each of these methods has a bit different idea, right?
+
+596
+00:31:20,140 --> 00:31:26,080
+Um, the- the two- first two methods embed into the- into the,
+
+597
+00:31:26,080 --> 00:31:28,765
+um, real, uh, space,
+
+598
+00:31:28,765 --> 00:31:30,370
+so into the Euclidean space.
+
+599
+00:31:30,370 --> 00:31:33,250
+Uh, but one uses the translation, uh,
+
+600
+00:31:33,250 --> 00:31:35,440
+idea for every relation,
+
+601
+00:31:35,440 --> 00:31:38,470
+while TransR also uses this, er, um,
+
+602
+00:31:38,470 --> 00:31:42,205
+transformation matrix, er M. And, uh,
+
+603
+00:31:42,205 --> 00:31:44,140
+here I show different properties or
+
+604
+00:31:44,140 --> 00:31:47,230
+different relation types that these methods can model.
+
+605
+00:31:47,230 --> 00:31:52,360
+Um, TransE is the only one that can model composite relations where they can be composed.
+
+606
+00:31:52,360 --> 00:31:56,880
+Uh, DistMult changes the scoring function, um, and, uh,
+
+607
+00:31:56,880 --> 00:32:00,030
+and ComplEx actually embeds, uh,
+
+608
+00:32:00,030 --> 00:32:01,980
+not into the Euclidean space,
+
+609
+00:32:01,980 --> 00:32:03,780
+but in the complex space.
+
+610
+00:32:03,780 --> 00:32:06,040
+And the reason why I wanted to show you
+
+611
+00:32:06,040 --> 00:32:10,810
+these different methods is to see kind of the diversity of options that, uh,
+
+612
+00:32:10,810 --> 00:32:12,790
+embeddings, uh, allow you,
+
+613
+00:32:12,790 --> 00:32:14,590
+uh, to work with and, uh,
+
+614
+00:32:14,590 --> 00:32:19,270
+a lot- give you a lot of freedom how you define your predictive model.
+
+615
+00:32:19,270 --> 00:32:23,845
+So how do you do now knowledge graph embeddings in practice?
+
+616
+00:32:23,845 --> 00:32:26,470
+Uh, different knowledge graphs may have
+
+617
+00:32:26,470 --> 00:32:31,015
+drastically different relational patterns and different properties.
+
+618
+00:32:31,015 --> 00:32:36,115
+So it is not that there is one method that works best, uh, on all of them.
+
+619
+00:32:36,115 --> 00:32:39,310
+It really depends on what kind of, uh,
+
+620
+00:32:39,310 --> 00:32:43,240
+relationship types you are interested in modeling and,
+
+621
+00:32:43,240 --> 00:32:47,335
+uh, what kind of relations do you wanna predict.
+
+622
+00:32:47,335 --> 00:32:49,495
+If you really want to predict, uh,
+
+623
+00:32:49,495 --> 00:32:54,610
+1-to-N relations and model 1-to-N relations, then don't use TransE.
+
+624
+00:32:54,610 --> 00:32:59,830
+if you really care about composite relations and these kind of compositions,
+
+625
+00:32:59,830 --> 00:33:02,110
+then use, for example, TransE.
+
+626
+00:33:02,110 --> 00:33:05,080
+If what you care about, uh, for example,
+
+627
+00:33:05,080 --> 00:33:07,300
+would be antisymmetric relations,
+
+628
+00:33:07,300 --> 00:33:10,405
+don't use DistMult, um, and so on.
+
+629
+00:33:10,405 --> 00:33:12,610
+So it really depends, uh,
+
+630
+00:33:12,610 --> 00:33:14,875
+on- on the graph and what you wanna do.
+
+631
+00:33:14,875 --> 00:33:16,435
+In general, you know,
+
+632
+00:33:16,435 --> 00:33:21,910
+TransR are and ComplEx have the most kind of- are able to model the most,
+
+633
+00:33:21,910 --> 00:33:26,260
+uh, diverse set of different, uh, relation types.
+
+634
+00:33:26,260 --> 00:33:30,820
+So what you can always try is try with TransE because it's very,
+
+635
+00:33:30,820 --> 00:33:33,295
+uh, simple and has a very nice intuition.
+
+636
+00:33:33,295 --> 00:33:37,975
+And then you can use more expressive model like complEx, uh, TransE.
+
+637
+00:33:37,975 --> 00:33:39,685
+You- there's also an notion,
+
+638
+00:33:39,685 --> 00:33:41,890
+a model called trans- RotatE,
+
+639
+00:33:41,890 --> 00:33:45,505
+which is TransE, but with complex embeddings.
+
+640
+00:33:45,505 --> 00:33:48,745
+Um, so there is a lot of different approaches and different,
+
+641
+00:33:48,745 --> 00:33:50,680
+er, uh, ideas here.
+
+642
+00:33:50,680 --> 00:33:52,945
+There is a paper linked up here that s- uh,
+
+643
+00:33:52,945 --> 00:33:55,300
+that serves as a very good follow-up, uh,
+
+644
+00:33:55,300 --> 00:33:58,000
+reading if you are interested in this topic.
+
+645
+00:33:58,000 --> 00:34:02,845
+So to summarize, we talked about the, uh, knowledge graph,
+
+646
+00:34:02,845 --> 00:34:05,260
+embedding a knowledge graph completion task
+
+647
+00:34:05,260 --> 00:34:07,795
+as one of the very important task in knowledge graphs.
+
+648
+00:34:07,795 --> 00:34:10,300
+And we talked about four different methods.
+
+649
+00:34:10,300 --> 00:34:14,110
+TransE, TransR, DistMult and ComplEx,
+
+650
+00:34:14,110 --> 00:34:17,665
+er, models with different embedding space,
+
+651
+00:34:17,665 --> 00:34:20,695
+and with different type level of expressivity,
+
+652
+00:34:20,695 --> 00:34:22,840
+allowing us to mi- model, uh,
+
+653
+00:34:22,840 --> 00:34:26,450
+different types of um, relationships.
+

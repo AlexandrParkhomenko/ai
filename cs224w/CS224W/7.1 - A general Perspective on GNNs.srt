@@ -1,0 +1,456 @@
+1
+00:00:04,010 --> 00:00:07,575
+We are going to generalize what we talked about,
+
+2
+00:00:07,575 --> 00:00:08,940
+uh, last time, uh,
+
+3
+00:00:08,940 --> 00:00:12,330
+which will be all about generalizing and mathematically formalizing,
+
+4
+00:00:12,330 --> 00:00:13,950
+uh, graph neural networks.
+
+5
+00:00:13,950 --> 00:00:16,965
+The idea for today's lecture,
+
+6
+00:00:16,965 --> 00:00:21,790
+is to talk about deep graph encoders and mathematically formalize them,
+
+7
+00:00:21,790 --> 00:00:26,100
+and also show you the design space, the idea,
+
+8
+00:00:26,100 --> 00:00:29,700
+the diversity of what kind of design choices, uh,
+
+9
+00:00:29,700 --> 00:00:31,725
+do we have when we are making, uh,
+
+10
+00:00:31,725 --> 00:00:33,930
+these types of, uh, decisions,
+
+11
+00:00:33,930 --> 00:00:36,630
+uh, building these types of architectures, right?
+
+12
+00:00:36,630 --> 00:00:40,680
+So what we want is we wanna build a deep graph encoder that takes the graph, uh,
+
+13
+00:00:40,680 --> 00:00:45,890
+as the input, and then through a series of non-linear, uh, transformations,
+
+14
+00:00:45,890 --> 00:00:48,395
+through kind of this deep neural network,
+
+15
+00:00:48,395 --> 00:00:50,115
+comes up with a set of, uh,
+
+16
+00:00:50,115 --> 00:00:52,205
+predictions that can be at node level,
+
+17
+00:00:52,205 --> 00:00:53,870
+can be at the level of sub-graphs,
+
+18
+00:00:53,870 --> 00:00:56,165
+pairs of nodes, um, and so on.
+
+19
+00:00:56,165 --> 00:00:58,250
+And what we talked about last time,
+
+20
+00:00:58,250 --> 00:01:02,750
+is that the way we can define convolutional neural networks on top of graphs is
+
+21
+00:01:02,750 --> 00:01:07,520
+to- to think about the underlying network as the computation graph, right?
+
+22
+00:01:07,520 --> 00:01:12,030
+So the idea was when we discussed if I wanna make a prediction for a given,
+
+23
+00:01:12,030 --> 00:01:13,220
+uh, node in the network,
+
+24
+00:01:13,220 --> 00:01:14,690
+let's say this red node i,
+
+25
+00:01:14,690 --> 00:01:18,760
+then first I need to decide how to compose a computation graph,
+
+26
+00:01:18,760 --> 00:01:22,195
+um, and based on the network neighborhood around this node.
+
+27
+00:01:22,195 --> 00:01:24,050
+And then I can think of the- um,
+
+28
+00:01:24,050 --> 00:01:28,175
+of the computation graph as the structure of the graph neural- of the neural network,
+
+29
+00:01:28,175 --> 00:01:31,955
+where now messages' information gets passed, uh,
+
+30
+00:01:31,955 --> 00:01:34,910
+and aggregated from a neighbor to neighbor towards
+
+31
+00:01:34,910 --> 00:01:38,000
+to the center node so that the center node can make a prediction.
+
+32
+00:01:38,000 --> 00:01:41,120
+And we talked about how graph neural networks allow us to
+
+33
+00:01:41,120 --> 00:01:44,270
+learn how to propagate and transform, um,
+
+34
+00:01:44,270 --> 00:01:46,490
+information across the edges of
+
+35
+00:01:46,490 --> 00:01:50,000
+the underlying network to make a prediction and embedding,
+
+36
+00:01:50,000 --> 00:01:51,835
+uh, at a given node.
+
+37
+00:01:51,835 --> 00:01:54,760
+So the intuition was that nodes
+
+38
+00:01:54,760 --> 00:01:58,405
+aggregate information from their neighbors using neural networks,
+
+39
+00:01:58,405 --> 00:02:01,835
+so we said that every node in the network gets to define
+
+40
+00:02:01,835 --> 00:02:05,690
+its own multi-layer neural network structure.
+
+41
+00:02:05,690 --> 00:02:10,120
+This neural network structure depends on the neighbors and the,
+
+42
+00:02:10,120 --> 00:02:13,450
+uh, graph structure around the node of interest.
+
+43
+00:02:13,450 --> 00:02:18,050
+So, for example, node B here takes information from two- two other nodes,
+
+44
+00:02:18,050 --> 00:02:20,820
+uh, A and C because they are the neighbors of it,
+
+45
+00:02:20,820 --> 00:02:22,085
+uh, in the network.
+
+46
+00:02:22,085 --> 00:02:24,470
+And then, of course, the goal will be to learn, uh,
+
+47
+00:02:24,470 --> 00:02:28,100
+the transformations in- um, in- in this,
+
+48
+00:02:28,100 --> 00:02:32,380
+uh, in this neural network that- that would be parameterized and this way,
+
+49
+00:02:32,380 --> 00:02:35,395
+uh, our- our approach is going to work.
+
+50
+00:02:35,395 --> 00:02:39,760
+So the intuition is that network neighborhood defines a computation graph,
+
+51
+00:02:39,760 --> 00:02:44,930
+and that every node defines a computation graph based on its, uh, network neighborhood.
+
+52
+00:02:44,930 --> 00:02:50,045
+So every node in the graph essentially can get its own neural network architecture,
+
+53
+00:02:50,045 --> 00:02:52,520
+because these are now different kind of neural networks,
+
+54
+00:02:52,520 --> 00:02:54,815
+they have, uh, different shapes.
+
+55
+00:02:54,815 --> 00:02:57,585
+So now with this quick recap,
+
+56
+00:02:57,585 --> 00:03:00,320
+let's talk about how do we generally define
+
+57
+00:03:00,320 --> 00:03:03,460
+graph neural networks and what are the components of them,
+
+58
+00:03:03,460 --> 00:03:07,090
+and how do we mathematically formalize, uh, these components?
+
+59
+00:03:07,090 --> 00:03:09,730
+So first, in this general framework,
+
+60
+00:03:09,730 --> 00:03:11,830
+is that we have two, uh, aspects.
+
+61
+00:03:11,830 --> 00:03:15,745
+We have this notion of a message and we have a notion of aggregation.
+
+62
+00:03:15,745 --> 00:03:19,810
+And different architectures like GCN, GraphSAGE,
+
+63
+00:03:19,810 --> 00:03:22,705
+graph attention networks and so on and so forth,
+
+64
+00:03:22,705 --> 00:03:26,080
+what they differ is how they define this notion of aggregation,
+
+65
+00:03:26,080 --> 00:03:27,760
+and how they define this notion,
+
+66
+00:03:27,760 --> 00:03:29,140
+uh, of a message.
+
+67
+00:03:29,140 --> 00:03:31,690
+So that's the first important part,
+
+68
+00:03:31,690 --> 00:03:35,350
+is how do we define basically a single layer of
+
+69
+00:03:35,350 --> 00:03:39,730
+a graph neural network, which composed basically by taking the messages,
+
+70
+00:03:39,730 --> 00:03:41,065
+uh, from the children,
+
+71
+00:03:41,065 --> 00:03:43,510
+transforming them and aggregating them.
+
+72
+00:03:43,510 --> 00:03:46,210
+So that's the transformation and aggregation,
+
+73
+00:03:46,210 --> 00:03:49,710
+are the first two core, um, operations.
+
+74
+00:03:49,710 --> 00:03:52,035
+The second set of, uh,
+
+75
+00:03:52,035 --> 00:03:54,910
+operations is about how are we stacking
+
+76
+00:03:54,910 --> 00:03:58,660
+together multiple layers in a graph neural network, right?
+
+77
+00:03:58,660 --> 00:04:01,180
+So do we stack these layers sequentially?
+
+78
+00:04:01,180 --> 00:04:03,460
+Do we add skip connections and so on?
+
+79
+00:04:03,460 --> 00:04:05,380
+So that's the- that's the, uh,
+
+80
+00:04:05,380 --> 00:04:07,720
+uh, second part, uh, of the equation,
+
+81
+00:04:07,720 --> 00:04:09,895
+is how do we add this layer, uh,
+
+82
+00:04:09,895 --> 00:04:11,860
+connectivity when we combine Layer 1,
+
+83
+00:04:11,860 --> 00:04:13,355
+uh, with Layer 2.
+
+84
+00:04:13,355 --> 00:04:16,260
+Um, and then the- the last part that, eh,
+
+85
+00:04:16,260 --> 00:04:19,260
+- that is an important design- design decision
+
+86
+00:04:19,260 --> 00:04:22,120
+is how do we create the computation graph, right?
+
+87
+00:04:22,120 --> 00:04:26,200
+Do we say that the- the input graph equals the computation graph,
+
+88
+00:04:26,200 --> 00:04:28,795
+or do we do any kind of augmentation?
+
+89
+00:04:28,795 --> 00:04:31,180
+Maybe we wanna do some feature augmentation,
+
+90
+00:04:31,180 --> 00:04:34,495
+or we wanna do some graph structure manipulation.
+
+91
+00:04:34,495 --> 00:04:36,275
+Again, uh, in this lecture,
+
+92
+00:04:36,275 --> 00:04:39,800
+I'm just kind of giving you an overview of the areas where I will
+
+93
+00:04:39,800 --> 00:04:43,340
+be going to provide more detail and where we are going to go, uh, deeper.
+
+94
+00:04:43,340 --> 00:04:47,465
+So that's the- that's the third- the fourth area where this becomes,
+
+95
+00:04:47,465 --> 00:04:51,155
+um, very important, design decisions, uh, have to be made.
+
+96
+00:04:51,155 --> 00:04:54,000
+And then the last part is in terms of the learning.
+
+97
+00:04:54,000 --> 00:04:57,365
+You know, what kind of learn- what kind of objective function,
+
+98
+00:04:57,365 --> 00:04:59,540
+what kind of task are we going to use to
+
+99
+00:04:59,540 --> 00:05:02,060
+learn the parameters of our graph neural network,
+
+100
+00:05:02,060 --> 00:05:03,245
+right? So how do we train it?
+
+101
+00:05:03,245 --> 00:05:06,560
+Do we train it in a supervised, unsupervised objective?
+
+102
+00:05:06,560 --> 00:05:09,945
+Do we do it at the level of node prediction, edge prediction,
+
+103
+00:05:09,945 --> 00:05:13,580
+or entire graph, um, level prediction tasks?
+
+104
+00:05:13,580 --> 00:05:18,310
+So these are, essentially now gave you a kind of an overview of the parts, uh,
+
+105
+00:05:18,310 --> 00:05:20,790
+of the design- design space, uh,
+
+106
+00:05:20,790 --> 00:05:24,405
+for neural, graph neural network, uh, architectures.
+
+107
+00:05:24,405 --> 00:05:26,805
+So as I said, first is,
+
+108
+00:05:26,805 --> 00:05:31,355
+defining the layer, then it's defining connectivity between layers.
+
+109
+00:05:31,355 --> 00:05:34,835
+It's about, uh, uh, eh, layer connectivity.
+
+110
+00:05:34,835 --> 00:05:36,620
+It's about graph manipulation,
+
+111
+00:05:36,620 --> 00:05:39,590
+augmentation, feature augmentation, as well as,
+
+112
+00:05:39,590 --> 00:05:41,540
+uh, finally the learning objectives.
+
+113
+00:05:41,540 --> 00:05:43,040
+So these are the five, uh,
+
+114
+00:05:43,040 --> 00:05:46,320
+pieces we are going to talk about.
+

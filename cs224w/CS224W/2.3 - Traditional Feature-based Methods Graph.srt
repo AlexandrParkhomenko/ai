@@ -1,0 +1,1560 @@
+1
+00:00:04,000 --> 00:00:11,080
+So far we discussed node and edge level features,
+
+2
+00:00:11,080 --> 00:00:13,850
+uh, for a prediction in graphs.
+
+3
+00:00:13,850 --> 00:00:17,730
+Now, we are going to discuss graph-level features and
+
+4
+00:00:17,730 --> 00:00:23,860
+graph kernels that are going to- to allow us to make predictions for entire graphs.
+
+5
+00:00:23,860 --> 00:00:26,410
+So the goal is that we want one
+
+6
+00:00:26,410 --> 00:00:30,325
+features that characterize the structure of an entire graph.
+
+7
+00:00:30,325 --> 00:00:33,175
+So for example, if you have a graph like I have here,
+
+8
+00:00:33,175 --> 00:00:34,960
+we can think about just in words,
+
+9
+00:00:34,960 --> 00:00:37,270
+how would we describe the structure of this graph,
+
+10
+00:00:37,270 --> 00:00:38,815
+that it seems it has, kind of,
+
+11
+00:00:38,815 --> 00:00:42,585
+two loosely connected parts that there are quite a few edges, uh,
+
+12
+00:00:42,585 --> 00:00:45,010
+ins- between the nodes in each part and that there is
+
+13
+00:00:45,010 --> 00:00:47,810
+only one edge between these two different parts.
+
+14
+00:00:47,810 --> 00:00:48,830
+So the question is,
+
+15
+00:00:48,830 --> 00:00:53,240
+how do we create the feature description- descriptor that will allow us to characterize,
+
+16
+00:00:53,240 --> 00:00:56,350
+uh, the structure like I just, uh, explained?
+
+17
+00:00:56,350 --> 00:00:57,915
+And the way we are going to do this,
+
+18
+00:00:57,915 --> 00:01:00,270
+is we are going to use kernel methods.
+
+19
+00:01:00,270 --> 00:01:02,705
+And kernel methods are widely used for
+
+20
+00:01:02,705 --> 00:01:06,305
+traditional machine learning in, uh, graph-level prediction.
+
+21
+00:01:06,305 --> 00:01:10,830
+And the idea is to design a kernel rather than a feature vector.
+
+22
+00:01:10,830 --> 00:01:15,000
+So let me tell you what is a kernel and give you a brief introduction.
+
+23
+00:01:15,000 --> 00:01:17,460
+So a kernel between graphs G,
+
+24
+00:01:17,460 --> 00:01:20,370
+and G', uh, returns a real value,
+
+25
+00:01:20,370 --> 00:01:23,815
+and measures a similarity between these two graphs,
+
+26
+00:01:23,815 --> 00:01:27,950
+or in general, measure similarity between different data points.
+
+27
+00:01:27,950 --> 00:01:31,400
+Uh, kernel matrix is then a matrix where
+
+28
+00:01:31,400 --> 00:01:35,270
+simply measures the similarity between all pairs of data points,
+
+29
+00:01:35,270 --> 00:01:36,865
+or all pairs of graphs.
+
+30
+00:01:36,865 --> 00:01:40,950
+And for a kernel to be a valid kern- kernel this ma- eh,
+
+31
+00:01:40,950 --> 00:01:44,400
+kernel matrix, uh, has to be positive semi-definite.
+
+32
+00:01:44,400 --> 00:01:47,615
+Which means it has to have positive eigenvalues,
+
+33
+00:01:47,615 --> 00:01:49,655
+for exam- and- and- as a consequence,
+
+34
+00:01:49,655 --> 00:01:54,170
+it has to be, symet- it is a symmetric, uh, ma- matrix.
+
+35
+00:01:54,170 --> 00:01:57,440
+And then what is also an important property of kernels,
+
+36
+00:01:57,440 --> 00:02:00,500
+is that there exist a feature representation, Phi,
+
+37
+00:02:00,500 --> 00:02:06,650
+such that the kernel between two graphs is simply a feature representation,
+
+38
+00:02:06,650 --> 00:02:09,860
+uh, wa-, uh, of the first graph dot product
+
+39
+00:02:09,860 --> 00:02:12,260
+with the feature representation of the second graph, right?
+
+40
+00:02:12,260 --> 00:02:14,195
+So Phi of G is a vector,
+
+41
+00:02:14,195 --> 00:02:16,610
+and Phi of G is a- is another vector,
+
+42
+00:02:16,610 --> 00:02:22,040
+and the value of the kernel is simply a dot product of this vector representation,
+
+43
+00:02:22,040 --> 00:02:24,580
+uh, of the two, uh, graphs.
+
+44
+00:02:24,580 --> 00:02:27,660
+Um, and what is sometimes nice in kernels,
+
+45
+00:02:27,660 --> 00:02:30,240
+is that this feature representation, Phi,
+
+46
+00:02:30,240 --> 00:02:36,590
+doesn't even need to- to be explicitly created for us to be able to compute the value,
+
+47
+00:02:36,590 --> 00:02:37,850
+uh, of the kernel.
+
+48
+00:02:37,850 --> 00:02:40,025
+And once the kernel is defined,
+
+49
+00:02:40,025 --> 00:02:42,290
+then off-the-shelf machine learning models,
+
+50
+00:02:42,290 --> 00:02:44,870
+such as kernel support vector machines,
+
+51
+00:02:44,870 --> 00:02:48,295
+uh, can be used to make, uh, predictions.
+
+52
+00:02:48,295 --> 00:02:51,620
+So in this le- in this part of the lecture,
+
+53
+00:02:51,620 --> 00:02:54,170
+we are going to discuss different, uh,
+
+54
+00:02:54,170 --> 00:02:58,700
+graph kernels, which will allow us to measure similarity between two graphs.
+
+55
+00:02:58,700 --> 00:03:01,130
+In particular, we are going to discuss
+
+56
+00:03:01,130 --> 00:03:06,125
+the graphlet kernel as well as Weisfeiler-Lehman kernel.
+
+57
+00:03:06,125 --> 00:03:10,400
+There are oth- also other kernels that are proposed in the literature,
+
+58
+00:03:10,400 --> 00:03:12,800
+uh, but this is beyond the scope of the lecture.
+
+59
+00:03:12,800 --> 00:03:14,585
+For example, random-walk kernel,
+
+60
+00:03:14,585 --> 00:03:18,215
+shortest-path kernel, uh, and many, uh, others.
+
+61
+00:03:18,215 --> 00:03:25,030
+And generally, these kernels provide a very competitive performance in graph-level tasks.
+
+62
+00:03:25,030 --> 00:03:28,635
+So what is the key idea behind kernels?
+
+63
+00:03:28,635 --> 00:03:33,905
+The key idea in the goal of kernels is to define a feature vector,
+
+64
+00:03:33,905 --> 00:03:35,480
+Phi of a given graph,
+
+65
+00:03:35,480 --> 00:03:37,760
+G. And the- the idea is that,
+
+66
+00:03:37,760 --> 00:03:40,325
+we are going to think of this feature vector, Phi,
+
+67
+00:03:40,325 --> 00:03:43,765
+as a bag-of-words type representation of a graph.
+
+68
+00:03:43,765 --> 00:03:45,720
+So what is bag of words?
+
+69
+00:03:45,720 --> 00:03:47,535
+When we have text documents,
+
+70
+00:03:47,535 --> 00:03:50,100
+one way how we can represent that text document,
+
+71
+00:03:50,100 --> 00:03:52,980
+is to simply to represent it as a bag of words.
+
+72
+00:03:52,980 --> 00:03:54,300
+Where basically, we would say,
+
+73
+00:03:54,300 --> 00:03:59,060
+for every word we keep a count of how often that word appears in the document.
+
+74
+00:03:59,060 --> 00:04:00,140
+So we can think of, let's say,
+
+75
+00:04:00,140 --> 00:04:02,840
+words sorted alphabetically, and then,
+
+76
+00:04:02,840 --> 00:04:05,505
+you know, at position, i,
+
+77
+00:04:05,505 --> 00:04:07,480
+of this bag-of-words representation,
+
+78
+00:04:07,480 --> 00:04:08,750
+we will have the frequency,
+
+79
+00:04:08,750 --> 00:04:10,430
+the number of occurrences of word,
+
+80
+00:04:10,430 --> 00:04:12,220
+i, in the document.
+
+81
+00:04:12,220 --> 00:04:15,120
+So in our- in the same way,
+
+82
+00:04:15,120 --> 00:04:20,495
+and naive extension of this idea to graphs would be to regard nodes as words.
+
+83
+00:04:20,495 --> 00:04:25,730
+However, the problem is that since both- since graphs can have very different structure,
+
+84
+00:04:25,730 --> 00:04:27,080
+but the same number of nodes,
+
+85
+00:04:27,080 --> 00:04:29,210
+we would get the same feature vector,
+
+86
+00:04:29,210 --> 00:04:32,330
+or the same representation for two very different graphs, right?
+
+87
+00:04:32,330 --> 00:04:35,030
+So if we re- regard nodes as words,
+
+88
+00:04:35,030 --> 00:04:36,800
+then this graph has four nodes,
+
+89
+00:04:36,800 --> 00:04:38,195
+this graphs has four nodes,
+
+90
+00:04:38,195 --> 00:04:41,090
+so their representation would be the same.
+
+91
+00:04:41,090 --> 00:04:44,140
+So we need a different candidate for- for the-
+
+92
+00:04:44,140 --> 00:04:47,810
+for the word in this kind of bag-of-words representation.
+
+93
+00:04:47,810 --> 00:04:50,135
+To be, for example, a bit more expressive,
+
+94
+00:04:50,135 --> 00:04:52,010
+we could have what we could call,
+
+95
+00:04:52,010 --> 00:04:54,165
+uh, degree kernel, where we could say,
+
+96
+00:04:54,165 --> 00:04:56,375
+w- how are we going to represent a graph?
+
+97
+00:04:56,375 --> 00:04:59,960
+We are going to represent it as a bag-of-node degrees, right?
+
+98
+00:04:59,960 --> 00:05:01,145
+So we say, "Aha,
+
+99
+00:05:01,145 --> 00:05:03,320
+we have one node of degree 1,
+
+100
+00:05:03,320 --> 00:05:08,345
+we have three nodes of degree 2,
+
+101
+00:05:08,345 --> 00:05:12,790
+and we have 0 nodes of degree, uh, 3."
+
+102
+00:05:12,790 --> 00:05:14,805
+In the same way,
+
+103
+00:05:14,805 --> 00:05:16,425
+for example, uh, here,
+
+104
+00:05:16,425 --> 00:05:17,590
+we could be asking,
+
+105
+00:05:17,590 --> 00:05:19,040
+how many nodes, uh,
+
+106
+00:05:19,040 --> 00:05:20,585
+of different degrees do we have here?
+
+107
+00:05:20,585 --> 00:05:23,630
+We have 0 nodes of degree, um, 1,
+
+108
+00:05:23,630 --> 00:05:25,835
+we have two nodes, uh, of degree 2,
+
+109
+00:05:25,835 --> 00:05:28,810
+and two nodes, uh, of degree, um, 3.
+
+110
+00:05:28,810 --> 00:05:31,570
+So, um, and this means that now we would, er,
+
+111
+00:05:31,570 --> 00:05:34,770
+obtain different feature representations for these,
+
+112
+00:05:34,770 --> 00:05:36,485
+uh, different, uh, graphs,
+
+113
+00:05:36,485 --> 00:05:40,625
+and that would allow us to distinguish these different, uh, graphs.
+
+114
+00:05:40,625 --> 00:05:45,440
+And now, both the graphlets kernel as well as the Weisfeiler-Lehman kernel,
+
+115
+00:05:45,440 --> 00:05:51,350
+use this idea of bag-of-something representation of a graph where- where the star,
+
+116
+00:05:51,350 --> 00:05:55,735
+this something is more sophisticated than node degree.
+
+117
+00:05:55,735 --> 00:05:59,735
+So let's, uh, first talk about the graphlets kernel.
+
+118
+00:05:59,735 --> 00:06:01,400
+The idea is that writing 1,
+
+119
+00:06:01,400 --> 00:06:06,605
+I represented the graph as a count of the number of different graphlets in the graph.
+
+120
+00:06:06,605 --> 00:06:08,115
+Here, I wanna make,
+
+121
+00:06:08,115 --> 00:06:10,060
+uh, um important point;
+
+122
+00:06:10,060 --> 00:06:13,220
+the definition of graphlets for a graphlet kernel,
+
+123
+00:06:13,220 --> 00:06:18,405
+is a bit different than the definition of a graphlet in the node-level features.
+
+124
+00:06:18,405 --> 00:06:21,800
+And there are two important differences that graphlets in
+
+125
+00:06:21,800 --> 00:06:25,865
+the node-level features do not need to be connected,
+
+126
+00:06:25,865 --> 00:06:30,470
+um, and, um also that they are not, uh, uh, rooted.
+
+127
+00:06:30,470 --> 00:06:33,515
+So graphlets, uh, in this- in the, eh,
+
+128
+00:06:33,515 --> 00:06:35,990
+graphlets kernel are not rooted,
+
+129
+00:06:35,990 --> 00:06:37,565
+and don't have to be connected.
+
+130
+00:06:37,565 --> 00:06:39,394
+And to give you an example,
+
+131
+00:06:39,394 --> 00:06:42,740
+let me, uh, show you, uh, the next slide.
+
+132
+00:06:42,740 --> 00:06:47,750
+So for example, if you have a list of graphlets that we are interested
+
+133
+00:06:47,750 --> 00:06:52,830
+in little g_1 up to the little g_n_k,
+
+134
+00:06:52,830 --> 00:06:55,055
+let's say these are graphlets of size k,
+
+135
+00:06:55,055 --> 00:06:57,080
+then let say for k equals 3,
+
+136
+00:06:57,080 --> 00:06:59,480
+there are four different graphlets, right?
+
+137
+00:06:59,480 --> 00:07:02,885
+There are four different con- graphs on three nodes,
+
+138
+00:07:02,885 --> 00:07:05,930
+and directed, fully connected two edges,
+
+139
+00:07:05,930 --> 00:07:07,580
+one edge, and no edges.
+
+140
+00:07:07,580 --> 00:07:10,610
+So this is the definition of graphlets in the graph kernel.
+
+141
+00:07:10,610 --> 00:07:13,190
+And for example, for k equals 4,
+
+142
+00:07:13,190 --> 00:07:15,170
+that are 11 different graphlets,
+
+143
+00:07:15,170 --> 00:07:21,325
+fully connected graph all the way to the graph on four nodes without any connections.
+
+144
+00:07:21,325 --> 00:07:23,735
+And now, uh, given a graph,
+
+145
+00:07:23,735 --> 00:07:28,055
+we can simply represent it as count of the number of structures,
+
+146
+00:07:28,055 --> 00:07:31,705
+um, er, different graphlets that appear, uh, in the graph.
+
+147
+00:07:31,705 --> 00:07:33,675
+So for example, given a graph,
+
+148
+00:07:33,675 --> 00:07:35,670
+and the graphr- graphlet list,
+
+149
+00:07:35,670 --> 00:07:38,305
+we define the graphlet count vector f,
+
+150
+00:07:38,305 --> 00:07:42,875
+simply as the number of instances of a given graphlet that appears,
+
+151
+00:07:42,875 --> 00:07:45,185
+uh, in our graph of interest.
+
+152
+00:07:45,185 --> 00:07:49,220
+For example, if these G is our graph of interest,
+
+153
+00:07:49,220 --> 00:07:50,570
+then in this graph,
+
+154
+00:07:50,570 --> 00:07:53,120
+there resides one triangle,
+
+155
+00:07:53,120 --> 00:07:58,965
+there resides three different parts of land 2,
+
+156
+00:07:58,965 --> 00:08:04,440
+there reside six different edges with an isolated nodes, and there, uh,
+
+157
+00:08:04,440 --> 00:08:07,800
+exist no, uh, triplet, uh, of nodes,
+
+158
+00:08:07,800 --> 00:08:10,470
+uh, that are, uh, that are not connected,
+
+159
+00:08:10,470 --> 00:08:11,565
+uh, in this graph.
+
+160
+00:08:11,565 --> 00:08:14,160
+So the graphlet feature vector in this case, uh,
+
+161
+00:08:14,160 --> 00:08:16,245
+would be here, would have ready 1,
+
+162
+00:08:16,245 --> 00:08:19,355
+3, 6, uh, and 0.
+
+163
+00:08:19,355 --> 00:08:21,925
+Now, given two graphs,
+
+164
+00:08:21,925 --> 00:08:27,640
+we can define the graphlet kernel simply as the dot product between the graphlet, uh,
+
+165
+00:08:27,640 --> 00:08:30,430
+count vector of the first graph times,
+
+166
+00:08:30,430 --> 00:08:33,940
+uh, the graphlet count vector of the second graph.
+
+167
+00:08:33,940 --> 00:08:36,385
+Um, this is a good idea,
+
+168
+00:08:36,385 --> 00:08:38,409
+but actually, there is a slight problem.
+
+169
+00:08:38,409 --> 00:08:42,789
+The problem is that graphs G1 and G2 may have different sizes,
+
+170
+00:08:42,789 --> 00:08:45,940
+so the row counts will be very,
+
+171
+00:08:45,940 --> 00:08:47,395
+uh, different of, uh,
+
+172
+00:08:47,395 --> 00:08:48,940
+graphlets in different graphs.
+
+173
+00:08:48,940 --> 00:08:54,475
+So a common solution people apply is to normalize this feature vector representation,
+
+174
+00:08:54,475 --> 00:08:55,750
+uh, for the graph.
+
+175
+00:08:55,750 --> 00:08:57,265
+So this means that, um,
+
+176
+00:08:57,265 --> 00:08:59,515
+the- the graphlet, uh,
+
+177
+00:08:59,515 --> 00:09:04,405
+vector representation for a given graph is simply the can- the count of
+
+178
+00:09:04,405 --> 00:09:09,580
+individual graphlets divided by the total number of graphlets that appear in the graph.
+
+179
+00:09:09,580 --> 00:09:11,410
+So if the- this essentially
+
+180
+00:09:11,410 --> 00:09:15,505
+normalizes for the size and the density of the underlying graph,
+
+181
+00:09:15,505 --> 00:09:19,585
+and then the graphlet kernel is defined as the dot product between these,
+
+182
+00:09:19,585 --> 00:09:23,635
+um, uh, feature vector representations of graphs,
+
+183
+00:09:23,635 --> 00:09:25,510
+uh, uh, h that capture,
+
+184
+00:09:25,510 --> 00:09:30,010
+uh, the frequency or the proportion of- of our given graphlet,
+
+185
+00:09:30,010 --> 00:09:31,780
+um, in a- in a graph.
+
+186
+00:09:31,780 --> 00:09:36,220
+There is an important limitation of the graphlet graph kernel.
+
+187
+00:09:36,220 --> 00:09:41,320
+And the limitation is that counting graphlets is very expens- expensive.
+
+188
+00:09:41,320 --> 00:09:45,685
+Counting a k-size graphlet in a graph with n nodes, uh,
+
+189
+00:09:45,685 --> 00:09:50,890
+by enumeration takes time or the n raised to the power k. So,
+
+190
+00:09:50,890 --> 00:09:54,670
+um, this means that counting graphlets of
+
+191
+00:09:54,670 --> 00:09:58,780
+size k is polynomial in the number of nodes in the graph,
+
+192
+00:09:58,780 --> 00:10:01,705
+but it is exponential in the graphlet size.
+
+193
+00:10:01,705 --> 00:10:04,645
+Um, and this is unavoidable in the worse-case
+
+194
+00:10:04,645 --> 00:10:08,170
+since sub-graph isomorisic- isomorphism judging whether,
+
+195
+00:10:08,170 --> 00:10:11,155
+uh, a sub-graph is a- is a, uh,
+
+196
+00:10:11,155 --> 00:10:12,655
+isomorphic to another, uh,
+
+197
+00:10:12,655 --> 00:10:14,320
+graph, is, uh, NP-hard.
+
+198
+00:10:14,320 --> 00:10:17,890
+Um, and, uh, there are faster algorithms if,
+
+199
+00:10:17,890 --> 00:10:19,180
+uh, graphs node, uh,
+
+200
+00:10:19,180 --> 00:10:21,190
+node degree is bounded by d,
+
+201
+00:10:21,190 --> 00:10:26,515
+then there exist a fa- faster algorithm to count the graphlets of size k. However,
+
+202
+00:10:26,515 --> 00:10:28,870
+the issue still remains that counting
+
+203
+00:10:28,870 --> 00:10:33,910
+these discrete structures in a graph is very time consuming, um, very expensive.
+
+204
+00:10:33,910 --> 00:10:36,400
+So we can only count graphlets up to,
+
+205
+00:10:36,400 --> 00:10:37,870
+uh, you know, uh,
+
+206
+00:10:37,870 --> 00:10:39,040
+a handful of nodes.
+
+207
+00:10:39,040 --> 00:10:44,665
+And then the- and then the exponential complexity takes over and we cannot count,
+
+208
+00:10:44,665 --> 00:10:46,240
+uh, graphlets, uh, that are,
+
+209
+00:10:46,240 --> 00:10:47,960
+uh, larger than that.
+
+210
+00:10:47,960 --> 00:10:50,370
+Um, so the question is,
+
+211
+00:10:50,370 --> 00:10:53,225
+how do we design a more efficient graph kernel?
+
+212
+00:10:53,225 --> 00:10:57,415
+Um, and Weisfeiler-Lehman graph kernel, uh, achieves this goal.
+
+213
+00:10:57,415 --> 00:11:02,260
+The goal here is to design an efficient graph feature descriptor Phi of G, uh,
+
+214
+00:11:02,260 --> 00:11:06,940
+where the idea is that we wanna use a neighborhood structure to iteratively enrich,
+
+215
+00:11:06,940 --> 00:11:09,295
+uh, node, uh, vocabulary.
+
+216
+00:11:09,295 --> 00:11:14,230
+And, um, we generalize a version of node degrees since node degrees are
+
+217
+00:11:14,230 --> 00:11:19,705
+one hot- one-hop neighborhood information to multi-hop neighborhood information.
+
+218
+00:11:19,705 --> 00:11:23,485
+And the algorithm that achieves this is, uh, uh,
+
+219
+00:11:23,485 --> 00:11:26,920
+called the Weisfeiler-Lehman graph isomorphism test,
+
+220
+00:11:26,920 --> 00:11:29,800
+or also known as color refinement.
+
+221
+00:11:29,800 --> 00:11:32,965
+So, uh, let me explain, uh, this next.
+
+222
+00:11:32,965 --> 00:11:38,200
+So the idea is that we are given a graph G with a set of nodes V,
+
+223
+00:11:38,200 --> 00:11:40,660
+and we're going to assign an initial color,
+
+224
+00:11:40,660 --> 00:11:45,790
+um, c^0, so this is an initial color to each node.
+
+225
+00:11:45,790 --> 00:11:48,220
+And then we are going to iteratively, er,
+
+226
+00:11:48,220 --> 00:11:53,005
+aggregate or hash colors from the neighbors to invent new colors.
+
+227
+00:11:53,005 --> 00:11:54,880
+So the way to think of this, uh,
+
+228
+00:11:54,880 --> 00:12:00,640
+the new color for a given node v will be a hashed value of its own color, um,
+
+229
+00:12:00,640 --> 00:12:05,395
+from the previous time step and a concatenation
+
+230
+00:12:05,395 --> 00:12:10,510
+of colors coming from the neighbors u of the node v of interest,
+
+231
+00:12:10,510 --> 00:12:13,660
+where hash is basically a hash functions that
+
+232
+00:12:13,660 --> 00:12:17,185
+maps different inputs into different, uh, colors.
+
+233
+00:12:17,185 --> 00:12:20,755
+And after k steps of this color refinement,
+
+234
+00:12:20,755 --> 00:12:22,795
+um, um, c, uh,
+
+235
+00:12:22,795 --> 00:12:24,325
+capital v of, uh,
+
+236
+00:12:24,325 --> 00:12:27,700
+capital K of v summarizes the structure, uh,
+
+237
+00:12:27,700 --> 00:12:30,190
+of the graph, uh, at the level of,
+
+238
+00:12:30,190 --> 00:12:32,080
+uh, K-hop, uh, neighborhood.
+
+239
+00:12:32,080 --> 00:12:35,440
+So let me, um, give you an example, uh, and explain.
+
+240
+00:12:35,440 --> 00:12:38,110
+So for example, here I have two, uh,
+
+241
+00:12:38,110 --> 00:12:42,580
+graphs that have very similar structure but are just slightly, uh, different.
+
+242
+00:12:42,580 --> 00:12:44,485
+The difference is, uh, this, uh,
+
+243
+00:12:44,485 --> 00:12:46,885
+edge and here, um, the- the, uh,
+
+244
+00:12:46,885 --> 00:12:49,945
+the diagonal edge, the triangle closing edge,
+
+245
+00:12:49,945 --> 00:12:52,530
+um, um, is, uh, different.
+
+246
+00:12:52,530 --> 00:12:55,380
+So first we are going to assign initial colors to nodes.
+
+247
+00:12:55,380 --> 00:12:57,045
+So every node gets the same color,
+
+248
+00:12:57,045 --> 00:12:59,470
+every node gets a color of one.
+
+249
+00:12:59,470 --> 00:13:02,590
+Now we are going to aggregate neighboring colors.
+
+250
+00:13:02,590 --> 00:13:06,325
+For example, this particular node aggregate colors 1,1,
+
+251
+00:13:06,325 --> 00:13:07,945
+1, um, and, uh,
+
+252
+00:13:07,945 --> 00:13:09,595
+adds it to it- to itself,
+
+253
+00:13:09,595 --> 00:13:13,990
+while this particular node up here aggregates colors from its neighbors,
+
+254
+00:13:13,990 --> 00:13:16,315
+one and one, uh, and it is here.
+
+255
+00:13:16,315 --> 00:13:17,785
+And the same process, uh,
+
+256
+00:13:17,785 --> 00:13:19,870
+happens in this second,
+
+257
+00:13:19,870 --> 00:13:21,505
+uh, graphs- graph as well.
+
+258
+00:13:21,505 --> 00:13:24,520
+Now that, um, we have collected the colors,
+
+259
+00:13:24,520 --> 00:13:26,065
+uh, we go, uh,
+
+260
+00:13:26,065 --> 00:13:27,460
+and hash them, right?
+
+261
+00:13:27,460 --> 00:13:30,445
+So we apply a hash- hash function that takes
+
+262
+00:13:30,445 --> 00:13:35,350
+nodes' own color plus the colors from neighbors and produces new colors.
+
+263
+00:13:35,350 --> 00:13:39,640
+And let's say here the hash function for the first combination returns one,
+
+264
+00:13:39,640 --> 00:13:41,920
+then two, then three, uh, four, and five.
+
+265
+00:13:41,920 --> 00:13:44,185
+So now we color the graphs,
+
+266
+00:13:44,185 --> 00:13:46,750
+uh, based on these new refined colors, right?
+
+267
+00:13:46,750 --> 00:13:48,880
+So this is the coloring of the first graph,
+
+268
+00:13:48,880 --> 00:13:52,495
+and this is the coloring of the second graph based on the hash values
+
+269
+00:13:52,495 --> 00:13:56,815
+of the- of the aggregated colors from the first step.
+
+270
+00:13:56,815 --> 00:13:59,815
+Now we take these two graphs and,
+
+271
+00:13:59,815 --> 00:14:02,920
+again, apply the same color aggregation scheme, right?
+
+272
+00:14:02,920 --> 00:14:04,855
+So for example, this node, uh,
+
+273
+00:14:04,855 --> 00:14:08,020
+with color 4 aggregates colors from its neighbors,
+
+274
+00:14:08,020 --> 00:14:10,750
+so aggregates the 3, 4, and 5.
+
+275
+00:14:10,750 --> 00:14:13,900
+So we have 3, 4, and 5 here, while, for example,
+
+276
+00:14:13,900 --> 00:14:17,230
+this node here of color 2 aggregates from its neighbor,
+
+277
+00:14:17,230 --> 00:14:18,790
+uh, that is colored 5,
+
+278
+00:14:18,790 --> 00:14:20,485
+so it gets 2, 5.
+
+279
+00:14:20,485 --> 00:14:22,120
+And again, for this graph,
+
+280
+00:14:22,120 --> 00:14:24,340
+the same process happens.
+
+281
+00:14:24,340 --> 00:14:27,250
+Now, again, we take, um, uh, this,
+
+282
+00:14:27,250 --> 00:14:30,460
+uh, aggregated colors, um, and we hash them.
+
+283
+00:14:30,460 --> 00:14:33,160
+And let's say our hash function, uh,
+
+284
+00:14:33,160 --> 00:14:36,100
+assigns different, uh, new colors, uh,
+
+285
+00:14:36,100 --> 00:14:37,570
+to, uh, to this,
+
+286
+00:14:37,570 --> 00:14:38,860
+uh, colors that are,
+
+287
+00:14:38,860 --> 00:14:41,830
+uh, combined aggregated from the previous timesteps.
+
+288
+00:14:41,830 --> 00:14:44,605
+So now we can take this, uh, original, uh,
+
+289
+00:14:44,605 --> 00:14:46,930
+aggregated colored graph and,
+
+290
+00:14:46,930 --> 00:14:49,390
+uh, relabel the colors based on the hash value.
+
+291
+00:14:49,390 --> 00:14:52,840
+So 4,345, uh, 4, um,
+
+292
+00:14:52,840 --> 00:14:56,800
+er, where is, uh, er, uh,
+
+293
+00:14:56,800 --> 00:15:00,100
+34- uh, 345- um, is, um,
+
+294
+00:15:00,100 --> 00:15:02,320
+layer hashes into color 10s,
+
+295
+00:15:02,320 --> 00:15:05,035
+so we replace a color 10, uh, here.
+
+296
+00:15:05,035 --> 00:15:09,160
+And we could keep iterating this and we would come up, uh, with, uh,
+
+297
+00:15:09,160 --> 00:15:11,230
+more and more, uh, refinement,
+
+298
+00:15:11,230 --> 00:15:12,370
+uh, of the, uh,
+
+299
+00:15:12,370 --> 00:15:13,975
+uh, colors of the graph.
+
+300
+00:15:13,975 --> 00:15:17,140
+So now that we have run this color refinement for a,
+
+301
+00:15:17,140 --> 00:15:18,850
+uh, a fixed number of steps,
+
+302
+00:15:18,850 --> 00:15:20,680
+let say k iterations,
+
+303
+00:15:20,680 --> 00:15:26,170
+the Weisfeiler-Lehman, uh, kernel counts number of nodes with a given color.
+
+304
+00:15:26,170 --> 00:15:27,280
+So in our case,
+
+305
+00:15:27,280 --> 00:15:29,035
+we run- we run this three times,
+
+306
+00:15:29,035 --> 00:15:32,260
+so we have 13 different colors.. And now
+
+307
+00:15:32,260 --> 00:15:36,055
+the feature description for a given graph is simply the count,
+
+308
+00:15:36,055 --> 00:15:37,990
+the number of nodes of a given color, right?
+
+309
+00:15:37,990 --> 00:15:39,130
+In the first iteration,
+
+310
+00:15:39,130 --> 00:15:40,720
+uh, all the nodes were colored,
+
+311
+00:15:40,720 --> 00:15:44,245
+um- all six nodes were colored the same one- uh, the same way.
+
+312
+00:15:44,245 --> 00:15:46,915
+Um, so there is six instances of color 1.
+
+313
+00:15:46,915 --> 00:15:49,495
+Then, um, after we iter- um,
+
+314
+00:15:49,495 --> 00:15:52,480
+agg- aggregated the colors and refined them, you know,
+
+315
+00:15:52,480 --> 00:15:54,400
+there were two nodes of color 2,
+
+316
+00:15:54,400 --> 00:15:55,810
+one node of color 3,
+
+317
+00:15:55,810 --> 00:15:58,210
+two nodes of color 4, um, and so on.
+
+318
+00:15:58,210 --> 00:16:03,145
+So here is now the feature description in terms of color counts, uh, for, uh,
+
+319
+00:16:03,145 --> 00:16:07,390
+for, uh, different colors for the first graph and different colors,
+
+320
+00:16:07,390 --> 00:16:09,400
+uh, for the second graph.
+
+321
+00:16:09,400 --> 00:16:12,085
+So now that we have the feature descriptions,
+
+322
+00:16:12,085 --> 00:16:17,035
+the Weisfeiler-Lehman graph kernel would simply take the dot product between these two,
+
+323
+00:16:17,035 --> 00:16:19,570
+uh, uh, feature descriptors and return a value.
+
+324
+00:16:19,570 --> 00:16:21,220
+So for example, in our case,
+
+325
+00:16:21,220 --> 00:16:23,875
+the si- the, uh, Weisfeiler-Lehman, uh,
+
+326
+00:16:23,875 --> 00:16:27,580
+kernel similarity between the two graphs is the dot product between the,
+
+327
+00:16:27,580 --> 00:16:29,890
+uh, feature descriptors, uh, here.
+
+328
+00:16:29,890 --> 00:16:31,030
+These are the two, uh,
+
+329
+00:16:31,030 --> 00:16:33,520
+feature descriptors and we compute the dot product,
+
+330
+00:16:33,520 --> 00:16:36,910
+we would get a value of, uh, 49.
+
+331
+00:16:36,910 --> 00:16:41,090
+So WL kernel is very popular and very strong,
+
+332
+00:16:41,090 --> 00:16:42,945
+uh, gives strong performance,
+
+333
+00:16:42,945 --> 00:16:47,300
+and it is also computationally efficient because the time complexity of
+
+334
+00:16:47,300 --> 00:16:51,760
+this color refinement at each step is linear in the size of the graph.
+
+335
+00:16:51,760 --> 00:16:55,070
+It is linear in the number of edges because all that
+
+336
+00:16:55,070 --> 00:16:58,700
+every node has to do is collect the colors, uh, from its, uh,
+
+337
+00:16:58,700 --> 00:17:01,580
+neighboring nodes and- and produce- and apply
+
+338
+00:17:01,580 --> 00:17:05,579
+a simple hash function to- to come up with a new,
+
+339
+00:17:05,579 --> 00:17:08,084
+um, uh, with a new, uh, color.
+
+340
+00:17:08,085 --> 00:17:10,130
+When computing the kernel value,
+
+341
+00:17:10,130 --> 00:17:14,885
+many colors, uh, appeared in two graphs need to be tracked.
+
+342
+00:17:14,885 --> 00:17:18,910
+So the number of colors will be at most the number of nodes,
+
+343
+00:17:18,910 --> 00:17:20,060
+uh, in the network.
+
+344
+00:17:20,060 --> 00:17:22,280
+So this again won't be too- too large.
+
+345
+00:17:22,280 --> 00:17:27,410
+And counting the colors again takes linear time because it's just a sweep over the nodes.
+
+346
+00:17:27,410 --> 00:17:30,545
+So the- the total complexity, uh,
+
+347
+00:17:30,545 --> 00:17:34,700
+of computing the Weisfeiler-Lehman graph kernel between a pair of, uh,
+
+348
+00:17:34,700 --> 00:17:38,885
+graphs is simply linear in the number of edges in the two graphs.
+
+349
+00:17:38,885 --> 00:17:41,240
+So this means this is extremely, uh,
+
+350
+00:17:41,240 --> 00:17:43,310
+fast and actually works,
+
+351
+00:17:43,310 --> 00:17:45,165
+uh, really well in practice.
+
+352
+00:17:45,165 --> 00:17:49,550
+So to summarize the graph level features that we have discussed,
+
+353
+00:17:49,550 --> 00:17:51,320
+first we talked about, uh,
+
+354
+00:17:51,320 --> 00:17:52,940
+the notion of graph kernels,
+
+355
+00:17:52,940 --> 00:17:59,390
+where basically graph is represented as a bag of graphlets or a bag of, uh, colors.
+
+356
+00:17:59,390 --> 00:18:02,720
+Um, and, uh, when we represent the graph as a graph- uh,
+
+357
+00:18:02,720 --> 00:18:04,355
+as a bag of graphlets,
+
+358
+00:18:04,355 --> 00:18:10,080
+this is extremely- this is very expensive representation because counting the graphlets,
+
+359
+00:18:10,080 --> 00:18:14,405
+uh, takes time exponential in the size of the graph.
+
+360
+00:18:14,405 --> 00:18:17,505
+At the same time, Weisfeiler-Lehman, uh,
+
+361
+00:18:17,505 --> 00:18:22,430
+kernel is based on this case step color refinement algorithm that
+
+362
+00:18:22,430 --> 00:18:27,470
+enriches and produces new node colors that are aggregated from the,
+
+363
+00:18:27,470 --> 00:18:30,890
+um, colors of the immediate neighbors of the node.
+
+364
+00:18:30,890 --> 00:18:34,775
+And as multiple rounds of this color refinement are run,
+
+365
+00:18:34,775 --> 00:18:38,530
+the node kind of gathers color information from farther away,
+
+366
+00:18:38,530 --> 00:18:39,940
+uh, parts of the network.
+
+367
+00:18:39,940 --> 00:18:43,285
+So here we represent the graph as a bag of colors.
+
+368
+00:18:43,285 --> 00:18:45,145
+This is computationally efficient.
+
+369
+00:18:45,145 --> 00:18:48,290
+The time is linear in the size of the graph, um,
+
+370
+00:18:48,290 --> 00:18:54,220
+and it is also closely related to graph neural networks that we are going to study,
+
+371
+00:18:54,220 --> 00:18:55,810
+uh, later in this course.
+
+372
+00:18:55,810 --> 00:18:59,260
+So, um, Weisfeiler-Lehman is a really, uh,
+
+373
+00:18:59,260 --> 00:19:01,890
+good way to measure similarity, um,
+
+374
+00:19:01,890 --> 00:19:04,040
+between graphs, and in many cases,
+
+375
+00:19:04,040 --> 00:19:06,440
+it is, uh, very hard to beat.
+
+376
+00:19:06,440 --> 00:19:11,360
+So this concludes the today lecture where we talked about, um,
+
+377
+00:19:11,360 --> 00:19:14,930
+three different, uh, approaches to traditional,
+
+378
+00:19:14,930 --> 00:19:18,095
+uh, graph, uh, level, um, machine learning.
+
+379
+00:19:18,095 --> 00:19:23,190
+We talked about, um, handcrafted features for node-level prediction,
+
+380
+00:19:23,190 --> 00:19:24,670
+uh, in terms of node degree,
+
+381
+00:19:24,670 --> 00:19:27,465
+centrality, clustering, coefficient, and graphlets.
+
+382
+00:19:27,465 --> 00:19:31,410
+We talked about link-level or edge-level features,
+
+383
+00:19:31,410 --> 00:19:35,105
+distance-based, as well as local and global neighborhood overlap.
+
+384
+00:19:35,105 --> 00:19:39,785
+And then last we'd talk about how do we characterize the structure of the entire graph.
+
+385
+00:19:39,785 --> 00:19:41,920
+We talked about graph kernels, uh,
+
+386
+00:19:41,920 --> 00:19:45,730
+and in particular about graphlet kernel and the WL,
+
+387
+00:19:45,730 --> 00:19:49,450
+meaning Weisfeiler-Lehman graph kernel.
+
+388
+00:19:49,450 --> 00:19:54,590
+So this concludes our discussion of traditional machine learning approaches, uh,
+
+389
+00:19:54,590 --> 00:19:59,390
+to graphs and how do we create feature vectors from nodes, links, um,
+
+390
+00:19:59,390 --> 00:20:05,670
+and graphs, um, in a- in a scalable and interesting way. Uh, thank you very much.
+

@@ -1,0 +1,2192 @@
+1
+00:00:04,070 --> 00:00:07,950
+So we are going to talk about random walk approaches,
+
+2
+00:00:07,950 --> 00:00:09,390
+uh, to node embeddings.
+
+3
+00:00:09,390 --> 00:00:12,615
+Um, and the idea here will be the following.
+
+4
+00:00:12,615 --> 00:00:16,410
+Uh, we are going to learn a vector z for every node
+
+5
+00:00:16,410 --> 00:00:20,565
+and this would be an embedding of the node and this is what we aim to find.
+
+6
+00:00:20,565 --> 00:00:22,770
+We are then going to, um,
+
+7
+00:00:22,770 --> 00:00:26,745
+also define a probability that, uh, basically will- uh,
+
+8
+00:00:26,745 --> 00:00:31,740
+will be the pre- predicted probability of how similar a given node u,
+
+9
+00:00:31,740 --> 00:00:34,155
+um, is uh, to some node, uh,
+
+10
+00:00:34,155 --> 00:00:38,520
+v. And given that we are going to use random walks to define this similarity,
+
+11
+00:00:38,520 --> 00:00:40,410
+this would be the probab- proba- uh,
+
+12
+00:00:40,410 --> 00:00:42,910
+predicted probability of visiting node v,
+
+13
+00:00:42,910 --> 00:00:46,030
+one random walks starting from node u.
+
+14
+00:00:46,030 --> 00:00:49,980
+Then we are also goin- need to, um,
+
+15
+00:00:49,980 --> 00:00:53,580
+nonlinear functions, uh, that will be used to,
+
+16
+00:00:53,580 --> 00:00:55,940
+uh, define or to produce these probabilities.
+
+17
+00:00:55,940 --> 00:01:00,070
+First, I'm going to define the notion of a softmax function,
+
+18
+00:01:00,070 --> 00:01:01,620
+which- which is- uh,
+
+19
+00:01:01,620 --> 00:01:05,430
+which returns a vector of k real values,
+
+20
+00:01:05,430 --> 00:01:09,320
+uh, um, and the- and these values sum to one.
+
+21
+00:01:09,320 --> 00:01:12,380
+So essentially, given a set of numbers z,
+
+22
+00:01:12,380 --> 00:01:15,230
+the- the softmax of that vector will be
+
+23
+00:01:15,230 --> 00:01:20,035
+a probability distribution over those values and the more likely that,
+
+24
+00:01:20,035 --> 00:01:23,015
+um, that- number is the maximum in the vector,
+
+25
+00:01:23,015 --> 00:01:24,620
+the higher the probability,
+
+26
+00:01:24,620 --> 00:01:25,745
+uh, it will have.
+
+27
+00:01:25,745 --> 00:01:28,445
+And essentially the way you can think of it, I take this, uh,
+
+28
+00:01:28,445 --> 00:01:33,650
+value z and I exponentiate them and then I normalize everything to sum to one.
+
+29
+00:01:33,650 --> 00:01:36,810
+So the idea is if the largest value, um,
+
+30
+00:01:36,810 --> 00:01:38,100
+in- in this vector z,
+
+31
+00:01:38,100 --> 00:01:39,870
+when I expo- exponentiate it,
+
+32
+00:01:39,870 --> 00:01:42,105
+it will be even larger than everything else.
+
+33
+00:01:42,105 --> 00:01:43,950
+So most probability mass,
+
+34
+00:01:43,950 --> 00:01:46,785
+um, will be concentrated on that value.
+
+35
+00:01:46,785 --> 00:01:49,070
+This is why this is called softmax because it's
+
+36
+00:01:49,070 --> 00:01:52,040
+a kind of a soft version of a maximum function.
+
+37
+00:01:52,040 --> 00:01:56,000
+Um, and then we are also going to define this notion of a sigmoid which is an
+
+38
+00:01:56,000 --> 00:01:59,960
+S shaped function that turns real values into,
+
+39
+00:01:59,960 --> 00:02:02,195
+uh, a range of- of 01,
+
+40
+00:02:02,195 --> 00:02:08,410
+um, and softmax is defined as 1 over 1 plus e to the minus x. Um,
+
+41
+00:02:08,410 --> 00:02:11,535
+and this is a nice way how to take something that lives on, uh,
+
+42
+00:02:11,535 --> 00:02:14,750
+minus infinity to plus infinity and kind of squish it,
+
+43
+00:02:14,750 --> 00:02:17,170
+uh, to, uh, value 01.
+
+44
+00:02:17,170 --> 00:02:19,750
+So that's- those are two important functions,
+
+45
+00:02:19,750 --> 00:02:21,500
+uh, I will- we will use.
+
+46
+00:02:21,500 --> 00:02:24,005
+Now let me define the notion of a random walk.
+
+47
+00:02:24,005 --> 00:02:26,120
+So a random walk is simply,
+
+48
+00:02:26,120 --> 00:02:28,790
+um, a process on top of the graph,
+
+49
+00:02:28,790 --> 00:02:31,700
+where we sa- let say start at some node and then out
+
+50
+00:02:31,700 --> 00:02:34,550
+of the outgoing neighbors of that node,
+
+51
+00:02:34,550 --> 00:02:36,460
+in this case it will be 1, 3, and 5,
+
+52
+00:02:36,460 --> 00:02:41,870
+we pick one at random and we move to it and this is one step of random- random walk.
+
+53
+00:02:41,870 --> 00:02:43,115
+Now we are in this,
+
+54
+00:02:43,115 --> 00:02:44,390
+uh, node 5, again,
+
+55
+00:02:44,390 --> 00:02:46,970
+we have four different ways in which we can go.
+
+56
+00:02:46,970 --> 00:02:48,290
+We can return back to four.
+
+57
+00:02:48,290 --> 00:02:53,170
+We can go to 8, 6 or 7 and we pick one of them at random and move there.
+
+58
+00:02:53,170 --> 00:02:55,515
+Um, and this process continues,
+
+59
+00:02:55,515 --> 00:02:58,330
+let say for a- for a- in this case for a fixed,
+
+60
+00:02:58,330 --> 00:02:59,940
+uh, number of steps.
+
+61
+00:02:59,940 --> 00:03:03,530
+So the way you can think of this is that we basically simulated this, uh,
+
+62
+00:03:03,530 --> 00:03:06,320
+random walk over- over this graph and let's say,
+
+63
+00:03:06,320 --> 00:03:08,000
+um, over our fixed, uh,
+
+64
+00:03:08,000 --> 00:03:11,840
+number of steps where the random walk can traverse the same edge multiple times,
+
+65
+00:03:11,840 --> 00:03:14,560
+can return, can go back and forth,
+
+66
+00:03:14,560 --> 00:03:16,770
+do, uh, whatever the random walk,
+
+67
+00:03:16,770 --> 00:03:18,345
+uh, wants to do.
+
+68
+00:03:18,345 --> 00:03:23,480
+All right. And this random walk is a seq- sequence of nodes visited this way,
+
+69
+00:03:23,480 --> 00:03:27,430
+uh, on a graph across the- across the edges.
+
+70
+00:03:27,430 --> 00:03:30,890
+So now how are we going to- to define
+
+71
+00:03:30,890 --> 00:03:34,000
+this notion of similarity and these probabilities that we talked about?
+
+72
+00:03:34,000 --> 00:03:36,140
+What we are going to do is to say we want to learn these
+
+73
+00:03:36,140 --> 00:03:39,170
+coordinate z such that the product of two,
+
+74
+00:03:39,170 --> 00:03:41,225
+uh, nodes u and v,
+
+75
+00:03:41,225 --> 00:03:44,075
+um, is similar or equals is, uh,
+
+76
+00:03:44,075 --> 00:03:49,465
+approximates the probability that u and v co-occur on a random walk, uh, over the graph.
+
+77
+00:03:49,465 --> 00:03:51,765
+So here is- here is the idea, right?
+
+78
+00:03:51,765 --> 00:03:54,260
+First we will need to estimate the probability of visiting
+
+79
+00:03:54,260 --> 00:03:56,790
+node v on a random walk starting,
+
+80
+00:03:56,790 --> 00:03:59,220
+uh, at some node u using some, let's say,
+
+81
+00:03:59,220 --> 00:04:01,550
+a random walk strategy R. I'm going to define
+
+82
+00:04:01,550 --> 00:04:04,220
+this notion of random walks strategy, uh, later,
+
+83
+00:04:04,220 --> 00:04:07,700
+but for now just think it's a simple random walk where we pick one of the, uh,
+
+84
+00:04:07,700 --> 00:04:11,710
+uh, neighbors uniformly at random and we move to it.
+
+85
+00:04:11,710 --> 00:04:14,670
+And then we wanna optimize the embeddings,
+
+86
+00:04:14,670 --> 00:04:17,980
+uh, in such a way to encode this random walk statistics.
+
+87
+00:04:17,980 --> 00:04:22,970
+Basically we want the- the cosine of the angle between the two vectors,
+
+88
+00:04:22,970 --> 00:04:27,950
+this is the dot product to be proportional or similar to the probability that,
+
+89
+00:04:27,950 --> 00:04:30,590
+uh, u and v are visited, uh,
+
+90
+00:04:30,590 --> 00:04:34,355
+uh, on the same random, uh, walk.
+
+91
+00:04:34,355 --> 00:04:36,240
+So why random walks?
+
+92
+00:04:36,240 --> 00:04:40,655
+We want to use random walks because they are expressive, they are flexible.
+
+93
+00:04:40,655 --> 00:04:44,570
+It gives us a flexible stochastic definition of node similarity that
+
+94
+00:04:44,570 --> 00:04:49,500
+incorporates both kind of local as well as higher order neighbor with information, right?
+
+95
+00:04:49,500 --> 00:04:51,680
+And the idea is that if a random walk, uh,
+
+96
+00:04:51,680 --> 00:04:54,195
+starting from node u visits v, um,
+
+97
+00:04:54,195 --> 00:04:57,690
+with high probability that u and v are similar, uh, uh,
+
+98
+00:04:57,690 --> 00:05:01,530
+they have kind of similar network neighborhood they are close together with each other,
+
+99
+00:05:01,530 --> 00:05:04,410
+there might be multiple paths between them and so on.
+
+100
+00:05:04,410 --> 00:05:08,930
+Um, and what is interesting is that this is in some sense also
+
+101
+00:05:08,930 --> 00:05:13,280
+efficient because we do not need to consider all the node pairs when- when training.
+
+102
+00:05:13,280 --> 00:05:17,570
+We only need to consider pairs that co-occur in random walks.
+
+103
+00:05:17,570 --> 00:05:20,404
+[BACKGROUND] So the supervised,
+
+104
+00:05:20,404 --> 00:05:21,890
+uh, feature learning, uh,
+
+105
+00:05:21,890 --> 00:05:23,000
+will work the following.
+
+106
+00:05:23,000 --> 00:05:25,325
+The intuition is that we find embedding of nodes in
+
+107
+00:05:25,325 --> 00:05:28,375
+d-dimensional space that preserves similarity.
+
+108
+00:05:28,375 --> 00:05:32,520
+Uh, the idea is that we want to learn node embedding such that nearby nodes in
+
+109
+00:05:32,520 --> 00:05:36,980
+the network are clo- are- are embedded close together in the embedding space.
+
+110
+00:05:36,980 --> 00:05:39,800
+Um, and given a node u the question is,
+
+111
+00:05:39,800 --> 00:05:41,605
+how do we define nearby?
+
+112
+00:05:41,605 --> 00:05:45,210
+And we are going to have these definition and,
+
+113
+00:05:45,210 --> 00:05:47,355
+uh, sub r of u, where, uh,
+
+114
+00:05:47,355 --> 00:05:50,820
+basically this is n labels the neighborhood,
+
+115
+00:05:50,820 --> 00:05:54,750
+uh, of u obtained by some random walk strategy or r, right?
+
+116
+00:05:54,750 --> 00:05:56,280
+So for a given node uh,
+
+117
+00:05:56,280 --> 00:05:58,830
+u we need to define what is the neighborhood?
+
+118
+00:05:58,830 --> 00:06:03,080
+And in our case, neighborhood will simply be a sequence of nodes that this,
+
+119
+00:06:03,080 --> 00:06:08,055
+um, uh, that the random walk starting at u has visited.
+
+120
+00:06:08,055 --> 00:06:12,005
+So now how are we setting this up as an optimization problem?
+
+121
+00:06:12,005 --> 00:06:13,385
+Given the graph, uh,
+
+122
+00:06:13,385 --> 00:06:16,810
+on nodes, uh, V and an edge set E,
+
+123
+00:06:16,810 --> 00:06:20,450
+our goal is to learn a mapping from the nodes, uh,
+
+124
+00:06:20,450 --> 00:06:24,170
+to their embeddings and we are going to maximize the following,
+
+125
+00:06:24,170 --> 00:06:26,195
+uh, maximum likelihood objective, right?
+
+126
+00:06:26,195 --> 00:06:28,460
+Our goal will be to find this function,
+
+127
+00:06:28,460 --> 00:06:32,730
+this mapping so basically find the coordinates z of the nodes such that,
+
+128
+00:06:32,730 --> 00:06:35,305
+uh, the summation over all the nodes, uh,
+
+129
+00:06:35,305 --> 00:06:39,925
+of log probabilities that given the node u, um, that, uh,
+
+130
+00:06:39,925 --> 00:06:44,450
+maximizes log probabilities of the nodes that appear in its- uh,
+
+131
+00:06:44,450 --> 00:06:48,210
+in its local uh, random-walk neighborhood, right?
+
+132
+00:06:48,210 --> 00:06:51,375
+So we want to basically to sum out- to maximize the sum,
+
+133
+00:06:51,375 --> 00:06:54,560
+which means we want to make nodes that are, um,
+
+134
+00:06:54,560 --> 00:06:58,399
+that are visited in the same random walk to be kind of embedded,
+
+135
+00:06:58,399 --> 00:06:59,910
+uh, close together, right?
+
+136
+00:06:59,910 --> 00:07:02,330
+So we wanna learn feature representations that are
+
+137
+00:07:02,330 --> 00:07:05,225
+predictive of the nodes in each, uh, uh, uh,
+
+138
+00:07:05,225 --> 00:07:07,490
+of the nodes that appear in it's, uh,
+
+139
+00:07:07,490 --> 00:07:09,365
+random walk neighborhood uh, uh,
+
+140
+00:07:09,365 --> 00:07:12,295
+N. That's the idea.
+
+141
+00:07:12,295 --> 00:07:14,730
+So how are we going to do this?
+
+142
+00:07:14,730 --> 00:07:17,560
+First, we are going to run short fixed length
+
+143
+00:07:17,560 --> 00:07:21,500
+random walk starting from each node u in the graph using,
+
+144
+00:07:21,500 --> 00:07:23,600
+uh, some random walks strategy R. Uh,
+
+145
+00:07:23,600 --> 00:07:25,025
+for each node u,
+
+146
+00:07:25,025 --> 00:07:26,570
+we are going to collect, uh,
+
+147
+00:07:26,570 --> 00:07:29,300
+N of u which is a multi set of nodes
+
+148
+00:07:29,300 --> 00:07:32,510
+visited in random walk starting from node u. Multi-set
+
+149
+00:07:32,510 --> 00:07:35,030
+meaning that a same node can appear
+
+150
+00:07:35,030 --> 00:07:38,620
+multiple times in the neighborhood because it may be visited multiple times.
+
+151
+00:07:38,620 --> 00:07:41,450
+Um, and then we are going to optimize- define
+
+152
+00:07:41,450 --> 00:07:45,350
+an optimization problem and optimize the embedding, so that, uh,
+
+153
+00:07:45,350 --> 00:07:48,350
+given node u we wanna be able to predict who are
+
+154
+00:07:48,350 --> 00:07:52,280
+the nodes that are in its neighborhood and defined again by the random walk.
+
+155
+00:07:52,280 --> 00:07:55,460
+So we are going to maximize, uh, uh, this,
+
+156
+00:07:55,460 --> 00:07:56,930
+uh, objective here, uh,
+
+157
+00:07:56,930 --> 00:07:59,155
+this maximum likelihood objective.
+
+158
+00:07:59,155 --> 00:08:01,190
+So how can we write this out?
+
+159
+00:08:01,190 --> 00:08:02,480
+We can write this out the following.
+
+160
+00:08:02,480 --> 00:08:06,470
+We- we- we write it as sum over all the starting nodes u,
+
+161
+00:08:06,470 --> 00:08:10,050
+sum over all the nodes that are in the neighborhood of u.
+
+162
+00:08:10,050 --> 00:08:14,360
+Let's call this nodes v and then we wanna maximize the log probability,
+
+163
+00:08:14,360 --> 00:08:15,950
+uh, that predicts, uh,
+
+164
+00:08:15,950 --> 00:08:17,540
+that node v, um,
+
+165
+00:08:17,540 --> 00:08:20,640
+is in the neighborhood of node U. Um,
+
+166
+00:08:20,640 --> 00:08:24,230
+and as I said opt- intuition is that we want to optimize embeddings to
+
+167
+00:08:24,230 --> 00:08:27,890
+maximize the likelihood of a random walk, uh, co-occurrence.
+
+168
+00:08:27,890 --> 00:08:30,335
+Um, how are we going to do this?
+
+169
+00:08:30,335 --> 00:08:33,315
+Um, we still need to define this, uh,
+
+170
+00:08:33,315 --> 00:08:37,370
+probability p and the way we are going to define it is we are going to use
+
+171
+00:08:37,370 --> 00:08:41,914
+the notion of softmax function that I have introduced a couple of slides ago.
+
+172
+00:08:41,914 --> 00:08:46,025
+So the idea here will be that what we wanna do is we wanna maximize
+
+173
+00:08:46,025 --> 00:08:52,250
+the dot product between the node u and node v. So node u is the starting node,
+
+174
+00:08:52,250 --> 00:08:53,630
+node v is the node,
+
+175
+00:08:53,630 --> 00:08:55,525
+um, in the neighborhood.
+
+176
+00:08:55,525 --> 00:08:57,510
+Random walk neighborhood of node, uh,
+
+177
+00:08:57,510 --> 00:09:01,890
+u we wanna maxima- we wanna to apply softf- softmax.
+
+178
+00:09:01,890 --> 00:09:06,920
+So this is the exponentiated value of the dot product of the node that is in
+
+179
+00:09:06,920 --> 00:09:09,170
+the neighborhood divided by sum of
+
+180
+00:09:09,170 --> 00:09:13,520
+the exponential dot product with all the other nodes in the network, right?
+
+181
+00:09:13,520 --> 00:09:18,180
+So the idea here is that we wanna assign as much probability mass to- uh,
+
+182
+00:09:18,180 --> 00:09:20,550
+to these dot product um,
+
+183
+00:09:20,550 --> 00:09:24,690
+and as little to all other, uh, dot products.
+
+184
+00:09:24,690 --> 00:09:27,460
+So now to write- to put it all together,
+
+185
+00:09:27,460 --> 00:09:31,660
+the way we can think of this is- this is- we are trying to optimize this function,
+
+186
+00:09:31,660 --> 00:09:34,795
+which is a sum over all the nodes for every node,
+
+187
+00:09:34,795 --> 00:09:38,410
+sum over all the nodes v that are seen on
+
+188
+00:09:38,410 --> 00:09:42,745
+random walks starting from this node u and then we wanna, uh, uh, uh,
+
+189
+00:09:42,745 --> 00:09:48,145
+optimize for a minus log probability of these softmax which says,
+
+190
+00:09:48,145 --> 00:09:49,410
+I want to, uh,
+
+191
+00:09:49,410 --> 00:09:53,830
+maximize the dot product between the- the starting node u and
+
+192
+00:09:53,830 --> 00:09:58,360
+the node v that is in the neighborhood and we- and we normalize this over all the nodes,
+
+193
+00:09:58,360 --> 00:09:59,680
+uh, in the network.
+
+194
+00:09:59,680 --> 00:10:04,140
+So now, um, you know what does it mean optimizing random walk embeddings,
+
+195
+00:10:04,140 --> 00:10:07,070
+it means finding this coordinates z, uh,
+
+196
+00:10:07,070 --> 00:10:11,595
+used here such that this likelihood function is, uh, minimized.
+
+197
+00:10:11,595 --> 00:10:14,035
+Now, uh, the question is,
+
+198
+00:10:14,035 --> 00:10:16,735
+how do we do this in practice?
+
+199
+00:10:16,735 --> 00:10:20,725
+And the problem is that this is very expensive because if you look at this,
+
+200
+00:10:20,725 --> 00:10:23,530
+we actually have to sum- two nested summations,
+
+201
+00:10:23,530 --> 00:10:25,450
+uh, over all nodes of the network.
+
+202
+00:10:25,450 --> 00:10:27,880
+We sum over all nodes in the- of- of the network
+
+203
+00:10:27,880 --> 00:10:30,625
+here for starting nodes of the random walks.
+
+204
+00:10:30,625 --> 00:10:33,355
+And here when we are normalizing softmax,
+
+205
+00:10:33,355 --> 00:10:37,120
+we are normalizing it over all of the nodes of the network again.
+
+206
+00:10:37,120 --> 00:10:39,205
+So this is a double summation,
+
+207
+00:10:39,205 --> 00:10:43,030
+which means that it will have complexity order, um, V squared.
+
+208
+00:10:43,030 --> 00:10:46,060
+So it will be, uh, quadratic in the number of nodes in the network,
+
+209
+00:10:46,060 --> 00:10:47,965
+and that's prohibitively expensive.
+
+210
+00:10:47,965 --> 00:10:49,720
+So let me tell you what, uh,
+
+211
+00:10:49,720 --> 00:10:52,585
+we do to make this, uh, practical.
+
+212
+00:10:52,585 --> 00:10:58,330
+And the- the issue here is that there is this problem with the softmax that, um,
+
+213
+00:10:58,330 --> 00:11:01,360
+we need to sum over all the nodes to basically
+
+214
+00:11:01,360 --> 00:11:04,795
+normalize it back to- to a distribution over the nodes.
+
+215
+00:11:04,795 --> 00:11:07,660
+So, um, can we approximate this theorem?
+
+216
+00:11:07,660 --> 00:11:09,310
+And the answer is yes.
+
+217
+00:11:09,310 --> 00:11:12,355
+And the solution to this is called negative sampling.
+
+218
+00:11:12,355 --> 00:11:17,740
+And intuitively, the idea is that rather than summing here over all the nodes,
+
+219
+00:11:17,740 --> 00:11:22,630
+uh, in the network, we are only going to sum over a subset of the nodes.
+
+220
+00:11:22,630 --> 00:11:25,420
+So essentially, we are going to sample a couple of
+
+221
+00:11:25,420 --> 00:11:28,660
+negative examples and sum, uh, over them.
+
+222
+00:11:28,660 --> 00:11:33,510
+So the way the approximation works out is that, um, we, um,
+
+223
+00:11:33,510 --> 00:11:37,135
+we can- we can view this as an approximation to the, um,
+
+224
+00:11:37,135 --> 00:11:40,630
+to the- to the softmax function, where we can,
+
+225
+00:11:40,630 --> 00:11:42,340
+uh, approximate it using,
+
+226
+00:11:42,340 --> 00:11:44,560
+uh, the following, uh, expression.
+
+227
+00:11:44,560 --> 00:11:50,020
+We are going to take log sigmoid function of the dot product between u and v. Uh,
+
+228
+00:11:50,020 --> 00:11:52,480
+this is for the, uh, for the theorem here.
+
+229
+00:11:52,480 --> 00:11:57,400
+And then we are going to say minus sum of i going from one to k,
+
+230
+00:11:57,400 --> 00:12:01,120
+so this is our k negative examples, logarithm, again,
+
+231
+00:12:01,120 --> 00:12:03,235
+of the sigmoid function between the, uh,
+
+232
+00:12:03,235 --> 00:12:05,095
+st- starting node u,
+
+233
+00:12:05,095 --> 00:12:07,390
+and the negative, um,
+
+234
+00:12:07,390 --> 00:12:09,160
+negative sample, uh, i,
+
+235
+00:12:09,160 --> 00:12:10,690
+where this negative samples,
+
+236
+00:12:10,690 --> 00:12:12,895
+this negative nodes will be, uh,
+
+237
+00:12:12,895 --> 00:12:17,470
+sampled at random, but not at ra- at uniform random,
+
+238
+00:12:17,470 --> 00:12:19,330
+but random in a biased way.
+
+239
+00:12:19,330 --> 00:12:21,110
+So the idea here is that,
+
+240
+00:12:21,110 --> 00:12:25,125
+instead of normalizing with respect to all nodes in the network,
+
+241
+00:12:25,125 --> 00:12:30,840
+we are going to normalize softmax against k random negative samples,
+
+242
+00:12:30,840 --> 00:12:33,195
+so negative nodes, uh, from the network.
+
+243
+00:12:33,195 --> 00:12:36,795
+And this negative samples will be carefully chosen.
+
+244
+00:12:36,795 --> 00:12:40,395
+So how do we choose negative samples?
+
+245
+00:12:40,395 --> 00:12:43,260
+We- we sample k negative nodes,
+
+246
+00:12:43,260 --> 00:12:46,680
+each with probabil- probability proportional to its degrees.
+
+247
+00:12:46,680 --> 00:12:49,400
+So it means that nodes that have higher degree,
+
+248
+00:12:49,400 --> 00:12:52,960
+uh, will be more likely to be chosen as a negative sample.
+
+249
+00:12:52,960 --> 00:12:57,400
+Um, there are two considerations for picking k in practice,
+
+250
+00:12:57,400 --> 00:12:59,260
+which means number of negative samples.
+
+251
+00:12:59,260 --> 00:13:02,965
+Higher values of k will give me more robust estimate.
+
+252
+00:13:02,965 --> 00:13:06,850
+Uh, but higher values of K also correspond, uh, to,
+
+253
+00:13:06,850 --> 00:13:08,305
+uh, to more, uh,
+
+254
+00:13:08,305 --> 00:13:11,380
+to more sampling again, to higher bias on negative events.
+
+255
+00:13:11,380 --> 00:13:15,790
+So what people tend to choose in practice is k between 5 and 20.
+
+256
+00:13:15,790 --> 00:13:16,990
+And if you think about it,
+
+257
+00:13:16,990 --> 00:13:18,820
+this is a very small number.
+
+258
+00:13:18,820 --> 00:13:22,330
+If you think network of a million nodes or 100,000 nodes,
+
+259
+00:13:22,330 --> 00:13:24,730
+rather than summing over 100,000,
+
+260
+00:13:24,730 --> 00:13:27,010
+uh, nodes, uh, every time here,
+
+261
+00:13:27,010 --> 00:13:28,960
+you are only summing over, you know,
+
+262
+00:13:28,960 --> 00:13:30,880
+5-20 nodes in this case.
+
+263
+00:13:30,880 --> 00:13:34,030
+And this way, your method and your estimation will be far,
+
+264
+00:13:34,030 --> 00:13:37,315
+um, much, much, much more, uh, efficient.
+
+265
+00:13:37,315 --> 00:13:41,530
+So, um, now how do we solve this optimization problem?
+
+266
+00:13:41,530 --> 00:13:43,930
+Uh, I won't go into too much detail,
+
+267
+00:13:43,930 --> 00:13:46,585
+but these things are today solved with,
+
+268
+00:13:46,585 --> 00:13:48,415
+uh, stochastic gradient descent.
+
+269
+00:13:48,415 --> 00:13:53,275
+And I just want to give you a quick introduction to stochastic gradient descent, uh,
+
+270
+00:13:53,275 --> 00:13:56,800
+two slides that are great lectures, uh,
+
+271
+00:13:56,800 --> 00:14:00,790
+a lot of really good tutorials on what is stochastic gradient descent,
+
+272
+00:14:00,790 --> 00:14:03,910
+how does it work and all the theoretical analysis of it.
+
+273
+00:14:03,910 --> 00:14:07,195
+But essentially, the idea is that if you have a smooth function,
+
+274
+00:14:07,195 --> 00:14:11,260
+then you can optimizing- optimize it by doing gradient descent,
+
+275
+00:14:11,260 --> 00:14:15,880
+by basically computing the gradient at- at a given point and then moving, um, uh, for,
+
+276
+00:14:15,880 --> 00:14:17,890
+uh, as a small step, um,
+
+277
+00:14:17,890 --> 00:14:20,800
+in- in the direction opposite of the gradient, right?
+
+278
+00:14:20,800 --> 00:14:23,290
+So this is the- this is the idea here, right?
+
+279
+00:14:23,290 --> 00:14:25,030
+Your start at some random point.
+
+280
+00:14:25,030 --> 00:14:26,620
+Um, in our case,
+
+281
+00:14:26,620 --> 00:14:29,050
+we can initialize embeddings of nodes,
+
+282
+00:14:29,050 --> 00:14:31,555
+uh, at- with random numbers,
+
+283
+00:14:31,555 --> 00:14:33,595
+and then we iterate until we converge.
+
+284
+00:14:33,595 --> 00:14:35,440
+We computed the derivative of
+
+285
+00:14:35,440 --> 00:14:39,520
+the likelihood function with respect to the embedding of a single node,
+
+286
+00:14:39,520 --> 00:14:43,180
+and now we find the direction of the derivative of the gradient.
+
+287
+00:14:43,180 --> 00:14:44,470
+And then we make, uh,
+
+288
+00:14:44,470 --> 00:14:47,890
+a step in the opposite direction of that gradient,
+
+289
+00:14:47,890 --> 00:14:50,950
+where, um, uh, this is the learning rate,
+
+290
+00:14:50,950 --> 00:14:52,900
+which means how big step do we take.
+
+291
+00:14:52,900 --> 00:14:55,240
+And we can actually even tune the step as we make,
+
+292
+00:14:55,240 --> 00:14:56,890
+uh, as we go and solve.
+
+293
+00:14:56,890 --> 00:15:00,505
+Uh, but essentially, this is what gradient descent is.
+
+294
+00:15:00,505 --> 00:15:02,740
+And in stochastic gradient descent,
+
+295
+00:15:02,740 --> 00:15:05,770
+we are approximating the gradient in a stochastic way.
+
+296
+00:15:05,770 --> 00:15:10,570
+So rather than evaluating the gradient over all the examples, we just do it, um,
+
+297
+00:15:10,570 --> 00:15:15,640
+uh, over, uh, a small batch of examples or over an individual examples.
+
+298
+00:15:15,640 --> 00:15:19,780
+So what does it mean? Is that rather than, um, uh, evaluating,
+
+299
+00:15:19,780 --> 00:15:24,280
+uh, the gradient over all the nodes- all the negative nodes, um,
+
+300
+00:15:24,280 --> 00:15:28,450
+and- or all the neighbors in the neighborhood of a given node,
+
+301
+00:15:28,450 --> 00:15:30,205
+and then make a- make a step,
+
+302
+00:15:30,205 --> 00:15:32,335
+we are going to do this only for a, uh,
+
+303
+00:15:32,335 --> 00:15:33,670
+for a given, uh,
+
+304
+00:15:33,670 --> 00:15:35,290
+for a given node in the neighborhood.
+
+305
+00:15:35,290 --> 00:15:36,970
+So basically, the idea is that, you know,
+
+306
+00:15:36,970 --> 00:15:38,275
+we'll sample node i,
+
+307
+00:15:38,275 --> 00:15:39,655
+and then for all, uh,
+
+308
+00:15:39,655 --> 00:15:41,740
+js that in the- in the,
+
+309
+00:15:41,740 --> 00:15:42,880
+uh, in the neighborhood,
+
+310
+00:15:42,880 --> 00:15:45,295
+we are going to compute the gradient, uh,
+
+311
+00:15:45,295 --> 00:15:48,355
+and then make a step and keep iterating this.
+
+312
+00:15:48,355 --> 00:15:49,630
+Uh, we- of course, we'll get
+
+313
+00:15:49,630 --> 00:15:52,840
+a stochastic estimates or kind of a random estimate of the gradient.
+
+314
+00:15:52,840 --> 00:15:55,735
+But we'll be able to up- to make updates much, much faster,
+
+315
+00:15:55,735 --> 00:15:57,070
+which in practice tends,
+
+316
+00:15:57,070 --> 00:15:59,305
+uh, to be much, uh, better.
+
+317
+00:15:59,305 --> 00:16:01,585
+So let me summarize.
+
+318
+00:16:01,585 --> 00:16:03,190
+We are going to run th-
+
+319
+00:16:03,190 --> 00:16:07,210
+a short fixed-length random walks starting from each node on the graph.
+
+320
+00:16:07,210 --> 00:16:09,025
+Uh, for each node u,
+
+321
+00:16:09,025 --> 00:16:11,245
+we are going to collect, um,
+
+322
+00:16:11,245 --> 00:16:13,960
+its neighborhood and as a multiset of
+
+323
+00:16:13,960 --> 00:16:16,540
+nodes visited on the random walks starting from node u.
+
+324
+00:16:16,540 --> 00:16:18,940
+And then we are going to optimize this embeddings
+
+325
+00:16:18,940 --> 00:16:22,030
+used- using stochastic gradient descent, which means, uh,
+
+326
+00:16:22,030 --> 00:16:23,575
+we are going to, uh, uh,
+
+327
+00:16:23,575 --> 00:16:26,380
+find the coordinate Z that maximize,
+
+328
+00:16:26,380 --> 00:16:28,360
+uh, this particular expression.
+
+329
+00:16:28,360 --> 00:16:31,510
+And we are going to efficiently approximate this expression,
+
+330
+00:16:31,510 --> 00:16:33,580
+uh, using negative sampling,
+
+331
+00:16:33,580 --> 00:16:39,010
+where we, um, sample negative nodes of each probability proportional to their degree.
+
+332
+00:16:39,010 --> 00:16:43,195
+And in practice, we sample about 5-20 negative examples,
+
+333
+00:16:43,195 --> 00:16:46,555
+uh, for, uh, for every node, for every step.
+
+334
+00:16:46,555 --> 00:16:49,330
+So, um, now, um,
+
+335
+00:16:49,330 --> 00:16:52,495
+the question that I wanna also talk is,
+
+336
+00:16:52,495 --> 00:16:54,790
+um, you know, how should we do this random walk?
+
+337
+00:16:54,790 --> 00:16:57,130
+Right? So far, I only described, uh,
+
+338
+00:16:57,130 --> 00:16:58,914
+how to optimize the embeddings,
+
+339
+00:16:58,914 --> 00:17:01,435
+uh, for a given the random walk, um, uh,
+
+340
+00:17:01,435 --> 00:17:04,300
+R. And we talked about this uniform random walk,
+
+341
+00:17:04,300 --> 00:17:09,819
+where basically we run fixed-length unbiased random walks starting at each node.
+
+342
+00:17:09,819 --> 00:17:12,879
+And the idea here is that, um,
+
+343
+00:17:12,880 --> 00:17:14,530
+there is the issue of this, uh,
+
+344
+00:17:14,530 --> 00:17:16,915
+type of similarity because in many cases,
+
+345
+00:17:16,915 --> 00:17:18,295
+it might be to constraint.
+
+346
+00:17:18,295 --> 00:17:22,510
+So the question is, can we use richer, um, random walks?
+
+347
+00:17:22,510 --> 00:17:25,150
+Can be made the- can be make random walks more
+
+348
+00:17:25,150 --> 00:17:29,035
+expressive so that we can tune these embeddings more?
+
+349
+00:17:29,035 --> 00:17:33,280
+And this is the idea of a method called, uh, node2vec,
+
+350
+00:17:33,280 --> 00:17:35,440
+where the idea is that we wanna, again,
+
+351
+00:17:35,440 --> 00:17:37,870
+embed nodes with similar network neighborhoods,
+
+352
+00:17:37,870 --> 00:17:39,565
+uh, closing the feature space.
+
+353
+00:17:39,565 --> 00:17:40,825
+Uh, we are going to frame.
+
+354
+00:17:40,825 --> 00:17:42,670
+The goal is again as, um,
+
+355
+00:17:42,670 --> 00:17:44,950
+maximum likelihood optimization problem,
+
+356
+00:17:44,950 --> 00:17:47,680
+uh, independent of the downstream prediction task.
+
+357
+00:17:47,680 --> 00:17:50,230
+Uh, and the key observation here is that
+
+358
+00:17:50,230 --> 00:17:53,635
+we have a flexible notion of network neighborhood,
+
+359
+00:17:53,635 --> 00:17:57,115
+um, which leads to much richer, uh, node embeddings.
+
+360
+00:17:57,115 --> 00:18:00,370
+And the extension of this simple random walk, uh,
+
+361
+00:18:00,370 --> 00:18:03,910
+here is that we are going to develop a second-order random
+
+362
+00:18:03,910 --> 00:18:07,900
+walk R to generate- to generate the network neighborhood,
+
+363
+00:18:07,900 --> 00:18:11,890
+uh, N, and then we are going to apply the same optimization problem.
+
+364
+00:18:11,890 --> 00:18:16,210
+So the only difference between deep walk and node2vec is how these, uh,
+
+365
+00:18:16,210 --> 00:18:19,135
+set of neighboring nodes, um,
+
+366
+00:18:19,135 --> 00:18:22,315
+is defined and how the random walk is defined.
+
+367
+00:18:22,315 --> 00:18:26,170
+So the idea is to use flexible, um,
+
+368
+00:18:26,170 --> 00:18:29,770
+biased random walks that can trade off between the local and global views,
+
+369
+00:18:29,770 --> 00:18:31,495
+uh, in the network.
+
+370
+00:18:31,495 --> 00:18:33,865
+Um, and what I mean by local and global,
+
+371
+00:18:33,865 --> 00:18:35,350
+when you are doing the random walk,
+
+372
+00:18:35,350 --> 00:18:37,360
+you can think of, uh, for example,
+
+373
+00:18:37,360 --> 00:18:41,380
+depth-first search, uh, as a way to explore as much of the network
+
+374
+00:18:41,380 --> 00:18:45,775
+as possible given a given budget of steps starting at node u.
+
+375
+00:18:45,775 --> 00:18:48,130
+But if you really want to get a good understanding how
+
+376
+00:18:48,130 --> 00:18:50,755
+the network looks like very locally around node u,
+
+377
+00:18:50,755 --> 00:18:53,950
+then perhaps you'd want to explore the network more in,
+
+378
+00:18:53,950 --> 00:18:57,040
+uh, um, breadth-first search, uh, fashion.
+
+379
+00:18:57,040 --> 00:18:58,600
+So this is really,
+
+380
+00:18:58,600 --> 00:19:00,220
+um, what this will allow us to do.
+
+381
+00:19:00,220 --> 00:19:05,050
+It will allow us to trade off or kind of extrapolate between breadth-first search, um,
+
+382
+00:19:05,050 --> 00:19:07,240
+and depth-first search, uh, type,
+
+383
+00:19:07,240 --> 00:19:10,390
+um, network exploration, right?
+
+384
+00:19:10,390 --> 00:19:12,805
+Um, uh, as I said, right, like, um,
+
+385
+00:19:12,805 --> 00:19:16,780
+in terms of strategies to explore the network neighborhood,
+
+386
+00:19:16,780 --> 00:19:19,030
+uh, and define the notion o- of, uh,
+
+387
+00:19:19,030 --> 00:19:21,235
+N from a given starting node,
+
+388
+00:19:21,235 --> 00:19:23,830
+you- you could imagine you wanna explore very
+
+389
+00:19:23,830 --> 00:19:27,160
+locally and would give you a very local view of the network,
+
+390
+00:19:27,160 --> 00:19:29,890
+and this will be just kind of breadth-first search exploration.
+
+391
+00:19:29,890 --> 00:19:33,010
+What you'd wanna look, perhaps a depth-first search explanation, right?
+
+392
+00:19:33,010 --> 00:19:34,885
+You wanna have these kind of global, uh,
+
+393
+00:19:34,885 --> 00:19:37,405
+macroscopic view of the network because you
+
+394
+00:19:37,405 --> 00:19:41,035
+capture much longer and larger, uh, distances.
+
+395
+00:19:41,035 --> 00:19:45,400
+All right. And that's essentially the intuition behind node2vec is
+
+396
+00:19:45,400 --> 00:19:49,450
+that you can- you can explore the network in different ways and you will get,
+
+397
+00:19:49,450 --> 00:19:52,000
+um, better resolution, uh, you know,
+
+398
+00:19:52,000 --> 00:19:54,460
+at more microscopic view versus more,
+
+399
+00:19:54,460 --> 00:19:57,445
+uh, macroscopic view, uh, of the network.
+
+400
+00:19:57,445 --> 00:20:01,360
+So how are we going to now do this in practice?
+
+401
+00:20:01,360 --> 00:20:03,355
+How are we going to define this random walk?
+
+402
+00:20:03,355 --> 00:20:08,725
+We are going to do biased fixed-length random walks are that,
+
+403
+00:20:08,725 --> 00:20:12,025
+that- so that a given node u generates its neighborhood,
+
+404
+00:20:12,025 --> 00:20:14,020
+uh, N, uh, of u.
+
+405
+00:20:14,020 --> 00:20:16,930
+And we are going to have two hyperparameters.
+
+406
+00:20:16,930 --> 00:20:19,150
+We'll have the return parameter p,
+
+407
+00:20:19,150 --> 00:20:23,050
+that will say how likely is the random walk maker step back,
+
+408
+00:20:23,050 --> 00:20:25,435
+backtrack to this- to the previous node.
+
+409
+00:20:25,435 --> 00:20:28,900
+And then we are going to have another parameter q that
+
+410
+00:20:28,900 --> 00:20:32,470
+are- we are going to call, uh, in-out parameter,
+
+411
+00:20:32,470 --> 00:20:35,920
+and it will allow us to trade off between moving outward,
+
+412
+00:20:35,920 --> 00:20:37,765
+kind of doing breadth-first search,
+
+413
+00:20:37,765 --> 00:20:41,860
+versus staying inwards, staying close to the starting node in this way,
+
+414
+00:20:41,860 --> 00:20:43,975
+mimicking, uh, breadth-first search.
+
+415
+00:20:43,975 --> 00:20:46,720
+And intuitively, we can think of q as
+
+416
+00:20:46,720 --> 00:20:50,080
+the ratio between the breadth-first and depth-first,
+
+417
+00:20:50,080 --> 00:20:52,150
+uh, exploration of the network.
+
+418
+00:20:52,150 --> 00:20:54,849
+To make this a bit more, uh, precise,
+
+419
+00:20:54,849 --> 00:21:00,835
+this is called a second-order random walk because it remembers where it came from.
+
+420
+00:21:00,835 --> 00:21:04,720
+Um, and then imagine for example in this- in this case that
+
+421
+00:21:04,720 --> 00:21:09,685
+the random walk just came from node S_1 to the node W. And now at W,
+
+422
+00:21:09,685 --> 00:21:13,240
+random walk needs to decide what to do, and there are- you know,
+
+423
+00:21:13,240 --> 00:21:14,485
+it needs to pick a node,
+
+424
+00:21:14,485 --> 00:21:18,265
+and there are actually three things that th- the- that the no- walker can do.
+
+425
+00:21:18,265 --> 00:21:20,560
+It can return back where it came from.
+
+426
+00:21:20,560 --> 00:21:23,905
+It can stay at the same distance,
+
+427
+00:21:23,905 --> 00:21:25,390
+um, uh, from, uh,
+
+428
+00:21:25,390 --> 00:21:27,250
+from where it came as it was before,
+
+429
+00:21:27,250 --> 00:21:28,600
+so you know, it's one hop,
+
+430
+00:21:28,600 --> 00:21:31,000
+our W is one hop from S_1,
+
+431
+00:21:31,000 --> 00:21:33,580
+so S_2 is also one hop from S_1.
+
+432
+00:21:33,580 --> 00:21:37,780
+So this means you stay at the same distance as from S_1 as you were,
+
+433
+00:21:37,780 --> 00:21:40,135
+or you can navigate farther out,
+
+434
+00:21:40,135 --> 00:21:46,390
+meaning navigate to someone- somebody who is at a distance 2 from the previous node S_1.
+
+435
+00:21:46,390 --> 00:21:49,960
+All right? So because we know where the random walker came,
+
+436
+00:21:49,960 --> 00:21:51,430
+the random walker needs to decide,
+
+437
+00:21:51,430 --> 00:21:54,310
+go back, stay at the same orbit,
+
+438
+00:21:54,310 --> 00:21:57,760
+at the same level, Or move one step further?
+
+439
+00:21:57,760 --> 00:22:02,830
+And the way we are going to parameterize this is using parameters p and q.
+
+440
+00:22:02,830 --> 00:22:07,480
+So we- di- if you think of this in terms of an unnormalized probabilities,
+
+441
+00:22:07,480 --> 00:22:08,995
+then we can think that, you know,
+
+442
+00:22:08,995 --> 00:22:10,600
+staying at the same distance,
+
+443
+00:22:10,600 --> 00:22:14,155
+we take this with probability proportional to some constant,
+
+444
+00:22:14,155 --> 00:22:16,930
+we return with probability 1 over p1,
+
+445
+00:22:16,930 --> 00:22:20,605
+and then we move farther away with probability one over
+
+446
+00:22:20,605 --> 00:22:24,580
+q one or proportional with- to- to 1 over q1, all right?
+
+447
+00:22:24,580 --> 00:22:27,355
+So here p is the return parameter,
+
+448
+00:22:27,355 --> 00:22:31,165
+and q is walk away type parameter.
+
+449
+00:22:31,165 --> 00:22:35,844
+So how are we going now to do this in- in practice is essentially,
+
+450
+00:22:35,844 --> 00:22:37,120
+as the random walker,
+
+451
+00:22:37,120 --> 00:22:39,310
+let's say goes from S_1 to the W,
+
+452
+00:22:39,310 --> 00:22:41,275
+now it needs to decide where to go.
+
+453
+00:22:41,275 --> 00:22:45,940
+We are going to have this unnormalized probability distribution of transitions,
+
+454
+00:22:45,940 --> 00:22:49,120
+which neighbor of W to navigate to.
+
+455
+00:22:49,120 --> 00:22:52,360
+We are going to normalize these to sum to one and then
+
+456
+00:22:52,360 --> 00:22:55,585
+flip a biased coin that will- that will navigate,
+
+457
+00:22:55,585 --> 00:22:58,435
+that will pick one of these four possible options, right?
+
+458
+00:22:58,435 --> 00:23:02,980
+Returning back, staying at the same distance, or navigating further.
+
+459
+00:23:02,980 --> 00:23:04,450
+And now, for example,
+
+460
+00:23:04,450 --> 00:23:07,255
+if I set a low value of p,
+
+461
+00:23:07,255 --> 00:23:12,220
+then this first term will be very high and the random walk will most likely return.
+
+462
+00:23:12,220 --> 00:23:14,215
+Uh, if we, uh,
+
+463
+00:23:14,215 --> 00:23:16,255
+want to navigate farther away,
+
+464
+00:23:16,255 --> 00:23:18,325
+we set a low value of q,
+
+465
+00:23:18,325 --> 00:23:20,365
+which means that S_3 and S_4,
+
+466
+00:23:20,365 --> 00:23:23,530
+will- will get a lot of, uh, probabilityness.
+
+467
+00:23:23,530 --> 00:23:26,575
+Um, and that's, uh, that's basically the idea.
+
+468
+00:23:26,575 --> 00:23:29,440
+And then again, the- the set n will be defined
+
+469
+00:23:29,440 --> 00:23:32,890
+by the nodes visited by this biased random walk
+
+470
+00:23:32,890 --> 00:23:36,130
+that is trading off the exploration of farther
+
+471
+00:23:36,130 --> 00:23:39,430
+out in the neigh- neighborhood versus exploration close,
+
+472
+00:23:39,430 --> 00:23:41,935
+uh, to the- to the- to the starting node,
+
+473
+00:23:41,935 --> 00:23:43,570
+um, S_1 in this case.
+
+474
+00:23:43,570 --> 00:23:44,905
+So that is, um,
+
+475
+00:23:44,905 --> 00:23:47,095
+that is the- that is the idea.
+
+476
+00:23:47,095 --> 00:23:49,825
+Um, so how does the algorithm work?
+
+477
+00:23:49,825 --> 00:23:53,275
+We are going to compute the random walk probabilities first.
+
+478
+00:23:53,275 --> 00:23:56,695
+Then we are going to simulate, the r, um,
+
+479
+00:23:56,695 --> 00:24:01,825
+biased random walks of some fixed length l starting from each node u.
+
+480
+00:24:01,825 --> 00:24:03,580
+And then we are going to, uh,
+
+481
+00:24:03,580 --> 00:24:06,715
+optimize the, uh, objective function, uh,
+
+482
+00:24:06,715 --> 00:24:09,040
+the same negative sampling objective function
+
+483
+00:24:09,040 --> 00:24:11,410
+that I- that I already discussed in DeepWalk,
+
+484
+00:24:11,410 --> 00:24:13,855
+uh, using stochastic gradient descent.
+
+485
+00:24:13,855 --> 00:24:15,955
+Um, the beauty in this,
+
+486
+00:24:15,955 --> 00:24:19,825
+is that there is linear time complexity in the optimization.
+
+487
+00:24:19,825 --> 00:24:21,220
+Because for every node,
+
+488
+00:24:21,220 --> 00:24:23,185
+we have a fixed set of random walks.
+
+489
+00:24:23,185 --> 00:24:24,865
+So it's linear, uh,
+
+490
+00:24:24,865 --> 00:24:26,950
+in the size o- of the graph.
+
+491
+00:24:26,950 --> 00:24:30,895
+And the- all these different three steps are also parallelizable.
+
+492
+00:24:30,895 --> 00:24:33,310
+So can- you can run them- uh, in parallel.
+
+493
+00:24:33,310 --> 00:24:34,930
+The drawback of this, uh,
+
+494
+00:24:34,930 --> 00:24:36,880
+no demanding approaches, uh,
+
+495
+00:24:36,880 --> 00:24:40,000
+is that we need to learn a separate,
+
+496
+00:24:40,000 --> 00:24:43,255
+uh, embedding, uh, for every node, uh, individually.
+
+497
+00:24:43,255 --> 00:24:45,370
+So with a bigger networks,
+
+498
+00:24:45,370 --> 00:24:46,795
+we need to learn, uh,
+
+499
+00:24:46,795 --> 00:24:50,805
+bigger, uh, embeddings, or more embeddings.
+
+500
+00:24:50,805 --> 00:24:54,705
+Um, of course, there's- there has been a lot of work, um,
+
+501
+00:24:54,705 --> 00:24:57,270
+after these, uh, these initial,
+
+502
+00:24:57,270 --> 00:24:59,775
+uh, papers that have proposed these ideas,
+
+503
+00:24:59,775 --> 00:25:01,440
+there are different kinds, uh,
+
+504
+00:25:01,440 --> 00:25:03,855
+of random walks that people kept proposed,
+
+505
+00:25:03,855 --> 00:25:06,960
+that our alternative optimization schemes, um,
+
+506
+00:25:06,960 --> 00:25:10,290
+and also different network pre-processing techniques, uh,
+
+507
+00:25:10,290 --> 00:25:14,310
+that allow us to define different notions, uh, of similarity.
+
+508
+00:25:14,310 --> 00:25:15,930
+Here are some papers that I linked,
+
+509
+00:25:15,930 --> 00:25:17,760
+uh, you know, if you are interested,
+
+510
+00:25:17,760 --> 00:25:19,945
+curious to learn more, um,
+
+511
+00:25:19,945 --> 00:25:21,535
+please, uh, please read them,
+
+512
+00:25:21,535 --> 00:25:23,320
+it will be a very good read.
+
+513
+00:25:23,320 --> 00:25:27,775
+So let me summarize what we have learned so far.
+
+514
+00:25:27,775 --> 00:25:30,100
+So the core idea was to embed nodes.
+
+515
+00:25:30,100 --> 00:25:32,170
+So the distances in the embedding space
+
+516
+00:25:32,170 --> 00:25:35,275
+reflect node similarities in the original network.
+
+517
+00:25:35,275 --> 00:25:39,250
+Um, and we talked about two different notions of node similarity.
+
+518
+00:25:39,250 --> 00:25:41,920
+Uh, first one was naive similarity where,
+
+519
+00:25:41,920 --> 00:25:42,940
+uh, if two node-,
+
+520
+00:25:42,940 --> 00:25:44,440
+if we could- for example,
+
+521
+00:25:44,440 --> 00:25:45,670
+do, uh, connect, uh,
+
+522
+00:25:45,670 --> 00:25:49,135
+make notes, uh, close together if they are simply connected by an edge.
+
+523
+00:25:49,135 --> 00:25:50,410
+We could, uh, do,
+
+524
+00:25:50,410 --> 00:25:53,110
+a neighborhood similarity, um,
+
+525
+00:25:53,110 --> 00:25:56,095
+and today we talked about random walk approaches, uh,
+
+526
+00:25:56,095 --> 00:25:58,525
+to, uh, node similarity where we said,
+
+527
+00:25:58,525 --> 00:26:02,080
+all the nodes visited on a random walk from a starting node,
+
+528
+00:26:02,080 --> 00:26:04,300
+those are, uh, similar to it.
+
+529
+00:26:04,300 --> 00:26:06,640
+So that's, uh, essentially the idea,
+
+530
+00:26:06,640 --> 00:26:09,130
+uh, for- uh, for today.
+
+531
+00:26:09,130 --> 00:26:11,830
+So, uh, now of course the question is,
+
+532
+00:26:11,830 --> 00:26:13,630
+which method should you use?
+
+533
+00:26:13,630 --> 00:26:16,585
+Um, and no method wins all cases.
+
+534
+00:26:16,585 --> 00:26:20,815
+So for example, node2vec performs better on a node classification,
+
+535
+00:26:20,815 --> 00:26:22,930
+while for example, a link prediction,
+
+536
+00:26:22,930 --> 00:26:25,240
+some alternative methods may perform better.
+
+537
+00:26:25,240 --> 00:26:27,310
+Uh, there is a very nice survey,
+
+538
+00:26:27,310 --> 00:26:30,520
+um, three years ago by Goyal and Ferrara.
+
+539
+00:26:30,520 --> 00:26:36,310
+That, um, surveyed many of these methods and compare them on a number of different tasks.
+
+540
+00:26:36,310 --> 00:26:39,340
+Um, er, and generally, you know,
+
+541
+00:26:39,340 --> 00:26:41,305
+random walk approaches are, uh,
+
+542
+00:26:41,305 --> 00:26:43,705
+quite efficient because you can simulate,
+
+543
+00:26:43,705 --> 00:26:45,670
+uh, a limited number of random walks.
+
+544
+00:26:45,670 --> 00:26:48,910
+They don't necessarily scale to the super big networks,
+
+545
+00:26:48,910 --> 00:26:53,020
+but they scale to lar- to rel- let say medium-size network.
+
+546
+00:26:53,020 --> 00:26:55,750
+Um , and, uh, in general, right?
+
+547
+00:26:55,750 --> 00:26:58,225
+You must choose the definition of node similarity
+
+548
+00:26:58,225 --> 00:27:02,239
+that best matches, uh, your application.
+

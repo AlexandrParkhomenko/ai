@@ -1,0 +1,848 @@
+1
+00:00:05,358 --> 00:00:09,720
+Welcome to CS224W, Machine Learning with Graphs.
+
+2
+00:00:09,720 --> 00:00:11,270
+My name is Jure Leskovec.
+
+3
+00:00:11,270 --> 00:00:13,570
+I'm Associate Professor of Computer Science at
+
+4
+00:00:13,570 --> 00:00:16,825
+Stanford University and I will be your instructor.
+
+5
+00:00:16,825 --> 00:00:22,240
+What I'm going to do in the first lecture is to motivate and get you excited about graph,
+
+6
+00:00:22,240 --> 00:00:28,030
+uh, structured data and how can we apply novel machine learning methods to it?
+
+7
+00:00:28,030 --> 00:00:30,020
+So why graphs?
+
+8
+00:00:30,020 --> 00:00:33,520
+Graphs are a general language for describing and an-
+
+9
+00:00:33,520 --> 00:00:37,375
+analyzing entities with the relations in interactions.
+
+10
+00:00:37,375 --> 00:00:40,570
+This means that rather than thinking of the world
+
+11
+00:00:40,570 --> 00:00:44,230
+or a given domain as a set of isolated datapoints,
+
+12
+00:00:44,230 --> 00:00:50,090
+we really think of it in terms of networks and relations between these entities.
+
+13
+00:00:50,090 --> 00:00:51,800
+This means that there is
+
+14
+00:00:51,800 --> 00:00:56,270
+the underla- ler- underlying graph of relations between the entities,
+
+15
+00:00:56,270 --> 00:00:58,820
+and these entities are related, uh,
+
+16
+00:00:58,820 --> 00:01:00,080
+to each other, uh,
+
+17
+00:01:00,080 --> 00:01:02,800
+according to these connections or the structure of the graph.
+
+18
+00:01:02,800 --> 00:01:06,710
+And there are many types of data that can naturally be
+
+19
+00:01:06,710 --> 00:01:10,670
+represented as graphs and modeling these graphical relations,
+
+20
+00:01:10,670 --> 00:01:13,535
+these relational structure of the underlying domain,
+
+21
+00:01:13,535 --> 00:01:15,065
+uh, allows us to, uh,
+
+22
+00:01:15,065 --> 00:01:16,340
+build much more faithful,
+
+23
+00:01:16,340 --> 00:01:17,600
+much more accurate, uh,
+
+24
+00:01:17,600 --> 00:01:19,100
+models of the underlying,
+
+25
+00:01:19,100 --> 00:01:21,095
+uh, phenomena underlying data.
+
+26
+00:01:21,095 --> 00:01:26,730
+So for example, we can think of a computer networks, disease pathways, uh,
+
+27
+00:01:26,730 --> 00:01:29,460
+networks of particles in physics, uh,
+
+28
+00:01:29,460 --> 00:01:32,030
+networks of organisms in food webs,
+
+29
+00:01:32,030 --> 00:01:37,250
+infrastructure, as well as events can all be represented as a graphs.
+
+30
+00:01:37,250 --> 00:01:40,400
+Similarly, we can think of social networks,
+
+31
+00:01:40,400 --> 00:01:43,760
+uh, economic networks, communication networks,
+
+32
+00:01:43,760 --> 00:01:46,370
+say patients between different papers,
+
+33
+00:01:46,370 --> 00:01:49,115
+Internet as a giant communication network,
+
+34
+00:01:49,115 --> 00:01:53,150
+as well as ways on how neurons in our brain are connected.
+
+35
+00:01:53,150 --> 00:01:58,025
+Again, all these domains are inherently network or graphs.
+
+36
+00:01:58,025 --> 00:02:00,710
+And that representation allows us to capture
+
+37
+00:02:00,710 --> 00:02:03,934
+the relationships between different objects or entities,
+
+38
+00:02:03,934 --> 00:02:06,545
+uh, in these different, uh, domains.
+
+39
+00:02:06,545 --> 00:02:09,514
+And last, we can take knowledge and
+
+40
+00:02:09,514 --> 00:02:13,609
+represent facts as relationships between different entities.
+
+41
+00:02:13,610 --> 00:02:17,914
+We can describe the regulatory mechanisms in our cells,
+
+42
+00:02:17,914 --> 00:02:22,580
+um, as processes governed by the connections between different entities.
+
+43
+00:02:22,580 --> 00:02:27,455
+We can even take scenes from real world and presented them
+
+44
+00:02:27,455 --> 00:02:32,600
+as graphs of relationships between the objects in the scene.
+
+45
+00:02:32,600 --> 00:02:34,160
+These are called scene graphs.
+
+46
+00:02:34,160 --> 00:02:39,560
+We can take computer code software and represent it as a graph of, let's say,
+
+47
+00:02:39,560 --> 00:02:42,350
+calls between different functions or as
+
+48
+00:02:42,350 --> 00:02:45,800
+a structure of the code captures by the abstract syntax tree.
+
+49
+00:02:45,800 --> 00:02:50,600
+We can also naturally take molecules which are composed of nodes, uh,
+
+50
+00:02:50,600 --> 00:02:55,370
+of atoms and bonds as a set of graphs, um,
+
+51
+00:02:55,370 --> 00:03:00,410
+where we represent atoms as nodes and their bonds as edges between them.
+
+52
+00:03:00,410 --> 00:03:02,150
+And of course, in computer graphics,
+
+53
+00:03:02,150 --> 00:03:07,330
+we can take three-dimensional shapes and- and represent them, um, as a graphs.
+
+54
+00:03:07,330 --> 00:03:09,230
+So in all these domains,
+
+55
+00:03:09,230 --> 00:03:11,810
+graphical structure is the- is
+
+56
+00:03:11,810 --> 00:03:15,620
+the important part that allows us to model the under- underlying domain,
+
+57
+00:03:15,620 --> 00:03:18,530
+underlying phenomena in a fateful way.
+
+58
+00:03:18,530 --> 00:03:21,455
+So the way we are going to think about graph
+
+59
+00:03:21,455 --> 00:03:25,040
+relational data in this class is that there are essentially two big,
+
+60
+00:03:25,040 --> 00:03:29,145
+uh, parts, uh, of data that can be represented as graphs.
+
+61
+00:03:29,145 --> 00:03:32,810
+First are what is called natural graphs or networks,
+
+62
+00:03:32,810 --> 00:03:36,780
+where underlying domains can naturally be represented as graphs.
+
+63
+00:03:36,780 --> 00:03:38,990
+For example, social networks,
+
+64
+00:03:38,990 --> 00:03:43,355
+societies are collection of seven billion individuals and connections between them,
+
+65
+00:03:43,355 --> 00:03:47,630
+communications and transactions between electronic devices, phone calls,
+
+66
+00:03:47,630 --> 00:03:51,930
+financial transactions, all naturally form, uh, graphs.
+
+67
+00:03:51,930 --> 00:03:54,110
+In biomedicine we have genes,
+
+68
+00:03:54,110 --> 00:03:57,109
+proteins regulating biological processes,
+
+69
+00:03:57,109 --> 00:03:59,510
+and we can represent interactions between
+
+70
+00:03:59,510 --> 00:04:03,585
+these different biological entities with a graph.
+
+71
+00:04:03,585 --> 00:04:05,215
+And- and as I mentioned,
+
+72
+00:04:05,215 --> 00:04:08,485
+connections between neurons in our brains are,
+
+73
+00:04:08,485 --> 00:04:11,860
+um, essentially a network of, uh, connections.
+
+74
+00:04:11,860 --> 00:04:13,735
+And if we want to model these domains,
+
+75
+00:04:13,735 --> 00:04:16,180
+really present them as networks.
+
+76
+00:04:16,180 --> 00:04:21,113
+A second example of domains that also have relational structure,
+
+77
+00:04:21,113 --> 00:04:26,010
+um, where- and we can use graphs to represent that relational structure.
+
+78
+00:04:26,010 --> 00:04:30,895
+So for example, information and knowledge is many times organized and linked.
+
+79
+00:04:30,895 --> 00:04:33,585
+Software can be represented as a graph.
+
+80
+00:04:33,585 --> 00:04:35,445
+We can many times take, uh,
+
+81
+00:04:35,445 --> 00:04:38,580
+datapoints and connect similar data points.
+
+82
+00:04:38,580 --> 00:04:40,200
+And this will create our graph,
+
+83
+00:04:40,200 --> 00:04:41,910
+uh, a similarity network.
+
+84
+00:04:41,910 --> 00:04:44,100
+And we can take other, um, uh,
+
+85
+00:04:44,100 --> 00:04:48,065
+domains that have natural relational structure like molecules,
+
+86
+00:04:48,065 --> 00:04:51,185
+scene graphs, 3D shapes, as well as,
+
+87
+00:04:51,185 --> 00:04:52,475
+you know, in physics,
+
+88
+00:04:52,475 --> 00:04:56,065
+we can take particle-based simulation to simulate how,
+
+89
+00:04:56,065 --> 00:04:58,910
+uh, particles are related to each other through,
+
+90
+00:04:58,910 --> 00:05:01,355
+uh, and they represent this with the graph.
+
+91
+00:05:01,355 --> 00:05:05,480
+So this means that there are many different domains, either, uh,
+
+92
+00:05:05,480 --> 00:05:08,600
+as natural graphs or natural networks,
+
+93
+00:05:08,600 --> 00:05:11,720
+as well as other domains that can naturally be
+
+94
+00:05:11,720 --> 00:05:16,375
+modeled as graphs to capture the relational structure.
+
+95
+00:05:16,375 --> 00:05:19,460
+And the main question for this class that we are
+
+96
+00:05:19,460 --> 00:05:22,070
+going to address is to talk about how do we take
+
+97
+00:05:22,070 --> 00:05:28,075
+advantage of this relational structure to be- to make better, more accurate predictions.
+
+98
+00:05:28,075 --> 00:05:30,950
+And this is especially important because
+
+99
+00:05:30,950 --> 00:05:34,130
+couplings domains have reached a relational structure,
+
+100
+00:05:34,130 --> 00:05:36,980
+uh, which can be presented, uh, with a graph.
+
+101
+00:05:36,980 --> 00:05:40,130
+And by explicitly modeling these relationships,
+
+102
+00:05:40,130 --> 00:05:41,930
+we will be able to achieve, uh,
+
+103
+00:05:41,930 --> 00:05:44,450
+better performance, build more, uh,
+
+104
+00:05:44,450 --> 00:05:48,535
+accurate, uh, models, make more accurate predictions.
+
+105
+00:05:48,535 --> 00:05:53,920
+And this is especially interesting and important in the age of deep learning,
+
+106
+00:05:53,920 --> 00:06:00,280
+where the- today's deep learning modern toolbox is specialized for simple data types.
+
+107
+00:06:00,280 --> 00:06:03,880
+It is specialized for simple sequences, uh, and grids.
+
+108
+00:06:03,880 --> 00:06:06,205
+A sequence is a, uh,
+
+109
+00:06:06,205 --> 00:06:10,830
+like text or speech has this linear structure and there
+
+110
+00:06:10,830 --> 00:06:15,475
+has- there are been amazing tools developed to analyze this type of structure.
+
+111
+00:06:15,475 --> 00:06:20,170
+Images can all be resized and have this spatial locality so- so
+
+112
+00:06:20,170 --> 00:06:24,804
+they can be represented as fixed size grids or fixed size standards.
+
+113
+00:06:24,804 --> 00:06:29,090
+And again, deep learning methodology has been very good at processing this type of,
+
+114
+00:06:29,090 --> 00:06:30,915
+uh, fixed size images.
+
+115
+00:06:30,915 --> 00:06:38,075
+However, um, graphs, networks are much harder to process because they are more complex.
+
+116
+00:06:38,075 --> 00:06:42,665
+First, they have arbitrary size and arb- and complex topology.
+
+117
+00:06:42,665 --> 00:06:47,990
+Um, and there is also no spatial locality as in grids or as in text.
+
+118
+00:06:47,990 --> 00:06:50,360
+In text we know left and right,
+
+119
+00:06:50,360 --> 00:06:53,600
+in grids we have up and down, uh, left and right.
+
+120
+00:06:53,600 --> 00:06:56,165
+But in networks, there is no reference point,
+
+121
+00:06:56,165 --> 00:06:57,815
+there is no notion of,
+
+122
+00:06:57,815 --> 00:07:00,355
+uh, uh, spatial locality.
+
+123
+00:07:00,355 --> 00:07:03,240
+The second important thing is there is no reference point,
+
+124
+00:07:03,240 --> 00:07:07,710
+there is no fixed node ordering that would allow us,
+
+125
+00:07:07,710 --> 00:07:09,075
+uh, uh, to do, uh,
+
+126
+00:07:09,075 --> 00:07:10,500
+to do deep learning.
+
+127
+00:07:10,500 --> 00:07:15,290
+And often, these networks are dynamic and have multi-model features.
+
+128
+00:07:15,290 --> 00:07:17,105
+So in this course,
+
+129
+00:07:17,105 --> 00:07:19,070
+we are really going to, uh,
+
+130
+00:07:19,070 --> 00:07:24,200
+talk about how do we develop neural networks that are much more broadly applicable?
+
+131
+00:07:24,200 --> 00:07:29,855
+How do we develop neural networks that are applicable to complex data types like graphs?
+
+132
+00:07:29,855 --> 00:07:34,685
+And really, it is relational data graphs that are the- the new frontier,
+
+133
+00:07:34,685 --> 00:07:39,085
+uh, of deep learning and representation learning, uh, research.
+
+134
+00:07:39,085 --> 00:07:43,475
+So intuitively, what we would like to do is we would like to do,
+
+135
+00:07:43,475 --> 00:07:45,515
+uh, build neural networks,
+
+136
+00:07:45,515 --> 00:07:48,155
+but on the input we'll take, uh, uh,
+
+137
+00:07:48,155 --> 00:07:50,075
+our graph and on the output,
+
+138
+00:07:50,075 --> 00:07:51,920
+they will be able to make predictions.
+
+139
+00:07:51,920 --> 00:07:55,310
+And, uh, these predictions can be at the level of individual nodes,
+
+140
+00:07:55,310 --> 00:07:58,220
+can be at the level of pairs of nodes or links,
+
+141
+00:07:58,220 --> 00:08:03,860
+or it can be something much more complex like a brand new generated graph or, uh,
+
+142
+00:08:03,860 --> 00:08:08,455
+prediction of a property of a given molecule that can be represented,
+
+143
+00:08:08,455 --> 00:08:10,505
+um, as a graph on the input.
+
+144
+00:08:10,505 --> 00:08:12,125
+And the question is,
+
+145
+00:08:12,125 --> 00:08:14,690
+how do we design this neural network architecture
+
+146
+00:08:14,690 --> 00:08:17,270
+that will allow us to do this end to end,
+
+147
+00:08:17,270 --> 00:08:21,650
+meaning there will be no human feature engineering, uh, needed?
+
+148
+00:08:21,650 --> 00:08:24,215
+So what I mean by that is that, um,
+
+149
+00:08:24,215 --> 00:08:26,884
+in traditional, uh, machine learning approaches,
+
+150
+00:08:26,884 --> 00:08:31,595
+a lot of effort goes into des- designing proper features,
+
+151
+00:08:31,595 --> 00:08:36,679
+proper ways to capture the structure of the data so that machine learning models can,
+
+152
+00:08:36,679 --> 00:08:38,519
+uh, take advantage of it.
+
+153
+00:08:38,520 --> 00:08:41,120
+So what we would like to do in this class,
+
+154
+00:08:41,120 --> 00:08:44,210
+we will talk mostly about representation learning
+
+155
+00:08:44,210 --> 00:08:47,615
+where these feature engineering step is taken away.
+
+156
+00:08:47,615 --> 00:08:50,165
+And basically, as soon as we have our graph,
+
+157
+00:08:50,165 --> 00:08:51,905
+uh, uh, repr- graph data,
+
+158
+00:08:51,905 --> 00:08:58,010
+we can automatically learn a good representation of the graph so that it can be used for,
+
+159
+00:08:58,010 --> 00:09:00,740
+um, downstream machine learning algorithm.
+
+160
+00:09:00,740 --> 00:09:05,900
+So that a presentation learning is about automatically extracting or learning features,
+
+161
+00:09:05,900 --> 00:09:07,435
+uh, in the graph.
+
+162
+00:09:07,435 --> 00:09:11,120
+The way we can think of representation learning is to map
+
+163
+00:09:11,120 --> 00:09:14,765
+nodes of our graph to a d-dimensional embedding,
+
+164
+00:09:14,765 --> 00:09:16,820
+to the d-dimensional vectors,
+
+165
+00:09:16,820 --> 00:09:19,280
+such that seeming that are nodes in the network are
+
+166
+00:09:19,280 --> 00:09:22,115
+embedded close together in the embedding space.
+
+167
+00:09:22,115 --> 00:09:25,100
+So the goal is to learn this function f that will take
+
+168
+00:09:25,100 --> 00:09:28,160
+the nodes and map them into these d-dimensional,
+
+169
+00:09:28,160 --> 00:09:30,200
+um, real valued vectors,
+
+170
+00:09:30,200 --> 00:09:34,280
+where this vector will call this, uh, representation, uh,
+
+171
+00:09:34,280 --> 00:09:38,165
+or a feature representation or an embedding of a given node,
+
+172
+00:09:38,165 --> 00:09:40,310
+an embedding of an entire graph,
+
+173
+00:09:40,310 --> 00:09:42,110
+an embedding of a given link,
+
+174
+00:09:42,110 --> 00:09:43,565
+um, and so on.
+
+175
+00:09:43,565 --> 00:09:46,775
+So a big part of our class we'll be, uh,
+
+176
+00:09:46,775 --> 00:09:51,005
+investigating and learning about latest presentation learning,
+
+177
+00:09:51,005 --> 00:09:53,750
+deep learning approaches that can be applied,
+
+178
+00:09:53,750 --> 00:09:56,765
+uh, to graph, uh, structured data.
+
+179
+00:09:56,765 --> 00:09:59,940
+And we are going to, uh, uh,
+
+180
+00:09:59,940 --> 00:10:02,600
+talk about many different topics in
+
+181
+00:10:02,600 --> 00:10:06,230
+machine learning and the representation learning for graph structure data.
+
+182
+00:10:06,230 --> 00:10:09,725
+So first, we're going to talk about traditional methods
+
+183
+00:10:09,725 --> 00:10:13,565
+for machine learning and graphs like graphlets and graph kernels.
+
+184
+00:10:13,565 --> 00:10:17,480
+We are then going to talk about methods to generate, um,
+
+185
+00:10:17,480 --> 00:10:22,130
+generic node embeddings, methods like DeepWalk and Node2Vec.
+
+186
+00:10:22,130 --> 00:10:25,010
+We are going to spend quite a bit of time talking about
+
+187
+00:10:25,010 --> 00:10:30,010
+graph neural networks and popular graph neural network architectures like graph,
+
+188
+00:10:30,010 --> 00:10:31,940
+uh, convolutional neural network,
+
+189
+00:10:31,940 --> 00:10:36,720
+the GraphSage architecture or Graph Attention Network, uh, architecture.
+
+190
+00:10:36,720 --> 00:10:41,450
+We are also going to study the expressive power of graph neural networks,
+
+191
+00:10:41,450 --> 00:10:44,045
+um, the theory behind them,
+
+192
+00:10:44,045 --> 00:10:47,705
+and how do we scale them up to very large graphs.
+
+193
+00:10:47,705 --> 00:10:50,465
+Um, and then in the second part of this course,
+
+194
+00:10:50,465 --> 00:10:53,585
+we are also going to talk about heterogeneous graphs,
+
+195
+00:10:53,585 --> 00:10:55,940
+knowledge graphs, and applications,
+
+196
+00:10:55,940 --> 00:10:57,395
+uh, to logical reasoning.
+
+197
+00:10:57,395 --> 00:11:00,790
+We're learning about methods like TransE and BetaE.
+
+198
+00:11:00,790 --> 00:11:05,690
+We are also going to talk about how do we build deep generative models for
+
+199
+00:11:05,690 --> 00:11:08,270
+graphs where we can think of the prediction of the model to
+
+200
+00:11:08,270 --> 00:11:11,060
+be an entire newly generated graph.
+
+201
+00:11:11,060 --> 00:11:15,890
+And we are also going to discuss applications to biomedicine, um,
+
+202
+00:11:15,890 --> 00:11:18,890
+various scientific applications, as well
+
+203
+00:11:18,890 --> 00:11:22,220
+as applications to industry in terms of recommender systems,
+
+204
+00:11:22,220 --> 00:11:24,770
+fraud detection, and so on.
+
+205
+00:11:24,770 --> 00:11:27,695
+So here is the outline of this course.
+
+206
+00:11:27,695 --> 00:11:30,860
+Week by week, 10 weeks, starting, uh,
+
+207
+00:11:30,860 --> 00:11:35,030
+starting today and all the way to the middle of March,
+
+208
+00:11:35,030 --> 00:11:37,805
+um, where, uh, the- the course will finish.
+
+209
+00:11:37,805 --> 00:11:41,795
+We will have 20 lectures and we will cover all the topics,
+
+210
+00:11:41,795 --> 00:11:43,190
+uh, that I have discussed,
+
+211
+00:11:43,190 --> 00:11:44,990
+and in particular focus on
+
+212
+00:11:44,990 --> 00:11:49,650
+graph neural networks and the representation learning in graphs.
+

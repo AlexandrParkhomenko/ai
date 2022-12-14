@@ -1,0 +1,2080 @@
+1
+00:00:04,220 --> 00:00:07,725
+So first, we are going to talk about
+
+2
+00:00:07,725 --> 00:00:11,250
+relational classification and iterative classification.
+
+3
+00:00:11,250 --> 00:00:12,555
+So let me explain to you, uh,
+
+4
+00:00:12,555 --> 00:00:15,900
+the ideas, uh, for this part of the lecture.
+
+5
+00:00:15,900 --> 00:00:20,640
+So first, we wanna talk about what is, uh, relation classification,
+
+6
+00:00:20,640 --> 00:00:23,925
+then we'll talk about iterative classification, and then last,
+
+7
+00:00:23,925 --> 00:00:25,530
+I'm going to talk about, uh,
+
+8
+00:00:25,530 --> 00:00:28,440
+belief propagation as I- as I said, uh, earlier.
+
+9
+00:00:28,440 --> 00:00:31,785
+So, uh, probabilistic relational classifier,
+
+10
+00:00:31,785 --> 00:00:33,060
+the idea is the following.
+
+11
+00:00:33,060 --> 00:00:36,240
+Uh, the class probability, um,
+
+12
+00:00:36,240 --> 00:00:41,270
+Y_v of node v is a weighted average of class probabilities of its neighbors, right?
+
+13
+00:00:41,270 --> 00:00:43,550
+So this means that for labeled nodes we are going to
+
+14
+00:00:43,550 --> 00:00:47,180
+fix the class label to be the ground-truth label,
+
+15
+00:00:47,180 --> 00:00:49,550
+the label we are given, and then for, um,
+
+16
+00:00:49,550 --> 00:00:54,210
+unlabeled nodes, we are just initialize the belief that, let's say,
+
+17
+00:00:54,210 --> 00:00:57,050
+they are- uh, they have the color green to be,
+
+18
+00:00:57,050 --> 00:00:59,885
+let say, 0.5, so something, uh, uniform.
+
+19
+00:00:59,885 --> 00:01:04,980
+And then nodes are going to update their belief about what color they are about,
+
+20
+00:01:04,980 --> 00:01:08,160
+based on the- on the colors of the,
+
+21
+00:01:08,160 --> 00:01:11,255
+eh, nodes, uh, in the network, uh, around them.
+
+22
+00:01:11,255 --> 00:01:15,145
+And this is going to iterate until it, uh, converges.
+
+23
+00:01:15,145 --> 00:01:16,680
+And just to note,
+
+24
+00:01:16,680 --> 00:01:21,589
+here we are go- only going to use node labels and network structure,
+
+25
+00:01:21,589 --> 00:01:24,670
+but we have not yet going to use node attributes.
+
+26
+00:01:24,670 --> 00:01:29,465
+So here, this works even if nodes only have colors and there are no,
+
+27
+00:01:29,465 --> 00:01:32,000
+uh, attributes, uh, attached to the nodes,
+
+28
+00:01:32,000 --> 00:01:34,375
+or no features attached to the nodes.
+
+29
+00:01:34,375 --> 00:01:37,455
+So how are we going to do this, uh, update?
+
+30
+00:01:37,455 --> 00:01:38,925
+We are going to, uh,
+
+31
+00:01:38,925 --> 00:01:41,595
+update this formula that I- that I show- uh,
+
+32
+00:01:41,595 --> 00:01:43,950
+that I show here, and the idea is the following.
+
+33
+00:01:43,950 --> 00:01:48,355
+We say that probability that my node of interest v is of class C,
+
+34
+00:01:48,355 --> 00:01:52,830
+is simply, um, 1 over the sum over, let's say,
+
+35
+00:01:52,830 --> 00:01:55,830
+the weights of the edges, um, uh,
+
+36
+00:01:55,830 --> 00:02:00,170
+that- that are adjacent to our node v. So this is basically, uh,
+
+37
+00:02:00,170 --> 00:02:04,890
+counts the degree or the in-degree of node v. Um,
+
+38
+00:02:04,890 --> 00:02:07,640
+and then we say, now let's sum up over this same,
+
+39
+00:02:07,640 --> 00:02:09,095
+uh, set of edges.
+
+40
+00:02:09,095 --> 00:02:11,030
+Here is the weight of every edge,
+
+41
+00:02:11,030 --> 00:02:13,265
+uh times the probability that
+
+42
+00:02:13,265 --> 00:02:16,830
+the neighbor beho- belongs to the same class C. So basically,
+
+43
+00:02:16,830 --> 00:02:18,890
+here we are summing all the neighboring nodes,
+
+44
+00:02:18,890 --> 00:02:25,070
+u of node v. We ask what is the weight of the edge times the probability,
+
+45
+00:02:25,070 --> 00:02:27,725
+the likelihood that node u belongs to class C?
+
+46
+00:02:27,725 --> 00:02:29,795
+So basically what this is saying,
+
+47
+00:02:29,795 --> 00:02:35,930
+is that the node v says the- the likelihood that I belong to a given class C,
+
+48
+00:02:35,930 --> 00:02:39,080
+is the average likelihood that
+
+49
+00:02:39,080 --> 00:02:44,000
+my neighbors belong to that same class C. Uh, and that's it, right?
+
+50
+00:02:44,000 --> 00:02:45,185
+So in some sense here,
+
+51
+00:02:45,185 --> 00:02:49,625
+a node is going to update its belief for a prediction about its own label,
+
+52
+00:02:49,625 --> 00:02:53,960
+about the beliefs or predictions about the labels of its nearby nodes.
+
+53
+00:02:53,960 --> 00:02:56,210
+And here we are making the most basic assumption,
+
+54
+00:02:56,210 --> 00:02:59,285
+which is that the two nodes share a label
+
+55
+00:02:59,285 --> 00:03:02,570
+if they are connected in the- in the network, which is here.
+
+56
+00:03:02,570 --> 00:03:06,200
+And, you know, we can now think of A_uv as a zero, one,
+
+57
+00:03:06,200 --> 00:03:07,925
+kind of as an unweighted graph,
+
+58
+00:03:07,925 --> 00:03:10,270
+or we can think of this as a weight,
+
+59
+00:03:10,270 --> 00:03:12,990
+um, and then, you know, now different nodes,
+
+60
+00:03:12,990 --> 00:03:16,290
+u have different influence on the label of v,
+
+61
+00:03:16,290 --> 00:03:18,765
+because of the co- different connection strength.
+
+62
+00:03:18,765 --> 00:03:21,690
+And this is just a normalization, so that this, uh,
+
+63
+00:03:21,690 --> 00:03:23,040
+weight that summation, uh,
+
+64
+00:03:23,040 --> 00:03:25,600
+is between, uh, zero and one.
+
+65
+00:03:25,600 --> 00:03:28,330
+There are a few just important things to note,
+
+66
+00:03:28,330 --> 00:03:31,780
+is that convergence of this formula is not guaranteed.
+
+67
+00:03:31,780 --> 00:03:34,640
+Um, and also notice as I said,
+
+68
+00:03:34,640 --> 00:03:37,640
+this model cannot use node featured information.
+
+69
+00:03:37,640 --> 00:03:43,755
+It is just using the labels of the nodes and also uses the network information.
+
+70
+00:03:43,755 --> 00:03:46,175
+How does it use the network information?
+
+71
+00:03:46,175 --> 00:03:49,250
+It uses it because these summations go over
+
+72
+00:03:49,250 --> 00:03:52,535
+the edges or over the neighbors, uh, in the network.
+
+73
+00:03:52,535 --> 00:03:55,525
+That's how network information is used.
+
+74
+00:03:55,525 --> 00:03:59,520
+So let me give you now one example how one could go and,
+
+75
+00:03:59,520 --> 00:04:01,505
+uh, implement the simple method.
+
+76
+00:04:01,505 --> 00:04:03,890
+First, you know, we are going to, uh,
+
+77
+00:04:03,890 --> 00:04:06,710
+initialize all labeled nodes, uh,
+
+78
+00:04:06,710 --> 00:04:09,615
+with their, uh, true labels,
+
+79
+00:04:09,615 --> 00:04:10,800
+and we are going to fix this.
+
+80
+00:04:10,800 --> 00:04:14,030
+So this probabilities of green and red nodes remain fixed.
+
+81
+00:04:14,030 --> 00:04:15,530
+So maybe it says, uh,
+
+82
+00:04:15,530 --> 00:04:18,740
+node 7 belongs to green class with probability 1,
+
+83
+00:04:18,740 --> 00:04:20,089
+while the node, uh,
+
+84
+00:04:20,089 --> 00:04:24,250
+2 belongs to green class with probability 0, because it's red.
+
+85
+00:04:24,250 --> 00:04:27,170
+Right? Um, and then all the unlabeled nodes here,
+
+86
+00:04:27,170 --> 00:04:28,565
+we will assign their, uh,
+
+87
+00:04:28,565 --> 00:04:30,305
+probability to belonging to,
+
+88
+00:04:30,305 --> 00:04:31,865
+uh, to class, uh,
+
+89
+00:04:31,865 --> 00:04:33,910
+green, to the positive class to be,
+
+90
+00:04:33,910 --> 00:04:35,390
+uh, to be 0.5., Right?
+
+91
+00:04:35,390 --> 00:04:39,295
+Nodes are unde- undecided which class they wanna, uh, belong to.
+
+92
+00:04:39,295 --> 00:04:40,700
+So now what we are going to do,
+
+93
+00:04:40,700 --> 00:04:46,505
+is we're going to update the- thi- this probabilities P of the, uh, gray nodes.
+
+94
+00:04:46,505 --> 00:04:48,590
+So let me show you how we are going to do this.
+
+95
+00:04:48,590 --> 00:04:51,425
+Um, of course, when we will be doing this,
+
+96
+00:04:51,425 --> 00:04:55,760
+we need to come up with some order in which we are going to update the nodes.
+
+97
+00:04:55,760 --> 00:04:59,990
+And in our case, let's assume that our order is exactly based on node ID,
+
+98
+00:04:59,990 --> 00:05:02,095
+so it's 1, 2, 3, 4, 5, and so on.
+
+99
+00:05:02,095 --> 00:05:05,195
+So first, we are going to update node 3.
+
+100
+00:05:05,195 --> 00:05:07,830
+And node 3 says the following.
+
+101
+00:05:07,830 --> 00:05:10,635
+It says, "Aha, I have, uh, three neighbors.
+
+102
+00:05:10,635 --> 00:05:12,450
+Um, you know, um,
+
+103
+00:05:12,450 --> 00:05:15,735
+and, uh, how I- how am I going, uh, to do this?
+
+104
+00:05:15,735 --> 00:05:17,970
+I have, um, you know, uh,
+
+105
+00:05:17,970 --> 00:05:23,390
+the- the- two neighbors of me have the probability zero of belonging to the green class,
+
+106
+00:05:23,390 --> 00:05:27,665
+and this- uh, and I have one gray- gray member that has 0.5.
+
+107
+00:05:27,665 --> 00:05:29,990
+So this is 0, 0 plus 0.5,
+
+108
+00:05:29,990 --> 00:05:33,229
+and because I have three neighbors and my graph is unweighted,
+
+109
+00:05:33,229 --> 00:05:34,825
+so this is divided by 3.
+
+110
+00:05:34,825 --> 00:05:39,950
+So now the- the node number 3 has a probability of belonging to green class,
+
+111
+00:05:39,950 --> 00:05:42,160
+uh, o- of 0.17."
+
+112
+00:05:42,160 --> 00:05:43,500
+Now there is- you know,
+
+113
+00:05:43,500 --> 00:05:47,330
+now node 4 wakes up and we're going to update its own,
+
+114
+00:05:47,330 --> 00:05:49,800
+uh, predicted probability of being green.
+
+115
+00:05:49,800 --> 00:05:54,860
+And again, it goes over its four neighbors and we sum up at zero,
+
+116
+00:05:54,860 --> 00:05:56,615
+uh, this is because of this one.
+
+117
+00:05:56,615 --> 00:05:58,595
+Then we sum up 0.17,
+
+118
+00:05:58,595 --> 00:06:01,565
+0.5, and 1, and divide it by 4.
+
+119
+00:06:01,565 --> 00:06:04,290
+So the, um, uh,
+
+120
+00:06:04,290 --> 00:06:06,030
+node number 4 will say,
+
+121
+00:06:06,030 --> 00:06:09,215
+"my likelihood or my probability that I am,
+
+122
+00:06:09,215 --> 00:06:12,625
+um, labeled green is 0.42."
+
+123
+00:06:12,625 --> 00:06:15,590
+Now, um, now that node 4 has,
+
+124
+00:06:15,590 --> 00:06:17,175
+uh, updated its label,
+
+125
+00:06:17,175 --> 00:06:20,160
+then node 5 is going to update its label,
+
+126
+00:06:20,160 --> 00:06:22,170
+again, summing over its neighbors,
+
+127
+00:06:22,170 --> 00:06:24,740
+ah, and, you know, it will- it will come up with a belief
+
+128
+00:06:24,740 --> 00:06:27,475
+that its probability of being green is 0.73.
+
+129
+00:06:27,475 --> 00:06:29,780
+Then, you know, node 8 is going to update
+
+130
+00:06:29,780 --> 00:06:32,750
+its label and node 9 is going to update its label.
+
+131
+00:06:32,750 --> 00:06:34,955
+And after, you know, the first iteration,
+
+132
+00:06:34,955 --> 00:06:37,320
+updates of all unlabeled nodes, uh,
+
+133
+00:06:37,320 --> 00:06:39,155
+these are our, uh, beliefs,
+
+134
+00:06:39,155 --> 00:06:42,200
+our predicted probabilities of them being green.
+
+135
+00:06:42,200 --> 00:06:44,870
+Again, the- the pre-labeled nodes,
+
+136
+00:06:44,870 --> 00:06:45,965
+they don't get to update,
+
+137
+00:06:45,965 --> 00:06:49,040
+they remain fixed, and all the gray nodes gets to update.
+
+138
+00:06:49,040 --> 00:06:51,175
+And you- for example, node number 9,
+
+139
+00:06:51,175 --> 00:06:55,800
+thinks it's green because the only neighbor it has is green with probability one,
+
+140
+00:06:55,800 --> 00:06:59,715
+so nine is also very sure it's- uh, it's green.
+
+141
+00:06:59,715 --> 00:07:01,050
+Um, while for example,
+
+142
+00:07:01,050 --> 00:07:05,415
+the pa- the eight is a bit less because it has one node who is not- uh,
+
+143
+00:07:05,415 --> 00:07:07,475
+neighboring one node, node number 5,
+
+144
+00:07:07,475 --> 00:07:11,440
+and that node is not super entirely sure about its color yet.
+
+145
+00:07:11,440 --> 00:07:13,605
+So this is, uh, one iteration.
+
+146
+00:07:13,605 --> 00:07:16,280
+Now we do the second iteration when now again,
+
+147
+00:07:16,280 --> 00:07:20,375
+node 3 is going to- to update its by summing 0,
+
+148
+00:07:20,375 --> 00:07:22,040
+0- 0, 0, um,
+
+149
+00:07:22,040 --> 00:07:24,580
+and 0.42, and dividing it by 3.
+
+150
+00:07:24,580 --> 00:07:25,970
+So what is going to happen,
+
+151
+00:07:25,970 --> 00:07:28,910
+is this probability increases a bit more than, uh,
+
+152
+00:07:28,910 --> 00:07:30,560
+you know, node 4 updated itself,
+
+153
+00:07:30,560 --> 00:07:33,230
+five updated, uh, and eight updated.
+
+154
+00:07:33,230 --> 00:07:36,350
+And nine updated, but its portability didn't change,
+
+155
+00:07:36,350 --> 00:07:38,720
+so we say node- node 9 has converged.
+
+156
+00:07:38,720 --> 00:07:42,265
+It converged to its belief and that's how it would stay.
+
+157
+00:07:42,265 --> 00:07:44,190
+So now you notice how the, uh,
+
+158
+00:07:44,190 --> 00:07:46,680
+beliefs have, uh, changed across the network.
+
+159
+00:07:46,680 --> 00:07:49,980
+And now I can run this for another, uh, iteration,
+
+160
+00:07:49,980 --> 00:07:52,610
+where again, I've update nodes in the order 3,
+
+161
+00:07:52,610 --> 00:07:54,655
+4, 5, uh, 8.
+
+162
+00:07:54,655 --> 00:07:56,940
+And as I update them, uh, you know,
+
+163
+00:07:56,940 --> 00:07:59,685
+the probability's updated a bit again, uh,
+
+164
+00:07:59,685 --> 00:08:02,560
+but node 8 did not change its, uh,
+
+165
+00:08:02,560 --> 00:08:05,650
+probability, so we say it converged and we fix it.
+
+166
+00:08:05,650 --> 00:08:08,285
+Right? So now, I still have three nodes and I will
+
+167
+00:08:08,285 --> 00:08:11,085
+update this for another iteration, right?
+
+168
+00:08:11,085 --> 00:08:12,885
+Um, and in the other iteration,
+
+169
+00:08:12,885 --> 00:08:15,510
+the four- five and three don't change,
+
+170
+00:08:15,510 --> 00:08:16,800
+so they have also converged.
+
+171
+00:08:16,800 --> 00:08:21,760
+So now, uh, node 3 beliefs it's of green class with probability 0.16.
+
+172
+00:08:21,760 --> 00:08:25,770
+Um, five thinks it's 0.86, so quite high.
+
+173
+00:08:25,770 --> 00:08:29,850
+And then, you know, po- no- node number 4 is undetermined.
+
+174
+00:08:29,850 --> 00:08:32,640
+It thinks it's a bit- leaning a bit more towards green,
+
+175
+00:08:32,640 --> 00:08:34,635
+but it's, uh, but it's unclear.
+
+176
+00:08:34,635 --> 00:08:38,570
+So, um, if I run for one more iteration,
+
+177
+00:08:38,570 --> 00:08:40,510
+um, then the probabilities,
+
+178
+00:08:40,510 --> 00:08:43,340
+um, on these classification task will converge.
+
+179
+00:08:43,340 --> 00:08:45,775
+Here is what- the- the values they converge to,
+
+180
+00:08:45,775 --> 00:08:47,105
+so what do we conclude?
+
+181
+00:08:47,105 --> 00:08:49,610
+We conclude that, uh, 9,8,
+
+182
+00:08:49,610 --> 00:08:51,725
+and 5, uh, belong- uh,
+
+183
+00:08:51,725 --> 00:08:54,050
+belong to green class.
+
+184
+00:08:54,050 --> 00:09:00,335
+Uh, node 4 also belongs to green class because it's just above 0.5, but very slightly.
+
+185
+00:09:00,335 --> 00:09:02,255
+So four is also green.
+
+186
+00:09:02,255 --> 00:09:03,860
+And three says, "You know,
+
+187
+00:09:03,860 --> 00:09:06,640
+I have a very low belief that I am of green color,
+
+188
+00:09:06,640 --> 00:09:08,600
+" so three is of red color, right?
+
+189
+00:09:08,600 --> 00:09:12,750
+So our predictions now would be that 4- 4, 5, uh, 8,
+
+190
+00:09:12,750 --> 00:09:14,640
+and belong to, uh, green color,
+
+191
+00:09:14,640 --> 00:09:17,235
+and three belongs to, uh, red color.
+
+192
+00:09:17,235 --> 00:09:19,870
+And we did this by basically just doing this, um,
+
+193
+00:09:19,870 --> 00:09:22,580
+iterative classification by propagating
+
+194
+00:09:22,580 --> 00:09:27,320
+this label information and nodes updating its belief about its label,
+
+195
+00:09:27,320 --> 00:09:28,970
+based on the labels of other nodes.
+
+196
+00:09:28,970 --> 00:09:30,620
+So in this approach,
+
+197
+00:09:30,620 --> 00:09:32,870
+we used the notion of the network,
+
+198
+00:09:32,870 --> 00:09:38,410
+but we did not use the notion that nodes have any kind of features or any kind of,
+
+199
+00:09:38,410 --> 00:09:41,455
+uh- uh, signal attached to them.
+
+200
+00:09:41,455 --> 00:09:48,290
+So this was in terms of relational classification based on the labels alone.
+
+201
+00:09:48,290 --> 00:09:51,980
+And you saw how basically the- the probabilities kind of
+
+202
+00:09:51,980 --> 00:09:55,945
+spread from labeled nodes to unlabeled nodes through these- um,
+
+203
+00:09:55,945 --> 00:09:58,535
+through this iterative classification,
+
+204
+00:09:58,535 --> 00:10:00,425
+where nodes were updating, uh,
+
+205
+00:10:00,425 --> 00:10:03,110
+the probabilities, based on the probabilities of
+
+206
+00:10:03,110 --> 00:10:06,960
+their nearby nodes or their neighbors in the network.
+
+207
+00:10:06,960 --> 00:10:12,140
+So now, we are going to look at the iterative, uh, classification,
+
+208
+00:10:12,140 --> 00:10:15,530
+a different kind of type of approach that will use more,
+
+209
+00:10:15,530 --> 00:10:17,105
+uh, of the information.
+
+210
+00:10:17,105 --> 00:10:21,780
+In particular, it's going to use both the node features as well as the labels,
+
+211
+00:10:21,780 --> 00:10:23,700
+uh, of the nearby nodes.
+
+212
+00:10:23,700 --> 00:10:26,960
+So this will now combine both the network as well as the,
+
+213
+00:10:26,960 --> 00:10:30,130
+uh, um, the feature information of the nodes.
+
+214
+00:10:30,130 --> 00:10:34,085
+So in the relational classifiers that we have just talked about,
+
+215
+00:10:34,085 --> 00:10:35,970
+they do not use node attributes,
+
+216
+00:10:35,970 --> 00:10:38,770
+they just use the network structure and the labels.
+
+217
+00:10:38,770 --> 00:10:40,380
+So now the question is,
+
+218
+00:10:40,380 --> 00:10:41,520
+how do we label?
+
+219
+00:10:41,520 --> 00:10:43,635
+How do we take advantage?
+
+220
+00:10:43,635 --> 00:10:47,500
+How do we harness the information in node attributes?
+
+221
+00:10:47,500 --> 00:10:50,720
+And the main idea of iterative classification,
+
+222
+00:10:50,720 --> 00:10:54,800
+is to classify node v based on its attributes f,
+
+223
+00:10:54,800 --> 00:10:59,565
+as well as the labels z of the neighboring nodes,
+
+224
+00:10:59,565 --> 00:11:01,170
+uh, N sub v of this,
+
+225
+00:11:01,170 --> 00:11:04,040
+uh, node v of interest.
+
+226
+00:11:04,040 --> 00:11:06,955
+So how is this going to work?
+
+227
+00:11:06,955 --> 00:11:09,205
+On the input, we are given a graph.
+
+228
+00:11:09,205 --> 00:11:12,550
+Each node will have a feature vector associated with it,
+
+229
+00:11:12,550 --> 00:11:16,315
+and some nodes will be labeled with, uh, labels y.
+
+230
+00:11:16,315 --> 00:11:19,885
+The task is to predict labels of unlabeled nodes
+
+231
+00:11:19,885 --> 00:11:25,045
+and the way we are going to do this is that we are going to train two classifiers.
+
+232
+00:11:25,045 --> 00:11:32,050
+We are going first to train a base classifier that is going to predict a label of a node,
+
+233
+00:11:32,050 --> 00:11:34,960
+uh, based on its feature vector alone.
+
+234
+00:11:34,960 --> 00:11:37,855
+That's the classifier Phi_1.
+
+235
+00:11:37,855 --> 00:11:44,155
+And then, we are also going to train another classifier that will have two inputs.
+
+236
+00:11:44,155 --> 00:11:47,470
+It will have inputs about the features of node v
+
+237
+00:11:47,470 --> 00:11:51,475
+and it is also going to have this additional input,
+
+238
+00:11:51,475 --> 00:11:58,555
+this vector z, that will su- summarize the labels of v's neighbors.
+
+239
+00:11:58,555 --> 00:12:04,090
+So this means that now we are making predictions with this classify our Phi_2,
+
+240
+00:12:04,090 --> 00:12:07,150
+um, using two- two types of input.
+
+241
+00:12:07,150 --> 00:12:09,325
+One is the feature information, uh,
+
+242
+00:12:09,325 --> 00:12:12,310
+captured in this feature vector f, and, uh,
+
+243
+00:12:12,310 --> 00:12:19,210
+also the labels of the name of its neighbors captured in the vector, uh, z.
+
+244
+00:12:19,210 --> 00:12:22,090
+And this way, this approach will now be using
+
+245
+00:12:22,090 --> 00:12:26,785
+both the feature information as well as the network information.
+
+246
+00:12:26,785 --> 00:12:33,610
+So let me tell you now how do we compute these labels summary vector z, uh,
+
+247
+00:12:33,610 --> 00:12:36,475
+of a- of a given node v. So the idea will be that,
+
+248
+00:12:36,475 --> 00:12:38,770
+you know, I'm a given node here in the network,
+
+249
+00:12:38,770 --> 00:12:41,020
+let's say blue and I have, um,
+
+250
+00:12:41,020 --> 00:12:44,890
+some nodes that believe they are green and other nodes that believe they are red.
+
+251
+00:12:44,890 --> 00:12:50,515
+So now what I need is to create this- this- this summary vector z, uh,
+
+252
+00:12:50,515 --> 00:12:52,960
+that will tell me- what are the beliefs,
+
+253
+00:12:52,960 --> 00:12:56,575
+what are- what does my- what do my neighbors think about their labels.
+
+254
+00:12:56,575 --> 00:13:02,200
+So for example, there are many ch- choices I can make to determine- to set this,
+
+255
+00:13:02,200 --> 00:13:04,165
+uh, vector, er, z.
+
+256
+00:13:04,165 --> 00:13:07,585
+For example, I could simply have it to be a vector,
+
+257
+00:13:07,585 --> 00:13:11,035
+to be a histogram which would count the number
+
+258
+00:13:11,035 --> 00:13:14,845
+or the fraction of each label in the neighborhood.
+
+259
+00:13:14,845 --> 00:13:16,900
+So for example, in this case,
+
+260
+00:13:16,900 --> 00:13:18,775
+um, for this node, uh,
+
+261
+00:13:18,775 --> 00:13:20,545
+the blue node we could say a-ha,
+
+262
+00:13:20,545 --> 00:13:23,020
+I have two neighbors who think they are green,
+
+263
+00:13:23,020 --> 00:13:25,645
+and I have one neighbor who thinks it's red.
+
+264
+00:13:25,645 --> 00:13:27,580
+Or another way would be to say,
+
+265
+00:13:27,580 --> 00:13:29,620
+you know, 66 percent of my,
+
+266
+00:13:29,620 --> 00:13:32,305
+um, neighbors think they are green,
+
+267
+00:13:32,305 --> 00:13:34,705
+and 33 think they are red.
+
+268
+00:13:34,705 --> 00:13:37,750
+And this is what this vector z would capture.
+
+269
+00:13:37,750 --> 00:13:39,910
+We could also, for example, um,
+
+270
+00:13:39,910 --> 00:13:44,035
+extend z to say what is the most common label among, uh,
+
+271
+00:13:44,035 --> 00:13:48,655
+these neighbors, or how many different labels are among these neighbors.
+
+272
+00:13:48,655 --> 00:13:52,045
+But essentially here the idea is that this vector z
+
+273
+00:13:52,045 --> 00:13:57,175
+captures how the labels around the node of interest,
+
+274
+00:13:57,175 --> 00:14:01,030
+uh, v are- are distributed among,
+
+275
+00:14:01,030 --> 00:14:04,090
+uh, the neighbors of node v in the network.
+
+276
+00:14:04,090 --> 00:14:07,165
+Um, and there are a lot of different, uh, choices, uh,
+
+277
+00:14:07,165 --> 00:14:09,565
+how we come up the,
+
+278
+00:14:09,565 --> 00:14:11,905
+uh- how we can come up with this vector.
+
+279
+00:14:11,905 --> 00:14:18,459
+Um, so this iterative classifiers are going now to work in two steps.
+
+280
+00:14:18,459 --> 00:14:21,130
+In the first step or in the first phase,
+
+281
+00:14:21,130 --> 00:14:26,065
+we are going to classify node labels based on node attributes alone.
+
+282
+00:14:26,065 --> 00:14:28,585
+So it means using the training data,
+
+283
+00:14:28,585 --> 00:14:30,790
+we are going to train two classifiers.
+
+284
+00:14:30,790 --> 00:14:33,820
+For example, using a linear classifier, a neural network,
+
+285
+00:14:33,820 --> 00:14:38,980
+or support vector machine or a decision tree that given a feature vector of a given node,
+
+286
+00:14:38,980 --> 00:14:41,185
+it's going to predict its label.
+
+287
+00:14:41,185 --> 00:14:46,209
+And in phase 1, we are going to apply this classifier Phi_1,
+
+288
+00:14:46,209 --> 00:14:50,935
+so that now every node in the network has some predicted, uh, label.
+
+289
+00:14:50,935 --> 00:14:53,125
+And then using the training data,
+
+290
+00:14:53,125 --> 00:14:56,650
+we are also going to train this classifier Phi_2,
+
+291
+00:14:56,650 --> 00:14:58,315
+that is going to use two inputs.
+
+292
+00:14:58,315 --> 00:15:01,555
+It's going to use the feature of the node of interest,
+
+293
+00:15:01,555 --> 00:15:08,830
+as well as this summary vector z that captures or summarizes the labels of the nodes,
+
+294
+00:15:08,830 --> 00:15:11,470
+um, in it's network neighborhood.
+
+295
+00:15:11,470 --> 00:15:14,230
+And this Phi_2 is going to predict the label of the node
+
+296
+00:15:14,230 --> 00:15:16,975
+of interest v based on its features,
+
+297
+00:15:16,975 --> 00:15:19,630
+as well as the summary z of its,
+
+298
+00:15:19,630 --> 00:15:22,210
+uh- of the labels of its neighbors.
+
+299
+00:15:22,210 --> 00:15:29,230
+And then- right, so we have first applied Phi_1 then we also have trained Phi_2 so
+
+300
+00:15:29,230 --> 00:15:32,110
+that now we will go into phase 2 where we are going to
+
+301
+00:15:32,110 --> 00:15:36,385
+iterate and we are going to iterate until convergence,
+
+302
+00:15:36,385 --> 00:15:38,800
+uh, the following- uh, the following, uh,
+
+303
+00:15:38,800 --> 00:15:41,035
+iteration where on the, uh,
+
+304
+00:15:41,035 --> 00:15:43,690
+test set, which means on the unlabeled nodes.
+
+305
+00:15:43,690 --> 00:15:47,170
+Uh, we are going to use this, uh, first,
+
+306
+00:15:47,170 --> 00:15:51,625
+the classifier Phi_1 to assign initial, uh, labels.
+
+307
+00:15:51,625 --> 00:15:55,270
+We are going to compute the label summaries z,
+
+308
+00:15:55,270 --> 00:16:00,130
+and then we are going to predict the labels with the second classifier, Phi_2.
+
+309
+00:16:00,130 --> 00:16:03,670
+And we are going now to repeat this process until it
+
+310
+00:16:03,670 --> 00:16:07,960
+converges in a sense that we are going to update the vector z.
+
+311
+00:16:07,960 --> 00:16:09,280
+We are going to, uh,
+
+312
+00:16:09,280 --> 00:16:13,270
+apply the classifier Phi_2 to update the label of the node.
+
+313
+00:16:13,270 --> 00:16:17,050
+And, uh, now the no- node labels have updated,
+
+314
+00:16:17,050 --> 00:16:21,325
+we are going to update the label summaries z and again
+
+315
+00:16:21,325 --> 00:16:26,800
+apply Phi_2 to update the node predi- the- the node predictions, update z,
+
+316
+00:16:26,800 --> 00:16:31,015
+update the prediction, and keep iterating this until this, uh,
+
+317
+00:16:31,015 --> 00:16:37,570
+class labels stabilize, converge or some maximum number of iterations is reached.
+
+318
+00:16:37,570 --> 00:16:41,440
+Um, note that in general or in worse-case,
+
+319
+00:16:41,440 --> 00:16:43,285
+uh, convergence is not guaranteed,
+
+320
+00:16:43,285 --> 00:16:45,640
+so we would set some maximum, uh,
+
+321
+00:16:45,640 --> 00:16:47,050
+number of iterations, you know,
+
+322
+00:16:47,050 --> 00:16:50,320
+maybe 10, 50, 100, something like that, something like that.
+
+323
+00:16:50,320 --> 00:16:51,790
+Not too many- not too many.
+
+324
+00:16:51,790 --> 00:16:54,680
+Um, so that's the idea.
+
+325
+00:16:54,690 --> 00:16:59,050
+So what I wanna do next is actually show you
+
+326
+00:16:59,050 --> 00:17:03,655
+this to give you a sense how this work on a simple, uh, toy example.
+
+327
+00:17:03,655 --> 00:17:06,940
+So the idea here is that we have an input graph,
+
+328
+00:17:06,940 --> 00:17:09,970
+uh, let's say that we are thinking about web pages.
+
+329
+00:17:09,970 --> 00:17:13,165
+So we have a graph of how web pages link to each other.
+
+330
+00:17:13,165 --> 00:17:15,160
+Each node will be a web page.
+
+331
+00:17:15,160 --> 00:17:17,395
+An edge will be a hyperlink,
+
+332
+00:17:17,395 --> 00:17:19,660
+uh, between the web pages.
+
+333
+00:17:19,660 --> 00:17:23,244
+And, uh, uh, we will have a directed edge,
+
+334
+00:17:23,244 --> 00:17:26,289
+which means that one page points to another page.
+
+335
+00:17:26,290 --> 00:17:29,410
+And imagine that every node in my network is,
+
+336
+00:17:29,410 --> 00:17:32,230
+uh, is, uh, is described with the set of features.
+
+337
+00:17:32,230 --> 00:17:33,610
+In our case, you know,
+
+338
+00:17:33,610 --> 00:17:36,760
+we could simply assume that these features captures,
+
+339
+00:17:36,760 --> 00:17:40,270
+uh, what words, what texts a web page is using.
+
+340
+00:17:40,270 --> 00:17:47,035
+And imagine that the task we wanna do is to predict the topic of the web page.
+
+341
+00:17:47,035 --> 00:17:50,770
+And what we would like to do in this prediction is use two facts.
+
+342
+00:17:50,770 --> 00:17:51,970
+First is, of course,
+
+343
+00:17:51,970 --> 00:17:55,525
+we'd like to use the words of the web page to predict the topic.
+
+344
+00:17:55,525 --> 00:17:59,350
+And then the second thing we would like to do is we also can
+
+345
+00:17:59,350 --> 00:18:03,670
+assume that pages that are on similar topics or on the same topic,
+
+346
+00:18:03,670 --> 00:18:05,875
+they tend to link one another.
+
+347
+00:18:05,875 --> 00:18:09,340
+So when we make a prediction about the topic of a page,
+
+348
+00:18:09,340 --> 00:18:13,915
+we don't only rely on the words that the page users itself.
+
+349
+00:18:13,915 --> 00:18:17,005
+But if you also wanna rely on the labels,
+
+350
+00:18:17,005 --> 00:18:20,710
+on the topics of the pages that link to this,
+
+351
+00:18:20,710 --> 00:18:22,480
+uh, page of interest.
+
+352
+00:18:22,480 --> 00:18:24,310
+So that is, uh, the idea.
+
+353
+00:18:24,310 --> 00:18:27,655
+Uh, this is what we would like to do.
+
+354
+00:18:27,655 --> 00:18:29,965
+So let me now, uh,
+
+355
+00:18:29,965 --> 00:18:32,980
+show you how- how this would work, uh,
+
+356
+00:18:32,980 --> 00:18:37,850
+in this, uh, example of a web page classification.
+
+357
+00:18:39,060 --> 00:18:42,460
+So the idea here is that first,
+
+358
+00:18:42,460 --> 00:18:46,210
+we are going to train this baseline classifier,
+
+359
+00:18:46,210 --> 00:18:49,240
+this classifier Phi 1,
+
+360
+00:18:49,240 --> 00:18:54,010
+that is going to- to use and classify pages,
+
+361
+00:18:54,010 --> 00:18:57,085
+classify nodes based on their attributes.
+
+362
+00:18:57,085 --> 00:18:59,005
+So just to give you uh,
+
+363
+00:18:59,005 --> 00:19:01,210
+to explain what- what is happening here,
+
+364
+00:19:01,210 --> 00:19:04,750
+we have this graph on four nodes.
+
+365
+00:19:04,750 --> 00:19:06,700
+We will do the following.
+
+366
+00:19:06,700 --> 00:19:10,360
+It's- the color will denote the ground truth color.
+
+367
+00:19:10,360 --> 00:19:15,935
+So this is the ground truth topic of the real topic of the web-page.
+
+368
+00:19:15,935 --> 00:19:22,365
+Um, the- the- then each- each page also has some feature- feature vector,
+
+369
+00:19:22,365 --> 00:19:24,855
+let's say describing the words on that page.
+
+370
+00:19:24,855 --> 00:19:28,775
+And let's assume these are the feature vectors of my four pages.
+
+371
+00:19:28,775 --> 00:19:34,960
+For- the pages also have hyperlinks that are directed and point to each other.
+
+372
+00:19:34,960 --> 00:19:37,945
+And then for example, based on the labeled data,
+
+373
+00:19:37,945 --> 00:19:42,055
+we can uh, apply our Phi 1 and Phi 1 will say,
+
+374
+00:19:42,055 --> 00:19:45,970
+this- this web-page belongs to topic o and you know,
+
+375
+00:19:45,970 --> 00:19:47,050
+the ground truth is zero,
+
+376
+00:19:47,050 --> 00:19:48,865
+so this is a correct classification.
+
+377
+00:19:48,865 --> 00:19:52,270
+But for example, this- this web-page here, uh,
+
+378
+00:19:52,270 --> 00:19:55,315
+based on it's features alone um,
+
+379
+00:19:55,315 --> 00:19:57,100
+we will predict that it is ah,
+
+380
+00:19:57,100 --> 00:20:01,420
+of topic 0, but in reality it is of topic 1.
+
+381
+00:20:01,420 --> 00:20:03,220
+And the question will be,
+
+382
+00:20:03,220 --> 00:20:06,550
+can we using kind of network information- could network
+
+383
+00:20:06,550 --> 00:20:10,915
+information help us to decide that this should really be green topic,
+
+384
+00:20:10,915 --> 00:20:15,310
+not the red topic as it is predicted based on the features alone.
+
+385
+00:20:15,310 --> 00:20:17,395
+And then we have this four other pages,
+
+386
+00:20:17,395 --> 00:20:20,380
+here are their corresponding featured vectors um,
+
+387
+00:20:20,380 --> 00:20:25,570
+and you know, here the classifier would predict that they're both green um,
+
+388
+00:20:25,570 --> 00:20:28,240
+while here the classifier would predict that
+
+389
+00:20:28,240 --> 00:20:30,550
+these two should be red and, perhaps, you know,
+
+390
+00:20:30,550 --> 00:20:34,330
+one way to think of this is that it's really whether the first feature uh,
+
+391
+00:20:34,330 --> 00:20:38,950
+is set to one, you're red and if it's set to zero, you are green.
+
+392
+00:20:38,950 --> 00:20:40,600
+That would be one way to think of the uh,
+
+393
+00:20:40,600 --> 00:20:42,340
+what the classifier is learning.
+
+394
+00:20:42,340 --> 00:20:47,125
+So now, in the first step of this or in the first phase, um,
+
+395
+00:20:47,125 --> 00:20:50,800
+we- we came up with predictions of the labels uh,
+
+396
+00:20:50,800 --> 00:20:52,870
+based only on the features alone.
+
+397
+00:20:52,870 --> 00:21:00,265
+So we applied the classifier Phi 1 from the previous- from the previous slide.
+
+398
+00:21:00,265 --> 00:21:08,530
+So now what we wanna do next is we wanna create our feet labeled summary vectors z.
+
+399
+00:21:08,530 --> 00:21:11,190
+So for each node v,
+
+400
+00:21:11,190 --> 00:21:16,125
+we are going to create this vector z that captures the neighborhood labels.
+
+401
+00:21:16,125 --> 00:21:18,570
+And given that this is a directed graph,
+
+402
+00:21:18,570 --> 00:21:24,385
+we are going to use a four-dimensional vector to capture the statistics.
+
+403
+00:21:24,385 --> 00:21:27,775
+Basically, we are going to have two parts to this vector z;
+
+404
+00:21:27,775 --> 00:21:35,980
+a part I and O. I is about incoming and O is about outgoing neighbor labeling formation.
+
+405
+00:21:35,980 --> 00:21:37,870
+And we will say that for example,
+
+406
+00:21:37,870 --> 00:21:42,220
+I of 0 is set to 1 if at least one of the
+
+407
+00:21:42,220 --> 00:21:48,100
+incoming pages- one of the pages that links to this node of interest is also labeled 0.
+
+408
+00:21:48,100 --> 00:21:53,665
+And we will use similar definitions for I1, O0, and O1.
+
+409
+00:21:53,665 --> 00:21:56,050
+So give you an idea.
+
+410
+00:21:56,050 --> 00:21:58,930
+So this is now same graph as before.
+
+411
+00:21:58,930 --> 00:22:00,925
+These are the features of the web page,
+
+412
+00:22:00,925 --> 00:22:02,635
+but now this four more uh,
+
+413
+00:22:02,635 --> 00:22:06,250
+numbers appear here and let me again explain what do they mean.
+
+414
+00:22:06,250 --> 00:22:09,040
+So this is now- this four numbers are basically
+
+415
+00:22:09,040 --> 00:22:14,770
+my vector z that summarizes the labels of the neighbors around it.
+
+416
+00:22:14,770 --> 00:22:17,620
+And we have I, which is for incoming neighbors,
+
+417
+00:22:17,620 --> 00:22:21,805
+I wanna say is any of the incoming neighbors uh, of plus zero,
+
+418
+00:22:21,805 --> 00:22:24,205
+is any of the incoming neighbors of plus one,
+
+419
+00:22:24,205 --> 00:22:27,580
+because this node here has one neighbor that is green,
+
+420
+00:22:27,580 --> 00:22:29,410
+we set value one here, right?
+
+421
+00:22:29,410 --> 00:22:31,255
+It's an incoming neighbor.
+
+422
+00:22:31,255 --> 00:22:35,515
+And then on the- on the uh, outgoing neighbor side,
+
+423
+00:22:35,515 --> 00:22:36,970
+this is this edge,
+
+424
+00:22:36,970 --> 00:22:41,410
+we have one neighbor that believes it's class is zero.
+
+425
+00:22:41,410 --> 00:22:44,215
+So here it is, right?
+
+426
+00:22:44,215 --> 00:22:47,155
+So notice that colors correspond to ground truth
+
+427
+00:22:47,155 --> 00:22:50,740
+and the numbers correspond to predicted labels, right?
+
+428
+00:22:50,740 --> 00:22:52,510
+So that's why here I have one,
+
+429
+00:22:52,510 --> 00:22:58,675
+zero because the node of interest has one outgoing edge to our node of
+
+430
+00:22:58,675 --> 00:23:06,400
+class zero and has zero outgoing edges to nodes of class 1 of the green class.
+
+431
+00:23:06,400 --> 00:23:10,300
+Similarly, for example, you can look at this node here, uh,
+
+432
+00:23:10,300 --> 00:23:13,060
+it's feature vector and then the summary of
+
+433
+00:23:13,060 --> 00:23:16,180
+the incoming edges and the summary of the outgoing edges,
+
+434
+00:23:16,180 --> 00:23:23,935
+this- this node has here- has one incoming neighbor that is of class zero.
+
+435
+00:23:23,935 --> 00:23:27,460
+This is this one and has zero incoming edges
+
+436
+00:23:27,460 --> 00:23:31,365
+of class 1 and in terms of the outgoing edges,
+
+437
+00:23:31,365 --> 00:23:34,635
+it has zero outgoing edges to class, uh,
+
+438
+00:23:34,635 --> 00:23:38,865
+to class 0, and it has one outgoing edge to class 1.
+
+439
+00:23:38,865 --> 00:23:40,320
+So this is now, you know,
+
+440
+00:23:40,320 --> 00:23:43,300
+the four-dimensional representation, uh,
+
+441
+00:23:43,300 --> 00:23:46,795
+the vector z, the summary of the labels around this particular node.
+
+442
+00:23:46,795 --> 00:23:51,070
+Analogously, you can compute it for this node and you can compute it for that node.
+
+443
+00:23:51,070 --> 00:23:57,580
+So now that you have for every node both the vector f and the vector z,
+
+444
+00:23:57,580 --> 00:24:00,190
+what you do, you now train,
+
+445
+00:24:00,190 --> 00:24:04,450
+uh, the second um, uh, classifier.
+
+446
+00:24:04,450 --> 00:24:07,855
+And again you only train it on the labeled training set.
+
+447
+00:24:07,855 --> 00:24:11,560
+And this classifier, you train in such a way that it uses
+
+448
+00:24:11,560 --> 00:24:15,985
+both the information in f as well as the information in z.
+
+449
+00:24:15,985 --> 00:24:19,270
+So now you are basically training
+
+450
+00:24:19,270 --> 00:24:25,030
+the classifier Phi 2 that uses both the feature information as well as
+
+451
+00:24:25,030 --> 00:24:29,245
+the label summary information about what do
+
+452
+00:24:29,245 --> 00:24:34,330
+the neighbors of a node of interest think about their own labels.
+
+453
+00:24:34,330 --> 00:24:37,915
+And this now gives me the classifier Phi 2.
+
+454
+00:24:37,915 --> 00:24:41,230
+So now um, in the second step,
+
+455
+00:24:41,230 --> 00:24:43,360
+I'm going now to apply my uh,
+
+456
+00:24:43,360 --> 00:24:48,640
+classifier Phi 2 on the- on the graph of interest on the unlabeled nodes.
+
+457
+00:24:48,640 --> 00:24:52,420
+So right, so we've- I'm going to use trained node features to apply
+
+458
+00:24:52,420 --> 00:24:59,500
+the classifier Phi 1 on the unlabeled- unlabeled set and I'm going to predict the labels.
+
+459
+00:24:59,500 --> 00:25:03,205
+And now- now I'm going to use
+
+460
+00:25:03,205 --> 00:25:06,220
+trained node feature vectors as well
+
+461
+00:25:06,220 --> 00:25:10,315
+to- to predict the labels and now given the predicted labels,
+
+462
+00:25:10,315 --> 00:25:11,620
+I'm going to um,
+
+463
+00:25:11,620 --> 00:25:17,200
+update the feature descriptors- the feature descriptors in a sec- in a sense of uh,
+
+464
+00:25:17,200 --> 00:25:20,560
+class summaries around each node.
+
+465
+00:25:20,560 --> 00:25:23,485
+Now that I have created this vector z,
+
+466
+00:25:23,485 --> 00:25:31,690
+I can now apply my classifier Phi 2 to update the predicted label of every node.
+
+467
+00:25:31,690 --> 00:25:36,910
+And if I do this, the labels of certain nodes may change.
+
+468
+00:25:36,910 --> 00:25:40,780
+And basically the idea is right now that I have used all these data,
+
+469
+00:25:40,780 --> 00:25:42,940
+meaning the feature vector as well as
+
+470
+00:25:42,940 --> 00:25:45,955
+the summary vector of the labels around the given node,
+
+471
+00:25:45,955 --> 00:25:50,560
+I will be able to more robustly predict the label of the node of interest.
+
+472
+00:25:50,560 --> 00:25:54,520
+And now, right, I- basically the idea is that now I
+
+473
+00:25:54,520 --> 00:25:58,630
+can go and update the summaries because some labels might have changed.
+
+474
+00:25:58,630 --> 00:26:04,360
+I update the summary and reapply the Phi 2 predictor- Phi 2 classifier.
+
+475
+00:26:04,360 --> 00:26:05,920
+And I keep doing this,
+
+476
+00:26:05,920 --> 00:26:11,875
+basically reclassifying nodes with Phi 2 until the process converges.
+
+477
+00:26:11,875 --> 00:26:17,980
+Right? So I'll be updating this until- until the label prediction stabilize.
+
+478
+00:26:17,980 --> 00:26:23,080
+I think because if our prediction for a given node changes,
+
+479
+00:26:23,080 --> 00:26:27,700
+then its vector z is also going to change.
+
+480
+00:26:27,700 --> 00:26:31,810
+And if the vector z is going- changes then the- I have to apply
+
+481
+00:26:31,810 --> 00:26:35,170
+the predictor Phi 2 to update
+
+482
+00:26:35,170 --> 00:26:39,295
+the belief or the prediction about the label of a given node.
+
+483
+00:26:39,295 --> 00:26:44,200
+And I keep iterating this until the process stabilized, right?
+
+484
+00:26:44,200 --> 00:26:48,850
+So here the prediction for this node flipped from 0 to 1.
+
+485
+00:26:48,850 --> 00:26:53,515
+Now this vectors z have changed, have been updated.
+
+486
+00:26:53,515 --> 00:27:00,100
+So I have to re-update my classifier Phi 2 again over all these nodes.
+
+487
+00:27:00,100 --> 00:27:07,495
+And I keep doing this until the process converges meaning until no node labels change,
+
+488
+00:27:07,495 --> 00:27:12,220
+or until some maximum number of iterations is reached.
+
+489
+00:27:12,220 --> 00:27:15,970
+And that is essentially the idea of what
+
+490
+00:27:15,970 --> 00:27:19,900
+we are trying to do here and how do we arrive to the final prediction.
+
+491
+00:27:19,900 --> 00:27:23,725
+So to summarize, so far,
+
+492
+00:27:23,725 --> 00:27:27,460
+we have talked about two approaches to collective classification.
+
+493
+00:27:27,460 --> 00:27:30,910
+First, we talked about relational classification,
+
+494
+00:27:30,910 --> 00:27:34,570
+where we are iteratively updating probabilities of nodes
+
+495
+00:27:34,570 --> 00:27:38,485
+belonging to a labeled class based on the labels of its neighbors.
+
+496
+00:27:38,485 --> 00:27:44,755
+This approach uses the network structure and the labels of the nodes,
+
+497
+00:27:44,755 --> 00:27:49,435
+but it does not use the features of the nodes.
+
+498
+00:27:49,435 --> 00:27:52,555
+So then in the second part,
+
+499
+00:27:52,555 --> 00:27:55,570
+we talked about iterative classification,
+
+500
+00:27:55,570 --> 00:27:57,940
+where we improve over
+
+501
+00:27:57,940 --> 00:28:01,420
+the relational classification to
+
+502
+00:28:01,420 --> 00:28:05,395
+handle attribute or feature information of nodes as well.
+
+503
+00:28:05,395 --> 00:28:09,040
+And here the idea was that we classify a given node,
+
+504
+00:28:09,040 --> 00:28:10,810
+v or a given node i,
+
+505
+00:28:10,810 --> 00:28:12,459
+based on its features,
+
+506
+00:28:12,459 --> 00:28:15,220
+as well as the labels of its neighbors.
+
+507
+00:28:15,220 --> 00:28:20,230
+So here, the way we achieve these was to train two classifiers.
+
+508
+00:28:20,230 --> 00:28:25,205
+The initial classifier that given the features of a node predicts its label.
+
+509
+00:28:25,205 --> 00:28:29,880
+Now that the nodes have its labels predicted, for every node,
+
+510
+00:28:29,880 --> 00:28:33,030
+we can now create this summary vector z that
+
+511
+00:28:33,030 --> 00:28:39,635
+describes the labels of the nodes that are neighbors of a node of interest.
+
+512
+00:28:39,635 --> 00:28:42,595
+And then that we have that,
+
+513
+00:28:42,595 --> 00:28:49,810
+we can then use the classifier Phi 2 to re-update the prediction on a given node.
+
+514
+00:28:49,810 --> 00:28:51,910
+And this classifier Phi 2,
+
+515
+00:28:51,910 --> 00:28:55,240
+uses both the feature information of the node as
+
+516
+00:28:55,240 --> 00:28:58,645
+well as the summary vector of the labels of its neighbors,
+
+517
+00:28:58,645 --> 00:29:00,490
+the summary vector z.
+
+518
+00:29:00,490 --> 00:29:06,790
+And we then keep applying this classifier Phi 2 over the network until
+
+519
+00:29:06,790 --> 00:29:10,390
+the entire process converges or until
+
+520
+00:29:10,390 --> 00:29:15,500
+the entire- the maximum number of iterations is reached.
+

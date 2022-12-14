@@ -1,0 +1,2188 @@
+1
+00:00:04,040 --> 00:00:06,285
+It is great to have, uh,
+
+2
+00:00:06,285 --> 00:00:08,730
+uh, everyone here today, and, uh,
+
+3
+00:00:08,730 --> 00:00:10,950
+we are going to continue, um,
+
+4
+00:00:10,950 --> 00:00:12,510
+our investigation of, uh,
+
+5
+00:00:12,510 --> 00:00:13,845
+machine learning with graphs.
+
+6
+00:00:13,845 --> 00:00:19,200
+And in particular today we're going to look at how we can represent graph as a matrix.
+
+7
+00:00:19,200 --> 00:00:21,945
+And, um, how- uh,
+
+8
+00:00:21,945 --> 00:00:24,600
+we- we will then define the notion of PageRank,
+
+9
+00:00:24,600 --> 00:00:28,305
+Random Walks and then connect it back to the previous lecture,
+
+10
+00:00:28,305 --> 00:00:30,735
+when we talked about, uh, node embeddings.
+
+11
+00:00:30,735 --> 00:00:33,375
+So this is, uh, the plan for, uh, today.
+
+12
+00:00:33,375 --> 00:00:34,905
+So let's start.
+
+13
+00:00:34,905 --> 00:00:38,790
+Today, I wanna talk about looking at graph as a matrix.
+
+14
+00:00:38,790 --> 00:00:41,700
+So we- we are going to investigate the graph analysis and
+
+15
+00:00:41,700 --> 00:00:44,870
+learning from the matrix linear algebra perspective.
+
+16
+00:00:44,870 --> 00:00:47,700
+And we are going to treat graph as a matrix,
+
+17
+00:00:47,700 --> 00:00:49,360
+and this will allow us to, uh,
+
+18
+00:00:49,360 --> 00:00:52,820
+define node importance via random walks,
+
+19
+00:00:52,820 --> 00:00:55,315
+and this is the famous PageRank algorithm.
+
+20
+00:00:55,315 --> 00:00:59,690
+We are then going to extend this into the notion of matrix factorization,
+
+21
+00:00:59,690 --> 00:01:02,090
+and then we are going to see how node embeddings,
+
+22
+00:01:02,090 --> 00:01:06,485
+meaning node2vec and DeepWalk are essentially a form of,
+
+23
+00:01:06,485 --> 00:01:09,595
+uh, implicit, uh, matrix factorization.
+
+24
+00:01:09,595 --> 00:01:13,080
+Um, and, um, this is the exciting thing here,
+
+25
+00:01:13,080 --> 00:01:15,515
+as in some sense will bring together graphs,
+
+26
+00:01:15,515 --> 00:01:18,350
+linear algebra, as well as node embeddings,
+
+27
+00:01:18,350 --> 00:01:19,490
+uh, that we have, uh,
+
+28
+00:01:19,490 --> 00:01:23,650
+discussed in the last lecture and show how they are all, uh, closely-related.
+
+29
+00:01:23,650 --> 00:01:26,575
+So first, let's talk about PageRank,
+
+30
+00:01:26,575 --> 00:01:32,450
+which is basically the main innovation that let Google Search become, uh, Google Search.
+
+31
+00:01:32,450 --> 00:01:36,280
+And it was developed by two students here at Stanford Computer Science,
+
+32
+00:01:36,280 --> 00:01:38,730
+uh, Larry Page and, uh, Sergey Brin.
+
+33
+00:01:38,730 --> 00:01:40,980
+So let me tell you about, uh,
+
+34
+00:01:40,980 --> 00:01:44,115
+what- what did they did as PhD students at Stanford.
+
+35
+00:01:44,115 --> 00:01:47,315
+So first is, we'll- we will talk about
+
+36
+00:01:47,315 --> 00:01:50,570
+the context of Google and we'll talk about the context of the web,
+
+37
+00:01:50,570 --> 00:01:52,265
+uh, search and, uh,
+
+38
+00:01:52,265 --> 00:01:54,200
+thinking about the web as a graph.
+
+39
+00:01:54,200 --> 00:01:55,445
+So the question is,
+
+40
+00:01:55,445 --> 00:01:57,155
+what does the web look like,
+
+41
+00:01:57,155 --> 00:01:58,430
+uh, at the global level, right?
+
+42
+00:01:58,430 --> 00:02:00,305
+Like how would you represent the web?
+
+43
+00:02:00,305 --> 00:02:01,550
+What do I mean by the web?
+
+44
+00:02:01,550 --> 00:02:03,410
+Is I want to represent it as a graph,
+
+45
+00:02:03,410 --> 00:02:06,950
+where nodes would be web pages and links between
+
+46
+00:02:06,950 --> 00:02:11,080
+the nodes would be hyperlinks so that you can navigate from one web page to another.
+
+47
+00:02:11,080 --> 00:02:12,855
+Um, of course, today,
+
+48
+00:02:12,855 --> 00:02:15,390
+the web has evolved a lot and there is- there is the issue,
+
+49
+00:02:15,390 --> 00:02:16,920
+you know, what is a node?
+
+50
+00:02:16,920 --> 00:02:19,840
+We have a lot of dynamic pages created on the fly,
+
+51
+00:02:19,840 --> 00:02:22,130
+and there is also a lot of the dark web,
+
+52
+00:02:22,130 --> 00:02:23,885
+so a lot of, uh,
+
+53
+00:02:23,885 --> 00:02:27,320
+places, uh, that are password protected,
+
+54
+00:02:27,320 --> 00:02:29,270
+that are inaccessible, uh,
+
+55
+00:02:29,270 --> 00:02:31,400
+by basically us just browsing the web.
+
+56
+00:02:31,400 --> 00:02:33,110
+But let's think of the web, you know,
+
+57
+00:02:33,110 --> 00:02:36,875
+as it was in the older days when we had a set of static pages.
+
+58
+00:02:36,875 --> 00:02:40,410
+You could imagine, here are some, um, static pages,
+
+59
+00:02:40,410 --> 00:02:44,325
+uh, that ap- that a- that appear at, uh, Stanford University.
+
+60
+00:02:44,325 --> 00:02:47,490
+And then, you know, the static pages have hyperlinks, uh,
+
+61
+00:02:47,490 --> 00:02:50,420
+so basically, links that you can click that move you to the next page, right?
+
+62
+00:02:50,420 --> 00:02:52,715
+So in the early days, this is how- uh,
+
+63
+00:02:52,715 --> 00:02:55,760
+how basically web was structured with a lot of
+
+64
+00:02:55,760 --> 00:02:59,910
+static web pages and a lot of these navigational, uh, links.
+
+65
+00:02:59,910 --> 00:03:02,270
+Today, many links are transactional,
+
+66
+00:03:02,270 --> 00:03:05,255
+meaning they are used not to navigate from page to page,
+
+67
+00:03:05,255 --> 00:03:08,540
+but they are used to make transactions like post something,
+
+68
+00:03:08,540 --> 00:03:10,400
+comment something, like something,
+
+69
+00:03:10,400 --> 00:03:13,070
+buy something, and then you get moved to the next page.
+
+70
+00:03:13,070 --> 00:03:15,580
+But let's today focus on these navigational,
+
+71
+00:03:15,580 --> 00:03:17,820
+uh, set of links.
+
+72
+00:03:17,820 --> 00:03:21,020
+Um, and this means that we can now represent the web as
+
+73
+00:03:21,020 --> 00:03:24,050
+this type of directed graph of web pages and,
+
+74
+00:03:24,050 --> 00:03:26,450
+uh, hyperlinks, uh, between them.
+
+75
+00:03:26,450 --> 00:03:29,240
+And the- there are many other places or
+
+76
+00:03:29,240 --> 00:03:32,000
+other types of information that you can represent in the same way.
+
+77
+00:03:32,000 --> 00:03:36,305
+For example, you can take citations where nodes would be, uh, papers,
+
+78
+00:03:36,305 --> 00:03:38,930
+and a paper is citing another paper,
+
+79
+00:03:38,930 --> 00:03:43,050
+which means that is a directed link from the source paper to the paper it cites,
+
+80
+00:03:43,050 --> 00:03:44,910
+and this is called citation networks.
+
+81
+00:03:44,910 --> 00:03:46,880
+And, uh, also you could take let say,
+
+82
+00:03:46,880 --> 00:03:50,255
+references in- in Encyclopedia like Wikipedia,
+
+83
+00:03:50,255 --> 00:03:56,100
+and represent them as a graph of how one concept is related or links to another concept.
+
+84
+00:03:56,100 --> 00:03:58,385
+So the, you know, the Wikipedia as we know it,
+
+85
+00:03:58,385 --> 00:04:01,255
+um, is a perfect example, uh, of this.
+
+86
+00:04:01,255 --> 00:04:03,345
+So now the question is,
+
+87
+00:04:03,345 --> 00:04:05,430
+what does the- what does the web look like?
+
+88
+00:04:05,430 --> 00:04:07,710
+What is kind of the- the map of the web?
+
+89
+00:04:07,710 --> 00:04:11,430
+And, uh, how do we- and- can analyze and understand the web,
+
+90
+00:04:11,430 --> 00:04:13,110
+uh, as a directed graph?
+
+91
+00:04:13,110 --> 00:04:15,900
+So essentially, we are going to represent this as- as- as-
+
+92
+00:04:15,900 --> 00:04:19,065
+as a set of no- nodes based vertices,
+
+93
+00:04:19,065 --> 00:04:22,755
+uh, web pages and a set of directed hyperlinks, uh, between them.
+
+94
+00:04:22,755 --> 00:04:26,960
+So, um, the important question from the viewpoint of let say,
+
+95
+00:04:26,960 --> 00:04:29,150
+web searches to understand what nodes on
+
+96
+00:04:29,150 --> 00:04:31,630
+the web are more important than then the others, right?
+
+97
+00:04:31,630 --> 00:04:36,530
+Like, um, some unknown domain name might be a priori less important,
+
+98
+00:04:36,530 --> 00:04:39,830
+less trustworthy than, uh, well-established domain name,
+
+99
+00:04:39,830 --> 00:04:42,740
+well-established website that a lot of other,
+
+100
+00:04:42,740 --> 00:04:44,225
+uh, web pages link.
+
+101
+00:04:44,225 --> 00:04:48,830
+So, you know, thispersondoesnotexist.com versus stanford.edu,
+
+102
+00:04:48,830 --> 00:04:52,235
+they might have very different a priori, uh, importance.
+
+103
+00:04:52,235 --> 00:04:56,090
+And because there is this large diversity in the web-graph connectivity,
+
+104
+00:04:56,090 --> 00:04:57,940
+the question is, could I somehow rank
+
+105
+00:04:57,940 --> 00:05:01,330
+the pages using the web-graph link structure in a sense,
+
+106
+00:05:01,330 --> 00:05:03,950
+which ones are more important, more popular,
+
+107
+00:05:03,950 --> 00:05:08,074
+more trustworthy, and which ones are less important, less trustworthy,
+
+108
+00:05:08,074 --> 00:05:09,575
+in a- in a sense that then when I,
+
+109
+00:05:09,575 --> 00:05:11,135
+let say, rank search results,
+
+110
+00:05:11,135 --> 00:05:16,130
+I can use this as a signal into what to put on the top and what to put on the bottom?
+
+111
+00:05:16,130 --> 00:05:18,070
+That is essentially the- uh,
+
+112
+00:05:18,070 --> 00:05:19,565
+the idea and the goal,
+
+113
+00:05:19,565 --> 00:05:21,560
+how this was developed,
+
+114
+00:05:21,560 --> 00:05:24,465
+uh, you know, uh, 20 years ago.
+
+115
+00:05:24,465 --> 00:05:28,310
+So, um, what are we going to discuss today is a set of
+
+116
+00:05:28,310 --> 00:05:32,615
+link analysis algorithms or approaches to link analysis,
+
+117
+00:05:32,615 --> 00:05:35,600
+uh, where the goal is to compute importance of nodes in a graph.
+
+118
+00:05:35,600 --> 00:05:38,614
+So, uh, we are going to talk about PageRank,
+
+119
+00:05:38,614 --> 00:05:41,735
+then an extension of it called personalized PageRank,
+
+120
+00:05:41,735 --> 00:05:46,130
+and then a further kind of extensional variant called Random Walk with Restarts.
+
+121
+00:05:46,130 --> 00:05:51,155
+But essentially, all these three different approaches algorithms under the hood
+
+122
+00:05:51,155 --> 00:05:53,210
+are the same thing and they only differ in
+
+123
+00:05:53,210 --> 00:05:56,230
+one slight variation that I'm going to explain.
+
+124
+00:05:56,230 --> 00:05:58,865
+So we are going to talk about the PageRank algorithm,
+
+125
+00:05:58,865 --> 00:06:01,685
+the personalized PageRank algorithm,
+
+126
+00:06:01,685 --> 00:06:05,865
+as well as, uh, a Random Walk with Restarts, uh, as it is called.
+
+127
+00:06:05,865 --> 00:06:09,840
+So, um, first we- our goal is to,
+
+128
+00:06:09,840 --> 00:06:13,080
+uh, compute the importance of a web page on the web.
+
+129
+00:06:13,080 --> 00:06:15,365
+And one way to do this would be to say,
+
+130
+00:06:15,365 --> 00:06:16,940
+the idea would be that, uh,
+
+131
+00:06:16,940 --> 00:06:19,175
+we think of links, uh, as votes.
+
+132
+00:06:19,175 --> 00:06:23,390
+So basically, a page is more important if it has more, uh, links.
+
+133
+00:06:23,390 --> 00:06:27,050
+And then you could say, is it incoming links or outgoing links, right?
+
+134
+00:06:27,050 --> 00:06:29,690
+Incoming links are kind of harder to fake
+
+135
+00:06:29,690 --> 00:06:32,610
+because other people on the web have to link to you,
+
+136
+00:06:32,610 --> 00:06:34,730
+and outgoing links are easier to kind
+
+137
+00:06:34,730 --> 00:06:36,890
+of fake because you can just generate them on your website.
+
+138
+00:06:36,890 --> 00:06:38,330
+So you would say, perhaps,
+
+139
+00:06:38,330 --> 00:06:40,565
+let's use links-in-links as votes.
+
+140
+00:06:40,565 --> 00:06:43,670
+So you could say, "Aha, I know stanford.edu has, you know,
+
+141
+00:06:43,670 --> 00:06:48,275
+23,000 in-links and thispersondoesnotexist.com has one in-link,
+
+142
+00:06:48,275 --> 00:06:51,100
+so perhaps stanford.edu is more important."
+
+143
+00:06:51,100 --> 00:06:55,835
+And then in the- in the next iteration of this type of thinking, you can say, "Oh,
+
+144
+00:06:55,835 --> 00:06:58,160
+but all in-links are not equal,
+
+145
+00:06:58,160 --> 00:07:02,275
+like an in-link from an important page should count more."
+
+146
+00:07:02,275 --> 00:07:06,230
+And this is now recursive because you say the- the- the confidence,
+
+147
+00:07:06,230 --> 00:07:11,105
+the- the amount of a vote I receive from someone depends on their importance.
+
+148
+00:07:11,105 --> 00:07:13,160
+And that same- that same web page will say, "Aha,
+
+149
+00:07:13,160 --> 00:07:15,950
+my important depends on the incom- on
+
+150
+00:07:15,950 --> 00:07:19,565
+the incoming votes of the importances of the pages that link to me."
+
+151
+00:07:19,565 --> 00:07:22,445
+So kind of, this is now a recursive question because
+
+152
+00:07:22,445 --> 00:07:25,250
+every no- importance of every node depends on
+
+153
+00:07:25,250 --> 00:07:28,330
+the importance of other nodes that link to it.
+
+154
+00:07:28,330 --> 00:07:30,720
+So, um, this is the interesting,
+
+155
+00:07:30,720 --> 00:07:33,050
+uh, approach carries this recursive nature of this.
+
+156
+00:07:33,050 --> 00:07:37,895
+So let's- uh, let's work it out mathematically and figure out how, uh, we can do this.
+
+157
+00:07:37,895 --> 00:07:40,535
+So the idea is that we wanna, uh,
+
+158
+00:07:40,535 --> 00:07:44,765
+that the- a vote, a link from an important page is worth more.
+
+159
+00:07:44,765 --> 00:07:47,210
+So the way we formalize this is to say that
+
+160
+00:07:47,210 --> 00:07:51,905
+each link's vote is proportional to the importance of the source page,
+
+161
+00:07:51,905 --> 00:07:53,705
+all right, because these are directed links.
+
+162
+00:07:53,705 --> 00:07:55,520
+And so, if a page i,
+
+163
+00:07:55,520 --> 00:07:57,125
+ah, has an importance, ah,
+
+164
+00:07:57,125 --> 00:07:58,730
+let's say r_i, ah,
+
+165
+00:07:58,730 --> 00:08:00,900
+and it has d_i out-links,
+
+166
+00:08:00,900 --> 00:08:02,635
+each of its targets,
+
+167
+00:08:02,635 --> 00:08:04,495
+each of its endpoints, ah,
+
+168
+00:08:04,495 --> 00:08:06,880
+each link gets, ah, ah,
+
+169
+00:08:06,880 --> 00:08:10,225
+r_i divided by d_i, ah, fraction of votes.
+
+170
+00:08:10,225 --> 00:08:13,195
+So essentially, this means every page has some, uh,
+
+171
+00:08:13,195 --> 00:08:18,395
+importance and then its importance gets equally split along its out-links.
+
+172
+00:08:18,395 --> 00:08:20,510
+So in this example, for example,
+
+173
+00:08:20,510 --> 00:08:24,350
+k takes its importance because it has four out-links.
+
+174
+00:08:24,350 --> 00:08:26,030
+It splits it four ways,
+
+175
+00:08:26,030 --> 00:08:28,685
+and 1/4 of it flows along this edge.
+
+176
+00:08:28,685 --> 00:08:30,695
+And then, node i here has, ah,
+
+177
+00:08:30,695 --> 00:08:34,115
+three, ah, out-links, so, ah, its,
+
+178
+00:08:34,115 --> 00:08:39,679
+ah, its importance r_i gets split three ways and 1/3 flows over this link.
+
+179
+00:08:39,679 --> 00:08:40,849
+So the, let's say,
+
+180
+00:08:40,850 --> 00:08:45,050
+importance of this node r_j is now the sum of the in-links,
+
+181
+00:08:45,050 --> 00:08:46,355
+ah, that it receives.
+
+182
+00:08:46,355 --> 00:08:51,710
+So is- so it's r_i divided by 3 plus r_k divided by 4,
+
+183
+00:08:51,710 --> 00:08:53,195
+because these are the two in-links.
+
+184
+00:08:53,195 --> 00:08:55,970
+And then, similarly, now r_j,
+
+185
+00:08:55,970 --> 00:08:58,384
+um, node j, takes its importance,
+
+186
+00:08:58,384 --> 00:09:00,215
+and it- because it has three out-links,
+
+187
+00:09:00,215 --> 00:09:05,480
+it divides it three ways and sends it forward to the light blue nodes, right?
+
+188
+00:09:05,480 --> 00:09:07,220
+And this is essentially the idea here.
+
+189
+00:09:07,220 --> 00:09:09,230
+So, ah, your importance,
+
+190
+00:09:09,230 --> 00:09:11,990
+you collect it from the people that points to you.
+
+191
+00:09:11,990 --> 00:09:14,105
+And then, you take your importance,
+
+192
+00:09:14,105 --> 00:09:15,875
+you split it, um,
+
+193
+00:09:15,875 --> 00:09:19,790
+equally among everyone you point to and pass it on to them.
+
+194
+00:09:19,790 --> 00:09:21,455
+So that's the- that's the, uh,
+
+195
+00:09:21,455 --> 00:09:25,370
+idea of this flow model of, ah, PageRank.
+
+196
+00:09:25,370 --> 00:09:28,190
+So, what this means is that a page is
+
+197
+00:09:28,190 --> 00:09:32,540
+important if it is pointed to by other important pages.
+
+198
+00:09:32,540 --> 00:09:38,105
+Um, and we can define the notion of a rank r_j of a page or of node j
+
+199
+00:09:38,105 --> 00:09:44,330
+simply as a- as a summation over- over the nodes i that point to j,
+
+200
+00:09:44,330 --> 00:09:49,730
+ah, importance of each node i divided by- by its out-degree, ah,
+
+201
+00:09:49,730 --> 00:09:51,770
+d. And- and this way, um,
+
+202
+00:09:51,770 --> 00:09:53,720
+we can now written it out, ah,
+
+203
+00:09:53,720 --> 00:09:55,970
+in terms of this type of, uh, summation.
+
+204
+00:09:55,970 --> 00:09:57,955
+To give you an example,
+
+205
+00:09:57,955 --> 00:09:59,950
+if I have these, you know, small, uh,
+
+206
+00:09:59,950 --> 00:10:02,425
+small example of the web graph, uh,
+
+207
+00:10:02,425 --> 00:10:05,770
+back in the old days when web was very small, and there were just,
+
+208
+00:10:05,770 --> 00:10:07,945
+you know, three web pages on the web,
+
+209
+00:10:07,945 --> 00:10:11,065
+and perhaps this is the hyperlink structure of that, uh,
+
+210
+00:10:11,065 --> 00:10:13,715
+web graph, um, then you could say,
+
+211
+00:10:13,715 --> 00:10:15,860
+Aha, here is how I can write this out, right?
+
+212
+00:10:15,860 --> 00:10:19,685
+Importance of y is half of the- half of the, uh,
+
+213
+00:10:19,685 --> 00:10:22,565
+importance of y, because of the self-loop,
+
+214
+00:10:22,565 --> 00:10:24,980
+uh, plus 1/2 of the importance of a,
+
+215
+00:10:24,980 --> 00:10:26,600
+because a has two out-links,
+
+216
+00:10:26,600 --> 00:10:31,355
+one to y and one to m. The importance of a is, ah, you know,
+
+217
+00:10:31,355 --> 00:10:32,480
+it's importance of m,
+
+218
+00:10:32,480 --> 00:10:35,030
+because m has one out-link and it's, uh, uh,
+
+219
+00:10:35,030 --> 00:10:36,290
+half importance of y,
+
+220
+00:10:36,290 --> 00:10:37,850
+because y has two out-links,
+
+221
+00:10:37,850 --> 00:10:39,650
+one to a and one self-loop.
+
+222
+00:10:39,650 --> 00:10:43,775
+And then, importance of m is simply half importance of a,
+
+223
+00:10:43,775 --> 00:10:46,220
+because again, a has two, uh, out-links, right?
+
+224
+00:10:46,220 --> 00:10:48,005
+So now, uh, you can say, Aha,
+
+225
+00:10:48,005 --> 00:10:50,675
+I have three unknowns and I have three equations,
+
+226
+00:10:50,675 --> 00:10:52,970
+of why don't I solve this using,
+
+227
+00:10:52,970 --> 00:10:54,740
+uh, uh, Gaussian elimination?
+
+228
+00:10:54,740 --> 00:10:57,350
+Basically, why don't I solve this as a system of equations?
+
+229
+00:10:57,350 --> 00:10:59,120
+And in principle, yes,
+
+230
+00:10:59,120 --> 00:11:00,710
+you could- you could do this.
+
+231
+00:11:00,710 --> 00:11:03,350
+You need the fourth constraint that you could say, Oh,
+
+232
+00:11:03,350 --> 00:11:06,560
+these importances have to sum to, uh,
+
+233
+00:11:06,560 --> 00:11:07,880
+to be equal to one,
+
+234
+00:11:07,880 --> 00:11:10,565
+and you could use a large-scale equation solver,
+
+235
+00:11:10,565 --> 00:11:12,020
+but this is kind of a bad idea.
+
+236
+00:11:12,020 --> 00:11:14,270
+Nobody does it this way because it's not scalable.
+
+237
+00:11:14,270 --> 00:11:18,830
+So there exists a much more elegant way to solve this system of equations,
+
+238
+00:11:18,830 --> 00:11:21,350
+and I'm going to show you, uh, how to do that.
+
+239
+00:11:21,350 --> 00:11:23,585
+So, uh, to be able to do that,
+
+240
+00:11:23,585 --> 00:11:27,560
+we are now not- we will stop looking at the graph as these set of nodes and edges,
+
+241
+00:11:27,560 --> 00:11:29,705
+but we are going to represent it as a matrix.
+
+242
+00:11:29,705 --> 00:11:33,665
+And we will define this notion of stochastic adjacency matrix M,
+
+243
+00:11:33,665 --> 00:11:36,785
+where if a page j has,
+
+244
+00:11:36,785 --> 00:11:39,410
+uh, out-degree d_j, then,
+
+245
+00:11:39,410 --> 00:11:43,130
+you know, in the entries of the- of the- of the matrix,
+
+246
+00:11:43,130 --> 00:11:45,290
+so if i poi-, i- if j points to i,
+
+247
+00:11:45,290 --> 00:11:51,920
+then the entry i_j of the matrix M will have the value of 1 over d_j.
+
+248
+00:11:51,920 --> 00:11:56,000
+So this means this matrix is what is called column stochastic, right?
+
+249
+00:11:56,000 --> 00:11:58,610
+Every column represents two, uh,
+
+250
+00:11:58,610 --> 00:12:00,305
+out-links of the node,
+
+251
+00:12:00,305 --> 00:12:02,135
+um, and, uh, each n,
+
+252
+00:12:02,135 --> 00:12:03,620
+number of non-zero entries,
+
+253
+00:12:03,620 --> 00:12:06,335
+is the number of out-links of that node j,
+
+254
+00:12:06,335 --> 00:12:08,930
+and the value is 1 over,
+
+255
+00:12:08,930 --> 00:12:10,430
+uh, d su- d_j.
+
+256
+00:12:10,430 --> 00:12:11,795
+So it means that these entries,
+
+257
+00:12:11,795 --> 00:12:14,000
+because there is d of them- d_j of them,
+
+258
+00:12:14,000 --> 00:12:15,950
+and each one has value 1 over d_j,
+
+259
+00:12:15,950 --> 00:12:17,465
+they will exactly say, uh,
+
+260
+00:12:17,465 --> 00:12:19,130
+be, um, say, uh,
+
+261
+00:12:19,130 --> 00:12:21,200
+uh, summed up to have value one.
+
+262
+00:12:21,200 --> 00:12:23,359
+So this is why this is called column stochastic,
+
+263
+00:12:23,359 --> 00:12:26,435
+because every column of this matrix sums up to one.
+
+264
+00:12:26,435 --> 00:12:28,520
+So it means every column you can think of it as
+
+265
+00:12:28,520 --> 00:12:32,180
+a probability distribution over the neighboring nodes, right?
+
+266
+00:12:32,180 --> 00:12:34,669
+So this is now the definition of matrix,
+
+267
+00:12:34,669 --> 00:12:37,355
+uh, m. So now,
+
+268
+00:12:37,355 --> 00:12:39,320
+we are also going to define this notion of
+
+269
+00:12:39,320 --> 00:12:42,920
+a rank vector that will have one entry per page,
+
+270
+00:12:42,920 --> 00:12:49,355
+and the- the entry i of this vector r will be the importance score of page i.
+
+271
+00:12:49,355 --> 00:12:50,900
+All right, so, ah, basically,
+
+272
+00:12:50,900 --> 00:12:54,620
+matrix M has size n by n number of nodes,
+
+273
+00:12:54,620 --> 00:12:57,125
+and then ve- vector r has also,
+
+274
+00:12:57,125 --> 00:12:58,700
+uh, the size number of nodes,
+
+275
+00:12:58,700 --> 00:13:01,280
+where for every node there is an entry telling-
+
+276
+00:13:01,280 --> 00:13:04,325
+telling or storing how important is that node.
+
+277
+00:13:04,325 --> 00:13:07,460
+Um, and one other thing we will do is we are going to say that
+
+278
+00:13:07,460 --> 00:13:10,565
+the entries of the vector r have to sum to one.
+
+279
+00:13:10,565 --> 00:13:15,635
+So again, the way you can think of this is that this is a probability distribution of,
+
+280
+00:13:15,635 --> 00:13:18,305
+uh, over the nodes, uh, in the network.
+
+281
+00:13:18,305 --> 00:13:22,850
+And then what is interesting is that the equations I- I showed, uh,
+
+282
+00:13:22,850 --> 00:13:25,460
+on the previous slide can actually now be written in
+
+283
+00:13:25,460 --> 00:13:30,020
+this very simple matrix form that r equals M times r, right?
+
+284
+00:13:30,020 --> 00:13:31,985
+So basically, you say, Aha, you know,
+
+285
+00:13:31,985 --> 00:13:34,220
+entry of, uh, of, uh,
+
+286
+00:13:34,220 --> 00:13:36,890
+j is simply a sum, um,
+
+287
+00:13:36,890 --> 00:13:39,440
+over the- over the nodes i that,
+
+288
+00:13:39,440 --> 00:13:41,135
+uh, point to the,
+
+289
+00:13:41,135 --> 00:13:42,320
+uh, to the node j.
+
+290
+00:13:42,320 --> 00:13:44,870
+And in the matrix form, this is how, uh,
+
+291
+00:13:44,870 --> 00:13:48,380
+you would save it- say it because you basically go over the- over
+
+292
+00:13:48,380 --> 00:13:52,235
+the row and sum of the importances of the nodes, uh, that points to you.
+
+293
+00:13:52,235 --> 00:13:53,600
+So, um, you know,
+
+294
+00:13:53,600 --> 00:13:55,520
+these two representations are equivalent.
+
+295
+00:13:55,520 --> 00:13:57,275
+We can write it as a- as an equation,
+
+296
+00:13:57,275 --> 00:14:00,245
+or we can write it in this, uh, matrix form.
+
+297
+00:14:00,245 --> 00:14:04,205
+So now, let me just give you an example how this would look like.
+
+298
+00:14:04,205 --> 00:14:05,600
+Here is my previous, you know,
+
+299
+00:14:05,600 --> 00:14:07,835
+example of the web graph on three nodes.
+
+300
+00:14:07,835 --> 00:14:10,550
+Here is my system of equations that I had before.
+
+301
+00:14:10,550 --> 00:14:12,005
+And now, this is my, er,
+
+302
+00:14:12,005 --> 00:14:14,720
+stochastic adjacency matrix, um,
+
+303
+00:14:14,720 --> 00:14:18,665
+meaning that you notice that every column now sums to one.
+
+304
+00:14:18,665 --> 00:14:23,540
+Um, you, um, and then the way I could write the- the- the system of
+
+305
+00:14:23,540 --> 00:14:28,730
+equations is simply to say r equals M times r. And if you- if you see this, for example,
+
+306
+00:14:28,730 --> 00:14:32,255
+y is, you know, 1/2- 1/2, uh, uh,
+
+307
+00:14:32,255 --> 00:14:35,960
+of r_y plus 1/2 of,
+
+308
+00:14:35,960 --> 00:14:39,290
+um, uh, r_a, which is exactly what this equation says, right?
+
+309
+00:14:39,290 --> 00:14:43,355
+So basically, these two representations, uh, are equivalent.
+
+310
+00:14:43,355 --> 00:14:50,435
+So now, I want to kind of stop this mathematical discussion and give you some intuition.
+
+311
+00:14:50,435 --> 00:14:52,580
+And the int- intuition here will be
+
+312
+00:14:52,580 --> 00:14:56,015
+the connection back to random walks that we talked about,
+
+313
+00:14:56,015 --> 00:14:57,350
+uh, in the last lecture.
+
+314
+00:14:57,350 --> 00:15:00,995
+So, let me make a connection to random walks and see how
+
+315
+00:15:00,995 --> 00:15:05,240
+this mathematical formulation of this Gaussian system of equation,
+
+316
+00:15:05,240 --> 00:15:08,960
+um, how- how is that really corresponds to random walks.
+
+317
+00:15:08,960 --> 00:15:10,505
+And this is so fascinating,
+
+318
+00:15:10,505 --> 00:15:13,460
+because it's mathematically kind of the same thing,
+
+319
+00:15:13,460 --> 00:15:14,690
+algorithmically, the same thing,
+
+320
+00:15:14,690 --> 00:15:18,365
+but we can think about it in so many different ways and we can use
+
+321
+00:15:18,365 --> 00:15:22,760
+so many different intuitions about the same kind of underlying,
+
+322
+00:15:22,760 --> 00:15:24,860
+uh, object or underlying thing.
+
+323
+00:15:24,860 --> 00:15:27,785
+So let's, uh, let's kind of, uh, uh,
+
+324
+00:15:27,785 --> 00:15:29,675
+pause a bit and think about, uh,
+
+325
+00:15:29,675 --> 00:15:34,175
+this hypothetical case of a random surfer, uh, on the web.
+
+326
+00:15:34,175 --> 00:15:37,190
+So the idea is a random surfer would be a- would be
+
+327
+00:15:37,190 --> 00:15:41,000
+a person who basically randomly navigates the web pages of the web.
+
+328
+00:15:41,000 --> 00:15:44,540
+So this is, you know, somebody or this surfer who at,
+
+329
+00:15:44,540 --> 00:15:48,065
+you know, at some time t is one of the pages on the web.
+
+330
+00:15:48,065 --> 00:15:50,430
+And then because this person is, let's say, I know,
+
+331
+00:15:50,430 --> 00:15:53,150
+so bored, they decide to randomly surf the web.
+
+332
+00:15:53,150 --> 00:15:55,505
+What this means is that when they are at page i,
+
+333
+00:15:55,505 --> 00:16:01,475
+they- then they at next time stay- they decide to pick an out-link of this page i, uh,
+
+334
+00:16:01,475 --> 00:16:04,850
+uniformly at random and- and click it and this means they
+
+335
+00:16:04,850 --> 00:16:08,240
+navigate now to the new page, uh, j, right?
+
+336
+00:16:08,240 --> 00:16:10,415
+So the idea is, again, I'm, uh, uh,
+
+337
+00:16:10,415 --> 00:16:12,920
+re- I have this random walk, this random surfer,
+
+338
+00:16:12,920 --> 00:16:15,530
+that whenever the surfer arrives to a page,
+
+339
+00:16:15,530 --> 00:16:21,065
+picks one of its outgoing links uniformly at random and navigates, uh, to the target.
+
+340
+00:16:21,065 --> 00:16:22,520
+And this process, ah,
+
+341
+00:16:22,520 --> 00:16:24,080
+you know, repeats indefinitely.
+
+342
+00:16:24,080 --> 00:16:26,585
+It kind of runs, ah, infinitely long.
+
+343
+00:16:26,585 --> 00:16:31,340
+So let's try to ask where is the web surfer, right?
+
+344
+00:16:31,340 --> 00:16:33,290
+So this random surfer surfs the web,
+
+345
+00:16:33,290 --> 00:16:35,645
+at what node is this web surfer?
+
+346
+00:16:35,645 --> 00:16:38,735
+So let's say that p of t is a vector
+
+347
+00:16:38,735 --> 00:16:42,620
+whose ith coordinate is the probability that a surfer is at
+
+348
+00:16:42,620 --> 00:16:46,250
+page i at time t. So what this is
+
+349
+00:16:46,250 --> 00:16:50,150
+means is that p of t is a probability distribution over pages.
+
+350
+00:16:50,150 --> 00:16:53,720
+It tells me with what probability is a s- a web surfer at
+
+351
+00:16:53,720 --> 00:16:57,790
+that given page at time t. So now,
+
+352
+00:16:57,790 --> 00:16:59,920
+let's work it out and ask, Okay,
+
+353
+00:16:59,920 --> 00:17:04,385
+so how- how likely- how can I think about this page j, right?
+
+354
+00:17:04,385 --> 00:17:08,540
+This page j, the way we formulated it in the, um, in the,
+
+355
+00:17:08,540 --> 00:17:09,875
+ah, in our, uh,
+
+356
+00:17:09,875 --> 00:17:13,579
+PageRank algorithm is to say that there are these, uh, pages i.
+
+357
+00:17:13,579 --> 00:17:15,679
+Each page i has importance.
+
+358
+00:17:15,680 --> 00:17:16,785
+And then, you know,
+
+359
+00:17:16,785 --> 00:17:21,380
+1 over d out-degree of this page i gets sent to the,
+
+360
+00:17:21,380 --> 00:17:23,585
+uh, to the page, uh, j.
+
+361
+00:17:23,585 --> 00:17:25,970
+And this is the key to be able to
+
+362
+00:17:25,970 --> 00:17:28,660
+make the correspondence between the random walk and these,
+
+363
+00:17:28,660 --> 00:17:31,190
+uh, flow-based equations that I talked about.
+
+364
+00:17:31,190 --> 00:17:33,350
+So let me tell you how to think about this.
+
+365
+00:17:33,350 --> 00:17:37,820
+So we want to compute where is the surfer at time t plus 1.
+
+366
+00:17:37,820 --> 00:17:42,100
+And basically, the way we know where is surfer at time t plus 1 is the following, right?
+
+367
+00:17:42,100 --> 00:17:45,770
+Is, um, the surfer follows links uniformly at random.
+
+368
+00:17:45,770 --> 00:17:47,135
+So this means that,
+
+369
+00:17:47,135 --> 00:17:50,365
+um, wherever is the surfer at time t,
+
+370
+00:17:50,365 --> 00:17:52,420
+the surfer will- will pick, uh,
+
+371
+00:17:52,420 --> 00:17:56,150
+out-links uniformly at random and navigate over them.
+
+372
+00:17:56,150 --> 00:17:58,130
+So the way you can say, Aha,
+
+373
+00:17:58,130 --> 00:18:02,210
+how likely is surfer at time t plus 1 out-link j, the, ah,
+
+374
+00:18:02,210 --> 00:18:07,085
+the answer to that is it is the- the likelihood that the surfer was what,
+
+375
+00:18:07,085 --> 00:18:09,605
+at node i_1 and then, you know,
+
+376
+00:18:09,605 --> 00:18:15,395
+picked a random link out of i_1 to arrive to j plus the probability they were at, uh,
+
+377
+00:18:15,395 --> 00:18:19,055
+i_2 and picked a random out-link that led them to j,
+
+378
+00:18:19,055 --> 00:18:21,500
+or they were at i_3, and again,
+
+379
+00:18:21,500 --> 00:18:24,605
+they were lucky to pick the right out-link to get them to j.
+
+380
+00:18:24,605 --> 00:18:27,110
+So the way you can write this out is exactly the following.
+
+381
+00:18:27,110 --> 00:18:29,230
+You say this is the stochastic, um, um,
+
+382
+00:18:29,230 --> 00:18:32,110
+ah, adjacency matrix that we talked about.
+
+383
+00:18:32,110 --> 00:18:34,490
+This is the probability vector where the- where
+
+384
+00:18:34,490 --> 00:18:36,930
+the random walker was at the previous time step,
+
+385
+00:18:36,930 --> 00:18:40,390
+and this gives you now the probability distribution of where the walker,
+
+386
+00:18:40,390 --> 00:18:43,195
+ah, will be in the next time step.
+
+387
+00:18:43,195 --> 00:18:46,360
+Right? So, um, you notice how now we can
+
+388
+00:18:46,360 --> 00:18:49,885
+basically say the- the random walker started somewhere,
+
+389
+00:18:49,885 --> 00:18:51,580
+we multiply it with matrix M,
+
+390
+00:18:51,580 --> 00:18:54,295
+and we get the probability distribution
+
+391
+00:18:54,295 --> 00:18:57,460
+where the walker is going to be in the next time step.
+
+392
+00:18:57,460 --> 00:19:02,590
+So now, let's suppose that this random walk process reaches a steady state.
+
+393
+00:19:02,590 --> 00:19:03,865
+What do I mean by that?
+
+394
+00:19:03,865 --> 00:19:06,190
+Is, um, that the- that
+
+395
+00:19:06,190 --> 00:19:09,820
+this probability distribution of where the random walker is, converges.
+
+396
+00:19:09,820 --> 00:19:13,240
+So I'm saying M times probability- the random walker,
+
+397
+00:19:13,240 --> 00:19:17,710
+ah, probability distribution of the random walker at time t equals now, right?
+
+398
+00:19:17,710 --> 00:19:20,215
+To probability where- probability distribution where-
+
+399
+00:19:20,215 --> 00:19:23,425
+over where the random walker is going to be at the next time step.
+
+400
+00:19:23,425 --> 00:19:27,730
+And let's just assume that this is actually equal to where they- where they used to be.
+
+401
+00:19:27,730 --> 00:19:32,020
+And technically p of t is called a stationary distribution of a random walk, right?
+
+402
+00:19:32,020 --> 00:19:36,610
+So random walker walks around so long that kind of time doesn't really matter,
+
+403
+00:19:36,610 --> 00:19:40,615
+and this distribution of where the random walker is kind of stabilizes,
+
+404
+00:19:40,615 --> 00:19:42,310
+uh, over the graph.
+
+405
+00:19:42,310 --> 00:19:44,695
+And, ah, now, um,
+
+406
+00:19:44,695 --> 00:19:45,925
+why is this interesting?
+
+407
+00:19:45,925 --> 00:19:48,039
+Because in our original,
+
+408
+00:19:48,039 --> 00:19:50,080
+uh, PageRank vector that we talked about,
+
+409
+00:19:50,080 --> 00:19:55,435
+we said r equals M times r. And notice what I've wrote here is basically,
+
+410
+00:19:55,435 --> 00:19:59,860
+p of t equals M times p of t. So now,
+
+411
+00:19:59,860 --> 00:20:01,600
+because we have this correspondence,
+
+412
+00:20:01,600 --> 00:20:06,130
+this means that r is a stationary distribution of the random walk.
+
+413
+00:20:06,130 --> 00:20:08,350
+So basically, it means that this flow
+
+414
+00:20:08,350 --> 00:20:12,100
+based equations can be interpreted based on the flow,
+
+415
+00:20:12,100 --> 00:20:15,790
+or can also be interpreted as this intuition that there
+
+416
+00:20:15,790 --> 00:20:19,405
+is a random walker walking around infinitely long over the graph,
+
+417
+00:20:19,405 --> 00:20:22,180
+so that after some time, basically,
+
+418
+00:20:22,180 --> 00:20:25,705
+it doesn't matter where the walker- random walker started,
+
+419
+00:20:25,705 --> 00:20:29,725
+but it's really all about this distribution of where the random walker is,
+
+420
+00:20:29,725 --> 00:20:33,460
+is going to converge to this stationary, uh, distribution.
+
+421
+00:20:33,460 --> 00:20:36,850
+And in order for you to compute the stationary distribution,
+
+422
+00:20:36,850 --> 00:20:41,350
+is the same problem as it was before to solve that system of equations or
+
+423
+00:20:41,350 --> 00:20:45,895
+to solve this recursive equation of r equals m times r. Right?
+
+424
+00:20:45,895 --> 00:20:48,190
+So, ah, this is the interesting, ah,
+
+425
+00:20:48,190 --> 00:20:50,080
+correspondence that I wanted,
+
+426
+00:20:50,080 --> 00:20:52,525
+ah, to talk about, right?
+
+427
+00:20:52,525 --> 00:20:55,210
+And now, this is very interesting because this,
+
+428
+00:20:55,210 --> 00:20:58,870
+ah, also links back to the lecture number 2,
+
+429
+00:20:58,870 --> 00:21:01,960
+when we talked about eigenvector centrality, and we said,
+
+430
+00:21:01,960 --> 00:21:04,945
+let adjacency matrix a be,
+
+431
+00:21:04,945 --> 00:21:07,640
+um, an adjacency matrix of an undirected graph.
+
+432
+00:21:07,640 --> 00:21:09,030
+As an example is here.
+
+433
+00:21:09,030 --> 00:21:12,375
+And we said, ah, eigenvectors of- eigenvectors, ah,
+
+434
+00:21:12,375 --> 00:21:14,895
+centrality of a, um,
+
+435
+00:21:14,895 --> 00:21:17,940
+of a- of a graph with adjacency matrix A,
+
+436
+00:21:17,940 --> 00:21:19,590
+simply satisfies this equation.
+
+437
+00:21:19,590 --> 00:21:20,895
+We said A, ah,
+
+438
+00:21:20,895 --> 00:21:23,280
+we said Lambda times c equals,
+
+439
+00:21:23,280 --> 00:21:24,900
+ah, A times c, right?
+
+440
+00:21:24,900 --> 00:21:28,515
+Where, ah, c is a vector and Lambda is of value.
+
+441
+00:21:28,515 --> 00:21:31,590
+And solutions to these equations, um,
+
+442
+00:21:31,590 --> 00:21:34,450
+where we have a scalar and a vector, um,
+
+443
+00:21:34,450 --> 00:21:38,320
+are called, um, eigenvector eigenvalue, ah, equation. So right?
+
+444
+00:21:38,320 --> 00:21:40,835
+So c in this case would be an eigenvector,
+
+445
+00:21:40,835 --> 00:21:42,805
+and lambda would be an eigenvalue.
+
+446
+00:21:42,805 --> 00:21:47,110
+So what this means is that the eigenvector centrality that
+
+447
+00:21:47,110 --> 00:21:51,370
+we talked about is- is- has very similar structure to the,
+
+448
+00:21:51,370 --> 00:21:53,110
+ah, to the PageRank equation, right?
+
+449
+00:21:53,110 --> 00:21:55,180
+Here we are using this matrix M,
+
+450
+00:21:55,180 --> 00:21:57,295
+that is stochastic matrix,
+
+451
+00:21:57,295 --> 00:21:59,725
+but we have basically the same equation, ah,
+
+452
+00:21:59,725 --> 00:22:02,845
+than what we had in the eigenvector centrality.
+
+453
+00:22:02,845 --> 00:22:05,185
+The only difference is that we have this, ah,
+
+454
+00:22:05,185 --> 00:22:08,515
+factor Lambda, and that we have this,
+
+455
+00:22:08,515 --> 00:22:10,720
+um, adjacency matrix A,
+
+456
+00:22:10,720 --> 00:22:13,990
+rather than the stochastic matrix M. So that's, ah,
+
+457
+00:22:13,990 --> 00:22:16,075
+the connection now back to, ah,
+
+458
+00:22:16,075 --> 00:22:20,260
+lecture 2, which is also, ah, super fascinating.
+
+459
+00:22:20,260 --> 00:22:23,155
+So now, lets keep, uh, working.
+
+460
+00:22:23,155 --> 00:22:24,910
+How are we going to solve this, right?
+
+461
+00:22:24,910 --> 00:22:28,330
+So if I write this r equals M times r,
+
+462
+00:22:28,330 --> 00:22:30,760
+and I include, ah, you know,
+
+463
+00:22:30,760 --> 00:22:33,110
+implicitly basically a constant one here,
+
+464
+00:22:33,110 --> 00:22:37,055
+then notice that this is also an eigenvalue eigenvector problem, right?
+
+465
+00:22:37,055 --> 00:22:42,490
+Now, ah, r is an eigenvector that corresponds to the eigenvalue, ah,
+
+466
+00:22:42,490 --> 00:22:45,925
+one of these stochastic, ah, matrix, ah,
+
+467
+00:22:45,925 --> 00:22:50,290
+M. So this is- this is very interesting, right?
+
+468
+00:22:50,290 --> 00:22:52,990
+Because this rank vector r, as I said,
+
+469
+00:22:52,990 --> 00:22:56,215
+is the eigenvector of the stochastic adjacency matrix M,
+
+470
+00:22:56,215 --> 00:22:58,720
+with the corresponding eigenvalue one, right?
+
+471
+00:22:58,720 --> 00:23:01,510
+This is the Lambda constant from the previous,
+
+472
+00:23:01,510 --> 00:23:03,715
+uh, slide, implicitly one.
+
+473
+00:23:03,715 --> 00:23:05,440
+Um, and now, you know,
+
+474
+00:23:05,440 --> 00:23:08,055
+what is the intuition of the- of the eigenvector?
+
+475
+00:23:08,055 --> 00:23:12,150
+So the idea is that imagine you start from some vector,
+
+476
+00:23:12,150 --> 00:23:16,360
+ah u, and you wanna compute this, uh,
+
+477
+00:23:16,360 --> 00:23:18,460
+product of M times u,
+
+478
+00:23:18,460 --> 00:23:20,560
+times M, times M, times M,
+
+479
+00:23:20,560 --> 00:23:23,560
+times M. So basically you are just taking u and
+
+480
+00:23:23,560 --> 00:23:27,200
+keep multiplying it with M over and over and over again.
+
+481
+00:23:27,200 --> 00:23:30,820
+Um, so the question then becomes- right what this will
+
+482
+00:23:30,820 --> 00:23:34,265
+do if u is the starting distribution of the random walker,
+
+483
+00:23:34,265 --> 00:23:35,830
+then the question is, what is
+
+484
+00:23:35,830 --> 00:23:40,165
+the long-term distribution of where the surfer is going to be in my network?
+
+485
+00:23:40,165 --> 00:23:42,130
+And if you are multiplying with M,
+
+486
+00:23:42,130 --> 00:23:44,605
+essentially you are making the surfer, uh,
+
+487
+00:23:44,605 --> 00:23:47,260
+keeps surfing around, uh, longer and longer.
+
+488
+00:23:47,260 --> 00:23:49,680
+Um, and just to- to tell you, right?
+
+489
+00:23:49,680 --> 00:23:54,795
+Like this is also interesting because it connects to the notion of ka- Katz,
+
+490
+00:23:54,795 --> 00:23:57,820
+uh, Katz, uh, centrality,
+
+491
+00:23:57,820 --> 00:23:59,425
+when we talked about this,
+
+492
+00:23:59,425 --> 00:24:02,830
+or Katz similarity in the- in the lecture 2,
+
+493
+00:24:02,830 --> 00:24:07,105
+because there we also said that if you take an adjacency matrix and power it,
+
+494
+00:24:07,105 --> 00:24:11,020
+it counts the number of paths between a pair of nodes, all right?
+
+495
+00:24:11,020 --> 00:24:12,715
+So here in some sense we are also, ah,
+
+496
+00:24:12,715 --> 00:24:16,225
+evolving and making this random walker walk longer and longer,
+
+497
+00:24:16,225 --> 00:24:22,270
+uh, one step longer whenever we multiply with the matrix m. So what did we learn so far?
+
+498
+00:24:22,270 --> 00:24:25,389
+We learned that PageRank is a limiting distribution,
+
+499
+00:24:25,389 --> 00:24:28,914
+a stationary distribution of this random walk process,
+
+500
+00:24:28,914 --> 00:24:33,430
+that it corresponds to the principal eigenvector of the stochastic, uh,
+
+501
+00:24:33,430 --> 00:24:36,999
+adjacency matrix M. Principal eigenvector means eigenvector
+
+502
+00:24:36,999 --> 00:24:41,590
+associated with the eigenvalue 1 of the- of the matrix.
+
+503
+00:24:41,590 --> 00:24:47,365
+Um, and, ah, also notice if r is the limit of this,
+
+504
+00:24:47,365 --> 00:24:49,990
+ah, ah, product of M, ah, you know,
+
+505
+00:24:49,990 --> 00:24:52,960
+of number of multiplications of matrix M and u,
+
+506
+00:24:52,960 --> 00:24:56,125
+then r satisfies this flow equation that we have,
+
+507
+00:24:56,125 --> 00:24:58,330
+uh, that we have written up here that, you know,
+
+508
+00:24:58,330 --> 00:25:01,355
+1 times r equals M times r. So what
+
+509
+00:25:01,355 --> 00:25:04,600
+this means is that our vector r is the principal eigenvector,
+
+510
+00:25:04,600 --> 00:25:09,085
+uh, of matrix M and that it corresponds to eigenvalue 1.
+
+511
+00:25:09,085 --> 00:25:13,090
+So, um, now, we brought three different things together.
+
+512
+00:25:13,090 --> 00:25:16,840
+We brought things- we brought together the random walk equation,
+
+513
+00:25:16,840 --> 00:25:20,920
+we've brought together this flow based equation that I've wrote here,
+
+514
+00:25:20,920 --> 00:25:23,320
+and we brought together this concept of
+
+515
+00:25:23,320 --> 00:25:26,530
+eigenvectors and eigenvalues from, uh, linear algebra.
+
+516
+00:25:26,530 --> 00:25:32,260
+And it's super fascinating that this very different intuitions all converge, uh,
+
+517
+00:25:32,260 --> 00:25:34,660
+in- in the same- in the same spot and they are
+
+518
+00:25:34,660 --> 00:25:38,920
+just different interpretation of the same underlying mathematics.
+
+519
+00:25:38,920 --> 00:25:41,965
+So now, what I wanna say is,
+
+520
+00:25:41,965 --> 00:25:44,215
+how can we solve for this vector r?
+
+521
+00:25:44,215 --> 00:25:45,925
+How do we determine vector r?
+
+522
+00:25:45,925 --> 00:25:47,890
+And it turns out there is a very elegant,
+
+523
+00:25:47,890 --> 00:25:49,870
+uh, and powerful, uh,
+
+524
+00:25:49,870 --> 00:25:51,005
+algorithm to do this.
+
+525
+00:25:51,005 --> 00:25:52,945
+It's called power iteration.
+
+526
+00:25:52,945 --> 00:25:57,355
+Um, and it's- the approach is amazingly simple and amazingly new scalable.
+
+527
+00:25:57,355 --> 00:26:00,205
+So, um, let me summarize,
+
+528
+00:26:00,205 --> 00:26:02,125
+um, what we learned so far.
+
+529
+00:26:02,125 --> 00:26:07,730
+We defined this notion of PageRank that measures importance of nodes in a graph using,
+
+530
+00:26:07,730 --> 00:26:09,580
+uh, link structure of the graph.
+
+531
+00:26:09,580 --> 00:26:12,580
+We talked today about directed graphs.
+
+532
+00:26:12,580 --> 00:26:19,105
+Ah, PageRank models are random web surfer using this stochastic adjacency matrix M,
+
+533
+00:26:19,105 --> 00:26:21,100
+and this random website for basically,
+
+534
+00:26:21,100 --> 00:26:22,450
+uh, resides at the page,
+
+535
+00:26:22,450 --> 00:26:26,245
+picks, uh, uh, out link at random and makes a transition.
+
+536
+00:26:26,245 --> 00:26:27,835
+And then we said,
+
+537
+00:26:27,835 --> 00:26:31,030
+how we- how could we compute the stationary distribution of
+
+538
+00:26:31,030 --> 00:26:36,115
+this random walk process of this random surfer process on the graph?
+
+539
+00:26:36,115 --> 00:26:39,400
+Um, we saw that PageRank solves this equation,
+
+540
+00:26:39,400 --> 00:26:42,130
+ah, r equals M times r, uh,
+
+541
+00:26:42,130 --> 00:26:46,420
+where r can be viewed both as the principal eigenvector of M,
+
+542
+00:26:46,420 --> 00:26:51,215
+as well as the stationary distribution of this random walk process of the graph.
+
+543
+00:26:51,215 --> 00:26:53,290
+And this is the fascinating thing, right?
+
+544
+00:26:53,290 --> 00:26:55,195
+It's- it's just an eigenvector,
+
+545
+00:26:55,195 --> 00:26:58,810
+but it has this very rich interpretation of the random walker,
+
+546
+00:26:58,810 --> 00:27:01,300
+random surfer, ah, surfing around.
+
+547
+00:27:01,300 --> 00:27:05,390
+So, um, this is the summary, ah, so far.
+

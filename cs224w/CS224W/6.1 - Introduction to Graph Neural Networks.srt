@@ -1,0 +1,816 @@
+1
+00:00:04,010 --> 00:00:07,620
+Great. So, uh, welcome back to the class.
+
+2
+00:00:07,620 --> 00:00:10,185
+Uh, we're starting a very exciting, uh,
+
+3
+00:00:10,185 --> 00:00:13,320
+new topic, uh, for which we have been building up,
+
+4
+00:00:13,320 --> 00:00:15,045
+uh, from the beginning of the course.
+
+5
+00:00:15,045 --> 00:00:17,415
+So today, we are going to talk about, uh,
+
+6
+00:00:17,415 --> 00:00:19,649
+deep learning for graphs and in particular,
+
+7
+00:00:19,649 --> 00:00:22,635
+uh, techniques around graph neural networks.
+
+8
+00:00:22,635 --> 00:00:26,100
+And this should be one of the most central topics of the- of the class.
+
+9
+00:00:26,100 --> 00:00:29,595
+And we are going to spend the next, uh, two weeks, uh,
+
+10
+00:00:29,595 --> 00:00:31,650
+discussing this and going, uh,
+
+11
+00:00:31,650 --> 00:00:34,335
+deeper, uh, into this exciting topic.
+
+12
+00:00:34,335 --> 00:00:37,640
+So the way we think of this is the following: so far,
+
+13
+00:00:37,640 --> 00:00:39,725
+we have been talking about node embeddings,
+
+14
+00:00:39,725 --> 00:00:42,800
+where our intuition was to map nodes of
+
+15
+00:00:42,800 --> 00:00:46,010
+the graph into d-dimensional embeddings such that,
+
+16
+00:00:46,010 --> 00:00:50,030
+uh, nodes similar in the graph are embedded close together.
+
+17
+00:00:50,030 --> 00:00:52,085
+And our goal was to learn this, uh,
+
+18
+00:00:52,085 --> 00:00:57,095
+function f that takes in a graph and gives us the positions,
+
+19
+00:00:57,095 --> 00:01:00,715
+the embeddings of individual nodes.
+
+20
+00:01:00,715 --> 00:01:03,025
+And the way we thought about this is,
+
+21
+00:01:03,025 --> 00:01:07,295
+we thought about this in this encoder-decoder framework where we said
+
+22
+00:01:07,295 --> 00:01:12,069
+that we want the similarity of nodes in the network,
+
+23
+00:01:12,069 --> 00:01:15,815
+uh, denoted as here to be similar or to
+
+24
+00:01:15,815 --> 00:01:19,550
+match the similarity of the nodes in the embedding space.
+
+25
+00:01:19,550 --> 00:01:21,050
+And here, by similarity,
+
+26
+00:01:21,050 --> 00:01:22,750
+we could measure distance.
+
+27
+00:01:22,750 --> 00:01:26,210
+Uh, there are many types of distances you can- you can quantify.
+
+28
+00:01:26,210 --> 00:01:30,860
+One type of a distance that we were interested in was cosine distance, a dot products.
+
+29
+00:01:30,860 --> 00:01:32,300
+So we say that, you know,
+
+30
+00:01:32,300 --> 00:01:34,985
+the dot product of the embeddings of the nodes
+
+31
+00:01:34,985 --> 00:01:38,360
+has to match the notion of similarity of them in the network.
+
+32
+00:01:38,360 --> 00:01:40,835
+So the goal was, that given an input network,
+
+33
+00:01:40,835 --> 00:01:43,940
+I want to encode the nodes by computing
+
+34
+00:01:43,940 --> 00:01:47,510
+their embeddings such that if nodes are similar in the network,
+
+35
+00:01:47,510 --> 00:01:50,030
+they are similar in the embedding space as well.
+
+36
+00:01:50,030 --> 00:01:52,735
+So their similarity, um, is higher.
+
+37
+00:01:52,735 --> 00:01:55,385
+And of course, when we talked about this,
+
+38
+00:01:55,385 --> 00:01:57,350
+we were defining about what does it mean to be
+
+39
+00:01:57,350 --> 00:02:00,355
+similar and what does it mean, uh, to encode?
+
+40
+00:02:00,355 --> 00:02:02,345
+And, ah, as I mentioned,
+
+41
+00:02:02,345 --> 00:02:04,700
+there are two key components in
+
+42
+00:02:04,700 --> 00:02:09,259
+this node embedding framework that we talked to- in- in the class so far.
+
+43
+00:02:09,259 --> 00:02:13,340
+So our goal was to make each node to a low-dimensional vector.
+
+44
+00:02:13,340 --> 00:02:19,870
+And, um, we wanted to encode the embedding of a node in this vector, uh, z_v.
+
+45
+00:02:19,870 --> 00:02:23,140
+And this is a d-dimensional embedding.
+
+46
+00:02:23,140 --> 00:02:25,700
+So, you know, a vector of d numbers.
+
+47
+00:02:25,700 --> 00:02:30,650
+And, uh, we also needed to specify the similarity function that specifies how
+
+48
+00:02:30,650 --> 00:02:33,275
+the relationships in the vector space
+
+49
+00:02:33,275 --> 00:02:36,110
+mapped to the relationships in the original network, right?
+
+50
+00:02:36,110 --> 00:02:37,610
+So we said, um, you know,
+
+51
+00:02:37,610 --> 00:02:40,280
+this is the similarity defined in terms of the network.
+
+52
+00:02:40,280 --> 00:02:42,425
+This is the similarity defined, uh,
+
+53
+00:02:42,425 --> 00:02:46,080
+in terms of the, um, embedding space,
+
+54
+00:02:46,080 --> 00:02:49,085
+and this similarity computation in the embedding space,
+
+55
+00:02:49,085 --> 00:02:51,005
+we can call this a dot,
+
+56
+00:02:51,005 --> 00:02:52,685
+uh, uh, we can call this a decoder.
+
+57
+00:02:52,685 --> 00:02:56,975
+So our goal was to encode the coordinate so that when we decode them,
+
+58
+00:02:56,975 --> 00:03:00,175
+they decode the similarity in the network.
+
+59
+00:03:00,175 --> 00:03:04,580
+Um, so far, we talked about what is called shallow encoding,
+
+60
+00:03:04,580 --> 00:03:06,560
+which is the simplest approach to, uh,
+
+61
+00:03:06,560 --> 00:03:11,965
+learning that encoder which is that basically encoder is just an embedding-look- look-up,
+
+62
+00:03:11,965 --> 00:03:15,005
+which means we said we are going to learn this matrix z,
+
+63
+00:03:15,005 --> 00:03:17,300
+where every node will have our column,
+
+64
+00:03:17,300 --> 00:03:19,265
+uh, reserved in this matrix.
+
+65
+00:03:19,265 --> 00:03:24,860
+And this- the way we are going to decode the- the embedding of a given node will simply
+
+66
+00:03:24,860 --> 00:03:27,620
+be to basically look at the appropriate column of
+
+67
+00:03:27,620 --> 00:03:30,485
+this matrix and say here is when it's embedding the store.
+
+68
+00:03:30,485 --> 00:03:33,500
+So this is what we mean by shallow because basically,
+
+69
+00:03:33,500 --> 00:03:36,590
+you are just memorizing the embedding of every node.
+
+70
+00:03:36,590 --> 00:03:38,225
+We are directly learning,
+
+71
+00:03:38,225 --> 00:03:41,890
+directly determining the embedding of every node.
+
+72
+00:03:41,890 --> 00:03:45,830
+Um, so what are some of the limitations of the approaches?
+
+73
+00:03:45,830 --> 00:03:49,850
+Um, like deep walk or nodes to end that we have talked about, uh,
+
+74
+00:03:49,850 --> 00:03:51,845
+so far that apply this, uh,
+
+75
+00:03:51,845 --> 00:03:55,010
+shallow approach to- to learning node embeddings.
+
+76
+00:03:55,010 --> 00:03:58,040
+First is that this is extremely expensive in
+
+77
+00:03:58,040 --> 00:04:01,220
+terms of the number of parameters that are needed, right?
+
+78
+00:04:01,220 --> 00:04:03,470
+The number of parameters that the model has,
+
+79
+00:04:03,470 --> 00:04:05,510
+the number of variables it has to
+
+80
+00:04:05,510 --> 00:04:08,615
+learn is proportional to the number of nodes in the network.
+
+81
+00:04:08,615 --> 00:04:11,550
+It is basically d times number of nodes.
+
+82
+00:04:11,550 --> 00:04:14,300
+This- the reason for this being is that for every node we have
+
+83
+00:04:14,300 --> 00:04:17,000
+to determine or learn d-parameters,
+
+84
+00:04:17,000 --> 00:04:19,144
+d-values that determine its embedding.
+
+85
+00:04:19,144 --> 00:04:21,694
+So, um, this means that, uh,
+
+86
+00:04:21,695 --> 00:04:25,490
+for huge graphs the parameter space will be- will be giant.
+
+87
+00:04:25,490 --> 00:04:29,600
+Um, there is no parameter sharing, uh, between the nodes.
+
+88
+00:04:29,600 --> 00:04:33,260
+Um, in some sense, every node has to determine its own unique embedding.
+
+89
+00:04:33,260 --> 00:04:36,095
+So there is a lot of computation that we need to do.
+
+90
+00:04:36,095 --> 00:04:40,685
+Then, um, this is what is called, uh, transductive.
+
+91
+00:04:40,685 --> 00:04:43,235
+Um, this means that in transductive learning,
+
+92
+00:04:43,235 --> 00:04:47,645
+we can only make predictions over the examples that we have actually seen,
+
+93
+00:04:47,645 --> 00:04:49,310
+uh, during the training phase.
+
+94
+00:04:49,310 --> 00:04:50,595
+So this means, in this case,
+
+95
+00:04:50,595 --> 00:04:52,610
+if you cannot generate an embedding for
+
+96
+00:04:52,610 --> 00:04:56,010
+a node that- for a node that was not seen during training.
+
+97
+00:04:56,010 --> 00:05:00,470
+We cannot transfer embeddings for one graph to another because for every graph,
+
+98
+00:05:00,470 --> 00:05:05,989
+for every node, we have to directly learn- learn that embedding in the training space.
+
+99
+00:05:05,989 --> 00:05:08,280
+And then, um, another important,
+
+100
+00:05:08,280 --> 00:05:11,345
+uh, uh, drawback of this shallow encoding- encoders,
+
+101
+00:05:11,345 --> 00:05:13,430
+as I said, like a deep walk or, uh,
+
+102
+00:05:13,430 --> 00:05:16,970
+node correct, is that they do not incorporate node features, right?
+
+103
+00:05:16,970 --> 00:05:18,830
+Many graphs have features,
+
+104
+00:05:18,830 --> 00:05:21,370
+properties attached to the nodes of the network.
+
+105
+00:05:21,370 --> 00:05:25,375
+Um, and these approaches do not naturally, uh, leverage them.
+
+106
+00:05:25,375 --> 00:05:30,200
+So today, we are going to talk about deep graph encoders.
+
+107
+00:05:30,200 --> 00:05:36,320
+So we are going to discuss graph neural networks that are examples of deep, um,
+
+108
+00:05:36,320 --> 00:05:41,570
+graph encoders where the idea is that this encoding of, uh, er, er,
+
+109
+00:05:41,570 --> 00:05:44,060
+of an embedding of our node v is
+
+110
+00:05:44,060 --> 00:05:48,770
+a multi-layers of nonlinear transformations based on the graph structure.
+
+111
+00:05:48,770 --> 00:05:50,795
+So basically now, we'll really think about
+
+112
+00:05:50,795 --> 00:05:53,870
+deep neural networks and how they are transforming
+
+113
+00:05:53,870 --> 00:05:56,570
+information through multiple layers of
+
+114
+00:05:56,570 --> 00:06:00,110
+nonlinear transforms to come up with the final embedding.
+
+115
+00:06:00,110 --> 00:06:04,040
+And important to note that all these deep encoders
+
+116
+00:06:04,040 --> 00:06:07,960
+can be combined also with node similarity functions in Lecture 3.
+
+117
+00:06:07,960 --> 00:06:13,070
+So we could say I want to learn a deep encoder that encodes the similarity function,
+
+118
+00:06:13,070 --> 00:06:16,445
+uh, for example, the random walk similarity function that we used,
+
+119
+00:06:16,445 --> 00:06:17,845
+uh, in the previous lectures.
+
+120
+00:06:17,845 --> 00:06:19,250
+Or in this case,
+
+121
+00:06:19,250 --> 00:06:21,380
+we can actually directly learn the- the-
+
+122
+00:06:21,380 --> 00:06:26,660
+the encoder so that it is able to decode the node labels,
+
+123
+00:06:26,660 --> 00:06:30,200
+which means we can actually directly train these models for, uh,
+
+124
+00:06:30,200 --> 00:06:32,750
+node classification or any kind of,
+
+125
+00:06:32,750 --> 00:06:35,575
+uh, graph prediction task.
+
+126
+00:06:35,575 --> 00:06:38,480
+So intuitively, what we would like to do,
+
+127
+00:06:38,480 --> 00:06:40,955
+or what we are going to do is we are going to develop
+
+128
+00:06:40,955 --> 00:06:45,695
+deep neural networks that on the left will- on the input will take graph,
+
+129
+00:06:45,695 --> 00:06:48,890
+uh, as a structure together with, uh, properties,
+
+130
+00:06:48,890 --> 00:06:50,730
+features of nodes, uh,
+
+131
+00:06:50,730 --> 00:06:52,095
+and potentially of edges.
+
+132
+00:06:52,095 --> 00:06:54,800
+We will send this to the multiple layers of
+
+133
+00:06:54,800 --> 00:06:58,670
+non-linear transformations in the network so that at the end,
+
+134
+00:06:58,670 --> 00:07:00,860
+in the output, we get, for example,
+
+135
+00:07:00,860 --> 00:07:04,665
+node embeddings, we also embed entire sub-graphs.
+
+136
+00:07:04,665 --> 00:07:10,070
+We can embed the pairs of nodes and make various kinds of predictions, uh, in the end.
+
+137
+00:07:10,070 --> 00:07:14,960
+And the good thing would be that we are able to train this in an end-to-end fashion.
+
+138
+00:07:14,960 --> 00:07:16,695
+So from the labels, uh,
+
+139
+00:07:16,695 --> 00:07:19,095
+on the right all the way down to the,
+
+140
+00:07:19,095 --> 00:07:21,720
+uh, graph structure, uh, on the left.
+
+141
+00:07:21,720 --> 00:07:24,300
+Um, and this would be in some sense,
+
+142
+00:07:24,300 --> 00:07:28,490
+task, uh, agnostic or it will be applicable to many different tasks.
+
+143
+00:07:28,490 --> 00:07:31,055
+We'll be able to do, uh, node classification,
+
+144
+00:07:31,055 --> 00:07:33,790
+we'll be able to do, uh, link prediction,
+
+145
+00:07:33,790 --> 00:07:37,160
+we'll be able to do any kind of clustering community detection,
+
+146
+00:07:37,160 --> 00:07:40,620
+as well as to measure similarity, um, or,
+
+147
+00:07:40,620 --> 00:07:44,420
+um, compatibility between different graphs or different sub-networks.
+
+148
+00:07:44,420 --> 00:07:46,700
+So, uh, this, uh, will really, uh,
+
+149
+00:07:46,700 --> 00:07:49,505
+allow us to be applied to any of these,
+
+150
+00:07:49,505 --> 00:07:51,970
+uh, different, uh, tasks.
+
+151
+00:07:51,970 --> 00:07:57,150
+So why is this interesting or why is it hard or why is it different from,
+
+152
+00:07:57,150 --> 00:07:58,545
+let's say, classical, uh,
+
+153
+00:07:58,545 --> 00:08:00,950
+machine learning or classical deep learning?
+
+154
+00:08:00,950 --> 00:08:03,935
+If you think about the classical deep learning toolbox,
+
+155
+00:08:03,935 --> 00:08:06,870
+it is designed for simple data types.
+
+156
+00:08:06,870 --> 00:08:11,450
+Essentially, what tra- traditional or current toolbox is really good at is,
+
+157
+00:08:11,450 --> 00:08:15,110
+we know how to process fixed-size matrices, right?
+
+158
+00:08:15,110 --> 00:08:17,630
+So basically, I can resize every image and I represent it as
+
+159
+00:08:17,630 --> 00:08:20,935
+a fixed-size matrix or as a fixed-size grid graph.
+
+160
+00:08:20,935 --> 00:08:22,230
+And I can also take,
+
+161
+00:08:22,230 --> 00:08:23,805
+for example, texts, speech,
+
+162
+00:08:23,805 --> 00:08:26,810
+and represent- think of it basically as a linear sequence,
+
+163
+00:08:26,810 --> 00:08:28,070
+as a chain graph.
+
+164
+00:08:28,070 --> 00:08:30,980
+And we know how to process that, uh, really, really well.
+
+165
+00:08:30,980 --> 00:08:32,990
+So kind of the claim, uh,
+
+166
+00:08:32,990 --> 00:08:34,460
+and motivation for this is that
+
+167
+00:08:34,460 --> 00:08:38,240
+modern deep learning toolbox is designed for simple data types,
+
+168
+00:08:38,240 --> 00:08:40,809
+meaning sequences, uh, linear sequences,
+
+169
+00:08:40,809 --> 00:08:42,889
+and, uh, fixed-size grids.
+
+170
+00:08:42,890 --> 00:08:44,600
+Um, and of course the question is,
+
+171
+00:08:44,600 --> 00:08:45,905
+how can we generalize that?
+
+172
+00:08:45,905 --> 00:08:51,215
+How can we apply deep learning representation learning to more complex data types?
+
+173
+00:08:51,215 --> 00:08:57,020
+And this is where graph neural networks come into play because they allow
+
+174
+00:08:57,020 --> 00:08:59,510
+us to apply representation learning to
+
+175
+00:08:59,510 --> 00:09:03,275
+much more complex data types than just the span of two very simple,
+
+176
+00:09:03,275 --> 00:09:05,090
+uh, uh, data types,
+
+177
+00:09:05,090 --> 00:09:06,600
+meaning the fixed size grids,
+
+178
+00:09:06,600 --> 00:09:08,590
+uh, and linear sequences.
+
+179
+00:09:08,590 --> 00:09:10,640
+And why is this hard?
+
+180
+00:09:10,640 --> 00:09:12,215
+Why this non-trivial to do?
+
+181
+00:09:12,215 --> 00:09:15,350
+It's because networks have a lot of complexity, right?
+
+182
+00:09:15,350 --> 00:09:20,300
+They have arbitrary size and they have complex topological structure, right?
+
+183
+00:09:20,300 --> 00:09:23,625
+There is no spatial locality like in grids.
+
+184
+00:09:23,625 --> 00:09:29,320
+Uh, this means there is also no reference point or at no fixed orderings on the nodes,
+
+185
+00:09:29,320 --> 00:09:35,400
+which means that in a graph there is no top left or bottom right as there is in a grid,
+
+186
+00:09:35,400 --> 00:09:37,490
+or you know there is no left and right,
+
+187
+00:09:37,490 --> 00:09:40,025
+as you can define in a text because it's a sequence.
+
+188
+00:09:40,025 --> 00:09:42,890
+In a graph, there is no notion of a reference point.
+
+189
+00:09:42,890 --> 00:09:44,770
+There is no notion of direction.
+
+190
+00:09:44,770 --> 00:09:46,490
+Um, and more interestingly, right,
+
+191
+00:09:46,490 --> 00:09:49,835
+these graphs are often dynamic and have multiple,
+
+192
+00:09:49,835 --> 00:09:54,005
+um multi-modal features assigned to the nodes and edges of them.
+
+193
+00:09:54,005 --> 00:09:55,400
+So this becomes, uh,
+
+194
+00:09:55,400 --> 00:10:00,090
+very- very interesting because it really, um, expands, uh,
+
+195
+00:10:00,090 --> 00:10:02,930
+ways in which we can describe the data and in which we
+
+196
+00:10:02,930 --> 00:10:06,410
+can represent the underlying domain in underlying data.
+
+197
+00:10:06,410 --> 00:10:09,690
+Because not everything can be represented as
+
+198
+00:10:09,690 --> 00:10:13,145
+a ma- fixed size matrix or as a linear sequence.
+
+199
+00:10:13,145 --> 00:10:15,300
+And there are- as I showed in the beginning,
+
+200
+00:10:15,300 --> 00:10:17,225
+right, in the first lecture,
+
+201
+00:10:17,225 --> 00:10:18,320
+there is a lot of domains,
+
+202
+00:10:18,320 --> 00:10:21,115
+a lot of use cases where, um,
+
+203
+00:10:21,115 --> 00:10:24,150
+proper graphical representation is,
+
+204
+00:10:24,150 --> 00:10:26,739
+uh, very, very important.
+

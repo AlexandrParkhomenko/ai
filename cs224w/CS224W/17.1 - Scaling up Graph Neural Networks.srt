@@ -1,0 +1,1212 @@
+1
+00:00:04,040 --> 00:00:06,765
+Welcome, uh, to the class.
+
+2
+00:00:06,765 --> 00:00:10,155
+Uh, today we are going to talk about scaling up,
+
+3
+00:00:10,155 --> 00:00:11,669
+uh, graph neural networks.
+
+4
+00:00:11,669 --> 00:00:15,810
+Uh, and in particular, we will be interested in how can we build, uh,
+
+5
+00:00:15,810 --> 00:00:19,680
+graph neural network models that can be applied, uh, to large, uh,
+
+6
+00:00:19,680 --> 00:00:22,320
+scale graphs, and what kind of, um,
+
+7
+00:00:22,320 --> 00:00:24,045
+techniques, uh, can we use,
+
+8
+00:00:24,045 --> 00:00:25,800
+uh, to be able to do that.
+
+9
+00:00:25,800 --> 00:00:27,990
+So, uh, let's first, uh,
+
+10
+00:00:27,990 --> 00:00:31,320
+kind of define and, uh, motivate the problem.
+
+11
+00:00:31,320 --> 00:00:36,620
+So, uh, there are large graphs in many modern applications.
+
+12
+00:00:36,620 --> 00:00:40,580
+Um, if you think about recommender systems, for example, uh,
+
+13
+00:00:40,580 --> 00:00:43,280
+systems that recommend you products at Amazon,
+
+14
+00:00:43,280 --> 00:00:46,760
+systems that recommend you mov- videos to watch on YouTube,
+
+15
+00:00:46,760 --> 00:00:49,070
+uh, pins to look at at Pinterest,
+
+16
+00:00:49,070 --> 00:00:51,290
+posts to examine at Instagram,
+
+17
+00:00:51,290 --> 00:00:52,455
+and so on, um,
+
+18
+00:00:52,455 --> 00:00:57,200
+you can think of these as a- as a- as a way where we wanna connect users, uh,
+
+19
+00:00:57,200 --> 00:01:00,110
+to the content, products, videos that,
+
+20
+00:01:00,110 --> 00:01:02,480
+uh, they might be interested in, right?
+
+21
+00:01:02,480 --> 00:01:05,360
+And, uh, you can think of this recommendation task,
+
+22
+00:01:05,360 --> 00:01:06,980
+um, as a way to, uh,
+
+23
+00:01:06,980 --> 00:01:09,590
+do link prediction, uh, in this, uh,
+
+24
+00:01:09,590 --> 00:01:12,710
+large bipartite graph where you have, you know,
+
+25
+00:01:12,710 --> 00:01:16,175
+hundreds of millions, billions of users on one end,
+
+26
+00:01:16,175 --> 00:01:18,950
+on the other side you have tens of millions,
+
+27
+00:01:18,950 --> 00:01:23,430
+hundreds of millions, tens of billions of items, uh,
+
+28
+00:01:23,430 --> 00:01:26,430
+on the other end, and you would like to predict what,
+
+29
+00:01:26,430 --> 00:01:28,320
+uh, what, uh, mo- what movie,
+
+30
+00:01:28,320 --> 00:01:29,865
+what video, or what product, uh,
+
+31
+00:01:29,865 --> 00:01:31,605
+is, uh, interesting, uh,
+
+32
+00:01:31,605 --> 00:01:33,165
+for what, uh, user,
+
+33
+00:01:33,165 --> 00:01:37,515
+and you can formulate this as a link prediction, uh, task.
+
+34
+00:01:37,515 --> 00:01:40,140
+Another example, uh, where,
+
+35
+00:01:40,140 --> 00:01:42,270
+uh, graph neural networks can be very, uh,
+
+36
+00:01:42,270 --> 00:01:44,820
+uh, well applied is in social networks,
+
+37
+00:01:44,820 --> 00:01:47,460
+for example, uh, Twitter, uh, Facebook, uh,
+
+38
+00:01:47,460 --> 00:01:51,800
+Instagram, where you have users and friend and follow relations,
+
+39
+00:01:51,800 --> 00:01:54,890
+and you want- wanna ask about how do I wanna make,
+
+40
+00:01:54,890 --> 00:01:57,980
+uh, recommend, uh, friends to each other at the link level?
+
+41
+00:01:57,980 --> 00:02:01,910
+Uh, do I wanna do some kind of user property prediction, for example,
+
+42
+00:02:01,910 --> 00:02:07,165
+uh, predict what ads the different users would be interested in or predict what, uh,
+
+43
+00:02:07,165 --> 00:02:08,600
+country they come from,
+
+44
+00:02:08,600 --> 00:02:13,330
+or perhaps I'm doing some kind of attribute imputation in a sense that maybe some-
+
+45
+00:02:13,330 --> 00:02:16,340
+some users tell me their gender but I don't know
+
+46
+00:02:16,340 --> 00:02:19,385
+the gender of other users and I wanna predict it.
+
+47
+00:02:19,385 --> 00:02:21,050
+Um, and again, in this case,
+
+48
+00:02:21,050 --> 00:02:22,685
+these networks have, uh,
+
+49
+00:02:22,685 --> 00:02:28,150
+billions of, uh, users and tens to hundreds of billions, uh, of edges.
+
+50
+00:02:28,150 --> 00:02:32,929
+And then, uh, another application I- you know that can be motivated
+
+51
+00:02:32,929 --> 00:02:37,360
+by what we are going to talk about today is- is a notion of heterogeneous graphs.
+
+52
+00:02:37,360 --> 00:02:39,975
+And, for example, you can- you can- one such, uh,
+
+53
+00:02:39,975 --> 00:02:43,005
+dataset is called Microsoft Academic Graph,
+
+54
+00:02:43,005 --> 00:02:46,129
+which is a set of 120 million papers,
+
+55
+00:02:46,129 --> 00:02:49,925
+120 million authors, as well as their affiliations,
+
+56
+00:02:49,925 --> 00:02:52,130
+institutions, um, and so on.
+
+57
+00:02:52,130 --> 00:02:55,830
+So, uh, this means now we have a giant heterogenous, uh,
+
+58
+00:02:55,830 --> 00:02:59,990
+knowledge graph on which you can try to do a lot of interesting machine learning tasks.
+
+59
+00:02:59,990 --> 00:03:04,340
+For example, a paper categorization which will be- predict what category,
+
+60
+00:03:04,340 --> 00:03:06,440
+what topic the paper is about, uh,
+
+61
+00:03:06,440 --> 00:03:08,900
+recommend collaborators to authors,
+
+62
+00:03:08,900 --> 00:03:12,140
+uh, predict, uh, what papers should cite each other.
+
+63
+00:03:12,140 --> 00:03:15,320
+You can imagine this to be very useful when you are writing,
+
+64
+00:03:15,320 --> 00:03:18,350
+uh, a new paper or doing a new piece of, uh, research.
+
+65
+00:03:18,350 --> 00:03:19,580
+And these are again, uh,
+
+66
+00:03:19,580 --> 00:03:23,485
+machine learning tasks over this giant heterogeneous graph.
+
+67
+00:03:23,485 --> 00:03:25,500
+And more broadly, right,
+
+68
+00:03:25,500 --> 00:03:27,615
+we can think about, uh, knowledge graphs,
+
+69
+00:03:27,615 --> 00:03:30,155
+the knowledge graphs coming out of Wikipedia,
+
+70
+00:03:30,155 --> 00:03:32,060
+coming out of, uh, Freebase,
+
+71
+00:03:32,060 --> 00:03:33,635
+where again we have, um,
+
+72
+00:03:33,635 --> 00:03:38,630
+100 million entities and we wanna do knowledge graph completion tasks or we wanna do,
+
+73
+00:03:38,630 --> 00:03:41,120
+uh, knowledge reasoning tasks, uh,
+
+74
+00:03:41,120 --> 00:03:42,485
+over these, uh, uh,
+
+75
+00:03:42,485 --> 00:03:43,910
+over these knowledge graphs.
+
+76
+00:03:43,910 --> 00:03:46,460
+And, you know, what all these, uh, um,
+
+77
+00:03:46,460 --> 00:03:49,280
+applications have in common is that they are large scale, right?
+
+78
+00:03:49,280 --> 00:03:52,290
+That number of nodes is in millions to billions,
+
+79
+00:03:52,290 --> 00:03:55,040
+and, you know, the number of soft edges is, I know,
+
+80
+00:03:55,040 --> 00:03:58,370
+tens- tens or hundreds of millions to,
+
+81
+00:03:58,370 --> 00:04:01,130
+uh, uh, or, uh, to tens- to,
+
+82
+00:04:01,130 --> 00:04:02,570
+uh, hundreds of billions.
+
+83
+00:04:02,570 --> 00:04:04,070
+And the question is, right,
+
+84
+00:04:04,070 --> 00:04:06,200
+like if we have these types of large-scale graph,
+
+85
+00:04:06,200 --> 00:04:08,750
+these large- this set of large-scale data,
+
+86
+00:04:08,750 --> 00:04:10,745
+and we would like to do, um,
+
+87
+00:04:10,745 --> 00:04:13,730
+tasks in- in all these cases that I have motivated,
+
+88
+00:04:13,730 --> 00:04:17,450
+we can do kind of node-level tasks in terms of user, item,
+
+89
+00:04:17,450 --> 00:04:21,375
+paper classification prediction as well as, uh,
+
+90
+00:04:21,375 --> 00:04:24,240
+pair-wise level tasks like, uh, link, uh,
+
+91
+00:04:24,240 --> 00:04:28,785
+recommendation, uh, uh, link prediction, and so on.
+
+92
+00:04:28,785 --> 00:04:32,570
+Um, and, er, the topic of today's class will be about how do
+
+93
+00:04:32,570 --> 00:04:36,140
+we scale up GNNs to- to graphs of this- of this size, right?
+
+94
+00:04:36,140 --> 00:04:37,280
+What kind of systems,
+
+95
+00:04:37,280 --> 00:04:41,870
+what kind of algorithms can be developed that will allow us to learn or over,
+
+96
+00:04:41,870 --> 00:04:43,295
+uh, these kind of, uh,
+
+97
+00:04:43,295 --> 00:04:45,875
+massive amounts, uh, of data?
+
+98
+00:04:45,875 --> 00:04:51,920
+So let me explain why is this hard or why is this non-trivial, um,
+
+99
+00:04:51,920 --> 00:04:55,160
+and it will become clearly- very quickly clear that we need,
+
+100
+00:04:55,160 --> 00:04:58,180
+uh, special methods and special approaches, right?
+
+101
+00:04:58,180 --> 00:05:00,510
+When we have a big, uh, dataset,
+
+102
+00:05:00,510 --> 00:05:04,280
+let just think in general- like in a general deep-learning framework,
+
+103
+00:05:04,280 --> 00:05:07,280
+when we have a large number of N data points,
+
+104
+00:05:07,280 --> 00:05:09,010
+uh, what do we wanna do, right?
+
+105
+00:05:09,010 --> 00:05:13,415
+In- in general, our objective is to minimize the- the- the loss,
+
+106
+00:05:13,415 --> 00:05:14,975
+the average loss, uh,
+
+107
+00:05:14,975 --> 00:05:16,880
+over the training data.
+
+108
+00:05:16,880 --> 00:05:17,950
+So if I have, uh,
+
+109
+00:05:17,950 --> 00:05:19,910
+N training data points, then, you know,
+
+110
+00:05:19,910 --> 00:05:24,600
+I go- I have the summation from 0 to n minus 1 where for every,
+
+111
+00:05:24,600 --> 00:05:28,980
+um, data point i, I'm asking what is the loss of it, right?
+
+112
+00:05:28,980 --> 00:05:31,280
+What is the discrepancy between the true label,
+
+113
+00:05:31,280 --> 00:05:33,290
+the true prediction, and the,
+
+114
+00:05:33,290 --> 00:05:35,510
+um, uh, uh, pre- uh, and the- and the,
+
+115
+00:05:35,510 --> 00:05:38,240
+um, and the prediction made by the model?
+
+116
+00:05:38,240 --> 00:05:41,750
+And- and I would like to compute this total loss, um,
+
+117
+00:05:41,750 --> 00:05:44,135
+under the current model parameters, uh,
+
+118
+00:05:44,135 --> 00:05:47,840
+Theta, so that then as I can compute the loss,
+
+119
+00:05:47,840 --> 00:05:52,580
+I can then compute the gradient with respect to the loss and update,
+
+120
+00:05:52,580 --> 00:05:57,275
+uh, model parameters in such a way that the total loss will be minimized,
+
+121
+00:05:57,275 --> 00:05:59,440
+that the- that the- so basically,
+
+122
+00:05:59,440 --> 00:06:01,010
+the model parameters will change,
+
+123
+00:06:01,010 --> 00:06:05,195
+which means model predictions should change such- such that the loss,
+
+124
+00:06:05,195 --> 00:06:08,630
+the discrepancy between the true labels and the predicted labels,
+
+125
+00:06:08,630 --> 00:06:10,580
+um, gets, uh, smaller.
+
+126
+00:06:10,580 --> 00:06:12,830
+And notice what is the point here,
+
+127
+00:06:12,830 --> 00:06:14,750
+the point here is that we have to sum up
+
+128
+00:06:14,750 --> 00:06:18,985
+these loss contributions over all the training data points.
+
+129
+00:06:18,985 --> 00:06:22,095
+Right? Um, and, uh, because, uh,
+
+130
+00:06:22,095 --> 00:06:24,830
+the number of da- training data points is too big,
+
+131
+00:06:24,830 --> 00:06:27,410
+what we then- what we then do is, um,
+
+132
+00:06:27,410 --> 00:06:33,305
+we would actually select small groups of M data points called the mini-batches and then
+
+133
+00:06:33,305 --> 00:06:35,810
+approximate this big summation with
+
+134
+00:06:35,810 --> 00:06:40,385
+smaller summations where i only goes over the points in the mini-batch,
+
+135
+00:06:40,385 --> 00:06:41,840
+right, uh, over, I know,
+
+136
+00:06:41,840 --> 00:06:43,955
+100, 1,000, uh, uh,
+
+137
+00:06:43,955 --> 00:06:46,250
+data points we have sampled and then
+
+138
+00:06:46,250 --> 00:06:49,250
+compute the loss over it and then make a gradient step.
+
+139
+00:06:49,250 --> 00:06:50,930
+This means that our, uh,
+
+140
+00:06:50,930 --> 00:06:54,140
+loss, our gradient will be- will be stochastic,
+
+141
+00:06:54,140 --> 00:06:59,360
+it will be imprecise, it will be a bit random because it will depend on what exact, uh,
+
+142
+00:06:59,360 --> 00:07:05,060
+subset, uh, of random points N have we compute- have we selected,
+
+143
+00:07:05,060 --> 00:07:08,450
+but it will be much faster to compute because M,
+
+144
+00:07:08,450 --> 00:07:09,815
+the size of the mini-batch,
+
+145
+00:07:09,815 --> 00:07:12,610
+will be much smaller than the total amount, uh, of data,
+
+146
+00:07:12,610 --> 00:07:14,065
+so our model will,
+
+147
+00:07:14,065 --> 00:07:16,535
+um, converge, uh, faster.
+
+148
+00:07:16,535 --> 00:07:19,770
+Now, what could you do in graph neural networks?
+
+149
+00:07:19,770 --> 00:07:23,445
+You would simply say, if let's say I'm doing a node-level prediction task,
+
+150
+00:07:23,445 --> 00:07:26,865
+let me subsample a set of nodes N,
+
+151
+00:07:26,865 --> 00:07:30,735
+uh, and put them in a mini-batch and let me learn, uh, over them.
+
+152
+00:07:30,735 --> 00:07:33,730
+Um, and, uh, here is the reason why this,
+
+153
+00:07:33,730 --> 00:07:36,890
+for example, won't work in graph neural networks.
+
+154
+00:07:36,890 --> 00:07:43,675
+Right, imagine that in a mini-batch I simply sample some set M of nodes, uh, independently.
+
+155
+00:07:43,675 --> 00:07:45,780
+And what this picture is trying to show,
+
+156
+00:07:45,780 --> 00:07:48,210
+is these are the nodes I'm going to sample.
+
+157
+00:07:48,210 --> 00:07:50,925
+And because, eh, the- the mini-batch is
+
+158
+00:07:50,925 --> 00:07:53,970
+much smaller than the total size- size of the graph,
+
+159
+00:07:53,970 --> 00:07:55,500
+what is going to happen, is that,
+
+160
+00:07:55,500 --> 00:07:57,420
+yes, I'm going to sample these nodes,
+
+161
+00:07:57,420 --> 00:07:59,760
+but the way graph neural networks operate is that
+
+162
+00:07:59,760 --> 00:08:02,330
+they aggregate information from the neighbors,
+
+163
+00:08:02,330 --> 00:08:08,560
+but most likely none or majority of this name neighbors won't be sampled in our,
+
+164
+00:08:08,560 --> 00:08:10,330
+uh, in our mini-batch.
+
+165
+00:08:10,330 --> 00:08:12,220
+So, um, what this means,
+
+166
+00:08:12,220 --> 00:08:16,210
+is that the nodes in a mini-batch will tend to be isolated nodes from each other.
+
+167
+00:08:16,210 --> 00:08:20,855
+And because the GNN generates node embeddings by aggregating, um,
+
+168
+00:08:20,855 --> 00:08:22,740
+information from the neighbors, uh,
+
+169
+00:08:22,740 --> 00:08:24,075
+in the graph, uh,
+
+170
+00:08:24,075 --> 00:08:26,535
+those neighbors won't be part of the- um,
+
+171
+00:08:26,535 --> 00:08:29,670
+of the mini-batch, so there will be nothing to, uh,
+
+172
+00:08:29,670 --> 00:08:32,760
+aggregate and whatever gradient we compute over
+
+173
+00:08:32,760 --> 00:08:37,890
+isolated nodes won't be representative of the- of the full gradient.
+
+174
+00:08:37,890 --> 00:08:42,010
+So this means that the stochastic gradient descent can- can,
+
+175
+00:08:42,010 --> 00:08:45,415
+uh, won't be able to train effectively on graph neural networks.
+
+176
+00:08:45,415 --> 00:08:49,510
+If we do this naive mini-batch implementation, where we simply,
+
+177
+00:08:49,510 --> 00:08:52,660
+uh, select a- a sub-sample of nodes,
+
+178
+00:08:52,660 --> 00:08:54,145
+as I illustrated here,
+
+179
+00:08:54,145 --> 00:08:57,745
+because nodes in the mini-batch won't be connected with each other,
+
+180
+00:08:57,745 --> 00:09:00,790
+so there won't be any message passing to be able,
+
+181
+00:09:00,790 --> 00:09:03,340
+uh- uh to be able to be done between the neighbors,
+
+182
+00:09:03,340 --> 00:09:04,960
+and the - the entire thing,
+
+183
+00:09:04,960 --> 00:09:06,730
+uh, is going to fail.
+
+184
+00:09:06,730 --> 00:09:09,955
+So, um, another way how we could, uh,
+
+185
+00:09:09,955 --> 00:09:11,185
+do this is to say,
+
+186
+00:09:11,185 --> 00:09:12,985
+let's forget mini batching,
+
+187
+00:09:12,985 --> 00:09:16,450
+let's not select a subset of the training data, uh,
+
+188
+00:09:16,450 --> 00:09:17,950
+to compute the gradient on,
+
+189
+00:09:17,950 --> 00:09:21,895
+let's do what is called full-batch implementation, full-batch training.
+
+190
+00:09:21,895 --> 00:09:24,925
+And the problem with full batch training is the following,
+
+191
+00:09:24,925 --> 00:09:27,700
+is that you can think of it that we generate
+
+192
+00:09:27,700 --> 00:09:31,375
+embeddings for all the nodes at the same time.
+
+193
+00:09:31,375 --> 00:09:34,420
+And the important thing here is- to notice that we
+
+194
+00:09:34,420 --> 00:09:37,450
+have embeddings of the nodes at several layers, right?
+
+195
+00:09:37,450 --> 00:09:38,965
+We start at layer 0,
+
+196
+00:09:38,965 --> 00:09:42,040
+which means the embedding of the node is just the node features,
+
+197
+00:09:42,040 --> 00:09:44,200
+then we propagate through the first layer
+
+198
+00:09:44,200 --> 00:09:46,870
+and we get the embeddings of the node at layer 1.
+
+199
+00:09:46,870 --> 00:09:49,945
+Now, to compute the embeddings of the node from layer 2,
+
+200
+00:09:49,945 --> 00:09:52,240
+we have to aggregate the first layer embeddings
+
+201
+00:09:52,240 --> 00:09:54,775
+to compute the second layer, uh, embeddings.
+
+202
+00:09:54,775 --> 00:09:57,235
+So what this means, is that you would first,
+
+203
+00:09:57,235 --> 00:10:00,040
+uh, load the graph in memory and all the features,
+
+204
+00:10:00,040 --> 00:10:01,990
+and then at each layer of the GNN,
+
+205
+00:10:01,990 --> 00:10:04,840
+you would compute the embeddings of all the nodes using
+
+206
+00:10:04,840 --> 00:10:08,580
+the embeddings of all the nodes from the previous layer, right?
+
+207
+00:10:08,580 --> 00:10:10,890
+So that now if I'm computing the layer K,
+
+208
+00:10:10,890 --> 00:10:14,475
+I need to have all the em- embeddings of all the nodes, um,
+
+209
+00:10:14,475 --> 00:10:16,905
+stored for layer K minus 1,
+
+210
+00:10:16,905 --> 00:10:20,475
+so that whenever I'm creating the next layer embedding of a given node,
+
+211
+00:10:20,475 --> 00:10:22,785
+I check who its neighbors are.
+
+212
+00:10:22,785 --> 00:10:25,170
+I take the previous layer embeddings, uh,
+
+213
+00:10:25,170 --> 00:10:28,935
+for those neighbors and aggregate them to create the next layer embedding.
+
+214
+00:10:28,935 --> 00:10:32,820
+And because of this recursive structure, I basically create,
+
+215
+00:10:32,820 --> 00:10:36,820
+um- I need to be able to keep in memory the
+
+216
+00:10:36,820 --> 00:10:41,080
+entire graph plus the embeddings of all the nodes from the previous layer,
+
+217
+00:10:41,080 --> 00:10:45,430
+as well as enough memory to create the embedding so for the nodes,
+
+218
+00:10:45,430 --> 00:10:46,690
+uh, for the next layer.
+
+219
+00:10:46,690 --> 00:10:48,610
+Uh, and then once I have that,
+
+220
+00:10:48,610 --> 00:10:52,240
+I can then compute the loss and I can compute the, perform the gradient descent.
+
+221
+00:10:52,240 --> 00:10:53,815
+So the way you can think of this is,
+
+222
+00:10:53,815 --> 00:10:56,845
+I start with the initial embeddings of the nodes,
+
+223
+00:10:56,845 --> 00:11:02,530
+I perform message-passing, create the embeddings of the nodes at layer K plus 1.
+
+224
+00:11:02,530 --> 00:11:03,985
+Now I put this, uh,
+
+225
+00:11:03,985 --> 00:11:06,370
+here and call this layer K, again,
+
+226
+00:11:06,370 --> 00:11:10,480
+do the message-passing to get to the next, uh, layer.
+
+227
+00:11:10,480 --> 00:11:15,625
+And this- this would be what is called a full-batch implementation of
+
+228
+00:11:15,625 --> 00:11:17,215
+a graph neural network.
+
+229
+00:11:17,215 --> 00:11:21,100
+Um, and why is full-batch implementation problematic?
+
+230
+00:11:21,100 --> 00:11:24,460
+Uh, it is problematic for two reasons.
+
+231
+00:11:24,460 --> 00:11:26,800
+One reason is that it takes, uh,
+
+232
+00:11:26,800 --> 00:11:29,710
+super long and it's kind of, uh, time-wise,
+
+233
+00:11:29,710 --> 00:11:32,995
+data-wise, inefficient to do full-batch training.
+
+234
+00:11:32,995 --> 00:11:34,120
+But imagine, you know,
+
+235
+00:11:34,120 --> 00:11:35,620
+you have all the time in the world,
+
+236
+00:11:35,620 --> 00:11:38,620
+so you say, I don't care if it takes a bit longer.
+
+237
+00:11:38,620 --> 00:11:40,600
+Um, even with that,
+
+238
+00:11:40,600 --> 00:11:45,175
+it is still impossible to implement a full batch training,
+
+239
+00:11:45,175 --> 00:11:47,530
+uh, for large, uh, for large graphs.
+
+240
+00:11:47,530 --> 00:11:52,120
+And the reason for this is because if we want the training to be,
+
+241
+00:11:52,120 --> 00:11:54,145
+uh- uh not- to be kind of, uh,
+
+242
+00:11:54,145 --> 00:11:57,025
+in the order of magnitude of what we are used today,
+
+243
+00:11:57,025 --> 00:11:59,110
+then we wanna use, um, GPUs.
+
+244
+00:11:59,110 --> 00:12:01,795
+So we wanna use um- uh,
+
+245
+00:12:01,795 --> 00:12:03,610
+graphic cards to do this,
+
+246
+00:12:03,610 --> 00:12:04,960
+right? For fast training.
+
+247
+00:12:04,960 --> 00:12:08,770
+But the GPU memory- GPUs have a very special kind of,
+
+248
+00:12:08,770 --> 00:12:11,050
+uh, super-fast, uh, memory,
+
+249
+00:12:11,050 --> 00:12:12,565
+but they have very little of it.
+
+250
+00:12:12,565 --> 00:12:16,150
+They have about 10-20 gigabytes, uh, of memory.
+
+251
+00:12:16,150 --> 00:12:19,525
+And I think the most you can buy today is around 30 gigabytes,
+
+252
+00:12:19,525 --> 00:12:21,130
+uh, bigger GPU cards.
+
+253
+00:12:21,130 --> 00:12:24,115
+And that's, you know, considered super state of the art.
+
+254
+00:12:24,115 --> 00:12:26,365
+Nobody has those graphics cards, right?
+
+255
+00:12:26,365 --> 00:12:29,410
+But the point is that the entire graphs and entire features,
+
+256
+00:12:29,410 --> 00:12:30,715
+if you have a billion nodes,
+
+257
+00:12:30,715 --> 00:12:32,815
+will be far, far bigger, right?
+
+258
+00:12:32,815 --> 00:12:34,525
+If you have a billion nodes,
+
+259
+00:12:34,525 --> 00:12:36,820
+um, and- and, uh, you just spend,
+
+260
+00:12:36,820 --> 00:12:38,335
+let's say one byte,
+
+261
+00:12:38,335 --> 00:12:40,360
+uh, um, uh, uh,
+
+262
+00:12:40,360 --> 00:12:42,954
+or do you have, I don't know, 100 bytes of, uh, features,
+
+263
+00:12:42,954 --> 00:12:46,750
+uh, per node, it will easily- you will need a terabyte of memory,
+
+264
+00:12:46,750 --> 00:12:47,965
+10 terabytes of, uh,
+
+265
+00:12:47,965 --> 00:12:50,800
+main memory, which is the amount of memory we
+
+266
+00:12:50,800 --> 00:12:54,055
+can get today for large servers using CPUs.
+
+267
+00:12:54,055 --> 00:12:57,190
+So the point is, CPUs have slow computation,
+
+268
+00:12:57,190 --> 00:12:58,555
+large amount of memory,
+
+269
+00:12:58,555 --> 00:13:02,350
+GPUs have very tiny amount of memory, but super-fast.
+
+270
+00:13:02,350 --> 00:13:04,735
+And the point is, if you wanna do full-batch,
+
+271
+00:13:04,735 --> 00:13:08,560
+you need to feed all the features, all the embeddings,
+
+272
+00:13:08,560 --> 00:13:11,935
+and the entire graph structure into the GPU memory,
+
+273
+00:13:11,935 --> 00:13:15,760
+and 10 gigabytes is- is- is- is- is nothing.
+
+274
+00:13:15,760 --> 00:13:18,130
+It's less than what your iPhone has memory.
+
+275
+00:13:18,130 --> 00:13:21,145
+So it is so small that we cannot scale,
+
+276
+00:13:21,145 --> 00:13:23,650
+uh, full-batch implementations beyond, uh,
+
+277
+00:13:23,650 --> 00:13:25,015
+a few thousand node, uh,
+
+278
+00:13:25,015 --> 00:13:29,470
+networks and definitely not to millions and not, uh, to billions.
+
+279
+00:13:29,470 --> 00:13:33,220
+So, um, this motivates the lecture for today, right?
+
+280
+00:13:33,220 --> 00:13:34,825
+So the lecture for today will be,
+
+281
+00:13:34,825 --> 00:13:38,620
+how can we change the way we think of graph neural networks?
+
+282
+00:13:38,620 --> 00:13:40,780
+How do we implement the training?
+
+283
+00:13:40,780 --> 00:13:42,085
+How do we, uh,
+
+284
+00:13:42,085 --> 00:13:46,045
+change the architecture so that we can scale them up,
+
+285
+00:13:46,045 --> 00:13:49,105
+uh, to, uh, large graphs of billions of nodes,
+
+286
+00:13:49,105 --> 00:13:52,990
+so that we can limit this issue with small, um,
+
+287
+00:13:52,990 --> 00:13:58,360
+GPU memory and that we can limit the issue that naive implementation of mini-batching,
+
+288
+00:13:58,360 --> 00:14:00,070
+uh, just doesn't work.
+
+289
+00:14:00,070 --> 00:14:02,560
+So I'm going to talk about two methods.
+
+290
+00:14:02,560 --> 00:14:04,180
+Uh, basically in this lecture,
+
+291
+00:14:04,180 --> 00:14:06,400
+I'm going to talk about three different methods,
+
+292
+00:14:06,400 --> 00:14:08,740
+two of them will be based on performing
+
+293
+00:14:08,740 --> 00:14:12,400
+message-passing over small subgraphs in each mini-batch.
+
+294
+00:14:12,400 --> 00:14:15,505
+So we are going to change how we design mini-batches.
+
+295
+00:14:15,505 --> 00:14:18,415
+Um, and this will lead to fast training time.
+
+296
+00:14:18,415 --> 00:14:21,160
+One- one is technique called neighborhood
+
+297
+00:14:21,160 --> 00:14:25,870
+sampling and the other one is technique called, uh, Cluster-GCN.
+
+298
+00:14:25,870 --> 00:14:29,755
+And then, uh, I'm also going to talk about the third method
+
+299
+00:14:29,755 --> 00:14:33,610
+which is called- which would be about simplifying the GCN, uh,
+
+300
+00:14:33,610 --> 00:14:37,315
+in such a way that we simplified the architecture so that, uh,
+
+301
+00:14:37,315 --> 00:14:41,770
+operations, uh, computation can be efficiently performed on a CPU.
+
+302
+00:14:41,770 --> 00:14:44,005
+And because CPU has a lot of memory,
+
+303
+00:14:44,005 --> 00:14:46,910
+we can scale, uh, to a large graph.
+

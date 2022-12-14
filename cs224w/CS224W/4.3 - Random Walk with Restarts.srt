@@ -1,0 +1,1032 @@
+1
+00:00:04,460 --> 00:00:10,740
+So we are going to talk about random walk with restarts and personalized PageRank.
+
+2
+00:00:10,740 --> 00:00:13,650
+And this will be extensions of our initial,
+
+3
+00:00:13,650 --> 00:00:16,710
+uh, PageRank idea that we have just discussed.
+
+4
+00:00:16,710 --> 00:00:21,510
+So let me give you an example how this would be very useful.
+
+5
+00:00:21,510 --> 00:00:25,980
+So we are going to talk about a problem of recommendations.
+
+6
+00:00:25,980 --> 00:00:29,670
+Imagine you- you have a set of users, customers,
+
+7
+00:00:29,670 --> 00:00:31,860
+uh, and a set of items,
+
+8
+00:00:31,860 --> 00:00:34,215
+uh, perhaps products, movies.
+
+9
+00:00:34,215 --> 00:00:37,880
+And then you create interactions between users and items by
+
+10
+00:00:37,880 --> 00:00:41,600
+basically saying a given user perhaps purchased a given item,
+
+11
+00:00:41,600 --> 00:00:44,940
+or a given user watched a given movie, right?
+
+12
+00:00:44,940 --> 00:00:49,010
+So this is now our bipartite graph representation,
+
+13
+00:00:49,010 --> 00:00:52,180
+uh, here of this user to item relation.
+
+14
+00:00:52,180 --> 00:00:58,295
+And then what we want to do is somehow measure similarity or proximity on graphs.
+
+15
+00:00:58,295 --> 00:01:00,680
+Why is this useful?
+
+16
+00:01:00,680 --> 00:01:06,305
+This is useful because if you are a online store or if you are Netflix,
+
+17
+00:01:06,305 --> 00:01:07,505
+you want to ask yourself,
+
+18
+00:01:07,505 --> 00:01:10,850
+what items should I recommend to a user who,
+
+19
+00:01:10,850 --> 00:01:13,580
+you know, purchased an item Q.
+
+20
+00:01:13,580 --> 00:01:17,915
+And the idea would be that if you know two items, P and Q,
+
+21
+00:01:17,915 --> 00:01:22,805
+are purchased by a lot of, uh, similar users,
+
+22
+00:01:22,805 --> 00:01:24,530
+a lot of other users have, let say,
+
+23
+00:01:24,530 --> 00:01:27,350
+bought or enjoyed the same- the same item,
+
+24
+00:01:27,350 --> 00:01:31,510
+the same movie, then- then whenever a user is looking at item Q,
+
+25
+00:01:31,510 --> 00:01:33,225
+we should also recommend, uh,
+
+26
+00:01:33,225 --> 00:01:36,075
+item P. So now,
+
+27
+00:01:36,075 --> 00:01:38,930
+how are we going to quantify this notion of proximity or
+
+28
+00:01:38,930 --> 00:01:42,620
+relatedness of different items in this graph.
+
+29
+00:01:42,620 --> 00:01:45,080
+So the question is, for example,
+
+30
+00:01:45,080 --> 00:01:46,670
+if I have this graph as I show here,
+
+31
+00:01:46,670 --> 00:01:47,825
+and I have items, you know,
+
+32
+00:01:47,825 --> 00:01:49,775
+A and A prime and B and B prime.
+
+33
+00:01:49,775 --> 00:01:52,930
+The question is which two are more related?
+
+34
+00:01:52,930 --> 00:01:55,940
+So you could do- one thing to do would be to say,
+
+35
+00:01:55,940 --> 00:01:57,800
+you know, let's measure shortest path.
+
+36
+00:01:57,800 --> 00:02:01,890
+So A has a shorter path than B to B-prime,
+
+37
+00:02:01,890 --> 00:02:05,965
+so, you know, A and A prime are more related.
+
+38
+00:02:05,965 --> 00:02:08,610
+However, the issue becomes,
+
+39
+00:02:08,610 --> 00:02:10,130
+is that- that you could then say, oh,
+
+40
+00:02:10,130 --> 00:02:11,510
+but if I have another example,
+
+41
+00:02:11,510 --> 00:02:14,000
+let's say this one where I have C and C prime.
+
+42
+00:02:14,000 --> 00:02:16,940
+And now C and C prime have to users that
+
+43
+00:02:16,940 --> 00:02:20,345
+bo- that both of let say purchased these two items,
+
+44
+00:02:20,345 --> 00:02:24,200
+then C and C prime intuitively are more related,
+
+45
+00:02:24,200 --> 00:02:27,800
+are at closer proximity than A and A prime, right?
+
+46
+00:02:27,800 --> 00:02:29,135
+So now, the question is,
+
+47
+00:02:29,135 --> 00:02:32,975
+how would I develop a metric that would allow me to kind of say,
+
+48
+00:02:32,975 --> 00:02:34,850
+hi, it's kind of the shortest path,
+
+49
+00:02:34,850 --> 00:02:37,790
+but it's also about how many different, uh,
+
+50
+00:02:37,790 --> 00:02:38,870
+neighbors you have in
+
+51
+00:02:38,870 --> 00:02:43,995
+common and how many different paths allow you to go from one, uh, to another.
+
+52
+00:02:43,995 --> 00:02:47,220
+And they- the idea here is that, er,
+
+53
+00:02:47,220 --> 00:02:49,955
+PageRank is going to solve this because
+
+54
+00:02:49,955 --> 00:02:52,850
+in this third example, you know, if you would just say,
+
+55
+00:02:52,850 --> 00:02:54,940
+let's count common neighbors, then let say, uh,
+
+56
+00:02:54,940 --> 00:02:58,820
+C and C prime are related as D and D prime.
+
+57
+00:02:58,820 --> 00:03:01,420
+And again, this is- um,
+
+58
+00:03:01,420 --> 00:03:05,150
+this is perhaps intuitively not what we want because, er,
+
+59
+00:03:05,150 --> 00:03:06,725
+you know item D,
+
+60
+00:03:06,725 --> 00:03:09,530
+this user has enjoyed a lot of different items as well.
+
+61
+00:03:09,530 --> 00:03:12,845
+This other user has enjoyed a lot of different items there.
+
+62
+00:03:12,845 --> 00:03:17,840
+So this relationship is less strong than the relationship here because here,
+
+63
+00:03:17,840 --> 00:03:19,160
+it's really two items,
+
+64
+00:03:19,160 --> 00:03:21,590
+two items that- that's all- that's all there is.
+
+65
+00:03:21,590 --> 00:03:24,245
+So, you know, how could we capture this
+
+66
+00:03:24,245 --> 00:03:28,285
+mathematically algorithmically to be able to run it on networks?
+
+67
+00:03:28,285 --> 00:03:33,830
+And, uh, this is where the notion of extension of PageRank happens.
+
+68
+00:03:33,830 --> 00:03:37,295
+Um, so PageRank tells me
+
+69
+00:03:37,295 --> 00:03:41,780
+the importance of a node on the graph and ranks nodes by importance.
+
+70
+00:03:41,780 --> 00:03:46,310
+And it has this notion of a teleport where we discuss that- that,
+
+71
+00:03:46,310 --> 00:03:52,135
+um, a random surfer teleports uniformly over any node in the graph.
+
+72
+00:03:52,135 --> 00:03:55,760
+So now, we will have- we will first define a notion of what is
+
+73
+00:03:55,760 --> 00:03:59,120
+called personalized PageRank, where basically,
+
+74
+00:03:59,120 --> 00:04:01,880
+the only difference with the original PageRank is that whenever we
+
+75
+00:04:01,880 --> 00:04:04,760
+teleport or whenever the random walker teleports,
+
+76
+00:04:04,760 --> 00:04:07,190
+it doesn't teleport anywhere in the graph,
+
+77
+00:04:07,190 --> 00:04:08,825
+but it only teleports,
+
+78
+00:04:08,825 --> 00:04:13,550
+jumps back to a subset of nodes S. Okay?
+
+79
+00:04:13,550 --> 00:04:15,020
+So basically, we say, you know,
+
+80
+00:04:15,020 --> 00:04:19,089
+there is a set of nodes S that are interesting to the user.
+
+81
+00:04:19,089 --> 00:04:21,229
+So whenever the random walker teleports,
+
+82
+00:04:21,230 --> 00:04:24,895
+it teleports back to that subset S and not to,
+
+83
+00:04:24,895 --> 00:04:26,525
+uh, every node in the graph.
+
+84
+00:04:26,525 --> 00:04:28,850
+And then in terms of, uh,
+
+85
+00:04:28,850 --> 00:04:30,980
+you know, er, proximity in graphs,
+
+86
+00:04:30,980 --> 00:04:32,300
+you can now take this notion of
+
+87
+00:04:32,300 --> 00:04:36,410
+a teleport set S and you can shrink it even further and say,
+
+88
+00:04:36,410 --> 00:04:38,675
+what if S is a single node?
+
+89
+00:04:38,675 --> 00:04:41,375
+So it means that the random walker can walk,
+
+90
+00:04:41,375 --> 00:04:43,325
+but whenever it decides to teleport,
+
+91
+00:04:43,325 --> 00:04:46,290
+it always jumps back to the starting point
+
+92
+00:04:46,290 --> 00:04:51,560
+S. And this is what is called a random walk with restart, where basically,
+
+93
+00:04:51,560 --> 00:04:54,710
+you always teleport back to the starting node S.
+
+94
+00:04:54,710 --> 00:04:58,500
+So essentially, PageRank, personalized PageRank,
+
+95
+00:04:58,500 --> 00:05:04,710
+and random walk with restarts are the same algorithm with one important difference,
+
+96
+00:05:04,710 --> 00:05:09,800
+that in PageRank, teleport set S is all of the nodes of the network,
+
+97
+00:05:09,800 --> 00:05:11,860
+all having equal probability.
+
+98
+00:05:11,860 --> 00:05:17,000
+In personalized PageRank, the teleport set S is a subset of nodes,
+
+99
+00:05:17,000 --> 00:05:19,130
+so you only can jump to the subset.
+
+100
+00:05:19,130 --> 00:05:21,035
+And in a random walker with restart,
+
+101
+00:05:21,035 --> 00:05:23,240
+the teleportation set S is
+
+102
+00:05:23,240 --> 00:05:27,065
+a simple node- is simply one node and that's the starting node,
+
+103
+00:05:27,065 --> 00:05:29,660
+our, you know, query node item,
+
+104
+00:05:29,660 --> 00:05:32,890
+uh, Q, uh, from the previous slide.
+
+105
+00:05:32,890 --> 00:05:37,415
+So let me now talk more about random walks with restarts.
+
+106
+00:05:37,415 --> 00:05:40,805
+So the idea here is that every node has some importance,
+
+107
+00:05:40,805 --> 00:05:44,120
+and the importance gets evenly split among all edges,
+
+108
+00:05:44,120 --> 00:05:46,325
+uh, and pushed to the neighbors.
+
+109
+00:05:46,325 --> 00:05:50,465
+And this is essentially the same as what we were discussing in,
+
+110
+00:05:50,465 --> 00:05:53,140
+uh, page- in the original PageRank formulation.
+
+111
+00:05:53,140 --> 00:05:57,370
+So in our case, we are going to say let's have a set of query nodes.
+
+112
+00:05:57,370 --> 00:06:00,440
+Um, uh, this is basically the set S. And let's
+
+113
+00:06:00,440 --> 00:06:04,070
+now physically simulate the random walk over this graph, right?
+
+114
+00:06:04,070 --> 00:06:06,455
+We will make a step at random neighbor,
+
+115
+00:06:06,455 --> 00:06:08,720
+um, and record the visit to that neighbor.
+
+116
+00:06:08,720 --> 00:06:11,405
+So we are going to increase the visit count of that neighbor.
+
+117
+00:06:11,405 --> 00:06:13,100
+And with some probability alpha,
+
+118
+00:06:13,100 --> 00:06:14,840
+we are going to restart the walk,
+
+119
+00:06:14,840 --> 00:06:17,615
+which basically means we are going to jump back to
+
+120
+00:06:17,615 --> 00:06:21,940
+any of the query nodes and restart the walk.
+
+121
+00:06:21,940 --> 00:06:26,060
+And then the nodes with the highest query- highest visit count
+
+122
+00:06:26,060 --> 00:06:29,050
+will have the highest proximity to the- uh,
+
+123
+00:06:29,050 --> 00:06:33,040
+to the query- to the nodes in the query nodes, uh, set.
+
+124
+00:06:33,040 --> 00:06:35,265
+So this is essentially the idea.
+
+125
+00:06:35,265 --> 00:06:37,595
+So let me now show you graphically, right?
+
+126
+00:06:37,595 --> 00:06:40,130
+So we have this bipartite graph.
+
+127
+00:06:40,130 --> 00:06:45,000
+Imagine my query nodes set Q is simply one node here.
+
+128
+00:06:45,000 --> 00:06:46,739
+Then we are going to simulate,
+
+129
+00:06:46,739 --> 00:06:49,325
+really, like a random walk that basically says,
+
+130
+00:06:49,325 --> 00:06:51,230
+I'm at Q. I pick one of its,
+
+131
+00:06:51,230 --> 00:06:52,655
+uh, links at random,
+
+132
+00:06:52,655 --> 00:06:53,780
+and I move to the user.
+
+133
+00:06:53,780 --> 00:06:55,325
+Now, I am at the user.
+
+134
+00:06:55,325 --> 00:06:58,700
+I pick one of the links at random, uh, move to,
+
+135
+00:06:58,700 --> 00:07:04,365
+uh- to the- to the other side and I increase the visit count, uh, one here.
+
+136
+00:07:04,365 --> 00:07:06,420
+And now I get to decide do I restart,
+
+137
+00:07:06,420 --> 00:07:07,710
+meaning go back to Q,
+
+138
+00:07:07,710 --> 00:07:11,515
+or do I continue walking by picking one of- one link,
+
+139
+00:07:11,515 --> 00:07:13,190
+um, to go to the user,
+
+140
+00:07:13,190 --> 00:07:14,585
+pick another link to go back,
+
+141
+00:07:14,585 --> 00:07:15,830
+and increase the visit count?
+
+142
+00:07:15,830 --> 00:07:20,465
+And again, ask myself do I want to restart or do want to continue walking?
+
+143
+00:07:20,465 --> 00:07:24,950
+So the pseudocode is written here and it's really what I just say.
+
+144
+00:07:24,950 --> 00:07:29,160
+It's basically, you know, pick a random neighbor for- for- for,
+
+145
+00:07:29,160 --> 00:07:31,440
+uh, start at a- at a query,
+
+146
+00:07:31,440 --> 00:07:32,910
+pick a random user,
+
+147
+00:07:32,910 --> 00:07:34,680
+uh, pick a random item,
+
+148
+00:07:34,680 --> 00:07:37,305
+increase the revisit count of the item,
+
+149
+00:07:37,305 --> 00:07:39,555
+uh, pick a biased coin.
+
+150
+00:07:39,555 --> 00:07:42,330
+If the coin says, uh, let restart,
+
+151
+00:07:42,330 --> 00:07:46,485
+you'll simply, uh, jump back to the query nodes.
+
+152
+00:07:46,485 --> 00:07:50,120
+You can jump, uh, uniformly at random to any of them,
+
+153
+00:07:50,120 --> 00:07:51,695
+or if they have different weights,
+
+154
+00:07:51,695 --> 00:07:53,990
+you can sample them, uh, by weight.
+
+155
+00:07:53,990 --> 00:07:59,090
+And that is- that is this notion of a random walk, uh, with, uh, restart.
+
+156
+00:07:59,090 --> 00:08:03,950
+And if you do this, then you will have the query item and then you will also get
+
+157
+00:08:03,950 --> 00:08:08,870
+this visit counts and- and the idea is that items that are more, uh,
+
+158
+00:08:08,870 --> 00:08:11,090
+related, that are closer in the graphs,
+
+159
+00:08:11,090 --> 00:08:13,460
+will have higher visit counts because it means
+
+160
+00:08:13,460 --> 00:08:15,890
+that the random walker will visit them more often,
+
+161
+00:08:15,890 --> 00:08:17,975
+which means you have more common neighbor,
+
+162
+00:08:17,975 --> 00:08:21,080
+more paths lead from one to the other,
+
+163
+00:08:21,080 --> 00:08:23,525
+these paths are short so that, uh,
+
+164
+00:08:23,525 --> 00:08:25,670
+the random walker does not decide to restart,
+
+165
+00:08:25,670 --> 00:08:27,295
+uh, and so on and so forth.
+
+166
+00:08:27,295 --> 00:08:32,169
+And this allows us to measure proximity in graphs very efficiently.
+
+167
+00:08:32,169 --> 00:08:34,904
+And here, we are measuring it by actually, uh,
+
+168
+00:08:34,905 --> 00:08:38,434
+un- kind of simulating this random walk physically.
+
+169
+00:08:38,434 --> 00:08:41,359
+But you could also compute this using
+
+170
+00:08:41,360 --> 00:08:46,285
+the power iteration where you would represent this bipartite graph with a matrix, uh,
+
+171
+00:08:46,285 --> 00:08:49,495
+M, you would then start with, uh, um,
+
+172
+00:08:49,495 --> 00:08:52,630
+rank vector, um, uh,
+
+173
+00:08:52,630 --> 00:08:54,535
+to be- to have a given value.
+
+174
+00:08:54,535 --> 00:08:55,645
+You would then, uh,
+
+175
+00:08:55,645 --> 00:08:59,745
+transfer them to the stochastic adjacency matrix with teleportation,
+
+176
+00:08:59,745 --> 00:09:03,275
+uh, matrix, and then round power iteration on top of it.
+
+177
+00:09:03,275 --> 00:09:06,590
+And it would, um, converge to the same- uh,
+
+178
+00:09:06,590 --> 00:09:09,270
+to the same set of, uh,
+
+179
+00:09:09,270 --> 00:09:12,180
+uh, node importance as we- as we show
+
+180
+00:09:12,180 --> 00:09:15,915
+here by basically running this quick, uh, simulation.
+
+181
+00:09:15,915 --> 00:09:19,475
+Um, so what are the benefits of this approach?
+
+182
+00:09:19,475 --> 00:09:23,000
+Um, this is a good solution because it
+
+183
+00:09:23,000 --> 00:09:26,750
+measures similarity by considering a lot of different,
+
+184
+00:09:26,750 --> 00:09:29,450
+um, things that are important, right?
+
+185
+00:09:29,450 --> 00:09:34,525
+It considers how many connections or how many paths are between a pair of nodes.
+
+186
+00:09:34,525 --> 00:09:37,155
+Um, what is the strength of those connections?
+
+187
+00:09:37,155 --> 00:09:40,545
+Are these connections direct or are they indirect?
+
+188
+00:09:40,545 --> 00:09:44,260
+They also- it also considers the- the degree of the nodes on the path.
+
+189
+00:09:44,260 --> 00:09:46,770
+Because, uh, the more edges it has,
+
+190
+00:09:46,770 --> 00:09:49,880
+the more- the more likely we- for the random walker,
+
+191
+00:09:49,880 --> 00:09:53,230
+is to kind of walk away and don't go to the node.
+
+192
+00:09:53,230 --> 00:09:55,565
+Let's say that- that we are interested in.
+
+193
+00:09:55,565 --> 00:09:58,185
+So in all these cases, um,
+
+194
+00:09:58,185 --> 00:10:00,350
+this is a very- uh,
+
+195
+00:10:00,350 --> 00:10:02,660
+has a lot of properties that we want.
+
+196
+00:10:02,660 --> 00:10:04,220
+It's very simple to implement,
+
+197
+00:10:04,220 --> 00:10:05,780
+it's very scalable, and,
+
+198
+00:10:05,780 --> 00:10:07,810
+uh, works, uh, really well.
+
+199
+00:10:07,810 --> 00:10:11,460
+So let me summarize this part of the lecture.
+
+200
+00:10:11,460 --> 00:10:15,620
+So basically, here, we talked about extensions of PageRank.
+
+201
+00:10:15,620 --> 00:10:21,500
+We talked about classical PageRank where the random walker teleports to any node.
+
+202
+00:10:21,500 --> 00:10:23,930
+So, you know, if I have a graph with 10 nodes,
+
+203
+00:10:23,930 --> 00:10:26,880
+then its teleport set S. You can think
+
+204
+00:10:26,880 --> 00:10:29,940
+of it is- it includes all the nodes and each node has,
+
+205
+00:10:29,940 --> 00:10:33,560
+uh, equal probability of the random walker landing there.
+
+206
+00:10:33,560 --> 00:10:35,315
+This is called PageRank.
+
+207
+00:10:35,315 --> 00:10:37,700
+Then the personalized PageRank,
+
+208
+00:10:37,700 --> 00:10:40,400
+sometimes also called topic-specific PageRank,
+
+209
+00:10:40,400 --> 00:10:43,100
+is basically, the only difference is that now
+
+210
+00:10:43,100 --> 00:10:48,095
+the teleport vector only has a couple of- of non-zero elements.
+
+211
+00:10:48,095 --> 00:10:51,215
+And this now means that whenever a random walker decides to jump,
+
+212
+00:10:51,215 --> 00:10:52,970
+you know, 50 percent of the times,
+
+213
+00:10:52,970 --> 00:10:54,350
+it will jump to this node,
+
+214
+00:10:54,350 --> 00:10:56,015
+10 percent to this node,
+
+215
+00:10:56,015 --> 00:10:57,875
+20 percent to this one and that one.
+
+216
+00:10:57,875 --> 00:11:01,810
+So that's, uh, what is called personalized PageRank.
+
+217
+00:11:01,810 --> 00:11:06,180
+And then random walk with restarts is again PageRank.
+
+218
+00:11:06,180 --> 00:11:11,120
+But here, the teleportation vector is a single node.
+
+219
+00:11:11,120 --> 00:11:14,510
+So whenever the-the surfer decides to
+
+220
+00:11:14,510 --> 00:11:19,595
+teleport it always teleports to the- to one, uh, single node.
+
+221
+00:11:19,595 --> 00:11:23,255
+But mathematically, all these formulations are the same,
+
+222
+00:11:23,255 --> 00:11:25,610
+the same power iteration can solve them.
+
+223
+00:11:25,610 --> 00:11:27,830
+Uh, we can also solve, for example,
+
+224
+00:11:27,830 --> 00:11:31,360
+especially the random walk with restarts by actually simulating the random walk,
+
+225
+00:11:31,360 --> 00:11:33,810
+which in some cases, might be- might be,
+
+226
+00:11:33,810 --> 00:11:36,840
+um, faster, but it is approximate.
+
+227
+00:11:36,840 --> 00:11:39,075
+Um, and the same algorithm works,
+
+228
+00:11:39,075 --> 00:11:42,125
+only thing is how do we define the set S,
+
+229
+00:11:42,125 --> 00:11:45,180
+the teleportation, uh, set.
+
+230
+00:11:45,490 --> 00:11:48,570
+So to summarize, uh,
+
+231
+00:11:48,570 --> 00:11:51,695
+a graph can naturally be represented as a matrix.
+
+232
+00:11:51,695 --> 00:11:55,675
+We then define the random walk process over, er, the graph.
+
+233
+00:11:55,675 --> 00:11:59,840
+We have this notion of a random surfer moving across links,
+
+234
+00:11:59,840 --> 00:12:03,439
+uh, with- er, together with having a-a way to teleport,
+
+235
+00:12:03,439 --> 00:12:05,740
+uh, out of every node.
+
+236
+00:12:05,740 --> 00:12:11,000
+This defined- allowed us to define this stochastic adjacency matrix M that
+
+237
+00:12:11,000 --> 00:12:12,860
+essentially tells us with what probability
+
+238
+00:12:12,860 --> 00:12:16,520
+the random surfer is going to navigate to each edge.
+
+239
+00:12:16,520 --> 00:12:18,950
+And then we define the notion of PageRank,
+
+240
+00:12:18,950 --> 00:12:22,940
+which is a limiting distribution of a- of the surfer location.
+
+241
+00:12:22,940 --> 00:12:29,380
+Um, and this limiting distribution of the surfer location represents node importance.
+
+242
+00:12:29,380 --> 00:12:33,650
+And then another beautiful thing happened is that we showed that this
+
+243
+00:12:33,650 --> 00:12:37,670
+limiting distributions- distribution can be computed or
+
+244
+00:12:37,670 --> 00:12:40,370
+corresponds to the leading eigenvector of
+
+245
+00:12:40,370 --> 00:12:43,220
+the transform adjacency matrix M. So it
+
+246
+00:12:43,220 --> 00:12:46,925
+basically means that by computing the eigenvector of M,
+
+247
+00:12:46,925 --> 00:12:49,880
+we are computing the limiting distribution of this, uh,
+
+248
+00:12:49,880 --> 00:12:55,025
+random surfer, and we are also computing this solution to the system of equations,
+
+249
+00:12:55,025 --> 00:12:59,060
+of, uh, flow equations where the importance of a node is,
+
+250
+00:12:59,060 --> 00:13:03,400
+you know, some of the importances of the other nodes that point to it.
+
+251
+00:13:03,400 --> 00:13:06,750
+So all these three different, uh, intuitions.
+
+252
+00:13:06,750 --> 00:13:09,424
+So the linear algebra, eigenvector eigenvalue,
+
+253
+00:13:09,424 --> 00:13:11,635
+the Random Walk intuition,
+
+254
+00:13:11,635 --> 00:13:15,095
+and these links as votes intuition are of the same thing.
+
+255
+00:13:15,095 --> 00:13:17,975
+They all boil down to the same optimization problem,
+
+256
+00:13:17,975 --> 00:13:19,520
+to the same algorithm,
+
+257
+00:13:19,520 --> 00:13:21,980
+to the same formulation that is solved with
+
+258
+00:13:21,980 --> 00:13:26,040
+this iterative approach called power iteration.
+

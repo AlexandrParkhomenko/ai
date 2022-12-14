@@ -1,0 +1,1932 @@
+1
+00:00:04,130 --> 00:00:09,195
+So to, uh, talk about the third method, uh,
+
+2
+00:00:09,195 --> 00:00:11,790
+we discussed today, I'm going now to,
+
+3
+00:00:11,790 --> 00:00:14,010
+uh, talk about belief propagation.
+
+4
+00:00:14,010 --> 00:00:19,500
+So this is the final method around collective classification we are going to talk,
+
+5
+00:00:19,500 --> 00:00:22,230
+um, in this, uh, in this lecture.
+
+6
+00:00:22,230 --> 00:00:26,300
+And really this will be all about what is called,
+
+7
+00:00:26,300 --> 00:00:28,850
+uh, no- uh, message passing, right?
+
+8
+00:00:28,850 --> 00:00:32,600
+We can think of these methods that we have talked about so far,
+
+9
+00:00:32,600 --> 00:00:35,465
+all in terms of kind of messages,
+
+10
+00:00:35,465 --> 00:00:38,885
+beliefs being sent over the edges of the network,
+
+11
+00:00:38,885 --> 00:00:42,230
+a node receiving these messages update- updating
+
+12
+00:00:42,230 --> 00:00:47,555
+its own belief so that in the next iterations its neighbors are able to- to get this,
+
+13
+00:00:47,555 --> 00:00:51,575
+uh, new information and update their own, uh, beliefs as well.
+
+14
+00:00:51,575 --> 00:00:55,820
+So this is, um, basically what, uh,
+
+15
+00:00:55,820 --> 00:00:56,975
+uh, what is, uh,
+
+16
+00:00:56,975 --> 00:01:00,410
+the core intuition we are trying to explore today,
+
+17
+00:01:00,410 --> 00:01:04,565
+which is all about passing information across the neighbors,
+
+18
+00:01:04,565 --> 00:01:07,295
+either pushing it or receiving it,
+
+19
+00:01:07,295 --> 00:01:10,430
+and updating the belief about, uh, oneself.
+
+20
+00:01:10,430 --> 00:01:17,690
+And, uh, the algorithm that- that does this is also known as loopy belief propagation.
+
+21
+00:01:17,690 --> 00:01:22,055
+Loopy because we will apply it to graphs that may have cycles, um,
+
+22
+00:01:22,055 --> 00:01:24,320
+and belief propagation because these messages,
+
+23
+00:01:24,320 --> 00:01:27,770
+these beliefs are going to be passed over the edges,
+
+24
+00:01:27,770 --> 00:01:29,810
+uh, of the network.
+
+25
+00:01:29,810 --> 00:01:33,680
+So let me give you a bit of context and where does this,
+
+26
+00:01:33,680 --> 00:01:36,410
+uh, notion of loopy belief propagation come from.
+
+27
+00:01:36,410 --> 00:01:39,835
+Belief propagation is a dynamic programming approach
+
+28
+00:01:39,835 --> 00:01:44,190
+to- about answering the proba- probabilistic queries,
+
+29
+00:01:44,190 --> 00:01:46,775
+uh, uh, in a graph, right?
+
+30
+00:01:46,775 --> 00:01:49,025
+By probabilistic queries, I mean, you know,
+
+31
+00:01:49,025 --> 00:01:53,140
+computing the probability that a given node belongs to a given class.
+
+32
+00:01:53,140 --> 00:01:55,970
+And it's an iterative process in which
+
+33
+00:01:55,970 --> 00:02:02,070
+the neighbor- neighboring nodes talk to each other by passing messages to each other.
+
+34
+00:02:02,070 --> 00:02:03,570
+And, you know, the way you can,
+
+35
+00:02:03,570 --> 00:02:05,540
+uh, think of this is really like, you know,
+
+36
+00:02:05,540 --> 00:02:07,100
+if- if there wouldn't be COVID,
+
+37
+00:02:07,100 --> 00:02:09,560
+we'd be nicely sitting in school and, you know,
+
+38
+00:02:09,560 --> 00:02:12,690
+you can- you can pass messages between, uh,
+
+39
+00:02:12,690 --> 00:02:14,840
+one another if you are, you know,
+
+40
+00:02:14,840 --> 00:02:18,020
+seat close together or if you are connected in the network, right?
+
+41
+00:02:18,020 --> 00:02:19,915
+So node v will say,
+
+42
+00:02:19,915 --> 00:02:21,350
+"I, you know, I believe you,
+
+43
+00:02:21,350 --> 00:02:26,630
+um, that you belong to this class 1 with the following, uh, likelihood."
+
+44
+00:02:26,630 --> 00:02:28,880
+And then- and then a given node can
+
+45
+00:02:28,880 --> 00:02:31,670
+then collect these beliefs from its neighbors and say,
+
+46
+00:02:31,670 --> 00:02:34,130
+"This now makes me more sure,
+
+47
+00:02:34,130 --> 00:02:37,650
+or less sure, I also belong to class 1."
+
+48
+00:02:37,650 --> 00:02:40,225
+And when this consensus, uh,
+
+49
+00:02:40,225 --> 00:02:43,760
+is reached as these messages are being, uh, passed around,
+
+50
+00:02:43,760 --> 00:02:45,995
+we- we arrive to the optimum,
+
+51
+00:02:45,995 --> 00:02:50,915
+we arrive to the kind of the final belief about the- the class or label,
+
+52
+00:02:50,915 --> 00:02:53,445
+uh, of every node in the network.
+
+53
+00:02:53,445 --> 00:02:58,010
+So let me show you some basics about message passing,
+
+54
+00:02:58,010 --> 00:03:01,130
+and we are first going to do this on simple graphs.
+
+55
+00:03:01,130 --> 00:03:03,715
+We're going to do this on a line graph,
+
+56
+00:03:03,715 --> 00:03:05,900
+then we are going to generalize this to a,
+
+57
+00:03:05,900 --> 00:03:11,755
+uh, tree-type graph, and then we are going to apply this to general graphs.
+
+58
+00:03:11,755 --> 00:03:14,785
+And just for simplicity, uh,
+
+59
+00:03:14,785 --> 00:03:17,810
+let's assume we want to count the number of nodes in
+
+60
+00:03:17,810 --> 00:03:20,880
+a graph using message passing, right?
+
+61
+00:03:20,880 --> 00:03:23,510
+So each node can only interact,
+
+62
+00:03:23,510 --> 00:03:25,475
+meaning it can only pass messages,
+
+63
+00:03:25,475 --> 00:03:26,900
+with its neighbors, right?
+
+64
+00:03:26,900 --> 00:03:28,895
+Other nodes it is connected to.
+
+65
+00:03:28,895 --> 00:03:32,890
+So, um, you know, as I said before,
+
+66
+00:03:32,890 --> 00:03:37,949
+note that there might be issues when we- if the graphs contains cycles,
+
+67
+00:03:37,949 --> 00:03:40,830
+but for now let's assume there are no cycles,
+
+68
+00:03:40,830 --> 00:03:42,710
+or let's ignore the cycles, right?
+
+69
+00:03:42,710 --> 00:03:44,300
+So the idea is I have a line graph,
+
+70
+00:03:44,300 --> 00:03:49,555
+I have nodes 1-6 linked in this type of linear structure.
+
+71
+00:03:49,555 --> 00:03:53,460
+So the task is that we want to compute,
+
+72
+00:03:53,460 --> 00:03:55,865
+or count, the number of nodes in the graph.
+
+73
+00:03:55,865 --> 00:04:01,100
+And the way how we can do this using message passing is that we define some ordering,
+
+74
+00:04:01,100 --> 00:04:03,030
+uh, on the nodes, right?
+
+75
+00:04:03,030 --> 00:04:04,140
+And this ordering, let's say,
+
+76
+00:04:04,140 --> 00:04:05,340
+results in a path,
+
+77
+00:04:05,340 --> 00:04:07,710
+and then edge directions, uh,
+
+78
+00:04:07,710 --> 00:04:11,090
+we can think of them according to the ordering of the nodes, right?
+
+79
+00:04:11,090 --> 00:04:13,535
+So, um, and this edge direction
+
+80
+00:04:13,535 --> 00:04:17,899
+determines the- the order in which messages are being passed.
+
+81
+00:04:17,899 --> 00:04:20,749
+So let's say we consider the nodes in order 1, 2, 3, 4, 5,
+
+82
+00:04:20,750 --> 00:04:25,090
+6, so the messages will start at one and be passed to node 6.
+
+83
+00:04:25,090 --> 00:04:31,745
+And the way these messages will go is that node i will compute the- the message and then,
+
+84
+00:04:31,745 --> 00:04:37,390
+um, uh, you know, it will- the message will be sent from node i to node i plus 1.
+
+85
+00:04:37,390 --> 00:04:40,350
+Um, and the idea will be that, um,
+
+86
+00:04:40,350 --> 00:04:42,165
+as the message passes to the node,
+
+87
+00:04:42,165 --> 00:04:44,310
+a node gets to look that message,
+
+88
+00:04:44,310 --> 00:04:46,705
+may transform it, and pass it on.
+
+89
+00:04:46,705 --> 00:04:52,265
+So if now we want to go back to this task of counting the number of nodes in the graph,
+
+90
+00:04:52,265 --> 00:04:54,435
+uh, the idea here is,
+
+91
+00:04:54,435 --> 00:04:56,720
+um, uh, simple, right?
+
+92
+00:04:56,720 --> 00:05:00,245
+Uh, each node can only interact with its, uh, members,
+
+93
+00:05:00,245 --> 00:05:02,599
+its neighbors can only pass messages,
+
+94
+00:05:02,599 --> 00:05:04,925
+um, and the idea is that each node says,
+
+95
+00:05:04,925 --> 00:05:08,485
+"What- however many nodes are in front of me,
+
+96
+00:05:08,485 --> 00:05:12,830
+I also add myself to the count and pass on this message,
+
+97
+00:05:12,830 --> 00:05:14,105
+uh, to the next node."
+
+98
+00:05:14,105 --> 00:05:18,725
+So this means that each node listens to the messages from its incoming neighbors,
+
+99
+00:05:18,725 --> 00:05:21,865
+updates the message and passes it forward.Uh,
+
+100
+00:05:21,865 --> 00:05:26,600
+and we will use the letter M to denote the message, right?
+
+101
+00:05:26,600 --> 00:05:30,350
+So for example, the way to think of this node 1 will say, "Oh,
+
+102
+00:05:30,350 --> 00:05:37,070
+there is one of me," and then it will pass this message M to the neighbor, number 2.
+
+103
+00:05:37,070 --> 00:05:38,960
+Neighbor number 2 is going to,
+
+104
+00:05:38,960 --> 00:05:41,330
+uh, get the incoming message and say, "Oh,
+
+105
+00:05:41,330 --> 00:05:43,100
+there is one node in front of me,
+
+106
+00:05:43,100 --> 00:05:45,130
+but there is me here as well,
+
+107
+00:05:45,130 --> 00:05:48,230
+so this means there are- there are two nodes so far."
+
+108
+00:05:48,230 --> 00:05:50,885
+So it will update the belief that there are,
+
+109
+00:05:50,885 --> 00:05:53,510
+you know, n plus 1 messages, uh,
+
+110
+00:05:53,510 --> 00:05:56,310
+ahead of it, and then it's going to send
+
+111
+00:05:56,310 --> 00:06:00,805
+this message forward with- the message will now have value 2.
+
+112
+00:06:00,805 --> 00:06:04,370
+And then node 3 is going to collect this message with value 2,
+
+113
+00:06:04,370 --> 00:06:05,600
+update it, it will say, "Oh,
+
+114
+00:06:05,600 --> 00:06:08,330
+there is me as well," so it will add one plu- to it,
+
+115
+00:06:08,330 --> 00:06:09,575
+so it will become a three,
+
+116
+00:06:09,575 --> 00:06:10,895
+and it will send it on.
+
+117
+00:06:10,895 --> 00:06:12,125
+And this way, you know,
+
+118
+00:06:12,125 --> 00:06:14,945
+like when- when we arrive to node, uh, six,
+
+119
+00:06:14,945 --> 00:06:17,510
+we will be counting the number of nodes, uh,
+
+120
+00:06:17,510 --> 00:06:23,260
+on the path because every node increases the message value by one and passes it on.
+
+121
+00:06:23,260 --> 00:06:25,040
+So at the end, you know,
+
+122
+00:06:25,040 --> 00:06:30,595
+the final belief of node 6 will be that there are six nodes, uh, in the graph.
+
+123
+00:06:30,595 --> 00:06:32,660
+And then the, you know,
+
+124
+00:06:32,660 --> 00:06:37,625
+we could even like now take this message and pass it back to the beginning node, uh, 1,
+
+125
+00:06:37,625 --> 00:06:42,755
+but the main idea here is that each node collects a message from its neighbor,
+
+126
+00:06:42,755 --> 00:06:45,430
+updates it, and passes it forward.
+
+127
+00:06:45,430 --> 00:06:48,810
+That's the core operation that I wanted to illustrate here.
+
+128
+00:06:48,810 --> 00:06:52,880
+And you can see how this works nicely on a- on a line graph,
+
+129
+00:06:52,880 --> 00:06:56,200
+um, with the proper, uh, ordering of the nodes.
+
+130
+00:06:56,200 --> 00:07:01,050
+Now we can do the same algorithm also on a tree, right?
+
+131
+00:07:01,050 --> 00:07:05,824
+If you have a graph that has this acyclic tree-like structure,
+
+132
+00:07:05,824 --> 00:07:07,475
+then we can perform, uh,
+
+133
+00:07:07,475 --> 00:07:12,020
+message passing not only on a path graph but also on a tree-structured graph.
+
+134
+00:07:12,020 --> 00:07:15,220
+The important thing here is to propagate or do
+
+135
+00:07:15,220 --> 00:07:19,955
+the message passing from the leaves to the root of the node- of the- of the tree.
+
+136
+00:07:19,955 --> 00:07:20,990
+So the idea is, right,
+
+137
+00:07:20,990 --> 00:07:23,420
+that first, uh, leaves, um, five,
+
+138
+00:07:23,420 --> 00:07:25,185
+six and seven, um,
+
+139
+00:07:25,185 --> 00:07:27,390
+will- and, uh, number 2 will say, "Oh,
+
+140
+00:07:27,390 --> 00:07:29,190
+we are one- I'm one node,
+
+141
+00:07:29,190 --> 00:07:32,035
+I'm the first node", and will set the message value to one,
+
+142
+00:07:32,035 --> 00:07:34,710
+and then they will send messages to their,
+
+143
+00:07:34,710 --> 00:07:37,365
+uh, to their parents, um, right?
+
+144
+00:07:37,365 --> 00:07:38,520
+Who are- who are, uh,
+
+145
+00:07:38,520 --> 00:07:40,080
+here, uh, above them.
+
+146
+00:07:40,080 --> 00:07:44,975
+And then the parents are going to sum up the values of the messages from the children,
+
+147
+00:07:44,975 --> 00:07:47,890
+add one to it and pass that message on.
+
+148
+00:07:47,890 --> 00:07:49,610
+And then again recursively,
+
+149
+00:07:49,610 --> 00:07:50,930
+the next level, you know,
+
+150
+00:07:50,930 --> 00:07:53,270
+it is going to sum up the- the incoming here,
+
+151
+00:07:53,270 --> 00:07:56,085
+it will be 2 plus 1 it's 3,
+
+152
+00:07:56,085 --> 00:07:57,540
+plus 1 for itself,
+
+153
+00:07:57,540 --> 00:07:59,175
+it's 4 to send it on,
+
+154
+00:07:59,175 --> 00:08:02,675
+and then this here is going again to sum up 1, uh,
+
+155
+00:08:02,675 --> 00:08:06,960
+plus 4 is 5 plus itself equals to 6, um,
+
+156
+00:08:06,960 --> 00:08:08,955
+so and there should be, uh,
+
+157
+00:08:08,955 --> 00:08:11,390
+six messages here, actually it should be seven,
+
+158
+00:08:11,390 --> 00:08:13,010
+so I lost a count of one somewhere.
+
+159
+00:08:13,010 --> 00:08:14,780
+But you get the idea, right?
+
+160
+00:08:14,780 --> 00:08:16,355
+So the idea is to say,
+
+161
+00:08:16,355 --> 00:08:17,840
+"I am one descendant,
+
+162
+00:08:17,840 --> 00:08:18,995
+I send information on.
+
+163
+00:08:18,995 --> 00:08:21,145
+I'm one descendant, I send it on."
+
+164
+00:08:21,145 --> 00:08:23,405
+This one sums the messages,
+
+165
+00:08:23,405 --> 00:08:25,730
+adds one to them, um, and says, "Oh,
+
+166
+00:08:25,730 --> 00:08:27,095
+there is three of us,
+
+167
+00:08:27,095 --> 00:08:28,400
+let me send this forward."
+
+168
+00:08:28,400 --> 00:08:30,230
+Right? So there will be a value of three here.
+
+169
+00:08:30,230 --> 00:08:32,820
+Um, there will be, um.
+
+170
+00:08:32,820 --> 00:08:37,225
+Again, uh, similarly, here it will be a value of one,
+
+171
+00:08:37,225 --> 00:08:38,320
+so that'll be, uh,
+
+172
+00:08:38,320 --> 00:08:40,240
+1 plus 3 is 4 plus 1 is 5.
+
+173
+00:08:40,240 --> 00:08:41,424
+So there'll be five here.
+
+174
+00:08:41,424 --> 00:08:43,209
+There is one descendant here.
+
+175
+00:08:43,210 --> 00:08:47,725
+So the two together will be 6 plus 1 for this node at the end,
+
+176
+00:08:47,725 --> 00:08:49,120
+the final belief will be that,
+
+177
+00:08:49,120 --> 00:08:51,730
+there is seven nodes, uh, in the graph.
+
+178
+00:08:51,730 --> 00:08:57,310
+Again, the basic information in this algorithm is this local message computation,
+
+179
+00:08:57,310 --> 00:08:59,440
+where messages come in,
+
+180
+00:08:59,440 --> 00:09:01,435
+they get collected by the node,
+
+181
+00:09:01,435 --> 00:09:03,895
+the node collects them, uh,
+
+182
+00:09:03,895 --> 00:09:07,675
+processes the messages, creates a new message, and sends it on.
+
+183
+00:09:07,675 --> 00:09:11,230
+So the loopy belief propagation, uh,
+
+184
+00:09:11,230 --> 00:09:12,895
+algorithm, what it does,
+
+185
+00:09:12,895 --> 00:09:14,755
+it, um, you know,
+
+186
+00:09:14,755 --> 00:09:18,445
+if you say what message will be sent from node i to node j,
+
+187
+00:09:18,445 --> 00:09:23,020
+it will depend on what node i hears from its neighbors, right?
+
+188
+00:09:23,020 --> 00:09:26,380
+The content of this message here is going to depend on
+
+189
+00:09:26,380 --> 00:09:30,625
+the incoming messages from its downstream, uh, neighbors.
+
+190
+00:09:30,625 --> 00:09:35,290
+So each neighbor passes a message to i to, uh,
+
+191
+00:09:35,290 --> 00:09:37,855
+i will now take these messages up,
+
+192
+00:09:37,855 --> 00:09:39,655
+uh, collect them, compute them,
+
+193
+00:09:39,655 --> 00:09:42,084
+update them, create a new message,
+
+194
+00:09:42,084 --> 00:09:45,505
+and then send this new message to node, uh, j.
+
+195
+00:09:45,505 --> 00:09:51,490
+And that's essentially what loopy belief propagation, uh, does.
+
+196
+00:09:51,490 --> 00:09:55,870
+The way we can think of this a bit more formally, uh, is the following.
+
+197
+00:09:55,870 --> 00:10:00,655
+We are going to have what is called label-label potential matrix.
+
+198
+00:10:00,655 --> 00:10:04,360
+So here we are going to capture dependencies between,
+
+199
+00:10:04,360 --> 00:10:07,705
+uh, a node and its neighbor in terms of labels.
+
+200
+00:10:07,705 --> 00:10:12,100
+And you can think of this as a- as a- one way to say is, uh,
+
+201
+00:10:12,100 --> 00:10:14,215
+what is the- if node, uh,
+
+202
+00:10:14,215 --> 00:10:17,635
+i has label y and node j has,
+
+203
+00:10:17,635 --> 00:10:19,390
+you know, some other label, uh,
+
+204
+00:10:19,390 --> 00:10:21,880
+y sub j, then, um, um,
+
+205
+00:10:21,880 --> 00:10:24,460
+the label-label potential matrix,
+
+206
+00:10:24,460 --> 00:10:27,395
+the entry of that, uh, um, uh,
+
+207
+00:10:27,395 --> 00:10:29,845
+cell will be the proportion, uh,
+
+208
+00:10:29,845 --> 00:10:35,380
+or will be proportional to the probability that node j belongs to class, uh,
+
+209
+00:10:35,380 --> 00:10:39,295
+Y sub j, given that its neighbor i belongs to class,
+
+210
+00:10:39,295 --> 00:10:41,425
+uh, Y sub, uh, i.
+
+211
+00:10:41,425 --> 00:10:42,745
+So this means that here,
+
+212
+00:10:42,745 --> 00:10:45,085
+if homophily is present,
+
+213
+00:10:45,085 --> 00:10:47,605
+this matrix will have high values on the diagonal.
+
+214
+00:10:47,605 --> 00:10:49,330
+Meaning, if- if, uh,
+
+215
+00:10:49,330 --> 00:10:51,175
+j belongs to Class 1,
+
+216
+00:10:51,175 --> 00:10:53,590
+then i should also belong to Class 1.
+
+217
+00:10:53,590 --> 00:10:56,470
+But given that we have this label-label potential matrix,
+
+218
+00:10:56,470 --> 00:10:58,795
+if there are big values, um,
+
+219
+00:10:58,795 --> 00:11:02,050
+off the diagonal, this will mean that, you know,
+
+220
+00:11:02,050 --> 00:11:04,195
+if my neighbor is of Class 1,
+
+221
+00:11:04,195 --> 00:11:06,220
+then I'm likely to be of class 0.
+
+222
+00:11:06,220 --> 00:11:09,055
+So it also can capture the cases where the, actually,
+
+223
+00:11:09,055 --> 00:11:12,625
+nodes that are connected are of the opposite labels,
+
+224
+00:11:12,625 --> 00:11:15,490
+are of the opposite, uh, classes.
+
+225
+00:11:15,490 --> 00:11:22,255
+So that this label-label potential matrix that tells us if a node j is of one label,
+
+226
+00:11:22,255 --> 00:11:24,580
+how likely am I of- uh,
+
+227
+00:11:24,580 --> 00:11:26,500
+of a different or of some,
+
+228
+00:11:26,500 --> 00:11:28,825
+uh, other type of label, if I'm node i.
+
+229
+00:11:28,825 --> 00:11:31,600
+Then we are also going to have this, uh, Phi,
+
+230
+00:11:31,600 --> 00:11:37,120
+which is the prior belief about what is- what should be the label of node i, so right?
+
+231
+00:11:37,120 --> 00:11:38,650
+So Phi of, uh,
+
+232
+00:11:38,650 --> 00:11:40,990
+Y_i is proportional to the probability,
+
+233
+00:11:40,990 --> 00:11:45,850
+prior probability of node i belonging to class Y_i.
+
+234
+00:11:45,850 --> 00:11:51,880
+And then we have this notion of a message where message goes from node i to node j.
+
+235
+00:11:51,880 --> 00:11:55,765
+And this means that it is i's message or estimate of
+
+236
+00:11:55,765 --> 00:11:59,830
+node y being in class Y sub- Y sub j. Um,
+
+237
+00:11:59,830 --> 00:12:04,150
+and L will be the set of all, uh, class labels.
+
+238
+00:12:04,150 --> 00:12:08,650
+So to give you now the formula, firstly,
+
+239
+00:12:08,650 --> 00:12:11,170
+in the initial iteration, in the utilization,
+
+240
+00:12:11,170 --> 00:12:14,140
+we are going to initialize all messages to have Value 1.
+
+241
+00:12:14,140 --> 00:12:17,200
+And then we are going to repeat for every node,
+
+242
+00:12:17,200 --> 00:12:19,135
+uh, the following formula,
+
+243
+00:12:19,135 --> 00:12:22,000
+where basically we are right now at node i
+
+244
+00:12:22,000 --> 00:12:25,030
+and we'd like to compute the message that you are going to send to
+
+245
+00:12:25,030 --> 00:12:32,470
+node j and we are in this message will be i's belief that j belongs to a given class.
+
+246
+00:12:32,470 --> 00:12:35,290
+So the way we are going to do this is to say, okay,
+
+247
+00:12:35,290 --> 00:12:39,925
+let's sum over all the states or over all the possible labels.
+
+248
+00:12:39,925 --> 00:12:45,880
+Let's take the- the belief that i belongs to a given, uh, label.
+
+249
+00:12:45,880 --> 00:12:48,940
+And, uh, this is the belie- this is the potential that
+
+250
+00:12:48,940 --> 00:12:52,210
+the j will belong to the label Y sub j, right?
+
+251
+00:12:52,210 --> 00:12:55,510
+So this is the label-label potential ma- matrix
+
+252
+00:12:55,510 --> 00:12:57,745
+that I have introduced in the previous slide.
+
+253
+00:12:57,745 --> 00:13:01,585
+Now, we are going to multiply that with a- with a, um,
+
+254
+00:13:01,585 --> 00:13:04,150
+prior probability of node i,
+
+255
+00:13:04,150 --> 00:13:07,030
+uh, belonging to class Y sub i.
+
+256
+00:13:07,030 --> 00:13:13,855
+And now here, what we are doing is we are going to sum over all the neighbors, uh, uh,
+
+257
+00:13:13,855 --> 00:13:16,570
+k of node i, um,
+
+258
+00:13:16,570 --> 00:13:19,480
+omitting the j, j will- is the uh uh,
+
+259
+00:13:19,480 --> 00:13:22,210
+the node to which we are sending the message.
+
+260
+00:13:22,210 --> 00:13:27,010
+So we are summing over everyone but the j or multiplying go- everyone by j.
+
+261
+00:13:27,010 --> 00:13:29,260
+Where now for every neighbor,
+
+262
+00:13:29,260 --> 00:13:31,765
+uh, k here, these three neighbors, we are asking,
+
+263
+00:13:31,765 --> 00:13:35,275
+what is your belief about node, um,
+
+264
+00:13:35,275 --> 00:13:37,390
+Y being in class,
+
+265
+00:13:37,390 --> 00:13:39,460
+uh, Y sub i, right?
+
+266
+00:13:39,460 --> 00:13:42,115
+So now basically what this means is that node i
+
+267
+00:13:42,115 --> 00:13:45,535
+collects beliefs from its downstream neighbors,
+
+268
+00:13:45,535 --> 00:13:48,235
+um, aggregates the beliefs,
+
+269
+00:13:48,235 --> 00:13:53,830
+multiplies with the- its pra- its- its belief what its own class should be.
+
+270
+00:13:53,830 --> 00:13:58,360
+And then- and then applies the label potential, um,
+
+271
+00:13:58,360 --> 00:14:02,995
+matrix to now send a message to node j about
+
+272
+00:14:02,995 --> 00:14:08,155
+how i's label should influence j's, uh, label.
+
+273
+00:14:08,155 --> 00:14:10,435
+And this is the core of, uh,
+
+274
+00:14:10,435 --> 00:14:13,150
+loopy belief, uh, propagation, right?
+
+275
+00:14:13,150 --> 00:14:16,240
+And, uh, we can keep iterating this, uh,
+
+276
+00:14:16,240 --> 00:14:18,340
+equation until we reach,
+
+277
+00:14:18,340 --> 00:14:20,110
+uh, some convergence, right?
+
+278
+00:14:20,110 --> 00:14:22,690
+When basically we collect messages,
+
+279
+00:14:22,690 --> 00:14:24,205
+uh, we transform them,
+
+280
+00:14:24,205 --> 00:14:30,235
+and send that message onward to the next level, uh, neighbor, right?
+
+281
+00:14:30,235 --> 00:14:32,080
+And after this approach,
+
+282
+00:14:32,080 --> 00:14:34,285
+this iteration is going to converge.
+
+283
+00:14:34,285 --> 00:14:37,510
+Um, we will have the belief about what
+
+284
+00:14:37,510 --> 00:14:40,810
+is the- what is the likelihood or probability of node i,
+
+285
+00:14:40,810 --> 00:14:43,600
+belonging to a given class or to a given label,
+
+286
+00:14:43,600 --> 00:14:45,595
+uh, Y sub, uh, i.
+
+287
+00:14:45,595 --> 00:14:48,460
+And essentially the way- the way this will look like
+
+288
+00:14:48,460 --> 00:14:51,340
+is that our belief will be a product of
+
+289
+00:14:51,340 --> 00:14:54,715
+the prior belief about what's the label of that node
+
+290
+00:14:54,715 --> 00:14:59,470
+times the messages of what other nodes downstream,
+
+291
+00:14:59,470 --> 00:15:01,390
+uh, here labeled as j.
+
+292
+00:15:01,390 --> 00:15:04,690
+Uh, think about what the label of node, uh,
+
+293
+00:15:04,690 --> 00:15:09,115
+i, uh, is, and this is encoded in these messages.
+
+294
+00:15:09,115 --> 00:15:14,650
+So this is the idea how belief propagation algorithm works.
+
+295
+00:15:14,650 --> 00:15:17,440
+Um, here, I call it loopy belief propagation,
+
+296
+00:15:17,440 --> 00:15:21,670
+because in practice, people tend to apply this algorithm to, um,
+
+297
+00:15:21,670 --> 00:15:24,775
+graphs that have cycles or loops as well,
+
+298
+00:15:24,775 --> 00:15:28,150
+even though than any kind of convergence guarantees and this kind of
+
+299
+00:15:28,150 --> 00:15:32,590
+probabilistic interpretation that I gave here, uh, gets lost.
+
+300
+00:15:32,590 --> 00:15:37,870
+So, um, if you consider graphs with cycles, right,
+
+301
+00:15:37,870 --> 00:15:42,745
+there is no- no longer a fixed ordering on- of the nodes which is, er,
+
+302
+00:15:42,745 --> 00:15:48,070
+which, um, otherwise the fixed ordering exists in terms if the graphs are trees.
+
+303
+00:15:48,070 --> 00:15:49,600
+But if a graph has a cycle,
+
+304
+00:15:49,600 --> 00:15:51,190
+you cannot- you cannot, uh,
+
+305
+00:15:51,190 --> 00:15:53,080
+sort, uh, the nodes, uh,
+
+306
+00:15:53,080 --> 00:15:55,420
+in- in a- in a- in a nice order.
+
+307
+00:15:55,420 --> 00:16:00,460
+And basically the idea is that we apply the same algorithm as in the previous slides,
+
+308
+00:16:00,460 --> 00:16:05,860
+but we start from arbitrary nodes and then follow the edges to update the messages.
+
+309
+00:16:05,860 --> 00:16:08,650
+So basically, we kind of propagate this in some kind of,
+
+310
+00:16:08,650 --> 00:16:10,150
+uh, random order, again,
+
+311
+00:16:10,150 --> 00:16:12,580
+until it converges or until, uh,
+
+312
+00:16:12,580 --> 00:16:14,365
+some fixed number of, uh,
+
+313
+00:16:14,365 --> 00:16:17,600
+iterations is, uh, is reached.
+
+314
+00:16:17,600 --> 00:16:21,510
+So, uh, to give you an idea how this would look like,
+
+315
+00:16:21,510 --> 00:16:25,635
+for example, on a - on a graph with cycles, um,
+
+316
+00:16:25,635 --> 00:16:27,345
+the issue becomes that,
+
+317
+00:16:27,345 --> 00:16:29,174
+if our graph has cycles,
+
+318
+00:16:29,174 --> 00:16:31,515
+messages from different subgraphs,
+
+319
+00:16:31,515 --> 00:16:35,730
+from different subbranches, are no longer independent, right?
+
+320
+00:16:35,730 --> 00:16:36,900
+So it means that for example,
+
+321
+00:16:36,900 --> 00:16:39,210
+when our graph was a tree, we could say, "Oh,
+
+322
+00:16:39,210 --> 00:16:41,640
+let's collect information from the left child,
+
+323
+00:16:41,640 --> 00:16:43,440
+from the right child,
+
+324
+00:16:43,440 --> 00:16:45,990
+and add it up, and send it to our parents."
+
+325
+00:16:45,990 --> 00:16:47,130
+So it means that, kind of,
+
+326
+00:16:47,130 --> 00:16:49,110
+children don't talk to each other,
+
+327
+00:16:49,110 --> 00:16:54,570
+and these messages really are coming from disjoint - disjoint parts of the tree.
+
+328
+00:16:54,570 --> 00:16:57,480
+However, if there is a cycle, then this,
+
+329
+00:16:57,480 --> 00:17:01,560
+uh- this idea of something being disjoint or independent,
+
+330
+00:17:01,560 --> 00:17:02,820
+is no longer true, right?
+
+331
+00:17:02,820 --> 00:17:06,359
+Like, for example, when node u would collect messages,
+
+332
+00:17:06,359 --> 00:17:09,584
+it would collect message from i and k. But really,
+
+333
+00:17:09,585 --> 00:17:12,150
+these messages are no longer independent because they
+
+334
+00:17:12,150 --> 00:17:14,910
+both depend on the message they got from j.
+
+335
+00:17:14,910 --> 00:17:16,964
+So in this sense, it comes- in some sense,
+
+336
+00:17:16,964 --> 00:17:19,739
+j is talking to u twice,
+
+337
+00:17:19,740 --> 00:17:25,380
+once through i and once through k. So this creates problems,
+
+338
+00:17:25,380 --> 00:17:26,925
+uh, uh, in terms of, uh,
+
+339
+00:17:26,925 --> 00:17:29,790
+theory and in terms of convergence.
+
+340
+00:17:29,790 --> 00:17:32,760
+Um, but what people tend to do in practice,
+
+341
+00:17:32,760 --> 00:17:34,965
+and not what works really well in practice,
+
+342
+00:17:34,965 --> 00:17:37,200
+is that you still run this belief propagation,
+
+343
+00:17:37,200 --> 00:17:41,490
+even though the graph has cycles, right?
+
+344
+00:17:41,490 --> 00:17:45,360
+And here what tried to show you is that when- once you are in a cycle, kind of,
+
+345
+00:17:45,360 --> 00:17:47,010
+the information will- uh,
+
+346
+00:17:47,010 --> 00:17:49,275
+will- will amplify, um,
+
+347
+00:17:49,275 --> 00:17:52,095
+artificially because it gets on a cycle.
+
+348
+00:17:52,095 --> 00:17:53,415
+And this is similar,
+
+349
+00:17:53,415 --> 00:17:56,880
+if you think about it to- when we talked about PageRank,
+
+350
+00:17:56,880 --> 00:17:58,830
+and we talked about spider traps, right,
+
+351
+00:17:58,830 --> 00:18:02,930
+that- where the random walker kind of gets- gets infinitely lost in this- uh,
+
+352
+00:18:02,930 --> 00:18:04,740
+in this spider trap.
+
+353
+00:18:04,740 --> 00:18:05,760
+It starts cycling.
+
+354
+00:18:05,760 --> 00:18:08,610
+And- and the problem with cycles or with loops is that
+
+355
+00:18:08,610 --> 00:18:12,315
+these messages start cycling, um, again, as well.
+
+356
+00:18:12,315 --> 00:18:15,000
+So the problem, um,
+
+357
+00:18:15,000 --> 00:18:16,875
+in this case, if the graph has cycles,
+
+358
+00:18:16,875 --> 00:18:18,720
+is that the beliefs may not converge.
+
+359
+00:18:18,720 --> 00:18:23,910
+Um, message is based on initial belief of i and not on separate,
+
+360
+00:18:23,910 --> 00:18:27,435
+kind of, independent evidence coming from nodes of i.
+
+361
+00:18:27,435 --> 00:18:29,985
+So the initial belief about i,
+
+362
+00:18:29,985 --> 00:18:31,950
+uh, which could be incorrect,
+
+363
+00:18:31,950 --> 00:18:34,440
+is reinforced, uh, let's say,
+
+364
+00:18:34,440 --> 00:18:37,005
+uh, through the cycle in this case.
+
+365
+00:18:37,005 --> 00:18:40,095
+Uh, however, as I said, in practice, uh,
+
+366
+00:18:40,095 --> 00:18:43,770
+loopy belief propagation is still very good heuristic, uh,
+
+367
+00:18:43,770 --> 00:18:46,170
+for complex graphs because, uh,
+
+368
+00:18:46,170 --> 00:18:49,890
+complex real world networks tend to be more like trees,
+
+369
+00:18:49,890 --> 00:18:53,235
+and they tend to have a relatively small number of cycles.
+
+370
+00:18:53,235 --> 00:18:54,870
+So the cycles, in reality,
+
+371
+00:18:54,870 --> 00:18:56,430
+are not such a big problem,
+
+372
+00:18:56,430 --> 00:18:57,750
+as they might be in this kind of,
+
+373
+00:18:57,750 --> 00:18:59,710
+wore ca- worse-case scenarios.
+
+374
+00:18:59,710 --> 00:19:02,465
+Um, and to give you an example, right, imagine,
+
+375
+00:19:02,465 --> 00:19:05,450
+we are doing belief propagation and we have two states.
+
+376
+00:19:05,450 --> 00:19:06,500
+We have a state, or,
+
+377
+00:19:06,500 --> 00:19:08,045
+a true or a false.
+
+378
+00:19:08,045 --> 00:19:10,550
+And now, you know, this node here sends, uh,
+
+379
+00:19:10,550 --> 00:19:12,680
+a message to the following node and says,
+
+380
+00:19:12,680 --> 00:19:15,105
+"You know, I think you are true,
+
+381
+00:19:15,105 --> 00:19:18,480
+with, you know- s- on a- with my belief about you
+
+382
+00:19:18,480 --> 00:19:22,440
+being true is 2 and my belief about you being false is 1."
+
+383
+00:19:22,440 --> 00:19:27,270
+So now this node will take this and s- and pass it on, and this is now,
+
+384
+00:19:27,270 --> 00:19:28,335
+kind of, going to be,
+
+385
+00:19:28,335 --> 00:19:29,730
+let's say, updated or,
+
+386
+00:19:29,730 --> 00:19:32,580
+uh, passed on in a- in a cycle.
+
+387
+00:19:32,580 --> 00:19:35,250
+But when it comes back to this node,
+
+388
+00:19:35,250 --> 00:19:38,880
+this node is now going to collect messages from both- uh,
+
+389
+00:19:38,880 --> 00:19:41,010
+from both of incoming, uh,
+
+390
+00:19:41,010 --> 00:19:43,050
+messages, this message and that message.
+
+391
+00:19:43,050 --> 00:19:44,460
+So now it will say, "Oh,
+
+392
+00:19:44,460 --> 00:19:47,130
+my belief that I'm- I am in- uh,
+
+393
+00:19:47,130 --> 00:19:49,275
+I am true is actually 4.
+
+394
+00:19:49,275 --> 00:19:51,540
+And my belief that I'm- I'm false is,
+
+395
+00:19:51,540 --> 00:19:52,875
+let say, only 1, or,
+
+396
+00:19:52,875 --> 00:19:54,180
+uh, let's say only 2.
+
+397
+00:19:54,180 --> 00:19:57,120
+And what this means is that now in this cycle,
+
+398
+00:19:57,120 --> 00:19:58,410
+this is going, kind of,
+
+399
+00:19:58,410 --> 00:20:00,420
+to an- uh, to amplify.
+
+400
+00:20:00,420 --> 00:20:06,330
+Um, and the cycle is going to amplify our belief that the state is actually, uh, true.
+
+401
+00:20:06,330 --> 00:20:11,610
+So this means that messages loop around and around and are more- more and more
+
+402
+00:20:11,610 --> 00:20:17,460
+convinced that these variables actually have state true and not state false.
+
+403
+00:20:17,460 --> 00:20:20,220
+And, uh, belief propagation, kind of incorrectly,
+
+404
+00:20:20,220 --> 00:20:22,290
+will treat these messages as separate evidence,
+
+405
+00:20:22,290 --> 00:20:24,615
+uh, that the variable T is true.
+
+406
+00:20:24,615 --> 00:20:28,170
+Um, and the issue is that these messages
+
+407
+00:20:28,170 --> 00:20:31,590
+are no longer independent because there is a- there is a cycle,
+
+408
+00:20:31,590 --> 00:20:32,910
+uh, on the graph.
+
+409
+00:20:32,910 --> 00:20:34,845
+Um, and this can cause- uh,
+
+410
+00:20:34,845 --> 00:20:36,240
+this can cause problems.
+
+411
+00:20:36,240 --> 00:20:38,010
+As I said, in practice,
+
+412
+00:20:38,010 --> 00:20:41,685
+real graphs, uh, tend to look more like trees.
+
+413
+00:20:41,685 --> 00:20:43,425
+So they don't- uh,
+
+414
+00:20:43,425 --> 00:20:46,110
+the cycles are not, uh, a problem,
+
+415
+00:20:46,110 --> 00:20:48,930
+uh, in- uh, in practice, right?
+
+416
+00:20:48,930 --> 00:20:51,075
+This is, as I said, an extreme example.
+
+417
+00:20:51,075 --> 00:20:55,050
+Often, in practice, the cycles- the influence of cycles is weak.
+
+418
+00:20:55,050 --> 00:20:56,325
+Our cycles are long,
+
+419
+00:20:56,325 --> 00:20:57,990
+or, uh, include, uh,
+
+420
+00:20:57,990 --> 00:21:00,225
+at least one weak, uh, correlation,
+
+421
+00:21:00,225 --> 00:21:03,120
+so that the message strength, uh, gets broken.
+
+422
+00:21:03,120 --> 00:21:07,200
+So, um, what are some advantages of belief propagation?
+
+423
+00:21:07,200 --> 00:21:11,160
+Advantages are- ea- that it's easy to- to code up,
+
+424
+00:21:11,160 --> 00:21:13,410
+and it's easy to paralleli- parallelize.
+
+425
+00:21:13,410 --> 00:21:15,240
+It is, uh, general.
+
+426
+00:21:15,240 --> 00:21:19,845
+It means that we can apply any graph model with any form of potential.
+
+427
+00:21:19,845 --> 00:21:22,560
+I showed you this label-label potential matrix,
+
+428
+00:21:22,560 --> 00:21:24,180
+but you can also, uh,
+
+429
+00:21:24,180 --> 00:21:27,165
+think of more complex, higher order potentials.
+
+430
+00:21:27,165 --> 00:21:33,635
+Um, so this is nice because label propagation or belief propagation does not, uh,
+
+431
+00:21:33,635 --> 00:21:36,020
+consider only homophily anymore,
+
+432
+00:21:36,020 --> 00:21:38,480
+but can learn more complex patterns,
+
+433
+00:21:38,480 --> 00:21:41,810
+where labels change, based on the labels of the neighbors, right?
+
+434
+00:21:41,810 --> 00:21:44,830
+So far, in- in previous methods, we only said,
+
+435
+00:21:44,830 --> 00:21:46,905
+"My label is- uh,
+
+436
+00:21:46,905 --> 00:21:48,960
+depends on the label of my neighbors.
+
+437
+00:21:48,960 --> 00:21:51,630
+So if- whatever my neighbor preference is,
+
+438
+00:21:51,630 --> 00:21:54,705
+my- why a- whatever my label- my neighbor's label is,
+
+439
+00:21:54,705 --> 00:21:56,370
+this is also my label."
+
+440
+00:21:56,370 --> 00:22:00,855
+In belief propagation, the labels can flip because we have this notion of,
+
+441
+00:22:00,855 --> 00:22:03,240
+uh, label-label, uh, affinity matrix.
+
+442
+00:22:03,240 --> 00:22:06,030
+Um, the challenge in belief propagation is
+
+443
+00:22:06,030 --> 00:22:11,340
+that convergence is not guaranteed so we generally don't know when to stop,
+
+444
+00:22:11,340 --> 00:22:14,370
+um, especially if there are many, uh, closed loops.
+
+445
+00:22:14,370 --> 00:22:19,140
+So the trick here would be to run a belief propagation for a short,
+
+446
+00:22:19,140 --> 00:22:20,625
+uh, number of steps.
+
+447
+00:22:20,625 --> 00:22:23,370
+Um, and of course, these potential functions,
+
+448
+00:22:23,370 --> 00:22:26,970
+this label-label, uh, potential, uh,
+
+449
+00:22:26,970 --> 00:22:30,105
+matrix, uh, this needs to be- um,
+
+450
+00:22:30,105 --> 00:22:32,550
+it requires training, uh,
+
+451
+00:22:32,550 --> 00:22:36,060
+data analysis to be able to, uh, estimate it.
+
+452
+00:22:36,060 --> 00:22:38,730
+So to summarize, uh,
+
+453
+00:22:38,730 --> 00:22:43,575
+we learned how to leverage correlations in graphs to make predictions of nodes.
+
+454
+00:22:43,575 --> 00:22:45,540
+We talked about three techniques.
+
+455
+00:22:45,540 --> 00:22:48,600
+Relational classification, where basically we say,
+
+456
+00:22:48,600 --> 00:22:53,160
+my label is a sum of the labels from my neighbors,
+
+457
+00:22:53,160 --> 00:22:54,900
+which basically means my label is, kind of,
+
+458
+00:22:54,900 --> 00:22:57,030
+the label of my neighbors.
+
+459
+00:22:57,030 --> 00:23:00,885
+Um, this uses the network structure but doesn't use feature information.
+
+460
+00:23:00,885 --> 00:23:06,570
+Then we talked about iterative classification that use both node feature information,
+
+461
+00:23:06,570 --> 00:23:11,730
+as well as the summary of the labels captured in the vector z around a given node.
+
+462
+00:23:11,730 --> 00:23:16,305
+So this approach use both the feature information about the nodes, as well as,
+
+463
+00:23:16,305 --> 00:23:18,630
+labels of the neighbors, but still,
+
+464
+00:23:18,630 --> 00:23:22,410
+kind of, would depend on homophily-type principle.
+
+465
+00:23:22,410 --> 00:23:25,200
+And then we talked about loopy belief propagation.
+
+466
+00:23:25,200 --> 00:23:29,505
+That- that, um, included this label- uh,
+
+467
+00:23:29,505 --> 00:23:32,220
+label-label potential matrix, uh, and,
+
+468
+00:23:32,220 --> 00:23:36,060
+uh, thought about this as collecting messages,
+
+469
+00:23:36,060 --> 00:23:40,995
+transforming messages, and sending a message to the upstream neighbor, as well.
+
+470
+00:23:40,995 --> 00:23:44,235
+This process is exact and, uh,
+
+471
+00:23:44,235 --> 00:23:48,135
+well-defined on, uh, chain graphs and on trees.
+
+472
+00:23:48,135 --> 00:23:50,550
+But on graphs with cycles,
+
+473
+00:23:50,550 --> 00:23:53,190
+um, it creates, uh, problems.
+
+474
+00:23:53,190 --> 00:23:55,170
+However, as I said in practice,
+
+475
+00:23:55,170 --> 00:23:57,195
+cycles tend to be, uh,
+
+476
+00:23:57,195 --> 00:23:59,985
+few or tend to have weak connections,
+
+477
+00:23:59,985 --> 00:24:03,060
+so that in practice, cycles don't, uh,
+
+478
+00:24:03,060 --> 00:24:04,860
+cause, uh, too much problem,
+
+479
+00:24:04,860 --> 00:24:06,900
+and loopy belief propagation is
+
+480
+00:24:06,900 --> 00:24:11,295
+a very strong allegory or a very strong approach for semi-supervised,
+
+481
+00:24:11,295 --> 00:24:14,340
+uh, labeling of nodes, uh, in the graph.
+
+482
+00:24:14,340 --> 00:24:17,025
+So, um, with this, uh,
+
+483
+00:24:17,025 --> 00:24:21,190
+we have finished the lecture for today.
+

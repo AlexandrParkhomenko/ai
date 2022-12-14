@@ -1,0 +1,2264 @@
+1
+00:00:04,070 --> 00:00:07,485
+So given the insights so far,
+
+2
+00:00:07,485 --> 00:00:12,450
+let's now go and design the most powerful graph neural network.
+
+3
+00:00:12,450 --> 00:00:15,600
+So let's go and design the most expressive,
+
+4
+00:00:15,600 --> 00:00:17,145
+uh, graph neural network.
+
+5
+00:00:17,145 --> 00:00:21,855
+And let's develop the theory that will allow us, uh, to do that.
+
+6
+00:00:21,855 --> 00:00:26,850
+So the key observation so far is that the expressive power of
+
+7
+00:00:26,850 --> 00:00:29,730
+a graph neural network can be characterized by
+
+8
+00:00:29,730 --> 00:00:33,840
+the expressive power of the neighborhood aggregation function they use.
+
+9
+00:00:33,840 --> 00:00:35,340
+Because the more expressive
+
+10
+00:00:35,340 --> 00:00:39,800
+the neighborhood aggregation leads to a more expressive graph neural network.
+
+11
+00:00:39,800 --> 00:00:44,420
+And we saw that if the neighborhood aggregation is injective,
+
+12
+00:00:44,420 --> 00:00:47,750
+this leads to the most expressive, uh, GNN.
+
+13
+00:00:47,750 --> 00:00:50,155
+A neighborhood aggregation being injective,
+
+14
+00:00:50,155 --> 00:00:55,520
+it means that whatever is the number and the features of the- of the children,
+
+15
+00:00:55,520 --> 00:00:58,880
+you- you map every different combination
+
+16
+00:00:58,880 --> 00:01:03,235
+into a different output, so no information get- gets lost.
+
+17
+00:01:03,235 --> 00:01:06,015
+So let's do the following next,
+
+18
+00:01:06,015 --> 00:01:12,265
+let's theoretically analyze the expressive power of different, uh, aggregation functions.
+
+19
+00:01:12,265 --> 00:01:16,360
+So the way you think of neighborhood aggregation, uh,
+
+20
+00:01:16,360 --> 00:01:20,255
+basically taking the information from the children and aggregating is that
+
+21
+00:01:20,255 --> 00:01:25,190
+neighborhood aggregation can be abstracted as a function over a multi-set.
+
+22
+00:01:25,190 --> 00:01:29,660
+A multi-set is simply a set with repeated elements, right?
+
+23
+00:01:29,660 --> 00:01:32,630
+So if you say, "I'm a node here and I aggregated
+
+24
+00:01:32,630 --> 00:01:36,005
+from two neighbors for two children," this is the same as saying,
+
+25
+00:01:36,005 --> 00:01:37,630
+I have a set of children,
+
+26
+00:01:37,630 --> 00:01:39,100
+uh, two yellow guys,
+
+27
+00:01:39,100 --> 00:01:42,845
+and I need to aggregate information from them, right?
+
+28
+00:01:42,845 --> 00:01:44,675
+And of course, in a multi-set,
+
+29
+00:01:44,675 --> 00:01:46,820
+um, nodes can have different colors,
+
+30
+00:01:46,820 --> 00:01:49,325
+node can have different features, so, you know,
+
+31
+00:01:49,325 --> 00:01:50,510
+could say, uh-huh, I have,
+
+32
+00:01:50,510 --> 00:01:52,130
+uh, I have two children,
+
+33
+00:01:52,130 --> 00:01:54,590
+one with yellow attribute and the other one with
+
+34
+00:01:54,590 --> 00:01:58,135
+blue attribute versus some other node has, um,
+
+35
+00:01:58,135 --> 00:02:02,900
+three children, two of them with yellow attribute or yellow feature,
+
+36
+00:02:02,900 --> 00:02:05,360
+and one, uh, with the blue feature.
+
+37
+00:02:05,360 --> 00:02:08,055
+And then we aggregate this information,
+
+38
+00:02:08,055 --> 00:02:10,145
+we want the- the new message,
+
+39
+00:02:10,145 --> 00:02:12,800
+the aggregated information not to be lost.
+
+40
+00:02:12,800 --> 00:02:15,020
+Somehow we wanna the,
+
+41
+00:02:15,020 --> 00:02:16,759
+er, to- in this aggregation,
+
+42
+00:02:16,759 --> 00:02:18,275
+in this compression step,
+
+43
+00:02:18,275 --> 00:02:21,740
+basically to retain all the information we know about the children, right?
+
+44
+00:02:21,740 --> 00:02:24,665
+So here we'd wanna say, two yellow and a blue,
+
+45
+00:02:24,665 --> 00:02:27,830
+and here we'd wanna say one yellow and one blue so that
+
+46
+00:02:27,830 --> 00:02:31,140
+these two sets- multi-sets still remain, uh,
+
+47
+00:02:31,140 --> 00:02:35,760
+distinguishable as- as we are aggregating them, uh, to their parent,
+
+48
+00:02:35,760 --> 00:02:39,475
+so that then we aggregate this parent further to the super parent,
+
+49
+00:02:39,475 --> 00:02:42,680
+uh, no information, uh, gets lost.
+
+50
+00:02:42,680 --> 00:02:45,905
+So let's look at, uh,
+
+51
+00:02:45,905 --> 00:02:50,170
+the neighborhood information- aggregation functions used by the two,
+
+52
+00:02:50,170 --> 00:02:53,305
+uh, models that we have discussed so far in the class.
+
+53
+00:02:53,305 --> 00:02:54,840
+First, we'll talk about, uh,
+
+54
+00:02:54,840 --> 00:02:57,705
+GCN, which uses mean pooling.
+
+55
+00:02:57,705 --> 00:03:02,565
+It uses element-wise mean pooling over neighborhood node features,
+
+56
+00:03:02,565 --> 00:03:07,490
+and then let's talk about the max pooling variant of GraphSAGE that uses
+
+57
+00:03:07,490 --> 00:03:12,320
+element-wise maximum pooling over neighboring, uh, node features.
+
+58
+00:03:12,320 --> 00:03:15,395
+And let's see what is the expressive power of mean
+
+59
+00:03:15,395 --> 00:03:19,495
+and what is the expressive power of max, uh, pooling.
+
+60
+00:03:19,495 --> 00:03:23,520
+So, uh, let's first talk about, uh, GCN,
+
+61
+00:03:23,520 --> 00:03:25,370
+so the mean pooling when you
+
+62
+00:03:25,370 --> 00:03:28,130
+average the messages coming from the ne- from the children.
+
+63
+00:03:28,130 --> 00:03:31,415
+Uh, if we take the, er, element-wise mean,
+
+64
+00:03:31,415 --> 00:03:32,930
+then in a GCN,
+
+65
+00:03:32,930 --> 00:03:35,359
+it's followed by a linear function,
+
+66
+00:03:35,359 --> 00:03:38,045
+and a ReLU, a- activation function.
+
+67
+00:03:38,045 --> 00:03:40,520
+Um, and, er, what is,
+
+68
+00:03:40,520 --> 00:03:42,485
+uh, what is the observation?
+
+69
+00:03:42,485 --> 00:03:46,740
+The observation function is that GCN's aggregation function cannot
+
+70
+00:03:46,740 --> 00:03:50,870
+disting- distinguish multi- different multi-sets with the same,
+
+71
+00:03:50,870 --> 00:03:53,450
+kind of, proportion of colors, right?
+
+72
+00:03:53,450 --> 00:03:55,250
+So for example, um,
+
+73
+00:03:55,250 --> 00:03:56,585
+this is a failure case.
+
+74
+00:03:56,585 --> 00:03:58,899
+When you average together messages,
+
+75
+00:03:58,899 --> 00:04:02,210
+it doesn't- it doesn't matter whether you average
+
+76
+00:04:02,210 --> 00:04:07,025
+one yellow and one blue message or whether you average two yellow and two blue messages.
+
+77
+00:04:07,025 --> 00:04:10,800
+At the end, the average is the same, all right?
+
+78
+00:04:10,800 --> 00:04:13,835
+And this is the failure case of the average.
+
+79
+00:04:13,835 --> 00:04:17,570
+It- it will combine these two multi-sets,
+
+80
+00:04:17,570 --> 00:04:20,019
+it will aggregate them into the same,
+
+81
+00:04:20,019 --> 00:04:21,379
+uh, into the same message.
+
+82
+00:04:21,380 --> 00:04:25,610
+So it means it will lose information in the case that here are,
+
+83
+00:04:25,610 --> 00:04:27,530
+um, one and one,
+
+84
+00:04:27,530 --> 00:04:28,940
+and here is two and two,
+
+85
+00:04:28,940 --> 00:04:31,055
+because the ratio is the same.
+
+86
+00:04:31,055 --> 00:04:34,930
+So let me be a bit more precise and give you a proper example.
+
+87
+00:04:34,930 --> 00:04:40,940
+Let's for simplicity, assume that node colors are represented as one-hot encodings, right?
+
+88
+00:04:40,940 --> 00:04:43,910
+So now every node- every node, uh,
+
+89
+00:04:43,910 --> 00:04:48,670
+has a feature vector that simply encodes what color is the color of the node, right?
+
+90
+00:04:48,670 --> 00:04:50,560
+That is its, uh, feature vector.
+
+91
+00:04:50,560 --> 00:04:52,100
+And this is just, kind of,
+
+92
+00:04:52,100 --> 00:04:54,380
+uh, a- a way to illustrate, uh,
+
+93
+00:04:54,380 --> 00:04:59,700
+this concept and what happens when we do, uh, aggregation, right?
+
+94
+00:04:59,700 --> 00:05:01,965
+So for example, when you do,
+
+95
+00:05:01,965 --> 00:05:04,430
+uh, average of, uh, two vectors,
+
+96
+00:05:04,430 --> 00:05:06,370
+uh, 1,0, and 0,1,
+
+97
+00:05:06,370 --> 00:05:09,710
+you- you- you get, uh, uh, half and half.
+
+98
+00:05:09,710 --> 00:05:14,625
+So that's your aggregated message now of these two, uh, feature vectors.
+
+99
+00:05:14,625 --> 00:05:15,840
+Uh, in this case,
+
+100
+00:05:15,840 --> 00:05:17,370
+when you have a multi-set, again,
+
+101
+00:05:17,370 --> 00:05:18,915
+of two yellow and two blue,
+
+102
+00:05:18,915 --> 00:05:21,720
+here are the corresponding feature representations.
+
+103
+00:05:21,720 --> 00:05:25,865
+If I take the e- the- the element-wise average of these,
+
+104
+00:05:25,865 --> 00:05:28,700
+uh, four vectors, I also get half half.
+
+105
+00:05:28,700 --> 00:05:33,500
+So it means that even if I then apply some non-linear transformation,
+
+106
+00:05:33,500 --> 00:05:35,770
+and activation, and so on, at the end,
+
+107
+00:05:35,770 --> 00:05:39,605
+I will get the same output because the aggregation of, uh,
+
+108
+00:05:39,605 --> 00:05:44,995
+yellow and blue is the same as the aggregation of two yellows and two blues.
+
+109
+00:05:44,995 --> 00:05:49,410
+Even though I encode them in- with different feature vectors,
+
+110
+00:05:49,410 --> 00:05:53,780
+so yellow and blue nodes are de- definitely distinguishable because, you know,
+
+111
+00:05:53,780 --> 00:05:55,970
+one has the first element set to 1,
+
+112
+00:05:55,970 --> 00:05:57,455
+and the other one has the second,
+
+113
+00:05:57,455 --> 00:05:59,530
+uh, element, uh, set to 1.
+
+114
+00:05:59,530 --> 00:06:05,030
+So you see how mean pooling can basically aggregate, uh,
+
+115
+00:06:05,030 --> 00:06:08,495
+multi-sets that have the same proportion
+
+116
+00:06:08,495 --> 00:06:12,890
+of nodes of one type of feature versus the other type of feature,
+
+117
+00:06:12,890 --> 00:06:15,140
+um, into the same representation,
+
+118
+00:06:15,140 --> 00:06:17,870
+regardless of what is the total number of nodes or what is
+
+119
+00:06:17,870 --> 00:06:21,560
+the total size of the underlying, uh, multi-set.
+
+120
+00:06:21,560 --> 00:06:24,125
+So this is the issue with the mean pooling.
+
+121
+00:06:24,125 --> 00:06:26,420
+This is a failure case of mean pooling
+
+122
+00:06:26,420 --> 00:06:29,420
+because it won't be able to distinguish a multi-set
+
+123
+00:06:29,420 --> 00:06:36,140
+of size 2 versus size 4 if the proportion of features is the same in both.
+
+124
+00:06:36,140 --> 00:06:40,010
+And now, let's look at, uh, um, um, uh,
+
+125
+00:06:40,010 --> 00:06:45,540
+GraphSAGE, uh, max-pooling, uh, variant of it.
+
+126
+00:06:45,540 --> 00:06:47,430
+So we- in the GraphSAGE,
+
+127
+00:06:47,430 --> 00:06:50,460
+we apply our multi-layer perceptron transformation,
+
+128
+00:06:50,460 --> 00:06:54,250
+and then take, uh, uh, element-wise maximum pooling.
+
+129
+00:06:54,250 --> 00:06:59,930
+Um, and what we learn here is that maximum pooling function cannot
+
+130
+00:06:59,930 --> 00:07:05,550
+distinguish different multi-sets with the same set of distinct colors, right?
+
+131
+00:07:05,550 --> 00:07:06,920
+So what does- what does this mean,
+
+132
+00:07:06,920 --> 00:07:10,160
+is that all of these different multi-sets will
+
+133
+00:07:10,160 --> 00:07:13,920
+be aggregated into the same representation.
+
+134
+00:07:13,920 --> 00:07:17,010
+Why is that the case is because as long as
+
+135
+00:07:17,010 --> 00:07:20,330
+multi-sets have the same set of distinct colors,
+
+136
+00:07:20,330 --> 00:07:23,000
+then the me- whatever is the maximum, right?
+
+137
+00:07:23,000 --> 00:07:24,920
+Maximum will be one of the colors,
+
+138
+00:07:24,920 --> 00:07:30,180
+that maximum is the same regardless of how many different nodes,
+
+139
+00:07:30,180 --> 00:07:33,815
+uh, and what are the proportions of colors in the,
+
+140
+00:07:33,815 --> 00:07:36,035
+um, uh, in the multi-set.
+
+141
+00:07:36,035 --> 00:07:38,180
+So to give you an example,
+
+142
+00:07:38,180 --> 00:07:41,365
+imagine I have these three different multi-sets,
+
+143
+00:07:41,365 --> 00:07:45,299
+I, uh, I encode this colors using some encoding,
+
+144
+00:07:45,299 --> 00:07:48,110
+then I apply some nonlinear transformation
+
+145
+00:07:48,110 --> 00:07:51,265
+like an MLP to it because this is what GraphSAGE does,
+
+146
+00:07:51,265 --> 00:07:53,720
+and let's assume without loss of generality,
+
+147
+00:07:53,720 --> 00:07:55,100
+that basically now, you know,
+
+148
+00:07:55,100 --> 00:07:57,800
+these colors get transformed to some new colors,
+
+149
+00:07:57,800 --> 00:08:00,860
+and we encode these colors with one-hot encoding.
+
+150
+00:08:00,860 --> 00:08:05,015
+So I- so everything is disti- distinguishable at to this level.
+
+151
+00:08:05,015 --> 00:08:08,000
+But the problem is that now if you take, uh,
+
+152
+00:08:08,000 --> 00:08:11,570
+element-wise, meaning coordinate-wise, maximum,
+
+153
+00:08:11,570 --> 00:08:13,310
+in all these different cases,
+
+154
+00:08:13,310 --> 00:08:15,770
+you get the same aggregation,
+
+155
+00:08:15,770 --> 00:08:17,300
+you get the same maximum value,
+
+156
+00:08:17,300 --> 00:08:18,900
+you get 1 and 1.
+
+157
+00:08:18,900 --> 00:08:23,215
+So this means that regardless whether the node has,
+
+158
+00:08:23,215 --> 00:08:25,810
+uh, two children, four children,
+
+159
+00:08:25,810 --> 00:08:27,520
+or three children, um,
+
+160
+00:08:27,520 --> 00:08:31,150
+and whatever is the ratio between blue, and, uh, uh,
+
+161
+00:08:31,150 --> 00:08:32,945
+yellow, in all cases,
+
+162
+00:08:32,945 --> 00:08:36,475
+the maximum pooling will give me the same representation.
+
+163
+00:08:36,475 --> 00:08:40,885
+So it means that all this information here gets lost and
+
+164
+00:08:40,885 --> 00:08:45,355
+all these different multi-sets get mapped to the same representation.
+
+165
+00:08:45,355 --> 00:08:49,240
+So clearly, uh, maximum pooling is not
+
+166
+00:08:49,240 --> 00:08:53,995
+an injective operator because it maps different inputs into the same,
+
+167
+00:08:53,995 --> 00:08:56,280
+uh, output, and that's the problem.
+
+168
+00:08:56,280 --> 00:08:59,740
+You get these collisions and information, uh, gets lost,
+
+169
+00:08:59,740 --> 00:09:02,770
+and that decreases the expressive power,
+
+170
+00:09:02,770 --> 00:09:05,340
+uh, of the graph neural network.
+
+171
+00:09:05,340 --> 00:09:09,605
+So, let's summarize what we have learned so far.
+
+172
+00:09:09,605 --> 00:09:13,399
+We have analyzed the expressive power of graph neural networks,
+
+173
+00:09:13,399 --> 00:09:15,925
+and the main takeaways are the following;
+
+174
+00:09:15,925 --> 00:09:20,390
+the expressive power of a graph neural network can be characterized by
+
+175
+00:09:20,390 --> 00:09:24,580
+the expressive power of its neighborhood aggregation function, right?
+
+176
+00:09:24,580 --> 00:09:26,700
+So the message aggregation function.
+
+177
+00:09:26,700 --> 00:09:30,590
+Neighborhood aggregation is a function over multi-sets,
+
+178
+00:09:30,590 --> 00:09:33,160
+basically sets with repeating elements.
+
+179
+00:09:33,160 --> 00:09:36,785
+Um, and GCN and GraphSAGE aggregation functions
+
+180
+00:09:36,785 --> 00:09:40,395
+fail to distinguish some of the basic multi-sets.
+
+181
+00:09:40,395 --> 00:09:43,070
+Meaning these two aggregation functions,
+
+182
+00:09:43,070 --> 00:09:46,190
+mean and maximum, are not injective,
+
+183
+00:09:46,190 --> 00:09:50,120
+which means different inputs get mapped into the same output,
+
+184
+00:09:50,120 --> 00:09:52,885
+and this way, the information gets lost.
+
+185
+00:09:52,885 --> 00:10:00,480
+Therefore, GCN and GraphSAGE are not maximally powerful graph neural networks.
+
+186
+00:10:00,480 --> 00:10:02,945
+They're not maximally expressive,
+
+187
+00:10:02,945 --> 00:10:05,430
+uh, graph neural networks.
+
+188
+00:10:05,430 --> 00:10:09,775
+So let's now move on and say,
+
+189
+00:10:09,775 --> 00:10:14,320
+can we design the most expressive graph neural network, right?
+
+190
+00:10:14,320 --> 00:10:19,240
+So our goal will be to design maximally powerful graph neural network,
+
+191
+00:10:19,240 --> 00:10:23,545
+uh, among all possible message-passing graph neural networks.
+
+192
+00:10:23,545 --> 00:10:27,160
+And this will- the way we are going to do this is to-
+
+193
+00:10:27,160 --> 00:10:30,850
+to design an injective neighborhood aggregation function.
+
+194
+00:10:30,850 --> 00:10:35,305
+So basically a neighborhood aggregation function that will never lose information
+
+195
+00:10:35,305 --> 00:10:40,195
+when it aggregates from the children to create a message, uh, for the parent.
+
+196
+00:10:40,195 --> 00:10:45,535
+So the property will be an injectivity of the aggregation function, right?
+
+197
+00:10:45,535 --> 00:10:50,425
+Um, so the goal is design a neural network that can model this injective,
+
+198
+00:10:50,425 --> 00:10:54,400
+uh, multi-set function because that's the aggregation operator.
+
+199
+00:10:54,400 --> 00:10:56,920
+So, uh, here is a very,
+
+200
+00:10:56,920 --> 00:10:59,065
+uh, useful, uh, theorem.
+
+201
+00:10:59,065 --> 00:11:02,860
+The theorem says that any injective multi-set function
+
+202
+00:11:02,860 --> 00:11:06,010
+can be expressed in the following way.
+
+203
+00:11:06,010 --> 00:11:09,730
+So it can be- so if I have a set of elements, right,
+
+204
+00:11:09,730 --> 00:11:12,190
+I have my multi-set function S, uh,
+
+205
+00:11:12,190 --> 00:11:15,490
+multi-set, uh, that has a set of elements,
+
+206
+00:11:15,490 --> 00:11:20,170
+then the way I can write an injective function over a multi-set is I can write it as,
+
+207
+00:11:20,170 --> 00:11:24,940
+uh, I apply my function f to every element of the multi-set,
+
+208
+00:11:24,940 --> 00:11:27,715
+I sum up these,
+
+209
+00:11:27,715 --> 00:11:29,590
+uh, uh, these, uh,
+
+210
+00:11:29,590 --> 00:11:35,230
+outputs of f and then I apply another non-linear function, okay?
+
+211
+00:11:35,230 --> 00:11:39,280
+So the point is that if I want to have an injective set over,
+
+212
+00:11:39,280 --> 00:11:41,515
+uh, over a multi-set,
+
+213
+00:11:41,515 --> 00:11:45,190
+then I can realize this injective, uh,
+
+214
+00:11:45,190 --> 00:11:49,135
+function by having two functions, f and Phi,
+
+215
+00:11:49,135 --> 00:11:52,990
+where f I apply to every element of the multi-set,
+
+216
+00:11:52,990 --> 00:11:55,525
+I sum up the outputs of f,
+
+217
+00:11:55,525 --> 00:11:57,940
+and then I apply another function,
+
+218
+00:11:57,940 --> 00:12:01,195
+another transformation, uh, Phi to it.
+
+219
+00:12:01,195 --> 00:12:03,910
+And this means that,
+
+220
+00:12:03,910 --> 00:12:05,665
+uh, this is how,
+
+221
+00:12:05,665 --> 00:12:07,120
+um, a gr- um,
+
+222
+00:12:07,120 --> 00:12:09,310
+a multi-set function can be expressed,
+
+223
+00:12:09,310 --> 00:12:13,525
+uh, and it will still be, uh, injective.
+
+224
+00:12:13,525 --> 00:12:16,615
+So the way you can think of the proof,
+
+225
+00:12:16,615 --> 00:12:17,965
+what is the intuition?
+
+226
+00:12:17,965 --> 00:12:21,145
+The intuition is that our f can, uh,
+
+227
+00:12:21,145 --> 00:12:24,340
+produce kind of one-hot encodings of colors, right?
+
+228
+00:12:24,340 --> 00:12:27,415
+So f is injective for different node,
+
+229
+00:12:27,415 --> 00:12:29,995
+it produces a different output, um,
+
+230
+00:12:29,995 --> 00:12:34,120
+and these outputs need to be different enough so that when you sum them up,
+
+231
+00:12:34,120 --> 00:12:35,860
+you don't lose any information.
+
+232
+00:12:35,860 --> 00:12:41,065
+So in some sense, if- if f takes colors and produces their one-hot encodings,
+
+233
+00:12:41,065 --> 00:12:43,735
+this means that then you can basically by summing up,
+
+234
+00:12:43,735 --> 00:12:47,515
+you are counting how many elements of each color you have.
+
+235
+00:12:47,515 --> 00:12:50,020
+And this way, you don't lose any information, right?
+
+236
+00:12:50,020 --> 00:12:53,155
+You say, uh huh, I have one yellow node and I have, uh,
+
+237
+00:12:53,155 --> 00:12:57,610
+two blue nodes, and that is kind of the way you can think of f, right?
+
+238
+00:12:57,610 --> 00:13:02,125
+f takes the colors and- and kind of encodes them as one-hot,
+
+239
+00:13:02,125 --> 00:13:03,655
+so that when you sum them up,
+
+240
+00:13:03,655 --> 00:13:06,550
+you basically count how many different colors you have.
+
+241
+00:13:06,550 --> 00:13:10,510
+Of course, f needs to be a function that does, that does this.
+
+242
+00:13:10,510 --> 00:13:12,895
+If f does not do this for you,
+
+243
+00:13:12,895 --> 00:13:15,220
+um, this won't, uh, this won't work.
+
+244
+00:13:15,220 --> 00:13:17,605
+So f has to be a very special, uh,
+
+245
+00:13:17,605 --> 00:13:19,930
+function, um, and then,
+
+246
+00:13:19,930 --> 00:13:22,615
+uh, it will, uh, work out.
+
+247
+00:13:22,615 --> 00:13:25,705
+So now the question is,
+
+248
+00:13:25,705 --> 00:13:29,665
+what kind of function f and Phi can I use?
+
+249
+00:13:29,665 --> 00:13:31,105
+How do I define them?
+
+250
+00:13:31,105 --> 00:13:36,145
+And we're going to u- to use them to basically define them with a neural network.
+
+251
+00:13:36,145 --> 00:13:39,805
+We are going to define them using a multi-layer perceptron.
+
+252
+00:13:39,805 --> 00:13:44,755
+Um, and why would we want to define it just using a perceptron?
+
+253
+00:13:44,755 --> 00:13:46,825
+There reason is that, uh,
+
+254
+00:13:46,825 --> 00:13:50,905
+there is something called an universal approximation theorem,
+
+255
+00:13:50,905 --> 00:13:54,040
+and it goes as follows: So, uh,
+
+256
+00:13:54,040 --> 00:13:57,460
+one hidden layer uh, multiple,
+
+257
+00:13:57,460 --> 00:14:00,910
+uh, layer perceptron with sufficiently large, uh,
+
+258
+00:14:00,910 --> 00:14:05,680
+hidden layer dimensionality and appropriate non-linearity can
+
+259
+00:14:05,680 --> 00:14:10,930
+approximate any continuous function to an arbitrary accuracy, right?
+
+260
+00:14:10,930 --> 00:14:12,355
+So what is this saying?
+
+261
+00:14:12,355 --> 00:14:17,980
+It says that I have this unknown special functions of Phi and f
+
+262
+00:14:17,980 --> 00:14:21,790
+that I need to define so that I- so
+
+263
+00:14:21,790 --> 00:14:25,180
+that I can write my injective function in terms of f and Phi,
+
+264
+00:14:25,180 --> 00:14:28,375
+but f and Phi are not known ahead of time.
+
+265
+00:14:28,375 --> 00:14:34,885
+So but- so I'm going to represent f and Phi with neural networks.
+
+266
+00:14:34,885 --> 00:14:38,740
+And then because multi-layer perceptron is able to
+
+267
+00:14:38,740 --> 00:14:43,020
+learn any function to arbitrary accuracy,
+
+268
+00:14:43,020 --> 00:14:47,910
+this basically means I can use data to learn f and Phi that
+
+269
+00:14:47,910 --> 00:14:53,205
+have the property to- to- to create these types of injective mappings.
+
+270
+00:14:53,205 --> 00:14:56,680
+So basically this means that, um,
+
+271
+00:14:56,680 --> 00:15:01,810
+we have arrived to a neural network that can model any injective function, right?
+
+272
+00:15:01,810 --> 00:15:05,350
+If I take a multi-set with elements x,
+
+273
+00:15:05,350 --> 00:15:08,215
+then if I apply a multi-layer perceptron to it,
+
+274
+00:15:08,215 --> 00:15:11,545
+sum it up and apply another multi-layer perceptron,
+
+275
+00:15:11,545 --> 00:15:14,605
+then multi-layer perceptron can, um,
+
+276
+00:15:14,605 --> 00:15:19,915
+approximate any function, so it can approximate my function f and Phi as well.
+
+277
+00:15:19,915 --> 00:15:23,020
+So this means now I have a neural network that can do
+
+278
+00:15:23,020 --> 00:15:26,755
+this injective multi-set, uh, mapping.
+
+279
+00:15:26,755 --> 00:15:28,615
+And, you know, in theory,
+
+280
+00:15:28,615 --> 00:15:34,060
+this embedding dimensionality, the dimensionality of the MLP could be very large,
+
+281
+00:15:34,060 --> 00:15:35,770
+but in practice, it turns out that, you know,
+
+282
+00:15:35,770 --> 00:15:37,570
+something between 100 and 500,
+
+283
+00:15:37,570 --> 00:15:41,275
+um, is good enough and gives you a good performance.
+
+284
+00:15:41,275 --> 00:15:44,380
+So what magic has just happened is that we
+
+285
+00:15:44,380 --> 00:15:48,310
+said any injective multi-set function can be written as,
+
+286
+00:15:48,310 --> 00:15:49,990
+uh, um, as, uh, uh,
+
+287
+00:15:49,990 --> 00:15:53,815
+uh, as a- with two functions, f and Phi.
+
+288
+00:15:53,815 --> 00:15:56,320
+F is first applied to every, uh,
+
+289
+00:15:56,320 --> 00:15:59,215
+element of the multi-set summed up and that
+
+290
+00:15:59,215 --> 00:16:02,545
+that is passed through the function Phi and this way,
+
+291
+00:16:02,545 --> 00:16:06,175
+uh, the- the injectivity, uh, is preserved.
+
+292
+00:16:06,175 --> 00:16:09,445
+And because of the universal approximation theorem,
+
+293
+00:16:09,445 --> 00:16:13,330
+we can model f and Phi with a multi-layer perceptron,
+
+294
+00:16:13,330 --> 00:16:16,060
+and now we have an injective, uh,
+
+295
+00:16:16,060 --> 00:16:21,730
+aggregation function, because MLP can learn any possible function, and, uh,
+
+296
+00:16:21,730 --> 00:16:24,940
+um, and, uh, the other MLP also can learn any function,
+
+297
+00:16:24,940 --> 00:16:27,985
+meaning, it can learn the function f as well.
+
+298
+00:16:27,985 --> 00:16:33,190
+So, uh, what is now the most expressive graph neural network there is?
+
+299
+00:16:33,190 --> 00:16:35,980
+The most expressive graph neural network there- there is,
+
+300
+00:16:35,980 --> 00:16:41,845
+is called Graph Isomorphism Neural Network or GIN for short.
+
+301
+00:16:41,845 --> 00:16:46,510
+And the way its aggregation function looks like it says,
+
+302
+00:16:46,510 --> 00:16:48,805
+let's take messages from the children,
+
+303
+00:16:48,805 --> 00:16:51,805
+let's transform them with a multi-layer perceptron,
+
+304
+00:16:51,805 --> 00:16:54,610
+let's sum them up and apply another,
+
+305
+00:16:54,610 --> 00:16:56,950
+uh, multi-layer, uh, perceptron.
+
+306
+00:16:56,950 --> 00:16:58,630
+And, you know, uh,
+
+307
+00:16:58,630 --> 00:17:01,720
+given everything I explained, this is, uh,
+
+308
+00:17:01,720 --> 00:17:04,630
+injective multi-set aggregation function,
+
+309
+00:17:04,630 --> 00:17:06,954
+so it means it has no failure cases.
+
+310
+00:17:06,954 --> 00:17:08,724
+It doesn't have any collisions,
+
+311
+00:17:08,724 --> 00:17:12,984
+and this is the most expressive graph neural network
+
+312
+00:17:12,984 --> 00:17:15,339
+in the class of this message passing,
+
+313
+00:17:15,339 --> 00:17:17,304
+uh, graph neural networks.
+
+314
+00:17:17,305 --> 00:17:21,744
+So, uh, it is super cool that we were basically able
+
+315
+00:17:21,744 --> 00:17:26,259
+to define the most powerful graph neural network,
+
+316
+00:17:26,260 --> 00:17:27,970
+um, out of, uh,
+
+317
+00:17:27,970 --> 00:17:29,350
+an entire class, uh,
+
+318
+00:17:29,350 --> 00:17:30,745
+of graph neural networks.
+
+319
+00:17:30,745 --> 00:17:35,725
+And we now theoretically understand that it is really all about the aggregation function,
+
+320
+00:17:35,725 --> 00:17:41,185
+and that the summation aggregation function is better than the average,
+
+321
+00:17:41,185 --> 00:17:43,570
+is better than the maximum.
+
+322
+00:17:43,570 --> 00:17:45,820
+So, uh, let me,
+
+323
+00:17:45,820 --> 00:17:47,200
+uh, summarize a bit, right?
+
+324
+00:17:47,200 --> 00:17:50,140
+We have described neighborhood aggregation fun- uh, uh, of, uh,
+
+325
+00:17:50,140 --> 00:17:52,900
+function of a GIN, um, and,
+
+326
+00:17:52,900 --> 00:17:56,004
+uh, we see that basically the aggregation is a summation.
+
+327
+00:17:56,004 --> 00:18:00,430
+We take messages, we transform them through an MLP and then sum them up.
+
+328
+00:18:00,430 --> 00:18:03,009
+And that has the injective property,
+
+329
+00:18:03,009 --> 00:18:08,425
+which means it will be able to capture the structure of the entire computation graph.
+
+330
+00:18:08,425 --> 00:18:12,685
+Now, uh, that we have seen what GIN is,
+
+331
+00:18:12,685 --> 00:18:15,130
+we are going to describe the full,
+
+332
+00:18:15,130 --> 00:18:17,485
+uh, model of the Graph Isomorphism Network,
+
+333
+00:18:17,485 --> 00:18:20,500
+and we are actually going to relate it back to the, uh,
+
+334
+00:18:20,500 --> 00:18:25,900
+Weisfeiler-Lehman graph kernel, the WL graph kernel that we talked about,
+
+335
+00:18:25,900 --> 00:18:27,925
+I think in lecture number 2.
+
+336
+00:18:27,925 --> 00:18:30,010
+And what we are going to provide is
+
+337
+00:18:30,010 --> 00:18:33,370
+this very interesting prospect where we are going to see that,
+
+338
+00:18:33,370 --> 00:18:38,485
+uh, GIN is a neural network version of the WL ker- kernel.
+
+339
+00:18:38,485 --> 00:18:42,355
+So, um, let me explain this in more detail.
+
+340
+00:18:42,355 --> 00:18:45,655
+So what is WL graph kernel?
+
+341
+00:18:45,655 --> 00:18:48,820
+Right? It is also called a color refinement
+
+342
+00:18:48,820 --> 00:18:53,395
+algorithm where basically we are given a graph G and a set of nodes V,
+
+343
+00:18:53,395 --> 00:18:55,630
+we assign initial color,
+
+344
+00:18:55,630 --> 00:18:58,570
+uh, c to each node v. Uh,
+
+345
+00:18:58,570 --> 00:19:01,495
+let's say we- the colors are based on degree of the node,
+
+346
+00:19:01,495 --> 00:19:04,510
+and then we are iteratively aggregating,
+
+347
+00:19:04,510 --> 00:19:09,010
+hashing colors of neighbors to create a new color for the node, right?
+
+348
+00:19:09,010 --> 00:19:11,485
+So we take the at- at, uh,
+
+349
+00:19:11,485 --> 00:19:15,385
+if you want to create the color at level k plus 1 for a given node,
+
+350
+00:19:15,385 --> 00:19:17,875
+we take the colors of the nodes, uh,
+
+351
+00:19:17,875 --> 00:19:23,320
+u that are its neighbors from the previous iteration, we take, uh,
+
+352
+00:19:23,320 --> 00:19:26,679
+color of node v from the previous iteration,
+
+353
+00:19:26,679 --> 00:19:29,965
+somehow hash these together into a new color.
+
+354
+00:19:29,965 --> 00:19:32,740
+All right, then hash- hash function.
+
+355
+00:19:32,740 --> 00:19:37,045
+The idea is that it maps different inputs to different, uh, outputs.
+
+356
+00:19:37,045 --> 00:19:41,845
+Uh, so hash functions are as injective, uh, as possible.
+
+357
+00:19:41,845 --> 00:19:47,485
+And the idea is that after k steps of this color refinement, the color, uh,
+
+358
+00:19:47,485 --> 00:19:52,195
+of every node will summarize the K-hop neighborhood structure,
+
+359
+00:19:52,195 --> 00:19:53,845
+uh, around a given node.
+
+360
+00:19:53,845 --> 00:19:56,530
+So let me give you an example.
+
+361
+00:19:56,530 --> 00:20:00,055
+Imagine I have two different graphs, um.
+
+362
+00:20:00,055 --> 00:20:02,590
+Here they are, they are different,
+
+363
+00:20:02,590 --> 00:20:05,695
+they are, um, uh, uh, non-isomorphic.
+
+364
+00:20:05,695 --> 00:20:07,600
+So the way we do this is, uh,
+
+365
+00:20:07,600 --> 00:20:09,745
+let's say we first simply initialize
+
+366
+00:20:09,745 --> 00:20:12,850
+all the colors to value 1 and then we aggregate, right?
+
+367
+00:20:12,850 --> 00:20:16,795
+So the- for example, this node has color 1 and then has three neighbors,
+
+368
+00:20:16,795 --> 00:20:17,890
+each one of color 1.
+
+369
+00:20:17,890 --> 00:20:20,440
+So this will be now one comma 1, 1, 1,
+
+370
+00:20:20,440 --> 00:20:21,865
+and then, you know,
+
+371
+00:20:21,865 --> 00:20:23,350
+every node does the same.
+
+372
+00:20:23,350 --> 00:20:28,120
+Now we are going to hash these descriptions,
+
+373
+00:20:28,120 --> 00:20:30,760
+these, uh, colors into new colors.
+
+374
+00:20:30,760 --> 00:20:33,970
+And let's assume that our hash function is injective,
+
+375
+00:20:33,970 --> 00:20:35,725
+meaning it has no, uh,
+
+376
+00:20:35,725 --> 00:20:38,770
+collisions, then this would be a new set of,
+
+377
+00:20:38,770 --> 00:20:41,005
+uh, node colors now.
+
+378
+00:20:41,005 --> 00:20:42,340
+Um, and for example,
+
+379
+00:20:42,340 --> 00:20:45,490
+in this case, this node, uh,
+
+380
+00:20:45,490 --> 00:20:48,880
+and that node have the same color because their descriptions,
+
+381
+00:20:48,880 --> 00:20:50,230
+uh, are the same, right?
+
+382
+00:20:50,230 --> 00:20:53,560
+They have color 1 and they have three neighbors, each with color 1,
+
+383
+00:20:53,560 --> 00:20:58,795
+so this particular input got mapped to a new color, uh, number 4.
+
+384
+00:20:58,795 --> 00:21:02,139
+And now I can then repeat this process,
+
+385
+00:21:02,139 --> 00:21:04,885
+uh, uh, one more time and so on.
+
+386
+00:21:04,885 --> 00:21:09,205
+What you should notice is that at every iteration of this WL kernel,
+
+387
+00:21:09,205 --> 00:21:12,985
+what is happening is we are taking the colors, uh,
+
+388
+00:21:12,985 --> 00:21:17,440
+from the neighbors, uh, and putting them together, together with our own color.
+
+389
+00:21:17,440 --> 00:21:19,765
+So if you go back and look here,
+
+390
+00:21:19,765 --> 00:21:22,435
+this is very similar to the, uh,
+
+391
+00:21:22,435 --> 00:21:26,305
+graph neural network, where we take messages from the neighbors,
+
+392
+00:21:26,305 --> 00:21:31,030
+combine it with the v's own message, somehow transform, uh,
+
+393
+00:21:31,030 --> 00:21:33,550
+all these into a new- and- and, uh,
+
+394
+00:21:33,550 --> 00:21:38,425
+transform this and call this- that this is the message for node V at the next level.
+
+395
+00:21:38,425 --> 00:21:43,510
+So this is essentially like a hard coded graph neural network, right?
+
+396
+00:21:43,510 --> 00:21:46,675
+We take, uh, colors from neighbors,
+
+397
+00:21:46,675 --> 00:21:49,690
+uh, aggregate them, take our own color,
+
+398
+00:21:49,690 --> 00:21:53,740
+aggregate it, and then call this to be the embedding of the node
+
+399
+00:21:53,740 --> 00:21:58,165
+v at the next layer or at the next, uh, level.
+
+400
+00:21:58,165 --> 00:22:02,275
+So the point is that as- the more iterations we do this,
+
+401
+00:22:02,275 --> 00:22:04,630
+the farther out information,
+
+402
+00:22:04,630 --> 00:22:07,330
+uh, is captured at a given node, right?
+
+403
+00:22:07,330 --> 00:22:09,985
+The farther out kind of the network neighborhood gets,
+
+404
+00:22:09,985 --> 00:22:12,565
+more and more hops get added to it.
+
+405
+00:22:12,565 --> 00:22:17,920
+And the idea of this color refinement is that the- if you are doing, let's say, um,
+
+406
+00:22:17,920 --> 00:22:22,285
+isomorphism testing, then the process continues al- uh,
+
+407
+00:22:22,285 --> 00:22:24,790
+until the stable coloring is reached.
+
+408
+00:22:24,790 --> 00:22:29,545
+And two graphs are considered isomorphic if they have the same set of colors.
+
+409
+00:22:29,545 --> 00:22:34,165
+In our case, the colors in these two graphs are different.
+
+410
+00:22:34,165 --> 00:22:37,780
+The distribution of them- the number of them is different,
+
+411
+00:22:37,780 --> 00:22:41,275
+which means these two graphs are not isomorphic and you- if you look at them,
+
+412
+00:22:41,275 --> 00:22:42,850
+you really see that,
+
+413
+00:22:42,850 --> 00:22:45,085
+uh, they are not, uh, isomorphic.
+
+414
+00:22:45,085 --> 00:22:48,790
+So now, how does this relate to the GIN model?
+
+415
+00:22:48,790 --> 00:22:54,400
+All right, GIN uses neural network to model this injective hash function, right?
+
+416
+00:22:54,400 --> 00:22:55,540
+The way we can, uh,
+
+417
+00:22:55,540 --> 00:22:57,805
+write out GIN is we can say, aha,
+
+418
+00:22:57,805 --> 00:23:01,900
+it's some aggregation over the- the, uh, embeddings,
+
+419
+00:23:01,900 --> 00:23:04,015
+messages from the children, uh,
+
+420
+00:23:04,015 --> 00:23:07,855
+from the neighbors of node v plus the color,
+
+421
+00:23:07,855 --> 00:23:09,730
+the message of the node V,
+
+422
+00:23:09,730 --> 00:23:12,580
+uh, from the previous, uh, step.
+
+423
+00:23:12,580 --> 00:23:17,275
+So the way we write this in terms of,
+
+424
+00:23:17,275 --> 00:23:20,140
+um, uh, GIN operator is to say, aha,
+
+425
+00:23:20,140 --> 00:23:23,395
+we are taking the messages from the children,
+
+426
+00:23:23,395 --> 00:23:26,950
+we aggregate- we transform them using an MLP,
+
+427
+00:23:26,950 --> 00:23:28,390
+this is our function f,
+
+428
+00:23:28,390 --> 00:23:29,770
+and we summed them up.
+
+429
+00:23:29,770 --> 00:23:35,020
+Um, and then we also add 1 plus epsilon,
+
+430
+00:23:35,020 --> 00:23:36,655
+where epsilon is some small, uh,
+
+431
+00:23:36,655 --> 00:23:40,990
+learnable scalar, our own message transformed by
+
+432
+00:23:40,990 --> 00:23:46,435
+f and then add the two together and pass through another function, uh, phi.
+
+433
+00:23:46,435 --> 00:23:51,130
+And this is exactly now a, um, uh,
+
+434
+00:23:51,130 --> 00:23:54,190
+an injective operator that basically an in- in
+
+435
+00:23:54,190 --> 00:23:58,765
+an injective way maps the neighborhood information plus the,
+
+436
+00:23:58,765 --> 00:24:02,080
+um, plus- plus the node's own information into
+
+437
+00:24:02,080 --> 00:24:05,770
+a unique embedding into a unique, uh, representation.
+
+438
+00:24:05,770 --> 00:24:10,900
+So, um, if- assume that in- input, uh,
+
+439
+00:24:10,900 --> 00:24:13,209
+feature is c is represented,
+
+440
+00:24:13,209 --> 00:24:15,625
+let's say as one-hot encoding,
+
+441
+00:24:15,625 --> 00:24:19,630
+then basically just direct summation is injective, right?
+
+442
+00:24:19,630 --> 00:24:22,120
+So if I say, how do I, uh,
+
+443
+00:24:22,120 --> 00:24:24,820
+have an injective function over a multiset where
+
+444
+00:24:24,820 --> 00:24:27,880
+elements of a multiset are encoded with one-hot?
+
+445
+00:24:27,880 --> 00:24:33,190
+Then basically, all I have to do is sum up these vectors and I'll get
+
+446
+00:24:33,190 --> 00:24:35,650
+a unique representation because every coordinate will
+
+447
+00:24:35,650 --> 00:24:39,355
+count how many nodes of a given color, uh, there are.
+
+448
+00:24:39,355 --> 00:24:43,839
+Now, if these colors are not presented so nicely,
+
+449
+00:24:43,839 --> 00:24:47,845
+you need to transform them with the function f so that it kind of
+
+450
+00:24:47,845 --> 00:24:52,360
+approximates this intuitive one-hot encoding, right?
+
+451
+00:24:52,360 --> 00:24:53,935
+So this means that,
+
+452
+00:24:53,935 --> 00:24:56,230
+uh, uh, GIN, uh, uh,
+
+453
+00:24:56,230 --> 00:25:01,720
+aggregation GIN type of convolution is composed of two M- uh, uh,
+
+454
+00:25:01,720 --> 00:25:06,490
+two MLPs, one operated on the colors of neighbors,
+
+455
+00:25:06,490 --> 00:25:11,620
+one, um, and then the aggregation is a summation plus some, uh,
+
+456
+00:25:11,620 --> 00:25:13,270
+final MLP that, again,
+
+457
+00:25:13,270 --> 00:25:17,530
+kind of provides the next level one-hot encoding so that when we,
+
+458
+00:25:17,530 --> 00:25:21,160
+again, sum up information from the children at the next level,
+
+459
+00:25:21,160 --> 00:25:23,395
+no information, uh, gets lost.
+
+460
+00:25:23,395 --> 00:25:25,630
+So you can think of these f's and, uh,
+
+461
+00:25:25,630 --> 00:25:27,760
+f's and phi as some kind of
+
+462
+00:25:27,760 --> 00:25:32,215
+transformation- transform- transformations that kind of softly do
+
+463
+00:25:32,215 --> 00:25:35,110
+uh, one-hot, uh, encoding.
+
+464
+00:25:35,110 --> 00:25:40,090
+So let's now summarize and provide the entire, uh, GIN model.
+
+465
+00:25:40,090 --> 00:25:44,620
+Uh, GIN, uh, node-embedding update goes as follows.
+
+466
+00:25:44,620 --> 00:25:47,050
+Given a graph with a set of nodes v,
+
+467
+00:25:47,050 --> 00:25:49,045
+we assign a scalar, uh,
+
+468
+00:25:49,045 --> 00:25:51,235
+vector to each node v,
+
+469
+00:25:51,235 --> 00:25:54,730
+and then iteratively, ap- uh, apply this, uh,
+
+470
+00:25:54,730 --> 00:25:59,545
+GINConv operator that basically takes the information from the neighbors,
+
+471
+00:25:59,545 --> 00:26:01,045
+takes its own information,
+
+472
+00:26:01,045 --> 00:26:04,360
+applies these func- uh, functions f and phi that are modeled
+
+473
+00:26:04,360 --> 00:26:08,005
+by MLPs and produces the next level embedding.
+
+474
+00:26:08,005 --> 00:26:13,210
+And if you look at this, this is now written exactly the same way as the WL, right?
+
+475
+00:26:13,210 --> 00:26:14,590
+Rather than hash here,
+
+476
+00:26:14,590 --> 00:26:16,600
+we write out this GINConv.
+
+477
+00:26:16,600 --> 00:26:21,145
+So this means that basically after K steps of GIN iteration,
+
+478
+00:26:21,145 --> 00:26:28,255
+CK summarizes the- the structure of the k-hop neighborhood around a given node, uh,
+
+479
+00:26:28,255 --> 00:26:32,215
+v. So to bring the two together,
+
+480
+00:26:32,215 --> 00:26:34,690
+this means that GIN can be viewed- understood as
+
+481
+00:26:34,690 --> 00:26:38,275
+a differentiable neural network version of WL,
+
+482
+00:26:38,275 --> 00:26:39,910
+uh, graph kernel, right,
+
+483
+00:26:39,910 --> 00:26:43,120
+wherein WL views node colors.
+
+484
+00:26:43,120 --> 00:26:47,905
+Um, and, uh, let's say we can encode them as one-hot and use this, uh,
+
+485
+00:26:47,905 --> 00:26:50,275
+abstract deterministic hash function,
+
+486
+00:26:50,275 --> 00:26:54,760
+while in GIN views node embeddings which are low-dimensional vectors.
+
+487
+00:26:54,760 --> 00:26:58,510
+And we use this GIN convolution with these two MLPs;
+
+488
+00:26:58,510 --> 00:27:01,210
+the MLP phi and MLP, uh,
+
+489
+00:27:01,210 --> 00:27:04,975
+f that, uh, aggregate information.
+
+490
+00:27:04,975 --> 00:27:07,390
+You know, what are the advantages of GIN over
+
+491
+00:27:07,390 --> 00:27:12,175
+the WL is that node embeddings are low-dimensional.
+
+492
+00:27:12,175 --> 00:27:14,920
+Hence, they can capture the fine
+
+493
+00:27:14,920 --> 00:27:18,970
+grained similarity of different nodes and that parameters,
+
+494
+00:27:18,970 --> 00:27:22,930
+uh, of the update function can be learned from the downstream task.
+
+495
+00:27:22,930 --> 00:27:26,080
+So we are going to actually be able to learn functions, uh,
+
+496
+00:27:26,080 --> 00:27:28,225
+f and phi that,
+
+497
+00:27:28,225 --> 00:27:31,075
+uh, ensure, uh, injectivity.
+
+498
+00:27:31,075 --> 00:27:33,565
+So, um, you know,
+
+499
+00:27:33,565 --> 00:27:37,390
+because the relationship between GIN and the WL kernel,
+
+500
+00:27:37,390 --> 00:27:41,620
+their expressive power is exactly the same.
+
+501
+00:27:41,620 --> 00:27:45,700
+So this now means that if two graphs can be distinguished by GIN,
+
+502
+00:27:45,700 --> 00:27:49,705
+they can be also distinguished by WL and vice versa.
+
+503
+00:27:49,705 --> 00:27:52,825
+So it means that, uh,
+
+504
+00:27:52,825 --> 00:27:58,030
+graph neural networks are at most as powerful or as
+
+505
+00:27:58,030 --> 00:28:04,930
+expressive as the WL kernel or the WL graph isomorphism test.
+
+506
+00:28:04,930 --> 00:28:10,495
+Um, and, uh, this is great because now we have the upper bound.
+
+507
+00:28:10,495 --> 00:28:16,435
+We know that GIN attains this upper bound and we also know that WL kernel,
+
+508
+00:28:16,435 --> 00:28:18,460
+both theoretically and empirically,
+
+509
+00:28:18,460 --> 00:28:23,875
+has shown to distinguish many or most of the real-world graphs, right?
+
+510
+00:28:23,875 --> 00:28:29,080
+So this means that GIN is the- powerful enough to distinguish most,
+
+511
+00:28:29,080 --> 00:28:31,720
+uh, real-world graphs, which is,
+
+512
+00:28:31,720 --> 00:28:34,550
+uh, great- uh, which is great news.
+
+513
+00:28:34,550 --> 00:28:36,750
+So let me summarize.
+
+514
+00:28:36,750 --> 00:28:40,005
+Uh, we design a neural network that can model
+
+515
+00:28:40,005 --> 00:28:43,345
+injective multi-set function by basically saying that
+
+516
+00:28:43,345 --> 00:28:46,870
+any injective multi-set function can be written as a,
+
+517
+00:28:46,870 --> 00:28:52,615
+uh, app- application of a function f to the elements of the multiset plus a summation.
+
+518
+00:28:52,615 --> 00:28:54,250
+Um, in our case,
+
+519
+00:28:54,250 --> 00:28:58,585
+we use a neural network for neg- neighborhood aggregation function, uh,
+
+520
+00:28:58,585 --> 00:29:00,505
+and rely on the, um, uh,
+
+521
+00:29:00,505 --> 00:29:06,265
+Universal Approximation Theorem to basically say that MLP is able to learn any function.
+
+522
+00:29:06,265 --> 00:29:11,935
+So this means that GIN is able to capture the neighborhoods in an injective way,
+
+523
+00:29:11,935 --> 00:29:17,155
+which means it is the most powerful or the most expressive graph neural network there is.
+
+524
+00:29:17,155 --> 00:29:24,295
+Um, and the key is to use element-wise summation pooling instead of mean or max pooling.
+
+525
+00:29:24,295 --> 00:29:29,725
+So it means that sum pooling is more expressive than mean or max pooling.
+
+526
+00:29:29,725 --> 00:29:33,040
+We also saw that the GIN is closely related to
+
+527
+00:29:33,040 --> 00:29:37,779
+the WL kernel and that both GIN and WL kernel can distinguish,
+
+528
+00:29:37,779 --> 00:29:41,710
+uh, most of the real-world, uh, graph structures.
+
+529
+00:29:41,710 --> 00:29:45,820
+To summarize, the- the- the important point of
+
+530
+00:29:45,820 --> 00:29:49,975
+the lecture is that if you say about mean and max pooling,
+
+531
+00:29:49,975 --> 00:29:53,020
+for example, mean and max pooling are not able to distinguish
+
+532
+00:29:53,020 --> 00:29:56,110
+these types of neighborhood structures where you have two or three neighbors,
+
+533
+00:29:56,110 --> 00:29:57,430
+all the same features.
+
+534
+00:29:57,430 --> 00:30:00,250
+Here is where maximum pooling fails because
+
+535
+00:30:00,250 --> 00:30:03,580
+the number of distinct- k- kind of the distinct colors are the same.
+
+536
+00:30:03,580 --> 00:30:07,560
+So whatever is the maximum is the same in both cases and this is, again,
+
+537
+00:30:07,560 --> 00:30:11,280
+the case where both mean and max pooling fail because we have, uh,
+
+538
+00:30:11,280 --> 00:30:15,420
+um, green and red and they are in the same proportion.
+
+539
+00:30:15,420 --> 00:30:21,615
+So if you rank, uh, different pooling operators by- by discriminative power, um,
+
+540
+00:30:21,615 --> 00:30:23,100
+sum pooling is the best,
+
+541
+00:30:23,100 --> 00:30:26,955
+is most expressive, is more expressive than mean pooling,
+
+542
+00:30:26,955 --> 00:30:30,110
+is more expressive than, uh, maximum pooling.
+
+543
+00:30:30,110 --> 00:30:32,845
+So in general, sum pooling, uh,
+
+544
+00:30:32,845 --> 00:30:34,600
+is the most expressive,
+
+545
+00:30:34,600 --> 00:30:37,255
+uh, to use in graph neural networks.
+
+546
+00:30:37,255 --> 00:30:41,350
+And last thing I want to mention is that you can
+
+547
+00:30:41,350 --> 00:30:45,970
+further improve the expressive power of graph neural networks.
+
+548
+00:30:45,970 --> 00:30:49,195
+So the important characteristic of what we talked
+
+549
+00:30:49,195 --> 00:30:52,690
+today was that node features are indistinguishable,
+
+550
+00:30:52,690 --> 00:30:56,325
+meaning that all nodes have the same node feature information.
+
+551
+00:30:56,325 --> 00:30:58,680
+So by adding rich features,
+
+552
+00:30:58,680 --> 00:31:01,580
+nodes may become, um, distinguishable.
+
+553
+00:31:01,580 --> 00:31:05,785
+The other important thing that we talked about today is that because
+
+554
+00:31:05,785 --> 00:31:08,290
+graph neural networks only aggregate features
+
+555
+00:31:08,290 --> 00:31:11,290
+and they use no reference point in the network.
+
+556
+00:31:11,290 --> 00:31:13,870
+Nodes that have the same, um,
+
+557
+00:31:13,870 --> 00:31:18,460
+uh, computation graph structure are indistinguishable.
+
+558
+00:31:18,460 --> 00:31:20,830
+And what we are going to talk about, uh,
+
+559
+00:31:20,830 --> 00:31:26,380
+later in the course is actually how do we improve the expressive power of,
+
+560
+00:31:26,380 --> 00:31:28,555
+uh, graph neural networks, um,
+
+561
+00:31:28,555 --> 00:31:30,865
+to be more expressive than GIN,
+
+562
+00:31:30,865 --> 00:31:34,330
+and to be more expressive that- than, uh, WL.
+
+563
+00:31:34,330 --> 00:31:36,145
+And of course in those cases,
+
+564
+00:31:36,145 --> 00:31:40,195
+it will actually require more than just the message passing.
+
+565
+00:31:40,195 --> 00:31:42,895
+It will require more advanced operations, um,
+
+566
+00:31:42,895 --> 00:31:46,550
+and we are going to talk about those, uh, in the future.
+

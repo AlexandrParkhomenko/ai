@@ -1,0 +1,1860 @@
+1
+00:00:04,100 --> 00:00:10,200
+So now I wanna talk about the second method about, uh, community structure,
+
+2
+00:00:10,200 --> 00:00:12,284
+and we'll call this, uh, BigCLAM,
+
+3
+00:00:12,284 --> 00:00:14,655
+is the name of the method and this is for detecting
+
+4
+00:00:14,655 --> 00:00:17,195
+overlapping communities in networks, right?
+
+5
+00:00:17,195 --> 00:00:21,840
+So so far we made assumption about this type of structure of the network.
+
+6
+00:00:21,840 --> 00:00:23,145
+So like we have these clusters,
+
+7
+00:00:23,145 --> 00:00:26,910
+each one has a lot of connections and then a few connections across.
+
+8
+00:00:26,910 --> 00:00:29,940
+But in many cases, you know,
+
+9
+00:00:29,940 --> 00:00:33,830
+people- humans, we belong to multiple social communities at once.
+
+10
+00:00:33,830 --> 00:00:35,750
+So you can have these social groups,
+
+11
+00:00:35,750 --> 00:00:37,550
+uh, that overlap, right?
+
+12
+00:00:37,550 --> 00:00:41,420
+So how could we extract this type of overlapping community structure?
+
+13
+00:00:41,420 --> 00:00:42,905
+To give you an example,
+
+14
+00:00:42,905 --> 00:00:46,265
+this is actually a Facebook network of one of the students,
+
+15
+00:00:46,265 --> 00:00:48,025
+uh, uh, in my group.
+
+16
+00:00:48,025 --> 00:00:52,080
+These are his friends and these are collection- connections between his friends.
+
+17
+00:00:52,080 --> 00:00:53,510
+Um, and you can ask, you know,
+
+18
+00:00:53,510 --> 00:00:55,550
+what is the community structure of this network?
+
+19
+00:00:55,550 --> 00:00:58,640
+What kind of communities does this PhD student of- uh,
+
+20
+00:00:58,640 --> 00:01:01,105
+uh, from my group, uh, belong to?
+
+21
+00:01:01,105 --> 00:01:03,470
+Um, and you know, if you look at this, perhaps you say,
+
+22
+00:01:03,470 --> 00:01:05,660
+there is- I see one big group here,
+
+23
+00:01:05,660 --> 00:01:07,280
+maybe I see another one here,
+
+24
+00:01:07,280 --> 00:01:09,310
+maybe there is something down here.
+
+25
+00:01:09,310 --> 00:01:15,140
+What is actually interesting if you look at it and you ask the student to- to, uh,
+
+26
+00:01:15,140 --> 00:01:17,490
+put his friends into different social groups,
+
+27
+00:01:17,490 --> 00:01:20,495
+uh, here are the social groups he came up with.
+
+28
+00:01:20,495 --> 00:01:25,320
+He basically said, I- I- I have friends from four different social groups,
+
+29
+00:01:25,320 --> 00:01:27,120
+uh, and here are the social groups.
+
+30
+00:01:27,120 --> 00:01:30,190
+And of course, some friends belong to multiple of these social groups.
+
+31
+00:01:30,190 --> 00:01:34,050
+Um, and then you can ask the- the student to label these groups.
+
+32
+00:01:34,050 --> 00:01:37,205
+And he said, "Oh, these are my friends from high school.
+
+33
+00:01:37,205 --> 00:01:41,840
+These are the friends from an internship I did in a given company.
+
+34
+00:01:41,840 --> 00:01:44,660
+These are the Stanford friends I play basketball with,
+
+35
+00:01:44,660 --> 00:01:47,905
+and these are these other Stanford friends I play, uh, squash with."
+
+36
+00:01:47,905 --> 00:01:50,570
+Uh, and of course there are some people here, right?
+
+37
+00:01:50,570 --> 00:01:53,910
+That are both- that went to the student to the same high school,
+
+38
+00:01:53,910 --> 00:01:58,310
+they are now at Stanford and they play both basketball and squash with him.
+
+39
+00:01:58,310 --> 00:02:00,875
+And, you know, that have some from the same high school
+
+40
+00:02:00,875 --> 00:02:03,860
+who only- who did the internship with him at this company,
+
+41
+00:02:03,860 --> 00:02:05,720
+but are not currently at Stanford, right?
+
+42
+00:02:05,720 --> 00:02:09,714
+So we see how these, um, communities overlap differently.
+
+43
+00:02:09,714 --> 00:02:13,085
+Another thing that I wanna notice you in this picture is that
+
+44
+00:02:13,085 --> 00:02:17,015
+nodes are either solid or they are kind of gray.
+
+45
+00:02:17,015 --> 00:02:22,340
+Um, and the point here is what I'm trying to show is that for- for a given- uh,
+
+46
+00:02:22,340 --> 00:02:24,439
+for a given network,
+
+47
+00:02:24,439 --> 00:02:27,310
+uh, we can- for this given input,
+
+48
+00:02:27,310 --> 00:02:29,455
+we can ask our community detection method,
+
+49
+00:02:29,455 --> 00:02:32,575
+our BigCLAM to identify the clusters.
+
+50
+00:02:32,575 --> 00:02:36,239
+And the big- BigCLAM identifies these four clusters,
+
+51
+00:02:36,239 --> 00:02:38,415
+and then we, uh, color the nodes.
+
+52
+00:02:38,415 --> 00:02:41,995
+The node is full if it was assigned to the correct cluster,
+
+53
+00:02:41,995 --> 00:02:47,020
+and it is gray if it- if it was not assigned to the great- to the correct cluster.
+
+54
+00:02:47,020 --> 00:02:52,480
+Uh, and what is amazing here is basically that only on the network structure alone,
+
+55
+00:02:52,480 --> 00:02:55,690
+only on this unlabeled network structure,
+
+56
+00:02:55,690 --> 00:02:58,900
+we can assign nodes to the correct clusters,
+
+57
+00:02:58,900 --> 00:03:02,890
+to the correct social communities without knowing anything about them.
+
+58
+00:03:02,890 --> 00:03:05,350
+Which is remarkable and super impressive, right?
+
+59
+00:03:05,350 --> 00:03:06,920
+It's a super hard task.
+
+60
+00:03:06,920 --> 00:03:09,210
+So, uh, this was one example,
+
+61
+00:03:09,210 --> 00:03:12,540
+another example I wanna show you is in, uh, biological networks.
+
+62
+00:03:12,540 --> 00:03:14,750
+This is a protein-protein interaction network,
+
+63
+00:03:14,750 --> 00:03:17,150
+and if you identify functional modules here,
+
+64
+00:03:17,150 --> 00:03:19,055
+you see how these functional modules,
+
+65
+00:03:19,055 --> 00:03:20,810
+uh, overlap with each other.
+
+66
+00:03:20,810 --> 00:03:23,270
+So this is, um, very interesting to think
+
+67
+00:03:23,270 --> 00:03:26,515
+about overlapping community structure in networks.
+
+68
+00:03:26,515 --> 00:03:30,680
+So just to contrast what we have been talking about so far,
+
+69
+00:03:30,680 --> 00:03:32,720
+we talked about networks having
+
+70
+00:03:32,720 --> 00:03:36,995
+this kind of clustering structure where dense clusters, few connections across.
+
+71
+00:03:36,995 --> 00:03:40,400
+If we think about this in terms of the graph adjacency matrix,
+
+72
+00:03:40,400 --> 00:03:42,485
+then the adjacency matrix would look like this,
+
+73
+00:03:42,485 --> 00:03:44,900
+where basically you have one cluster, you know,
+
+74
+00:03:44,900 --> 00:03:46,970
+the orange one, you have the green cluster,
+
+75
+00:03:46,970 --> 00:03:48,140
+a lot of connections.
+
+76
+00:03:48,140 --> 00:03:51,560
+And then these areas of the adjacency matrix means, you know,
+
+77
+00:03:51,560 --> 00:03:55,100
+an orange node linking to a green node and there is, uh,
+
+78
+00:03:55,100 --> 00:03:59,375
+less connections here because we assume there is less connections across the two clusters.
+
+79
+00:03:59,375 --> 00:04:01,115
+In the overlapping case,
+
+80
+00:04:01,115 --> 00:04:03,770
+it actually- the situation gets much more tricky.
+
+81
+00:04:03,770 --> 00:04:06,200
+If you have two overlapping clusters,
+
+82
+00:04:06,200 --> 00:04:08,480
+then these red nodes here are in the overlap.
+
+83
+00:04:08,480 --> 00:04:09,950
+And if you think of it from the, um,
+
+84
+00:04:09,950 --> 00:04:13,940
+um, adjacency matrix point of view, this is the picture, right?
+
+85
+00:04:13,940 --> 00:04:15,650
+You have one cluster,
+
+86
+00:04:15,650 --> 00:04:17,555
+you have the other cluster.
+
+87
+00:04:17,555 --> 00:04:19,024
+And here in the overlap,
+
+88
+00:04:19,024 --> 00:04:22,990
+you have even more connections because these connections kind of,
+
+89
+00:04:22,990 --> 00:04:25,440
+uh, come either from one cluster or,
+
+90
+00:04:25,440 --> 00:04:26,540
+uh, the other cluster.
+
+91
+00:04:26,540 --> 00:04:28,550
+And the point here wouldn't be to say, oh,
+
+92
+00:04:28,550 --> 00:04:32,605
+there is this set of people that are super strongly connected with each other.
+
+93
+00:04:32,605 --> 00:04:34,290
+The point is to say, oh,
+
+94
+00:04:34,290 --> 00:04:38,460
+there are two clusters that overlap in the set in the middle.
+
+95
+00:04:38,460 --> 00:04:41,680
+So now, how are we going to detect,
+
+96
+00:04:41,680 --> 00:04:44,600
+uh, this type of structure, uh, in the network?
+
+97
+00:04:44,600 --> 00:04:47,035
+How we are going to extract communities.
+
+98
+00:04:47,035 --> 00:04:49,875
+Um, our plan of action is the following.
+
+99
+00:04:49,875 --> 00:04:51,420
+We are going in step 1,
+
+100
+00:04:51,420 --> 00:04:55,990
+define a generative model for graphs that is based on node community affiliations,
+
+101
+00:04:55,990 --> 00:04:58,765
+and we'll call this model Affiliation Graph Model.
+
+102
+00:04:58,765 --> 00:05:03,800
+And then we are going to define an optimization problem that, uh, will, uh,
+
+103
+00:05:03,800 --> 00:05:06,950
+optimize the log-likelihood of,
+
+104
+00:05:06,950 --> 00:05:10,230
+uh, the model to generate, uh, the graph.
+
+105
+00:05:10,230 --> 00:05:14,935
+So what we are going to learn today is an instance of, uh,
+
+106
+00:05:14,935 --> 00:05:20,690
+generative modeling of networks and how to feed a generative model to a given graph.
+
+107
+00:05:20,690 --> 00:05:22,355
+So this is, uh,
+
+108
+00:05:22,355 --> 00:05:25,505
+kind of very useful and very fundamental.
+
+109
+00:05:25,505 --> 00:05:28,355
+So first, let me define the model.
+
+110
+00:05:28,355 --> 00:05:29,840
+The model will be the following.
+
+111
+00:05:29,840 --> 00:05:33,860
+Uh, we will have a set of nodes at the bottom,
+
+112
+00:05:33,860 --> 00:05:36,020
+and a set of communities at the top.
+
+113
+00:05:36,020 --> 00:05:40,820
+And a node will be connected to a community if a given node belongs to a community.
+
+114
+00:05:40,820 --> 00:05:42,045
+So in this case, you know,
+
+115
+00:05:42,045 --> 00:05:45,500
+blue nodes belong to A alone, green nodes, uh,
+
+116
+00:05:45,500 --> 00:05:47,990
+belo- uh, belong to B alone,
+
+117
+00:05:47,990 --> 00:05:50,255
+and then the red nodes belong to both.
+
+118
+00:05:50,255 --> 00:05:52,895
+So they are connected both to A and B, um,
+
+119
+00:05:52,895 --> 00:05:54,860
+and this is how we are going to de- describe
+
+120
+00:05:54,860 --> 00:05:57,605
+the community structure of the- of the network.
+
+121
+00:05:57,605 --> 00:06:02,925
+Now, we wanna build a generative model which says, you- I'm given,
+
+122
+00:06:02,925 --> 00:06:06,015
+uh, uh, an assignment of nodes to communities,
+
+123
+00:06:06,015 --> 00:06:08,840
+I want to generate the edges of the network.
+
+124
+00:06:08,840 --> 00:06:11,125
+How do I generate the edges?
+
+125
+00:06:11,125 --> 00:06:15,170
+And we are going now to describe the generative process,
+
+126
+00:06:15,170 --> 00:06:16,760
+how to turn the, uh,
+
+127
+00:06:16,760 --> 00:06:19,960
+affiliations of nodes to communities into edges of the network.
+
+128
+00:06:19,960 --> 00:06:22,095
+Our model will have a set of nodes,
+
+129
+00:06:22,095 --> 00:06:23,339
+a set of communities,
+
+130
+00:06:23,339 --> 00:06:27,630
+and a set of memberships of nodes to communities, right? Like this.
+
+131
+00:06:27,630 --> 00:06:30,080
+And then we are going to assume that each community,
+
+132
+00:06:30,080 --> 00:06:32,584
+C up here, has a single parameter,
+
+133
+00:06:32,584 --> 00:06:37,620
+P sub C. And this parameter will have the following, uh, role, right?
+
+134
+00:06:37,620 --> 00:06:40,940
+So basically we'll say given the- given our- our model,
+
+135
+00:06:40,940 --> 00:06:43,220
+given affiliations in this community parameters,
+
+136
+00:06:43,220 --> 00:06:47,165
+we wanna generate the edges of the underlying network.
+
+137
+00:06:47,165 --> 00:06:50,300
+And we are going to say that nodes in community
+
+138
+00:06:50,300 --> 00:06:53,720
+C will connect to each other by flipping a coin with, uh,
+
+139
+00:06:53,720 --> 00:06:57,050
+bare ground with a probabili- that is going to create
+
+140
+00:06:57,050 --> 00:07:00,360
+an edge with probability C. So the way to think of this is,
+
+141
+00:07:00,360 --> 00:07:01,910
+you know, this pair of nodes says, oh,
+
+142
+00:07:01,910 --> 00:07:03,875
+we belong to the same community A,
+
+143
+00:07:03,875 --> 00:07:06,890
+let's flip this coin P sub A, and, uh,
+
+144
+00:07:06,890 --> 00:07:08,195
+if the coin says yes,
+
+145
+00:07:08,195 --> 00:07:10,560
+we are going to create a connection between us.
+
+146
+00:07:10,560 --> 00:07:12,830
+Why? For example, these two nodes here,
+
+147
+00:07:12,830 --> 00:07:14,780
+they belong both to A and B.
+
+148
+00:07:14,780 --> 00:07:19,345
+So they are going to flip the first coin and if the coin says yes, they'll create a link.
+
+149
+00:07:19,345 --> 00:07:22,610
+Um, then they'll flip the second coin and if the coin says yes,
+
+150
+00:07:22,610 --> 00:07:24,150
+they are going to create a link.
+
+151
+00:07:24,150 --> 00:07:27,170
+So basically if at least one of these two coins says yes,
+
+152
+00:07:27,170 --> 00:07:29,185
+they are going to, uh, link to each other.
+
+153
+00:07:29,185 --> 00:07:31,910
+So this means that long- nodes that belong to
+
+154
+00:07:31,910 --> 00:07:34,970
+multiple communities get multiple coin flips,
+
+155
+00:07:34,970 --> 00:07:36,660
+which means they are more likely to,
+
+156
+00:07:36,660 --> 00:07:37,910
+uh, link to each other.
+
+157
+00:07:37,910 --> 00:07:41,780
+So in some sense, if the- if they are unfortunate the first time,
+
+158
+00:07:41,780 --> 00:07:43,440
+they might- might be luck in creating
+
+159
+00:07:43,440 --> 00:07:47,255
+a connection next time for the second community they have in common.
+
+160
+00:07:47,255 --> 00:07:50,110
+So one way you can write out the probability that U
+
+161
+00:07:50,110 --> 00:07:53,315
+and V connect with each other is through this formula.
+
+162
+00:07:53,315 --> 00:07:54,995
+And let me just explain it.
+
+163
+00:07:54,995 --> 00:07:58,730
+So basically what this is saying is this is the probability that, um,
+
+164
+00:07:58,730 --> 00:08:01,175
+at least one of these coin flips with biases,
+
+165
+00:08:01,175 --> 00:08:03,500
+P sub C comes up heads, right?
+
+166
+00:08:03,500 --> 00:08:05,120
+So basically we are saying, let's go over to
+
+167
+00:08:05,120 --> 00:08:08,215
+all the communities that nodes U and V have in common,
+
+168
+00:08:08,215 --> 00:08:13,460
+for each community we flip a coin of each probability C. So 1 minus,
+
+169
+00:08:13,460 --> 00:08:15,605
+uh, P sub C is the probability that, uh,
+
+170
+00:08:15,605 --> 00:08:17,740
+the coin says, let's not create an edge.
+
+171
+00:08:17,740 --> 00:08:19,640
+Now multiplying this says,
+
+172
+00:08:19,640 --> 00:08:22,985
+what if you are super unlucky and for every coin flip,
+
+173
+00:08:22,985 --> 00:08:25,415
+the coin flip comes up and saying no edge.
+
+174
+00:08:25,415 --> 00:08:29,480
+So this is now the total probability that all the coin flips say no edge
+
+175
+00:08:29,480 --> 00:08:34,414
+and 1 minus that is that at least one of these coin flips came up,
+
+176
+00:08:34,414 --> 00:08:36,799
+uh, uh, positively and the edge is created.
+
+177
+00:08:36,799 --> 00:08:40,599
+So basically we say a pair of nodes is connected if at least one of these coin flips,
+
+178
+00:08:40,600 --> 00:08:44,145
+uh, was successful, and that's kind of the formula for this.
+
+179
+00:08:44,145 --> 00:08:46,805
+So what did we learn so far?
+
+180
+00:08:46,805 --> 00:08:48,965
+We learned that if you give me the model,
+
+181
+00:08:48,965 --> 00:08:52,085
+uh, specified by the nodes,
+
+182
+00:08:52,085 --> 00:08:54,585
+communities, the memberships, uh,
+
+183
+00:08:54,585 --> 00:08:56,160
+and the parameters, uh,
+
+184
+00:08:56,160 --> 00:08:59,370
+then we know how to generate a- a network.
+
+185
+00:08:59,370 --> 00:09:03,185
+Um, this model is super flexible because it allows, uh,
+
+186
+00:09:03,185 --> 00:09:04,610
+us to- to, uh,
+
+187
+00:09:04,610 --> 00:09:07,145
+express a variety of community structures.
+
+188
+00:09:07,145 --> 00:09:12,015
+We can create this type of traditional one that's- two dense clusters.
+
+189
+00:09:12,015 --> 00:09:14,275
+Um, with this type of structure.
+
+190
+00:09:14,275 --> 00:09:18,400
+We can create overlaps by saying this orange nodes belong to both communities,
+
+191
+00:09:18,400 --> 00:09:22,030
+so they are in the overlap or we could even have a hierarchical structure,
+
+192
+00:09:22,030 --> 00:09:23,860
+where we say, you know, ah,
+
+193
+00:09:23,860 --> 00:09:26,620
+um, violet nodes belong to A,
+
+194
+00:09:26,620 --> 00:09:29,485
+uh, green nodes belong to, uh, C, ah,
+
+195
+00:09:29,485 --> 00:09:33,640
+and then all the nodes belong to B so that there is this kind of A and B are
+
+196
+00:09:33,640 --> 00:09:38,035
+embedded or included are subgroups of the bigger group, ah, B.
+
+197
+00:09:38,035 --> 00:09:39,970
+So, uh, that's the way, ah,
+
+198
+00:09:39,970 --> 00:09:43,675
+the flexibility of this model to give you some, uh, intuition.
+
+199
+00:09:43,675 --> 00:09:47,755
+So what we know to do so far is,
+
+200
+00:09:47,755 --> 00:09:51,640
+how do we go from the model to generate the network?
+
+201
+00:09:51,640 --> 00:09:54,820
+What we'd like to do next is to go the other way around, right.
+
+202
+00:09:54,820 --> 00:09:57,760
+Given the network, we'd like to say, what is the model?
+
+203
+00:09:57,760 --> 00:10:01,420
+So essentially this is called maximum likelihood estimation,
+
+204
+00:10:01,420 --> 00:10:04,210
+where basically we'll say, we'll define the following reasoning.
+
+205
+00:10:04,210 --> 00:10:10,690
+We say, assume there is some model that nature uses to generate graphs.
+
+206
+00:10:10,690 --> 00:10:15,850
+And we will assume that AGM is the model that nature uses to generate graphs.
+
+207
+00:10:15,850 --> 00:10:17,305
+Then we are going to say,
+
+208
+00:10:17,305 --> 00:10:21,430
+let's assume that our real-world graph was generated by AGM.
+
+209
+00:10:21,430 --> 00:10:22,975
+So we are going to say,
+
+210
+00:10:22,975 --> 00:10:29,800
+what is the model F that is most likely to have generated my data?
+
+211
+00:10:29,800 --> 00:10:32,485
+So in our case we say, given a graph,
+
+212
+00:10:32,485 --> 00:10:34,975
+find the most likely, ah,
+
+213
+00:10:34,975 --> 00:10:39,040
+model AGM, ah, that have generated the data.
+
+214
+00:10:39,040 --> 00:10:40,570
+So what do we mean by model?
+
+215
+00:10:40,570 --> 00:10:43,300
+It means, we need to decide that the number of communities,
+
+216
+00:10:43,300 --> 00:10:46,630
+we need to assign- decide how nodes belong to communities,
+
+217
+00:10:46,630 --> 00:10:49,660
+and what is every parameter P_C of every community?
+
+218
+00:10:49,660 --> 00:10:54,040
+So we say, what are the values of these parameters such that
+
+219
+00:10:54,040 --> 00:10:56,290
+this graph that I observe in reality
+
+220
+00:10:56,290 --> 00:10:59,590
+would most likely have been generated by my model?
+
+221
+00:10:59,590 --> 00:11:02,350
+So now, as I said,
+
+222
+00:11:02,350 --> 00:11:05,905
+basically we want to fit our model to the underlying graph.
+
+223
+00:11:05,905 --> 00:11:09,520
+And the way we do this is using maximum likelihood estimation.
+
+224
+00:11:09,520 --> 00:11:12,685
+So basically given a real, uh, graph,
+
+225
+00:11:12,685 --> 00:11:15,280
+we want to find the parame- the model parameters
+
+226
+00:11:15,280 --> 00:11:19,030
+F which maximize the likelihood of our graph.
+
+227
+00:11:19,030 --> 00:11:21,535
+So the way I wri- say this is to say,
+
+228
+00:11:21,535 --> 00:11:23,680
+given some model parameters,
+
+229
+00:11:23,680 --> 00:11:26,560
+I wanna generate a synthetic graph.
+
+230
+00:11:26,560 --> 00:11:30,280
+And then I wanna, ah, ah, I wanna say, uh,
+
+231
+00:11:30,280 --> 00:11:33,760
+what is the correspondence between the synthetic graph, uh, and the real graph?
+
+232
+00:11:33,760 --> 00:11:37,375
+So in some sense, I wanna maximize the probability
+
+233
+00:11:37,375 --> 00:11:41,290
+of my model F generating the real graph, right?
+
+234
+00:11:41,290 --> 00:11:44,980
+So basically, I wanna be able to efficiently compute this, ah,
+
+235
+00:11:44,980 --> 00:11:50,755
+likelihood that F generated my data G and then I need to- a way to,
+
+236
+00:11:50,755 --> 00:11:54,370
+uh, optimize over F to maximize this probability,
+
+237
+00:11:54,370 --> 00:11:55,975
+to maximize this likelihood.
+
+238
+00:11:55,975 --> 00:12:02,560
+So let me now first tell you how likelihood is defined over a graph, right?
+
+239
+00:12:02,560 --> 00:12:05,620
+So I'm given a real graph G and I'm given a
+
+240
+00:12:05,620 --> 00:12:09,130
+model F that assigns a probability to every edge.
+
+241
+00:12:09,130 --> 00:12:11,035
+And I want to genera- ah,
+
+242
+00:12:11,035 --> 00:12:15,730
+compute the likelihood that my model F has generated the graph
+
+243
+00:12:15,730 --> 00:12:20,455
+G. And the way I can do this is to say, that is a graph.
+
+244
+00:12:20,455 --> 00:12:21,730
+Here's an adjacency matrix.
+
+245
+00:12:21,730 --> 00:12:23,050
+This is my input data.
+
+246
+00:12:23,050 --> 00:12:28,930
+I have my model and my model assigns a probability to every edge that can happen, right?
+
+247
+00:12:28,930 --> 00:12:30,310
+Every- the model says,
+
+248
+00:12:30,310 --> 00:12:32,500
+A has a self-loop with itself with,
+
+249
+00:12:32,500 --> 00:12:35,500
+ah, you know, probability 0.25.
+
+250
+00:12:35,500 --> 00:12:37,870
+Of what- node 1 links to node B,
+
+251
+00:12:37,870 --> 00:12:40,300
+uh, to node 2 with probability 0.1.
+
+252
+00:12:40,300 --> 00:12:41,755
+So now I can ask,
+
+253
+00:12:41,755 --> 00:12:45,355
+what is the total probability that this kind of
+
+254
+00:12:45,355 --> 00:12:50,455
+probabilistic adjacency matrix would generate a given graph G?
+
+255
+00:12:50,455 --> 00:12:53,350
+I can simply do this as a- as a product.
+
+256
+00:12:53,350 --> 00:12:54,805
+Uh, and I go, ah-ha,
+
+257
+00:12:54,805 --> 00:12:58,840
+I wanna go- I wanna go over all the edges of G. I wanna go over
+
+258
+00:12:58,840 --> 00:13:02,875
+all the entries of this adjacency matrix where there is a value 1.
+
+259
+00:13:02,875 --> 00:13:06,340
+And I want these coin flips to land up heads.
+
+260
+00:13:06,340 --> 00:13:10,690
+I want them to- I want to multiply these probabilities together because I want,
+
+261
+00:13:10,690 --> 00:13:12,010
+uh, you know, this will be,
+
+262
+00:13:12,010 --> 00:13:18,250
+uh, with, ah, will have value of 1 with probability 0.25 and so on and so forth, right.
+
+263
+00:13:18,250 --> 00:13:21,910
+Then I also want to go over all the entries that are missing.
+
+264
+00:13:21,910 --> 00:13:25,855
+So basically, over all the edges that don't exist in the network.
+
+265
+00:13:25,855 --> 00:13:30,145
+And here I want the- the- the coin to land on the tail.
+
+266
+00:13:30,145 --> 00:13:31,600
+I want no edge.
+
+267
+00:13:31,600 --> 00:13:35,230
+So I go over all the non-edges of the network and I multiply 1
+
+268
+00:13:35,230 --> 00:13:39,030
+minus the probability of edge occurring, right?
+
+269
+00:13:39,030 --> 00:13:42,975
+And this is how likelihood of a graph under a given model is defined.
+
+270
+00:13:42,975 --> 00:13:45,720
+Basically, I go over, ah, all,
+
+271
+00:13:45,720 --> 00:13:46,905
+ah, all the, ah,
+
+272
+00:13:46,905 --> 00:13:48,980
+all the edges of the graph.
+
+273
+00:13:48,980 --> 00:13:52,465
+I see what is the probability that the model assigns to this edge.
+
+274
+00:13:52,465 --> 00:13:55,630
+And I want the product of these probabilities to be as high as possible.
+
+275
+00:13:55,630 --> 00:13:59,275
+And then I want to go over all the non-edges of the graph,
+
+276
+00:13:59,275 --> 00:14:00,550
+over all the 0s.
+
+277
+00:14:00,550 --> 00:14:04,705
+And I wanna multiply together 1 minus the probability that the edge is there.
+
+278
+00:14:04,705 --> 00:14:08,110
+And again, I want these 1 minuses to be as high as possible.
+
+279
+00:14:08,110 --> 00:14:10,240
+So our likelihood will be high,
+
+280
+00:14:10,240 --> 00:14:14,605
+where the model will assign high probabilities to edges that appear in the graph.
+
+281
+00:14:14,605 --> 00:14:16,015
+This is this part,
+
+282
+00:14:16,015 --> 00:14:21,370
+and it will assign low probabilities to edges that don't appear,
+
+283
+00:14:21,370 --> 00:14:22,765
+ah, in my, ah,
+
+284
+00:14:22,765 --> 00:14:24,370
+graph, uh, G, right?
+
+285
+00:14:24,370 --> 00:14:28,540
+Because this is- this goes over nodes and edges of the G. And this
+
+286
+00:14:28,540 --> 00:14:32,920
+now gives me the likelihood that model F generated the graph,
+
+287
+00:14:32,920 --> 00:14:35,500
+uh, G. So now, um,
+
+288
+00:14:35,500 --> 00:14:37,300
+the- the question becomes,
+
+289
+00:14:37,300 --> 00:14:38,830
+how do I find my model?
+
+290
+00:14:38,830 --> 00:14:40,990
+How do I find parameters of F?
+
+291
+00:14:40,990 --> 00:14:45,220
+And the way I'm going to find parameters of F is that I'm going to what we call,
+
+292
+00:14:45,220 --> 00:14:50,155
+relax or extend my model a bit to account for membership strengths.
+
+293
+00:14:50,155 --> 00:14:55,000
+So the way I'm going to do this now is rather than saying that every community C has a,
+
+294
+00:14:55,000 --> 00:14:57,790
+um, has a parameter.
+
+295
+00:14:57,790 --> 00:14:59,350
+I'm going to, uh,
+
+296
+00:14:59,350 --> 00:15:01,900
+assign a membership to have a strength.
+
+297
+00:15:01,900 --> 00:15:07,675
+So this would be the strength of our membership of node u to community A, okay?
+
+298
+00:15:07,675 --> 00:15:09,370
+And, uh, if the strength is 0,
+
+299
+00:15:09,370 --> 00:15:12,385
+this means, node is not a member of that community.
+
+300
+00:15:12,385 --> 00:15:16,375
+Um, so now, how are we going to write out, ah, ah,
+
+301
+00:15:16,375 --> 00:15:21,115
+the probability that node u and v link to each- to each other, ah,
+
+302
+00:15:21,115 --> 00:15:22,930
+if they are a member of a common community
+
+303
+00:15:22,930 --> 00:15:25,945
+C. And the way we are going to parameterize this is to say
+
+304
+00:15:25,945 --> 00:15:31,045
+it is the strength- is a- it's a product of the strengths of memberships.
+
+305
+00:15:31,045 --> 00:15:33,460
+And memberships can only be a non-negative,
+
+306
+00:15:33,460 --> 00:15:34,480
+so 0 or more.
+
+307
+00:15:34,480 --> 00:15:36,595
+So it's a product of the memberships.
+
+308
+00:15:36,595 --> 00:15:39,190
+And, uh, I'll take the negative value of this,
+
+309
+00:15:39,190 --> 00:15:41,830
+uh, exponentiate it, and take minus 1 of that.
+
+310
+00:15:41,830 --> 00:15:44,800
+So this now means that this should be a valid probability,
+
+311
+00:15:44,800 --> 00:15:46,615
+it will be between 0 and 1.
+
+312
+00:15:46,615 --> 00:15:48,085
+Um, and the higher,
+
+313
+00:15:48,085 --> 00:15:50,005
+the stronger the memberships,
+
+314
+00:15:50,005 --> 00:15:51,940
+the bigger the number here will be.
+
+315
+00:15:51,940 --> 00:15:54,865
+So E to the minus negative would be something close to 0.
+
+316
+00:15:54,865 --> 00:15:56,980
+Which means the probability of link,
+
+317
+00:15:56,980 --> 00:15:58,570
+uh, will be higher, right?
+
+318
+00:15:58,570 --> 00:16:01,390
+So basically, if membership strengths are low,
+
+319
+00:16:01,390 --> 00:16:03,145
+the probability of the edge is low.
+
+320
+00:16:03,145 --> 00:16:05,305
+If membership strengths are both high,
+
+321
+00:16:05,305 --> 00:16:07,150
+then the product is going to be high,
+
+322
+00:16:07,150 --> 00:16:10,570
+which means the probability is going, ah, to be high.
+
+323
+00:16:10,570 --> 00:16:13,285
+So this is how we parameterize it.
+
+324
+00:16:13,285 --> 00:16:18,160
+So now, uh, nodes v and u can connect via multiple communities, right?
+
+325
+00:16:18,160 --> 00:16:20,455
+They can have multiple, uh, communities in common.
+
+326
+00:16:20,455 --> 00:16:24,760
+So the way we are going to do this is using the same formula as we had before.
+
+327
+00:16:24,760 --> 00:16:29,080
+We are going to say the probability that u and v linked to each other is that they
+
+328
+00:16:29,080 --> 00:16:31,240
+create- they link to each other
+
+329
+00:16:31,240 --> 00:16:34,090
+through at least one of the communities they have in common.
+
+330
+00:16:34,090 --> 00:16:38,110
+So this is again P_C that we have des- derived here.
+
+331
+00:16:38,110 --> 00:16:40,660
+And but now I say, out of all these communities they have in
+
+332
+00:16:40,660 --> 00:16:43,735
+common at least one of these coin flips has to come up,
+
+333
+00:16:43,735 --> 00:16:46,790
+uh, heads, has to create a connection.
+
+334
+00:16:46,790 --> 00:16:50,250
+And this is uh, very nice because it, uh,
+
+335
+00:16:50,250 --> 00:16:54,660
+allows me to simplify this expression by quite- by quite a lot, right?
+
+336
+00:16:54,660 --> 00:16:57,270
+So now this is what we had on the previous slide.
+
+337
+00:16:57,270 --> 00:17:00,320
+Probability of a link is parameterized the following way,
+
+338
+00:17:00,320 --> 00:17:02,445
+where P_C is, uh,
+
+339
+00:17:02,445 --> 00:17:06,395
+parameterized this way by the product of the strands of, uh,
+
+340
+00:17:06,395 --> 00:17:09,310
+node u and node v belonging to the common community
+
+341
+00:17:09,310 --> 00:17:13,520
+C. So now if I write it- if I write is all out, it- this is, you know,
+
+342
+00:17:13,520 --> 00:17:16,079
+it's 1 minus product or our common communities,
+
+343
+00:17:16,079 --> 00:17:19,439
+1 minus- 1 minus,
+
+344
+00:17:19,440 --> 00:17:23,040
+uh, e to the minus product of Fs.
+
+345
+00:17:23,040 --> 00:17:25,180
+So here is how it simp- simplifies this to,
+
+346
+00:17:25,180 --> 00:17:26,980
+1s kind of uh- uh,
+
+347
+00:17:26,980 --> 00:17:28,395
+subtract each other out.
+
+348
+00:17:28,395 --> 00:17:31,385
+Then what I can do, I can take this product and, um, uh,
+
+349
+00:17:31,385 --> 00:17:34,055
+distribute it inside and the product of, uh,
+
+350
+00:17:34,055 --> 00:17:36,855
+exponentials becomes a sum of the exponents.
+
+351
+00:17:36,855 --> 00:17:39,360
+So here it is and why is this elegant?
+
+352
+00:17:39,360 --> 00:17:44,175
+Because this now means that this is simply a dot product of- of- of vectors,
+
+353
+00:17:44,175 --> 00:17:48,040
+of community memberships of nodes u and nodes v. So
+
+354
+00:17:48,040 --> 00:17:51,965
+I can simplify this whole expression into simply saying probability is, uh,
+
+355
+00:17:51,965 --> 00:17:58,170
+1 minus e raised to the dot-product of the community membership vector for node u times
+
+356
+00:17:58,170 --> 00:18:01,380
+the community membership vector for node v. So
+
+357
+00:18:01,380 --> 00:18:04,915
+this is super cool because it's a very nice type expression.
+
+358
+00:18:04,915 --> 00:18:08,760
+So now that I have defined the probability of an edge between a pair of nodes
+
+359
+00:18:08,760 --> 00:18:12,665
+based on their vector representations of the community memberships,
+
+360
+00:18:12,665 --> 00:18:16,185
+now, you know, how will my graph likelihood look like?
+
+361
+00:18:16,185 --> 00:18:20,460
+It's a product over the edges times the product of 1 minus,
+
+362
+00:18:20,460 --> 00:18:22,895
+uh, probabilities of non-edges.
+
+363
+00:18:22,895 --> 00:18:26,135
+And I simply, you know inserted this in, this is here.
+
+364
+00:18:26,135 --> 00:18:28,050
+When I insert it here again, these, uh,
+
+365
+00:18:28,050 --> 00:18:32,645
+1s will, um, cancel out and I just get the exponent.
+
+366
+00:18:32,645 --> 00:18:35,450
+Now, if I take this,
+
+367
+00:18:35,450 --> 00:18:38,670
+uh- uh likelihood and further simplify it a bit,
+
+368
+00:18:38,670 --> 00:18:40,980
+I can write it in the following form, right?
+
+369
+00:18:40,980 --> 00:18:44,614
+It's basically rather than directly optimizing the likelihood,
+
+370
+00:18:44,614 --> 00:18:46,890
+we like to optimize the log-likelihood.
+
+371
+00:18:46,890 --> 00:18:51,420
+And the reason why we optimize log-likelihoods is for numerical stability, right?
+
+372
+00:18:51,420 --> 00:18:53,595
+Probabilities are small numbers,
+
+373
+00:18:53,595 --> 00:18:57,070
+product of small numbers are even smaller numbers and then
+
+374
+00:18:57,070 --> 00:19:00,815
+numerical instabilities and imprecisions started to play a role,
+
+375
+00:19:00,815 --> 00:19:03,450
+so you never work with raw probabilities,
+
+376
+00:19:03,450 --> 00:19:06,630
+you always work with logarithmic probabilities,
+
+377
+00:19:06,630 --> 00:19:08,280
+a logarithm of the probability.
+
+378
+00:19:08,280 --> 00:19:11,900
+So if I apply now, uh, a logarithm here,
+
+379
+00:19:11,900 --> 00:19:16,490
+and it is a valid transform because logarithm is a monotonic transformation.
+
+380
+00:19:16,490 --> 00:19:21,304
+So when I maximize the max- maximum is attained at the same position,
+
+381
+00:19:21,304 --> 00:19:23,930
+regardless of whether I- whether I pass this through
+
+382
+00:19:23,930 --> 00:19:27,390
+a logarithmic transformation because it's, um, monotonic.
+
+383
+00:19:27,390 --> 00:19:32,475
+So if I apply a log and the log products become summations,
+
+384
+00:19:32,475 --> 00:19:38,970
+so I get this summation over log 1 minus the first term plus a summation,
+
+385
+00:19:38,970 --> 00:19:44,615
+over the log x- the second term and log and exponent again cancel each other out.
+
+386
+00:19:44,615 --> 00:19:46,800
+So here only the summation survive.
+
+387
+00:19:46,800 --> 00:19:48,390
+And this is now our objective.
+
+388
+00:19:48,390 --> 00:19:51,930
+We'll call it the log-likelihood that we tried to, uh, optimize.
+
+389
+00:19:51,930 --> 00:19:54,490
+So we have simplified it, uh, a lot.
+
+390
+00:19:54,490 --> 00:19:56,845
+So how do we, uh,
+
+391
+00:19:56,845 --> 00:19:59,720
+optimize, uh, this likelihood F?
+
+392
+00:19:59,720 --> 00:20:02,160
+We simply start with random memberships, uh,
+
+393
+00:20:02,160 --> 00:20:05,010
+Fs, and then we iterate until convergence.
+
+394
+00:20:05,010 --> 00:20:08,050
+We basically, uh, update the membership F of
+
+395
+00:20:08,050 --> 00:20:11,350
+node u while fixing the memberships of all other nodes.
+
+396
+00:20:11,350 --> 00:20:13,835
+Um, and we can do gradient descent,
+
+397
+00:20:13,835 --> 00:20:19,180
+where we take small changes in F that lead to the increase in the log-likelihood.
+
+398
+00:20:19,180 --> 00:20:21,075
+Uh, and that is um- uh,
+
+399
+00:20:21,075 --> 00:20:22,895
+all- all we do.
+
+400
+00:20:22,895 --> 00:20:26,260
+And, uh, just to say one more is when we compute
+
+401
+00:20:26,260 --> 00:20:30,590
+this derivative- partial derivative of log-likelihood,
+
+402
+00:20:30,590 --> 00:20:32,750
+uh, here is the expression.
+
+403
+00:20:32,750 --> 00:20:34,860
+What we find out is that this depends,
+
+404
+00:20:34,860 --> 00:20:39,125
+it is a summation over the neighbors of node, uh, u.
+
+405
+00:20:39,125 --> 00:20:43,650
+And, uh, you see how we're now multiplying the,
+
+406
+00:20:43,650 --> 00:20:45,820
+uh- the- the- the,
+
+407
+00:20:45,820 --> 00:20:47,775
+uh, community membership vectors.
+
+408
+00:20:47,775 --> 00:20:49,320
+We multiply it with, uh,
+
+409
+00:20:49,320 --> 00:20:51,845
+community membership vector of node v. But
+
+410
+00:20:51,845 --> 00:20:54,430
+then the term that is very expensive to compute is
+
+411
+00:20:54,430 --> 00:20:59,835
+the second term because here the summation goes over non neighbors of node u.
+
+412
+00:20:59,835 --> 00:21:03,275
+And because usually nodes have small number of neighbors, uh,
+
+413
+00:21:03,275 --> 00:21:06,890
+this means that this summation goes over- over the entire network, right?
+
+414
+00:21:06,890 --> 00:21:11,220
+Basically this plus this is the entire network and this is too slow,
+
+415
+00:21:11,220 --> 00:21:13,315
+uh, in practice to do.
+
+416
+00:21:13,315 --> 00:21:17,160
+But we can efficiently approximate these, uh,
+
+417
+00:21:17,160 --> 00:21:20,685
+computing this expression by realizing that this blue part,
+
+418
+00:21:20,685 --> 00:21:22,660
+um, is, uh, slow to compute.
+
+419
+00:21:22,660 --> 00:21:25,130
+But we can expand it, um,
+
+420
+00:21:25,130 --> 00:21:27,575
+and uh- uh, make it,
+
+421
+00:21:27,575 --> 00:21:29,075
+uh, to compute much faster.
+
+422
+00:21:29,075 --> 00:21:31,130
+And basically the idea is very simple, right?
+
+423
+00:21:31,130 --> 00:21:34,300
+If you wanna sum, over, um, uh,
+
+424
+00:21:34,300 --> 00:21:37,440
+a set of nodes that are not neighbors of a given node,
+
+425
+00:21:37,440 --> 00:21:40,030
+then you can write out this summation the following way.
+
+426
+00:21:40,030 --> 00:21:42,960
+You say, let me sum up over all the nodes in the network,
+
+427
+00:21:42,960 --> 00:21:45,690
+but then only subtract the contributions from
+
+428
+00:21:45,690 --> 00:21:48,900
+the nodes that are actually neighbors of this node u. All right?
+
+429
+00:21:48,900 --> 00:21:54,105
+So this now is the summation over all nodes that are non-neighbors of node u.
+
+430
+00:21:54,105 --> 00:21:57,335
+It's basically all the nodes minus the u itself,
+
+431
+00:21:57,335 --> 00:21:59,360
+minus the neighbors of node u.
+
+432
+00:21:59,360 --> 00:22:02,840
+Uh, and the point is because mo- most of the nodes have low degree,
+
+433
+00:22:02,840 --> 00:22:04,445
+you can cache this part,
+
+434
+00:22:04,445 --> 00:22:06,200
+you just compute it once,
+
+435
+00:22:06,200 --> 00:22:08,505
+and then you only have to update these terms.
+
+436
+00:22:08,505 --> 00:22:11,815
+And this way, you can make your method, uh, scale, uh,
+
+437
+00:22:11,815 --> 00:22:15,010
+much- much faster and run uh- uh,
+
+438
+00:22:15,010 --> 00:22:18,385
+to be able to be applied to much bigger graphs.
+
+439
+00:22:18,385 --> 00:22:20,820
+So let me summarize,
+
+440
+00:22:20,820 --> 00:22:23,495
+uh, the part of this lecture- this part of the lecture.
+
+441
+00:22:23,495 --> 00:22:27,950
+We talked about generative modeling of networks.
+
+442
+00:22:27,950 --> 00:22:31,325
+We talked about how we can fit a generative model to
+
+443
+00:22:31,325 --> 00:22:34,965
+the underlying network using log-likelihood and gradient descent.
+
+444
+00:22:34,965 --> 00:22:39,760
+In our case, we have defined our generative model of networks,
+
+445
+00:22:39,760 --> 00:22:43,700
+uh, that is based on node community memberships.
+
+446
+00:22:43,700 --> 00:22:50,300
+So what this means is that by feeding our model to the underlying network structure,
+
+447
+00:22:50,300 --> 00:22:52,280
+we can then, uh,
+
+448
+00:22:52,280 --> 00:22:56,190
+get the co- node community memberships out of that model.
+
+449
+00:22:56,190 --> 00:22:58,890
+So essentially we are doing community detection by
+
+450
+00:22:58,890 --> 00:23:01,900
+fitting a generative model to the underlying,
+
+451
+00:23:01,900 --> 00:23:04,095
+uh- to the underlying, uh, graph.
+
+452
+00:23:04,095 --> 00:23:08,600
+So BigCLAM is a method that- that defines a model,
+
+453
+00:23:08,600 --> 00:23:11,950
+uh- affiliation graph model based on the- based on
+
+454
+00:23:11,950 --> 00:23:16,680
+the node community affiliations and then generates the underlying network structure.
+
+455
+00:23:16,680 --> 00:23:21,935
+So what we then did is defined the fitting procedure that says,
+
+456
+00:23:21,935 --> 00:23:25,720
+given that the underlying network structure and
+
+457
+00:23:25,720 --> 00:23:29,150
+the assumption that the network was generated by the BigCLAM,
+
+458
+00:23:29,150 --> 00:23:34,415
+what is the optimal assignment of nodes to communities such that,
+
+459
+00:23:34,415 --> 00:23:36,460
+uh, we- we get the underlying,
+
+460
+00:23:36,460 --> 00:23:38,300
+uh, real network.
+
+461
+00:23:38,300 --> 00:23:40,905
+Um, in this procedure of model fitting,
+
+462
+00:23:40,905 --> 00:23:43,980
+we defined the notion of log-likelihood, um,
+
+463
+00:23:43,980 --> 00:23:45,235
+and then said, you know,
+
+464
+00:23:45,235 --> 00:23:48,290
+what is the most likely model to have gen- generated this data?
+
+465
+00:23:48,290 --> 00:23:51,820
+And we were able to feed the model, uh, to the data.
+

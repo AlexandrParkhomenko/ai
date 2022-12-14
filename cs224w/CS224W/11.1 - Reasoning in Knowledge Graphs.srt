@@ -1,0 +1,1444 @@
+1
+00:00:03,980 --> 00:00:07,455
+So, uh, welcome, everyone, to the class.
+
+2
+00:00:07,455 --> 00:00:10,500
+Uh, today, we are going to discuss about, uh,
+
+3
+00:00:10,500 --> 00:00:13,530
+reasoning in knowledge graphs, uh, using embeddings.
+
+4
+00:00:13,530 --> 00:00:15,855
+So, um, what we learned,
+
+5
+00:00:15,855 --> 00:00:17,865
+uh, last week was that, uh,
+
+6
+00:00:17,865 --> 00:00:20,445
+we discussed knowledge graphs, and in particular,
+
+7
+00:00:20,445 --> 00:00:23,220
+we defined the notion of a knowledge graph as a,
+
+8
+00:00:23,220 --> 00:00:24,765
+uh, set of, uh,
+
+9
+00:00:24,765 --> 00:00:27,900
+nodes and a set of relations between them where, uh,
+
+10
+00:00:27,900 --> 00:00:28,980
+nodes can have, uh,
+
+11
+00:00:28,980 --> 00:00:31,170
+different types and also, uh,
+
+12
+00:00:31,170 --> 00:00:33,885
+relationships, uh, can have different types.
+
+13
+00:00:33,885 --> 00:00:36,570
+Um, and then we have defined, uh, a task,
+
+14
+00:00:36,570 --> 00:00:39,755
+uh, we call the knowledge graph completion task.
+
+15
+00:00:39,755 --> 00:00:42,910
+We're basically given an enormous knowledge graph.
+
+16
+00:00:42,910 --> 00:00:44,685
+The question is, can we complete it?
+
+17
+00:00:44,685 --> 00:00:47,070
+Can we predict, infer, uh,
+
+18
+00:00:47,070 --> 00:00:49,950
+missing, uh, relationships, uh, in the graph?
+
+19
+00:00:49,950 --> 00:00:51,840
+So for a given head and,
+
+20
+00:00:51,840 --> 00:00:53,220
+uh, for a given relation,
+
+21
+00:00:53,220 --> 00:00:56,640
+uh, we wanted to predict missing tails, right?
+
+22
+00:00:56,640 --> 00:00:58,935
+So basically, for example, we would want to, uh,
+
+23
+00:00:58,935 --> 00:01:04,129
+predict the genre that a particular author is writing,
+
+24
+00:01:04,129 --> 00:01:07,070
+uh, books about based on the rest of the structure,
+
+25
+00:01:07,070 --> 00:01:09,415
+uh, of the knowledge graph.
+
+26
+00:01:09,415 --> 00:01:14,585
+So what do we are going to do today is we are going to take this idea of,
+
+27
+00:01:14,585 --> 00:01:16,290
+uh, knowledge graphs, um,
+
+28
+00:01:16,290 --> 00:01:17,805
+and knowledge graph completion,
+
+29
+00:01:17,805 --> 00:01:21,260
+but we are going to generalize it and extend it to, uh,
+
+30
+00:01:21,260 --> 00:01:23,225
+more, uh, interesting and a more,
+
+31
+00:01:23,225 --> 00:01:25,580
+uh, challenging setting where basically,
+
+32
+00:01:25,580 --> 00:01:30,625
+what we will be doing is we are going to perform multi-hop reasoning,
+
+33
+00:01:30,625 --> 00:01:35,505
+um, and logical reasoning in these knowledge graphs, uh, using embeddings.
+
+34
+00:01:35,505 --> 00:01:38,540
+So the goal is to reason in knowledge graphs and what-
+
+35
+00:01:38,540 --> 00:01:41,900
+by mean- by reason is to be able to answer, uh,
+
+36
+00:01:41,900 --> 00:01:43,880
+multi-hop queries or in some sense,
+
+37
+00:01:43,880 --> 00:01:47,165
+to make complex predictions in these, uh,
+
+38
+00:01:47,165 --> 00:01:51,080
+knowledge graphs for arbitrary predictive queries.
+
+39
+00:01:51,080 --> 00:01:54,260
+Um, and we are going to talk about, uh, two approaches.
+
+40
+00:01:54,260 --> 00:01:57,350
+One will be how do we handle what is called path queries,
+
+41
+00:01:57,350 --> 00:01:59,900
+and the other one will be about talking about
+
+42
+00:01:59,900 --> 00:02:03,880
+conjunctive queries and a method called, uh, Query2box.
+
+43
+00:02:03,880 --> 00:02:06,090
+Um, and in all these cases, basically,
+
+44
+00:02:06,090 --> 00:02:08,555
+the idea will be how do we embed the knowledge graph?
+
+45
+00:02:08,555 --> 00:02:13,295
+How do we embed the relations such that we can reason and navigate,
+
+46
+00:02:13,295 --> 00:02:15,440
+and move around, uh,
+
+47
+00:02:15,440 --> 00:02:18,020
+in this, uh, in this- in this space.
+
+48
+00:02:18,020 --> 00:02:20,050
+Uh, that's essentially the idea.
+
+49
+00:02:20,050 --> 00:02:23,060
+So, um, for the rest of the lecture,
+
+50
+00:02:23,060 --> 00:02:25,680
+I'm going to use this simple, um,
+
+51
+00:02:25,680 --> 00:02:28,060
+biomedical knowledge graph that includes,
+
+52
+00:02:28,060 --> 00:02:30,040
+uh, the following, uh- uh,
+
+53
+00:02:30,040 --> 00:02:31,375
+four types of entities.
+
+54
+00:02:31,375 --> 00:02:34,665
+If we will have nodes for, uh, different, uh,
+
+55
+00:02:34,665 --> 00:02:37,500
+drugs, we are going to have nodes,
+
+56
+00:02:37,500 --> 00:02:39,330
+uh, for different diseases,
+
+57
+00:02:39,330 --> 00:02:43,990
+we are going also to have some kind of adverse events or let's say- let's say,
+
+58
+00:02:43,990 --> 00:02:47,380
+side effects, uh, that these diseases can cause,
+
+59
+00:02:47,380 --> 00:02:50,950
+and then we'll also have nodes corresponding to proteins,
+
+60
+00:02:50,950 --> 00:02:54,660
+um, and, uh, that are- that are in,
+
+61
+00:02:54,660 --> 00:02:56,300
+uh, in our bodies and basically,
+
+62
+00:02:56,300 --> 00:03:01,009
+proteins that regulate and are part of various kinds of biological processes,
+
+63
+00:03:01,009 --> 00:03:05,755
+uh, taking, uh, part in our bodies and in our, uh, cells.
+
+64
+00:03:05,755 --> 00:03:08,640
+So now, let's say we have this kind of miniature, uh,
+
+65
+00:03:08,640 --> 00:03:11,570
+knowledge graph or a small part of the knowledge graph, uh,
+
+66
+00:03:11,570 --> 00:03:14,600
+that basically captures how these different entities,
+
+67
+00:03:14,600 --> 00:03:16,385
+uh, are related, uh,
+
+68
+00:03:16,385 --> 00:03:18,380
+to each other and then the question would be,
+
+69
+00:03:18,380 --> 00:03:20,780
+can we answer interesting questions,
+
+70
+00:03:20,780 --> 00:03:23,085
+uh, over this knowledge graph?
+
+71
+00:03:23,085 --> 00:03:24,765
+So, uh, to give you, uh,
+
+72
+00:03:24,765 --> 00:03:27,980
+an example- for example, the question is,
+
+73
+00:03:27,980 --> 00:03:31,430
+how could I answer complex queries or how would I be able to make
+
+74
+00:03:31,430 --> 00:03:35,800
+complex predictions over incomplete and massive, uh, knowledge graphs,
+
+75
+00:03:35,800 --> 00:03:37,080
+and just to give you, uh,
+
+76
+00:03:37,080 --> 00:03:38,745
+a few examples, um,
+
+77
+00:03:38,745 --> 00:03:40,440
+you know, you could say what,
+
+78
+00:03:40,440 --> 00:03:42,585
+uh, adverse event is caused, uh,
+
+79
+00:03:42,585 --> 00:03:45,570
+by a drug, uh, Ful- Fulvestrant, right?
+
+80
+00:03:45,570 --> 00:03:47,540
+And the way you could say this is to say, "Hi,
+
+81
+00:03:47,540 --> 00:03:52,235
+I want to start with the entity Fulvestrant and I want a traverse relationship cause,
+
+82
+00:03:52,235 --> 00:03:55,820
+and I want to predict what is on the other end of the- uh,
+
+83
+00:03:55,820 --> 00:04:00,930
+of this- uh, um, uh, Fulvestrant-caused relation."
+
+84
+00:04:00,930 --> 00:04:03,260
+Uh, and this is in some sense, a one-hop query.
+
+85
+00:04:03,260 --> 00:04:06,110
+It's basically a knowledge graph completion-type task.
+
+86
+00:04:06,110 --> 00:04:10,385
+I could then also do path queries where, for example, I could say,
+
+87
+00:04:10,385 --> 00:04:15,800
+what protein is associated with an adverse event caused by, uh, Fulvestrant, right?
+
+88
+00:04:15,800 --> 00:04:16,925
+So in this case, I would say,
+
+89
+00:04:16,925 --> 00:04:18,890
+I want to start with entity Fulvestrant,
+
+90
+00:04:18,890 --> 00:04:21,500
+I need to traverse over causes relation,
+
+91
+00:04:21,500 --> 00:04:22,895
+and then I need to cause, uh,
+
+92
+00:04:22,895 --> 00:04:24,800
+traverse over a associated relation.
+
+93
+00:04:24,800 --> 00:04:26,770
+Whatever entity is at the end of this,
+
+94
+00:04:26,770 --> 00:04:29,190
+that is the answer to my, uh, question,
+
+95
+00:04:29,190 --> 00:04:32,800
+to my query and then we can also ask more complex queries,
+
+96
+00:04:32,800 --> 00:04:36,890
+uh, where we can also have various logical relations between them.
+
+97
+00:04:36,890 --> 00:04:38,240
+For example, I could ask,
+
+98
+00:04:38,240 --> 00:04:41,360
+what is the drug that treats breast cancer,
+
+99
+00:04:41,360 --> 00:04:43,340
+uh, and, uh, causes headache?
+
+100
+00:04:43,340 --> 00:04:45,360
+So I could say, uh, you know, uh,
+
+101
+00:04:45,360 --> 00:04:48,060
+breast cancer- I start with an entity breast cancer.
+
+102
+00:04:48,060 --> 00:04:49,610
+I say, uh, treated by,
+
+103
+00:04:49,610 --> 00:04:51,275
+so this is now the drugs treated by
+
+104
+00:04:51,275 --> 00:04:54,905
+breast cancer and I also want to take a migraine and say,
+
+105
+00:04:54,905 --> 00:04:57,400
+what are the drugs that cause, uh, migraine,
+
+106
+00:04:57,400 --> 00:04:59,285
+and then whatever drug, uh,
+
+107
+00:04:59,285 --> 00:05:01,620
+causes both, um, that's the- uh,
+
+108
+00:05:01,620 --> 00:05:03,330
+that's the answer to my question.
+
+109
+00:05:03,330 --> 00:05:06,750
+So, you know, you can write these questions in natural language,
+
+110
+00:05:06,750 --> 00:05:08,530
+you can write them in this kind of,
+
+111
+00:05:08,530 --> 00:05:14,090
+um, uh, formula, but you can also write them in terms of the rec- graph structure, right?
+
+112
+00:05:14,090 --> 00:05:17,060
+So in- in a sense that one-hop query says start with
+
+113
+00:05:17,060 --> 00:05:20,139
+an entity and make a step along a relation,
+
+114
+00:05:20,139 --> 00:05:23,285
+path queries say start with- start with an entity,
+
+115
+00:05:23,285 --> 00:05:25,370
+make a step along one relation,
+
+116
+00:05:25,370 --> 00:05:28,550
+and then make a step a- along the other relation like causes
+
+117
+00:05:28,550 --> 00:05:31,730
+and associated, and what does this say is, it
+
+118
+00:05:31,730 --> 00:05:34,790
+says start with breast cancer and move across the
+
+119
+00:05:34,790 --> 00:05:38,759
+treated by, and start with migraine and move across,
+
+120
+00:05:38,759 --> 00:05:43,460
+uh, the relation caused by and whatever you end up- whatever entity you end up with,
+
+121
+00:05:43,460 --> 00:05:46,070
+uh, that's the answer, uh, to your question.
+
+122
+00:05:46,070 --> 00:05:49,125
+So you can see how we can basically take this- uh,
+
+123
+00:05:49,125 --> 00:05:50,790
+let's say, uh, questions,
+
+124
+00:05:50,790 --> 00:05:52,745
+queries, write them in natural language,
+
+125
+00:05:52,745 --> 00:05:54,320
+write them in the- let's say,
+
+126
+00:05:54,320 --> 00:05:58,055
+this kind of logical formula or write them in this type of,
+
+127
+00:05:58,055 --> 00:06:00,750
+uh, graphical structure, uh, form.
+
+128
+00:06:00,750 --> 00:06:02,240
+Uh, of course, today,
+
+129
+00:06:02,240 --> 00:06:05,860
+we are not going to address how do we get from natural language to the formula,
+
+130
+00:06:05,860 --> 00:06:08,990
+we are only going to kind of discuss once you have the formula,
+
+131
+00:06:08,990 --> 00:06:10,580
+once you have this logical structure,
+
+132
+00:06:10,580 --> 00:06:14,635
+this graphical structure, how do you answer, uh, a query?
+
+133
+00:06:14,635 --> 00:06:18,425
+And an important point over here will be that this-
+
+134
+00:06:18,425 --> 00:06:22,610
+this- we want to be able to answer these queries over incomplete knowledge graphs.
+
+135
+00:06:22,610 --> 00:06:24,095
+So it won't be only that we say,
+
+136
+00:06:24,095 --> 00:06:25,745
+oh, just traverse the relation.
+
+137
+00:06:25,745 --> 00:06:27,605
+It will be like, the relation is missing,
+
+138
+00:06:27,605 --> 00:06:28,985
+you have to predict it.
+
+139
+00:06:28,985 --> 00:06:31,790
+And it will- it can be chains of relations that are missing,
+
+140
+00:06:31,790 --> 00:06:33,275
+or are not in the knowledge graph,
+
+141
+00:06:33,275 --> 00:06:35,060
+and we still want to be answered- uh,
+
+142
+00:06:35,060 --> 00:06:37,585
+able to answer these questions.
+
+143
+00:06:37,585 --> 00:06:39,200
+So, um, you know,
+
+144
+00:06:39,200 --> 00:06:41,330
+first, let's talk about one-hop queries.
+
+145
+00:06:41,330 --> 00:06:43,460
+We already know how to, uh, uh,
+
+146
+00:06:43,460 --> 00:06:45,050
+answer them because we can formulate
+
+147
+00:06:45,050 --> 00:06:49,350
+graph completion problems as answering one-hop, uh, queries, right?
+
+148
+00:06:49,350 --> 00:06:51,840
+In a- in a knowledge graph completion, basically,
+
+149
+00:06:51,840 --> 00:06:54,065
+what we need to be able to estimate is to say,
+
+150
+00:06:54,065 --> 00:06:58,505
+is there a link between a head and a tail of relation-type, uh, r?
+
+151
+00:06:58,505 --> 00:07:00,950
+So this is essentially the same as saying,
+
+152
+00:07:00,950 --> 00:07:03,680
+is there- is there an answer to the query start
+
+153
+00:07:03,680 --> 00:07:06,495
+with the head and move along the relation, uh, r?
+
+154
+00:07:06,495 --> 00:07:08,940
+So, for example, what side effects,
+
+155
+00:07:08,940 --> 00:07:11,730
+uh, are caused by drug Fulvestrant, right?
+
+156
+00:07:11,730 --> 00:07:14,265
+In this case, I start with drug Fulvestrant.
+
+157
+00:07:14,265 --> 00:07:17,445
+This is my h. Uh, r is the- um,
+
+158
+00:07:17,445 --> 00:07:19,940
+caused by- uh, and now,
+
+159
+00:07:19,940 --> 00:07:22,910
+I want to basically say, is this particular entity the nth
+
+160
+00:07:22,910 --> 00:07:26,400
+point of Fulvestrant and, uh, caused by?
+
+161
+00:07:26,400 --> 00:07:28,980
+So that's, uh, how basically answering
+
+162
+00:07:28,980 --> 00:07:32,660
+one-hop queries like simple link prediction queries is,
+
+163
+00:07:32,660 --> 00:07:34,690
+uh, knowledge graph completion.
+
+164
+00:07:34,690 --> 00:07:38,870
+Now, we can talk about how about answering path queries, right?
+
+165
+00:07:38,870 --> 00:07:43,670
+We want to generalize this to basically being able to chain multiple relations,
+
+166
+00:07:43,670 --> 00:07:45,620
+uh, one after the other, right?
+
+167
+00:07:45,620 --> 00:07:51,125
+So we can say that we have an n-hop path query q that is represented by a- uh,
+
+168
+00:07:51,125 --> 00:07:54,395
+what is called an anchor node, uh, starting entity,
+
+169
+00:07:54,395 --> 00:07:56,374
+and then a sequence of relations,
+
+170
+00:07:56,374 --> 00:07:58,940
+r-1, uh, all the way to r-n, right?
+
+171
+00:07:58,940 --> 00:08:00,765
+So v is- uh,
+
+172
+00:08:00,765 --> 00:08:02,505
+v_a is an anchor node,
+
+173
+00:08:02,505 --> 00:08:04,275
+this is a fixed entity like, uh,
+
+174
+00:08:04,275 --> 00:08:06,240
+Fulvestrant, as we talked about,
+
+175
+00:08:06,240 --> 00:08:07,820
+and then answers, uh,
+
+176
+00:08:07,820 --> 00:08:10,100
+to the query will be denoted in this notation.
+
+177
+00:08:10,100 --> 00:08:14,225
+So basically, um, I have these kind of double braces so whatever is- uh,
+
+178
+00:08:14,225 --> 00:08:15,935
+whatever elements I write in here,
+
+179
+00:08:15,935 --> 00:08:17,065
+these are the answers,
+
+180
+00:08:17,065 --> 00:08:18,225
+uh, to the, uh,
+
+181
+00:08:18,225 --> 00:08:22,550
+query q on a knowledge graph G. So the way we could write this in
+
+182
+00:08:22,550 --> 00:08:24,770
+a graphical form into this kind- in something
+
+183
+00:08:24,770 --> 00:08:27,260
+we are going to call query plan is basically,
+
+184
+00:08:27,260 --> 00:08:29,855
+we start with the entity, uh, v_a,
+
+185
+00:08:29,855 --> 00:08:34,110
+and then we want to traverse our relationship type 1 and the relationship type 2,
+
+186
+00:08:34,110 --> 00:08:39,610
+all the way across the n relationships, and whatever entities are at the end of this,
+
+187
+00:08:39,610 --> 00:08:41,530
+um, we are making,
+
+188
+00:08:41,530 --> 00:08:44,375
+uh, uh, a prediction that this is the correct answer.
+
+189
+00:08:44,375 --> 00:08:46,950
+So that's a notion of a path query.
+
+190
+00:08:46,950 --> 00:08:49,169
+Um, to give you an example,
+
+191
+00:08:49,169 --> 00:08:51,650
+I could ask what proteins that are associated with
+
+192
+00:08:51,650 --> 00:08:55,220
+adverse ev- events caused by Fulvestrant, right?
+
+193
+00:08:55,220 --> 00:08:56,765
+So if I write this, then I say,
+
+194
+00:08:56,765 --> 00:08:58,820
+Fulvestrant is my anchor entity,
+
+195
+00:08:58,820 --> 00:09:03,235
+my r_1 and r_2 are relation causes and associated.
+
+196
+00:09:03,235 --> 00:09:06,225
+So my query will be started with Fulvestrant,
+
+197
+00:09:06,225 --> 00:09:08,085
+go across the causes relation,
+
+198
+00:09:08,085 --> 00:09:10,680
+and go across an associated relation, right?
+
+199
+00:09:10,680 --> 00:09:12,825
+So here is my, uh, Fulvestrant.
+
+200
+00:09:12,825 --> 00:09:15,655
+I want to first go over the green, uh-
+
+201
+00:09:15,655 --> 00:09:17,375
+The green links, uh,
+
+202
+00:09:17,375 --> 00:09:19,400
+saying, uh, uh, uh, you know,
+
+203
+00:09:19,400 --> 00:09:23,985
+what is- uh, what causes, this would be the re- the re- the red links, uh, apologies.
+
+204
+00:09:23,985 --> 00:09:25,990
+And then from here, I wanna then,
+
+205
+00:09:25,990 --> 00:09:28,045
+uh, traverse over, uh, uh,
+
+206
+00:09:28,045 --> 00:09:31,570
+the second part of li- link associated to arrive,
+
+207
+00:09:31,570 --> 00:09:33,685
+uh, at a given, uh, protein.
+
+208
+00:09:33,685 --> 00:09:36,445
+So that would basically be the idea for,
+
+209
+00:09:36,445 --> 00:09:38,050
+uh, path queries, right?
+
+210
+00:09:38,050 --> 00:09:40,840
+So to answer- to give you an example again,
+
+211
+00:09:40,840 --> 00:09:43,600
+so how do I ans- how do I find the answer now?
+
+212
+00:09:43,600 --> 00:09:46,600
+Basically the way I find the answer is that, conceptually,
+
+213
+00:09:46,600 --> 00:09:48,565
+if- if the knowledge graph is complete,
+
+214
+00:09:48,565 --> 00:09:50,035
+I simply need to, uh,
+
+215
+00:09:50,035 --> 00:09:53,265
+traverse it according to this query plan.
+
+216
+00:09:53,265 --> 00:09:56,510
+So the idea is I start with Fulvestrant.
+
+217
+00:09:56,510 --> 00:10:01,205
+I- I traverse over causes relations to get to all the side effects,
+
+218
+00:10:01,205 --> 00:10:03,230
+uh, caused by, uh, this drug,
+
+219
+00:10:03,230 --> 00:10:04,610
+like headaches and, you know,
+
+220
+00:10:04,610 --> 00:10:06,800
+brain bleeding, and shortness of breath,
+
+221
+00:10:06,800 --> 00:10:08,690
+and kidney infection, and so on,
+
+222
+00:10:08,690 --> 00:10:10,520
+so, kind of, quite serious side effects.
+
+223
+00:10:10,520 --> 00:10:12,590
+And now that I have this set of entities,
+
+224
+00:10:12,590 --> 00:10:16,310
+now I need to traverse from them according to associated relation.
+
+225
+00:10:16,310 --> 00:10:18,665
+And you know why I traverse the edges,
+
+226
+00:10:18,665 --> 00:10:20,930
+and whatever proteins I end up with,
+
+227
+00:10:20,930 --> 00:10:22,220
+those are the answers,
+
+228
+00:10:22,220 --> 00:10:23,435
+uh, to my query.
+
+229
+00:10:23,435 --> 00:10:27,830
+So, uh, these are the answers to the- to the query about,
+
+230
+00:10:27,830 --> 00:10:29,900
+you know, what are proteins associated with
+
+231
+00:10:29,900 --> 00:10:32,675
+adverse events caused by the drug, uh, Fulvestrant?
+
+232
+00:10:32,675 --> 00:10:35,120
+So that's, uh, basically the, um,
+
+233
+00:10:35,120 --> 00:10:37,610
+idea how now I can formulate and
+
+234
+00:10:37,610 --> 00:10:41,870
+answer path-based queries directly on the knowledge graph,
+
+235
+00:10:41,870 --> 00:10:43,925
+assuming knowledge graph contains,
+
+236
+00:10:43,925 --> 00:10:45,980
+uh, all the information.
+
+237
+00:10:45,980 --> 00:10:49,730
+Of course, um, in some sense, this seemed easy, right?
+
+238
+00:10:49,730 --> 00:10:52,130
+It's just answering queries, seems easy.
+
+239
+00:10:52,130 --> 00:10:54,830
+You just traverse the knowledge graph according to this plan.
+
+240
+00:10:54,830 --> 00:10:58,835
+Uh, but the problem is that knowledge graphs are notoriously incomplete, right?
+
+241
+00:10:58,835 --> 00:11:03,350
+Many relations between entities are missing or are, uh, incomplete.
+
+242
+00:11:03,350 --> 00:11:07,955
+Uh, for example, we lack a lot of biomedical knowledge, and, you know,
+
+243
+00:11:07,955 --> 00:11:10,370
+kind of enumerating all facts,
+
+244
+00:11:10,370 --> 00:11:13,040
+uh, testing all possible side effects,
+
+245
+00:11:13,040 --> 00:11:15,575
+all possible associations in these graphs,
+
+246
+00:11:15,575 --> 00:11:19,190
+is too costly and would take far too much time,
+
+247
+00:11:19,190 --> 00:11:25,055
+and perhaps we will never be able to obtain the entire knowledge, uh, about biomedicine.
+
+248
+00:11:25,055 --> 00:11:26,405
+So the question then is,
+
+249
+00:11:26,405 --> 00:11:29,870
+if these graphs are notoriously incomplete, um,
+
+250
+00:11:29,870 --> 00:11:33,215
+right, we cannot simply hope to traverse them,
+
+251
+00:11:33,215 --> 00:11:35,570
+um, to get the answers, right?
+
+252
+00:11:35,570 --> 00:11:38,615
+So the question then is, uh, what do we do?
+
+253
+00:11:38,615 --> 00:11:41,390
+Um, to give you an example, right,
+
+254
+00:11:41,390 --> 00:11:43,640
+if I'm missing, perhaps, uh,
+
+255
+00:11:43,640 --> 00:11:46,370
+a relationship causes by because it's not yet known
+
+256
+00:11:46,370 --> 00:11:49,415
+that Fulvestrant also causes shortness of breath,
+
+257
+00:11:49,415 --> 00:11:53,480
+then, for example, if I'm not able to traverse this edge, then, you know, uh,
+
+258
+00:11:53,480 --> 00:11:57,545
+the li- there is no way for me to discover that, uh, BIRC2,
+
+259
+00:11:57,545 --> 00:11:59,465
+the- uh, the protein,
+
+260
+00:11:59,465 --> 00:12:02,240
+is actually an answer to my query, right?
+
+261
+00:12:02,240 --> 00:12:04,610
+Uh, I would be able to say that the CASP8 is, uh,
+
+262
+00:12:04,610 --> 00:12:06,605
+is an answer because I go over,
+
+263
+00:12:06,605 --> 00:12:08,450
+uh, brain leading to get to it.
+
+264
+00:12:08,450 --> 00:12:11,150
+I know that, uh, PIM1 is also,
+
+265
+00:12:11,150 --> 00:12:14,330
+uh, an answer because of this path through the kidney infection,
+
+266
+00:12:14,330 --> 00:12:16,820
+but there is no way for me to find out that this, uh,
+
+267
+00:12:16,820 --> 00:12:20,855
+BIRC2 protein is also the answer, uh, to my query.
+
+268
+00:12:20,855 --> 00:12:22,235
+So that's the problem.
+
+269
+00:12:22,235 --> 00:12:24,290
+So what you could do is to say,
+
+270
+00:12:24,290 --> 00:12:25,685
+uh, I, actually, you know,
+
+271
+00:12:25,685 --> 00:12:30,545
+listened previous lecture and I remember we talked about knowledge graph completion.
+
+272
+00:12:30,545 --> 00:12:33,230
+So let's just go and apply, uh,
+
+273
+00:12:33,230 --> 00:12:36,785
+knowledge graph completion so that now the graph will be complete,
+
+274
+00:12:36,785 --> 00:12:39,335
+and then we can simply, uh, traverse it.
+
+275
+00:12:39,335 --> 00:12:41,225
+The problem is that,
+
+276
+00:12:41,225 --> 00:12:43,205
+if you do this, then, um,
+
+277
+00:12:43,205 --> 00:12:47,165
+you don't know how many edges are really missing in the knowledge graph.
+
+278
+00:12:47,165 --> 00:12:51,125
+So you could basically go and apply your knowledge graph completion,
+
+279
+00:12:51,125 --> 00:12:53,465
+uh, approach to all possible,
+
+280
+00:12:53,465 --> 00:12:54,590
+uh, edges of the graph.
+
+281
+00:12:54,590 --> 00:12:56,840
+So it means that you would wanna take, for,
+
+282
+00:12:56,840 --> 00:12:59,510
+uh, every triple i- in the knowledge graph,
+
+283
+00:12:59,510 --> 00:13:01,490
+you'd wanna s- ask your pre- uh,
+
+284
+00:13:01,490 --> 00:13:04,670
+knowledge comple- knowledge graph completion engine to
+
+285
+00:13:04,670 --> 00:13:08,720
+assign a probability that that link, um, is true.
+
+286
+00:13:08,720 --> 00:13:11,120
+Um, the problem then will be that, now,
+
+287
+00:13:11,120 --> 00:13:15,995
+your graph just got a whole lot of new- this kind of probabilistic links,
+
+288
+00:13:15,995 --> 00:13:20,855
+and now the graph is getting denser and knowledge graph, uh,
+
+289
+00:13:20,855 --> 00:13:22,700
+completion or traversal, uh,
+
+290
+00:13:22,700 --> 00:13:24,680
+will get very expensive because,
+
+291
+00:13:24,680 --> 00:13:25,790
+if you think about, you know,
+
+292
+00:13:25,790 --> 00:13:28,550
+starting at an entity, alo- uh,
+
+293
+00:13:28,550 --> 00:13:30,755
+moving along a given relation,
+
+294
+00:13:30,755 --> 00:13:33,110
+and then, uh, getting to a set of nodes,
+
+295
+00:13:33,110 --> 00:13:34,894
+moving to the next relation,
+
+296
+00:13:34,894 --> 00:13:36,455
+uh, to a new set of nodes,
+
+297
+00:13:36,455 --> 00:13:41,450
+this will explode exponentially with the length of the query, right?
+
+298
+00:13:41,450 --> 00:13:43,100
+So with the query length is, let's say,
+
+299
+00:13:43,100 --> 00:13:45,050
+capital L, then if,
+
+300
+00:13:45,050 --> 00:13:47,045
+at every step, you have some,
+
+301
+00:13:47,045 --> 00:13:49,370
+um, uh, non-trivial expansion,
+
+302
+00:13:49,370 --> 00:13:52,220
+some non- non-trivial number of- um,
+
+303
+00:13:52,220 --> 00:13:55,520
+of, uh, uh, nodes that are as- that, uh,
+
+304
+00:13:55,520 --> 00:13:57,320
+al- that allow you to traverse to- uh,
+
+305
+00:13:57,320 --> 00:13:58,955
+along a given relation,
+
+306
+00:13:58,955 --> 00:14:00,335
+then this is going to, uh,
+
+307
+00:14:00,335 --> 00:14:02,240
+increase exponentially in the query length.
+
+308
+00:14:02,240 --> 00:14:04,445
+And, uh, having big queries,
+
+309
+00:14:04,445 --> 00:14:07,595
+this becomes computationally quite hard to do,
+
+310
+00:14:07,595 --> 00:14:10,430
+uh, over, uh, a massive, uh, knowledge graph,
+
+311
+00:14:10,430 --> 00:14:13,190
+especially if you think about that we have just added
+
+312
+00:14:13,190 --> 00:14:16,850
+a lot of new edges with different probabilities, uh,
+
+313
+00:14:16,850 --> 00:14:21,515
+and we nin- we need to keep track over these probabilistic imputing edges as well,
+
+314
+00:14:21,515 --> 00:14:25,610
+this becomes, uh, a very hard, uh, computational task.
+
+315
+00:14:25,610 --> 00:14:30,965
+So, uh, here is the idea how we are going to do this and formulate it.
+
+316
+00:14:30,965 --> 00:14:33,770
+And the way we are going to talk about this is we
+
+317
+00:14:33,770 --> 00:14:36,665
+are going to call it predictive queries.
+
+318
+00:14:36,665 --> 00:14:38,120
+And the idea is, right,
+
+319
+00:14:38,120 --> 00:14:39,320
+we need a way to answer
+
+320
+00:14:39,320 --> 00:14:44,345
+path-based- path-based queries over an incomplete, uh, knowledge graph.
+
+321
+00:14:44,345 --> 00:14:47,705
+Um, and we want our approach to implicitly impute
+
+322
+00:14:47,705 --> 00:14:51,005
+and account for the incompleteness of the knowledge graph.
+
+323
+00:14:51,005 --> 00:14:53,975
+So we don't want to impute the edges and then traverse.
+
+324
+00:14:53,975 --> 00:14:58,085
+We just like the method to take care of all this automatically.
+
+325
+00:14:58,085 --> 00:15:03,170
+So rather than thinking that all we have to do is just traverse the knowledge graph,
+
+326
+00:15:03,170 --> 00:15:08,300
+we really can think of this as making very complex predictions, right?
+
+327
+00:15:08,300 --> 00:15:12,590
+It's basically saying predict what entities are a- uh,
+
+328
+00:15:12,590 --> 00:15:14,210
+an answer to a given query.
+
+329
+00:15:14,210 --> 00:15:18,050
+So basically we are going to formulate these queries as predictions.
+
+330
+00:15:18,050 --> 00:15:20,330
+So this will now be our prediction task.
+
+331
+00:15:20,330 --> 00:15:22,910
+Um, and this means it will be very interesting
+
+332
+00:15:22,910 --> 00:15:26,285
+because we'll be able to answer any kind of query.
+
+333
+00:15:26,285 --> 00:15:28,760
+In so far, we talked about path queries,
+
+334
+00:15:28,760 --> 00:15:31,550
+we are able to answer any kind of path query.
+
+335
+00:15:31,550 --> 00:15:34,340
+Whatever set of relations you put on the path,
+
+336
+00:15:34,340 --> 00:15:35,750
+we should be able to answer it.
+
+337
+00:15:35,750 --> 00:15:38,000
+So it doesn't mean, at the training time,
+
+338
+00:15:38,000 --> 00:15:39,395
+we have to see the query,
+
+339
+00:15:39,395 --> 00:15:41,570
+then we train how to answer the query,
+
+340
+00:15:41,570 --> 00:15:43,385
+and now we are able to give the answers.
+
+341
+00:15:43,385 --> 00:15:48,770
+The idea is that we can obtain- we can get any query at the,
+
+342
+00:15:48,770 --> 00:15:51,755
+uh, test time, and we should still be able to answer it.
+
+343
+00:15:51,755 --> 00:15:53,855
+Uh, and then, you know, uh,
+
+344
+00:15:53,855 --> 00:15:57,725
+another important thing is that this method needs to be able to impute- to
+
+345
+00:15:57,725 --> 00:16:03,545
+implicity impute or implicitly complete the knowledge graph for the missing information,
+
+346
+00:16:03,545 --> 00:16:05,630
+and be, this way, robust to
+
+347
+00:16:05,630 --> 00:16:08,915
+the missing information or to the nois- in the knowledge graph.
+
+348
+00:16:08,915 --> 00:16:11,120
+And, really, another way how you can think of
+
+349
+00:16:11,120 --> 00:16:13,970
+this predictive queries task is that it's
+
+350
+00:16:13,970 --> 00:16:16,925
+a generalization of the link prediction task, right?
+
+351
+00:16:16,925 --> 00:16:20,165
+Uh, link prediction is simply starting with the head, uh,
+
+352
+00:16:20,165 --> 00:16:23,045
+moving along a relation of type R,
+
+353
+00:16:23,045 --> 00:16:24,380
+what is the tail?
+
+354
+00:16:24,380 --> 00:16:26,360
+And now we'd like to, uh,
+
+355
+00:16:26,360 --> 00:16:32,015
+generalize this one-step prediction task into multistep, uh, prediction task.
+
+356
+00:16:32,015 --> 00:16:33,305
+So this is very important.
+
+357
+00:16:33,305 --> 00:16:36,770
+We are really taking- reformulating this,
+
+358
+00:16:36,770 --> 00:16:38,990
+um, task of, uh,
+
+359
+00:16:38,990 --> 00:16:41,930
+answering queries as traversal over to the knowledge graph
+
+360
+00:16:41,930 --> 00:16:45,590
+into predicting what entities are the answer,
+
+361
+00:16:45,590 --> 00:16:47,820
+uh, to the query.
+

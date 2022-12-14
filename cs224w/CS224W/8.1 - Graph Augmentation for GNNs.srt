@@ -1,0 +1,2208 @@
+1
+00:00:04,010 --> 00:00:06,720
+Welcome, everyone, to the class.
+
+2
+00:00:06,720 --> 00:00:11,070
+Um, we are going to continue with the discussion of, uh,
+
+3
+00:00:11,070 --> 00:00:14,100
+what kind of design choices that we have when, uh,
+
+4
+00:00:14,100 --> 00:00:17,984
+training or, uh, designing graph neural networks.
+
+5
+00:00:17,984 --> 00:00:21,120
+Um, and then in the last part of the lecture today,
+
+6
+00:00:21,120 --> 00:00:24,255
+we're going to talk about graph neural network training, um,
+
+7
+00:00:24,255 --> 00:00:27,390
+and various other aspects of how do we make these,
+
+8
+00:00:27,390 --> 00:00:29,685
+um, models, uh, work.
+
+9
+00:00:29,685 --> 00:00:32,744
+So to start, um, to remind everyone,
+
+10
+00:00:32,744 --> 00:00:34,470
+we are discussing deep graph, uh,
+
+11
+00:00:34,470 --> 00:00:37,589
+encoders, in particular, graph neural networks,
+
+12
+00:00:37,589 --> 00:00:41,550
+where the idea is that given the input graph on the left,
+
+13
+00:00:41,550 --> 00:00:46,980
+we wanna transform it through several layers of non-linear, uh, transformations.
+
+14
+00:00:46,980 --> 00:00:50,515
+Uh, several layers of a neural network to, um,
+
+15
+00:00:50,515 --> 00:00:54,110
+come up with good predictions at the level of node's, uh,
+
+16
+00:00:54,110 --> 00:00:57,275
+address, as well as entire graphs.
+
+17
+00:00:57,275 --> 00:01:00,440
+Um, and the, the formalism we have
+
+18
+00:01:00,440 --> 00:01:03,655
+defined is called graph neural network, where basically,
+
+19
+00:01:03,655 --> 00:01:05,420
+for every node in the network,
+
+20
+00:01:05,420 --> 00:01:08,420
+we define the computation graph that is
+
+21
+00:01:08,420 --> 00:01:12,620
+based on the network neighborhood around that given target node.
+
+22
+00:01:12,620 --> 00:01:14,210
+So essentially this means that
+
+23
+00:01:14,210 --> 00:01:17,195
+the input graph network structure
+
+24
+00:01:17,195 --> 00:01:20,645
+around the target node defines the neural network structure.
+
+25
+00:01:20,645 --> 00:01:23,240
+And then we discussed that now,
+
+26
+00:01:23,240 --> 00:01:25,550
+in order to make this neural network, uh,
+
+27
+00:01:25,550 --> 00:01:30,800
+architecture work because every node gets to define its own neural network architecture,
+
+28
+00:01:30,800 --> 00:01:36,005
+its own computational graph that will depend on the position of the node in the network.
+
+29
+00:01:36,005 --> 00:01:38,675
+Then what we can do in the, um,
+
+30
+00:01:38,675 --> 00:01:42,575
+to make this work is we have to define several different operators,
+
+31
+00:01:42,575 --> 00:01:44,690
+um, in the architecture.
+
+32
+00:01:44,690 --> 00:01:48,185
+So first we said we need to define what we call a message passing function,
+
+33
+00:01:48,185 --> 00:01:52,250
+a message transformation function that will take the message from the child,
+
+34
+00:01:52,250 --> 00:01:54,840
+transform it, and pass it towards the parent.
+
+35
+00:01:54,840 --> 00:01:58,195
+We have to define the notion of message aggregation that
+
+36
+00:01:58,195 --> 00:02:01,970
+will take the transformed messages from the children
+
+37
+00:02:01,970 --> 00:02:03,890
+and aggregate them in
+
+38
+00:02:03,890 --> 00:02:10,250
+an order invariant way to produce the- the one combined message from the children.
+
+39
+00:02:10,250 --> 00:02:15,080
+Then we said that when this message arrives to the parent,
+
+40
+00:02:15,080 --> 00:02:18,860
+we need to decide how to combine it with the parent's own message
+
+41
+00:02:18,860 --> 00:02:23,090
+from the previous level to then create the embedding of the node,
+
+42
+00:02:23,090 --> 00:02:25,330
+which can then be passed on.
+
+43
+00:02:25,330 --> 00:02:30,065
+So this is how we defined a single layer of a graph neural network.
+
+44
+00:02:30,065 --> 00:02:36,925
+Then we discussed how to combine or how do you link, or stack multiple layers together.
+
+45
+00:02:36,925 --> 00:02:39,815
+Um, and what we are going to discuss today,
+
+46
+00:02:39,815 --> 00:02:43,520
+is the point Number 4 around what kind of graph and
+
+47
+00:02:43,520 --> 00:02:49,130
+feature augmentation can we create to shape the structure of this neural network?
+
+48
+00:02:49,130 --> 00:02:51,635
+As well as we are going to talk about
+
+49
+00:02:51,635 --> 00:02:55,070
+learning objectives and how to make the training work.
+
+50
+00:02:55,070 --> 00:02:57,450
+So that's, uh, the plan for today.
+
+51
+00:02:57,450 --> 00:03:01,625
+So first, let's talk about graph augmentation for,
+
+52
+00:03:01,625 --> 00:03:03,190
+uh, graph neural networks.
+
+53
+00:03:03,190 --> 00:03:07,790
+So the idea is that raw input graph does not
+
+54
+00:03:07,790 --> 00:03:12,520
+necessarily need to present the underlying computation graph, all right?
+
+55
+00:03:12,520 --> 00:03:15,410
+So what I discussed so far was that if I wanna create
+
+56
+00:03:15,410 --> 00:03:18,635
+a graph neural network for a given target node in the network,
+
+57
+00:03:18,635 --> 00:03:21,980
+then I take the information from the neighbors of it.
+
+58
+00:03:21,980 --> 00:03:23,075
+Here are the neighbors,
+
+59
+00:03:23,075 --> 00:03:26,360
+and then each of the neighbors takes information from its own neighbors.
+
+60
+00:03:26,360 --> 00:03:28,745
+And this defines the graph neural network.
+
+61
+00:03:28,745 --> 00:03:31,790
+However, um, this translation from
+
+62
+00:03:31,790 --> 00:03:33,800
+the input graph structure to
+
+63
+00:03:33,800 --> 00:03:37,565
+the graph neural network structure does not need to be kind of one-to-one.
+
+64
+00:03:37,565 --> 00:03:41,045
+I don't need to take the raw input graph and,
+
+65
+00:03:41,045 --> 00:03:43,565
+uh, interpret it as the computational graph.
+
+66
+00:03:43,565 --> 00:03:44,975
+I can use, um,
+
+67
+00:03:44,975 --> 00:03:49,565
+various kinds of techniques to create the computation graph of the graph neural network.
+
+68
+00:03:49,565 --> 00:03:52,235
+And the two techniques we are going to talk about is
+
+69
+00:03:52,235 --> 00:03:57,440
+graph feature augmentation and graph structure augmentation.
+
+70
+00:03:57,440 --> 00:04:00,140
+So what we assume so far as I said,
+
+71
+00:04:00,140 --> 00:04:02,270
+is that the raw input graph directly defines
+
+72
+00:04:02,270 --> 00:04:05,060
+the computational graph of the graph neural network.
+
+73
+00:04:05,060 --> 00:04:09,170
+And there are many good reasons why we would- why we would want to break this assumption.
+
+74
+00:04:09,170 --> 00:04:12,995
+So, um, we would wanna break it at the level of node features.
+
+75
+00:04:12,995 --> 00:04:14,525
+Many times, for example,
+
+76
+00:04:14,525 --> 00:04:16,745
+input graphs may lack, um,
+
+77
+00:04:16,745 --> 00:04:21,005
+features, attributes, perhaps you wanna- sometimes,
+
+78
+00:04:21,005 --> 00:04:22,790
+um, the features are also, uh,
+
+79
+00:04:22,790 --> 00:04:29,330
+hard to encode so we may wanna help the neural network to learn a given concept easier.
+
+80
+00:04:29,330 --> 00:04:32,300
+And then in terms of graph structure, sometimes,
+
+81
+00:04:32,300 --> 00:04:35,855
+graphs- input graphs tend to be too sparse and it's
+
+82
+00:04:35,855 --> 00:04:38,030
+inefficient to do message passing over
+
+83
+00:04:38,030 --> 00:04:40,595
+a very sparse graph, it would take a lot of iterations,
+
+84
+00:04:40,595 --> 00:04:42,100
+a lot of GNN depth.
+
+85
+00:04:42,100 --> 00:04:46,205
+Sometimes they are too dense and the message passing becomes too costly.
+
+86
+00:04:46,205 --> 00:04:47,510
+If you think, for example,
+
+87
+00:04:47,510 --> 00:04:49,670
+doing message passing on an - on top of
+
+88
+00:04:49,670 --> 00:04:54,890
+an Instagram or Twitter network and you hit the Kim Kardashian node,
+
+89
+00:04:54,890 --> 00:04:59,960
+then you need to aggregate from all her gazillions of followers, right?
+
+90
+00:04:59,960 --> 00:05:01,910
+So that is very expensive.
+
+91
+00:05:01,910 --> 00:05:03,230
+So the question is when you hit a,
+
+92
+00:05:03,230 --> 00:05:04,600
+a high degree node,
+
+93
+00:05:04,600 --> 00:05:06,490
+what do you- what do you do?
+
+94
+00:05:06,490 --> 00:05:11,225
+Do you really need to aggregate from all the neighbors of that high degree node?
+
+95
+00:05:11,225 --> 00:05:14,660
+Or perhaps can you just select a subset of the neighbors?
+
+96
+00:05:14,660 --> 00:05:19,535
+And then another important consideration is that sometimes this graph is just too large,
+
+97
+00:05:19,535 --> 00:05:24,000
+so we cannot fit the computation graph into the GPU memory.
+
+98
+00:05:24,000 --> 00:05:27,785
+And again, certain augmentation techniques are needed.
+
+99
+00:05:27,785 --> 00:05:30,890
+So basically, the point is that sometimes
+
+100
+00:05:30,890 --> 00:05:33,620
+it is unlikely that the input graph happens to be
+
+101
+00:05:33,620 --> 00:05:36,835
+the optimal computation graph for computing
+
+102
+00:05:36,835 --> 00:05:39,320
+GNN-based embeddings and the techniques we are
+
+103
+00:05:39,320 --> 00:05:41,930
+going to discuss next will give you some ideas.
+
+104
+00:05:41,930 --> 00:05:45,350
+What can we do to improve the structure of the graph so that it
+
+105
+00:05:45,350 --> 00:05:49,795
+lends better to the graph neural network embeddings?
+
+106
+00:05:49,795 --> 00:05:52,380
+So we are going to talk about, uh,
+
+107
+00:05:52,380 --> 00:05:55,550
+augmentation approaches and we are going to talk
+
+108
+00:05:55,550 --> 00:05:59,040
+about in particular the graph feature augmentation, where,
+
+109
+00:05:59,040 --> 00:06:04,715
+um, it- it can be the case that the input graph lacks attributes,
+
+110
+00:06:04,715 --> 00:06:08,780
+lacks features and we are going to create features so that,
+
+111
+00:06:08,780 --> 00:06:10,790
+uh, GNN has easier time to learn.
+
+112
+00:06:10,790 --> 00:06:14,975
+And then we'll also talk about the graph structure augmentation.
+
+113
+00:06:14,975 --> 00:06:16,685
+As I said, if graph is too sparse,
+
+114
+00:06:16,685 --> 00:06:19,685
+we can- we will be able to add virtual nodes and edges.
+
+115
+00:06:19,685 --> 00:06:20,900
+If it's too dense,
+
+116
+00:06:20,900 --> 00:06:25,385
+we can decide to do some kind of sampling of neighbors when doing message-passing.
+
+117
+00:06:25,385 --> 00:06:27,170
+And if graph is too large,
+
+118
+00:06:27,170 --> 00:06:31,325
+then we can subsample subgraphs to compute the embeddings.
+
+119
+00:06:31,325 --> 00:06:33,725
+And this last point we are going to,
+
+120
+00:06:33,725 --> 00:06:38,060
+to talk in more detail when we discuss scaling up GNNs.
+
+121
+00:06:38,060 --> 00:06:41,725
+But these are some of the techniques we are going to learn about today.
+
+122
+00:06:41,725 --> 00:06:45,450
+So why do we need feature augmentation, right?
+
+123
+00:06:45,450 --> 00:06:48,660
+So first, I wanna talk about graph feature augmentation.
+
+124
+00:06:48,660 --> 00:06:50,775
+So let's discuss why do we need this.
+
+125
+00:06:50,775 --> 00:06:54,440
+Sometimes, input graphs do not have any node features.
+
+126
+00:06:54,440 --> 00:06:55,760
+This is common, right?
+
+127
+00:06:55,760 --> 00:06:58,985
+If the input is just the graph adjacency matrix.
+
+128
+00:06:58,985 --> 00:07:02,990
+And what I'm going to discuss next is several standard approaches.
+
+129
+00:07:02,990 --> 00:07:05,890
+How do you deal with this situation and what can you do?
+
+130
+00:07:05,890 --> 00:07:10,580
+So first idea is that you simply assign a constant value,
+
+131
+00:07:10,580 --> 00:07:13,445
+a constant feature to every node.
+
+132
+00:07:13,445 --> 00:07:17,225
+So basically all the nodes have the same future value, value of 1.
+
+133
+00:07:17,225 --> 00:07:19,670
+And then if you think of what aggregation does,
+
+134
+00:07:19,670 --> 00:07:21,860
+it basically counts how many neighbors,
+
+135
+00:07:21,860 --> 00:07:25,040
+how do- does a node have at level- at Level 1?
+
+136
+00:07:25,040 --> 00:07:26,750
+How many do they have at Level 2?
+
+137
+00:07:26,750 --> 00:07:28,495
+How many do they have at Level 3?
+
+138
+00:07:28,495 --> 00:07:30,000
+So this would, in some sense,
+
+139
+00:07:30,000 --> 00:07:32,690
+allow you still to capture some notion of how does
+
+140
+00:07:32,690 --> 00:07:36,260
+the network neighborhood structure about a given node look like,
+
+141
+00:07:36,260 --> 00:07:39,770
+even though all the nodes have the same feature,
+
+142
+00:07:39,770 --> 00:07:42,610
+which is uh, which has a value 1.
+
+143
+00:07:42,610 --> 00:07:47,435
+Another idea that you can do is to assign unique IDs to nodes.
+
+144
+00:07:47,435 --> 00:07:52,205
+So basically these IDs are then converted to one-hot vectors, right?
+
+145
+00:07:52,205 --> 00:07:56,930
+So basically it means if you have a network on, um, six nodes,
+
+146
+00:07:56,930 --> 00:08:02,420
+then the idea is that you can assign a one-hot encoding to every node in the network.
+
+147
+00:08:02,420 --> 00:08:06,080
+So what I mean by this is now a feature vector for every node in
+
+148
+00:08:06,080 --> 00:08:09,920
+the network is simply a six-dimensional binary vector where you know,
+
+149
+00:08:09,920 --> 00:08:14,345
+node ID Number 5 has a- has a value of 1 up here.
+
+150
+00:08:14,345 --> 00:08:17,495
+If this is, you know, the node ID Number 5.
+
+151
+00:08:17,495 --> 00:08:23,270
+Um, also notice that this ordering of the nodes is totally arbitrary.
+
+152
+00:08:23,270 --> 00:08:27,080
+So there are some issues with one-hot encodings because it might
+
+153
+00:08:27,080 --> 00:08:30,830
+be hard or impossible to generalize them across different graphs.
+
+154
+00:08:30,830 --> 00:08:32,510
+But if you work with a single graph,
+
+155
+00:08:32,510 --> 00:08:36,049
+then this type of approach might be fine because
+
+156
+00:08:36,049 --> 00:08:40,489
+every node basically has now a unique one-hot encoding.
+
+157
+00:08:40,490 --> 00:08:45,605
+There is a flag value 1 at the ID of that single node.
+
+158
+00:08:45,605 --> 00:08:51,260
+And this now allows you to,to learn very expressive models because the models know
+
+159
+00:08:51,260 --> 00:08:57,340
+actually what are the IDs of the neighbors of the node in the network.
+
+160
+00:08:57,340 --> 00:09:02,450
+Of course, it might be costly because now your feature representation, your,
+
+161
+00:09:02,450 --> 00:09:06,680
+your number of attributes that the node has number of features,
+
+162
+00:09:06,680 --> 00:09:09,050
+the node has equals the number of nodes in the network.
+
+163
+00:09:09,050 --> 00:09:10,540
+So- so, um, that,
+
+164
+00:09:10,540 --> 00:09:13,550
+that is quite an expensive feature representation
+
+165
+00:09:13,550 --> 00:09:17,035
+for a node if the network is large. [NOISE]
+
+166
+00:09:17,035 --> 00:09:18,770
+So how do these,
+
+167
+00:09:18,770 --> 00:09:20,600
+uh, two approaches compare, right?
+
+168
+00:09:20,600 --> 00:09:24,155
+How does this adding a constant feature versus one-hot encoding,
+
+169
+00:09:24,155 --> 00:09:25,730
+uh, how do they compare, right?
+
+170
+00:09:25,730 --> 00:09:28,940
+In terms of their expressive power constant feature,
+
+171
+00:09:28,940 --> 00:09:31,265
+so every node having a value of 1,
+
+172
+00:09:31,265 --> 00:09:34,265
+um, has kind of medium expressive power, right?
+
+173
+00:09:34,265 --> 00:09:35,974
+Not- all nodes are identical,
+
+174
+00:09:35,974 --> 00:09:39,005
+but as- as we will talk about this later, uh,
+
+175
+00:09:39,005 --> 00:09:40,940
+GNN can still learn about
+
+176
+00:09:40,940 --> 00:09:43,790
+the graph structure and the neighborhood structure around the node, right?
+
+177
+00:09:43,790 --> 00:09:47,720
+In some sense, let's say an aggregation function like summation allows you to say,
+
+178
+00:09:47,720 --> 00:09:49,970
+"Hi, I have three- if this is the node of interest,
+
+179
+00:09:49,970 --> 00:09:51,890
+I have three neighbors at level 1.
+
+180
+00:09:51,890 --> 00:09:53,060
+I have, let's say, uh,
+
+181
+00:09:53,060 --> 00:09:56,090
+two neigh- two neighbors at level 2," and so on and so forth, right?
+
+182
+00:09:56,090 --> 00:09:57,770
+So this is what this we'll be able to learn.
+
+183
+00:09:57,770 --> 00:10:01,700
+So it's still able to capture some simple part of the graph, uh, structure.
+
+184
+00:10:01,700 --> 00:10:03,935
+Uh, one-hot encoding, uh,
+
+185
+00:10:03,935 --> 00:10:05,555
+has high expressive power, right?
+
+186
+00:10:05,555 --> 00:10:07,190
+Each node has a unique ID,
+
+187
+00:10:07,190 --> 00:10:12,035
+so a node's specific information can be stored or can be retrieved or learned.
+
+188
+00:10:12,035 --> 00:10:13,100
+So you can learn, "Oh,
+
+189
+00:10:13,100 --> 00:10:15,560
+I have a neighbor with ID number 2," and
+
+190
+00:10:15,560 --> 00:10:18,410
+perhaps that is important to determine your own label.
+
+191
+00:10:18,410 --> 00:10:21,005
+So, um, the expressive power is very high.
+
+192
+00:10:21,005 --> 00:10:24,035
+Um, you know, do we allow for- does this approach allow for,
+
+193
+00:10:24,035 --> 00:10:26,365
+uh, in, uh, an inductive learning capability?
+
+194
+00:10:26,365 --> 00:10:28,145
+What- what does this mean is, uh,
+
+195
+00:10:28,145 --> 00:10:31,940
+generalization to unseen nodes or generalization to, um,
+
+196
+00:10:31,940 --> 00:10:34,280
+nodes that are not yet part of the network or
+
+197
+00:10:34,280 --> 00:10:38,060
+generalization to a new graph that I have never seen during training.
+
+198
+00:10:38,060 --> 00:10:42,155
+Of course, the constant feature has high inductive, uh,
+
+199
+00:10:42,155 --> 00:10:46,610
+learning, uh, capability, because it's simple to generalize the new nodes, to new graphs.
+
+200
+00:10:46,610 --> 00:10:49,745
+We assign constant feature to them and just apply a GNN.
+
+201
+00:10:49,745 --> 00:10:52,100
+While for example, in, um, uh,
+
+202
+00:10:52,100 --> 00:10:54,185
+in the one-hot encoding case,
+
+203
+00:10:54,185 --> 00:10:55,790
+uh, we cannot really do that, right?
+
+204
+00:10:55,790 --> 00:10:58,625
+Because, uh, we cannot generalize to new nodes, right?
+
+205
+00:10:58,625 --> 00:11:00,740
+New nodes introduce new IDs.
+
+206
+00:11:00,740 --> 00:11:02,915
+Those IDs were not part of the training.
+
+207
+00:11:02,915 --> 00:11:05,390
+The GNN does not know how to,
+
+208
+00:11:05,390 --> 00:11:07,220
+uh, embed unseen nodes.
+
+209
+00:11:07,220 --> 00:11:10,565
+Um, so this is the- this is the issue,
+
+210
+00:11:10,565 --> 00:11:12,740
+um, in terms of one-hot encodings.
+
+211
+00:11:12,740 --> 00:11:16,655
+You need to know the entire node set at the time of training,
+
+212
+00:11:16,655 --> 00:11:20,180
+and you need to know the edges of that node set at the time of training.
+
+213
+00:11:20,180 --> 00:11:22,305
+In terms of computational cost, um,
+
+214
+00:11:22,305 --> 00:11:23,825
+as I said, uh,
+
+215
+00:11:23,825 --> 00:11:26,060
+constant node feature is very cheap.
+
+216
+00:11:26,060 --> 00:11:28,370
+It's just one- one value per node,
+
+217
+00:11:28,370 --> 00:11:33,080
+while the one-hot encoding has high because each node has a,
+
+218
+00:11:33,080 --> 00:11:38,060
+um, uh, feature vector that is length of the size of the network, right?
+
+219
+00:11:38,060 --> 00:11:41,540
+Its, uh, number of vertices is the dimensionality of the feature vector,
+
+220
+00:11:41,540 --> 00:11:43,430
+so we cannot apply these to larger graphs.
+
+221
+00:11:43,430 --> 00:11:45,980
+And then, you know, when would you apply one or the other?
+
+222
+00:11:45,980 --> 00:11:49,610
+You would, um, you can apply the constant feature essentially to any graph,
+
+223
+00:11:49,610 --> 00:11:55,160
+uh, whenever you care about inductive setting and generalizing to new nodes.
+
+224
+00:11:55,160 --> 00:11:58,985
+Uh, but, uh, the expressive power of the model will be limited.
+
+225
+00:11:58,985 --> 00:12:01,280
+On the other hand, one-hot encoding, um,
+
+226
+00:12:01,280 --> 00:12:06,500
+is very powerful, allows you to learn much more intricate structure around the network.
+
+227
+00:12:06,500 --> 00:12:09,020
+But it can only be applied to small graphs and to
+
+228
+00:12:09,020 --> 00:12:11,600
+transductive settings basically where all the nodes
+
+229
+00:12:11,600 --> 00:12:17,060
+and all the edges are known at the time of the training of the model.
+
+230
+00:12:17,060 --> 00:12:19,620
+So this was in terms of, uh,
+
+231
+00:12:19,620 --> 00:12:24,545
+feature- one idea of feature augmentation when we have no features, uh, on the nodes.
+
+232
+00:12:24,545 --> 00:12:27,650
+Another motivation for why we would want to do
+
+233
+00:12:27,650 --> 00:12:31,490
+some feature augmentation is that sometimes,
+
+234
+00:12:31,490 --> 00:12:34,615
+uh, certain structures are hard to learn for a GNN.
+
+235
+00:12:34,615 --> 00:12:37,310
+So sometimes, we actually want to encode a bit of
+
+236
+00:12:37,310 --> 00:12:40,460
+a graph structure into the node attribute vector as well.
+
+237
+00:12:40,460 --> 00:12:42,380
+So, uh, the idea, for example,
+
+238
+00:12:42,380 --> 00:12:44,810
+is that, um, to give you an example,
+
+239
+00:12:44,810 --> 00:12:49,400
+like kind of an edge example is that it's very hard for a GNN to count,
+
+240
+00:12:49,400 --> 00:12:52,475
+uh, you know, what's the length of a cycle a node is on?
+
+241
+00:12:52,475 --> 00:12:54,620
+So, um, and the question is, you know,
+
+242
+00:12:54,620 --> 00:12:59,375
+could a- could a GNN learn the length of a cycle a given node, uh, resides in?
+
+243
+00:12:59,375 --> 00:13:02,410
+And unless you have discriminative node features,
+
+244
+00:13:02,410 --> 00:13:04,280
+uh, this is not possible, right?
+
+245
+00:13:04,280 --> 00:13:05,745
+So what I mean by it is, for example,
+
+246
+00:13:05,745 --> 00:13:07,020
+here in this example,
+
+247
+00:13:07,020 --> 00:13:10,565
+node v_1 resides on a cycle of length 3,
+
+248
+00:13:10,565 --> 00:13:14,630
+while here this, the node v_1 resides on a cycle of length 4.
+
+249
+00:13:14,630 --> 00:13:16,100
+And in both cases, right,
+
+250
+00:13:16,100 --> 00:13:17,540
+v_1 has degree 2,
+
+251
+00:13:17,540 --> 00:13:19,370
+and its neighbors have degree 2.
+
+252
+00:13:19,370 --> 00:13:21,275
+So it's kind of the question is, you know,
+
+253
+00:13:21,275 --> 00:13:24,260
+how do I- how does this node know that now it's in a cycle of,
+
+254
+00:13:24,260 --> 00:13:26,690
+uh, length, uh, 4 versus 3.
+
+255
+00:13:26,690 --> 00:13:29,150
+Something like this is very important, for example,
+
+256
+00:13:29,150 --> 00:13:32,390
+in chemistry because these- these could be different kinds of, uh,
+
+257
+00:13:32,390 --> 00:13:36,380
+chemical structures or different kinds of, uh, ring structures.
+
+258
+00:13:36,380 --> 00:13:40,010
+And, uh, the reason why a, uh, uh,
+
+259
+00:13:40,010 --> 00:13:43,135
+plain GNN cannot differentiate between,
+
+260
+00:13:43,135 --> 00:13:45,560
+you know, node 1 in, uh,
+
+261
+00:13:45,560 --> 00:13:48,130
+a cycle of length 3 versus a cycle of leng- length 4
+
+262
+00:13:48,130 --> 00:13:51,065
+is that if you look at the GNN computation graph,
+
+263
+00:13:51,065 --> 00:13:54,315
+re- both- for both of these nodes V_1 and V_2,
+
+264
+00:13:54,315 --> 00:13:56,705
+the computation graph is exactly the same.
+
+265
+00:13:56,705 --> 00:13:59,660
+Meaning, V_1- V_1 and V_2 have two neighbors,
+
+266
+00:13:59,660 --> 00:14:01,550
+um, each, and then, you know,
+
+267
+00:14:01,550 --> 00:14:02,870
+these neighbors have, uh,
+
+268
+00:14:02,870 --> 00:14:06,725
+one neighbor each and the computation graph will always look like this.
+
+269
+00:14:06,725 --> 00:14:11,705
+Uh, unless, right, you have some way to discriminate nodes based on the features.
+
+270
+00:14:11,705 --> 00:14:14,035
+But if the nodes have the same,
+
+271
+00:14:14,035 --> 00:14:15,290
+um, set of, uh,
+
+272
+00:14:15,290 --> 00:14:18,910
+features that not- you cannot discriminate them based on their attributes,
+
+273
+00:14:18,910 --> 00:14:20,650
+then you cannot learn,
+
+274
+00:14:20,650 --> 00:14:23,315
+uh, to discriminate node V_1 from V_2.
+
+275
+00:14:23,315 --> 00:14:25,150
+They will- from the GNN point of view,
+
+276
+00:14:25,150 --> 00:14:27,430
+they will all, uh, look the same.
+
+277
+00:14:27,430 --> 00:14:29,630
+I'm going to go into more, uh,
+
+278
+00:14:29,630 --> 00:14:32,170
+depth, uh, uh, around this,
+
+279
+00:14:32,170 --> 00:14:33,970
+uh, this example and, er,
+
+280
+00:14:33,970 --> 00:14:36,640
+what are some very important implications of it and
+
+281
+00:14:36,640 --> 00:14:40,625
+consequences of it when we are going to discuss the theory of,
+
+282
+00:14:40,625 --> 00:14:41,950
+uh, graph neural networks.
+
+283
+00:14:41,950 --> 00:14:43,120
+But for now, uh,
+
+284
+00:14:43,120 --> 00:14:48,365
+the important thing is to see to understand that a GNN has a hard time capturing, um,
+
+285
+00:14:48,365 --> 00:14:50,890
+or is not able to capture whether a node is on
+
+286
+00:14:50,890 --> 00:14:55,390
+a length 3 cycle or a length 4 cycle unless these nodes,
+
+287
+00:14:55,390 --> 00:14:58,475
+um, on the cycle would have some discriminative features.
+
+288
+00:14:58,475 --> 00:15:01,370
+And the reason why we are not able to distinguish between
+
+289
+00:15:01,370 --> 00:15:04,385
+these two nodes or why GNN is not able to dis- distinguish,
+
+290
+00:15:04,385 --> 00:15:07,280
+uh, between these nodes is because computation graph looks,
+
+291
+00:15:07,280 --> 00:15:08,825
+uh, the same in both cases, right?
+
+292
+00:15:08,825 --> 00:15:10,100
+A node has two neighbors,
+
+293
+00:15:10,100 --> 00:15:12,410
+and then each of these neighbors has two other neighbors.
+
+294
+00:15:12,410 --> 00:15:14,630
+And if- if all the neighbors look the same,
+
+295
+00:15:14,630 --> 00:15:17,210
+they don't have any discriminative colors to them,
+
+296
+00:15:17,210 --> 00:15:19,370
+then computation graphs, in all cases,
+
+297
+00:15:19,370 --> 00:15:20,960
+will look the same so,
+
+298
+00:15:20,960 --> 00:15:23,090
+uh, the embeddings will be the same.
+
+299
+00:15:23,090 --> 00:15:24,860
+So it doesn't matter whether you are part of
+
+300
+00:15:24,860 --> 00:15:28,010
+a cycle or you are a part of a infinite length,
+
+301
+00:15:28,010 --> 00:15:31,460
+uh, chain, the computation graph will always be the same.
+
+302
+00:15:31,460 --> 00:15:34,865
+So the GNN won't be able to distinguish the nodes again,
+
+303
+00:15:34,865 --> 00:15:38,660
+unless there is some discrimination between the nodes.
+
+304
+00:15:38,660 --> 00:15:40,490
+So if nodes have different colors,
+
+305
+00:15:40,490 --> 00:15:41,810
+then a GNN could,
+
+306
+00:15:41,810 --> 00:15:43,530
+uh, capture the pattern.
+
+307
+00:15:43,530 --> 00:15:46,370
+So, um, what is the solution?
+
+308
+00:15:46,370 --> 00:15:49,850
+The solution is to create a feature vector for every node that would,
+
+309
+00:15:49,850 --> 00:15:51,285
+uh, that would, for example,
+
+310
+00:15:51,285 --> 00:15:52,970
+give me the cycle count, right?
+
+311
+00:15:52,970 --> 00:15:56,660
+So basically, I would augment the node features with the cycle count information.
+
+312
+00:15:56,660 --> 00:15:59,555
+So one idea, for example would be is to create this,
+
+313
+00:15:59,555 --> 00:16:01,610
+uh, um, vector where, you know,
+
+314
+00:16:01,610 --> 00:16:05,195
+this is the number of cycles of length 0 the node participates in,
+
+315
+00:16:05,195 --> 00:16:07,085
+number of cycles of length 1,
+
+316
+00:16:07,085 --> 00:16:08,930
+length 2, length 3, right?
+
+317
+00:16:08,930 --> 00:16:10,639
+So length 1 is a self-loop,
+
+318
+00:16:10,639 --> 00:16:12,650
+length 2 would be, um,
+
+319
+00:16:12,650 --> 00:16:14,870
+if in a directed graph would be a, uh,
+
+320
+00:16:14,870 --> 00:16:18,500
+reciprocated connection, length 3 is a,
+
+321
+00:16:18,500 --> 00:16:20,000
+um, a triangle, you know,
+
+322
+00:16:20,000 --> 00:16:21,950
+length 4 is a square, right?
+
+323
+00:16:21,950 --> 00:16:23,315
+And, uh, you could now, uh,
+
+324
+00:16:23,315 --> 00:16:25,880
+append this type of feature vector to
+
+325
+00:16:25,880 --> 00:16:28,925
+whatever feature vector you already have, uh, for the nodes,
+
+326
+00:16:28,925 --> 00:16:33,845
+and this way increase the expressive power of the graph neural network,
+
+327
+00:16:33,845 --> 00:16:36,045
+especially if your intuition is that, let's say,
+
+328
+00:16:36,045 --> 00:16:38,715
+cycle information, uh, is important.
+
+329
+00:16:38,715 --> 00:16:41,145
+And of course, there are many other, uh,
+
+330
+00:16:41,145 --> 00:16:42,665
+commonly used, uh, uh,
+
+331
+00:16:42,665 --> 00:16:44,825
+techniques to augment features.
+
+332
+00:16:44,825 --> 00:16:47,840
+People very much like to include node degree.
+
+333
+00:16:47,840 --> 00:16:50,030
+It's a very simple to compute feature, but again,
+
+334
+00:16:50,030 --> 00:16:53,240
+allows you to disti- distinguish between different nodes.
+
+335
+00:16:53,240 --> 00:16:57,080
+You can include clustering coefficient that essentially
+
+336
+00:16:57,080 --> 00:17:01,670
+counts how many cycles of length 3 a node participates in.
+
+337
+00:17:01,670 --> 00:17:04,099
+So this is, um, triangle counting.
+
+338
+00:17:04,099 --> 00:17:06,749
+Uh, you could also have other types of, uh,
+
+339
+00:17:06,750 --> 00:17:08,480
+features like PageRank or,
+
+340
+00:17:08,480 --> 00:17:10,339
+uh, node centrality metrics, right?
+
+341
+00:17:10,339 --> 00:17:14,914
+So essentially, any features we have introduced in Lecture 2, um,
+
+342
+00:17:14,915 --> 00:17:17,464
+you could include to augment, uh,
+
+343
+00:17:17,464 --> 00:17:20,839
+the GNN to help it learn the network structure,
+
+344
+00:17:20,839 --> 00:17:23,389
+uh, better and, uh, faster, right?
+
+345
+00:17:23,390 --> 00:17:25,349
+So in some sense, in many cases,
+
+346
+00:17:25,349 --> 00:17:28,069
+the goal of the- of the machine learning, uh,
+
+347
+00:17:28,069 --> 00:17:32,180
+scientist is to essentially understand the intuition betw- be- behind
+
+348
+00:17:32,180 --> 00:17:37,349
+the learning algorithm and tries to help the- the algorithm to learn the patterns,
+
+349
+00:17:37,349 --> 00:17:40,400
+perhaps, we as domain scientists would know are important.
+
+350
+00:17:40,400 --> 00:17:42,660
+And by encoding some of the graph features,
+
+351
+00:17:42,660 --> 00:17:44,390
+many times, you can very much, uh,
+
+352
+00:17:44,390 --> 00:17:48,090
+speed up and improve the performance of the model because you kind of help,
+
+353
+00:17:48,090 --> 00:17:52,790
+uh, you know, you point the model to the- to the places where there might be good signal.
+
+354
+00:17:52,790 --> 00:17:57,170
+So this was about augmenting the features, uh,
+
+355
+00:17:57,170 --> 00:18:00,530
+of the node, and we talked about adding a constant feature,
+
+356
+00:18:00,530 --> 00:18:02,465
+we talked about adding, um,
+
+357
+00:18:02,465 --> 00:18:06,030
+one-hot encoding, and we also talked about,
+
+358
+00:18:06,030 --> 00:18:09,100
+um, adding various kinds of graph, uh,
+
+359
+00:18:09,100 --> 00:18:12,800
+structure information like the cycle count or node degree,
+
+360
+00:18:12,800 --> 00:18:16,340
+uh, to- to augment the node feature information.
+
+361
+00:18:16,340 --> 00:18:18,845
+Now, I'm going to switch, uh,
+
+362
+00:18:18,845 --> 00:18:25,695
+gears and I'm going to talk about adding and changing the graph structure information.
+
+363
+00:18:25,695 --> 00:18:27,500
+So we are going to augment
+
+364
+00:18:27,500 --> 00:18:31,780
+the underlying graph structure again to help, uh, with to the learning.
+
+365
+00:18:31,780 --> 00:18:37,225
+The way we are going to do this is to add virtual nodes and virtual edges.
+
+366
+00:18:37,225 --> 00:18:42,555
+So the first motivation we wanna discuss is we wanna augment sparse graphs,
+
+367
+00:18:42,555 --> 00:18:45,805
+so we wanna add a virtual address.
+
+368
+00:18:45,805 --> 00:18:47,580
+A common approach, for example,
+
+369
+00:18:47,580 --> 00:18:51,430
+would be to connect two hop neighbors via virtual edges.
+
+370
+00:18:51,430 --> 00:18:52,950
+So the intuition is,
+
+371
+00:18:52,950 --> 00:18:54,965
+or one way to say this is that instead of using
+
+372
+00:18:54,965 --> 00:18:58,980
+the adjacency matrix A of a- for a GNN computation,
+
+373
+00:18:58,980 --> 00:19:01,850
+we are going to use A plus A squared, right?
+
+374
+00:19:01,850 --> 00:19:03,170
+If you, again, uh,
+
+375
+00:19:03,170 --> 00:19:05,295
+remember early on in the course,
+
+376
+00:19:05,295 --> 00:19:07,085
+maybe Lecture 2, 3,
+
+377
+00:19:07,085 --> 00:19:12,725
+we discussed that powering the adjacency matrix, um, counts,
+
+378
+00:19:12,725 --> 00:19:15,720
+um, the number of, uh, nodes that,
+
+379
+00:19:15,720 --> 00:19:17,550
+uh, are neighbors at level 2,
+
+380
+00:19:17,550 --> 00:19:18,865
+level 3, and so on.
+
+381
+00:19:18,865 --> 00:19:23,365
+So by basically adding- by powering the matrix and adding, uh,
+
+382
+00:19:23,365 --> 00:19:25,615
+A adding it to the adjacency matrix,
+
+383
+00:19:25,615 --> 00:19:29,665
+now basically we connect all the nodes that are two-hop neighbors.
+
+384
+00:19:29,665 --> 00:19:31,940
+Um, and this is very interesting, for example,
+
+385
+00:19:31,940 --> 00:19:34,015
+especially in bipartite graphs.
+
+386
+00:19:34,015 --> 00:19:36,865
+Because if in a bipartite graph where for example,
+
+387
+00:19:36,865 --> 00:19:39,020
+authors and the papers they author,
+
+388
+00:19:39,020 --> 00:19:41,035
+you create a square,
+
+389
+00:19:41,035 --> 00:19:43,870
+then basically you create a projection and you
+
+390
+00:19:43,870 --> 00:19:46,840
+created a paper co-authorship network,
+
+391
+00:19:46,840 --> 00:19:49,890
+or an author colle- collaboration network, right?
+
+392
+00:19:49,890 --> 00:19:51,485
+So this would mean that you either connect
+
+393
+00:19:51,485 --> 00:19:54,320
+two authors that have written at least one paper together,
+
+394
+00:19:54,320 --> 00:19:58,040
+or you connect two papers if they were written, uh, by the same author.
+
+395
+00:19:58,040 --> 00:20:00,409
+It just depends do you do, um,
+
+396
+00:20:00,409 --> 00:20:04,790
+you know,  A times A transpose or do you do, uh,
+
+397
+00:20:04,790 --> 00:20:06,900
+A transpose times A,
+
+398
+00:20:06,900 --> 00:20:12,240
+in a case of a bipartite graph because the adjacency matrix, uh, won't be square.
+
+399
+00:20:12,240 --> 00:20:16,115
+So, uh, that's- that's one idea how you can kind of include
+
+400
+00:20:16,115 --> 00:20:18,765
+additional information and what this will help in
+
+401
+00:20:18,765 --> 00:20:21,500
+the graph neural network is that rather than, you know,
+
+402
+00:20:21,500 --> 00:20:23,400
+if you think about message passing,
+
+403
+00:20:23,400 --> 00:20:26,240
+an author sending a message to the paper and then paper
+
+404
+00:20:26,240 --> 00:20:29,540
+sending it back to the author by connecting two authors,
+
+405
+00:20:29,540 --> 00:20:32,000
+they will be able to directly exchange messages,
+
+406
+00:20:32,000 --> 00:20:37,020
+which means that the depth- the number of layers of the graph neural network will be,
+
+407
+00:20:37,020 --> 00:20:38,975
+uh, able to be smaller, um,
+
+408
+00:20:38,975 --> 00:20:41,615
+and you'll be able to train it, uh, faster.
+
+409
+00:20:41,615 --> 00:20:44,630
+Of course, the um,
+
+410
+00:20:44,630 --> 00:20:49,160
+- the issue will then become that you have too few- that you will have
+
+411
+00:20:49,160 --> 00:20:54,020
+too many neighbors to aggregate from and that may add er, more complexity.
+
+412
+00:20:54,020 --> 00:20:58,205
+But we'll talk about how to fix that um, er later.
+
+413
+00:20:58,205 --> 00:21:01,490
+So if graphs are too sparse,
+
+414
+00:21:01,490 --> 00:21:02,840
+er, as I said,
+
+415
+00:21:02,840 --> 00:21:06,560
+one idea is to- to connect nodes that are-that are
+
+416
+00:21:06,560 --> 00:21:11,675
+two edges-virtual edges between length 2 or length 3 connected nodes.
+
+417
+00:21:11,675 --> 00:21:15,395
+Another idea is to add a virtual node um,
+
+418
+00:21:15,395 --> 00:21:17,870
+and the virtual node will then connect to, let's say,
+
+419
+00:21:17,870 --> 00:21:23,060
+all or some carefully chosen subset of the nodes in the graph, right?
+
+420
+00:21:23,060 --> 00:21:24,800
+So for example, imagine you have
+
+421
+00:21:24,800 --> 00:21:29,240
+a super sparse graph where have two nodes are very far apart in the graph, right?
+
+422
+00:21:29,240 --> 00:21:31,280
+They are, let's say, ten hops apart, right?
+
+423
+00:21:31,280 --> 00:21:35,660
+And now if one node needs to send a message to the other node,
+
+424
+00:21:35,660 --> 00:21:37,580
+you need a length, you need
+
+425
+00:21:37,580 --> 00:21:42,620
+a ten layer graph neural network to be able to allow for that communication.
+
+426
+00:21:42,620 --> 00:21:44,465
+But in some cases,
+
+427
+00:21:44,465 --> 00:21:47,090
+you may know that these two nodes actually need to communicate.
+
+428
+00:21:47,090 --> 00:21:49,310
+Even though they are farther apart in the original graph,
+
+429
+00:21:49,310 --> 00:21:51,230
+they need to send messages to each other, right?
+
+430
+00:21:51,230 --> 00:21:52,565
+One depends on the other.
+
+431
+00:21:52,565 --> 00:21:57,575
+So what you can do in that case is you can create a virtual node and then connect,
+
+432
+00:21:57,575 --> 00:21:59,510
+for example, several nodes to it.
+
+433
+00:21:59,510 --> 00:22:05,165
+And this way, you can connect nodes that are very far in the original graph structure er,
+
+434
+00:22:05,165 --> 00:22:09,020
+to be able to communicate with each other much more efficiently, right?
+
+435
+00:22:09,020 --> 00:22:11,240
+So basically, after adding a virtual node,
+
+436
+00:22:11,240 --> 00:22:14,585
+er, all the nodes will have a smaller distance to each other.
+
+437
+00:22:14,585 --> 00:22:18,800
+So you'll- the message passing will be more er,
+
+438
+00:22:18,800 --> 00:22:21,005
+- more efficient, it will happen faster.
+
+439
+00:22:21,005 --> 00:22:25,820
+The depth of the graph neural network won't have to be er, that large.
+
+440
+00:22:25,820 --> 00:22:30,020
+Er, so that's another technique that sometimes um, is er,
+
+441
+00:22:30,020 --> 00:22:32,330
+-is-is a good idea to have in your toolbox um,
+
+442
+00:22:32,330 --> 00:22:35,660
+if the basic approaches don't work.
+
+443
+00:22:35,660 --> 00:22:41,885
+And then er, the last thing I want to talk about- about graph structure information is
+
+444
+00:22:41,885 --> 00:22:44,690
+not when you have too few edges in the graph and you want
+
+445
+00:22:44,690 --> 00:22:47,690
+to kind of make the message passing er, more efficient.
+
+446
+00:22:47,690 --> 00:22:49,460
+Er, the question becomes,
+
+447
+00:22:49,460 --> 00:22:50,795
+what if you have too many edges?
+
+448
+00:22:50,795 --> 00:22:53,270
+What if the graph is too large, right?
+
+449
+00:22:53,270 --> 00:22:54,515
+Again, think of my er,
+
+450
+00:22:54,515 --> 00:22:56,135
+Kim Kardashian example, right?
+
+451
+00:22:56,135 --> 00:22:58,190
+Or Lady Gaga used to be er,
+
+452
+00:22:58,190 --> 00:23:01,670
+the highest degree node in the Twitter network a few years ago,
+
+453
+00:23:01,670 --> 00:23:04,095
+but I think she is not number one anymore.
+
+454
+00:23:04,095 --> 00:23:08,410
+But the point is, right, you have these high degree nodes in networks and
+
+455
+00:23:08,410 --> 00:23:13,105
+aggregating messages from millions- over tens of millions or hundreds of millions of er,
+
+456
+00:23:13,105 --> 00:23:17,710
+people that are connected to it can become er, quite er, expensive.
+
+457
+00:23:17,710 --> 00:23:19,570
+So um- so far, right?
+
+458
+00:23:19,570 --> 00:23:22,375
+We said, let's use all the nodes, all the neighbors er,
+
+459
+00:23:22,375 --> 00:23:24,610
+for message passing when defining
+
+460
+00:23:24,610 --> 00:23:28,415
+the graph neural network and the idea that we are going to explore here and
+
+461
+00:23:28,415 --> 00:23:33,770
+introduce is, what if I sample node's neighborhood er, for message passing?
+
+462
+00:23:33,770 --> 00:23:35,870
+And of course I could do random sampling,
+
+463
+00:23:35,870 --> 00:23:39,530
+but it turns out there are far better heuristics er,
+
+464
+00:23:39,530 --> 00:23:42,305
+that allow you to really carefully select
+
+465
+00:23:42,305 --> 00:23:46,730
+what neighbors to collect information from and what neighbors to ignore.
+
+466
+00:23:46,730 --> 00:23:49,085
+So um, here is the idea.
+
+467
+00:23:49,085 --> 00:23:51,590
+So the idea is that, for example,
+
+468
+00:23:51,590 --> 00:23:56,975
+what if we randomly choose two neighbors to pass messages from in a given layer?
+
+469
+00:23:56,975 --> 00:23:59,570
+So for example, for our neighbors of node A,
+
+470
+00:23:59,570 --> 00:24:02,255
+we-we would decide that out of the three neighbors,
+
+471
+00:24:02,255 --> 00:24:05,810
+we are only going to select two of them and ignore the third one.
+
+472
+00:24:05,810 --> 00:24:07,220
+So this would, for example,
+
+473
+00:24:07,220 --> 00:24:11,390
+in this case mean that A only collects information from B and D but ignores
+
+474
+00:24:11,390 --> 00:24:16,160
+the C. So now our message-passing computation graph would look like this.
+
+475
+00:24:16,160 --> 00:24:20,675
+Why is this good? This is good because now computation graph is much smaller.
+
+476
+00:24:20,675 --> 00:24:22,580
+Um, of course, why is it bad?
+
+477
+00:24:22,580 --> 00:24:24,860
+It's because perhaps node C has
+
+478
+00:24:24,860 --> 00:24:27,020
+very important information that would allow
+
+479
+00:24:27,020 --> 00:24:29,675
+us to make a better prediction at node A,
+
+480
+00:24:29,675 --> 00:24:31,565
+but because we ignored it,
+
+481
+00:24:31,565 --> 00:24:35,615
+this will be- it will be harder for the neural network er,
+
+482
+00:24:35,615 --> 00:24:37,550
+to learn that better, right?
+
+483
+00:24:37,550 --> 00:24:39,350
+So this is kind of the trade-off here is,
+
+484
+00:24:39,350 --> 00:24:41,810
+yes, you gain computational efficiency,
+
+485
+00:24:41,810 --> 00:24:43,310
+but in the worst case,
+
+486
+00:24:43,310 --> 00:24:46,790
+you kind of lose some of the expressive power er,
+
+487
+00:24:46,790 --> 00:24:49,550
+because you-you-you dropped out er,
+
+488
+00:24:49,550 --> 00:24:52,985
+some edges, you dropped out some information that might be important.
+
+489
+00:24:52,985 --> 00:24:54,500
+And of course, in practice,
+
+490
+00:24:54,500 --> 00:24:57,890
+um, if you have a super high degree node,
+
+491
+00:24:57,890 --> 00:25:02,765
+you can really sub-sample how many neighbors you- you er,
+
+492
+00:25:02,765 --> 00:25:06,770
+aggregate information from because you really want to kind of aggregate from
+
+493
+00:25:06,770 --> 00:25:10,865
+important neighbors and from all the kind of noisy unimportant ones,
+
+494
+00:25:10,865 --> 00:25:12,920
+er, you can er, - you can ignore them.
+
+495
+00:25:12,920 --> 00:25:14,960
+That's kind of the intuition.
+
+496
+00:25:14,960 --> 00:25:17,795
+So- and of course we can, um, er,
+
+497
+00:25:17,795 --> 00:25:21,650
+do this sampling differently er, every time.
+
+498
+00:25:21,650 --> 00:25:22,775
+We could even make it, er,
+
+499
+00:25:22,775 --> 00:25:25,205
+such that sampling changes between er,
+
+500
+00:25:25,205 --> 00:25:26,450
+layers and this way,
+
+501
+00:25:26,450 --> 00:25:30,110
+the network- the aggregation functions actually become er,
+
+502
+00:25:30,110 --> 00:25:35,450
+robust to how many neighbors do you sam- do you collect the information from, right?
+
+503
+00:25:35,450 --> 00:25:36,770
+So the idea would be, for example,
+
+504
+00:25:36,770 --> 00:25:38,390
+in the-in the next layer,
+
+505
+00:25:38,390 --> 00:25:40,430
+or in the next er, minute- er,
+
+506
+00:25:40,430 --> 00:25:42,995
+in the next er, epoch of training,
+
+507
+00:25:42,995 --> 00:25:44,855
+we can sample different nodes er,
+
+508
+00:25:44,855 --> 00:25:46,520
+for the same node A , right?
+
+509
+00:25:46,520 --> 00:25:48,020
+So what this would mean is that, for example,
+
+510
+00:25:48,020 --> 00:25:52,370
+now we re-sample and we decide to collect from C and D but ignore er,
+
+511
+00:25:52,370 --> 00:25:54,980
+B and this is now how the computation graph would look
+
+512
+00:25:54,980 --> 00:25:57,590
+like and this is also good because it adds a
+
+513
+00:25:57,590 --> 00:26:01,490
+robustness to our neural network training approach, right?
+
+514
+00:26:01,490 --> 00:26:03,170
+It er,-it now means that er,
+
+515
+00:26:03,170 --> 00:26:07,010
+A will be able to collect information-will learn how to robustly collect
+
+516
+00:26:07,010 --> 00:26:11,600
+information from some subsets of its- of its neighbors and won't er,
+
+517
+00:26:11,600 --> 00:26:13,370
+suffer to much if, for example,
+
+518
+00:26:13,370 --> 00:26:15,590
+an edge is er, missing in the network.
+
+519
+00:26:15,590 --> 00:26:17,225
+So that's also, um,
+
+520
+00:26:17,225 --> 00:26:18,590
+one reason why this er,
+
+521
+00:26:18,590 --> 00:26:21,545
+neighborhood sampling, er, is a good approach.
+
+522
+00:26:21,545 --> 00:26:24,200
+Um, and why is this interesting?
+
+523
+00:26:24,200 --> 00:26:25,580
+It's because in expectation,
+
+524
+00:26:25,580 --> 00:26:27,260
+right after a lot of different er,
+
+525
+00:26:27,260 --> 00:26:29,885
+random samplings, we will get embeddings
+
+526
+00:26:29,885 --> 00:26:33,245
+similar to the case when all nodes are being used.
+
+527
+00:26:33,245 --> 00:26:38,135
+Er, but the benefit is that this greatly reduces computational cost and,
+
+528
+00:26:38,135 --> 00:26:39,260
+you know, in the small graphs,
+
+529
+00:26:39,260 --> 00:26:40,490
+this might not be er,
+
+530
+00:26:40,490 --> 00:26:43,070
+so obvious but if you-if, you know,
+
+531
+00:26:43,070 --> 00:26:46,205
+node A has 30 million neighbors,
+
+532
+00:26:46,205 --> 00:26:48,920
+then we cannot aggregate from 30 million.
+
+533
+00:26:48,920 --> 00:26:51,590
+The question is, can we decide what are the top 100,
+
+534
+00:26:51,590 --> 00:26:54,575
+maybe top 1,000 most important nodes?
+
+535
+00:26:54,575 --> 00:26:56,420
+Most important, let's say friends,
+
+536
+00:26:56,420 --> 00:27:00,605
+if this is a social network or the true friends er, of this person,
+
+537
+00:27:00,605 --> 00:27:02,675
+and we want to aggregate information er,
+
+538
+00:27:02,675 --> 00:27:05,210
+from them rather than from all the kind of, er,
+
+539
+00:27:05,210 --> 00:27:07,940
+random followers, er, all over the world, right?
+
+540
+00:27:07,940 --> 00:27:10,130
+Um, and by doing this sub-sampling,
+
+541
+00:27:10,130 --> 00:27:12,590
+we can make the computation graphs much, much,
+
+542
+00:27:12,590 --> 00:27:17,300
+much smaller, which allows us to scale GNNs to massive graphs.
+
+543
+00:27:17,300 --> 00:27:19,790
+And this is very important in industrial applications
+
+544
+00:27:19,790 --> 00:27:22,550
+like recommender systems and social networks,
+
+545
+00:27:22,550 --> 00:27:23,720
+where you have, you know,
+
+546
+00:27:23,720 --> 00:27:26,285
+networks of billions and tens of billions of er,
+
+547
+00:27:26,285 --> 00:27:28,925
+nodes and edges and you need these  kind of,
+
+548
+00:27:28,925 --> 00:27:31,955
+um, techniques to be able to scale.
+
+549
+00:27:31,955 --> 00:27:34,610
+Er, and in practice, this is a very good approach to scale
+
+550
+00:27:34,610 --> 00:27:37,370
+up- to scale up graph neural networks.
+
+551
+00:27:37,370 --> 00:27:42,020
+So er, this is what I wanted to say about neighborhood sampling er,
+
+552
+00:27:42,020 --> 00:27:44,580
+and give you this er, example.
+

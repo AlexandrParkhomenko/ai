@@ -1,0 +1,5864 @@
+1
+00:00:04,070 --> 00:00:08,835
+Today, I will talk about graph neural networks in computational biology.
+
+2
+00:00:08,835 --> 00:00:11,235
+And, um, there has been, um,
+
+3
+00:00:11,235 --> 00:00:14,324
+a tremendous surge in- of interest in leveraging,
+
+4
+00:00:14,324 --> 00:00:17,280
+ah, graph neural networks and graph representation learning,
+
+5
+00:00:17,280 --> 00:00:21,720
+in particular, ah, for learning meaningful representations of biology and
+
+6
+00:00:21,720 --> 00:00:24,000
+meaningful representations of datasets and
+
+7
+00:00:24,000 --> 00:00:27,120
+entities when co- we encounter in biology and medicine.
+
+8
+00:00:27,120 --> 00:00:28,890
+And so over the last few years,
+
+9
+00:00:28,890 --> 00:00:30,170
+we have seen, ah,
+
+10
+00:00:30,170 --> 00:00:33,829
+several prominent examples where GNNs have been used successfully,
+
+11
+00:00:33,829 --> 00:00:35,000
+ah, to learn, uh,
+
+12
+00:00:35,000 --> 00:00:39,635
+representations that have enabled critical predictions in a variety of downstream tasks,
+
+13
+00:00:39,635 --> 00:00:44,015
+including predictions about discovering novel interactions about- between proteins,
+
+14
+00:00:44,015 --> 00:00:46,760
+information about, ah, uh, treat- uh,
+
+15
+00:00:46,760 --> 00:00:50,870
+succes- potentially successful disease treatments, um,
+
+16
+00:00:50,870 --> 00:00:55,295
+opportunities about, uh, novel- regarding novel drugs and so on.
+
+17
+00:00:55,295 --> 00:00:56,780
+And so that has,
+
+18
+00:00:56,780 --> 00:00:58,755
+um- that of course,
+
+19
+00:00:58,755 --> 00:01:02,240
+is- is very interesting and particularly, um,
+
+20
+00:01:02,240 --> 00:01:04,144
+a natural question to ask is,
+
+21
+00:01:04,144 --> 00:01:07,860
+why do we see that graph neural networks,
+
+22
+00:01:07,860 --> 00:01:12,225
+achieve such success in biomedical and biological data?
+
+23
+00:01:12,225 --> 00:01:14,200
+And so to answer this question,
+
+24
+00:01:14,200 --> 00:01:16,300
+we need to think a bit about, um,
+
+25
+00:01:16,300 --> 00:01:18,370
+[NOISE] biology and- and
+
+26
+00:01:18,370 --> 00:01:21,610
+observe that biology is actually highly interconnected to the- uh,
+
+27
+00:01:21,610 --> 00:01:23,980
+in- in the sense that, um,
+
+28
+00:01:23,980 --> 00:01:26,700
+the way drugs work when- when people take
+
+29
+00:01:26,700 --> 00:01:29,770
+them is not that they work independently of each other,
+
+30
+00:01:29,770 --> 00:01:34,405
+but the way drugs work is they actually affect certain number o- of molecules, ah,
+
+31
+00:01:34,405 --> 00:01:37,479
+in humans cells that are typically proteins,
+
+32
+00:01:37,479 --> 00:01:40,030
+and those proteins interact with each other and
+
+33
+00:01:40,030 --> 00:01:42,640
+then- then these effects are then propagated.
+
+34
+00:01:42,640 --> 00:01:46,130
+The way they are propagating in- in human body and in
+
+35
+00:01:46,130 --> 00:01:49,940
+human cells is through those underlying biological networks.
+
+36
+00:01:49,940 --> 00:01:54,799
+So we can really see that biology is interconnected at various different scales,
+
+37
+00:01:54,799 --> 00:01:57,650
+from the scale of genomic sequences where we
+
+38
+00:01:57,650 --> 00:02:01,190
+see interactions between parts of the genome,
+
+39
+00:02:01,190 --> 00:02:06,260
+to the scale of interactions between proteins and molecules in- within a cell,
+
+40
+00:02:06,260 --> 00:02:10,639
+to- to interactions of external agents that are included in the human body,
+
+41
+00:02:10,639 --> 00:02:12,600
+such as drugs and therapeutics,
+
+42
+00:02:12,600 --> 00:02:18,215
+[NOISE] all the way to the scale of populations or entire ecosystems where we have,
+
+43
+00:02:18,215 --> 00:02:22,400
+for example, health care systems and dependencies between different institutions,
+
+44
+00:02:22,400 --> 00:02:24,410
+different hospitals, or different kinds of
+
+45
+00:02:24,410 --> 00:02:26,870
+symptoms within a heal- within healthcare records.
+
+46
+00:02:26,870 --> 00:02:32,090
+So the effects of many of biological then interventions,
+
+47
+00:02:32,090 --> 00:02:34,100
+many of biological, um,
+
+48
+00:02:34,100 --> 00:02:36,710
+e- entities are- they're really network effects.
+
+49
+00:02:36,710 --> 00:02:40,460
+And because of that, it makes lots of sense to study the biology through the lens
+
+50
+00:02:40,460 --> 00:02:45,100
+of networks and interactions between biologically relevant entities.
+
+51
+00:02:45,100 --> 00:02:47,150
+So to unpack this a bit,
+
+52
+00:02:47,150 --> 00:02:50,420
+we can try to understand why are networks in biology so powerful?
+
+53
+00:02:50,420 --> 00:02:55,175
+And I'll look- I'll look- I will take a particular example to- to explain that.
+
+54
+00:02:55,175 --> 00:02:59,820
+So let's look for a- let's take a look at the human protein interaction network.
+
+55
+00:02:59,820 --> 00:03:01,500
+This is a network where nodes,
+
+56
+00:03:01,500 --> 00:03:03,495
+um, represent human proteins,
+
+57
+00:03:03,495 --> 00:03:06,815
+and two proteins are connected by an edge if,
+
+58
+00:03:06,815 --> 00:03:09,350
+um, the proteins physically interact.
+
+59
+00:03:09,350 --> 00:03:14,000
+Meaning that at some point in time the two proteins are physically close in the cell,
+
+60
+00:03:14,000 --> 00:03:16,770
+and, um, you might want to know, well,
+
+61
+00:03:16,770 --> 00:03:20,885
+why- why are then proteins interacting with each other?
+
+62
+00:03:20,885 --> 00:03:25,565
+Um, if we look at a particular sub-region of protein interaction network,
+
+63
+00:03:25,565 --> 00:03:30,485
+which might be this particular subgraph on- o- on five human proteins where we see, ah,
+
+64
+00:03:30,485 --> 00:03:34,595
+five interactions, is there any significance between
+
+65
+00:03:34,595 --> 00:03:38,690
+these two protein MXS1 and B9D2 so- that they- in,
+
+66
+00:03:38,690 --> 00:03:39,965
+uh- in- in the sense that,
+
+67
+00:03:39,965 --> 00:03:43,920
+what does it mean and what are implications of them interacting with each other?
+
+68
+00:03:43,920 --> 00:03:45,260
+And to answer this question,
+
+69
+00:03:45,260 --> 00:03:47,780
+what we can do is to overlay on that,
+
+70
+00:03:47,780 --> 00:03:50,525
+um, protein interaction network
+
+71
+00:03:50,525 --> 00:03:54,110
+information about what are diseases that those proteins are involved in.
+
+72
+00:03:54,110 --> 00:03:56,945
+And if we do that for this particular example,
+
+73
+00:03:56,945 --> 00:04:00,380
+we can see that the these three proteins that are highlighted here in
+
+74
+00:04:00,380 --> 00:04:03,950
+red are all associated with the disease- with the same disease.
+
+75
+00:04:03,950 --> 00:04:07,415
+Meaning that when there are certain alterations in those two proteins,
+
+76
+00:04:07,415 --> 00:04:09,635
+a particular disease would develop.
+
+77
+00:04:09,635 --> 00:04:12,960
+And so what is interesting to- to- to
+
+78
+00:04:12,960 --> 00:04:17,750
+explore and obs- and observe is that if we overlay, um,
+
+79
+00:04:17,750 --> 00:04:22,130
+information about involvement of proteins in various diseases onto this- uh,
+
+80
+00:04:22,130 --> 00:04:23,975
+onto protein interaction network,
+
+81
+00:04:23,975 --> 00:04:26,510
+we can see that proteins associated with
+
+82
+00:04:26,510 --> 00:04:30,515
+the same disease tend to agglomerate or cluster in certain regions,
+
+83
+00:04:30,515 --> 00:04:32,575
+in certain neighborhoods of the network.
+
+84
+00:04:32,575 --> 00:04:35,145
+And that has, over the last two decades,
+
+85
+00:04:35,145 --> 00:04:38,585
+yield to very powerful paradigms in, um,
+
+86
+00:04:38,585 --> 00:04:41,990
+biology and medicine because it's powerful as it
+
+87
+00:04:41,990 --> 00:04:45,590
+allows us to identify new proteins that might be involved in
+
+88
+00:04:45,590 --> 00:04:49,360
+disease by simply exploring the surrounding and lo-
+
+89
+00:04:49,360 --> 00:04:51,770
+n- network neighborhoods of those proteins
+
+90
+00:04:51,770 --> 00:04:55,040
+that were already known to be associated with the disease.
+
+91
+00:04:55,040 --> 00:05:00,380
+That particular longstanding paradigm is known as local hypothesis.
+
+92
+00:05:00,380 --> 00:05:01,400
+And in other words,
+
+93
+00:05:01,400 --> 00:05:05,225
+it means that proteins involved in the same disease,
+
+94
+00:05:05,225 --> 00:05:07,930
+proteins that when mutated are,
+
+95
+00:05:07,930 --> 00:05:10,050
+um, lead to the same disease,
+
+96
+00:05:10,050 --> 00:05:13,790
+they- they have an increasing tendency to interact with each other,
+
+97
+00:05:13,790 --> 00:05:17,150
+meaning that they would be connected in our PPI network.
+
+98
+00:05:17,150 --> 00:05:20,820
+So the implication of that local hypothesis is that, ah,
+
+99
+00:05:20,820 --> 00:05:25,465
+m- mutations in interacting proteins often lead to similar diseases.
+
+100
+00:05:25,465 --> 00:05:27,020
+And now that we know that,
+
+101
+00:05:27,020 --> 00:05:30,470
+we can effectively leverage that information as inf- uh,
+
+102
+00:05:30,470 --> 00:05:34,865
+as prior information for- for our- for our machine learning models.
+
+103
+00:05:34,865 --> 00:05:38,240
+While I'll explain this particular local hypothesis in
+
+104
+00:05:38,240 --> 00:05:41,795
+the case of human protein interaction networks and diseases,
+
+105
+00:05:41,795 --> 00:05:44,270
+similar findings apply to
+
+106
+00:05:44,270 --> 00:05:48,440
+a broad range of different kinds of networks that we can see in biology.
+
+107
+00:05:48,440 --> 00:05:53,060
+Going from protein interaction networks to networks where nodes are patients
+
+108
+00:05:53,060 --> 00:05:54,920
+related and connected based on
+
+109
+00:05:54,920 --> 00:05:58,640
+familial or- relationships or similarity of the genomic profiles,
+
+110
+00:05:58,640 --> 00:06:02,419
+to networks representing hierarchies of several systems,
+
+111
+00:06:02,419 --> 00:06:05,320
+networks representing disease pathways, um,
+
+112
+00:06:05,320 --> 00:06:10,090
+gene interaction networks, cell-cell similarity networks, and many others.
+
+113
+00:06:10,090 --> 00:06:11,830
+And so that, um,
+
+114
+00:06:11,830 --> 00:06:15,440
+notion of local hypothesis where we see that, um,
+
+115
+00:06:15,440 --> 00:06:19,760
+entities with similar properties all- all tend to cluster
+
+116
+00:06:19,760 --> 00:06:24,060
+and agglomerate in certain network regions, um,
+
+117
+00:06:24,060 --> 00:06:27,200
+are- is really one of the core observations and
+
+118
+00:06:27,200 --> 00:06:31,220
+motivation and guiding principle that can explain why
+
+119
+00:06:31,220 --> 00:06:34,370
+graph neural networks are so well suited for the analysis of
+
+120
+00:06:34,370 --> 00:06:39,200
+biological networks and why they have already led to several very successful,
+
+121
+00:06:39,200 --> 00:06:43,160
+uh, applications to biomedical problems.
+
+122
+00:06:43,160 --> 00:06:48,110
+So- so that's all great and fantastic vision that we can share.
+
+123
+00:06:48,110 --> 00:06:50,510
+It's a nice motivation for great- for why it makes
+
+124
+00:06:50,510 --> 00:06:53,220
+sense to use graph neural networks for biological data.
+
+125
+00:06:53,220 --> 00:06:55,400
+But biological networks also present
+
+126
+00:06:55,400 --> 00:06:59,900
+some fundamental challenges that we can solve through algorithmic innovation.
+
+127
+00:06:59,900 --> 00:07:01,145
+So there are a number of challenges,
+
+128
+00:07:01,145 --> 00:07:02,480
+I will just mention tree here.
+
+129
+00:07:02,480 --> 00:07:04,595
+Um, so the first challenge is that
+
+130
+00:07:04,595 --> 00:07:08,450
+biological networks tend to involve heterogeneous interactions
+
+131
+00:07:08,450 --> 00:07:11,270
+that span from the mo- molecular level
+
+132
+00:07:11,270 --> 00:07:14,720
+all the way to the level of whole populations or societies.
+
+133
+00:07:14,720 --> 00:07:19,370
+And so typically [NOISE] the challenge is how to computationally operationalize the data.
+
+134
+00:07:19,370 --> 00:07:22,100
+What- how to even construct then- the graphs
+
+135
+00:07:22,100 --> 00:07:25,370
+that are then amenable to- to machine learning.
+
+136
+00:07:25,370 --> 00:07:27,410
+The second challenge is that,
+
+137
+00:07:27,410 --> 00:07:29,600
+um, networks in biology, uh,
+
+138
+00:07:29,600 --> 00:07:34,024
+contain data that you are co- that come from a variety of different resources,
+
+139
+00:07:34,024 --> 00:07:38,555
+including experimental readouts, curated annotations, and metadata.
+
+140
+00:07:38,555 --> 00:07:41,210
+And we really need to consider all those data
+
+141
+00:07:41,210 --> 00:07:44,930
+jointly because no single datatype
+
+142
+00:07:44,930 --> 00:07:47,900
+can really capture all the fact- factors that are necessary to
+
+143
+00:07:47,900 --> 00:07:51,295
+understand a particular complex phenomenon such as a disease.
+
+144
+00:07:51,295 --> 00:07:53,185
+It really is, um,
+
+145
+00:07:53,185 --> 00:07:55,780
+that we wo- need to, uh,
+
+146
+00:07:55,780 --> 00:07:59,390
+co- co- jointly consider the data from diverse resources to do so.
+
+147
+00:07:59,390 --> 00:08:03,890
+And finally, biological networks are by definition noisy and there by
+
+148
+00:08:03,890 --> 00:08:06,170
+definition are incomplete because our understanding
+
+149
+00:08:06,170 --> 00:08:08,645
+of the nature and biology is incomplete.
+
+150
+00:08:08,645 --> 00:08:11,900
+And they are noisy because inherent natural variations as well as
+
+151
+00:08:11,900 --> 00:08:16,380
+limitations of current biotechnological platforms that generate the data,
+
+152
+00:08:16,380 --> 00:08:21,425
+which means that we need to operate with the assumption that our data will be missing,
+
+153
+00:08:21,425 --> 00:08:23,884
+it will contain po- repeated measurements,
+
+154
+00:08:23,884 --> 00:08:27,530
+even contradictory observations that can plague the analysis,
+
+155
+00:08:27,530 --> 00:08:31,535
+and methods need to be robust against [NOISE] these issues.
+
+156
+00:08:31,535 --> 00:08:34,360
+So the plan for today lecture is the following,
+
+157
+00:08:34,360 --> 00:08:36,330
+um, I will [NOISE], uh,
+
+158
+00:08:36,330 --> 00:08:38,720
+talk about three vignettes that will
+
+159
+00:08:38,720 --> 00:08:41,419
+highlight some of these challenge- some of the challenges, uh,
+
+160
+00:08:41,419 --> 00:08:45,035
+for- for wor- dealing with biological networks as well as propose
+
+161
+00:08:45,035 --> 00:08:46,880
+solutions and show examples of
+
+162
+00:08:46,880 --> 00:08:50,420
+successful applications of graph neural networks in computational biology.
+
+163
+00:08:50,420 --> 00:08:54,080
+So the part that I will touch are- are the que- first
+
+164
+00:08:54,080 --> 00:08:57,480
+will be the question related to modeling safety of drugs and,
+
+165
+00:08:57,480 --> 00:08:59,900
+um, safety of combinations of drugs.
+
+166
+00:08:59,900 --> 00:09:04,175
+Second, I will talk about predicting patient outcomes and disease classification.
+
+167
+00:09:04,175 --> 00:09:05,810
+And finally, we will,
+
+168
+00:09:05,810 --> 00:09:08,125
+ah, discuss, um, um,
+
+169
+00:09:08,125 --> 00:09:11,840
+m- methods for identifying effective disease treatments and for
+
+170
+00:09:11,840 --> 00:09:15,980
+identifying promising therapeutic opportunities for emerging diseases.
+
+171
+00:09:15,980 --> 00:09:18,935
+And along the way, I will also highlight some of new- uh,
+
+172
+00:09:18,935 --> 00:09:23,780
+technical work that was motivated by- by- by these specific biomedical problems.
+
+173
+00:09:23,780 --> 00:09:26,480
+So let's start with the first topic, which is that of,
+
+174
+00:09:26,480 --> 00:09:30,740
+ah, [NOISE] modern drug safety and modeling drug combinations.
+
+175
+00:09:30,740 --> 00:09:35,070
+So this work is really motivated by the problem that is known as polytherapy,
+
+176
+00:09:35,070 --> 00:09:37,040
+sometimes also called polypharmacy.
+
+177
+00:09:37,040 --> 00:09:39,620
+It refers to the situation where patients take
+
+178
+00:09:39,620 --> 00:09:43,895
+multiple drugs at the same time to treat complex or coexisting disease.
+
+179
+00:09:43,895 --> 00:09:46,985
+This is a problem that is very common, actually.
+
+180
+00:09:46,985 --> 00:09:50,150
+46% of people over 65 years take
+
+181
+00:09:50,150 --> 00:09:52,130
+more than five drugs that are
+
+182
+00:09:52,130 --> 00:09:55,145
+prescribed to them by the do- their doctor at the same time.
+
+183
+00:09:55,145 --> 00:09:57,290
+It's not uncommon to encounter patients that
+
+184
+00:09:57,290 --> 00:09:59,540
+take more than 20 drugs to treat heart diseases,
+
+185
+00:09:59,540 --> 00:10:02,730
+de- depression, cancer, some other complex disease.
+
+186
+00:10:02,730 --> 00:10:07,910
+So the problem with that is that when a patient takes m- several drugs at the same time,
+
+187
+00:10:07,910 --> 00:10:11,030
+they're at much higher risk for developing adverse events.
+
+188
+00:10:11,030 --> 00:10:13,550
+And there are estimates that
+
+189
+00:10:13,550 --> 00:10:15,710
+fi- around 50% of- 15% of
+
+190
+00:10:15,710 --> 00:10:18,750
+the US population is affected by those unwanted side effects,
+
+191
+00:10:18,750 --> 00:10:22,460
+and that represents a huge burden both for individuals as well as for
+
+192
+00:10:22,460 --> 00:10:27,040
+the entire health care system in terms of rising health care costs.
+
+193
+00:10:27,040 --> 00:10:30,460
+So when I said that individuals are at
+
+194
+00:10:30,460 --> 00:10:33,325
+higher risk of developing adverse- unintended adverse events,
+
+195
+00:10:33,325 --> 00:10:35,150
+what did I actually mean by that?
+
+196
+00:10:35,150 --> 00:10:39,820
+So when patients take m- multiple drugs at the same time,
+
+197
+00:10:39,820 --> 00:10:43,180
+because we now know that drugs don't act independently of each other,
+
+198
+00:10:43,180 --> 00:10:47,695
+they might give rise to unexpected interactions between drugs.
+
+199
+00:10:47,695 --> 00:10:49,270
+So what does that mean? Let's look at
+
+200
+00:10:49,270 --> 00:10:52,810
+this hypothetical scenario where we have a system with just two drugs.
+
+201
+00:10:52,810 --> 00:10:54,955
+We have a blue pill and a red pill.
+
+202
+00:10:54,955 --> 00:10:58,280
+So when a patient takes blue pill alone, um,
+
+203
+00:10:58,280 --> 00:11:00,435
+there are no side effects observed and
+
+204
+00:11:00,435 --> 00:11:05,275
+the desired therapeutic effect- e- effect is achieved and everything is- is- is well.
+
+205
+00:11:05,275 --> 00:11:07,240
+When a patient takes red pill alone,
+
+206
+00:11:07,240 --> 00:11:10,135
+no side effects are observed and everything is okay.
+
+207
+00:11:10,135 --> 00:11:12,890
+However, when a patient takes blue and red pill together,
+
+208
+00:11:12,890 --> 00:11:14,585
+then with certain probability,
+
+209
+00:11:14,585 --> 00:11:17,785
+the patient would experience side effects,
+
+210
+00:11:17,785 --> 00:11:20,280
+um, uh, when taking that combination of drug.
+
+211
+00:11:20,280 --> 00:11:22,715
+So that is surprising and unexpected
+
+212
+00:11:22,715 --> 00:11:26,300
+because if the two drugs would act completely independently of each other,
+
+213
+00:11:26,300 --> 00:11:28,400
+then you would not expect to see
+
+214
+00:11:28,400 --> 00:11:32,480
+any significant side effects when the two drugs are taken together.
+
+215
+00:11:32,480 --> 00:11:36,035
+So our learning task for- for- for this part of the talk,
+
+216
+00:11:36,035 --> 00:11:38,330
+we will- we- uh, we- is the following.
+
+217
+00:11:38,330 --> 00:11:42,350
+We want to design a model that will be able to predict how
+
+218
+00:11:42,350 --> 00:11:46,250
+likely a particular combination of drugs lead to a particular side effect.
+
+219
+00:11:46,250 --> 00:11:47,900
+So that is the- uh,
+
+220
+00:11:47,900 --> 00:11:50,585
+the- the- the test that you want to solve.
+
+221
+00:11:50,585 --> 00:11:53,660
+Okay, so na- natural question to ask is,
+
+222
+00:11:53,660 --> 00:11:55,475
+now that we know what is our question,
+
+223
+00:11:55,475 --> 00:12:00,530
+is modeling drug combinations and modern drug interactions really a challenging problem?
+
+224
+00:12:00,530 --> 00:12:02,045
+As I answer to that is yes,
+
+225
+00:12:02,045 --> 00:12:03,710
+it's a very challenging problem.
+
+226
+00:12:03,710 --> 00:12:05,105
+Why is it so challenging?
+
+227
+00:12:05,105 --> 00:12:07,715
+First, and that's perhaps the core challenge,
+
+228
+00:12:07,715 --> 00:12:11,870
+is that we can see a combinatorial explosion of possible combinations of drugs.
+
+229
+00:12:11,870 --> 00:12:15,140
+Even if you take only a set of drugs that are approved in
+
+230
+00:12:15,140 --> 00:12:18,605
+the US and we consider only combinations that consists of two drugs,
+
+231
+00:12:18,605 --> 00:12:22,010
+there are over 30 million possible combinations of two drugs.
+
+232
+00:12:22,010 --> 00:12:24,590
+There are over 20 billion possible combinations of
+
+233
+00:12:24,590 --> 00:12:27,905
+three drugs and many more higher other drug interactions.
+
+234
+00:12:27,905 --> 00:12:33,410
+So the implication of that is- that is- is certainly infeasible in po- in- to test,
+
+235
+00:12:33,410 --> 00:12:36,980
+er, safety of those combinations of drugs in the lab,
+
+236
+00:12:36,980 --> 00:12:40,970
+which effectively means that these drugs that are approved by- uh,
+
+237
+00:12:40,970 --> 00:12:43,385
+by FDA and other regulatory agencies,
+
+238
+00:12:43,385 --> 00:12:44,810
+they get to the market,
+
+239
+00:12:44,810 --> 00:12:46,145
+and then patients take them,
+
+240
+00:12:46,145 --> 00:12:47,330
+and then we see what happens.
+
+241
+00:12:47,330 --> 00:12:52,040
+All right. So this is a huge opportunity for computational models to, ah, prioritize,
+
+242
+00:12:52,040 --> 00:12:55,250
+and a priori identify, and flag those combinations of drugs that
+
+243
+00:12:55,250 --> 00:12:58,775
+might be unsafe before they are really used in real patients.
+
+244
+00:12:58,775 --> 00:13:02,495
+The second problem is that, ah, dr- er,
+
+245
+00:13:02,495 --> 00:13:07,220
+un- unexpected drug interactions are by definition, non-linear, non-additive effect.
+
+246
+00:13:07,220 --> 00:13:10,715
+Right? An interaction is defined as an effect that is different
+
+247
+00:13:10,715 --> 00:13:15,140
+from what wou- is an additive effect of individual drugs,
+
+248
+00:13:15,140 --> 00:13:17,390
+which presents its own set of challenges.
+
+249
+00:13:17,390 --> 00:13:19,190
+And finally, you might think of
+
+250
+00:13:19,190 --> 00:13:22,850
+this problem as a kind of big data problem because we'll be working
+
+251
+00:13:22,850 --> 00:13:28,550
+with the set of all drugs in the US and all adverse events associated with those drugs,
+
+252
+00:13:28,550 --> 00:13:31,295
+and there will be millions of those adverse event reports.
+
+253
+00:13:31,295 --> 00:13:34,700
+But very quickly, we get down to the small data problem.
+
+254
+00:13:34,700 --> 00:13:37,040
+Where actually for any particular combination of drug there is
+
+255
+00:13:37,040 --> 00:13:41,525
+just a small subset of patients that take that combination of drugs and,
+
+256
+00:13:41,525 --> 00:13:44,390
+um, there might be actually no information available
+
+257
+00:13:44,390 --> 00:13:47,315
+about those combinations that are not yet used in patients.
+
+258
+00:13:47,315 --> 00:13:49,265
+And so that's another challenge.
+
+259
+00:13:49,265 --> 00:13:52,430
+So to tackle this particular challenge,
+
+260
+00:13:52,430 --> 00:13:55,010
+what I will mention is an approach that is called decagon,
+
+261
+00:13:55,010 --> 00:14:00,920
+that uses- that use graph neural networks to predict safety of combinations of drugs.
+
+262
+00:14:00,920 --> 00:14:02,750
+So decagon was defined on
+
+263
+00:14:02,750 --> 00:14:06,305
+a polypharmacy knowledge graph that had the following structure.
+
+264
+00:14:06,305 --> 00:14:07,775
+It's a graph with, ah,
+
+265
+00:14:07,775 --> 00:14:10,595
+two kinds of entities, drugs and proteins.
+
+266
+00:14:10,595 --> 00:14:12,875
+So in this particular, uh, case, um,
+
+267
+00:14:12,875 --> 00:14:15,455
+drugs are represented by green triangles,
+
+268
+00:14:15,455 --> 00:14:18,620
+an edge between two drugs has a particular type.
+
+269
+00:14:18,620 --> 00:14:21,440
+So an edge of type r_1 between two drugs would
+
+270
+00:14:21,440 --> 00:14:24,800
+indicate that a specific type of interaction,
+
+271
+00:14:24,800 --> 00:14:26,300
+a specific adverse event,
+
+272
+00:14:26,300 --> 00:14:28,940
+r_1 is observed when- uh,
+
+273
+00:14:28,940 --> 00:14:32,150
+in patients that take the two, um, um,
+
+274
+00:14:32,150 --> 00:14:35,030
+drugs, ah, together and their side effects cannot
+
+275
+00:14:35,030 --> 00:14:38,405
+be clearly attributed to either drug alone in that part.
+
+276
+00:14:38,405 --> 00:14:41,240
+Of course, in addition to knowing- um,
+
+277
+00:14:41,240 --> 00:14:44,690
+um, include information about existing interactions between drugs,
+
+278
+00:14:44,690 --> 00:14:47,900
+we want to understand how those drugs actually work in terms
+
+279
+00:14:47,900 --> 00:14:51,260
+of ha- what part of the body they affect,
+
+280
+00:14:51,260 --> 00:14:54,935
+and how the- they change activity of human cells.
+
+281
+00:14:54,935 --> 00:14:57,590
+And so for that, the second mode information in
+
+282
+00:14:57,590 --> 00:15:01,370
+the knowledge graph connects drugs to their protein targets.
+
+283
+00:15:01,370 --> 00:15:05,330
+And that, uh, proteins are represented by, ah, orange circles.
+
+284
+00:15:05,330 --> 00:15:07,100
+And then we know that proteins,
+
+285
+00:15:07,100 --> 00:15:08,705
+ah, interact with each other,
+
+286
+00:15:08,705 --> 00:15:12,875
+which gives rise to this underlying protein-protein interaction network.
+
+287
+00:15:12,875 --> 00:15:18,140
+So given this, ah, um, multimodal, ah,
+
+288
+00:15:18,140 --> 00:15:21,620
+polypharmacy network, the project I would describe it is called Decagon,
+
+289
+00:15:21,620 --> 00:15:24,440
+ah, has, er, two components.
+
+290
+00:15:24,440 --> 00:15:25,985
+And so in the first component,
+
+291
+00:15:25,985 --> 00:15:28,820
+in the encoder phase, it will take the multimodal network,
+
+292
+00:15:28,820 --> 00:15:30,725
+it will learn an embedding, ah,
+
+293
+00:15:30,725 --> 00:15:34,280
+for every drug, and every protein out in that, um,
+
+294
+00:15:34,280 --> 00:15:40,010
+graph, and then it will average those embeddings to predict labeled edges between
+
+295
+00:15:40,010 --> 00:15:42,500
+drug nodes that would correspond to predict
+
+296
+00:15:42,500 --> 00:15:46,130
+its drug interactions or adverse events of combinations of drugs.
+
+297
+00:15:46,130 --> 00:15:50,225
+So let's just, uh, briefly take a look at, ah, that.
+
+298
+00:15:50,225 --> 00:15:53,750
+Um, so the key idea for generating embeddings of
+
+299
+00:15:53,750 --> 00:15:57,650
+drug and protein nodes in- in that- that graph was to,
+
+300
+00:15:57,650 --> 00:16:01,490
+um, explore the local and look at the local network neighborhoods for
+
+301
+00:16:01,490 --> 00:16:05,855
+every node in the graph that are and separates them by distinct edge types.
+
+302
+00:16:05,855 --> 00:16:09,170
+So that is- is achieved to two phases,
+
+303
+00:16:09,170 --> 00:16:11,030
+where in the first phase for every node,
+
+304
+00:16:11,030 --> 00:16:12,710
+say node v, um,
+
+305
+00:16:12,710 --> 00:16:15,725
+we would de- determine a node's computation graph and
+
+306
+00:16:15,725 --> 00:16:19,475
+there would be a separate computation graph for each edge type that- uh,
+
+307
+00:16:19,475 --> 00:16:25,445
+that- that exists in the local neighborhood of that node v. And in the second phase, ah,
+
+308
+00:16:25,445 --> 00:16:29,090
+the idea is to take those computation graphs and learn what is
+
+309
+00:16:29,090 --> 00:16:34,080
+the best way to propagate neural messages along the edges of- um,
+
+310
+00:16:34,080 --> 00:16:38,795
+of computation graphs and trans- and- and then non-linearly transform them.
+
+311
+00:16:38,795 --> 00:16:40,280
+And so in this particular case,
+
+312
+00:16:40,280 --> 00:16:41,900
+we see that for node v,
+
+313
+00:16:41,900 --> 00:16:43,355
+node v has two- uh,
+
+314
+00:16:43,355 --> 00:16:45,875
+two first-order neighbors that are of type r_3,
+
+315
+00:16:45,875 --> 00:16:49,100
+and three second-order neighbors that are of type r_3.
+
+316
+00:16:49,100 --> 00:16:52,235
+So that would be- that would then define
+
+317
+00:16:52,235 --> 00:16:56,840
+a particular computation graph for node v for an edge type r_3 that would,
+
+318
+00:16:56,840 --> 00:17:02,075
+ah, specify how information is propagated along the edges of that edge type.
+
+319
+00:17:02,075 --> 00:17:05,599
+So this gives rise to multirelational graph encoder.
+
+320
+00:17:05,599 --> 00:17:08,194
+And in 2018, when the model was developed,
+
+321
+00:17:08,194 --> 00:17:10,699
+the- the architecture was relatively simple.
+
+322
+00:17:10,700 --> 00:17:12,920
+And- and I'm sure you're very familiar with
+
+323
+00:17:12,920 --> 00:17:15,440
+these kind of architectures by this far in the course.
+
+324
+00:17:15,440 --> 00:17:17,270
+So I'll very briefly describe it.
+
+325
+00:17:17,270 --> 00:17:21,380
+Um, the idea here is that in- er, that in Decagon,
+
+326
+00:17:21,380 --> 00:17:25,984
+node embeddings were initialized by, uh, node features, um,
+
+327
+00:17:25,984 --> 00:17:27,559
+which in the case of,
+
+328
+00:17:27,560 --> 00:17:30,710
+um, polypharmacy problem, were um,
+
+329
+00:17:30,710 --> 00:17:33,230
+features representing additional information about
+
+330
+00:17:33,230 --> 00:17:35,720
+drugs and proteins such as drug structure,
+
+331
+00:17:35,720 --> 00:17:38,315
+and protein memberships in pathways, and so on.
+
+332
+00:17:38,315 --> 00:17:41,045
+So embedding for node v and then at layer,
+
+333
+00:17:41,045 --> 00:17:43,010
+um, 0 was just initial,
+
+334
+00:17:43,010 --> 00:17:44,570
+um, node feature of that node.
+
+335
+00:17:44,570 --> 00:17:45,815
+And then at each layer,
+
+336
+00:17:45,815 --> 00:17:48,575
+um, of- uh, of the GNN,
+
+337
+00:17:48,575 --> 00:17:51,725
+the- the embedding for node v was- was
+
+338
+00:17:51,725 --> 00:17:55,370
+updated based on this particular equation which what it did.
+
+339
+00:17:55,370 --> 00:17:58,835
+It look at all possible edge types that- um, uh,
+
+340
+00:17:58,835 --> 00:18:01,055
+that node v was involved in,
+
+341
+00:18:01,055 --> 00:18:02,450
+and for each na- uh,
+
+342
+00:18:02,450 --> 00:18:05,195
+neighbor of node v in that particular edge type,
+
+343
+00:18:05,195 --> 00:18:07,510
+for each neighbor u, um,
+
+344
+00:18:07,510 --> 00:18:12,260
+the- the method took the embedding of that node u from the previous layer k minus 1,
+
+345
+00:18:12,260 --> 00:18:14,390
+it combined that embedding,
+
+346
+00:18:14,390 --> 00:18:16,265
+um, by- er, by, uh,
+
+347
+00:18:16,265 --> 00:18:18,620
+trainable, ah, weight matrix that was
+
+348
+00:18:18,620 --> 00:18:21,605
+specific for the edge type that you're currently looking at.
+
+349
+00:18:21,605 --> 00:18:24,320
+And so to that aggregated result was that
+
+350
+00:18:24,320 --> 00:18:27,335
+co- was then combined with the embedding for node v
+
+351
+00:18:27,335 --> 00:18:29,810
+from the previous layer and non-linearly
+
+352
+00:18:29,810 --> 00:18:34,140
+transformed to get an updated embedding for node v at layer k.
+
+353
+00:18:34,370 --> 00:18:37,485
+Um, the weights for combining the, uh,
+
+354
+00:18:37,485 --> 00:18:40,440
+the- the embedding, the- each- each, um,
+
+355
+00:18:40,440 --> 00:18:44,070
+each nodes embedding from the previous layer as well as the embeddings of the, uh,
+
+356
+00:18:44,070 --> 00:18:47,040
+neighbors at that point was defined by normalization constant,
+
+357
+00:18:47,040 --> 00:18:49,620
+which was fixed based on the node degrees.
+
+358
+00:18:49,620 --> 00:18:53,235
+Today, what- certainly, we would want to use our attention mechanisms.
+
+359
+00:18:53,235 --> 00:18:55,380
+But this particular equation was then applied,
+
+360
+00:18:55,380 --> 00:18:58,530
+um, some large K times where- where large K,
+
+361
+00:18:58,530 --> 00:19:01,690
+would define the number of layers and the final embedding of the, uh,
+
+362
+00:19:01,690 --> 00:19:04,150
+the node is the embedding after
+
+363
+00:19:04,150 --> 00:19:07,165
+K layers of the neighborhood propagation, uh, aggregation schema.
+
+364
+00:19:07,165 --> 00:19:10,945
+So that is fairly standard multi-relational graph encoder by now.
+
+365
+00:19:10,945 --> 00:19:14,335
+So the- the result of multi- uh, uh, uh,
+
+366
+00:19:14,335 --> 00:19:18,085
+of the graph encoder were embeddings for drug and protein nodes.
+
+367
+00:19:18,085 --> 00:19:22,345
+And so once em- em- embeddings for those nodes were obtained, um,
+
+368
+00:19:22,345 --> 00:19:27,190
+then the edges were- labeled edges between graph nodes were predicted.
+
+369
+00:19:27,190 --> 00:19:29,320
+And for that the input was, uh, was,
+
+370
+00:19:29,320 --> 00:19:31,570
+em- consists of embeddings of two nodes,
+
+371
+00:19:31,570 --> 00:19:34,645
+C and S. Those would be two particular drugs.
+
+372
+00:19:34,645 --> 00:19:37,780
+And so embeddings of those two nodes, C and S,
+
+373
+00:19:37,780 --> 00:19:40,840
+were combined by, um, um,
+
+374
+00:19:40,840 --> 00:19:44,800
+a particular type of- of tensor factorization, um, that,
+
+375
+00:19:44,800 --> 00:19:50,305
+um, was a- a style of the- tensor factorization that took embeddings for,
+
+376
+00:19:50,305 --> 00:19:52,600
+um, a pair of drug nodes, um,
+
+377
+00:19:52,600 --> 00:19:56,125
+and a combined- and multiplied them by,
+
+378
+00:19:56,125 --> 00:19:59,995
+uh, two diagonal matrices that we're relation specific, and essentially,
+
+379
+00:19:59,995 --> 00:20:05,845
+it encoded in a contribution of specific embedding dimensions towards a particular,
+
+380
+00:20:05,845 --> 00:20:08,020
+um, um, side effect.
+
+381
+00:20:08,020 --> 00:20:10,150
+And then, um, a matrix R,
+
+382
+00:20:10,150 --> 00:20:11,860
+which was, uh, a- a small, uh,
+
+383
+00:20:11,860 --> 00:20:15,970
+um, non- a fully non-zero matrix, um, that, um,
+
+384
+00:20:15,970 --> 00:20:19,150
+allow the model to capture any kind of dependencies
+
+385
+00:20:19,150 --> 00:20:22,810
+between any pair of dimensions in the learned embedding. And so the output
+
+386
+00:20:22,810 --> 00:20:25,060
+was then of- of these decoder were- were
+
+387
+00:20:25,060 --> 00:20:30,115
+then predicted edges of their- for every pair- for every particular side effect,
+
+388
+00:20:30,115 --> 00:20:33,880
+um, the model would return the probability that- that- that
+
+389
+00:20:33,880 --> 00:20:38,420
+a given pair of drugs would interact through that particular side effect.
+
+390
+00:20:39,300 --> 00:20:44,920
+Okay. So in order to then apply this model to the polypharmacy knowledge graph,
+
+391
+00:20:44,920 --> 00:20:48,340
+then the first thing to do is to construct the actual polypharmacy knowledge graph.
+
+392
+00:20:48,340 --> 00:20:51,580
+So the data that was used to do so was captured
+
+393
+00:20:51,580 --> 00:20:55,405
+molecular drug and patient data across all drugs prescribed to the US.
+
+394
+00:20:55,405 --> 00:20:59,365
+And for that, a unique dataset was built that consisted of,
+
+395
+00:20:59,365 --> 00:21:02,305
+um, over 4 million drug-drug edges.
+
+396
+00:21:02,305 --> 00:21:06,100
+Those are currently known interactions between pairs and drugs that was,
+
+397
+00:21:06,100 --> 00:21:08,155
+uh, that were retrieved from the FDA.
+
+398
+00:21:08,155 --> 00:21:13,480
+Information on drug-protein edges and information protein-protein edges,
+
+399
+00:21:13,480 --> 00:21:15,445
+as well as site features on nodes.
+
+400
+00:21:15,445 --> 00:21:20,695
+So that gave rise exactly to this multimodal knowledge graph that we have seen earlier,
+
+401
+00:21:20,695 --> 00:21:22,330
+which had over, um,
+
+402
+00:21:22,330 --> 00:21:25,570
+around 5 million edges all together,
+
+403
+00:21:25,570 --> 00:21:27,640
+and it was highly multi-relational as there
+
+404
+00:21:27,640 --> 00:21:32,515
+were 1,000 different edge types in that, um, graph.
+
+405
+00:21:32,515 --> 00:21:35,650
+One is the model where the dataset was constructed,
+
+406
+00:21:35,650 --> 00:21:38,800
+um, and, um, Decagon was fully specified.
+
+407
+00:21:38,800 --> 00:21:41,290
+Then, um, the Decagon, uh, uh,
+
+408
+00:21:41,290 --> 00:21:44,170
+model was trained on the polypharmacy, um,
+
+409
+00:21:44,170 --> 00:21:46,720
+knowledge graph in an effort to answer
+
+410
+00:21:46,720 --> 00:21:49,945
+questions of the following form so the users could then pose,
+
+411
+00:21:49,945 --> 00:21:51,940
+uh, a query, uh, for example,
+
+412
+00:21:51,940 --> 00:21:56,590
+whether a form of statin and ciprofloxacin where- which are two drug,
+
+413
+00:21:56,590 --> 00:22:00,130
+when they come together would they lead to breakdown of muscle tissue?
+
+414
+00:22:00,130 --> 00:22:02,680
+That effect should effectively meant that in the backend,
+
+415
+00:22:02,680 --> 00:22:06,355
+that the model was asked with predicting the probability that, uh,
+
+416
+00:22:06,355 --> 00:22:08,155
+these two drugs, um,
+
+417
+00:22:08,155 --> 00:22:12,340
+are connected in the graph by an edge of type r_2,
+
+418
+00:22:12,340 --> 00:22:15,820
+if r_2 would indicate breakdown of muscle tissue.
+
+419
+00:22:15,820 --> 00:22:18,610
+So, um, once the model was trained,
+
+420
+00:22:18,610 --> 00:22:20,305
+it was compared against, uh,
+
+421
+00:22:20,305 --> 00:22:24,130
+several baselines, uh, baseline algorithms at that point in time.
+
+422
+00:22:24,130 --> 00:22:26,335
+So these see- the results are shown in the slide,
+
+423
+00:22:26,335 --> 00:22:29,440
+where in the- on the y-axis we see performance,
+
+424
+00:22:29,440 --> 00:22:32,350
+high performer- higher values indicate better performance as
+
+425
+00:22:32,350 --> 00:22:35,905
+me-measured by AUROC and average precision at top 50.
+
+426
+00:22:35,905 --> 00:22:39,445
+And, uh, the performance of Decagon model is shown who read
+
+427
+00:22:39,445 --> 00:22:43,075
+performance of- of- other baselines,
+
+428
+00:22:43,075 --> 00:22:45,325
+um, is, uh, is shown in,
+
+429
+00:22:45,325 --> 00:22:47,530
+um, uh, brown, blue, and green colors.
+
+430
+00:22:47,530 --> 00:22:50,605
+So the particular baselines that we'll consider here was, uh,
+
+431
+00:22:50,605 --> 00:22:52,750
+a simple RESCAL tensor factorization,
+
+432
+00:22:52,750 --> 00:22:54,715
+which can be thought of as Decagon,
+
+433
+00:22:54,715 --> 00:22:56,965
+that does not use the deep graph encoder.
+
+434
+00:22:56,965 --> 00:22:59,950
+And so that test- that test has shown that it's really
+
+435
+00:22:59,950 --> 00:23:03,715
+important to use graph convolutions to learn powerful embeddings.
+
+436
+00:23:03,715 --> 00:23:07,840
+So then Decagon was compared to a multi-relational factorization,
+
+437
+00:23:07,840 --> 00:23:11,045
+which is as, uh, which, um, um,
+
+438
+00:23:11,045 --> 00:23:13,650
+any- the- the relative improvement of Decagon
+
+439
+00:23:13,650 --> 00:23:16,230
+over that factorization showed that it's- it's really
+
+440
+00:23:16,230 --> 00:23:19,005
+important to be able to model side effects jointly
+
+441
+00:23:19,005 --> 00:23:22,230
+because there are some correlations between side effects.
+
+442
+00:23:22,230 --> 00:23:24,360
+And- and finally, then, uh,
+
+443
+00:23:24,360 --> 00:23:27,225
+Decagon was compared to a shallow network embedding model, um,
+
+444
+00:23:27,225 --> 00:23:30,555
+embedding model which was a node2vec style model.
+
+445
+00:23:30,555 --> 00:23:33,240
+Um, and the improvement there showed that, um,
+
+446
+00:23:33,240 --> 00:23:36,630
+the- the- the new- the message passing network is- is
+
+447
+00:23:36,630 --> 00:23:40,500
+much better in- in terms of performance in this particular application,
+
+448
+00:23:40,500 --> 00:23:42,540
+uh, than, uh, some of the random walk,
+
+449
+00:23:42,540 --> 00:23:44,685
+uh, based, uh, embeddings at the time.
+
+450
+00:23:44,685 --> 00:23:47,880
+So another test that was done was to,
+
+451
+00:23:47,880 --> 00:23:51,225
+um, do, um, apply Decagon in a temporal fashion.
+
+452
+00:23:51,225 --> 00:23:55,845
+Meaning, the Decagon was trained on all the data generated prior to 2012.
+
+453
+00:23:55,845 --> 00:24:01,400
+And then, uh, the model was frozen and it was asked to make predictions,
+
+454
+00:24:01,400 --> 00:24:05,440
+um, that the model is most confident about. And we then test that,
+
+455
+00:24:05,440 --> 00:24:09,235
+well, how many of those prediction have been confirmed after 2012?
+
+456
+00:24:09,235 --> 00:24:13,495
+So what is shown in this particular slide is our top 10 predictions made by the model,
+
+457
+00:24:13,495 --> 00:24:14,665
+and so we- we recorded.
+
+458
+00:24:14,665 --> 00:24:17,170
+Each prediction comes in the form of a pair of drugs and
+
+459
+00:24:17,170 --> 00:24:20,095
+the side effects associated with that pair of drugs.
+
+460
+00:24:20,095 --> 00:24:22,810
+And so for five out of those top ten predictions,
+
+461
+00:24:22,810 --> 00:24:24,580
+direct evidence was found,
+
+462
+00:24:24,580 --> 00:24:27,190
+published after 2012, um,
+
+463
+00:24:27,190 --> 00:24:32,050
+showing that- it- showing examples of real patients who were on
+
+464
+00:24:32,050 --> 00:24:34,915
+a particular combination of drugs and have experienced
+
+465
+00:24:34,915 --> 00:24:38,395
+the kind of side effect the data has actually predicted would happen.
+
+466
+00:24:38,395 --> 00:24:39,760
+So for example, for drug,
+
+467
+00:24:39,760 --> 00:24:41,485
+uh, prediction number 8,
+
+468
+00:24:41,485 --> 00:24:45,880
+the- there- there are several reports of- of patients who took,
+
+469
+00:24:45,880 --> 00:24:50,034
+a statin and amlodipine together and experienced muscle inflammation.
+
+470
+00:24:50,034 --> 00:24:53,770
+And those reports were made after 2012 and- which
+
+471
+00:24:53,770 --> 00:24:57,940
+is- which provides evidence for- for- for prediction made by the model.
+
+472
+00:24:57,940 --> 00:25:00,190
+Some of the novel predictions in this space are
+
+473
+00:25:00,190 --> 00:25:03,970
+novel hypotheses that can- that warrant further analysis and- and
+
+474
+00:25:03,970 --> 00:25:07,300
+downstream investigations in several collaborations with
+
+475
+00:25:07,300 --> 00:25:09,010
+domain experts who are in- working
+
+476
+00:25:09,010 --> 00:25:12,355
+these disease and drug areas that has actually been done.
+
+477
+00:25:12,355 --> 00:25:15,385
+Um, and- and, uh, a re- more recent follow-up, um,
+
+478
+00:25:15,385 --> 00:25:18,790
+on the Decagon study is concerned with modeling
+
+479
+00:25:18,790 --> 00:25:22,660
+adverse events at the level of patient groups in an effort to
+
+480
+00:25:22,660 --> 00:25:26,260
+make predictions about what are adverse events that might be
+
+481
+00:25:26,260 --> 00:25:30,460
+associated with certain group of individuals.
+
+482
+00:25:30,460 --> 00:25:33,295
+There were- those groups can be defined by age,
+
+483
+00:25:33,295 --> 00:25:37,630
+by gender, or by individuals that have certain kinds of certain diseases.
+
+484
+00:25:37,630 --> 00:25:41,515
+And so, um, what- what- I'm mentioning this because, um,
+
+485
+00:25:41,515 --> 00:25:43,150
+the data is already, um,
+
+486
+00:25:43,150 --> 00:25:45,820
+preprocessed and provided to the study, um,
+
+487
+00:25:45,820 --> 00:25:48,490
+and- and so those who are interested in potentially leveraging
+
+488
+00:25:48,490 --> 00:25:52,240
+GNNs for doing more personalized level adverse event prediction,
+
+489
+00:25:52,240 --> 00:25:55,645
+which is certainly something that can- that is possible now to do with
+
+490
+00:25:55,645 --> 00:25:59,920
+this dataset that contains over 10 million ad- adverse event reports.
+
+491
+00:25:59,920 --> 00:26:02,980
+Okay. So [NOISE] this concludes my- my first, um,
+
+492
+00:26:02,980 --> 00:26:06,460
+vignette or first pa- topic- a large topic for today.
+
+493
+00:26:06,460 --> 00:26:09,325
+And the next topic, we'll- we'll change the gears,
+
+494
+00:26:09,325 --> 00:26:13,645
+and we will move away from predicting safety of drugs.
+
+495
+00:26:13,645 --> 00:26:15,655
+Instead, now we will, um,
+
+496
+00:26:15,655 --> 00:26:19,015
+we will think about diagnosing patients,
+
+497
+00:26:19,015 --> 00:26:21,865
+which is important crucial question that, uh,
+
+498
+00:26:21,865 --> 00:26:24,790
+first need to be answered before any drugs can be actually- or
+
+499
+00:26:24,790 --> 00:26:29,275
+treatments can be actually identified and recommended to the patient.
+
+500
+00:26:29,275 --> 00:26:33,925
+So let me start with the motivation of disease diagnosis.
+
+501
+00:26:33,925 --> 00:26:38,500
+Uh, so, um, the core information for disease,
+
+502
+00:26:38,500 --> 00:26:40,510
+uh, uh, for diagnosing the disease,
+
+503
+00:26:40,510 --> 00:26:42,955
+broadly speaking, is the information about
+
+504
+00:26:42,955 --> 00:26:47,080
+phenotypes that are seen and observed in a particular patient.
+
+505
+00:26:47,080 --> 00:26:52,705
+So phenotypes can be defined as some observable characteristics that,
+
+506
+00:26:52,705 --> 00:26:54,865
+uh, that um, can be seen,
+
+507
+00:26:54,865 --> 00:26:56,620
+er, uh, in- in a patient,
+
+508
+00:26:56,620 --> 00:26:59,680
+and they result from various interactions between
+
+509
+00:26:59,680 --> 00:27:04,060
+the genotype and the genomic information within the patient as well as, um,
+
+510
+00:27:04,060 --> 00:27:08,440
+environment in which the patient lives. So physicians typically utilize, uh,
+
+511
+00:27:08,440 --> 00:27:13,225
+various standardized vocabularies of phenotypes to describe human diseases.
+
+512
+00:27:13,225 --> 00:27:17,860
+For example, a very prominent standardized voca- vocabulary phenotypes
+
+513
+00:27:17,860 --> 00:27:21,290
+is known hu- as human phenotype, uh, um, ontology.
+
+514
+00:27:22,440 --> 00:27:26,020
+And, um, that codifies there- uh,
+
+515
+00:27:26,020 --> 00:27:29,680
+a variety of different phenotypes and how they map to human diseases.
+
+516
+00:27:29,680 --> 00:27:33,205
+So by mo- by- by modeling diseases then as collections
+
+517
+00:27:33,205 --> 00:27:36,595
+of phenotypes or- or that represent the disease,
+
+518
+00:27:36,595 --> 00:27:41,575
+we can then diagnose patients based on what are the phenotypes that they have,
+
+519
+00:27:41,575 --> 00:27:44,635
+based on what are the symptoms that those patients would have.
+
+520
+00:27:44,635 --> 00:27:46,390
+So in machine learning,
+
+521
+00:27:46,390 --> 00:27:50,395
+we can define the diagnosis task then in the following manner.
+
+522
+00:27:50,395 --> 00:27:52,270
+Uh, we will start with a graph.
+
+523
+00:27:52,270 --> 00:27:54,610
+Consi- consider for- in this particular example,
+
+524
+00:27:54,610 --> 00:27:57,910
+a graph that is built from the standardized vocabulary phenotypes.
+
+525
+00:27:57,910 --> 00:28:01,960
+That would be a graph where nodes are phenotypes that- those might be
+
+526
+00:28:01,960 --> 00:28:06,790
+visible symptoms as well as various phenotypes of the molecular or genomic level.
+
+527
+00:28:06,790 --> 00:28:09,370
+And edges between those phenotypic nodes would
+
+528
+00:28:09,370 --> 00:28:12,610
+indicate different kinds of relationships between phenotypes.
+
+529
+00:28:12,610 --> 00:28:14,875
+We can then- in- in- in that setting,
+
+530
+00:28:14,875 --> 00:28:17,620
+the disease would then be represented as a set of nodes or
+
+531
+00:28:17,620 --> 00:28:21,265
+a subgraph in that, uh, phenotypic network.
+
+532
+00:28:21,265 --> 00:28:24,760
+So the learning task would then be the diagnosis test,
+
+533
+00:28:24,760 --> 00:28:28,255
+is then concerned with- with predicting the, uh,
+
+534
+00:28:28,255 --> 00:28:32,460
+the label or predicting the disease that is most consistent with,
+
+535
+00:28:32,460 --> 00:28:35,985
+uh, a particular subgraph S that describes the patient.
+
+536
+00:28:35,985 --> 00:28:38,820
+So you can think of now that patients are
+
+537
+00:28:38,820 --> 00:28:42,255
+these different subgraphs of phenotypes the patients have,
+
+538
+00:28:42,255 --> 00:28:45,420
+and the goal is to predict labels,
+
+539
+00:28:45,420 --> 00:28:48,345
+which in this particular case are colors of the subgraphs,
+
+540
+00:28:48,345 --> 00:28:51,195
+and those labels are the diseases that, uh,
+
+541
+00:28:51,195 --> 00:28:52,710
+the- that- that are, uh,
+
+542
+00:28:52,710 --> 00:28:55,610
+candidate diseases patients might have.
+
+543
+00:28:55,610 --> 00:29:00,085
+Okay. So, if- given this formulation, uh, let's, uh,
+
+544
+00:29:00,085 --> 00:29:02,950
+let's discuss the algorithm for this problem a bit
+
+545
+00:29:02,950 --> 00:29:06,220
+and then we will return back to the data in the diagnosis task.
+
+546
+00:29:06,220 --> 00:29:08,905
+So in the context of graph neural network,
+
+547
+00:29:08,905 --> 00:29:10,795
+our problem formulation is the following.
+
+548
+00:29:10,795 --> 00:29:16,270
+The goal here will be actually to learn embeddings for subgraphs such that,
+
+549
+00:29:16,270 --> 00:29:18,565
+uh, uh, those embeddings for,
+
+550
+00:29:18,565 --> 00:29:20,110
+uh, the- the- for subgraphs that are learned,
+
+551
+00:29:20,110 --> 00:29:22,675
+we capture well, uh, the topology of
+
+552
+00:29:22,675 --> 00:29:25,960
+interactions between nodes as well as where they are,
+
+553
+00:29:25,960 --> 00:29:28,075
+where they exist in the context of,
+
+554
+00:29:28,075 --> 00:29:29,500
+um, the underlying graph.
+
+555
+00:29:29,500 --> 00:29:31,345
+So that means that,
+
+556
+00:29:31,345 --> 00:29:33,700
+um, that the input, um,
+
+557
+00:29:33,700 --> 00:29:37,090
+which then consists of the- some underlying graph G and a
+
+558
+00:29:37,090 --> 00:29:40,615
+large number of subgraphs that have labels,
+
+559
+00:29:40,615 --> 00:29:45,415
+and the goal is to learn subgraph embedding such that two subgraphs is a pioneer Sub_j,
+
+560
+00:29:45,415 --> 00:29:47,380
+that have similar subgraph topology,
+
+561
+00:29:47,380 --> 00:29:49,360
+and I will define next what that means.
+
+562
+00:29:49,360 --> 00:29:52,570
+They should be embedded close together in the embedding space,
+
+563
+00:29:52,570 --> 00:29:58,030
+so representing by nearby points in the embedding space that you want to learn.
+
+564
+00:29:58,030 --> 00:30:00,730
+So why are subgraphs challenging?
+
+565
+00:30:00,730 --> 00:30:02,110
+So why can we, for example,
+
+566
+00:30:02,110 --> 00:30:04,945
+just take our favorite node level embedder,
+
+567
+00:30:04,945 --> 00:30:08,785
+and by now, I'm sure you have heard of many node level embedders in the course,
+
+568
+00:30:08,785 --> 00:30:11,410
+and essentially, just learned node embeddings and- and
+
+569
+00:30:11,410 --> 00:30:14,200
+taken every- of those node embeddings or somehow,
+
+570
+00:30:14,200 --> 00:30:17,965
+um, aggregate those node embeddings to arrive at a subgraph embedding.
+
+571
+00:30:17,965 --> 00:30:23,545
+So there are several reasons why we- we might lose a lot of information if you do so.
+
+572
+00:30:23,545 --> 00:30:25,405
+So one of them is that, um,
+
+573
+00:30:25,405 --> 00:30:28,345
+the subgraphs that we would encounter in the diagnosis task,
+
+574
+00:30:28,345 --> 00:30:30,670
+um, are subgraphs of varying sizes.
+
+575
+00:30:30,670 --> 00:30:32,890
+And, um, then the question is really,
+
+576
+00:30:32,890 --> 00:30:35,545
+how to represent those subgraphs effectively that are not
+
+577
+00:30:35,545 --> 00:30:40,420
+simple k-hop neighborhoods around a sing- a- a single center node.
+
+578
+00:30:40,420 --> 00:30:45,025
+Second, subgraphs could- could- would have reached connectivity structures both
+
+579
+00:30:45,025 --> 00:30:49,690
+internally as well as externally to interactions with the rest of the graph.
+
+580
+00:30:49,690 --> 00:30:53,410
+So how can you inject that information into our GNNs?
+
+581
+00:30:53,410 --> 00:30:56,860
+And finally, subgraphs that are given by,
+
+582
+00:30:56,860 --> 00:30:58,450
+uh, sets of, uh,
+
+583
+00:30:58,450 --> 00:31:01,465
+phenotypes for patients can be localized
+
+584
+00:31:01,465 --> 00:31:04,450
+in the sense that they would reside in a single region,
+
+585
+00:31:04,450 --> 00:31:06,595
+in a single large neighborhood of the graph,
+
+586
+00:31:06,595 --> 00:31:10,420
+such as this hypothetical example where the subgraph is
+
+587
+00:31:10,420 --> 00:31:14,455
+indicated by this red blob that is core to the center of core of the graph,
+
+588
+00:31:14,455 --> 00:31:18,880
+or subgraphs may be distributed across many multiple local neighborhoods.
+
+589
+00:31:18,880 --> 00:31:21,520
+And so, um, then, uh,
+
+590
+00:31:21,520 --> 00:31:25,105
+a simple averaging of node embeddings might not be an effective strategy.
+
+591
+00:31:25,105 --> 00:31:27,010
+So to tackle this problem, uh,
+
+592
+00:31:27,010 --> 00:31:30,145
+what was developed was a subgraph neural network model.
+
+593
+00:31:30,145 --> 00:31:34,765
+And so the problem that subgraph neural network is solving is the following.
+
+594
+00:31:34,765 --> 00:31:38,395
+It assumes that given are some set of subgraphs S,
+
+595
+00:31:38,395 --> 00:31:39,850
+the set has an, uh,
+
+596
+00:31:39,850 --> 00:31:42,520
+n subgraphs, S_1, S_2 up to S_n.
+
+597
+00:31:42,520 --> 00:31:47,050
+SubGNN specifies then a neural message passing architecture that will generate,
+
+598
+00:31:47,050 --> 00:31:53,455
+um, D then- Dsub as dimensional subgraph representation for every subgraph in that set.
+
+599
+00:31:53,455 --> 00:31:58,240
+And would- they'll use those representations to learn a subgraph level classifier.
+
+600
+00:31:58,240 --> 00:32:04,450
+So a function that will then map those subgraphs to some number of discrete labels.
+
+601
+00:32:04,450 --> 00:32:08,440
+And the way it will do so is by really
+
+602
+00:32:08,440 --> 00:32:12,490
+taking into account different kinds of subgraph topology, in particular,
+
+603
+00:32:12,490 --> 00:32:15,685
+the- the parts of subgraph topology to- to- you're interested in,
+
+604
+00:32:15,685 --> 00:32:21,940
+is related to capturing the connectivity within the immediate local neighborhood of, uh,
+
+605
+00:32:21,940 --> 00:32:23,500
+each subgraph, both, uh,
+
+606
+00:32:23,500 --> 00:32:26,440
+the internal in- in- with- within a subgraph as
+
+607
+00:32:26,440 --> 00:32:29,785
+well as at the border of the subgraph in the, uh, um,
+
+608
+00:32:29,785 --> 00:32:33,610
+the graph G. The information about the structure of the subgraph in
+
+609
+00:32:33,610 --> 00:32:37,945
+the sense of other certain motifs that are over or underrepresented in a subgraph,
+
+610
+00:32:37,945 --> 00:32:44,280
+as well as where is that subgraph located relative to the graph G in- in- in which,
+
+611
+00:32:44,280 --> 00:32:46,440
+uh, it, uh, it exists.
+
+612
+00:32:46,440 --> 00:32:51,670
+So a- as a quick note on problem formulation that I want to- to give
+
+613
+00:32:51,670 --> 00:32:57,520
+here is that SubGNN puts forward a definition of subgraph prediction learning task.
+
+614
+00:32:57,520 --> 00:33:02,380
+Um, this is different from other canonical tasks on graphs that are primarily
+
+615
+00:33:02,380 --> 00:33:05,320
+concerned with a node level predictions
+
+616
+00:33:05,320 --> 00:33:08,320
+and representations where the goal is to predict properties,
+
+617
+00:33:08,320 --> 00:33:11,125
+um, from- of an individual node in the graph,
+
+618
+00:33:11,125 --> 00:33:15,745
+or link prediction which is concerned with predicting properties of a pair of nodes,
+
+619
+00:33:15,745 --> 00:33:17,200
+or graph level prediction,
+
+620
+00:33:17,200 --> 00:33:19,960
+which is concerned with predicting properties of entire graphs.
+
+621
+00:33:19,960 --> 00:33:26,410
+So SubGNN is concerned with predicting properties of subgraphs of non-trivial size,
+
+622
+00:33:26,410 --> 00:33:30,100
+meaning, not subgraphs of size just 2, which would correspond on edge.
+
+623
+00:33:30,100 --> 00:33:33,985
+The way this is done is that SubGNN consists of two parts.
+
+624
+00:33:33,985 --> 00:33:36,070
+So the first important part is, uh,
+
+625
+00:33:36,070 --> 00:33:39,295
+message passing scheme that is hierarchical in nature,
+
+626
+00:33:39,295 --> 00:33:43,960
+and it specifies the way neural messages are propagated from anchor patches,
+
+627
+00:33:43,960 --> 00:33:49,030
+which are helper graphs sampled from G to subgraphs S that, uh,
+
+628
+00:33:49,030 --> 00:33:53,275
+we want to embed, and how those messages are then embedded- um,
+
+629
+00:33:53,275 --> 00:33:56,425
+aggregated to arrive at the final subgraph embedding.
+
+630
+00:33:56,425 --> 00:33:59,440
+And in part 3 the- uh, in part 2,
+
+631
+00:33:59,440 --> 00:34:02,950
+that routing of messages is really down to three distinct channels where
+
+632
+00:34:02,950 --> 00:34:07,134
+each channel corresponds to a part- distinct aspect of subgraph topology,
+
+633
+00:34:07,134 --> 00:34:10,014
+position, neighborhood, and structure if you want to capture.
+
+634
+00:34:10,014 --> 00:34:11,769
+Uh, very blief- briefly,
+
+635
+00:34:11,770 --> 00:34:13,870
+let me describe these two parts.
+
+636
+00:34:13,870 --> 00:34:16,014
+So the subgraph message passing, uh,
+
+637
+00:34:16,014 --> 00:34:18,864
+scheme is- has the following structure.
+
+638
+00:34:18,864 --> 00:34:21,729
+Um, there are, um, um,
+
+639
+00:34:21,730 --> 00:34:24,040
+neural messages s- specified to
+
+640
+00:34:24,040 --> 00:34:27,833
+those messages are specific for each of the three properties.
+
+641
+00:34:27,833 --> 00:34:29,739
+So they're denoted in sub x,
+
+642
+00:34:29,739 --> 00:34:35,439
+and those messages are propagated from anchor patches to subgraph components.
+
+643
+00:34:35,440 --> 00:34:38,230
+Anchor patches are just helper subgraphs that are
+
+644
+00:34:38,230 --> 00:34:41,590
+sampled randomly from the underlying graph G,
+
+645
+00:34:41,590 --> 00:34:46,150
+and there are three different kinds of patches depending of the- of the- to capture for,
+
+646
+00:34:46,150 --> 00:34:49,014
+uh, to capture position, neighborhood, and structure.
+
+647
+00:34:49,014 --> 00:34:54,159
+So, um, then the- the- the message passing
+
+648
+00:34:54,159 --> 00:34:59,305
+is then formulated as the message from this anchor patch A to subgraphs S,
+
+649
+00:34:59,305 --> 00:35:03,520
+um, is, uh, is sent and it's scored based on its weight.
+
+650
+00:35:03,520 --> 00:35:07,810
+Its contribution is weighted by similarity function between a subgraph component in
+
+651
+00:35:07,810 --> 00:35:10,690
+an anchor patch that- that- that represents a weight
+
+652
+00:35:10,690 --> 00:35:14,170
+of how much an embedding of the anchor patch will,
+
+653
+00:35:14,170 --> 00:35:16,765
+uh, contribute to embedding of the subgraph.
+
+654
+00:35:16,765 --> 00:35:20,590
+So this is visually shown here in the right part of the slide where the-
+
+655
+00:35:20,590 --> 00:35:25,510
+the subgraph that- that is part of the data that you want to embed is S_1.
+
+656
+00:35:25,510 --> 00:35:28,660
+This subgraph actually has two disconnected components.
+
+657
+00:35:28,660 --> 00:35:30,670
+It- one is here, um, um,
+
+658
+00:35:30,670 --> 00:35:33,805
+on the left part and the right part of the, uh, the-
+
+659
+00:35:33,805 --> 00:35:35,290
+the right, uh, uh,
+
+660
+00:35:35,290 --> 00:35:36,505
+extreme of the graph,
+
+661
+00:35:36,505 --> 00:35:38,515
+and in the message passing phase, uh,
+
+662
+00:35:38,515 --> 00:35:40,630
+those helper patches- um,
+
+663
+00:35:40,630 --> 00:35:42,040
+anchor patches which are in gray,
+
+664
+00:35:42,040 --> 00:35:44,980
+send their messages to the subgraph component.
+
+665
+00:35:44,980 --> 00:35:50,060
+Those set of messages that are received at the subgraph component are aggregated,
+
+666
+00:35:50,060 --> 00:35:53,715
+and then the- the aggregated message of
+
+667
+00:35:53,715 --> 00:35:57,420
+the subgraph component is combined with its previous components- uh,
+
+668
+00:35:57,420 --> 00:36:00,285
+with its previous embedding to get
+
+669
+00:36:00,285 --> 00:36:04,395
+a property specific representation of, uh, subgraph component.
+
+670
+00:36:04,395 --> 00:36:08,280
+So H_x c is then an embedding for,
+
+671
+00:36:08,280 --> 00:36:10,200
+um, subgraph component c,
+
+672
+00:36:10,200 --> 00:36:14,175
+so it could be just for this fir- one component of the subgraph S_1, ah,
+
+673
+00:36:14,175 --> 00:36:17,520
+that captures the aspect x,
+
+674
+00:36:17,520 --> 00:36:20,090
+which can be position, neighborhood, or structure.
+
+675
+00:36:20,090 --> 00:36:22,540
+So the way this message passing is done,
+
+676
+00:36:22,540 --> 00:36:24,565
+is done in three separate channels.
+
+677
+00:36:24,565 --> 00:36:28,135
+And each channel, it describes, um, a particular- uh,
+
+678
+00:36:28,135 --> 00:36:31,029
+it's designed to capture one aspect of topology,
+
+679
+00:36:31,029 --> 00:36:32,950
+position, neighborhood, and structure.
+
+680
+00:36:32,950 --> 00:36:35,635
+Each channel x has three key co- elements.
+
+681
+00:36:35,635 --> 00:36:39,130
+Those elements are similarity function that weighs,
+
+682
+00:36:39,130 --> 00:36:43,555
+um, messages exchange between anchor patches and subgraph components.
+
+683
+00:36:43,555 --> 00:36:47,755
+Then a sa- uh, an anchor patch sampling function that specifies how
+
+684
+00:36:47,755 --> 00:36:50,350
+these helper patches need to
+
+685
+00:36:50,350 --> 00:36:54,280
+be sampled from the underlying graph in order to capture,
+
+686
+00:36:54,280 --> 00:36:56,560
+um, neighborhood or see- and- and capture
+
+687
+00:36:56,560 --> 00:36:59,440
+diverse neighborhoods and diverse structure and diverse positions.
+
+688
+00:36:59,440 --> 00:37:02,125
+And finally, how to encode those anchor patches,
+
+689
+00:37:02,125 --> 00:37:05,350
+and these functions can be learned or predefined.
+
+690
+00:37:05,350 --> 00:37:07,465
+And so the recap of that,
+
+691
+00:37:07,465 --> 00:37:10,285
+is that we can think of this problem as, um, uh,
+
+692
+00:37:10,285 --> 00:37:15,520
+as the- as the problem of learning subgraph representations as, um, uh,
+
+693
+00:37:15,520 --> 00:37:18,715
+as- as a message passing network that has three distinct channels,
+
+694
+00:37:18,715 --> 00:37:21,025
+and those channels output, um,
+
+695
+00:37:21,025 --> 00:37:26,260
+channel specific embeddings that are then aggregated to produce
+
+696
+00:37:26,260 --> 00:37:29,845
+a final subgraph representation Z_s for subgraph
+
+697
+00:37:29,845 --> 00:37:35,365
+S. So let's now return to our problem of, uh, disease diagnosis.
+
+698
+00:37:35,365 --> 00:37:37,540
+And the first thing we will do, we will, uh,
+
+699
+00:37:37,540 --> 00:37:42,085
+ask- we will- we will test whether that method works on
+
+700
+00:37:42,085 --> 00:37:45,130
+some simulated synthetic datasets to really see whether
+
+701
+00:37:45,130 --> 00:37:49,255
+the method can truly captured the distinct aspects of subgraph topology.
+
+702
+00:37:49,255 --> 00:37:51,580
+And the set up for that was the following.
+
+703
+00:37:51,580 --> 00:37:57,295
+In each case, each dataset started with the base graph, um,
+
+704
+00:37:57,295 --> 00:38:00,040
+and base graph was then, um,
+
+705
+00:38:00,040 --> 00:38:03,430
+sprinkled, um, with a large number of subgraphs.
+
+706
+00:38:03,430 --> 00:38:05,425
+There were two strategies to define subgraphs,
+
+707
+00:38:05,425 --> 00:38:07,495
+either to- one strategy was- uh,
+
+708
+00:38:07,495 --> 00:38:10,450
+was the planting strategy where a subgraph was generated
+
+709
+00:38:10,450 --> 00:38:13,855
+and it was planted on top of the base graph,
+
+710
+00:38:13,855 --> 00:38:17,455
+or it would be essential- essentially just joined in the form of- uh,
+
+711
+00:38:17,455 --> 00:38:20,650
+in similar way as it would be stable together with the base graph.
+
+712
+00:38:20,650 --> 00:38:22,570
+In this particular subgraph- er,
+
+713
+00:38:22,570 --> 00:38:25,030
+in this particular synthetical datasets,
+
+714
+00:38:25,030 --> 00:38:26,575
+each sub- for each subgraph,
+
+715
+00:38:26,575 --> 00:38:27,850
+a label was defined.
+
+716
+00:38:27,850 --> 00:38:30,100
+And so labels were defined based on
+
+717
+00:38:30,100 --> 00:38:33,430
+certain network structural properties of those subgraphs.
+
+718
+00:38:33,430 --> 00:38:36,865
+So one particular synthetic dataset was called density,
+
+719
+00:38:36,865 --> 00:38:39,460
+where- that was a dataset where, um,
+
+720
+00:38:39,460 --> 00:38:42,220
+that consists of the underlying base graph
+
+721
+00:38:42,220 --> 00:38:44,965
+with the- and then a large number of subgraphs,
+
+722
+00:38:44,965 --> 00:38:50,920
+the labels of those subgraphs were binned values of density network, density metric.
+
+723
+00:38:50,920 --> 00:38:53,815
+And similar datasets were constructed for- that, uh,
+
+724
+00:38:53,815 --> 00:38:57,700
+based on- on cut ratio metric, coreness, and component.
+
+725
+00:38:57,700 --> 00:38:59,275
+Why would you want to do that?
+
+726
+00:38:59,275 --> 00:39:02,859
+The idea was to do that to test whether
+
+727
+00:39:02,859 --> 00:39:06,370
+really the most informative channels for certain types of
+
+728
+00:39:06,370 --> 00:39:10,030
+labels are those channels that really truly determine the label.
+
+729
+00:39:10,030 --> 00:39:14,005
+So this is really a controlled environment of testing performance of the model.
+
+730
+00:39:14,005 --> 00:39:19,900
+And so- thus results show that SubGNN is an effective strategy for
+
+731
+00:39:19,900 --> 00:39:22,300
+learning subgraph embeddings that outperforms
+
+732
+00:39:22,300 --> 00:39:25,750
+various simple adhoc measures that one could think of.
+
+733
+00:39:25,750 --> 00:39:29,320
+For example, um, taking a simple average of
+
+734
+00:39:29,320 --> 00:39:33,520
+node embeddings at- and- and obtain subgrapgh embeddings in this way,
+
+735
+00:39:33,520 --> 00:39:38,125
+or introduce a meta artificial note and then embed those meta nodes
+
+736
+00:39:38,125 --> 00:39:43,615
+that could serve as proxies for subgraph embeddings or even doing graph level embeddings.
+
+737
+00:39:43,615 --> 00:39:46,900
+Finally, this- these results also showed that the SubGNN can
+
+738
+00:39:46,900 --> 00:39:49,915
+capture well different aspects of subgraph topology.
+
+739
+00:39:49,915 --> 00:39:55,120
+That was can be studied by looking what- which of the three channels; neighborhood,
+
+740
+00:39:55,120 --> 00:40:00,970
+position, or structure, would be most informative for predicting certain kinds of labels.
+
+741
+00:40:00,970 --> 00:40:03,655
+So for the case of density, um,
+
+742
+00:40:03,655 --> 00:40:06,385
+the label would primarily be determined by,
+
+743
+00:40:06,385 --> 00:40:08,980
+uh, the neighborhood of the subgraphs.
+
+744
+00:40:08,980 --> 00:40:11,320
+So what was then tested is whether
+
+745
+00:40:11,320 --> 00:40:15,175
+the neighborhood channel is most informative for predicting the density labels,
+
+746
+00:40:15,175 --> 00:40:17,075
+and indeed, that was the case.
+
+747
+00:40:17,075 --> 00:40:19,080
+Okay. So now that, uh,
+
+748
+00:40:19,080 --> 00:40:21,045
+we- we know that SubGNN works well,
+
+749
+00:40:21,045 --> 00:40:23,070
+let's return to our real-world dataset.
+
+750
+00:40:23,070 --> 00:40:27,225
+So there were four real-world datasets that were designed for the problem of,
+
+751
+00:40:27,225 --> 00:40:30,765
+uh, um, clinical diagnostic tests.
+
+752
+00:40:30,765 --> 00:40:33,780
+So each of the four datasets consists of a base graph,
+
+753
+00:40:33,780 --> 00:40:36,210
+and sub-graphs with associated labels.
+
+754
+00:40:36,210 --> 00:40:39,290
+So the two, uh,
+
+755
+00:40:39,290 --> 00:40:44,935
+datasets that I want to bring your attention to are called HPO-METAB and HPO-NEURO.
+
+756
+00:40:44,935 --> 00:40:49,810
+So these are the datasets where the base graph is the graph of- um,
+
+757
+00:40:49,810 --> 00:40:51,955
+from the human phenotype ontology.
+
+758
+00:40:51,955 --> 00:40:54,430
+So this is a graph where nodes are human phenotypes,
+
+759
+00:40:54,430 --> 00:40:57,145
+and just are hierarchical relationships between
+
+760
+00:40:57,145 --> 00:41:00,955
+phenotypes and symptoms that we see in human populations.
+
+761
+00:41:00,955 --> 00:41:05,110
+And then labels are defined by certain- uh, by, uh,
+
+762
+00:41:05,110 --> 00:41:09,040
+then subgraphs are defined by subgraphs of metabolic,
+
+763
+00:41:09,040 --> 00:41:14,575
+um, uh, diseases and metabolic disorders that, uh, affect humans.
+
+764
+00:41:14,575 --> 00:41:17,665
+And in the HPO-NEURO dataset,
+
+765
+00:41:17,665 --> 00:41:20,890
+then subgraphs represent, um,
+
+766
+00:41:20,890 --> 00:41:23,260
+uh, various neurodegenerative diseases.
+
+767
+00:41:23,260 --> 00:41:25,345
+So the goal of those two- uh, uh,
+
+768
+00:41:25,345 --> 00:41:30,220
+those- these two particular datasets is to, um, define- er,
+
+769
+00:41:30,220 --> 00:41:34,120
+is to predict subgraph labels that correspond to
+
+770
+00:41:34,120 --> 00:41:37,105
+various metabolic or neurological diseases
+
+771
+00:41:37,105 --> 00:41:40,075
+that are consistent with the underlying phenotypes.
+
+772
+00:41:40,075 --> 00:41:43,240
+So this simulates the environment of diagnosing
+
+773
+00:41:43,240 --> 00:41:46,990
+patients that might have metabolic or neurological disorders.
+
+774
+00:41:46,990 --> 00:41:49,479
+So let's see performance of SubGNN,
+
+775
+00:41:49,479 --> 00:41:51,910
+uh, across those, um,
+
+776
+00:41:51,910 --> 00:41:54,670
+four datasets with a particular focus on the,
+
+777
+00:41:54,670 --> 00:41:56,140
+uh, human phenotype ontology,
+
+778
+00:41:56,140 --> 00:41:58,060
+neuro and metabolic dataset.
+
+779
+00:41:58,060 --> 00:42:04,060
+And so what we can see is that the performance of SubGNN when- when,
+
+780
+00:42:04,060 --> 00:42:08,590
+uh, implemented with, uh, um, uh,
+
+781
+00:42:08,590 --> 00:42:11,095
+when, uh- when compared to, um,
+
+782
+00:42:11,095 --> 00:42:14,290
+baseline motto- models is substantially better,
+
+783
+00:42:14,290 --> 00:42:17,275
+and SubGNN outperforms though- those, uh,
+
+784
+00:42:17,275 --> 00:42:22,540
+baseline met- models considered here by up to 125%,
+
+785
+00:42:22,540 --> 00:42:26,529
+which is a- which is a really incredible improvement in performance,
+
+786
+00:42:26,529 --> 00:42:31,930
+which clearly motivates the use of subgraphs rather than simply,
+
+787
+00:42:31,930 --> 00:42:36,080
+um, considering note level or graph level aggregation.
+
+788
+00:42:37,340 --> 00:42:41,205
+Okay, um, so this concludes the second part of,
+
+789
+00:42:41,205 --> 00:42:43,785
+uh, the stock, which was concerned with,
+
+790
+00:42:43,785 --> 00:42:50,595
+um, using the power of subgraph embeddings and GNS for disease diagnosis tasks.
+
+791
+00:42:50,595 --> 00:42:54,045
+And in the first- the third part of the talk, I will, uh,
+
+792
+00:42:54,045 --> 00:42:58,680
+focus on se- important endpoint for drug development,
+
+793
+00:42:58,680 --> 00:43:00,690
+which is that of drug efficacy.
+
+794
+00:43:00,690 --> 00:43:03,795
+So in the first part we talked about drug safety but, uh,
+
+795
+00:43:03,795 --> 00:43:06,630
+in drugs and safety is one of
+
+796
+00:43:06,630 --> 00:43:11,130
+two cornered endpoints that we care about in drug development process.
+
+797
+00:43:11,130 --> 00:43:12,330
+In addition to drug safety,
+
+798
+00:43:12,330 --> 00:43:15,150
+the second important endpoint is efficacy,
+
+799
+00:43:15,150 --> 00:43:17,220
+where the question is to understand,
+
+800
+00:43:17,220 --> 00:43:20,370
+whether a certain molecule that might be candidate drug
+
+801
+00:43:20,370 --> 00:43:24,345
+wi- will really have positive therapeutic effect in patients.
+
+802
+00:43:24,345 --> 00:43:28,620
+So let's, uh, start with this third part of the talk.
+
+803
+00:43:28,620 --> 00:43:31,245
+The motivating factor- the- the motivating,
+
+804
+00:43:31,245 --> 00:43:32,940
+uh, problem for this,
+
+805
+00:43:32,940 --> 00:43:34,080
+uh, task was, uh,
+
+806
+00:43:34,080 --> 00:43:37,650
+the question of how to find cures for emerging diseases.
+
+807
+00:43:37,650 --> 00:43:43,140
+This particular, uh, work was motivated by the onset of the COVID pandemic last year,
+
+808
+00:43:43,140 --> 00:43:47,400
+uh, where- um, it was- became clear that, uh,
+
+809
+00:43:47,400 --> 00:43:52,440
+at the- them, uh, at the beginning of the pandemic, uh, there, um,
+
+810
+00:43:52,440 --> 00:43:54,810
+the need was for rapid de- deployment and
+
+811
+00:43:54,810 --> 00:43:59,040
+identification of drugs that might have positive therapeutic effect in, uh,
+
+812
+00:43:59,040 --> 00:44:04,589
+in COVID-19 patients but simply traditional approaches of iterative development,
+
+813
+00:44:04,589 --> 00:44:07,230
+experimental testing, and clinical validation,
+
+814
+00:44:07,230 --> 00:44:11,130
+and approval of new drugs were not feasible because they- they, on average,
+
+815
+00:44:11,130 --> 00:44:14,580
+take over a decade to bring and des- design
+
+816
+00:44:14,580 --> 00:44:18,480
+a new drug from scratch and bring it to market and that was simply not feasible.
+
+817
+00:44:18,480 --> 00:44:22,230
+So a more realistic strategy relied on repurposing of drugs,
+
+818
+00:44:22,230 --> 00:44:25,035
+requiring has to essentially identify
+
+819
+00:44:25,035 --> 00:44:28,380
+what other drugs that are clinically approved that might have
+
+820
+00:44:28,380 --> 00:44:31,275
+therapeutic effect in COVID-19 patients
+
+821
+00:44:31,275 --> 00:44:35,025
+and so the particular study that I will be mentioning is,
+
+822
+00:44:35,025 --> 00:44:37,635
+uh, is the- is the one that was
+
+823
+00:44:37,635 --> 00:44:41,745
+conducted bet- that it started at the beginning of March last year,
+
+824
+00:44:41,745 --> 00:44:46,140
+and the most parts of it were done between March and, uh,
+
+825
+00:44:46,140 --> 00:44:48,570
+last summer and it really demonstrates,
+
+826
+00:44:48,570 --> 00:44:51,570
+uh, an opportunity of how, in this particular case,
+
+827
+00:44:51,570 --> 00:44:57,210
+graph neural networks were able to compress years of work into actually weeks,
+
+828
+00:44:57,210 --> 00:45:00,270
+in some cases actually days of work by-
+
+829
+00:45:00,270 --> 00:45:03,630
+by- through very close collaboration between machine learning models,
+
+830
+00:45:03,630 --> 00:45:08,400
+predictions that are provided by those models and end-users, which in this case,
+
+831
+00:45:08,400 --> 00:45:11,010
+were virologists and experimental biologists who took
+
+832
+00:45:11,010 --> 00:45:13,830
+predictions and experimentally screened and intellect.
+
+833
+00:45:13,830 --> 00:45:22,620
+Okay, so that's- this is our goal for- for this part of the talk.
+
+834
+00:45:22,620 --> 00:45:24,360
+Let's- let's now try to, uh, uh,
+
+835
+00:45:24,360 --> 00:45:27,420
+unpack and define the problem of drug repurposing first and then
+
+836
+00:45:27,420 --> 00:45:30,990
+describe our technical approach for- for- for this problem.
+
+837
+00:45:30,990 --> 00:45:34,470
+So as I mentioned, the discovery of a new development of
+
+838
+00:45:34,470 --> 00:45:38,250
+new drug from scratch is a very lengthy resource intensive process.
+
+839
+00:45:38,250 --> 00:45:40,710
+It, on average, takes more than a decade and it
+
+840
+00:45:40,710 --> 00:45:44,580
+costs 1-2 billion dollars to design a new drug from scratch.
+
+841
+00:45:44,580 --> 00:45:48,375
+And so, faced with the skyrocketing costs for developing new drugs,
+
+842
+00:45:48,375 --> 00:45:52,185
+researchers are looking at ways to repurpose older ones,
+
+843
+00:45:52,185 --> 00:45:55,665
+to essentially take drugs that are already on the market and ask,
+
+844
+00:45:55,665 --> 00:46:01,065
+are there any other kind of diseases that those drugs might be effective in?
+
+845
+00:46:01,065 --> 00:46:03,900
+And that is very appealing strategy because it
+
+846
+00:46:03,900 --> 00:46:07,545
+would be much shorter and potentially much more effective.
+
+847
+00:46:07,545 --> 00:46:14,190
+Most famous example of a drug that was repurpose on the market is- is- is
+
+848
+00:46:14,190 --> 00:46:16,620
+Viagra that was initially designed for treating
+
+849
+00:46:16,620 --> 00:46:19,890
+cardiovascular diseases but then during clinical trials,
+
+850
+00:46:19,890 --> 00:46:23,805
+it turned out that there might be other indications that it would be useful for.
+
+851
+00:46:23,805 --> 00:46:26,940
+And so while in the past, those repurposing, uh,
+
+852
+00:46:26,940 --> 00:46:31,080
+strategies were primarily coincidental findings,
+
+853
+00:46:31,080 --> 00:46:33,255
+there is now a concerted effort of,
+
+854
+00:46:33,255 --> 00:46:35,640
+"Can we systematically go through drugs that are, uh,
+
+855
+00:46:35,640 --> 00:46:39,915
+clinically approved in the market and identify possible therapeutic opportunities?"
+
+856
+00:46:39,915 --> 00:46:43,695
+So the core of this question or the core of this problem is the following question,
+
+857
+00:46:43,695 --> 00:46:48,285
+which we can think of it as a link prediction problem in- in a bar touch graph,
+
+858
+00:46:48,285 --> 00:46:50,595
+where on the left we have a set of drugs.
+
+859
+00:46:50,595 --> 00:46:55,080
+Those might be all approved drugs plus investigational experimental drugs, um,
+
+860
+00:46:55,080 --> 00:46:57,060
+some drugs that fails in clinical trials,
+
+861
+00:46:57,060 --> 00:47:00,195
+but otherwise are not hugely, uh,
+
+862
+00:47:00,195 --> 00:47:02,580
+unsafe for patient, and on the right,
+
+863
+00:47:02,580 --> 00:47:06,405
+we would have tens of thousands of diseases which are codified diseases,
+
+864
+00:47:06,405 --> 00:47:08,840
+uh, that could be described, for example,
+
+865
+00:47:08,840 --> 00:47:12,620
+two set of phenotypes that we were discussing in the second part of the talk.
+
+866
+00:47:12,620 --> 00:47:15,050
+So edges connecting drugs to diseases
+
+867
+00:47:15,050 --> 00:47:17,645
+here would indicate the known treatment relationships.
+
+868
+00:47:17,645 --> 00:47:20,150
+The problem that we have here- our goal is to have
+
+869
+00:47:20,150 --> 00:47:23,135
+a model that would predict what diseases,
+
+870
+00:47:23,135 --> 00:47:27,295
+uh, a- a new molecule or an existing drug might treat.
+
+871
+00:47:27,295 --> 00:47:29,940
+So is this a challenging problem?
+
+872
+00:47:29,940 --> 00:47:33,360
+Why is finding treatments for a new disease in particular,
+
+873
+00:47:33,360 --> 00:47:34,950
+such a challenging problem.
+
+874
+00:47:34,950 --> 00:47:38,100
+So when we're conc- we're- when we're concerned with
+
+875
+00:47:38,100 --> 00:47:41,100
+the question of ho- finding treatment for a new emerging disease,
+
+876
+00:47:41,100 --> 00:47:46,110
+that means that we want to identify drugs that may treat the disease,
+
+877
+00:47:46,110 --> 00:47:49,035
+but there are no currently known drugs for that disease.
+
+878
+00:47:49,035 --> 00:47:50,610
+So, and COVID was a very,
+
+879
+00:47:50,610 --> 00:47:53,610
+very prominent example of that na- i- the- uh,
+
+880
+00:47:53,610 --> 00:47:56,025
+la- early, uh, last, uh, year.
+
+881
+00:47:56,025 --> 00:47:58,440
+And so conceptual- technically that
+
+882
+00:47:58,440 --> 00:48:01,860
+means- that- that's not surprising because we know in machine learning,
+
+883
+00:48:01,860 --> 00:48:04,890
+that generalizing to new phenomena is typically hard.
+
+884
+00:48:04,890 --> 00:48:08,670
+Prevailing graph neural network methods still assume and require
+
+885
+00:48:08,670 --> 00:48:11,055
+abundant label information in order
+
+886
+00:48:11,055 --> 00:48:14,415
+to be really trained effectively and achieve high accuracy.
+
+887
+00:48:14,415 --> 00:48:16,890
+However, I would argue that one of
+
+888
+00:48:16,890 --> 00:48:21,540
+the definitive factors of frontier of biology and medicine are
+
+889
+00:48:21,540 --> 00:48:24,659
+problems were labeled examples are incredibly
+
+890
+00:48:24,659 --> 00:48:29,220
+scarce and this includes emergent diseases such as COVID-19,
+
+891
+00:48:29,220 --> 00:48:31,530
+rare diseases, hard to diagnose patients,
+
+892
+00:48:31,530 --> 00:48:35,055
+modeling novel drugs in development and many, many other problems.
+
+893
+00:48:35,055 --> 00:48:37,530
+So what prevailing methods assume is that we start
+
+894
+00:48:37,530 --> 00:48:40,410
+with drugs that are already richly labeled.
+
+895
+00:48:40,410 --> 00:48:44,310
+That assumption is heavily violated in most exciting problems where in
+
+896
+00:48:44,310 --> 00:48:47,880
+reality what happens in the world that we only have a handful of labels,
+
+897
+00:48:47,880 --> 00:48:52,200
+uh, for a particular class, if any at all.
+
+898
+00:48:52,200 --> 00:48:57,750
+So too- for- for the- for the problem of drug repurposing, that, uh,
+
+899
+00:48:57,750 --> 00:49:01,290
+in the- in the meta da- and the gene and methodology that I will describe,
+
+900
+00:49:01,290 --> 00:49:04,530
+it really relies on few-short learning and meta-learning.
+
+901
+00:49:04,530 --> 00:49:09,120
+So I have two slides now with just a very brief high-level overview of that, uh,
+
+902
+00:49:09,120 --> 00:49:11,340
+of what metal learning is and I assume that many
+
+903
+00:49:11,340 --> 00:49:14,070
+have already heard about this in o- in other courses.
+
+904
+00:49:14,070 --> 00:49:17,490
+So, uh, meta-learning is
+
+905
+00:49:17,490 --> 00:49:20,880
+very effective strategy for- for learning in the cases where there
+
+906
+00:49:20,880 --> 00:49:23,850
+are a very few small number of
+
+907
+00:49:23,850 --> 00:49:27,870
+labeled examples available for- for- for tasks and so typically,
+
+908
+00:49:27,870 --> 00:49:29,370
+the idea of, uh,
+
+909
+00:49:29,370 --> 00:49:32,220
+meta-learning strategies is the following: we assume that we
+
+910
+00:49:32,220 --> 00:49:35,250
+have a- meta- we train a meta-learning model over a variety of
+
+911
+00:49:35,250 --> 00:49:38,355
+learning tasks and that model is optimized
+
+912
+00:49:38,355 --> 00:49:42,330
+for- to achieve the best performance on a distribution of tasks,
+
+913
+00:49:42,330 --> 00:49:44,430
+including potentially unseen tasks.
+
+914
+00:49:44,430 --> 00:49:47,565
+The way to think of meta-learning is that think of
+
+915
+00:49:47,565 --> 00:49:51,989
+each learning task being defined and associated with the small dataset,
+
+916
+00:49:51,989 --> 00:49:54,960
+D, that contains both data instances,
+
+917
+00:49:54,960 --> 00:49:57,030
+feature vectors, and some true labels.
+
+918
+00:49:57,030 --> 00:49:59,385
+And so meta-learning is then,
+
+919
+00:49:59,385 --> 00:50:01,980
+uh, concerned with ide- um,
+
+920
+00:50:01,980 --> 00:50:06,930
+finding the optimal parameters Theta star for the model, uh,
+
+921
+00:50:06,930 --> 00:50:11,160
+that would minimize the loss function across those,
+
+922
+00:50:11,160 --> 00:50:13,065
+uh, large number of datasets,
+
+923
+00:50:13,065 --> 00:50:15,465
+each describing a different task.
+
+924
+00:50:15,465 --> 00:50:19,470
+So if those models can define success with those parameters,
+
+925
+00:50:19,470 --> 00:50:21,285
+Theta star can define successfully,
+
+926
+00:50:21,285 --> 00:50:24,210
+that indicates that the model was able to really
+
+927
+00:50:24,210 --> 00:50:28,005
+successfully generalize from one task to the other,
+
+928
+00:50:28,005 --> 00:50:29,895
+from one dataset to the other,
+
+929
+00:50:29,895 --> 00:50:34,695
+and so if can- if it can do that effectively to the process known as Meta training,
+
+930
+00:50:34,695 --> 00:50:38,880
+then we can hope that also in the case of at task time,
+
+931
+00:50:38,880 --> 00:50:40,620
+it will be able to very quickly,
+
+932
+00:50:40,620 --> 00:50:44,040
+very effectively adapt to a new task,
+
+933
+00:50:44,040 --> 00:50:46,995
+in our case, that will be a new disease, COVID-19.
+
+934
+00:50:46,995 --> 00:50:49,200
+So this looks very similar to just normal,
+
+935
+00:50:49,200 --> 00:50:50,430
+regular machine learning task,
+
+936
+00:50:50,430 --> 00:50:54,120
+but you can think this actually one data sample
+
+937
+00:50:54,120 --> 00:50:56,460
+is not a single note, it's not a single, uh,
+
+938
+00:50:56,460 --> 00:50:58,905
+uh, edge in the graph but essentially,
+
+939
+00:50:58,905 --> 00:51:01,230
+a data sample is- is small dataset,
+
+940
+00:51:01,230 --> 00:51:06,240
+which in our case would be a small part of the graph on which the model is straight.
+
+941
+00:51:06,240 --> 00:51:08,040
+So, as- uh, uh, uh,
+
+942
+00:51:08,040 --> 00:51:11,820
+a second slide of the background of meta-learning is- is about few-shot learning,
+
+943
+00:51:11,820 --> 00:51:14,190
+which is just a specific instantiation of
+
+944
+00:51:14,190 --> 00:51:16,680
+meta-learning in the field of supervised learning and
+
+945
+00:51:16,680 --> 00:51:19,065
+I mentioned in there just because I want to introduce a no-
+
+946
+00:51:19,065 --> 00:51:21,750
+s- a one notation and that notation is,
+
+947
+00:51:21,750 --> 00:51:27,485
+uh, uh, describes the difficulty of a few- a few-shot learning tasks,
+
+948
+00:51:27,485 --> 00:51:32,755
+where we will say that we are interested in solving a k-shot n-class-
+
+949
+00:51:32,755 --> 00:51:38,625
+classification problem the- which meaning that we want to solve a task for that,
+
+950
+00:51:38,625 --> 00:51:44,250
+uh, in a problem for which we only have k labeled examples for each of n classes.
+
+951
+00:51:44,250 --> 00:51:47,130
+So what is showing here in this slide is an example of
+
+952
+00:51:47,130 --> 00:51:51,165
+a two-shot three-way image classification where we would have- uh,
+
+953
+00:51:51,165 --> 00:51:55,710
+where each task would consist of classifying im- class- uh,
+
+954
+00:51:55,710 --> 00:51:57,524
+images into three classes.
+
+955
+00:51:57,524 --> 00:52:00,150
+That's why it's two-way image classification and for each class,
+
+956
+00:52:00,150 --> 00:52:01,515
+we have two examples.
+
+957
+00:52:01,515 --> 00:52:04,950
+And so the process here would be the during training thought- phase we
+
+958
+00:52:04,950 --> 00:52:08,280
+def- we sample and define a large number of training tasks,
+
+959
+00:52:08,280 --> 00:52:12,870
+each of them is an instance of two-shot three-way image classification and
+
+960
+00:52:12,870 --> 00:52:17,820
+so if the model can be successfully primed to- to solve these, uh, to, uh,
+
+961
+00:52:17,820 --> 00:52:21,930
+or to- to solve this task during meta-training phase then in,
+
+962
+00:52:21,930 --> 00:52:24,375
+during Meta testing time, then, uh,
+
+963
+00:52:24,375 --> 00:52:27,465
+the model would- would quickly adapt to
+
+964
+00:52:27,465 --> 00:52:32,595
+completely new set of classes for which only a handful of labels are given as well.
+
+965
+00:52:32,595 --> 00:52:37,020
+The goal that we will have here now that we have this background on few-shot or
+
+966
+00:52:37,020 --> 00:52:41,190
+making meta-learning is how to- how to make predictions,
+
+967
+00:52:41,190 --> 00:52:44,610
+uh, on a new graph or a new label set.
+
+968
+00:52:44,610 --> 00:52:46,830
+So essentially, we want to use few-shot learning,
+
+969
+00:52:46,830 --> 00:52:49,650
+not on- for image classification- we want- but we want to
+
+970
+00:52:49,650 --> 00:52:53,740
+use it- use it for graphs. Okay?
+
+971
+00:52:53,740 --> 00:52:57,285
+Um, so the problem formulation, um,
+
+972
+00:52:57,285 --> 00:53:00,120
+is- of this problem is the following, uh, and,
+
+973
+00:53:00,120 --> 00:53:04,110
+um, we are interested in designing a meta-learner.
+
+974
+00:53:04,110 --> 00:53:07,050
+Uh, that meta-learner will be concerned with, um,
+
+975
+00:53:07,050 --> 00:53:11,055
+will need to be able to classify an unseen label set,
+
+976
+00:53:11,055 --> 00:53:13,140
+so that could be lab- a blue label set,
+
+977
+00:53:13,140 --> 00:53:16,455
+by observing some other label sets in the same graph.
+
+978
+00:53:16,455 --> 00:53:19,590
+So during, um, training, uh,
+
+979
+00:53:19,590 --> 00:53:21,180
+the model will be lear- only on
+
+980
+00:53:21,180 --> 00:53:24,390
+yellow labels and we would expect that the model would be-
+
+981
+00:53:24,390 --> 00:53:29,685
+would be able to generalize to blu- blue labels that are defined within the same graph,
+
+982
+00:53:29,685 --> 00:53:31,995
+um, during, uh, test time.
+
+983
+00:53:31,995 --> 00:53:34,785
+And so the meta that does that is called,
+
+984
+00:53:34,785 --> 00:53:36,870
+um, is- is called the G-Meta.
+
+985
+00:53:36,870 --> 00:53:38,595
+The overview of G-Meta,
+
+986
+00:53:38,595 --> 00:53:42,570
+if I present it in similar way as I have done for few- few-shot learning, uh,
+
+987
+00:53:42,570 --> 00:53:43,830
+just a few slides ago,
+
+988
+00:53:43,830 --> 00:53:46,920
+it's very similar to the general few-shot learning setting,
+
+989
+00:53:46,920 --> 00:53:49,170
+but now we are not concerned with, um,
+
+990
+00:53:49,170 --> 00:53:53,700
+solving image classification task but we are concerned with solving graph,
+
+991
+00:53:53,700 --> 00:53:57,255
+um, um, um, learning problems.
+
+992
+00:53:57,255 --> 00:53:59,490
+Um, in- in- for the case of this, uh,
+
+993
+00:53:59,490 --> 00:54:02,160
+explanation those would be node classification problems.
+
+994
+00:54:02,160 --> 00:54:03,675
+But during training time,
+
+995
+00:54:03,675 --> 00:54:07,575
+we would define a large number of- of tasks, each, um,
+
+996
+00:54:07,575 --> 00:54:11,519
+from a different- from a particular label set and at task time,
+
+997
+00:54:11,519 --> 00:54:15,600
+the new task will be presented on label set 3 that would not be seen,
+
+998
+00:54:15,600 --> 00:54:18,090
+that was not present at training time.
+
+999
+00:54:18,090 --> 00:54:22,545
+So the key idea that G-Meta uses to solve these, uh,
+
+1000
+00:54:22,545 --> 00:54:28,305
+to solve the few-shot learning problem on- on graphs is that it was specified,
+
+1001
+00:54:28,305 --> 00:54:30,675
+uh, um, you know,
+
+1002
+00:54:30,675 --> 00:54:33,510
+a signature function for each learning task.
+
+1003
+00:54:33,510 --> 00:54:35,775
+That signature function will be, uh,
+
+1004
+00:54:35,775 --> 00:54:38,790
+defined based on the structure of- of,
+
+1005
+00:54:38,790 --> 00:54:41,715
+um, subgraphs that encompass, uh,
+
+1006
+00:54:41,715 --> 00:54:45,750
+labeled examples in each task and then
+
+1007
+00:54:45,750 --> 00:54:49,485
+those subgraphs signature functions will essentially lear- uh, that, uh,
+
+1008
+00:54:49,485 --> 00:54:52,650
+will learn how to map the structure of sampled subgraphs
+
+1009
+00:54:52,650 --> 00:54:56,235
+representing tasks and how- and effectively,
+
+1010
+00:54:56,235 --> 00:54:59,220
+uh, serve, uh, sen- initialization for a GNN.
+
+1011
+00:54:59,220 --> 00:55:01,799
+And so this treated, it can be really effectively-
+
+1012
+00:55:01,799 --> 00:55:04,560
+the strategy of extracting subgraphs that enclose
+
+1013
+00:55:04,560 --> 00:55:07,800
+labeled example and then applying GNN to each subgraph
+
+1014
+00:55:07,800 --> 00:55:12,390
+individually is effective strategy for doing- for doing few-shot learning.
+
+1015
+00:55:12,390 --> 00:55:15,960
+A natural question to ask now is just conceptually,
+
+1016
+00:55:15,960 --> 00:55:17,160
+which is an interesting question,
+
+1017
+00:55:17,160 --> 00:55:20,100
+what is the value of these local subgraphs that we are using
+
+1018
+00:55:20,100 --> 00:55:23,325
+now to transfer knowledge from one task to the other?
+
+1019
+00:55:23,325 --> 00:55:25,350
+And the reasoning for why subgraphs, um,
+
+1020
+00:55:25,350 --> 00:55:28,155
+um, are useful here is the following.
+
+1021
+00:55:28,155 --> 00:55:29,865
+You can think of, there are
+
+1022
+00:55:29,865 --> 00:55:34,525
+two fundamental core sources of information that the GNNs are using.
+
+1023
+00:55:34,525 --> 00:55:36,950
+One is based that on label propagation,
+
+1024
+00:55:36,950 --> 00:55:40,925
+where we can think of nodes that have the same label,
+
+1025
+00:55:40,925 --> 00:55:42,770
+they tend to be nearby in the graphs.
+
+1026
+00:55:42,770 --> 00:55:46,415
+We have seen at the beginning of the lecture today that proteins that tend to
+
+1027
+00:55:46,415 --> 00:55:50,850
+interact the- they are also tend to lit- uh,
+
+1028
+00:55:50,850 --> 00:55:55,275
+be, uh, affiliated with similar phenotypes in similar diseases.
+
+1029
+00:55:55,275 --> 00:55:59,100
+The other core source of GNN power is structural similarity,
+
+1030
+00:55:59,100 --> 00:56:01,590
+where nodes that have the same label,
+
+1031
+00:56:01,590 --> 00:56:03,720
+they might not be nearby in the graph but they
+
+1032
+00:56:03,720 --> 00:56:06,690
+might have similar network shapes in their local neighborhoods.
+
+1033
+00:56:06,690 --> 00:56:09,585
+Okay. So now that we know that,
+
+1034
+00:56:09,585 --> 00:56:13,320
+we know that in the case of few-shot learning where labels are really
+
+1035
+00:56:13,320 --> 00:56:16,860
+scarce that we- that we cannot rely much on label propagation.
+
+1036
+00:56:16,860 --> 00:56:18,405
+It's simply not sufficient.
+
+1037
+00:56:18,405 --> 00:56:21,225
+It's- it's where only a handful of nodes are labeled.
+
+1038
+00:56:21,225 --> 00:56:24,780
+It's very challenging to effectively propagate labels to the entire graph.
+
+1039
+00:56:24,780 --> 00:56:27,330
+So instead, we can much better leverage
+
+1040
+00:56:27,330 --> 00:56:29,880
+structural information and structural equivalence,
+
+1041
+00:56:29,880 --> 00:56:33,195
+which is exactly what these local subgraphs,
+
+1042
+00:56:33,195 --> 00:56:36,765
+uh, capture as a mechanism for transferring knowledge across tasks.
+
+1043
+00:56:36,765 --> 00:56:39,855
+And it is actually possible to show theoretically
+
+1044
+00:56:39,855 --> 00:56:43,170
+that local subgraphs that are a fine- defined around the,
+
+1045
+00:56:43,170 --> 00:56:47,955
+uh, labeled examples capture much of relevant information for prediction.
+
+1046
+00:56:47,955 --> 00:56:51,180
+And beyond theoretical findings,
+
+1047
+00:56:51,180 --> 00:56:53,910
+it has been well, um,
+
+1048
+00:56:53,910 --> 00:56:57,360
+demonstrated by many studies, ah, uh,
+
+1049
+00:56:57,360 --> 00:57:03,090
+in the context of biological networks that typically most useful information for,
+
+1050
+00:57:03,090 --> 00:57:05,730
+uh, that to describes a particular task,
+
+1051
+00:57:05,730 --> 00:57:09,690
+um, in the context of biological network exist in some two,
+
+1052
+00:57:09,690 --> 00:57:11,835
+three-hop neighborhoods around target nodes,
+
+1053
+00:57:11,835 --> 00:57:15,150
+so the use of local subgraphs is then highly motivated.
+
+1054
+00:57:15,150 --> 00:57:18,480
+Okay. So let's return now finally,
+
+1055
+00:57:18,480 --> 00:57:21,345
+uh, to our COVID-19 repurposing problem.
+
+1056
+00:57:21,345 --> 00:57:26,130
+And so I- I will start with description of the dataset on which this,
+
+1057
+00:57:26,130 --> 00:57:29,160
+with the- the- the- this transfer
+
+1058
+00:57:29,160 --> 00:57:33,075
+of this- this few-shot learning strategy that I described was applied.
+
+1059
+00:57:33,075 --> 00:57:35,895
+So the repurposing dataset had,
+
+1060
+00:57:35,895 --> 00:57:37,890
+had three major components.
+
+1061
+00:57:37,890 --> 00:57:42,120
+The first was information on how to even represent COVID-19.
+
+1062
+00:57:42,120 --> 00:57:45,390
+Okay. How can we represent it in the form of a graph or
+
+1063
+00:57:45,390 --> 00:57:50,250
+some structure that- that is machine-readable that we can actually compute over?
+
+1064
+00:57:50,250 --> 00:57:52,395
+And so to do that,
+
+1065
+00:57:52,395 --> 00:57:54,900
+we relied on the study that, uh,
+
+1066
+00:57:54,900 --> 00:57:57,975
+was published in, um, last year in, uh,
+
+1067
+00:57:57,975 --> 00:58:00,420
+in Nature by Gordon et al and colleagues from
+
+1068
+00:58:00,420 --> 00:58:04,155
+UCSF and they- what they have done, they have, uh,
+
+1069
+00:58:04,155 --> 00:58:08,760
+expressed 26 out of 29 proteins in
+
+1070
+00:58:08,760 --> 00:58:11,445
+SARS-CoV2 virus and they have checked
+
+1071
+00:58:11,445 --> 00:58:15,285
+what are human proteins that those viral proteins take.
+
+1072
+00:58:15,285 --> 00:58:17,535
+And so in doing so, they identified
+
+1073
+00:58:17,535 --> 00:58:23,430
+332 human proteins to reach the SARS-CoV2 virus binds.
+
+1074
+00:58:23,430 --> 00:58:26,100
+And so that can be used as essentially
+
+1075
+00:58:26,100 --> 00:58:29,730
+computational- co- computable representation of COVID-19.
+
+1076
+00:58:29,730 --> 00:58:35,130
+COVID-19 can be then represented by that set or subgraph or structure of
+
+1077
+00:58:35,130 --> 00:58:40,755
+332 human proteins that are directly affect by the virus.
+
+1078
+00:58:40,755 --> 00:58:44,444
+So these are known as viral-human protein-protein interactions
+
+1079
+00:58:44,444 --> 00:58:48,405
+because they are actually interaction between the virus and humans.
+
+1080
+00:58:48,405 --> 00:58:52,155
+The second important information was that on,
+
+1081
+00:58:52,155 --> 00:58:56,070
+what are other proteins that those a- pro,
+
+1082
+00:58:56,070 --> 00:58:58,170
+uh, proteins interact with?
+
+1083
+00:58:58,170 --> 00:59:01,050
+So that is the human interactome network
+
+1084
+00:59:01,050 --> 00:59:03,180
+or the human protein-protein interaction network.
+
+1085
+00:59:03,180 --> 00:59:06,315
+And the third piece of information was up, um,
+
+1086
+00:59:06,315 --> 00:59:08,520
+the information about, um,
+
+1087
+00:59:08,520 --> 00:59:10,335
+existing drugs on the market.
+
+1088
+00:59:10,335 --> 00:59:15,645
+So for each and every dru- existing drug we put information on its known targets,
+
+1089
+00:59:15,645 --> 00:59:18,810
+uh, on proteins that those drugs bind to,
+
+1090
+00:59:18,810 --> 00:59:21,105
+and that gave, um,
+
+1091
+00:59:21,105 --> 00:59:23,460
+rise to those drug modules,
+
+1092
+00:59:23,460 --> 00:59:26,790
+which would- would be the set of proteins for each drug that
+
+1093
+00:59:26,790 --> 00:59:30,765
+are- that are targeted when the patient takes the drug.
+
+1094
+00:59:30,765 --> 00:59:34,980
+So COVID-19 ultimately was represented as a network neighborhood of
+
+1095
+00:59:34,980 --> 00:59:39,210
+human PPI network targeted by SARS-CoV-2 virus.
+
+1096
+00:59:39,210 --> 00:59:46,410
+And the few-shot learning strategy was then applied to learn the embedding for COVID, uh,
+
+1097
+00:59:46,410 --> 00:59:51,120
+COVID-19 that was the new task which is that we wanted to,
+
+1098
+00:59:51,120 --> 00:59:56,565
+uh, rank drugs for based on how promising they might be for COVID-19.
+
+1099
+00:59:56,565 --> 00:59:58,649
+The way the model was optimized,
+
+1100
+00:59:58,649 --> 01:00:03,555
+it was optimized based on known drug disease indications for
+
+1101
+01:00:03,555 --> 01:00:09,465
+other drugs and other diseases that are much better understood than COVID-19.
+
+1102
+01:00:09,465 --> 01:00:15,225
+So that process yield an embedding space for approved drugs and diseases.
+
+1103
+01:00:15,225 --> 01:00:19,740
+Uh, one point in that embedding space was the point that represented COVID- 19.
+
+1104
+01:00:19,740 --> 01:00:24,000
+So an effective way to identify oppor- repurposing opportunities for
+
+1105
+01:00:24,000 --> 01:00:28,380
+COVID-19 was to look at what are other, um,
+
+1106
+01:00:28,380 --> 01:00:33,645
+what are drugs that are embedded close to the COVID-19, this em- embedding,
+
+1107
+01:00:33,645 --> 01:00:39,405
+and then prioritize drugs based on that closeness between,
+
+1108
+01:00:39,405 --> 01:00:42,105
+uh, COVID-19 embedding and the drugs embedding.
+
+1109
+01:00:42,105 --> 01:00:45,120
+And that- that gives rise to a ranked list of
+
+1110
+01:00:45,120 --> 01:00:49,650
+drugs where those are the top represents most promising algorithm- uh,
+
+1111
+01:00:49,650 --> 01:00:53,745
+most promising opportunities for repurposing in the context of COVID-19.
+
+1112
+01:00:53,745 --> 01:01:00,195
+The first test to do when you have such a model is to try to get a bit- uh,
+
+1113
+01:01:00,195 --> 01:01:03,900
+some understanding into how accurate those predictions are.
+
+1114
+01:01:03,900 --> 01:01:05,865
+So what this plot is showing,
+
+1115
+01:01:05,865 --> 01:01:07,785
+it is an AUC-ROC, uh,
+
+1116
+01:01:07,785 --> 01:01:09,840
+plot, um, that, um,
+
+1117
+01:01:09,840 --> 01:01:12,015
+shows on the x-axis false positive rate,
+
+1118
+01:01:12,015 --> 01:01:16,410
+on the y-axis true positive rate of a prediction problem,
+
+1119
+01:01:16,410 --> 01:01:19,425
+which was defined as a question of,
+
+1120
+01:01:19,425 --> 01:01:23,850
+can- can these models effectively identify those drugs that were at,
+
+1121
+01:01:23,850 --> 01:01:28,770
+uh, in April 2020 investigated on clinical trials for COVID-19.
+
+1122
+01:01:28,770 --> 01:01:31,200
+And so a number of baseline methods were,
+
+1123
+01:01:31,200 --> 01:01:33,330
+uh, tested for this, uh, question.
+
+1124
+01:01:33,330 --> 01:01:37,815
+Uh, the three GNN-based method- the four GNN-based methods are called,
+
+1125
+01:01:37,815 --> 01:01:40,830
+uh, A1, uh, are denoted A1 up to A4,
+
+1126
+01:01:40,830 --> 01:01:44,340
+and they showed substantial improvement in performance relative
+
+1127
+01:01:44,340 --> 01:01:48,195
+to some other networks medicine-based, uh,
+
+1128
+01:01:48,195 --> 01:01:50,490
+strategies based on diffusions,
+
+1129
+01:01:50,490 --> 01:01:52,140
+random walks, network proximity,
+
+1130
+01:01:52,140 --> 01:01:55,770
+and others that are more commonly deployed in the field of drug repurposing.
+
+1131
+01:01:55,770 --> 01:02:00,510
+Then, finding it by itself, however, while promising,
+
+1132
+01:02:00,510 --> 01:02:04,365
+it's not particularly exciting because the fact that a drug is
+
+1133
+01:02:04,365 --> 01:02:08,910
+investigated in clinical trials for COVID-19 does not really mean that it's successful.
+
+1134
+01:02:08,910 --> 01:02:12,270
+So a real test of the accuracy and
+
+1135
+01:02:12,270 --> 01:02:16,920
+the ability of the predictions being useful is to experimentally validate predictions.
+
+1136
+01:02:16,920 --> 01:02:20,910
+So for that, biologists and
+
+1137
+01:02:20,910 --> 01:02:24,420
+virologists from the National Emerging Infectious Disease Laboratory,
+
+1138
+01:02:24,420 --> 01:02:29,790
+so this is a national laboratory that can work with live viruses and it looks like this.
+
+1139
+01:02:29,790 --> 01:02:34,280
+So it's looks like very kind of almost like some kind of environment in
+
+1140
+01:02:34,280 --> 01:02:39,500
+a space where nobody can enter except those with very particular access.
+
+1141
+01:02:39,500 --> 01:02:42,740
+And they're able to work with live viruses there.
+
+1142
+01:02:42,740 --> 01:02:48,990
+So virologists there took the top predictions made by the model,
+
+1143
+01:02:48,990 --> 01:02:55,350
+and then test- screen those predictions for their efficacy in first African monkey cells,
+
+1144
+01:02:55,350 --> 01:02:57,000
+which are VeroE6 cells,
+
+1145
+01:02:57,000 --> 01:03:02,625
+a very prominent cell line for COVID-19 tests and later in mouse in human cells.
+
+1146
+01:03:02,625 --> 01:03:04,995
+So the result of that was that, uh,
+
+1147
+01:03:04,995 --> 01:03:07,890
+77 drugs that were predicted showed
+
+1148
+01:03:07,890 --> 01:03:12,315
+strong or weak effect and they were active over a broad range of concentrations.
+
+1149
+01:03:12,315 --> 01:03:15,510
+Importantly, those predictions that were
+
+1150
+01:03:15,510 --> 01:03:18,990
+obtained by GNN and actually an assemble of methods,
+
+1151
+01:03:18,990 --> 01:03:21,690
+including some of the other network medicine methods,
+
+1152
+01:03:21,690 --> 01:03:28,380
+gave an order of magnitude higher hit rate among top predictions than prior work.
+
+1153
+01:03:28,380 --> 01:03:33,450
+So prior work would be just brute force tests of all drugs in,
+
+1154
+01:03:33,450 --> 01:03:36,720
+uh, in, uh, in a- in the lab.
+
+1155
+01:03:36,720 --> 01:03:40,050
+And if that is not done in a brute force manner,
+
+1156
+01:03:40,050 --> 01:03:47,430
+but it's rather informed by prioritized list of drugs produced by ML models,
+
+1157
+01:03:47,430 --> 01:03:49,860
+then an order of magnitude,
+
+1158
+01:03:49,860 --> 01:03:53,775
+uh, better hit rate is something that we could expect.
+
+1159
+01:03:53,775 --> 01:03:58,320
+Since we are in the, um, in a course which is concerned about networks,
+
+1160
+01:03:58,320 --> 01:04:01,425
+there is an interesting finding that I want to mention here.
+
+1161
+01:04:01,425 --> 01:04:04,815
+Um, so a natural question to ask is great.
+
+1162
+01:04:04,815 --> 01:04:07,920
+So this analysis identified 77 drugs.
+
+1163
+01:04:07,920 --> 01:04:13,110
+Is there something common to those drugs that inhibited viral growth?
+
+1164
+01:04:13,110 --> 01:04:15,585
+So the answer to that question is yes.
+
+1165
+01:04:15,585 --> 01:04:19,590
+So 76 out of 77 drugs that were predicted
+
+1166
+01:04:19,590 --> 01:04:23,820
+and experimentally showed that they successfully reduced viral infection,
+
+1167
+01:04:23,820 --> 01:04:27,180
+were though kind of drugs that do not directly bind
+
+1168
+01:04:27,180 --> 01:04:31,575
+to those human proteins that the virus directly attacks.
+
+1169
+01:04:31,575 --> 01:04:35,580
+Instead, those drugs rely on network-based action.
+
+1170
+01:04:35,580 --> 01:04:38,520
+Those drugs, such as D3 here,
+
+1171
+01:04:38,520 --> 01:04:44,130
+would target some human proteins that are not directly attacked by the virus.
+
+1172
+01:04:44,130 --> 01:04:48,360
+And those human proteins in turn would interact with some other proteins who in turn,
+
+1173
+01:04:48,360 --> 01:04:52,560
+finally, would be exactly those proteins that the virus attacks.
+
+1174
+01:04:52,560 --> 01:04:54,840
+Why- why am I mentioning that?
+
+1175
+01:04:54,840 --> 01:04:57,990
+It's because these kinds of drugs,
+
+1176
+01:04:57,990 --> 01:05:01,350
+which we now call network drugs are- could not be
+
+1177
+01:05:01,350 --> 01:05:04,935
+identified by traditional strategies for drug purposing,
+
+1178
+01:05:04,935 --> 01:05:10,080
+which in computational biology and computational pharmacology are based on docking.
+
+1179
+01:05:10,080 --> 01:05:13,410
+Okay, so since I'm already running over time,
+
+1180
+01:05:13,410 --> 01:05:16,740
+I will wrap up here.
+
+1181
+01:05:16,740 --> 01:05:20,790
+So to summarize the lecture, um, today, uh,
+
+1182
+01:05:20,790 --> 01:05:23,550
+we talked about interesting applications of
+
+1183
+01:05:23,550 --> 01:05:28,500
+graph neural networks in computational biology and we touched two top- three topics.
+
+1184
+01:05:28,500 --> 01:05:32,505
+We talked about using GNNs for modelings in
+
+1185
+01:05:32,505 --> 01:05:38,385
+drug combinations and identifying adverse events and concerns regarding safety of drugs.
+
+1186
+01:05:38,385 --> 01:05:42,450
+We then talked about opportunities for- that GNNs present for,
+
+1187
+01:05:42,450 --> 01:05:46,740
+uh, finding diagnostic tests and classifying diseases.
+
+1188
+01:05:46,740 --> 01:05:52,335
+And finally, we talked about ways of- for using GNNs to identify, uh,
+
+1189
+01:05:52,335 --> 01:05:56,085
+promising therapeutic opportunities with a particular angle,
+
+1190
+01:05:56,085 --> 01:06:00,870
+which was that of opportunities for never before seen emerging diseases.
+
+1191
+01:06:00,870 --> 01:06:04,260
+So, uh, this concludes my last lecture here,
+
+1192
+01:06:04,260 --> 01:06:07,740
+I'm very happy to take questions. Thank you.
+
+1193
+01:06:07,740 --> 01:06:10,050
+Uh, thank you very much Marinka,
+
+1194
+01:06:10,050 --> 01:06:11,745
+uh, this was awesome.
+
+1195
+01:06:11,745 --> 01:06:16,710
+Um, would you want to comment a bit more about what do you think are, uh,
+
+1196
+01:06:16,710 --> 01:06:20,025
+big challenges, uh, in
+
+1197
+01:06:20,025 --> 01:06:25,365
+bio-medicine that are ready to be attacked by machine learning AI methods?
+
+1198
+01:06:25,365 --> 01:06:27,930
+Wow, that's a very- uh,
+
+1199
+01:06:27,930 --> 01:06:30,480
+that's a very broad question.
+
+1200
+01:06:30,480 --> 01:06:34,475
+So the way I would think of bio-medicine is,
+
+1201
+01:06:34,475 --> 01:06:36,290
+um, in the following way.
+
+1202
+01:06:36,290 --> 01:06:39,170
+So we can broadly think about certain core problems.
+
+1203
+01:06:39,170 --> 01:06:40,840
+So one core problem is,
+
+1204
+01:06:40,840 --> 01:06:44,265
+um, related to diagnosing patients.
+
+1205
+01:06:44,265 --> 01:06:50,190
+Before any kind of treatment can be identified or any kind of drug can be recommended,
+
+1206
+01:06:50,190 --> 01:06:52,470
+we first need to know what are,
+
+1207
+01:06:52,470 --> 01:06:54,675
+uh, what is the disease that the patient has.
+
+1208
+01:06:54,675 --> 01:06:58,155
+So a core challenging problem that is- that is ready to be
+
+1209
+01:06:58,155 --> 01:07:01,935
+tackled from the AML standpoint here is in particularly,
+
+1210
+01:07:01,935 --> 01:07:07,020
+um, uh, we need methods for rapid diagnosis of patients.
+
+1211
+01:07:07,020 --> 01:07:09,975
+In particular, those patients that have, uh,
+
+1212
+01:07:09,975 --> 01:07:14,805
+that are hard to diagnose and have many rare novel diseases.
+
+1213
+01:07:14,805 --> 01:07:17,670
+You might say, well, that might not be lots of patients,
+
+1214
+01:07:17,670 --> 01:07:23,654
+but it turns out that 20% of all patients in the US have these kinds of diseases.
+
+1215
+01:07:23,654 --> 01:07:27,735
+On average, a patient or patients we treat these rare diseases need
+
+1216
+01:07:27,735 --> 01:07:32,489
+to visit seven specialists before they are correctly diagnosed.
+
+1217
+01:07:32,489 --> 01:07:35,160
+That's again a huge problem for healthcare systems,
+
+1218
+01:07:35,160 --> 01:07:37,035
+for individuals, etc, etc.
+
+1219
+01:07:37,035 --> 01:07:42,299
+So now the data-sets are available to expedite the diagnosis tasks considerably.
+
+1220
+01:07:42,299 --> 01:07:45,870
+So I think that's one exciting problem in direction to pursue.
+
+1221
+01:07:45,870 --> 01:07:48,135
+Sorry, just to ask a follow up.
+
+1222
+01:07:48,135 --> 01:07:49,710
+So do you think of this as a
+
+1223
+01:07:49,710 --> 01:07:54,240
+active learning type problem where you also recommend what other tests,
+
+1224
+01:07:54,240 --> 01:07:58,360
+uh, to take so that you can diagnose the disease?
+
+1225
+01:07:59,540 --> 01:08:03,195
+Probably not. Because, uh,
+
+1226
+01:08:03,195 --> 01:08:08,220
+the problem is that if you think of- if you look at those patients,
+
+1227
+01:08:08,220 --> 01:08:10,875
+they already went to many, many tests.
+
+1228
+01:08:10,875 --> 01:08:13,650
+So they more or less, they took lots of different tests and we
+
+1229
+01:08:13,650 --> 01:08:16,665
+don't know what- what else to do.
+
+1230
+01:08:16,665 --> 01:08:21,825
+So it's not that much a question of identifying what lab tests should they conduct,
+
+1231
+01:08:21,825 --> 01:08:26,955
+but the problem is that you- we can ask ourselves why we cannot diagnose patients easily.
+
+1232
+01:08:26,955 --> 01:08:31,335
+The problem is that they are- they are conflicting in some way,
+
+1233
+01:08:31,335 --> 01:08:35,970
+meaning that a patient would come and would present- presents with
+
+1234
+01:08:35,970 --> 01:08:41,279
+phenotypes in symptoms that don't match with any known disease classification, right?
+
+1235
+01:08:41,279 --> 01:08:43,409
+So the way patient comes to the physician,
+
+1236
+01:08:43,410 --> 01:08:46,859
+the physician has a huge book then they- they- they- they- open and they say,
+
+1237
+01:08:46,859 --> 01:08:50,669
+"Okay, this is a- these are the symptoms that I would expect for disease A."
+
+1238
+01:08:50,670 --> 01:08:53,460
+And they compare that with patients in terms, there's no match.
+
+1239
+01:08:53,460 --> 01:08:55,800
+Okay, so no disease A, let's go to disease B,
+
+1240
+01:08:55,800 --> 01:09:00,600
+let's go to disease C. And the problem that it's hard to diagnose patients is that they
+
+1241
+01:09:00,600 --> 01:09:05,774
+somehow have a mixture of symptoms that don't align well with any of the disease.
+
+1242
+01:09:05,774 --> 01:09:10,319
+So it's- it's really more about essentially diagnosing them and the question is,
+
+1243
+01:09:10,319 --> 01:09:11,879
+what is a good diagnosis?
+
+1244
+01:09:11,880 --> 01:09:15,029
+Probably, it's not just saying a patient has disease A,
+
+1245
+01:09:15,029 --> 01:09:18,794
+but it has these- these set of diseases which
+
+1246
+01:09:18,795 --> 01:09:21,240
+or can be learned so kind of distribution
+
+1247
+01:09:21,240 --> 01:09:24,390
+over known diseases that capture the patient well.
+
+1248
+01:09:24,390 --> 01:09:25,210
+Uh-huh.
+
+1249
+01:09:25,210 --> 01:09:27,689
+It's just the first task of identifying what's-
+
+1250
+01:09:27,689 --> 01:09:31,169
+what's wrong with- with the individual, right?
+
+1251
+01:09:31,170 --> 01:09:32,520
+Immediate next question is,
+
+1252
+01:09:32,520 --> 01:09:35,580
+can we identify successful treatments?
+
+1253
+01:09:35,580 --> 01:09:38,880
+So here, all the questions related to drug discovery and
+
+1254
+01:09:38,880 --> 01:09:43,290
+development apply in the sense of can we re-purpose existing drugs?
+
+1255
+01:09:43,290 --> 01:09:47,310
+Can we identify combinations of drugs that might work for a patient?
+
+1256
+01:09:47,310 --> 01:09:49,680
+Can we do that in a more personalized way?
+
+1257
+01:09:49,680 --> 01:09:52,064
+And it's possible now to date,
+
+1258
+01:09:52,064 --> 01:09:57,615
+meaning that the data-sets are ready and available to move away from the one size fits
+
+1259
+01:09:57,615 --> 01:10:01,020
+all treatment recommendation which is still
+
+1260
+01:10:01,020 --> 01:10:04,530
+more or less the kind of work that I've been describing in the lecture today.
+
+1261
+01:10:04,530 --> 01:10:07,980
+It's essentially one size fits all treatment recommendation.
+
+1262
+01:10:07,980 --> 01:10:11,040
+But it's now possible to go to a more precise level,
+
+1263
+01:10:11,040 --> 01:10:13,155
+at least at the stage of patient groups.
+
+1264
+01:10:13,155 --> 01:10:16,395
+Meaning what would work for certain genders, certain ages,
+
+1265
+01:10:16,395 --> 01:10:18,555
+certain combinations of gender, age,
+
+1266
+01:10:18,555 --> 01:10:19,980
+or molecular markers.
+
+1267
+01:10:19,980 --> 01:10:25,365
+Um, I think then- there is another large group of
+
+1268
+01:10:25,365 --> 01:10:29,115
+very important high impactful question in biomedicine to ask,
+
+1269
+01:10:29,115 --> 01:10:33,270
+which are related to, um, uh,
+
+1270
+01:10:33,270 --> 01:10:36,900
+temporal aspects of how diseases progress and how to monitor the,
+
+1271
+01:10:36,900 --> 01:10:41,235
+uh, patients and help them improve their, uh, self-care.
+
+1272
+01:10:41,235 --> 01:10:43,320
+So that- that's- those are
+
+1273
+01:10:43,320 --> 01:10:47,565
+important questions to- to tackle for which datasets are available as well.
+
+1274
+01:10:47,565 --> 01:10:52,275
+And then close collaborations with health care systems would
+
+1275
+01:10:52,275 --> 01:10:56,910
+offer lots of opportunities for kind of, um, tedious work.
+
+1276
+01:10:56,910 --> 01:10:59,220
+[LAUGHTER] Tedious work would be optimizing clinical,
+
+1277
+01:10:59,220 --> 01:11:01,995
+uh, workflows, identifying medical errors.
+
+1278
+01:11:01,995 --> 01:11:07,020
+In, um, uh, then proposing systems that have,
+
+1279
+01:11:07,020 --> 01:11:12,150
+at the end that use active learning to then identify, uh,
+
+1280
+01:11:12,150 --> 01:11:13,500
+what- when to- um, uh,
+
+1281
+01:11:13,500 --> 01:11:17,670
+[NOISE] when to add another drug to patients,
+
+1282
+01:11:17,670 --> 01:11:19,245
+remove a drug from the patient,
+
+1283
+01:11:19,245 --> 01:11:23,205
+when to call the patient to come to the- to the clinic.
+
+1284
+01:11:23,205 --> 01:11:24,780
+Um, so those are
+
+1285
+01:11:24,780 --> 01:11:28,305
+all exciting questions and some new questions have emerged during the pandemic.
+
+1286
+01:11:28,305 --> 01:11:33,480
+And type- an example of a question that is new is that of,
+
+1287
+01:11:33,480 --> 01:11:37,455
+um, [NOISE] uh, remote medical visits.
+
+1288
+01:11:37,455 --> 01:11:42,675
+Um, that is particularly very exciting topic nowadays in the interface of,
+
+1289
+01:11:42,675 --> 01:11:44,895
+uh, AI in medical space.
+
+1290
+01:11:44,895 --> 01:11:47,580
+In particular, the question is,
+
+1291
+01:11:47,580 --> 01:11:54,135
+can we design various AI systems that could help, um, uh,
+
+1292
+01:11:54,135 --> 01:11:59,475
+doctors to perform visits remotely in the sense that,
+
+1293
+01:11:59,475 --> 01:12:02,895
+um, one would have, uh, uh, uh,
+
+1294
+01:12:02,895 --> 01:12:04,800
+it would be possible to take an image with, uh,
+
+1295
+01:12:04,800 --> 01:12:07,485
+the- the- of- um, a patient would take, um,
+
+1296
+01:12:07,485 --> 01:12:08,910
+an image with- with their app,
+
+1297
+01:12:08,910 --> 01:12:11,715
+and that image would be analyzed automatically, um,
+
+1298
+01:12:11,715 --> 01:12:14,820
+on the patient side and then communicated to the physician.
+
+1299
+01:12:14,820 --> 01:12:16,740
+Or and- and here in particular,
+
+1300
+01:12:16,740 --> 01:12:20,625
+active learning strategy is- is most important to ex- for example,
+
+1301
+01:12:20,625 --> 01:12:28,080
+identify what part of the data is most crucial to have in order to make diagnosis, right?
+
+1302
+01:12:28,080 --> 01:12:30,450
+And then can that part of the data being
+
+1303
+01:12:30,450 --> 01:12:34,695
+acquired without the patient necessarily visiting with [NOISE] hospital?
+
+1304
+01:12:34,695 --> 01:12:38,715
+And [OVERLAPPING] that would- that would enable,
+
+1305
+01:12:38,715 --> 01:12:41,790
+um, uh, remote diagno- diagnosis and management.
+
+1306
+01:12:41,790 --> 01:12:43,275
+Uh, this is super cool.
+
+1307
+01:12:43,275 --> 01:12:46,335
+So, uh, I guess a follow-up, uh, question, uh,
+
+1308
+01:12:46,335 --> 01:12:49,020
+is, uh, especially for the first few,
+
+1309
+01:12:49,020 --> 01:12:50,835
+uh, problems that you are mentioning.
+
+1310
+01:12:50,835 --> 01:12:52,530
+Why are graphs essentials?
+
+1311
+01:12:52,530 --> 01:12:54,240
+Like- like, uh, why are these,
+
+1312
+01:12:54,240 --> 01:12:56,160
+uh, graph problems and, you know,
+
+1313
+01:12:56,160 --> 01:12:58,890
+not natural language problems or,
+
+1314
+01:12:58,890 --> 01:13:00,465
+uh, you know, computer vision problems?
+
+1315
+01:13:00,465 --> 01:13:02,775
+Why do you think graphs are essential in this case?
+
+1316
+01:13:02,775 --> 01:13:04,025
+That's a great question.
+
+1317
+01:13:04,025 --> 01:13:06,860
+I tried to shed some light into this question at
+
+1318
+01:13:06,860 --> 01:13:11,120
+the very beginning of the talk- of the very beginning of this lecture.
+
+1319
+01:13:11,120 --> 01:13:14,480
+And, um, so the- the answer to your question would
+
+1320
+01:13:14,480 --> 01:13:18,305
+have- would have- would have be- would have two- two parts.
+
+1321
+01:13:18,305 --> 01:13:23,295
+The first part is that it's very easy to see that,
+
+1322
+01:13:23,295 --> 01:13:28,440
+um, most of the problems in biology are co-dependent,
+
+1323
+01:13:28,440 --> 01:13:33,494
+or in- in the sense of whatever task we pick up, typically,
+
+1324
+01:13:33,494 --> 01:13:36,690
+there- there are substantial relationships between
+
+1325
+01:13:36,690 --> 01:13:41,175
+important entities in that task that need to be modeled and decades
+
+1326
+01:13:41,175 --> 01:13:44,670
+of kind of fundamental biological research has
+
+1327
+01:13:44,670 --> 01:13:48,840
+shown that those dependencies are really important and cannot be ignored.
+
+1328
+01:13:48,840 --> 01:13:52,785
+So the relational structure of the dataset is very universal.
+
+1329
+01:13:52,785 --> 01:13:56,640
+So we have seen that for essentially all three problems discussed in this talk,
+
+1330
+01:13:56,640 --> 01:13:59,940
+that that's indeed the case and it has been
+
+1331
+01:13:59,940 --> 01:14:03,540
+shown over and over again experimentally from protein interaction network,
+
+1332
+01:14:03,540 --> 01:14:07,020
+CRISPR gene editing, disease diagnosis tasks, and so on.
+
+1333
+01:14:07,020 --> 01:14:10,500
+So- so these are relations are an important component of the dataset.
+
+1334
+01:14:10,500 --> 01:14:12,675
+So we would need to leverage models for for those tasks.
+
+1335
+01:14:12,675 --> 01:14:16,215
+Second is, not only that, um,
+
+1336
+01:14:16,215 --> 01:14:18,840
+these relations exist, but they are,
+
+1337
+01:14:18,840 --> 01:14:20,925
+in most cases really informative,
+
+1338
+01:14:20,925 --> 01:14:25,155
+sometimes even more informative than- than structural data,
+
+1339
+01:14:25,155 --> 01:14:27,765
+for example, for the problems of predicting,
+
+1340
+01:14:27,765 --> 01:14:30,420
+uh, proteins, uh, structure.
+
+1341
+01:14:30,420 --> 01:14:35,310
+The recent models put out by DeepMind actually leverage relational,
+
+1342
+01:14:35,310 --> 01:14:40,785
+uh, information about proteins to infer what their structure is, uh, about.
+
+1343
+01:14:40,785 --> 01:14:44,250
+And- and- and so not only the datasets, uh,
+
+1344
+01:14:44,250 --> 01:14:47,325
+and problems are- have strong relational structure,
+
+1345
+01:14:47,325 --> 01:14:49,980
+but that relational structure correlates well with
+
+1346
+01:14:49,980 --> 01:14:52,995
+predictive tasks that we want to produce.
+
+1347
+01:14:52,995 --> 01:14:56,205
+And so then some form of graph-based machine learning,
+
+1348
+01:14:56,205 --> 01:14:59,775
+um, seems very suitable.
+
+1349
+01:14:59,775 --> 01:15:02,640
+Uh, thank you- thank you so much.
+
+1350
+01:15:02,640 --> 01:15:03,960
+Uh, one more, uh,
+
+1351
+01:15:03,960 --> 01:15:07,245
+question, um, is about, uh,
+
+1352
+01:15:07,245 --> 01:15:12,720
+how effective has been to get the medical community to adapt to these methods?
+
+1353
+01:15:12,720 --> 01:15:15,035
+Um, and, uh, uh, yeah,
+
+1354
+01:15:15,035 --> 01:15:17,560
+so that I guess is, uh, the question.
+
+1355
+01:15:17,560 --> 01:15:19,440
+So that's a great question and
+
+1356
+01:15:19,440 --> 01:15:22,260
+the short answer to that is would be it's- it's challenging.
+
+1357
+01:15:22,260 --> 01:15:26,175
+[LAUGHTER] So first to ans- to answer that,
+
+1358
+01:15:26,175 --> 01:15:30,930
+by now we have seen several examples of successful deployments of,
+
+1359
+01:15:30,930 --> 01:15:33,195
+um, this algor- um,
+
+1360
+01:15:33,195 --> 01:15:35,085
+ML algorithms in general,
+
+1361
+01:15:35,085 --> 01:15:38,130
+in clinical settings as well as in large pharma companies.
+
+1362
+01:15:38,130 --> 01:15:39,885
+So that is primarily true,
+
+1363
+01:15:39,885 --> 01:15:42,345
+so far, for image-based models.
+
+1364
+01:15:42,345 --> 01:15:49,725
+Um, there aren't many or I'm not aware of really successful graph-based machine model,
+
+1365
+01:15:49,725 --> 01:15:54,195
+that is applied and used routinely in clinical contexts,
+
+1366
+01:15:54,195 --> 01:15:57,630
+or in, um, at least in public clinical settings.
+
+1367
+01:15:57,630 --> 01:16:01,155
+What- where- where we are currently at this stage is that
+
+1368
+01:16:01,155 --> 01:16:04,920
+typically individual researchers engage with collaborators would
+
+1369
+01:16:04,920 --> 01:16:09,600
+be physicians or clinical researchers and so on and they would work hand in hand on
+
+1370
+01:16:09,600 --> 01:16:12,840
+their particular problems and one could think of that as
+
+1371
+01:16:12,840 --> 01:16:16,650
+validations- experimental validation of predictions but currently,
+
+1372
+01:16:16,650 --> 01:16:20,025
+we are not there yet where these methods would be routinely used,
+
+1373
+01:16:20,025 --> 01:16:25,155
+where graph neural networks or graph ML would be routinely used in, um, in real-world.
+
+1374
+01:16:25,155 --> 01:16:26,670
+Why is that the case?
+
+1375
+01:16:26,670 --> 01:16:32,730
+So I would argue that the main gap that is significant that exists between say,
+
+1376
+01:16:32,730 --> 01:16:34,965
+models publishing Europe's papers,
+
+1377
+01:16:34,965 --> 01:16:37,874
+and then these models being deployed in real-world,
+
+1378
+01:16:37,874 --> 01:16:40,005
+is this lag debt.
+
+1379
+01:16:40,005 --> 01:16:44,159
+Typically, on- when we apply these models to datasets,
+
+1380
+01:16:44,159 --> 01:16:48,825
+they don't generate predictions that users would think of as actionable predictions.
+
+1381
+01:16:48,825 --> 01:16:50,670
+What that means is that,
+
+1382
+01:16:50,670 --> 01:16:55,845
+it's not enough to simply predict whether a drug will treat a disease.
+
+1383
+01:16:55,845 --> 01:16:58,740
+It's very hard to convince somebody that will follow up with
+
+1384
+01:16:58,740 --> 01:17:01,530
+very expensive downstream experiments in the lab
+
+1385
+01:17:01,530 --> 01:17:04,785
+by this high level pointwise based prediction.
+
+1386
+01:17:04,785 --> 01:17:09,510
+So what- what I didn't discuss in the context of COVID repurposing project,
+
+1387
+01:17:09,510 --> 01:17:13,065
+it was extraordinarily important to essentially provide explanations,
+
+1388
+01:17:13,065 --> 01:17:15,870
+allow users to provide feedback to the model,
+
+1389
+01:17:15,870 --> 01:17:19,500
+and essentially build some trust and confidence in the model and
+
+1390
+01:17:19,500 --> 01:17:23,805
+so that has now given rise to this- some relative term of trustworthy machine learning,
+
+1391
+01:17:23,805 --> 01:17:27,330
+which I think has- has some bearing in the context of,
+
+1392
+01:17:27,330 --> 01:17:30,015
+uh, um, biomedical applications.
+
+1393
+01:17:30,015 --> 01:17:32,940
+Uh, thank you. Uh, then,
+
+1394
+01:17:32,940 --> 01:17:34,800
+uh, uh, two more quick questions.
+
+1395
+01:17:34,800 --> 01:17:39,495
+Uh, could you elaborate on the node feature engineering for drug- drug interaction,
+
+1396
+01:17:39,495 --> 01:17:42,105
+uh, the drug combination in the first,
+
+1397
+01:17:42,105 --> 01:17:43,530
+uh, part of your talk?
+
+1398
+01:17:43,530 --> 01:17:45,315
+Um, and then we have one more.
+
+1399
+01:17:45,315 --> 01:17:49,545
+Yes. So, uh, for node features in the first part of the talk,
+
+1400
+01:17:49,545 --> 01:17:52,260
+we had node features for drugs and for proteins.
+
+1401
+01:17:52,260 --> 01:17:55,500
+Node features for drugs were, uh, SMILES
+
+1402
+01:17:55,500 --> 01:17:59,895
+fingerprints of, um, the drugs and, um,
+
+1403
+01:17:59,895 --> 01:18:02,550
+they were- there were not manually engineered by- by us,
+
+1404
+01:18:02,550 --> 01:18:07,530
+but this is a very common descriptor of drug structure that is used in cheminformatics.
+
+1405
+01:18:07,530 --> 01:18:11,280
+It was retrieved from a database called DrugBank.
+
+1406
+01:18:11,280 --> 01:18:15,900
+Uh, for protein nodes, the node features were
+
+1407
+01:18:15,900 --> 01:18:19,710
+binary vectors that contained information
+
+1408
+01:18:19,710 --> 01:18:23,715
+about what molecular pathways those proteins are involved in.
+
+1409
+01:18:23,715 --> 01:18:28,620
+For example, if we know that a protein A is- uh,
+
+1410
+01:18:28,620 --> 01:18:30,975
+participates in a cell apoptosis pathway,
+
+1411
+01:18:30,975 --> 01:18:34,920
+this is a pathway that's incredibly important because it basically tells us- it-
+
+1412
+01:18:34,920 --> 01:18:39,015
+it has a control over when a cell should die or stay alive, right?
+
+1413
+01:18:39,015 --> 01:18:41,715
+So if a protein is a member of that pathway,
+
+1414
+01:18:41,715 --> 01:18:45,300
+then there would be a- a simple indicator one at that,
+
+1415
+01:18:45,300 --> 01:18:49,605
+uh, in particular- in the relevant dimension of the protein feature vector.
+
+1416
+01:18:49,605 --> 01:18:52,035
+All right, thank you. And then,
+
+1417
+01:18:52,035 --> 01:18:53,535
+uh, uh, one, uh, I'll,
+
+1418
+01:18:53,535 --> 01:18:54,885
+uh, next question is about,
+
+1419
+01:18:54,885 --> 01:18:56,730
+uh, the G-Meta learning,
+
+1420
+01:18:56,730 --> 01:18:59,250
+how, uh, uh, somebody is interested,
+
+1421
+01:18:59,250 --> 01:19:03,225
+how does it differ from Bayesian network learning and the EM algorithms?
+
+1422
+01:19:03,225 --> 01:19:05,415
+Could you discuss pros and cons?
+
+1423
+01:19:05,415 --> 01:19:09,210
+Oh, I see. Interesting. So we actually didn't
+
+1424
+01:19:09,210 --> 01:19:13,680
+consider any Bayesian network learning method for the problem of- uh, of G-Meta.
+
+1425
+01:19:13,680 --> 01:19:16,095
+We compared it primarily with, uh,
+
+1426
+01:19:16,095 --> 01:19:17,655
+current work on- um,
+
+1427
+01:19:17,655 --> 01:19:21,075
+that is graph neural network-based for few-shot learning.
+
+1428
+01:19:21,075 --> 01:19:25,965
+I- I can clearly see from this question that it might be interesting to use, um,
+
+1429
+01:19:25,965 --> 01:19:32,340
+some Bayesian model and then learn a distribution of drug effectiveness across diseases,
+
+1430
+01:19:32,340 --> 01:19:37,830
+and then use that to sample a new disease that would approximate COVID-19.
+
+1431
+01:19:37,830 --> 01:19:44,490
+Um, the pros of that would be that using the Bayesian models would perhaps,
+
+1432
+01:19:44,490 --> 01:19:47,205
+uh, give us a better ranking of drugs.
+
+1433
+01:19:47,205 --> 01:19:49,920
+Because ranking of drugs for that problem was determined on
+
+1434
+01:19:49,920 --> 01:19:52,635
+predicted scores returned by GNNs,
+
+1435
+01:19:52,635 --> 01:19:53,790
+and we know- uh,
+
+1436
+01:19:53,790 --> 01:19:55,620
+and returned by G-Meta in particular.
+
+1437
+01:19:55,620 --> 01:19:57,660
+Uh, from several applications,
+
+1438
+01:19:57,660 --> 01:20:00,570
+we know that often the scores that are returned by the model are
+
+1439
+01:20:00,570 --> 01:20:04,080
+not necessarily well calibrated or indicative of probabilities.
+
+1440
+01:20:04,080 --> 01:20:08,160
+So I could imagine that the Bayesian network model might work better for that.
+
+1441
+01:20:08,160 --> 01:20:09,720
+So that would be the pros.
+
+1442
+01:20:09,720 --> 01:20:12,840
+The cons of that, uh, would be that,
+
+1443
+01:20:12,840 --> 01:20:15,600
+um, what he found in the context of,
+
+1444
+01:20:15,600 --> 01:20:17,985
+uh, COVID repurposing is that, uh,
+
+1445
+01:20:17,985 --> 01:20:23,760
+the G-Meta or graph neural network-based models when implemented with very recent,
+
+1446
+01:20:23,760 --> 01:20:27,510
+um, neighborhood sampling strategies from like Cluster-GCN,
+
+1447
+01:20:27,510 --> 01:20:29,670
+or GraphSAGE for example, in other,
+
+1448
+01:20:29,670 --> 01:20:32,850
+they can scale very well to very large datasets,
+
+1449
+01:20:32,850 --> 01:20:34,590
+um, including, for example,
+
+1450
+01:20:34,590 --> 01:20:36,690
+one dataset where we looked at, um,
+
+1451
+01:20:36,690 --> 01:20:38,130
+information not only for humans,
+
+1452
+01:20:38,130 --> 01:20:41,160
+but from- from our 1,800 other [NOISE] species,
+
+1453
+01:20:41,160 --> 01:20:46,490
+and try to translate information from other species and model organisms like zebra,
+
+1454
+01:20:46,490 --> 01:20:47,945
+fish, and monkeys to human.
+
+1455
+01:20:47,945 --> 01:20:51,440
+And I- um, at least in my experience,
+
+1456
+01:20:51,440 --> 01:20:55,615
+in- GNN models scale better to a larger dataset, than some Bayesian models.
+
+1457
+01:20:55,615 --> 01:20:57,600
+Thank you so much, uh,
+
+1458
+01:20:57,600 --> 01:20:58,650
+[NOISE] Marinka for, uh,
+
+1459
+01:20:58,650 --> 01:21:00,105
+the excellent lecture and, uh,
+
+1460
+01:21:00,105 --> 01:21:02,805
+thank you everyone for asking great questions.
+
+1461
+01:21:02,805 --> 01:21:05,340
+Uh, appreciate it a lot. Uh, thank you so much,
+
+1462
+01:21:05,340 --> 01:21:08,025
+and, uh, uh, all the best to Boston.
+
+1463
+01:21:08,025 --> 01:21:10,380
+Great. Thank you for inviting me.
+
+1464
+01:21:10,380 --> 01:21:12,120
+Yeah, thank you. Bye bye.
+
+1465
+01:21:12,120 --> 01:21:12,795
+Bye.
+
+1466
+01:21:12,795 --> 01:21:14,320
+Bye.
+

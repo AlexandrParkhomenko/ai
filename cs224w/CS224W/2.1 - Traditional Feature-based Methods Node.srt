@@ -1,0 +1,2224 @@
+1
+00:00:04,160 --> 00:00:09,710
+Welcome to the class. Today we are going to talk about traditional methods for,
+
+2
+00:00:09,710 --> 00:00:11,460
+uh, machine learning in graphs.
+
+3
+00:00:11,460 --> 00:00:13,049
+Um, and in particular,
+
+4
+00:00:13,049 --> 00:00:15,765
+what we are going to investigate is, uh,
+
+5
+00:00:15,765 --> 00:00:17,520
+different levels of tasks,
+
+6
+00:00:17,520 --> 00:00:19,305
+uh, that we can have in the graph.
+
+7
+00:00:19,305 --> 00:00:22,980
+In particular, we can think about the node-level prediction tasks.
+
+8
+00:00:22,980 --> 00:00:27,510
+We can think about the link-level or edge-level prediction tasks
+
+9
+00:00:27,510 --> 00:00:32,320
+that consider pairs of nodes and tries to predict whether the pair is connected or not.
+
+10
+00:00:32,320 --> 00:00:34,784
+And we can think about graph-level prediction,
+
+11
+00:00:34,784 --> 00:00:38,135
+where we wanna make a prediction for an entire graph.
+
+12
+00:00:38,135 --> 00:00:40,220
+For example, for an entire uh,
+
+13
+00:00:40,220 --> 00:00:44,425
+molecule or for a- for an entire uh, piece of code.
+
+14
+00:00:44,425 --> 00:00:48,200
+The traditional machine learning pipeline um, eh,
+
+15
+00:00:48,200 --> 00:00:51,485
+is all about designing proper uh, features.
+
+16
+00:00:51,485 --> 00:00:54,980
+And here we are going to think of two types of features.
+
+17
+00:00:54,980 --> 00:00:57,410
+We are going to assume that nodes already
+
+18
+00:00:57,410 --> 00:01:00,620
+have some types of attributes associated with them.
+
+19
+00:01:00,620 --> 00:01:02,930
+So this would mean, for example, if this is a protein,
+
+20
+00:01:02,930 --> 00:01:04,550
+protein interaction network uh,
+
+21
+00:01:04,550 --> 00:01:06,810
+proteins have different um,
+
+22
+00:01:06,810 --> 00:01:10,550
+chemical structure, have different chemical properties and we can think of these
+
+23
+00:01:10,550 --> 00:01:14,660
+as attributes attached to the nodes uh, of the network.
+
+24
+00:01:14,660 --> 00:01:18,455
+At the same time, what we also wanna do is we wanna be able to
+
+25
+00:01:18,455 --> 00:01:23,360
+create additional features that will describe how um,
+
+26
+00:01:23,360 --> 00:01:25,370
+this particular node is uh,
+
+27
+00:01:25,370 --> 00:01:27,620
+positioned in the rest of the network,
+
+28
+00:01:27,620 --> 00:01:30,470
+and what is its local network structure.
+
+29
+00:01:30,470 --> 00:01:35,140
+And these additional features that describe the topology of the network of the graph uh,
+
+30
+00:01:35,140 --> 00:01:38,105
+will allow us to make more accurate predictions.
+
+31
+00:01:38,105 --> 00:01:43,220
+So this means that we will always be thinking about two types of uh, features,
+
+32
+00:01:43,220 --> 00:01:45,950
+structural features, as well as features
+
+33
+00:01:45,950 --> 00:01:49,555
+describing the attributes and properties uh, of the nodes.
+
+34
+00:01:49,555 --> 00:01:51,405
+So the goal in uh,
+
+35
+00:01:51,405 --> 00:01:54,320
+in what we wanna do today is especially focused
+
+36
+00:01:54,320 --> 00:01:57,170
+on structural features that will describe um,
+
+37
+00:01:57,170 --> 00:02:01,250
+the structure of a link in the broader surrounding of the network,
+
+38
+00:02:01,250 --> 00:02:04,370
+that will describe the structure of the um,
+
+39
+00:02:04,370 --> 00:02:07,535
+network neighborhood around a given node of interest,
+
+40
+00:02:07,535 --> 00:02:12,485
+as well as features that are going to describe the structure of the entire uh,
+
+41
+00:02:12,485 --> 00:02:14,840
+graph so that we can then feed these features
+
+42
+00:02:14,840 --> 00:02:18,130
+into machine learning models uh, to make predictions.
+
+43
+00:02:18,130 --> 00:02:22,710
+Traditionally um, in traditional machine learning pipelines, we have two steps.
+
+44
+00:02:22,710 --> 00:02:26,855
+In the first step, we are going to take our data points, nodes, links,
+
+45
+00:02:26,855 --> 00:02:29,790
+entire graphs um, represent them um,
+
+46
+00:02:29,790 --> 00:02:31,955
+with vectors of features.
+
+47
+00:02:31,955 --> 00:02:36,230
+And then on top of that, we are going then to train a classical machine learning uh,
+
+48
+00:02:36,230 --> 00:02:38,540
+a classifier or a model, for example,
+
+49
+00:02:38,540 --> 00:02:42,270
+a random forest, perhaps a support vector machine uh,
+
+50
+00:02:42,270 --> 00:02:44,160
+a feed-forward neural network um,
+
+51
+00:02:44,160 --> 00:02:45,555
+something of that sort.
+
+52
+00:02:45,555 --> 00:02:47,240
+So that then in the future,
+
+53
+00:02:47,240 --> 00:02:50,810
+we are able to apply this model where a new node,
+
+54
+00:02:50,810 --> 00:02:53,060
+link, or graph uh, appears.
+
+55
+00:02:53,060 --> 00:02:55,220
+Uh, we can obtain its features um,
+
+56
+00:02:55,220 --> 00:02:56,540
+and make a prediction.
+
+57
+00:02:56,540 --> 00:02:58,310
+So this is the setting uh,
+
+58
+00:02:58,310 --> 00:03:02,155
+generally in which we are going to um, operate today.
+
+59
+00:03:02,155 --> 00:03:03,710
+So in this lecture,
+
+60
+00:03:03,710 --> 00:03:05,330
+we are going to focus as I said,
+
+61
+00:03:05,330 --> 00:03:09,440
+on feature design, where we are going to use effective features uh,
+
+62
+00:03:09,440 --> 00:03:13,910
+over the graphs, which will be the key to obtain good predictive performance,
+
+63
+00:03:13,910 --> 00:03:15,800
+because you wanna capture the structure,
+
+64
+00:03:15,800 --> 00:03:17,885
+the relational structure of the network.
+
+65
+00:03:17,885 --> 00:03:22,930
+Um, and traditional machine learning pipelines use hand-designed, handcrafted features.
+
+66
+00:03:22,930 --> 00:03:26,750
+And today's lecture will be all about these handcrafted features.
+
+67
+00:03:26,750 --> 00:03:29,480
+And we are going to split the lecture into three parts.
+
+68
+00:03:29,480 --> 00:03:32,090
+First, we are going to talk about features that describe
+
+69
+00:03:32,090 --> 00:03:35,420
+individual nodes and we can use them for node-level prediction,
+
+70
+00:03:35,420 --> 00:03:39,770
+then we are going to move and talk about features that can des- describe a pair of nodes.
+
+71
+00:03:39,770 --> 00:03:43,310
+And you can think of these as features for link-level prediction,
+
+72
+00:03:43,310 --> 00:03:45,740
+and then we're also going to talk about features and
+
+73
+00:03:45,740 --> 00:03:48,080
+approaches that describe topology structure of
+
+74
+00:03:48,080 --> 00:03:53,555
+entire graphs so that different graphs can be compared um, and uh, classified.
+
+75
+00:03:53,555 --> 00:03:59,755
+And for simplicity, we are going to- to- today focus on uh, undirected graphs.
+
+76
+00:03:59,755 --> 00:04:01,880
+So the goal will be,
+
+77
+00:04:01,880 --> 00:04:06,065
+how do we make predictions for a set of objects of interest where
+
+78
+00:04:06,065 --> 00:04:10,490
+the design choice will be that our feature vector will be a d-dimensional vector?
+
+79
+00:04:10,490 --> 00:04:13,160
+Uh, objects that we are interested in will be nodes,
+
+80
+00:04:13,160 --> 00:04:15,665
+edges, sets of nodes uh,
+
+81
+00:04:15,665 --> 00:04:17,959
+meaning entire graphs um,
+
+82
+00:04:17,959 --> 00:04:20,989
+and the objective function we'll be thinking about is,
+
+83
+00:04:20,990 --> 00:04:22,415
+what are the labels uh,
+
+84
+00:04:22,415 --> 00:04:24,680
+we are trying to predict?
+
+85
+00:04:24,680 --> 00:04:29,390
+So the way we can think of this is that we are given a graph as a set of vertices,
+
+86
+00:04:29,390 --> 00:04:30,490
+as a set of edges,
+
+87
+00:04:30,490 --> 00:04:32,780
+and we wanna learn a function that for example,
+
+88
+00:04:32,780 --> 00:04:38,720
+for every node will give- will give us a real valued prediction um, which for example,
+
+89
+00:04:38,720 --> 00:04:40,955
+would be useful if we're trying to predict uh,
+
+90
+00:04:40,955 --> 00:04:44,780
+edge of uh, every node in our, uh social network.
+
+91
+00:04:44,780 --> 00:04:47,450
+And the question is, how can we learn this function
+
+92
+00:04:47,450 --> 00:04:50,810
+f that is going to make uh, these uh, predictions?
+
+93
+00:04:50,810 --> 00:04:53,390
+So first, we are going to talk about
+
+94
+00:04:53,390 --> 00:04:58,015
+node-level tasks and features that describe individual nodes.
+
+95
+00:04:58,015 --> 00:05:00,920
+The way we are thinking of this is that we are thinking of
+
+96
+00:05:00,920 --> 00:05:04,250
+this in what is known as semi-supervised uh,
+
+97
+00:05:04,250 --> 00:05:07,010
+case, where we are given a network,
+
+98
+00:05:07,010 --> 00:05:11,660
+we are given a couple of nodes that are labeled with different colors, for example,
+
+99
+00:05:11,660 --> 00:05:17,705
+in this case, and the goal is to predict the colors of un- uh, un-uncolored uh, nodes.
+
+100
+00:05:17,705 --> 00:05:19,490
+And if you look at this example here,
+
+101
+00:05:19,490 --> 00:05:22,040
+so given the red and green nodes,
+
+102
+00:05:22,040 --> 00:05:24,320
+we wanna color uh, the gray nodes.
+
+103
+00:05:24,320 --> 00:05:27,110
+And you know, if you stir a bit at this,
+
+104
+00:05:27,110 --> 00:05:29,210
+the rule here is that um,
+
+105
+00:05:29,210 --> 00:05:33,575
+green nodes should have at least two a- edges adjacent to them,
+
+106
+00:05:33,575 --> 00:05:36,650
+while red nodes have at least one edge uh,
+
+107
+00:05:36,650 --> 00:05:40,790
+have e- exactly one edge at um, uh, connected to them.
+
+108
+00:05:40,790 --> 00:05:43,690
+So if we are now able to describe um,
+
+109
+00:05:43,690 --> 00:05:46,595
+the node degree of every node um,
+
+110
+00:05:46,595 --> 00:05:49,100
+as a- as a structural feature uh, in this graph,
+
+111
+00:05:49,100 --> 00:05:51,860
+then we will be able to learn the model that in this uh,
+
+112
+00:05:51,860 --> 00:05:54,290
+simple case, correctly colors uh,
+
+113
+00:05:54,290 --> 00:05:56,225
+the nodes uh, of the graph.
+
+114
+00:05:56,225 --> 00:06:02,510
+So we need features that will describe this particular topological uh, pattern.
+
+115
+00:06:02,510 --> 00:06:06,845
+So the goal is to characterize the structure o- um,
+
+116
+00:06:06,845 --> 00:06:08,840
+of the network around a given node,
+
+117
+00:06:08,840 --> 00:06:09,980
+as well as in some sense,
+
+118
+00:06:09,980 --> 00:06:14,210
+the position, the location of the node in the broader network context.
+
+119
+00:06:14,210 --> 00:06:17,030
+And we are going to talk about four different uh,
+
+120
+00:06:17,030 --> 00:06:18,940
+approaches that allow us to do this.
+
+121
+00:06:18,940 --> 00:06:23,760
+First, we can always use the degree of the node as a characterization of um,
+
+122
+00:06:23,760 --> 00:06:25,810
+uh, structure of the network around the node,
+
+123
+00:06:25,810 --> 00:06:27,979
+then we can think about the importance,
+
+124
+00:06:27,979 --> 00:06:30,860
+the position of the node through the notion of uh,
+
+125
+00:06:30,860 --> 00:06:34,025
+node centrality measures, and we are going to review a few.
+
+126
+00:06:34,025 --> 00:06:36,365
+Then we will talk about um,
+
+127
+00:06:36,365 --> 00:06:38,795
+characterizing the local network structure.
+
+128
+00:06:38,795 --> 00:06:40,880
+Not only how many uh, uh,
+
+129
+00:06:40,880 --> 00:06:42,590
+edges a given node has,
+
+130
+00:06:42,590 --> 00:06:44,850
+but also what is the structure of the node around it?
+
+131
+00:06:44,850 --> 00:06:47,434
+First, we are going to talk about clustering coefficient,
+
+132
+00:06:47,434 --> 00:06:52,310
+and then we are going to generalize this to the concept known uh, graphlets.
+
+133
+00:06:52,310 --> 00:06:54,860
+So first, let's talk about the node degree.
+
+134
+00:06:54,860 --> 00:06:56,350
+We have already introduced it.
+
+135
+00:06:56,350 --> 00:06:57,680
+There is nothing special,
+
+136
+00:06:57,680 --> 00:06:59,470
+but it is a very useful feature,
+
+137
+00:06:59,470 --> 00:07:01,130
+and many times it is um,
+
+138
+00:07:01,130 --> 00:07:04,010
+quite important where basically we will say the-
+
+139
+00:07:04,010 --> 00:07:07,280
+we capture the- s- the structure of the node uh,
+
+140
+00:07:07,280 --> 00:07:12,420
+um, v in the network with the number of edges that this node has.
+
+141
+00:07:12,420 --> 00:07:13,880
+Um, and uh, you know,
+
+142
+00:07:13,880 --> 00:07:15,920
+the drawback of this is that it treats uh,
+
+143
+00:07:15,920 --> 00:07:17,255
+all the neighbors equally.
+
+144
+00:07:17,255 --> 00:07:19,520
+But in- and in the sense, for example,
+
+145
+00:07:19,520 --> 00:07:23,780
+nodes with the same degree are indistinguishable even though if they may be in uh,
+
+146
+00:07:23,780 --> 00:07:25,220
+different parts of the network.
+
+147
+00:07:25,220 --> 00:07:26,570
+So for example, you know,
+
+148
+00:07:26,570 --> 00:07:29,450
+the node C and the node E have the same degree,
+
+149
+00:07:29,450 --> 00:07:31,040
+so our classifier uh,
+
+150
+00:07:31,040 --> 00:07:34,340
+won't be able to distinguish them or perhaps node A, uh,
+
+151
+00:07:34,340 --> 00:07:38,270
+H, E, uh, uh, F and G also have all degree one.
+
+152
+00:07:38,270 --> 00:07:40,040
+So they will all have the same feature value,
+
+153
+00:07:40,040 --> 00:07:43,190
+so the- our simple uh, machine learning model would uh,
+
+154
+00:07:43,190 --> 00:07:46,175
+that would only use the node degree as a feature would we only-
+
+155
+00:07:46,175 --> 00:07:48,940
+we'd- would be able to predict the same value uh,
+
+156
+00:07:48,940 --> 00:07:52,295
+or would be forced to predict the same value for all these uh,
+
+157
+00:07:52,295 --> 00:07:55,240
+different nodes because they have the same degree.
+
+158
+00:07:55,240 --> 00:08:00,165
+So um, to generalize bi- a bit this very simple notion,
+
+159
+00:08:00,165 --> 00:08:03,075
+we can then start thinking about uh, you know,
+
+160
+00:08:03,075 --> 00:08:06,320
+node degree only counts neighbors of the node and uh,
+
+161
+00:08:06,320 --> 00:08:09,635
+without capturing, let's say their importance or who they really are.
+
+162
+00:08:09,635 --> 00:08:14,130
+So the node centrality measures try to uh,
+
+163
+00:08:14,130 --> 00:08:18,980
+capture or characterize this notion of how important is the node in- in the graph?
+
+164
+00:08:18,980 --> 00:08:22,190
+And there are many different ways how we can capture um,
+
+165
+00:08:22,190 --> 00:08:25,070
+or model this notion of importance.
+
+166
+00:08:25,070 --> 00:08:29,510
+I'm quickly going to introduce um, Eigenvector Centrality um,
+
+167
+00:08:29,510 --> 00:08:31,370
+which we are going to further uh,
+
+168
+00:08:31,370 --> 00:08:33,440
+work on and extend to the uh,
+
+169
+00:08:33,440 --> 00:08:36,620
+seminal PageRank algorithm uh, later uh.
+
+170
+00:08:36,620 --> 00:08:38,335
+In the- in the course,
+
+171
+00:08:38,335 --> 00:08:43,000
+I'm going to talk about between the centrality that will tell us how- uh,
+
+172
+00:08:43,000 --> 00:08:45,910
+how important connector a given node is,
+
+173
+00:08:45,910 --> 00:08:48,790
+as well as closeness centrality that we'll try to capture
+
+174
+00:08:48,790 --> 00:08:52,495
+how close to the center of the network a given node is.
+
+175
+00:08:52,495 --> 00:08:55,450
+Um, and of course, there are many other, um,
+
+176
+00:08:55,450 --> 00:08:58,900
+measures of, uh, centrality or importance.
+
+177
+00:08:58,900 --> 00:09:02,425
+So first, let's define what is an eigenvector centrality.
+
+178
+00:09:02,425 --> 00:09:06,370
+We say that node v is as important if it
+
+179
+00:09:06,370 --> 00:09:10,555
+is su- surrounded by important neighboring nodes u.
+
+180
+00:09:10,555 --> 00:09:16,345
+So the idea then is that we say that the importance of a given node v is simply, um,
+
+181
+00:09:16,345 --> 00:09:18,835
+normalized divided by 1 over Lambda,
+
+182
+00:09:18,835 --> 00:09:22,195
+sum over the importances of its neighbors,
+
+183
+00:09:22,195 --> 00:09:23,665
+uh, uh, in the network.
+
+184
+00:09:23,665 --> 00:09:26,785
+So the idea is, the more important my friends are,
+
+185
+00:09:26,785 --> 00:09:29,635
+the higher my own importance, uh, is.
+
+186
+00:09:29,635 --> 00:09:31,390
+And if you-if you look at this,
+
+187
+00:09:31,390 --> 00:09:32,740
+um, and you've write it down,
+
+188
+00:09:32,740 --> 00:09:35,140
+you can write this in terms of, uh,
+
+189
+00:09:35,140 --> 00:09:36,400
+a simple, uh, uh,
+
+190
+00:09:36,400 --> 00:09:39,445
+matrix equation where basically, Lambda is this,
+
+191
+00:09:39,445 --> 00:09:42,490
+uh, uh, positive constant like a normalizing factor,
+
+192
+00:09:42,490 --> 00:09:45,160
+c is the vector of our centrality measures,
+
+193
+00:09:45,160 --> 00:09:47,845
+A is now, uh, graph adjacency matrix,
+
+194
+00:09:47,845 --> 00:09:50,740
+and c is again that vector of centrality measures.
+
+195
+00:09:50,740 --> 00:09:53,275
+And if you write this in this type of, uh, forum,
+
+196
+00:09:53,275 --> 00:09:55,465
+then you see that this is a simple, um,
+
+197
+00:09:55,465 --> 00:09:58,240
+eigenvector, eigenvalue, uh, equation.
+
+198
+00:09:58,240 --> 00:10:00,235
+So what this means is that, um,
+
+199
+00:10:00,235 --> 00:10:02,125
+the solution to this, uh, uh,
+
+200
+00:10:02,125 --> 00:10:05,110
+problem, uh, here- to this equation here, um,
+
+201
+00:10:05,110 --> 00:10:08,440
+is, um, um, this is solved by the, uh,
+
+202
+00:10:08,440 --> 00:10:12,805
+la- uh, by the given eigenvalue and the associated eigenvector.
+
+203
+00:10:12,805 --> 00:10:16,420
+And what people take as, uh, uh,
+
+204
+00:10:16,420 --> 00:10:18,910
+measure of nodes centrality is- is
+
+205
+00:10:18,910 --> 00:10:23,170
+the eigenvector that is associated with the largest, um, eigenvalue.
+
+206
+00:10:23,170 --> 00:10:27,880
+So in this case, if eigen- largest eigenvalue is Lambda max, um, be- uh,
+
+207
+00:10:27,880 --> 00:10:30,190
+by Perron–Frobenius theorem, uh,
+
+208
+00:10:30,190 --> 00:10:32,695
+because we are thinking of the graph is undirected,
+
+209
+00:10:32,695 --> 00:10:34,975
+it is always positive, uh, and unique.
+
+210
+00:10:34,975 --> 00:10:39,010
+Then, uh, the associated leading eigenvector c_max
+
+211
+00:10:39,010 --> 00:10:43,270
+is usually used as a centrality score for the nodes in the network.
+
+212
+00:10:43,270 --> 00:10:44,545
+And again, um, uh,
+
+213
+00:10:44,545 --> 00:10:48,060
+the intuition is that the importance of a node is the sum,
+
+214
+00:10:48,060 --> 00:10:52,140
+the normalized sum of the importances of the nodes that it links to.
+
+215
+00:10:52,140 --> 00:10:55,995
+So it is not about how many connections you have but it is, uh,
+
+216
+00:10:55,995 --> 00:10:59,580
+how, um, who these connections point to and how important,
+
+217
+00:10:59,580 --> 00:11:00,855
+uh, are those people.
+
+218
+00:11:00,855 --> 00:11:02,700
+So this is the notion of, uh,
+
+219
+00:11:02,700 --> 00:11:06,635
+nodes centrality captured by the eigenvector, uh, centrality.
+
+220
+00:11:06,635 --> 00:11:09,040
+A different type of centrality that has
+
+221
+00:11:09,040 --> 00:11:13,075
+a very different intuition and captures a different aspect of the,
+
+222
+00:11:13,075 --> 00:11:18,895
+uh, nodes position in the network is- is what is called betweenness centrality.
+
+223
+00:11:18,895 --> 00:11:24,400
+And betweenness centrality says that node is important if it lies on many shortest paths,
+
+224
+00:11:24,400 --> 00:11:27,025
+um, between, uh, other pairs of nodes.
+
+225
+00:11:27,025 --> 00:11:31,390
+So the idea is if a node is an important connector, an important bridge,
+
+226
+00:11:31,390 --> 00:11:33,700
+an important kind of transit hub,
+
+227
+00:11:33,700 --> 00:11:36,520
+then it has a high importance.
+
+228
+00:11:36,520 --> 00:11:38,365
+Um, the way we compute, um,
+
+229
+00:11:38,365 --> 00:11:41,050
+betweenness centrality is to say betweenness centrality of
+
+230
+00:11:41,050 --> 00:11:45,190
+a given node v is a summation over pairs of nodes, uh,
+
+231
+00:11:45,190 --> 00:11:49,900
+s and t. And we count how many shortest paths between s and t,
+
+232
+00:11:49,900 --> 00:11:53,005
+uh, pass through the node, uh, v,
+
+233
+00:11:53,005 --> 00:11:57,100
+and we normalize that by the total number of shortest paths,
+
+234
+00:11:57,100 --> 00:11:59,140
+um, of the same length between, uh,
+
+235
+00:11:59,140 --> 00:12:01,705
+s and t. So essentially, um,
+
+236
+00:12:01,705 --> 00:12:04,480
+the more shorter paths a given node,
+
+237
+00:12:04,480 --> 00:12:06,025
+uh, appears on, uh,
+
+238
+00:12:06,025 --> 00:12:07,420
+the more important it is.
+
+239
+00:12:07,420 --> 00:12:12,430
+So it means that this kind of measures how good a connector or how good of a transit,
+
+240
+00:12:12,430 --> 00:12:14,110
+uh, point a given node is.
+
+241
+00:12:14,110 --> 00:12:17,740
+So if we look at this example that- that we have here, for example,
+
+242
+00:12:17,740 --> 00:12:19,180
+between a centrality of these,
+
+243
+00:12:19,180 --> 00:12:20,440
+uh, nodes that are,
+
+244
+00:12:20,440 --> 00:12:23,830
+uh, on the- uh, uh, on the edge of the network like A, B,
+
+245
+00:12:23,830 --> 00:12:25,105
+and E is zero,
+
+246
+00:12:25,105 --> 00:12:27,670
+but the- the betweenness centrality of node,
+
+247
+00:12:27,670 --> 00:12:30,100
+uh, uh, C equals to three,
+
+248
+00:12:30,100 --> 00:12:34,510
+because the shortest path from A to B pass through C,
+
+249
+00:12:34,510 --> 00:12:35,980
+a shortest path from, uh,
+
+250
+00:12:35,980 --> 00:12:38,230
+A to D, uh, passes through C,
+
+251
+00:12:38,230 --> 00:12:40,000
+and a shortest path between,
+
+252
+00:12:40,000 --> 00:12:41,860
+uh, A and E, again,
+
+253
+00:12:41,860 --> 00:12:46,915
+passes through C. So these are the three shortest paths that pass through the node C,
+
+254
+00:12:46,915 --> 00:12:49,375
+so it's between a centrality equals to three.
+
+255
+00:12:49,375 --> 00:12:51,175
+By a similar argument,
+
+256
+00:12:51,175 --> 00:12:55,000
+the betweenness centrality of the node D will be the same, equals to three.
+
+257
+00:12:55,000 --> 00:12:57,640
+Here are the corresponding shortest paths between
+
+258
+00:12:57,640 --> 00:13:00,445
+different pairs of nodes that actually pass through, uh,
+
+259
+00:13:00,445 --> 00:13:07,335
+this node D. Now that we talked about how important transit hub a given, uh,
+
+260
+00:13:07,335 --> 00:13:10,334
+node is captured by the betweenness centrality,
+
+261
+00:13:10,334 --> 00:13:12,750
+the third type of centrality that,
+
+262
+00:13:12,750 --> 00:13:15,120
+again, captures a different aspect of
+
+263
+00:13:15,120 --> 00:13:18,540
+the position of the node is called closeness centrality.
+
+264
+00:13:18,540 --> 00:13:23,130
+And this notion of centrality importance says that a node is important if it
+
+265
+00:13:23,130 --> 00:13:28,050
+has small shortest path- path lengths to oth- all other nodes in the network.
+
+266
+00:13:28,050 --> 00:13:30,250
+So essentially, the more center you are,
+
+267
+00:13:30,250 --> 00:13:33,025
+the shorter the path to everyone else,
+
+268
+00:13:33,025 --> 00:13:36,100
+um, uh, is, the more important you are.
+
+269
+00:13:36,100 --> 00:13:38,830
+The way, um, uh, we operationalize this is to
+
+270
+00:13:38,830 --> 00:13:41,845
+say that the closeness centrality of a given node v is one
+
+271
+00:13:41,845 --> 00:13:44,635
+over the sum of the shortest path length
+
+272
+00:13:44,635 --> 00:13:48,025
+between the node of interest three and any other node,
+
+273
+00:13:48,025 --> 00:13:50,020
+uh, u, uh, in the network.
+
+274
+00:13:50,020 --> 00:13:53,020
+So, uh, to give an example, right?
+
+275
+00:13:53,020 --> 00:13:54,805
+Uh, the idea here is that the- the-
+
+276
+00:13:54,805 --> 00:13:58,750
+the smaller this- the- the more in the center you are,
+
+277
+00:13:58,750 --> 00:14:00,280
+the smaller the summation will be,
+
+278
+00:14:00,280 --> 00:14:03,280
+so one over a smaller number will be a big number.
+
+279
+00:14:03,280 --> 00:14:04,930
+And if somebody is on the, let's say,
+
+280
+00:14:04,930 --> 00:14:08,980
+very far on the edge of the network and needs a lot of, uh, uh, uh,
+
+281
+00:14:08,980 --> 00:14:11,650
+long paths to reach other nodes in the network,
+
+282
+00:14:11,650 --> 00:14:13,705
+then its betweenness centrality will be low
+
+283
+00:14:13,705 --> 00:14:16,630
+because the sum of the shortest path lengths, uh, will be high.
+
+284
+00:14:16,630 --> 00:14:17,860
+Um, in this case,
+
+285
+00:14:17,860 --> 00:14:19,690
+for example, you know, the- uh,
+
+286
+00:14:19,690 --> 00:14:24,145
+the closest centrality of node a equals 1/8 because,
+
+287
+00:14:24,145 --> 00:14:25,630
+um, it has, uh,
+
+288
+00:14:25,630 --> 00:14:29,020
+to node B, it has the shortest path of length two, to node C,
+
+289
+00:14:29,020 --> 00:14:31,735
+it has a shortest path of length one, to D,
+
+290
+00:14:31,735 --> 00:14:35,215
+it is two, and to E is three, so it's 1/8.
+
+291
+00:14:35,215 --> 00:14:37,840
+While for example, the node D that is a bit more in
+
+292
+00:14:37,840 --> 00:14:40,300
+the center of the network has a length two,
+
+293
+00:14:40,300 --> 00:14:43,180
+shortest path to node A and length one,
+
+294
+00:14:43,180 --> 00:14:45,895
+shortest paths to all other nodes in the network.
+
+295
+00:14:45,895 --> 00:14:47,470
+So this is one over five,
+
+296
+00:14:47,470 --> 00:14:49,210
+so it's betweenness centrali- oh,
+
+297
+00:14:49,210 --> 00:14:50,860
+sorry, its clo- node centrality,
+
+298
+00:14:50,860 --> 00:14:53,875
+closeness centrality, uh, is higher.
+
+299
+00:14:53,875 --> 00:14:57,685
+And then now, I'm going to shift gears a bit.
+
+300
+00:14:57,685 --> 00:15:01,795
+I was talking about centralities in terms of how- how important,
+
+301
+00:15:01,795 --> 00:15:03,159
+uh, what is the position,
+
+302
+00:15:03,159 --> 00:15:05,020
+uh, of the node in the network.
+
+303
+00:15:05,020 --> 00:15:10,495
+Now, we are going to start talk- we are going back to think about the node degree and uh,
+
+304
+00:15:10,495 --> 00:15:14,215
+the local structure, uh, around the node.
+
+305
+00:15:14,215 --> 00:15:15,370
+And when I say local structure,
+
+306
+00:15:15,370 --> 00:15:16,840
+it me- really means that for a given node,
+
+307
+00:15:16,840 --> 00:15:19,870
+we only look, uh, in its immediate vicinity, uh,
+
+308
+00:15:19,870 --> 00:15:22,120
+and decide, uh, on the, uh,
+
+309
+00:15:22,120 --> 00:15:26,380
+pro- on the- and characterize the properties of the network around it.
+
+310
+00:15:26,380 --> 00:15:30,310
+And, uh, classical measure of this is called clustering coefficient.
+
+311
+00:15:30,310 --> 00:15:36,055
+And the clustering coefficients measures how connected one's neighbors are.
+
+312
+00:15:36,055 --> 00:15:39,490
+So how connected the friends of node v are.
+
+313
+00:15:39,490 --> 00:15:41,590
+And the way we, uh, define this is to say,
+
+314
+00:15:41,590 --> 00:15:43,840
+clustering coefficient of node, uh, v,
+
+315
+00:15:43,840 --> 00:15:46,240
+is the number of edges among the,
+
+316
+00:15:46,240 --> 00:15:48,070
+uh, neighboring nodes of, uh,
+
+317
+00:15:48,070 --> 00:15:52,270
+v divided by the degree of v, uh, choose 2.
+
+318
+00:15:52,270 --> 00:15:54,595
+So this is the number- this is, um,
+
+319
+00:15:54,595 --> 00:15:59,020
+k choose 2 measures how many pairs can you select out of,
+
+320
+00:15:59,020 --> 00:16:00,610
+uh, uh, k different objects.
+
+321
+00:16:00,610 --> 00:16:04,870
+So this is saying, how many- how many node pairs there exists in your neighborhood?
+
+322
+00:16:04,870 --> 00:16:10,240
+So how many potential edges are there in the net- in- in your neighborhood?
+
+323
+00:16:10,240 --> 00:16:11,605
+Um, and, um, uh,
+
+324
+00:16:11,605 --> 00:16:15,040
+D says, how many edges actually occur?
+
+325
+00:16:15,040 --> 00:16:18,175
+So this metric is naturally between zero and one
+
+326
+00:16:18,175 --> 00:16:21,070
+where zero would mean that none of your friends,
+
+327
+00:16:21,070 --> 00:16:24,175
+not on- none of your connections know each other, and,
+
+328
+00:16:24,175 --> 00:16:27,670
+uh, one would mean that all your friends are also friends with each other.
+
+329
+00:16:27,670 --> 00:16:29,410
+So, uh, here's an example.
+
+330
+00:16:29,410 --> 00:16:32,905
+Imagine this simple graph on five nodes and we have our,
+
+331
+00:16:32,905 --> 00:16:34,630
+uh, red node, uh, v,
+
+332
+00:16:34,630 --> 00:16:36,820
+to be the, uh, node of interest.
+
+333
+00:16:36,820 --> 00:16:38,200
+So for example, in this case,
+
+334
+00:16:38,200 --> 00:16:41,710
+node v has clustering coefficient, um, of one, uh,
+
+335
+00:16:41,710 --> 00:16:43,690
+because all of its, uh,
+
+336
+00:16:43,690 --> 00:16:45,970
+four friends are also,
+
+337
+00:16:45,970 --> 00:16:48,070
+uh, connected, uh, with each other.
+
+338
+00:16:48,070 --> 00:16:51,055
+So here, um, the clustering is one.
+
+339
+00:16:51,055 --> 00:16:52,810
+In this particular case, for example,
+
+340
+00:16:52,810 --> 00:16:55,315
+the clustering is, uh, uh, 0.5.
+
+341
+00:16:55,315 --> 00:16:57,130
+The reason being that, um,
+
+342
+00:16:57,130 --> 00:17:00,205
+out of, um, six, uh,
+
+343
+00:17:00,205 --> 00:17:02,380
+possible connections between the, uh,
+
+344
+00:17:02,380 --> 00:17:04,599
+four neighboring nodes of node v,
+
+345
+00:17:04,599 --> 00:17:05,859
+there are only, uh,
+
+346
+00:17:05,859 --> 00:17:07,568
+three of them are connected.
+
+347
+00:17:07,569 --> 00:17:09,460
+While here in the last example,
+
+348
+00:17:09,460 --> 00:17:12,925
+the clustering is zero because, um, out of,
+
+349
+00:17:12,925 --> 00:17:15,609
+uh, all four, uh, neighbors of, uh,
+
+350
+00:17:15,609 --> 00:17:19,169
+node v, none of them are connected, uh, with each other.
+
+351
+00:17:19,170 --> 00:17:24,395
+The observation that is interesting that then leads us to generalize, uh,
+
+352
+00:17:24,395 --> 00:17:28,820
+this notion to the not- of clustering coefficient to the notion of graphlets,
+
+353
+00:17:28,820 --> 00:17:31,730
+the observation is that clustering coefficient basically
+
+354
+00:17:31,730 --> 00:17:35,625
+counts the number of triangles in the ego-network of the node.
+
+355
+00:17:35,625 --> 00:17:37,465
+So let me explain what I mean by that.
+
+356
+00:17:37,465 --> 00:17:40,700
+First, ego-network of a given node is simply
+
+357
+00:17:40,700 --> 00:17:44,465
+a network that is induced by the no- node itself and its neighbors.
+
+358
+00:17:44,465 --> 00:17:49,700
+So it's basically degree 1 neighborhood network around a given node.
+
+359
+00:17:49,700 --> 00:17:52,280
+And then what I mean by counts triangles?
+
+360
+00:17:52,280 --> 00:17:55,265
+I mean that now, if I have this ego-network of a node,
+
+361
+00:17:55,265 --> 00:17:58,430
+I can count how many triples of nodes are connected.
+
+362
+00:17:58,430 --> 00:17:59,930
+And in this particular, uh,
+
+363
+00:17:59,930 --> 00:18:02,000
+use case where, um, um,
+
+364
+00:18:02,000 --> 00:18:05,150
+uh, the clustering coefficient of this node is 0.5,
+
+365
+00:18:05,150 --> 00:18:09,035
+it means that I find three triangles, um,
+
+366
+00:18:09,035 --> 00:18:12,380
+in the network, uh, neighborhood, in the,
+
+367
+00:18:12,380 --> 00:18:15,850
+um, ego-network of my node of interest.
+
+368
+00:18:15,850 --> 00:18:19,775
+So this means that clustering coefficient is really counting these triangles,
+
+369
+00:18:19,775 --> 00:18:23,295
+which in social networks are very important because in social networks,
+
+370
+00:18:23,295 --> 00:18:26,060
+a friend of my friend is also a friend with me.
+
+371
+00:18:26,060 --> 00:18:30,860
+So social networks naturally evolve by triangle closing where basically,
+
+372
+00:18:30,860 --> 00:18:35,280
+the intuition is if somebody has two friends in common, then more or la- uh,
+
+373
+00:18:35,280 --> 00:18:37,685
+sooner or later these two friends will be
+
+374
+00:18:37,685 --> 00:18:41,325
+introduced by this node v and there will be a link, uh, forming-
+
+375
+00:18:41,325 --> 00:18:45,745
+Here, so social networks tend to have a lot of triangles syndrome and,
+
+376
+00:18:45,745 --> 00:18:49,000
+uh, clustering coefficient is a very important metric.
+
+377
+00:18:49,000 --> 00:18:51,700
+So now with this, the question is,
+
+378
+00:18:51,700 --> 00:18:55,810
+could we generalize this notion of triangle accounting, uh,
+
+379
+00:18:55,810 --> 00:18:59,530
+to more interesting structures and- and count, uh,
+
+380
+00:18:59,530 --> 00:19:04,135
+the number of pre-specified graphs in the neighborhood of a given node.
+
+381
+00:19:04,135 --> 00:19:09,775
+And this is exactly what the concept of graphlet, uh, captures.
+
+382
+00:19:09,775 --> 00:19:12,685
+So the last, um, uh,
+
+383
+00:19:12,685 --> 00:19:16,615
+way to characterize the structure of the net, uh,
+
+384
+00:19:16,615 --> 00:19:20,110
+of the network around the given node will be through this concept of
+
+385
+00:19:20,110 --> 00:19:24,655
+graphlets that render them just to- to- to count triangles.
+
+386
+00:19:24,655 --> 00:19:28,105
+Also, counts other types of structures, uh, around the node.
+
+387
+00:19:28,105 --> 00:19:29,710
+So let me define that.
+
+388
+00:19:29,710 --> 00:19:35,755
+So graphlet is a rooted connected non isomorphic, um, subgraph.
+
+389
+00:19:35,755 --> 00:19:37,285
+So what do I mean by this?
+
+390
+00:19:37,285 --> 00:19:38,990
+For example, here are all,
+
+391
+00:19:38,990 --> 00:19:41,485
+um, possible graphlets, um,
+
+392
+00:19:41,485 --> 00:19:44,530
+that- that have, um,
+
+393
+00:19:44,530 --> 00:19:45,550
+uh, um, different number,
+
+394
+00:19:45,550 --> 00:19:47,710
+uh, of nodes which start with,
+
+395
+00:19:47,710 --> 00:19:49,600
+uh, a graphlet on two nodes.
+
+396
+00:19:49,600 --> 00:19:51,530
+So it's basically nodes connected by an edge.
+
+397
+00:19:51,530 --> 00:19:56,500
+There are, uh, three possible graphlets on three nodes and,
+
+398
+00:19:56,500 --> 00:19:57,715
+uh, there is, uh,
+
+399
+00:19:57,715 --> 00:20:00,130
+and then here are the graphlets of 4-nodes.
+
+400
+00:20:00,130 --> 00:20:03,020
+And these are the graphlets on, uh, five nodes.
+
+401
+00:20:03,020 --> 00:20:05,455
+So now let me explain what we are looking at.
+
+402
+00:20:05,455 --> 00:20:09,130
+So for example, if you look at the graphlets on three nodes, it is either,
+
+403
+00:20:09,130 --> 00:20:11,410
+uh, a chain on three,
+
+404
+00:20:11,410 --> 00:20:13,865
+um, nodes, audits or triangle, right?
+
+405
+00:20:13,865 --> 00:20:15,160
+Its all three nodes are connected.
+
+406
+00:20:15,160 --> 00:20:19,360
+These are all possible connected graphs on three nodes.
+
+407
+00:20:19,360 --> 00:20:21,670
+Now why do I say there are, uh,
+
+408
+00:20:21,670 --> 00:20:23,920
+uh, three graphlets not two?
+
+409
+00:20:23,920 --> 00:20:25,330
+Uh, the reason for that,
+
+410
+00:20:25,330 --> 00:20:29,485
+is that the position of the node of interest also matters.
+
+411
+00:20:29,485 --> 00:20:30,715
+So here, for example,
+
+412
+00:20:30,715 --> 00:20:32,410
+you can be at this position.
+
+413
+00:20:32,410 --> 00:20:36,595
+And then the question is in how many graphs like this do you participate in.
+
+414
+00:20:36,595 --> 00:20:38,860
+Or you can be at this other, uh,
+
+415
+00:20:38,860 --> 00:20:40,750
+position here- position number two,
+
+416
+00:20:40,750 --> 00:20:41,980
+and it's basically saying,
+
+417
+00:20:41,980 --> 00:20:44,440
+how many pairs of friends do you have?
+
+418
+00:20:44,440 --> 00:20:45,595
+And then this- this,
+
+419
+00:20:45,595 --> 00:20:47,410
+in the case of a triangle,
+
+420
+00:20:47,410 --> 00:20:49,450
+all this position are isomorphic,
+
+421
+00:20:49,450 --> 00:20:50,620
+they're equivalent, so there is,
+
+422
+00:20:50,620 --> 00:20:51,700
+uh, only one of them,
+
+423
+00:20:51,700 --> 00:20:55,115
+so this is the, uh, position in which you may- you can be.
+
+424
+00:20:55,115 --> 00:20:57,855
+Now, similarly, if you look at now at, uh,
+
+425
+00:20:57,855 --> 00:20:59,400
+four node graphlets, there is,
+
+426
+00:20:59,400 --> 00:21:01,260
+uh, um, many more of them, right?
+
+427
+00:21:01,260 --> 00:21:04,420
+Um, uh, they- they look the following, right?
+
+428
+00:21:04,420 --> 00:21:07,865
+You again have a chain on four nodes and you have two positions on the chain.
+
+429
+00:21:07,865 --> 00:21:10,750
+You are either in the edge or you are one- one away
+
+430
+00:21:10,750 --> 00:21:13,810
+from the edge- from- if you go from the other end, it is just symmetric.
+
+431
+00:21:13,810 --> 00:21:15,040
+Here in the second,
+
+432
+00:21:15,040 --> 00:21:17,575
+this kind of star graphlet you can either be, um,
+
+433
+00:21:17,575 --> 00:21:19,840
+the satellite on the edge of the star or you can be
+
+434
+00:21:19,840 --> 00:21:22,975
+the center on- of the star in a- in a square.
+
+435
+00:21:22,975 --> 00:21:24,820
+All the positions are isomorphic,
+
+436
+00:21:24,820 --> 00:21:26,860
+so you can be just part of the square.
+
+437
+00:21:26,860 --> 00:21:28,705
+Here's another interesting, um,
+
+438
+00:21:28,705 --> 00:21:32,020
+example where, um, you test three different positions.
+
+439
+00:21:32,020 --> 00:21:34,195
+You can be- you can be here- you can be here,
+
+440
+00:21:34,195 --> 00:21:35,695
+or you can be at position 10,
+
+441
+00:21:35,695 --> 00:21:39,715
+which is i-isomorphic to the- to the other side in this kind of square,
+
+442
+00:21:39,715 --> 00:21:40,900
+v dot diagonal, again,
+
+443
+00:21:40,900 --> 00:21:43,029
+you have, uh, two different positions.
+
+444
+00:21:43,029 --> 00:21:46,015
+And in this last fully connected graph on four nodes,
+
+445
+00:21:46,015 --> 00:21:47,315
+uh, all nodes are equivalent.
+
+446
+00:21:47,315 --> 00:21:50,230
+So there is- all- all positions are equivalent, so there is only one.
+
+447
+00:21:50,230 --> 00:21:52,550
+So what this shows is that, um,
+
+448
+00:21:52,550 --> 00:21:55,420
+if you say how many graphlets are there on five nodes,
+
+449
+00:21:55,420 --> 00:21:56,455
+uh, there is, uh,
+
+450
+00:21:56,455 --> 00:21:57,805
+73 of them, right?
+
+451
+00:21:57,805 --> 00:21:59,605
+Labeled from one, uh,
+
+452
+00:21:59,605 --> 00:22:03,715
+all the way to 73 because it's different graphs as well as,
+
+453
+00:22:03,715 --> 00:22:05,500
+uh, positions in these graphs.
+
+454
+00:22:05,500 --> 00:22:07,630
+So now that we know what the graphlets are,
+
+455
+00:22:07,630 --> 00:22:11,125
+we can define what is called Graphlet Degree Vector,
+
+456
+00:22:11,125 --> 00:22:14,125
+which is basically a graphlet-base,
+
+457
+00:22:14,125 --> 00:22:16,825
+uh, based features, uh, for nodes.
+
+458
+00:22:16,825 --> 00:22:20,170
+And graphlet degree counts, um,
+
+459
+00:22:20,170 --> 00:22:23,905
+the number of times a given graphlet appears,
+
+460
+00:22:23,905 --> 00:22:25,870
+uh, uh, rooted at that given node.
+
+461
+00:22:25,870 --> 00:22:28,525
+So the way you can think of this is, degree counts,
+
+462
+00:22:28,525 --> 00:22:31,360
+the number of edges that the node touches, uh,
+
+463
+00:22:31,360 --> 00:22:34,270
+clustering coefficient counts the number of triangles
+
+464
+00:22:34,270 --> 00:22:38,005
+that are node touches or participates in and,
+
+465
+00:22:38,005 --> 00:22:40,840
+uh, graphlet degree vector counts the number of
+
+466
+00:22:40,840 --> 00:22:44,695
+graphlets that- that a node, uh, participates in.
+
+467
+00:22:44,695 --> 00:22:48,130
+So to give you an example, um, uh,
+
+468
+00:22:48,130 --> 00:22:50,425
+a Graphlet Degree Vector is then simply
+
+469
+00:22:50,425 --> 00:22:54,385
+a count vector of graphlets rooted at that given node.
+
+470
+00:22:54,385 --> 00:22:56,830
+So to, uh, to give an example,
+
+471
+00:22:56,830 --> 00:22:58,795
+consider this particular graph here,
+
+472
+00:22:58,795 --> 00:23:01,645
+and we are interested in the node v. Then
+
+473
+00:23:01,645 --> 00:23:04,630
+here is a set of graphlets on two and three nodes.
+
+474
+00:23:04,630 --> 00:23:06,310
+This is our universe of graphlets.
+
+475
+00:23:06,310 --> 00:23:08,140
+We are only look- going to look at
+
+476
+00:23:08,140 --> 00:23:11,425
+the graphlets all the way up to size of three nodes and node v there.
+
+477
+00:23:11,425 --> 00:23:13,180
+Um, and then, uh, you know,
+
+478
+00:23:13,180 --> 00:23:16,290
+what are the- what are now the graphlets instances, for example,
+
+479
+00:23:16,290 --> 00:23:18,930
+the- the graphlets of type a,
+
+480
+00:23:18,930 --> 00:23:21,510
+these node v participates in two of them, right?
+
+481
+00:23:21,510 --> 00:23:23,880
+It's- one is here and the other one is there, right?
+
+482
+00:23:23,880 --> 00:23:25,830
+So this means this one and that one.
+
+483
+00:23:25,830 --> 00:23:30,090
+Then the graphlet of type b node v participates in one of them, right?
+
+484
+00:23:30,090 --> 00:23:34,420
+This is, um, this is the graphlet here, right, uh, b.
+
+485
+00:23:34,420 --> 00:23:38,245
+And then you say, how about how many graphlets of type d does, uh,
+
+486
+00:23:38,245 --> 00:23:41,585
+node, um, sorry, of type c,
+
+487
+00:23:41,585 --> 00:23:43,915
+does node, uh, v participate in.
+
+488
+00:23:43,915 --> 00:23:46,795
+And it doesn't participate in any because,
+
+489
+00:23:46,795 --> 00:23:49,660
+uh, here it is, but these two nodes are also connected.
+
+490
+00:23:49,660 --> 00:23:52,790
+So, um, because graphlets are induced,
+
+491
+00:23:52,790 --> 00:23:55,180
+this edge appears here as well.
+
+492
+00:23:55,180 --> 00:23:57,130
+So for d we get zero,
+
+493
+00:23:57,130 --> 00:23:58,855
+sorry, for c we get zero.
+
+494
+00:23:58,855 --> 00:24:00,145
+How about for d?
+
+495
+00:24:00,145 --> 00:24:02,500
+D is a path of- on two nodes.
+
+496
+00:24:02,500 --> 00:24:05,740
+If you look at it, there are two instances of d. Uh,
+
+497
+00:24:05,740 --> 00:24:09,880
+here is one and here is the other as, uh, illustrated here.
+
+498
+00:24:09,880 --> 00:24:16,030
+So graphlet, uh, degree vector for node v would be two, one, zero, two.
+
+499
+00:24:16,030 --> 00:24:19,000
+So two, one, zero, two.
+
+500
+00:24:19,000 --> 00:24:23,620
+And this now characterizes the local neighborhood structure, uh,
+
+501
+00:24:23,620 --> 00:24:30,385
+around the given node of interest based on the frequencies of these graphlets that,
+
+502
+00:24:30,385 --> 00:24:33,625
+uh, the node v, uh, participates in.
+
+503
+00:24:33,625 --> 00:24:37,960
+So, um, if we consider graphlets from,
+
+504
+00:24:37,960 --> 00:24:40,255
+uh, two to five no- nodes,
+
+505
+00:24:40,255 --> 00:24:44,105
+we can now describe every node in the network with a vector that
+
+506
+00:24:44,105 --> 00:24:48,475
+has 73 dimensions or 73- 73 coordinates.
+
+507
+00:24:48,475 --> 00:24:52,390
+Uh, and this is essentially a signature of a node that describes the topology,
+
+508
+00:24:52,390 --> 00:24:54,490
+uh, of nodes, uh, neighborhood.
+
+509
+00:24:54,490 --> 00:24:58,225
+Uh, and it captures its interact- interconnections,
+
+510
+00:24:58,225 --> 00:25:01,750
+um, all the way up to the distance of four- four hops, right?
+
+511
+00:25:01,750 --> 00:25:06,265
+Because, um, uh, a chain of four edges has five nodes,
+
+512
+00:25:06,265 --> 00:25:08,035
+so if you are at the edge of the chain,
+
+513
+00:25:08,035 --> 00:25:11,680
+which means you count how many paths of length four- do,
+
+514
+00:25:11,680 --> 00:25:13,450
+uh, uh, lead out of that node.
+
+515
+00:25:13,450 --> 00:25:17,560
+So it characterizes the network up to the distance, uh, of four.
+
+516
+00:25:17,560 --> 00:25:20,950
+And, uh, Graphlet Degree Vector provides a measure of nodes,
+
+517
+00:25:20,950 --> 00:25:25,645
+local network topology and comparing vectors now of- of two nodes,
+
+518
+00:25:25,645 --> 00:25:30,775
+proves, uh, provides a more detailed measure of local topological similarity.
+
+519
+00:25:30,775 --> 00:25:34,810
+Then for example, just looking at node degree or clustering coefficient.
+
+520
+00:25:34,810 --> 00:25:38,785
+So this gives me a really fine-grained way to compare the neighborhoods, uh,
+
+521
+00:25:38,785 --> 00:25:40,375
+the structure of neighborhoods, uh,
+
+522
+00:25:40,375 --> 00:25:41,800
+of two different nodes, uh,
+
+523
+00:25:41,800 --> 00:25:44,365
+in perhaps through different, uh, networks.
+
+524
+00:25:44,365 --> 00:25:47,350
+So to conclude, uh, so far,
+
+525
+00:25:47,350 --> 00:25:50,830
+we have introduced different ways to obtain node features.
+
+526
+00:25:50,830 --> 00:25:53,320
+Uh, and they can be categorized based on
+
+527
+00:25:53,320 --> 00:25:57,290
+importance features like node degree and different centrality measures,
+
+528
+00:25:57,290 --> 00:25:59,800
+as well as structure-based features where again,
+
+529
+00:25:59,800 --> 00:26:02,425
+no degrees like the simplest one, then, uh,
+
+530
+00:26:02,425 --> 00:26:05,695
+that counts edges, clustering, counts triangles.
+
+531
+00:26:05,695 --> 00:26:10,520
+And the Graphlet Degree Vector is a generalization that counts,
+
+532
+00:26:10,520 --> 00:26:15,745
+uh, other types of structures that a given node of interest, uh, participates in.
+
+533
+00:26:15,745 --> 00:26:18,820
+So to summarize, the importance
+
+534
+00:26:18,820 --> 00:26:21,685
+based features capture the importance of a node in a graph.
+
+535
+00:26:21,685 --> 00:26:24,445
+We talked about degree centrality,
+
+536
+00:26:24,445 --> 00:26:27,700
+um, and we talked about different notions of, uh,
+
+537
+00:26:27,700 --> 00:26:30,445
+centrality closeness, betweenness, um,
+
+538
+00:26:30,445 --> 00:26:32,410
+as well as, um,
+
+539
+00:26:32,410 --> 00:26:34,420
+the eigenvector, uh centrality.
+
+540
+00:26:34,420 --> 00:26:37,420
+And these types of features are using in predicting,
+
+541
+00:26:37,420 --> 00:26:40,930
+for example, how important or influential are nodes in the graph.
+
+542
+00:26:40,930 --> 00:26:45,805
+So for example, identifying celebrity users in social networks would be one,
+
+543
+00:26:45,805 --> 00:26:47,785
+uh, such, uh, example.
+
+544
+00:26:47,785 --> 00:26:52,085
+Um, the other type of node level features that we talked about,
+
+545
+00:26:52,085 --> 00:26:55,660
+were structured based-fea- structure-based features that capture
+
+546
+00:26:55,660 --> 00:26:59,260
+the topological properties of local neighborhood around the node.
+
+547
+00:26:59,260 --> 00:27:00,805
+We talked about node degree,
+
+548
+00:27:00,805 --> 00:27:03,865
+clustering coefficient and graphlet degree vector
+
+549
+00:27:03,865 --> 00:27:06,370
+and these types of features that are very useful,
+
+550
+00:27:06,370 --> 00:27:09,310
+uh, for predicting a particular nodes role,
+
+551
+00:27:09,310 --> 00:27:10,595
+uh, in the network.
+
+552
+00:27:10,595 --> 00:27:14,330
+So for example, if you think about predicting protein function,
+
+553
+00:27:14,330 --> 00:27:16,990
+then, um, these type of graphlet, uh,
+
+554
+00:27:16,990 --> 00:27:20,440
+features are very useful because they characterize, uh,
+
+555
+00:27:20,440 --> 00:27:21,805
+the structure of the, uh,
+
+556
+00:27:21,805 --> 00:27:25,670
+network, uh, around, given, uh, node.
+

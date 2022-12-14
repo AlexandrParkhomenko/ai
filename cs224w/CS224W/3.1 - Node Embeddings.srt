@@ -1,0 +1,1180 @@
+1
+00:00:04,160 --> 00:00:10,620
+This is Lecture 3 of our class and we are going to talk today about node embeddings.
+
+2
+00:00:10,620 --> 00:00:13,020
+So the way we think of this is the following.
+
+3
+00:00:13,020 --> 00:00:15,810
+Um, the inter- what we talked
+
+4
+00:00:15,810 --> 00:00:19,310
+on last week was about traditional machine learning in graphs,
+
+5
+00:00:19,310 --> 00:00:21,555
+where the idea was that given an input graph,
+
+6
+00:00:21,555 --> 00:00:24,840
+we are going to extract some node link or graph level
+
+7
+00:00:24,840 --> 00:00:29,040
+features that basically describe the topological structure,
+
+8
+00:00:29,040 --> 00:00:30,510
+uh, of the network,
+
+9
+00:00:30,510 --> 00:00:31,650
+either around the node,
+
+10
+00:00:31,650 --> 00:00:34,260
+around a particular link or the entire graph.
+
+11
+00:00:34,260 --> 00:00:36,780
+And then we can take that topological information,
+
+12
+00:00:36,780 --> 00:00:38,685
+compare, um, er, uh, um,
+
+13
+00:00:38,685 --> 00:00:43,760
+combine it with the attribute-based information to
+
+14
+00:00:43,760 --> 00:00:46,040
+then train a classical machine learning model
+
+15
+00:00:46,040 --> 00:00:48,850
+like a support vector machine or a logistic regression,
+
+16
+00:00:48,850 --> 00:00:51,370
+uh, to be able to make predictions.
+
+17
+00:00:51,370 --> 00:00:53,820
+So, um, in this sense, right,
+
+18
+00:00:53,820 --> 00:00:57,080
+the way we are thinking of this is that we are given an input graph here.
+
+19
+00:00:57,080 --> 00:00:58,385
+We are then, uh,
+
+20
+00:00:58,385 --> 00:01:01,580
+creating structure- structured features or structural features,
+
+21
+00:01:01,580 --> 00:01:03,920
+uh, of this graph so that then we can apply
+
+22
+00:01:03,920 --> 00:01:06,490
+our learning algorithm and make, uh, prediction.
+
+23
+00:01:06,490 --> 00:01:10,730
+And generally most of the effort goes here into the feature engineering,
+
+24
+00:01:10,730 --> 00:01:12,605
+uh, where, you know, we are as,
+
+25
+00:01:12,605 --> 00:01:14,510
+uh, engineers, humans, scientists,
+
+26
+00:01:14,510 --> 00:01:16,835
+we are trying to figure out how to best describe,
+
+27
+00:01:16,835 --> 00:01:18,275
+uh, this particular, um,
+
+28
+00:01:18,275 --> 00:01:19,685
+network so that, uh,
+
+29
+00:01:19,685 --> 00:01:21,570
+it would be most useful, uh,
+
+30
+00:01:21,570 --> 00:01:23,955
+for, uh, downstream prediction task.
+
+31
+00:01:23,955 --> 00:01:26,670
+Um, and, uh, the question then becomes,
+
+32
+00:01:26,670 --> 00:01:28,140
+uh, can we do this automatically?
+
+33
+00:01:28,140 --> 00:01:31,035
+Can we kind of get away from, uh, feature engineer?
+
+34
+00:01:31,035 --> 00:01:35,465
+So the idea behind graph representation learning is that we wanna
+
+35
+00:01:35,465 --> 00:01:40,010
+alleviate this need to do manual feature engineering every single time, every time for,
+
+36
+00:01:40,010 --> 00:01:41,600
+uh, every different task,
+
+37
+00:01:41,600 --> 00:01:45,410
+and we wanna kind of automatically learn the features,
+
+38
+00:01:45,410 --> 00:01:46,850
+the structure of the network,
+
+39
+00:01:46,850 --> 00:01:49,310
+um, in- that we are interested in.
+
+40
+00:01:49,310 --> 00:01:50,750
+And this is what is called, uh,
+
+41
+00:01:50,750 --> 00:01:53,510
+representation learning so that no manual, uh,
+
+42
+00:01:53,510 --> 00:01:57,055
+feature engineering is, uh, necessary, uh, anymore.
+
+43
+00:01:57,055 --> 00:01:59,000
+So the idea will be to do
+
+44
+00:01:59,000 --> 00:02:03,800
+efficient task-independent feature learning for machine learning with the graphs.
+
+45
+00:02:03,800 --> 00:02:05,930
+Um, the idea is that for example,
+
+46
+00:02:05,930 --> 00:02:08,270
+if we are doing this at the level of individual nodes,
+
+47
+00:02:08,270 --> 00:02:09,410
+that for every node,
+
+48
+00:02:09,410 --> 00:02:13,160
+we wanna learn how to map this node in a d-dimensional
+
+49
+00:02:13,160 --> 00:02:17,600
+space ha- and represent it as a vector of d numbers.
+
+50
+00:02:17,600 --> 00:02:22,190
+And we will call this vector of d numbers as feature representation,
+
+51
+00:02:22,190 --> 00:02:24,590
+or we will call it, um, an embeding.
+
+52
+00:02:24,590 --> 00:02:28,385
+And the goal will be that this, uh, mapping, um,
+
+53
+00:02:28,385 --> 00:02:30,890
+happens automatically and that this vector
+
+54
+00:02:30,890 --> 00:02:34,640
+captures the structure of the underlying network that,
+
+55
+00:02:34,640 --> 00:02:36,815
+uh, we are, uh, interested in,
+
+56
+00:02:36,815 --> 00:02:39,470
+uh, analyzing or making predictions over.
+
+57
+00:02:39,470 --> 00:02:41,570
+So why would you wanna do this?
+
+58
+00:02:41,570 --> 00:02:43,115
+Why create these embeddings?
+
+59
+00:02:43,115 --> 00:02:47,240
+Right. The task is to map nodes into an- into an embedding space.
+
+60
+00:02:47,240 --> 00:02:49,970
+Um, and the idea is that similarity, uh,
+
+61
+00:02:49,970 --> 00:02:55,100
+of the embeddings between nodes indicates their similarity in the network.
+
+62
+00:02:55,100 --> 00:02:56,640
+Uh, for example, you know,
+
+63
+00:02:56,640 --> 00:02:59,585
+if bo- nodes that are close to each other in the network,
+
+64
+00:02:59,585 --> 00:03:03,095
+perhaps they should be embedded close together in the embedding space.
+
+65
+00:03:03,095 --> 00:03:05,810
+Um, and the goal of this is that kind of en-
+
+66
+00:03:05,810 --> 00:03:10,075
+automatically encodes the network, uh, structure information.
+
+67
+00:03:10,075 --> 00:03:11,550
+Um, and then, you know,
+
+68
+00:03:11,550 --> 00:03:15,995
+it can be used for many kinds of different downstream prediction tasks.
+
+69
+00:03:15,995 --> 00:03:19,655
+For example, you can do any kind of node classification, link prediction,
+
+70
+00:03:19,655 --> 00:03:22,280
+graph classification, you can do anomaly detection,
+
+71
+00:03:22,280 --> 00:03:23,465
+you can do clustering,
+
+72
+00:03:23,465 --> 00:03:25,365
+a lot of different things.
+
+73
+00:03:25,365 --> 00:03:28,080
+So to give you an example, uh,
+
+74
+00:03:28,080 --> 00:03:31,070
+here is- here is a plot from a- a paper that came up with
+
+75
+00:03:31,070 --> 00:03:34,685
+this idea back in 2014, fe- 2015.
+
+76
+00:03:34,685 --> 00:03:36,575
+The method is called DeepWalk.
+
+77
+00:03:36,575 --> 00:03:39,080
+Um, and they take this, uh, small, uh,
+
+78
+00:03:39,080 --> 00:03:40,895
+small network that you see here,
+
+79
+00:03:40,895 --> 00:03:44,690
+and then they show how the embedding of nodes would look like in two-dimensions.
+
+80
+00:03:44,690 --> 00:03:46,145
+And- and here the nodes are,
+
+81
+00:03:46,145 --> 00:03:47,930
+uh, colored by different colors.
+
+82
+00:03:47,930 --> 00:03:49,580
+Uh, they have different numbers.
+
+83
+00:03:49,580 --> 00:03:52,550
+And here in the, um, in this example, uh,
+
+84
+00:03:52,550 --> 00:03:55,600
+you can also see how, um, uh,
+
+85
+00:03:55,600 --> 00:03:58,850
+how different nodes get mapped into different parts of the embedding space.
+
+86
+00:03:58,850 --> 00:04:01,835
+For example, all these light blue nodes end up here,
+
+87
+00:04:01,835 --> 00:04:03,350
+the violet nodes, uh,
+
+88
+00:04:03,350 --> 00:04:05,750
+from this part of the network end up here,
+
+89
+00:04:05,750 --> 00:04:07,820
+you know, the green nodes are here,
+
+90
+00:04:07,820 --> 00:04:09,230
+the bottom two nodes here,
+
+91
+00:04:09,230 --> 00:04:10,460
+get kind of set, uh,
+
+92
+00:04:10,460 --> 00:04:12,050
+uh on a different pa- uh,
+
+93
+00:04:12,050 --> 00:04:13,400
+in a different place.
+
+94
+00:04:13,400 --> 00:04:15,710
+And basically what you see is that in some sense,
+
+95
+00:04:15,710 --> 00:04:17,690
+this visualization of the network and
+
+96
+00:04:17,690 --> 00:04:22,370
+the underlying embedding correspond to each other quite well in two-dimensional space.
+
+97
+00:04:22,370 --> 00:04:23,900
+And of course, this is a small network.
+
+98
+00:04:23,900 --> 00:04:26,525
+It's a small kind of toy- toy network,
+
+99
+00:04:26,525 --> 00:04:28,775
+but you can get an idea about, uh,
+
+100
+00:04:28,775 --> 00:04:30,515
+how this would look like in,
+
+101
+00:04:30,515 --> 00:04:31,805
+uh, uh- in, uh,
+
+102
+00:04:31,805 --> 00:04:33,680
+more interesting, uh, larger,
+
+103
+00:04:33,680 --> 00:04:35,510
+uh- in larger dimensions.
+
+104
+00:04:35,510 --> 00:04:37,010
+So that's basically the,
+
+105
+00:04:37,010 --> 00:04:39,465
+uh- that's basically the, uh, idea.
+
+106
+00:04:39,465 --> 00:04:44,590
+So what I wanna now do is to tell you about how do we formulate this as a task, uh,
+
+107
+00:04:44,590 --> 00:04:46,300
+how do we view it in this, uh,
+
+108
+00:04:46,300 --> 00:04:49,735
+encoder, decoder, uh, view or a definition?
+
+109
+00:04:49,735 --> 00:04:51,820
+And then what kind of practical methods, um,
+
+110
+00:04:51,820 --> 00:04:55,605
+exist there, uh for us to be able, uh, to do this.
+
+111
+00:04:55,605 --> 00:04:58,630
+So the way we are going to do this, um,
+
+112
+00:04:58,630 --> 00:05:00,580
+is that we are going to represent, uh,
+
+113
+00:05:00,580 --> 00:05:03,960
+a graph, as a- as a- with an adjacency matrix.
+
+114
+00:05:03,960 --> 00:05:06,510
+Um, and we are going to think of this,
+
+115
+00:05:06,510 --> 00:05:09,060
+um, in terms of its adjacency matrix,
+
+116
+00:05:09,060 --> 00:05:12,490
+and we are not going to assume any feature, uh, uh,
+
+117
+00:05:12,490 --> 00:05:14,800
+represe- features or attributes,
+
+118
+00:05:14,800 --> 00:05:16,660
+uh, on the nodes, uh, of the network.
+
+119
+00:05:16,660 --> 00:05:22,410
+So we are just going to- to think of this as a- as a- as a set of,
+
+120
+00:05:22,410 --> 00:05:26,240
+um, as a- as an adjacency matrix that we wanna- that we wanna analyze.
+
+121
+00:05:26,240 --> 00:05:28,625
+Um, we are going to have a graph, as I showed here,
+
+122
+00:05:28,625 --> 00:05:30,920
+and the corresponding adjacency matrix A.
+
+123
+00:05:30,920 --> 00:05:34,895
+And for simplicity, we are going to think of these as undirected graphs.
+
+124
+00:05:34,895 --> 00:05:40,105
+So the goal is to encode nodes so that similarity in the embedding space- uh,
+
+125
+00:05:40,105 --> 00:05:41,660
+similarity in the embedding space,
+
+126
+00:05:41,660 --> 00:05:44,840
+you can think of it as distance or as a dot product,
+
+127
+00:05:44,840 --> 00:05:47,435
+as an inner product of the coordinates of two nodes
+
+128
+00:05:47,435 --> 00:05:50,390
+approximates the similarity in the graph space, right?
+
+129
+00:05:50,390 --> 00:05:53,345
+So the idea will be that in- or in the original network,
+
+130
+00:05:53,345 --> 00:05:54,560
+I wanna to take the nodes,
+
+131
+00:05:54,560 --> 00:05:57,290
+I wanna map them into the embedding space.
+
+132
+00:05:57,290 --> 00:06:00,960
+I'm going to use the letter Z to denote the coordinates,
+
+133
+00:06:00,960 --> 00:06:02,910
+uh, of that- of that embedding,
+
+134
+00:06:02,910 --> 00:06:04,605
+uh, of a given node.
+
+135
+00:06:04,605 --> 00:06:06,575
+Um, and the idea is that, you know,
+
+136
+00:06:06,575 --> 00:06:08,345
+some notion of similarity here
+
+137
+00:06:08,345 --> 00:06:11,240
+corresponds to some notion of similarity in the embedding space.
+
+138
+00:06:11,240 --> 00:06:14,060
+And the goal is to learn this encoder that encodes
+
+139
+00:06:14,060 --> 00:06:17,905
+the original network as a set of, uh, node embeddings.
+
+140
+00:06:17,905 --> 00:06:23,780
+So the goal is to- to define the similarity in the original network, um,
+
+141
+00:06:23,780 --> 00:06:27,815
+and to map nodes into the coordinates in the embedding space such that, uh,
+
+142
+00:06:27,815 --> 00:06:32,120
+similarity of their embeddings corresponds to the similarity in the network.
+
+143
+00:06:32,120 --> 00:06:35,360
+Uh, and as a similarity metric in the embedding space, uh,
+
+144
+00:06:35,360 --> 00:06:39,300
+people usually, uh, select, um, dot product.
+
+145
+00:06:39,300 --> 00:06:41,850
+And dot product is simply the angle,
+
+146
+00:06:41,850 --> 00:06:43,670
+uh, between the two vectors, right?
+
+147
+00:06:43,670 --> 00:06:44,870
+So when you do the dot product,
+
+148
+00:06:44,870 --> 00:06:46,820
+it's the cosine of the- of the angle.
+
+149
+00:06:46,820 --> 00:06:51,575
+So if the two points are close together or in the same direction from the origin,
+
+150
+00:06:51,575 --> 00:06:53,120
+they have, um, um,
+
+151
+00:06:53,120 --> 00:06:54,980
+high, uh, uh, dot product.
+
+152
+00:06:54,980 --> 00:06:56,420
+And if they are orthogonal,
+
+153
+00:06:56,420 --> 00:06:58,550
+so there is kind of a 90-degree angle, uh,
+
+154
+00:06:58,550 --> 00:07:00,740
+then- then they are as- as dissimilar as
+
+155
+00:07:00,740 --> 00:07:03,920
+possible because the dot product will be, uh, zero.
+
+156
+00:07:03,920 --> 00:07:06,560
+So that's the idea. So now what do we need to
+
+157
+00:07:06,560 --> 00:07:08,810
+define is we need to define this notion of, uh,
+
+158
+00:07:08,810 --> 00:07:12,320
+ori- similarity in the original network and we need to define then
+
+159
+00:07:12,320 --> 00:07:16,850
+an objective function that will connect the similarity with the, uh, embeddings.
+
+160
+00:07:16,850 --> 00:07:19,985
+And this is really what we are going to do ,uh, in this lecture.
+
+161
+00:07:19,985 --> 00:07:22,220
+So, uh, to summarize a bit, right?
+
+162
+00:07:22,220 --> 00:07:25,070
+Encoder maps nodes, uh, to embeddings.
+
+163
+00:07:25,070 --> 00:07:27,680
+We need to define a node similarity function,
+
+164
+00:07:27,680 --> 00:07:30,815
+a measure of similarity in the original network.
+
+165
+00:07:30,815 --> 00:07:33,110
+And then the decoder, right,
+
+166
+00:07:33,110 --> 00:07:36,305
+maps from the embeddings to the similarity score.
+
+167
+00:07:36,305 --> 00:07:39,950
+Uh, and then we can optimize the parameters such that
+
+168
+00:07:39,950 --> 00:07:43,760
+the decoded similarity corresponds as closely as
+
+169
+00:07:43,760 --> 00:07:47,720
+possible to the underlying definition of the network similarity.
+
+170
+00:07:47,720 --> 00:07:50,300
+Where here we're using a very simple decoder,
+
+171
+00:07:50,300 --> 00:07:52,520
+as I said, just the dot-product.
+
+172
+00:07:52,520 --> 00:07:57,995
+So, uh, encoder will map notes into low-dimensional vectors.
+
+173
+00:07:57,995 --> 00:08:03,470
+So encoder of a given node will simply be the coordinates or the embedding of that node.
+
+174
+00:08:03,470 --> 00:08:06,439
+Um, we talked about how we are going to define the similarity
+
+175
+00:08:06,439 --> 00:08:09,260
+in the embedding space in terms of the decoder,
+
+176
+00:08:09,260 --> 00:08:11,360
+in terms of the dot product.
+
+177
+00:08:11,360 --> 00:08:13,280
+Um, and as I said, uh,
+
+178
+00:08:13,280 --> 00:08:16,925
+the embeddings will be in some d-dimensional space.
+
+179
+00:08:16,925 --> 00:08:19,580
+You can think of d, you know, between,
+
+180
+00:08:19,580 --> 00:08:22,460
+let's say 64 up to about 1,000,
+
+181
+00:08:22,460 --> 00:08:24,695
+this is usually how- how,
+
+182
+00:08:24,695 --> 00:08:26,870
+uh, how many dimensions people, uh, choose,
+
+183
+00:08:26,870 --> 00:08:29,750
+but of course, it depends a bit on the size of the network,
+
+184
+00:08:29,750 --> 00:08:31,715
+uh, and other factors as well.
+
+185
+00:08:31,715 --> 00:08:33,350
+Um, and then as I said,
+
+186
+00:08:33,350 --> 00:08:36,470
+the similarity function specifies how the relationship in
+
+187
+00:08:36,470 --> 00:08:40,115
+the- in the vector space map to the relationship in the,
+
+188
+00:08:40,115 --> 00:08:42,980
+uh, original ,uh, in the original network.
+
+189
+00:08:42,980 --> 00:08:44,780
+And this is what I'm trying to ,uh,
+
+190
+00:08:44,780 --> 00:08:47,210
+show an example of, uh, here.
+
+191
+00:08:47,210 --> 00:08:53,000
+So the simplest encoding approach is that an encoder is just an embedding-lookup.
+
+192
+00:08:53,000 --> 00:08:56,270
+So what- what do I mean by this that- is that an encoded- an
+
+193
+00:08:56,270 --> 00:08:59,780
+encoding of a given node is simply a vector of numbers.
+
+194
+00:08:59,780 --> 00:09:02,645
+And this is just a lookup in some big matrix.
+
+195
+00:09:02,645 --> 00:09:06,995
+So what I mean by this is that our goal will be to learn this matrix Z,
+
+196
+00:09:06,995 --> 00:09:08,810
+whose dimensionalities is d,
+
+197
+00:09:08,810 --> 00:09:11,390
+the embedding dimension times the number of nodes,
+
+198
+00:09:11,390 --> 00:09:12,590
+uh, in the network.
+
+199
+00:09:12,590 --> 00:09:15,680
+So this means that for every node we will have a column
+
+200
+00:09:15,680 --> 00:09:19,190
+that is reserved to store the embedding for that node.
+
+201
+00:09:19,190 --> 00:09:21,350
+And this is what we are going to learn,
+
+202
+00:09:21,350 --> 00:09:23,180
+this is what we are going to estimate.
+
+203
+00:09:23,180 --> 00:09:24,860
+And then in this kind of notation,
+
+204
+00:09:24,860 --> 00:09:29,510
+you can think of v simply as an indicator vector that has all zeros,
+
+205
+00:09:29,510 --> 00:09:31,865
+except the value of one in the column
+
+206
+00:09:31,865 --> 00:09:35,900
+indicating the- the ID of that node v. And- and what this
+
+207
+00:09:35,900 --> 00:09:38,630
+will do pictorially is that basically you can think of
+
+208
+00:09:38,630 --> 00:09:42,440
+Z as this matrix that has one column per node,
+
+209
+00:09:42,440 --> 00:09:47,690
+um, and the column store- a given column stores the embedding of that given node.
+
+210
+00:09:47,690 --> 00:09:52,295
+So the size of this matrix will be number of nodes times the embedding dimension.
+
+211
+00:09:52,295 --> 00:09:54,110
+And people now who are, for example,
+
+212
+00:09:54,110 --> 00:09:58,010
+thinking about large graphs may already have a question.
+
+213
+00:09:58,010 --> 00:10:00,725
+You know, won't these to be a lot of parameters to estimate?
+
+214
+00:10:00,725 --> 00:10:05,525
+Because the number of parameters in this model is basically the number of entries, uh,
+
+215
+00:10:05,525 --> 00:10:09,080
+of this matrix, and this matrix gets very large because
+
+216
+00:10:09,080 --> 00:10:12,560
+it dep- the size of the matrix depends on the number of nodes in the network.
+
+217
+00:10:12,560 --> 00:10:16,175
+So if you want to do a network or one billion nodes,
+
+218
+00:10:16,175 --> 00:10:19,880
+then the dimensionality of this matrix would be one billion times,
+
+219
+00:10:19,880 --> 00:10:20,990
+let's say thousandth, uh,
+
+220
+00:10:20,990 --> 00:10:23,135
+and embedding dimension and that's- that's,
+
+221
+00:10:23,135 --> 00:10:24,860
+uh, that's a lot of parameters.
+
+222
+00:10:24,860 --> 00:10:29,420
+So these methods won't necessarily be most scalable, you can scale them,
+
+223
+00:10:29,420 --> 00:10:33,035
+let's say up to millions or a million nodes or, uh,
+
+224
+00:10:33,035 --> 00:10:35,105
+something like that if you- if you really try,
+
+225
+00:10:35,105 --> 00:10:37,760
+but they will be slow because for every node
+
+226
+00:10:37,760 --> 00:10:40,655
+we essentially have to estimate the parameters.
+
+227
+00:10:40,655 --> 00:10:44,990
+Basically for every node we have to estimate its embedding- embedding vector,
+
+228
+00:10:44,990 --> 00:10:48,650
+which is described by the d-numbers d-parameters,
+
+229
+00:10:48,650 --> 00:10:50,990
+d-coordinates that we have to estimate.
+
+230
+00:10:50,990 --> 00:10:55,100
+So, um, but this means that once we have estimated this embeddings,
+
+231
+00:10:55,100 --> 00:10:56,300
+getting them is very easy.
+
+232
+00:10:56,300 --> 00:11:00,410
+Is just, uh, lookup in this matrix where everything is stored.
+
+233
+00:11:00,410 --> 00:11:02,870
+So this means, as I said,
+
+234
+00:11:02,870 --> 00:11:05,555
+each node is assigned a unique embedding vector.
+
+235
+00:11:05,555 --> 00:11:10,820
+And the goal of our methods will be to directly optimize or ,uh,
+
+236
+00:11:10,820 --> 00:11:15,305
+learn the embedding of each node separately in some sense.
+
+237
+00:11:15,305 --> 00:11:17,045
+Um, and this means that, uh,
+
+238
+00:11:17,045 --> 00:11:19,700
+there are many methods that will allow us to do this.
+
+239
+00:11:19,700 --> 00:11:22,130
+In particular, we are going to look at two methods.
+
+240
+00:11:22,130 --> 00:11:23,270
+One is called, uh,
+
+241
+00:11:23,270 --> 00:11:27,105
+DeepWalk and the other one is called node2vec.
+
+242
+00:11:27,105 --> 00:11:29,905
+So let me- let me summarize.
+
+243
+00:11:29,905 --> 00:11:34,060
+In this view we talked about an encoder ,uh, decoder, uh,
+
+244
+00:11:34,060 --> 00:11:37,600
+framework where we have what we call a shallow encoder because it's
+
+245
+00:11:37,600 --> 00:11:42,110
+just an embedding-lookup the parameters to optimize ,um, are- are,
+
+246
+00:11:42,110 --> 00:11:46,715
+uh, very simple, it is just this embedding matrix Z. Um,
+
+247
+00:11:46,715 --> 00:11:51,375
+and for every node we want to identify the embedding z_u.
+
+248
+00:11:51,375 --> 00:11:55,460
+And v are going to cover in the future lectures is we are
+
+249
+00:11:55,460 --> 00:11:59,360
+going to cover deep encoders like graph neural networks that- that,
+
+250
+00:11:59,360 --> 00:12:04,370
+uh, are a very different approach to computing, uh, node embeddings.
+
+251
+00:12:04,370 --> 00:12:06,080
+In terms of a decoder,
+
+252
+00:12:06,080 --> 00:12:08,765
+decoder for us would be something very similar- simple.
+
+253
+00:12:08,765 --> 00:12:14,510
+It'd be simple- simply based on the node similarity based on the dot product.
+
+254
+00:12:14,510 --> 00:12:17,000
+And our objective function that we are going to try to
+
+255
+00:12:17,000 --> 00:12:19,955
+learn is to maximize the dot product
+
+256
+00:12:19,955 --> 00:12:26,765
+of node pairs that are similar according to our node similarity function.
+
+257
+00:12:26,765 --> 00:12:29,180
+So then the question is,
+
+258
+00:12:29,180 --> 00:12:31,100
+how do we define the similarity, right?
+
+259
+00:12:31,100 --> 00:12:32,285
+I've been talking about it,
+
+260
+00:12:32,285 --> 00:12:34,310
+but I've never really defined it.
+
+261
+00:12:34,310 --> 00:12:38,165
+And really this is how these methods are going to differ between each other,
+
+262
+00:12:38,165 --> 00:12:41,810
+is how do they define the node similarity notion?
+
+263
+00:12:41,810 --> 00:12:45,950
+Um, and you could ask a lot of different ways how- how to do this, right?
+
+264
+00:12:45,950 --> 00:12:46,970
+You could chay- say,
+
+265
+00:12:46,970 --> 00:12:51,545
+"Should two nodes have similar embedding if they are perhaps linked by an edge?"
+
+266
+00:12:51,545 --> 00:12:54,185
+Perhaps they share many neighbors in common,
+
+267
+00:12:54,185 --> 00:12:58,220
+perhaps they have something else in common or they are in similar part of
+
+268
+00:12:58,220 --> 00:13:02,525
+the network or the structure of the network around them, uh, look similar.
+
+269
+00:13:02,525 --> 00:13:07,505
+And the idea that allow- that- that started all this area of
+
+270
+00:13:07,505 --> 00:13:13,055
+learning node embeddings was that we are going to def- define a similarity,
+
+271
+00:13:13,055 --> 00:13:15,860
+um, of nodes based on random walks.
+
+272
+00:13:15,860 --> 00:13:17,900
+And we are going to ,uh,
+
+273
+00:13:17,900 --> 00:13:22,445
+optimize node embedding for this random-walk similarity measure.
+
+274
+00:13:22,445 --> 00:13:26,255
+So, uh, let me explain what- what I mean by that.
+
+275
+00:13:26,255 --> 00:13:30,755
+So, uh, it is important to know that this method
+
+276
+00:13:30,755 --> 00:13:34,850
+is what is called unsupervised or self-supervised,
+
+277
+00:13:34,850 --> 00:13:37,745
+in a way that when we are learning the node embeddings,
+
+278
+00:13:37,745 --> 00:13:40,715
+we are not utilizing any node labels.
+
+279
+00:13:40,715 --> 00:13:43,550
+Um, will only be basically trying to
+
+280
+00:13:43,550 --> 00:13:47,405
+learn embedding so that they capture some notion of network similarity,
+
+281
+00:13:47,405 --> 00:13:51,500
+but they don't need to capture the- the notion of labels of the nodes.
+
+282
+00:13:51,500 --> 00:13:55,100
+Uh, and we are also not- not utilizing any node features
+
+283
+00:13:55,100 --> 00:13:58,490
+or node attributes in a sense that if nodes are humans,
+
+284
+00:13:58,490 --> 00:14:00,380
+perhaps, you know, their interest,
+
+285
+00:14:00,380 --> 00:14:03,860
+location, gender, age would be attached to the node.
+
+286
+00:14:03,860 --> 00:14:05,780
+So we are not using any data,
+
+287
+00:14:05,780 --> 00:14:10,130
+any information attached to every node or attached to every link.
+
+288
+00:14:10,130 --> 00:14:14,840
+And the goal here is to directly estimate a set of coordinates of node so
+
+289
+00:14:14,840 --> 00:14:20,300
+that some aspect of the network structure is preserved.
+
+290
+00:14:20,300 --> 00:14:22,220
+And in- in this sense,
+
+291
+00:14:22,220 --> 00:14:25,280
+these embeddings will be task-independent because they are
+
+292
+00:14:25,280 --> 00:14:28,400
+not trained on a given prediction task, um,
+
+293
+00:14:28,400 --> 00:14:30,410
+or a given specific, you know,
+
+294
+00:14:30,410 --> 00:14:34,385
+labelings of the nodes or are given specific subset of links,
+
+295
+00:14:34,385 --> 00:14:39,270
+it is trained just given the network itself.
+

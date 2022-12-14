@@ -1,0 +1,3216 @@
+1
+00:00:04,040 --> 00:00:08,415
+Next, I wanna talk about how do we train,
+
+2
+00:00:08,415 --> 00:00:10,290
+uh, graph neural networks, right?
+
+3
+00:00:10,290 --> 00:00:12,750
+So far we talked about how do we augment
+
+4
+00:00:12,750 --> 00:00:16,725
+the feature vector of the node and how can we augment the- the graph structure.
+
+5
+00:00:16,725 --> 00:00:20,970
+And we talked about how to augment the graph structure by adding edges to improve
+
+6
+00:00:20,970 --> 00:00:26,505
+message-passing or how do we drop edges to increase the efficiency,
+
+7
+00:00:26,505 --> 00:00:30,615
+especially in natural graph social networks where you have high degree nodes,
+
+8
+00:00:30,615 --> 00:00:34,185
+you don't wanna aggregate from the entire neighborhood of the node,
+
+9
+00:00:34,185 --> 00:00:36,449
+but you wanna kind of carefully sub-select,
+
+10
+00:00:36,449 --> 00:00:38,895
+uh, the part of the network to aggregate from.
+
+11
+00:00:38,895 --> 00:00:41,865
+So, uh, this is the reason,
+
+12
+00:00:41,865 --> 00:00:43,830
+uh, why you wanna do these augmentations.
+
+13
+00:00:43,830 --> 00:00:46,680
+Now I wanna talk more about how do you do the training?
+
+14
+00:00:46,680 --> 00:00:48,180
+How do you deal with the outputs?
+
+15
+00:00:48,180 --> 00:00:49,575
+How do you define, uh,
+
+16
+00:00:49,575 --> 00:00:53,280
+the loss functions, measure performance, and so on?
+
+17
+00:00:53,280 --> 00:00:56,220
+So the next talk is,
+
+18
+00:00:56,220 --> 00:00:59,055
+um, how do we train a GNN, right?
+
+19
+00:00:59,055 --> 00:01:02,700
+Like, what kind of learning objective do we wanna define and,
+
+20
+00:01:02,700 --> 00:01:04,980
+um, how are we going to, uh,
+
+21
+00:01:04,980 --> 00:01:08,145
+do, uh, all these, uh, together?
+
+22
+00:01:08,145 --> 00:01:13,605
+So GNN training pipeline has the following, uh, steps, right?
+
+23
+00:01:13,605 --> 00:01:15,920
+So far we talked about the input graph,
+
+24
+00:01:15,920 --> 00:01:18,780
+we talked about how to define the graph neural network,
+
+25
+00:01:18,780 --> 00:01:23,050
+and we talked about how the graph neural network produces node embeddings.
+
+26
+00:01:23,050 --> 00:01:25,505
+What we haven't talked about yet is
+
+27
+00:01:25,505 --> 00:01:29,045
+how do you get from node embeddings to the actual prediction?
+
+28
+00:01:29,045 --> 00:01:30,905
+And then once you have the predictions,
+
+29
+00:01:30,905 --> 00:01:35,405
+how do you evaluate them based against some ground truth labels?
+
+30
+00:01:35,405 --> 00:01:37,190
+And how do you compute the loss,
+
+31
+00:01:37,190 --> 00:01:39,080
+or how do you define the losses,
+
+32
+00:01:39,080 --> 00:01:42,820
+the discrepancy between the predictions and the true labels?
+
+33
+00:01:42,820 --> 00:01:45,410
+Right? Um, so far we only said, aha,
+
+34
+00:01:45,410 --> 00:01:48,410
+GNN produces a set of node embeddings, right?
+
+35
+00:01:48,410 --> 00:01:53,135
+Which means that this is a- a representation of node L at the final layer,
+
+36
+00:01:53,135 --> 00:01:55,820
+layer L, uh, of the graph neural network.
+
+37
+00:01:55,820 --> 00:01:57,740
+And I can just think of this as, you know,
+
+38
+00:01:57,740 --> 00:02:01,820
+some representations, some vectors attached to the nodes of the network.
+
+39
+00:02:01,820 --> 00:02:03,735
+Now, the question is, uh, you know,
+
+40
+00:02:03,735 --> 00:02:06,150
+how is this second part defined?
+
+41
+00:02:06,150 --> 00:02:09,604
+What do we do here in terms of prediction heads, evaluation matrix,
+
+42
+00:02:09,604 --> 00:02:11,420
+where do the labels come from,
+
+43
+00:02:11,420 --> 00:02:14,735
+and what is the loss function we are going to optimize?
+
+44
+00:02:14,735 --> 00:02:18,780
+So let's first talk about the prediction head, right?
+
+45
+00:02:18,780 --> 00:02:23,655
+Uh, prediction head, this means the output of the g- of the- of the final model,
+
+46
+00:02:23,655 --> 00:02:26,675
+um, can have di- we can have different prediction heads.
+
+47
+00:02:26,675 --> 00:02:28,550
+We can have node-level prediction heads.
+
+48
+00:02:28,550 --> 00:02:30,665
+We can have, er, link-level,
+
+49
+00:02:30,665 --> 00:02:34,205
+edge-level, as well as entire graph-level prediction heads.
+
+50
+00:02:34,205 --> 00:02:35,540
+So let me talk about,
+
+51
+00:02:35,540 --> 00:02:37,220
+uh, this, uh, first.
+
+52
+00:02:37,220 --> 00:02:39,830
+So, er, for prediction head,
+
+53
+00:02:39,830 --> 00:02:44,105
+the idea is that different tasks require different types of,
+
+54
+00:02:44,105 --> 00:02:45,680
+uh, prediction outputs, right?
+
+55
+00:02:45,680 --> 00:02:48,215
+As I said, we can have our entire graph-level,
+
+56
+00:02:48,215 --> 00:02:50,760
+individual node-level, or, um,
+
+57
+00:02:50,760 --> 00:02:54,005
+edge-level, which is a pairwise between a pair of nodes.
+
+58
+00:02:54,005 --> 00:02:56,240
+So for the node-level of prediction,
+
+59
+00:02:56,240 --> 00:02:59,015
+we can directly make prediction using node embeddings.
+
+60
+00:02:59,015 --> 00:03:02,150
+So basically after a graph neural network computation,
+
+61
+00:03:02,150 --> 00:03:04,315
+we have a d-dimensional node embedding,
+
+62
+00:03:04,315 --> 00:03:06,270
+uh, for every node in the network.
+
+63
+00:03:06,270 --> 00:03:07,590
+Um, and if, for example,
+
+64
+00:03:07,590 --> 00:03:09,445
+we wanna make a k-way prediction,
+
+65
+00:03:09,445 --> 00:03:12,380
+which would be basically a classification of nodes
+
+66
+00:03:12,380 --> 00:03:16,300
+among k different classes or k different categories,
+
+67
+00:03:16,300 --> 00:03:17,775
+um, this would be one way.
+
+68
+00:03:17,775 --> 00:03:19,785
+Or perhaps we wanna regress,
+
+69
+00:03:19,785 --> 00:03:21,830
+uh, against 10, uh, sorry,
+
+70
+00:03:21,830 --> 00:03:24,110
+k different targets, k different,
+
+71
+00:03:24,110 --> 00:03:26,050
+uh, characteristics of that node.
+
+72
+00:03:26,050 --> 00:03:28,680
+Uh, the idea would be quite, uh, simple.
+
+73
+00:03:28,680 --> 00:03:30,360
+We just say, um, you know,
+
+74
+00:03:30,360 --> 00:03:32,910
+the output, er, head of, uh,
+
+75
+00:03:32,910 --> 00:03:35,235
+for a given node is simply some, er,
+
+76
+00:03:35,235 --> 00:03:39,050
+matrix time the- times the em- final embedding of that node, right?
+
+77
+00:03:39,050 --> 00:03:43,700
+So this basically means that W will- will map node embeddings, uh,
+
+78
+00:03:43,700 --> 00:03:47,534
+from this embedding space to the- to the prediction,
+
+79
+00:03:47,534 --> 00:03:48,780
+uh, to the prediction space.
+
+80
+00:03:48,780 --> 00:03:51,240
+To the, in this scalar- case, let's say, uh,
+
+81
+00:03:51,240 --> 00:03:53,945
+k-dimensional output because we are interested in,
+
+82
+00:03:53,945 --> 00:03:56,455
+uh, k-dimensional, um, uh,
+
+83
+00:03:56,455 --> 00:03:59,970
+prediction, so a k-way, uh, prediction.
+
+84
+00:03:59,970 --> 00:04:04,280
+Um, in or- one more thing I will add for the rest of the lecture,
+
+85
+00:04:04,280 --> 00:04:06,980
+I'm going to use this hat symbol to denote
+
+86
+00:04:06,980 --> 00:04:10,070
+the predicted value versus the ground truth value, right?
+
+87
+00:04:10,070 --> 00:04:11,750
+So whenever I use a hat,
+
+88
+00:04:11,750 --> 00:04:14,540
+this means this is a value predicted by the model,
+
+89
+00:04:14,540 --> 00:04:18,079
+and then I can go and compare y hat with y,
+
+90
+00:04:18,079 --> 00:04:24,270
+where y is the true- true label and y hat is the predicted, uh, label, right?
+
+91
+00:04:24,270 --> 00:04:26,030
+And now that I have y-hat,
+
+92
+00:04:26,030 --> 00:04:27,740
+I can compare it to, uh,
+
+93
+00:04:27,740 --> 00:04:30,305
+y and I can compute, uh, the loss,
+
+94
+00:04:30,305 --> 00:04:33,550
+the discrepancy between the prediction, uh, and the truth.
+
+95
+00:04:33,550 --> 00:04:36,345
+This is for node-level tasks.
+
+96
+00:04:36,345 --> 00:04:41,650
+For edge-level tasks, we have to make a prediction using pairs of node embeddings, right?
+
+97
+00:04:41,650 --> 00:04:45,550
+So, again, suppose we wanna make a k-way prediction,
+
+98
+00:04:45,550 --> 00:04:49,210
+then what we need is a- is a prediction head that takes
+
+99
+00:04:49,210 --> 00:04:53,545
+the embedding of one node and the other node and returns, uh, y hat.
+
+100
+00:04:53,545 --> 00:04:54,865
+Now, y hat is, uh,
+
+101
+00:04:54,865 --> 00:04:56,920
+defined on, uh, pairs of nodes.
+
+102
+00:04:56,920 --> 00:04:59,590
+This will be, for example, for, uh, link prediction.
+
+103
+00:04:59,590 --> 00:05:04,450
+So let me tell you what are some options for creating this,
+
+104
+00:05:04,450 --> 00:05:06,490
+uh, um, edge-level, uh,
+
+105
+00:05:06,490 --> 00:05:08,830
+head, uh, for prediction.
+
+106
+00:05:08,830 --> 00:05:12,970
+So one option is that we simply concatenate, uh,
+
+107
+00:05:12,970 --> 00:05:16,315
+embeddings of nodes u and v and then apply a linear,
+
+108
+00:05:16,315 --> 00:05:18,715
+uh, layer, a linear transformation, right?
+
+109
+00:05:18,715 --> 00:05:20,400
+And, ah, we have seen this, er,
+
+110
+00:05:20,400 --> 00:05:23,690
+this idea already in graph attention, right?
+
+111
+00:05:23,690 --> 00:05:26,610
+We said when we computed the attention between nodes u and v,
+
+112
+00:05:26,610 --> 00:05:29,359
+we simply concatenated the embeddings,
+
+113
+00:05:29,359 --> 00:05:31,130
+passed them through a linear layer,
+
+114
+00:05:31,130 --> 00:05:32,885
+um, and that gave us, uh,
+
+115
+00:05:32,885 --> 00:05:35,780
+the prediction of the attention score between,
+
+116
+00:05:35,780 --> 00:05:37,055
+uh, a pair of nodes.
+
+117
+00:05:37,055 --> 00:05:38,480
+Here, we can use the same,
+
+118
+00:05:38,480 --> 00:05:42,455
+the same idea, where basically we can take the embeddings of u and v,
+
+119
+00:05:42,455 --> 00:05:45,395
+concatenate them, basically just join them together,
+
+120
+00:05:45,395 --> 00:05:48,650
+and then apply a linear predictor on top of this.
+
+121
+00:05:48,650 --> 00:05:51,170
+So basically multiply this with the matrix and
+
+122
+00:05:51,170 --> 00:05:54,470
+perhaps send through a non-linearity or anything like that,
+
+123
+00:05:54,470 --> 00:05:57,200
+like a sigmoid or a softmax if we like, right?
+
+124
+00:05:57,200 --> 00:05:59,120
+So, uh, idea would be that,
+
+125
+00:05:59,120 --> 00:06:01,325
+um, the prediction is simply,
+
+126
+00:06:01,325 --> 00:06:05,870
+um, you know, it's a linear function that then takes the, um, h 1, er,
+
+127
+00:06:05,870 --> 00:06:08,455
+h of u and h of v, concatenates them,
+
+128
+00:06:08,455 --> 00:06:11,805
+um, and up- and maps this, uh, er,
+
+129
+00:06:11,805 --> 00:06:16,100
+to the- 2D dimensional embedding into a k-way,
+
+130
+00:06:16,100 --> 00:06:19,475
+uh, prediction or a k-dimensional output.
+
+131
+00:06:19,475 --> 00:06:24,970
+Another idea, uh, rather than concatenating is also we can do,
+
+132
+00:06:24,970 --> 00:06:26,320
+uh, a dot product, right?
+
+133
+00:06:26,320 --> 00:06:27,400
+So we basically say,
+
+134
+00:06:27,400 --> 00:06:33,144
+our prediction between u and v is simply a dot product between their embeddings.
+
+135
+00:06:33,144 --> 00:06:35,785
+If I simply do the dot product between the embeddings,
+
+136
+00:06:35,785 --> 00:06:37,780
+then I get a single scalar output.
+
+137
+00:06:37,780 --> 00:06:39,250
+So this would be a one-way prediction,
+
+138
+00:06:39,250 --> 00:06:41,830
+like link classification or link prediction.
+
+139
+00:06:41,830 --> 00:06:43,450
+Is thi- is that our link or not, right?
+
+140
+00:06:43,450 --> 00:06:45,045
+So basically just that a, um,
+
+141
+00:06:45,045 --> 00:06:48,300
+one variable kind of binary, uh, classification.
+
+142
+00:06:48,300 --> 00:06:51,670
+Now, if I wanna have a k-way prediction, if I wanna, for example,
+
+143
+00:06:51,670 --> 00:06:54,920
+predict the type of the link and I have multiple types,
+
+144
+00:06:54,920 --> 00:06:58,570
+er, then I would basically have this kind of, uh,
+
+145
+00:06:58,570 --> 00:07:01,090
+uh, al- almost similar to this kind of multi-hat prediction,
+
+146
+00:07:01,090 --> 00:07:04,790
+where basically I can have a different, uh, um,
+
+147
+00:07:04,790 --> 00:07:08,264
+uh, matrix, uh, W that is trainable,
+
+148
+00:07:08,264 --> 00:07:11,720
+um, and I have one for every output class, right?
+
+149
+00:07:11,720 --> 00:07:14,560
+So for every, uh, output, er, class,
+
+150
+00:07:14,560 --> 00:07:16,470
+I would have a different, uh,
+
+151
+00:07:16,470 --> 00:07:18,060
+matrix W that essentially,
+
+152
+00:07:18,060 --> 00:07:20,360
+the way you can think of it is it takes, er,
+
+153
+00:07:20,360 --> 00:07:25,535
+let's say the vector u and then it transforms it by shrinking or extending,
+
+154
+00:07:25,535 --> 00:07:27,280
+rotating, and translating it,
+
+155
+00:07:27,280 --> 00:07:31,215
+and then, uh, multiplying that- that with, ah, h of, uh,
+
+156
+00:07:31,215 --> 00:07:32,870
+v. So it's still a dot product,
+
+157
+00:07:32,870 --> 00:07:35,360
+but the input vector gets transformed, right?
+
+158
+00:07:35,360 --> 00:07:39,575
+And, um, every- every class gets to learn its own transformation,
+
+159
+00:07:39,575 --> 00:07:41,360
+how to basically, uh,
+
+160
+00:07:41,360 --> 00:07:43,560
+rotate, uh, translate, um,
+
+161
+00:07:43,560 --> 00:07:47,925
+and- and shrink or expand the vector so that the dot product,
+
+162
+00:07:47,925 --> 00:07:49,905
+um, is, uh, is, uh,
+
+163
+00:07:49,905 --> 00:07:52,215
+such that the predict- that the value,
+
+164
+00:07:52,215 --> 00:07:53,970
+the output values, uh,
+
+165
+00:07:53,970 --> 00:07:56,520
+are well, um, are well predicted.
+
+166
+00:07:56,520 --> 00:07:59,780
+And then, right, once I have a prediction for every of the classes,
+
+167
+00:07:59,780 --> 00:08:01,625
+I can simply concatenate them,
+
+168
+00:08:01,625 --> 00:08:03,900
+and that's my final prediction, right?
+
+169
+00:08:03,900 --> 00:08:07,475
+So for k-way prediction in binary, just to summarize,
+
+170
+00:08:07,475 --> 00:08:11,780
+I can define this matrix W, one per output class,
+
+171
+00:08:11,780 --> 00:08:14,510
+and then learn this type of, uh, uh,
+
+172
+00:08:14,510 --> 00:08:18,490
+linear, uh, predictor based on a dot product.
+
+173
+00:08:18,490 --> 00:08:22,080
+And then, er, the last thing to discuss is,
+
+174
+00:08:22,080 --> 00:08:26,625
+how do we do, er, graph-level, er, prediction, right?
+
+175
+00:08:26,625 --> 00:08:31,175
+Here, we wanna predict using all the node embeddings in our graph, right?
+
+176
+00:08:31,175 --> 00:08:34,750
+And, again, let's suppose we wanna make a k-way prediction.
+
+177
+00:08:34,750 --> 00:08:37,650
+So what we want is we wanna have these, uh, uh,
+
+178
+00:08:37,650 --> 00:08:41,390
+prediction head that, uh, makes one prediction on the entire graph.
+
+179
+00:08:41,390 --> 00:08:45,020
+So what this means is we have to take the individual node embeddings, right,
+
+180
+00:08:45,020 --> 00:08:48,665
+for every node and somehow aggregate them to- to
+
+181
+00:08:48,665 --> 00:08:53,190
+find the embedding of the graph so that we can then make a prediction, right?
+
+182
+00:08:53,190 --> 00:08:54,900
+So in this sense, this, uh,
+
+183
+00:08:54,900 --> 00:08:56,790
+head for graph, uh,
+
+184
+00:08:56,790 --> 00:08:58,940
+prediction- graph-level prediction is
+
+185
+00:08:58,940 --> 00:09:01,760
+similar to the aggregation function in a GNN layer, right?
+
+186
+00:09:01,760 --> 00:09:05,195
+We need to aggregate all these embeddings of nodes to create
+
+187
+00:09:05,195 --> 00:09:09,635
+a graph-level embedding and then make a graph-level, uh, prediction.
+
+188
+00:09:09,635 --> 00:09:12,970
+So let me tell you how you can define this,
+
+189
+00:09:12,970 --> 00:09:16,555
+uh, graph, uh, prediction head.
+
+190
+00:09:16,555 --> 00:09:18,735
+There are many options,
+
+191
+00:09:18,735 --> 00:09:20,160
+uh, for us to do this.
+
+192
+00:09:20,160 --> 00:09:23,510
+[BACKGROUND] So one needs to do global mean pooling, right?
+
+193
+00:09:23,510 --> 00:09:27,575
+So basically you take the embeddings of all the nodes and you average them.
+
+194
+00:09:27,575 --> 00:09:29,340
+That would be one possibility.
+
+195
+00:09:29,340 --> 00:09:31,820
+Another possibility is max pooling,
+
+196
+00:09:31,820 --> 00:09:33,525
+where you would take- take
+
+197
+00:09:33,525 --> 00:09:38,165
+coordinate-wise maximum across the embeddings of all the nodes.
+
+198
+00:09:38,165 --> 00:09:42,545
+Um, and then another option is that you do summation-based pooling,
+
+199
+00:09:42,545 --> 00:09:46,970
+where you basically just sum up the embeddings of all the nodes, uh, in the graph.
+
+200
+00:09:46,970 --> 00:09:48,545
+Um, and this will,
+
+201
+00:09:48,545 --> 00:09:53,155
+depending on the application and depending on the graph- graphs you are working with,
+
+202
+00:09:53,155 --> 00:09:57,555
+uh, different, um, options are going to work the, uh, uh, better.
+
+203
+00:09:57,555 --> 00:09:59,870
+You know, mean pooling is interesting because
+
+204
+00:09:59,870 --> 00:10:02,600
+the number of nodes does not really play the role.
+
+205
+00:10:02,600 --> 00:10:05,960
+So if you- if you wanna compare graphs that have very different,
+
+206
+00:10:05,960 --> 00:10:09,735
+uh, sizes, then perhaps mean pooling is the best option,
+
+207
+00:10:09,735 --> 00:10:12,410
+but if you really wanna also understand how many nodes are
+
+208
+00:10:12,410 --> 00:10:15,515
+there in the graph and what is the structure of the graph,
+
+209
+00:10:15,515 --> 00:10:19,345
+then sum-based pooling, uh, is a better option.
+
+210
+00:10:19,345 --> 00:10:22,555
+Um, of course, there are also more advanced,
+
+211
+00:10:22,555 --> 00:10:25,360
+uh, graph, uh, pooling, uh, strategies.
+
+212
+00:10:25,360 --> 00:10:28,225
+And I'm just going to give you next an idea,
+
+213
+00:10:28,225 --> 00:10:31,475
+uh, how, uh, how you can improve this.
+
+214
+00:10:31,475 --> 00:10:35,730
+Um, the reason why we may wanna improve this is that the issue is that
+
+215
+00:10:35,730 --> 00:10:39,945
+global pooling over a large graph will use a lot of information.
+
+216
+00:10:39,945 --> 00:10:45,255
+Um, and I wanna illustrate what I mean by this is by- with this simple toy example,
+
+217
+00:10:45,255 --> 00:10:50,320
+where you can think that we have nodes that have only one dimensional embeddings, right?
+
+218
+00:10:50,320 --> 00:10:52,600
+So the embeddings are just a single number.
+
+219
+00:10:52,600 --> 00:10:54,405
+And imagine I have two graphs.
+
+220
+00:10:54,405 --> 00:10:55,670
+In one case, you know,
+
+221
+00:10:55,670 --> 00:10:57,530
+I have the values like minus,
+
+222
+00:10:57,530 --> 00:11:00,050
+uh, node 1 has embedding minus 1,
+
+223
+00:11:00,050 --> 00:11:03,484
+node 2 has embedding minus 2, node 3, 0,
+
+224
+00:11:03,484 --> 00:11:05,150
+you know, 4 has embedding 1,
+
+225
+00:11:05,150 --> 00:11:07,605
+and 5 has embedding, uh, 2.
+
+226
+00:11:07,605 --> 00:11:10,120
+And perhaps I have a different graph,
+
+227
+00:11:10,120 --> 00:11:12,535
+um, where embeddings are very different, right?
+
+228
+00:11:12,535 --> 00:11:14,500
+Like minus 10, minus 20,
+
+229
+00:11:14,500 --> 00:11:16,110
+0, 10 and 20, right?
+
+230
+00:11:16,110 --> 00:11:20,655
+Then I can say look clearly G_1 and G_2 have very different node embeddings.
+
+231
+00:11:20,655 --> 00:11:23,285
+Their structures could be very, very different.
+
+232
+00:11:23,285 --> 00:11:27,745
+But if I do any kind of global sum based pooling, for example,
+
+233
+00:11:27,745 --> 00:11:29,890
+if I sum or if I take the average,
+
+234
+00:11:29,890 --> 00:11:31,150
+then for both of these, um,
+
+235
+00:11:31,150 --> 00:11:33,940
+uh, I will get the same value.
+
+236
+00:11:33,940 --> 00:11:38,095
+So it means that from the graph embedding point of view,
+
+237
+00:11:38,095 --> 00:11:41,290
+these two no- these two graphs will have the same embedding value.
+
+238
+00:11:41,290 --> 00:11:43,300
+So they'll have the same representation.
+
+239
+00:11:43,300 --> 00:11:44,800
+So we cannot differentiate,
+
+240
+00:11:44,800 --> 00:11:46,120
+we cannot separate them out.
+
+241
+00:11:46,120 --> 00:11:48,070
+We cannot classify them into
+
+242
+00:11:48,070 --> 00:11:51,370
+two different classes because they have the same representation.
+
+243
+00:11:51,370 --> 00:11:55,360
+They both have the, uh, the representation, uh, of 0.
+
+244
+00:11:55,360 --> 00:11:57,415
+So this is one issue,
+
+245
+00:11:57,415 --> 00:11:58,555
+kind of, uh, uh,
+
+246
+00:11:58,555 --> 00:12:00,205
+a very simple, uh,
+
+247
+00:12:00,205 --> 00:12:02,920
+kind of edge case example, um,
+
+248
+00:12:02,920 --> 00:12:05,545
+why- why global pooling, uh,
+
+249
+00:12:05,545 --> 00:12:08,575
+many times can lead to unsatisfactory results,
+
+250
+00:12:08,575 --> 00:12:11,815
+especially if their graphs are, uh, larger.
+
+251
+00:12:11,815 --> 00:12:16,495
+A solution to this is to do a hierarchical pooling.
+
+252
+00:12:16,495 --> 00:12:19,015
+And hierarchical pooling would mean that I don't
+
+253
+00:12:19,015 --> 00:12:21,565
+aggregate everything together at the same time,
+
+254
+00:12:21,565 --> 00:12:24,310
+but I'm aggregating smaller groups and then,
+
+255
+00:12:24,310 --> 00:12:26,605
+you know, I take a few nodes, aggregate them.
+
+256
+00:12:26,605 --> 00:12:28,900
+I take another subset of nodes, aggregate them.
+
+257
+00:12:28,900 --> 00:12:30,385
+Now I have two aggregations.
+
+258
+00:12:30,385 --> 00:12:31,825
+I further aggregate these,
+
+259
+00:12:31,825 --> 00:12:33,685
+and this way I can hierarchically,
+
+260
+00:12:33,685 --> 00:12:35,665
+uh, aggregate things, uh,
+
+261
+00:12:35,665 --> 00:12:37,390
+subsets of nodes together.
+
+262
+00:12:37,390 --> 00:12:42,745
+So let me give you a- a toy example and then I'll tell you about how one can do this.
+
+263
+00:12:42,745 --> 00:12:47,110
+Um, so imagine I will been going to aggregate using, uh, a
+
+264
+00:12:47,110 --> 00:12:50,050
+rectified linear unit as a non, uh,
+
+265
+00:12:50,050 --> 00:12:54,565
+as a nonlinearity and a summation as the aggregation function, right?
+
+266
+00:12:54,565 --> 00:12:56,980
+And imagine that I decide to aggregate
+
+267
+00:12:56,980 --> 00:13:00,655
+hierarchically in a sense that I first aggregate first two nodes,
+
+268
+00:13:00,655 --> 00:13:02,965
+then I aggregate that the last three nodes,
+
+269
+00:13:02,965 --> 00:13:06,040
+and then I aggregate the aggregates, right?
+
+270
+00:13:06,040 --> 00:13:07,930
+So , uh, for, uh, graph 1,
+
+271
+00:13:07,930 --> 00:13:09,295
+how will this look like is,
+
+272
+00:13:09,295 --> 00:13:11,740
+I first aggregate minus 1 and minus 2,
+
+273
+00:13:11,740 --> 00:13:14,020
+um, and then pass it through ReLU,
+
+274
+00:13:14,020 --> 00:13:17,740
+I get a 0, then I aggregate the last three nodes.
+
+275
+00:13:17,740 --> 00:13:19,240
+Uh, here's the aggregation.
+
+276
+00:13:19,240 --> 00:13:20,515
+I get the value of 3.
+
+277
+00:13:20,515 --> 00:13:23,950
+Now I aggregate 0 and the 3 together,
+
+278
+00:13:23,950 --> 00:13:25,150
+and I obtain a 3.
+
+279
+00:13:25,150 --> 00:13:29,180
+So this means the embedding of this graph G_1 is 3,
+
+280
+00:13:29,180 --> 00:13:32,565
+because we worked with single-dimensional embeddings right?
+
+281
+00:13:32,565 --> 00:13:34,590
+Now for G_2, here is my,
+
+282
+00:13:34,590 --> 00:13:36,330
+uh, here's my graph, right?
+
+283
+00:13:36,330 --> 00:13:37,950
+So again, if I do the, uh,
+
+284
+00:13:37,950 --> 00:13:39,795
+I- if I do the first two nodes,
+
+285
+00:13:39,795 --> 00:13:41,325
+the ReLU will be 0.
+
+286
+00:13:41,325 --> 00:13:42,585
+If I do the second,
+
+287
+00:13:42,585 --> 00:13:44,860
+uh, the last three nodes, the,
+
+288
+00:13:44,860 --> 00:13:49,615
+uh, the ReLU output of this aggregation will be 30.
+
+289
+00:13:49,615 --> 00:13:53,455
+If I now further aggregate this using the same aggregation, uh,
+
+290
+00:13:53,455 --> 00:13:55,960
+function, so I aggregate zero 0 and a 30,
+
+291
+00:13:55,960 --> 00:13:58,360
+um, I will get, uh, a 30.
+
+292
+00:13:58,360 --> 00:14:01,720
+So now the two graphs have very different embeddings.
+
+293
+00:14:01,720 --> 00:14:04,345
+One has an embedding of 3, the other one of 30.
+
+294
+00:14:04,345 --> 00:14:06,520
+So we are able now to differentiate, right?
+
+295
+00:14:06,520 --> 00:14:09,625
+We are to distinguish them because they have different embeddings.
+
+296
+00:14:09,625 --> 00:14:13,240
+They- they do not overlap in the embedding space.
+
+297
+00:14:13,240 --> 00:14:19,630
+So that's an idea or an illustration how hierarchical pooling, uh, may help.
+
+298
+00:14:19,630 --> 00:14:22,375
+So now, of course the question is, uh,
+
+299
+00:14:22,375 --> 00:14:27,745
+how do I decide who tells me what to aggregate first and how to hierarchically aggregate?
+
+300
+00:14:27,745 --> 00:14:32,095
+And the insight that allows you to do this really well in graphs is that
+
+301
+00:14:32,095 --> 00:14:36,190
+graphs tend to have what is called community structure, right?
+
+302
+00:14:36,190 --> 00:14:37,750
+If you think of social networks,
+
+303
+00:14:37,750 --> 00:14:41,425
+there are tightly knit communities inside social networks.
+
+304
+00:14:41,425 --> 00:14:46,600
+So the idea would be that if I can detect these communities ahead of time,
+
+305
+00:14:46,600 --> 00:14:50,950
+then I can aggregate nodes inside communities into,
+
+306
+00:14:50,950 --> 00:14:52,689
+let's say community embeddings,
+
+307
+00:14:52,689 --> 00:14:55,960
+and then I can further aggregate community embeddings into
+
+308
+00:14:55,960 --> 00:15:00,355
+super community embeddings and so on and so forth hierarchically.
+
+309
+00:15:00,355 --> 00:15:02,080
+This will be one strategy,
+
+310
+00:15:02,080 --> 00:15:05,830
+would basically be to apply what is called a community detection or
+
+311
+00:15:05,830 --> 00:15:10,435
+a graph partitioning algorithm to split the graph into different, uh,
+
+312
+00:15:10,435 --> 00:15:14,155
+clusters, denoted here by these different, uh, colors,
+
+313
+00:15:14,155 --> 00:15:17,020
+and then aggregate inside each of the cluster,
+
+314
+00:15:17,020 --> 00:15:18,415
+each of the communities,
+
+315
+00:15:18,415 --> 00:15:22,885
+and then keep to- to create basically for each community a supernode.
+
+316
+00:15:22,885 --> 00:15:27,115
+This is now an aggregate that embedding of all the members of the community.
+
+317
+00:15:27,115 --> 00:15:30,310
+And then I could again look how communities link to each other,
+
+318
+00:15:30,310 --> 00:15:32,335
+uh, aggregate based on that,
+
+319
+00:15:32,335 --> 00:15:35,890
+get another supernode and keep aggregating until I get,
+
+320
+00:15:35,890 --> 00:15:38,125
+uh, to the prediction head, right?
+
+321
+00:15:38,125 --> 00:15:39,520
+And, uh, one option,
+
+322
+00:15:39,520 --> 00:15:40,675
+as I said, to do this,
+
+323
+00:15:40,675 --> 00:15:46,600
+would be to simply apply a graph partitioning, graph clustering community detection,
+
+324
+00:15:46,600 --> 00:15:50,530
+uh, algorithm to identify what are the clusters in the graph,
+
+325
+00:15:50,530 --> 00:15:52,690
+what are these densely connected groups?
+
+326
+00:15:52,690 --> 00:15:53,860
+And then you would, you know,
+
+327
+00:15:53,860 --> 00:15:56,395
+do this in the level of the original network.
+
+328
+00:15:56,395 --> 00:15:58,195
+Then you will do this again at level 1,
+
+329
+00:15:58,195 --> 00:15:59,485
+you do this at level 2,
+
+330
+00:15:59,485 --> 00:16:01,615
+until you can have a single supernode,
+
+331
+00:16:01,615 --> 00:16:05,215
+which you then can input into a prediction head.
+
+332
+00:16:05,215 --> 00:16:09,630
+Uh, what is interesting is that you can do this
+
+333
+00:16:09,630 --> 00:16:13,860
+actually in a way so that you learn how to partition the network, right?
+
+334
+00:16:13,860 --> 00:16:18,420
+You don't need to download some external software and make this assumption that,
+
+335
+00:16:18,420 --> 00:16:20,510
+you know, communities are important.
+
+336
+00:16:20,510 --> 00:16:24,820
+What you can do, and there is our paper linked up here called DiffPool,
+
+337
+00:16:24,820 --> 00:16:27,910
+because this is kind of differential pooling operator that
+
+338
+00:16:27,910 --> 00:16:31,315
+allows you to learn how to aggregate nodes in the network.
+
+339
+00:16:31,315 --> 00:16:36,700
+And the simple idea how to do this is to have two independent graph neural networks,
+
+340
+00:16:36,700 --> 00:16:38,560
+uh, at each, uh, level here.
+
+341
+00:16:38,560 --> 00:16:42,430
+And one graph neural network is going to compute node embeddings.
+
+342
+00:16:42,430 --> 00:16:44,905
+This is standard, what we have talked so far.
+
+343
+00:16:44,905 --> 00:16:47,050
+But what is clever is that we will also have
+
+344
+00:16:47,050 --> 00:16:52,360
+a second graph neural network that will compute the clusters that nodes belong to.
+
+345
+00:16:52,360 --> 00:16:54,760
+So what I mean by this is it will determine
+
+346
+00:16:54,760 --> 00:16:58,030
+which nodes should belong to the same, uh, cluster.
+
+347
+00:16:58,030 --> 00:17:01,000
+Which nodes should be aggregated, er, together,
+
+348
+00:17:01,000 --> 00:17:05,530
+which embeddings should be aggregated together to create this, uh, supernode.
+
+349
+00:17:05,530 --> 00:17:12,880
+And the cool thing is that you can train GNNs A and B at each level together in parallel.
+
+350
+00:17:12,880 --> 00:17:15,339
+So this means that you can supervise how to
+
+351
+00:17:15,339 --> 00:17:18,639
+cluster the network and how to aggregate the, uh,
+
+352
+00:17:18,640 --> 00:17:22,224
+the network infor- the node embedding information to-
+
+353
+00:17:22,224 --> 00:17:25,284
+to come up with the optimal way to embed,
+
+354
+00:17:25,285 --> 00:17:26,770
+uh, the underlying network.
+
+355
+00:17:26,770 --> 00:17:29,395
+So this is kind of the most advanced way how you can-
+
+356
+00:17:29,395 --> 00:17:32,485
+how you can learn to hierarchically pool, uh,
+
+357
+00:17:32,485 --> 00:17:35,365
+the network in order- in order to make a
+
+358
+00:17:35,365 --> 00:17:37,165
+good faithful embedding, uh,
+
+359
+00:17:37,165 --> 00:17:39,820
+of the entire network.
+
+360
+00:17:39,820 --> 00:17:43,330
+So, uh, this is what I wanted to,
+
+361
+00:17:43,330 --> 00:17:46,195
+uh, uh, show in this case.
+
+362
+00:17:46,195 --> 00:17:50,515
+Now that we have talked about prediction heads,
+
+363
+00:17:50,515 --> 00:17:53,230
+let's talk about actually the predictions,
+
+364
+00:17:53,230 --> 00:17:54,370
+uh, and the labels.
+
+365
+00:17:54,370 --> 00:17:57,295
+So the second, uh, part I wanna talk about, uh,
+
+366
+00:17:57,295 --> 00:17:58,570
+is this part here,
+
+367
+00:17:58,570 --> 00:18:00,085
+which wi- which is about,
+
+368
+00:18:00,085 --> 00:18:02,485
+uh, predictions and labels.
+
+369
+00:18:02,485 --> 00:18:09,190
+So, um, we can broadly distinguish between supervised and unsupervised, uh, learning.
+
+370
+00:18:09,190 --> 00:18:11,890
+Supervised learning on graphs would be where,
+
+371
+00:18:11,890 --> 00:18:15,340
+uh, labels come from some external sources.
+
+372
+00:18:15,340 --> 00:18:19,780
+Perhaps, for example, nodes have belonged to different classes.
+
+373
+00:18:19,780 --> 00:18:22,030
+Users in social network, uh,
+
+374
+00:18:22,030 --> 00:18:24,850
+you know, uh, are interested in different topics.
+
+375
+00:18:24,850 --> 00:18:27,610
+Uh, if you have graphs, molecules,
+
+376
+00:18:27,610 --> 00:18:30,025
+perhaps every molecule, you know,
+
+377
+00:18:30,025 --> 00:18:32,305
+we know whether it's toxic or not- not.
+
+378
+00:18:32,305 --> 00:18:35,500
+Or we know how is i- its drug likeness,
+
+379
+00:18:35,500 --> 00:18:37,000
+which is something that chemists,
+
+380
+00:18:37,000 --> 00:18:38,515
+uh, worry about, right?
+
+381
+00:18:38,515 --> 00:18:43,315
+This is supervised, basically l- supervision labels come from the outside.
+
+382
+00:18:43,315 --> 00:18:48,640
+And then there is also the notion of unsupervised learning on graphs where the signal,
+
+383
+00:18:48,640 --> 00:18:51,460
+the supervision comes from the graph itself.
+
+384
+00:18:51,460 --> 00:18:52,810
+An example of this would be,
+
+385
+00:18:52,810 --> 00:18:54,220
+for- for example, uh,
+
+386
+00:18:54,220 --> 00:18:55,740
+link prediction task, right?
+
+387
+00:18:55,740 --> 00:18:57,985
+Where we want to predict whether a pair of nodes is connected.
+
+388
+00:18:57,985 --> 00:19:00,715
+Here, we don't need any external information.
+
+389
+00:19:00,715 --> 00:19:02,995
+All we need is just, um,
+
+390
+00:19:02,995 --> 00:19:07,090
+pairs of nodes that are connected and pairs of nodes that are not connected.
+
+391
+00:19:07,090 --> 00:19:09,850
+Um, and sometimes the difference between supervised
+
+392
+00:19:09,850 --> 00:19:12,850
+and unsupervised is blurry because both you
+
+393
+00:19:12,850 --> 00:19:18,550
+can formulate as optimization tasks and in both you kind of still have supervision.
+
+394
+00:19:18,550 --> 00:19:21,670
+Uh, just in some cases supervision is external and
+
+395
+00:19:21,670 --> 00:19:24,970
+sometimes supervision is, uh, internal, right?
+
+396
+00:19:24,970 --> 00:19:26,935
+So, um, you know, uh,
+
+397
+00:19:26,935 --> 00:19:29,230
+for example, if you train a GNN, uh,
+
+398
+00:19:29,230 --> 00:19:31,255
+to predict node clustering coefficient,
+
+399
+00:19:31,255 --> 00:19:33,640
+you would kind of call this unsupervised learning on
+
+400
+00:19:33,640 --> 00:19:36,460
+graphs because the supervision is not external.
+
+401
+00:19:36,460 --> 00:19:41,320
+And sometimes unsupervised learning is also called self-supervised, right?
+
+402
+00:19:41,320 --> 00:19:44,380
+Basically, it's the data that say- that-
+
+403
+00:19:44,380 --> 00:19:47,800
+the- the input data gives you the su- the supervision to the model.
+
+404
+00:19:47,800 --> 00:19:51,985
+So a link prediction task is an example of a self-supervised,
+
+405
+00:19:51,985 --> 00:19:53,200
+uh, learning task, right?
+
+406
+00:19:53,200 --> 00:19:55,750
+Where basically we take the unlabeled data but still
+
+407
+00:19:55,750 --> 00:19:59,650
+define supervised prediction tasks based on the structure,
+
+408
+00:19:59,650 --> 00:20:01,540
+uh, of that data.
+
+409
+00:20:01,540 --> 00:20:05,425
+So, um, let me first talk about supervised,
+
+410
+00:20:05,425 --> 00:20:06,770
+uh, labels on graphs.
+
+411
+00:20:06,770 --> 00:20:10,710
+So supervising labels come from specific use cases.
+
+412
+00:20:10,710 --> 00:20:13,590
+Um, and let me give you a few examples, right?
+
+413
+00:20:13,590 --> 00:20:15,120
+For node labels, you know,
+
+414
+00:20:15,120 --> 00:20:16,350
+you could say, oh,
+
+415
+00:20:16,350 --> 00:20:19,585
+in a citation network perhaps, uh, uh,
+
+416
+00:20:19,585 --> 00:20:21,625
+subject area that a node,
+
+417
+00:20:21,625 --> 00:20:23,230
+that a paper belongs to,
+
+418
+00:20:23,230 --> 00:20:24,730
+that's my external label,
+
+419
+00:20:24,730 --> 00:20:26,815
+is defined for every node.
+
+420
+00:20:26,815 --> 00:20:30,055
+Uh, for example in, um, [NOISE] uh,
+
+421
+00:20:30,055 --> 00:20:35,530
+in, uh, link prediction for pairwise, uh, prediction tasks,
+
+422
+00:20:35,530 --> 00:20:38,645
+for example, in a transaction network, um,
+
+423
+00:20:38,645 --> 00:20:41,290
+I could have the label y to- for
+
+424
+00:20:41,290 --> 00:20:45,160
+every transaction to tell me whether that transaction is fraudulent or not, right?
+
+425
+00:20:45,160 --> 00:20:48,550
+I have some external entity that tells me, it verifies
+
+426
+00:20:48,550 --> 00:20:52,180
+every transaction and says which ones are fraudulent and which ones are not.
+
+427
+00:20:52,180 --> 00:20:53,380
+So that could be the label.
+
+428
+00:20:53,380 --> 00:20:54,940
+Is it fraudulent or not?
+
+429
+00:20:54,940 --> 00:20:57,565
+And, you know, for entire graphs, for example,
+
+430
+00:20:57,565 --> 00:20:59,650
+if I work with molecules, as I said,
+
+431
+00:20:59,650 --> 00:21:01,810
+drug likeness or, uh, uh,
+
+432
+00:21:01,810 --> 00:21:05,890
+toxicity would be an example of an externally defined , uh,
+
+433
+00:21:05,890 --> 00:21:09,355
+label that we can now predict for the entire graph,
+
+434
+00:21:09,355 --> 00:21:11,410
+for the entire, uh, molecule.
+
+435
+00:21:11,410 --> 00:21:14,860
+Um, and you know, uh, one- one advice is,
+
+436
+00:21:14,860 --> 00:21:17,935
+is that to reduce your task to a node,
+
+437
+00:21:17,935 --> 00:21:19,030
+edge, or a graph,
+
+438
+00:21:19,030 --> 00:21:24,130
+uh, labeling task sees these tasks are standard and easy to work with, right?
+
+439
+00:21:24,130 --> 00:21:27,390
+So, um, what this means is that sometimes
+
+440
+00:21:27,390 --> 00:21:31,020
+your machine learning modeling task will come in as a,
+
+441
+00:21:31,020 --> 00:21:34,640
+not as a node classification task but as a link prediction task.
+
+442
+00:21:34,640 --> 00:21:38,065
+But if you can formulate it as one of these three tasks,
+
+443
+00:21:38,065 --> 00:21:42,460
+this means- means that you can reuse a lot of existing research and you can reuse,
+
+444
+00:21:42,460 --> 00:21:46,840
+um, a lot of existing methodology and, uh, architecture, right?
+
+445
+00:21:46,840 --> 00:21:49,299
+So a heavy fo- casting
+
+446
+00:21:49,299 --> 00:21:53,500
+the prediction tasks in terms of these three fundamental graph level tasks,
+
+447
+00:21:53,500 --> 00:21:56,185
+definitely helps because it's, uh, easy,
+
+448
+00:21:56,185 --> 00:21:58,375
+because you can lean on a lot of, uh,
+
+449
+00:21:58,375 --> 00:22:01,585
+prior work and prior, uh, research.
+
+450
+00:22:01,585 --> 00:22:05,395
+So now that we've talked about supervised tasks,
+
+451
+00:22:05,395 --> 00:22:08,350
+let's talk about unsupervised signals on graphs.
+
+452
+00:22:08,350 --> 00:22:11,890
+Um, the- the idea here is that sometimes
+
+453
+00:22:11,890 --> 00:22:15,400
+you only have our graph and we don't have any external labels.
+
+454
+00:22:15,400 --> 00:22:20,350
+Um, and the solution here is to define self supervised learning tasks, right?
+
+455
+00:22:20,350 --> 00:22:22,900
+So the models will still be- be the same,
+
+456
+00:22:22,900 --> 00:22:24,160
+they will still be the loss
+
+457
+00:22:24,160 --> 00:22:29,155
+just the supervision signal will come from the input graph itself.
+
+458
+00:22:29,155 --> 00:22:31,570
+So what are some examples of this?
+
+459
+00:22:31,570 --> 00:22:34,900
+For example, for node level tasks, you could say,
+
+460
+00:22:34,900 --> 00:22:40,120
+let me predict statistics such as node clustering coefficient or a page name.
+
+461
+00:22:40,120 --> 00:22:42,610
+Perhaps what one option would also
+
+462
+00:22:42,610 --> 00:22:45,820
+be that if you work with the molecule- molecular graphs,
+
+463
+00:22:45,820 --> 00:22:50,800
+maybe you would say, let me predict what type of atom is a given node, right?
+
+464
+00:22:50,800 --> 00:22:52,975
+Is it a hydrogen, is it a carbon,
+
+465
+00:22:52,975 --> 00:22:54,835
+um, is it oxygen.
+
+466
+00:22:54,835 --> 00:22:58,210
+That would be one way of a self-supervised task in a sense that you are
+
+467
+00:22:58,210 --> 00:23:02,605
+trying to predict some attributes- some property of that node.
+
+468
+00:23:02,605 --> 00:23:06,505
+For link prediction for edge - edge level tasks.
+
+469
+00:23:06,505 --> 00:23:10,750
+Very natural way to self-supervise is to hide a couple of answers
+
+470
+00:23:10,750 --> 00:23:15,220
+and then say can I predict whether a pair of nodes are connected or not?
+
+471
+00:23:15,220 --> 00:23:17,890
+Right? Can I predict whether there should be a link or not?
+
+472
+00:23:17,890 --> 00:23:20,530
+And that's a level of self supervision.
+
+473
+00:23:20,530 --> 00:23:22,420
+And then for graph level tasks.
+
+474
+00:23:22,420 --> 00:23:25,405
+Uh, again, we can think of different graph statistics.
+
+475
+00:23:25,405 --> 00:23:26,845
+For example, we can say,
+
+476
+00:23:26,845 --> 00:23:28,210
+are two graphs isomorphic?
+
+477
+00:23:28,210 --> 00:23:34,134
+Uh, you know, what kind of motifs, graphlets, do two graphs have?
+
+478
+00:23:34,134 --> 00:23:36,640
+Um, and you could use these as a way, uh,
+
+479
+00:23:36,640 --> 00:23:39,940
+to supervise, uh, at the graph level, right?
+
+480
+00:23:39,940 --> 00:23:43,720
+Um, and notice that in all these tasks that I defined now,
+
+481
+00:23:43,720 --> 00:23:47,710
+we don't require any external ground truth labels.
+
+482
+00:23:47,710 --> 00:23:50,845
+we just use the graph structured information in whatever,
+
+483
+00:23:50,845 --> 00:23:53,840
+um, is the input, uh, data.
+
+484
+00:23:53,880 --> 00:23:56,755
+So now that we've talked about,
+
+485
+00:23:56,755 --> 00:23:58,420
+uh, uh, predictions, uh,
+
+486
+00:23:58,420 --> 00:24:02,785
+and labels, now let's discuss the loss function and, um,
+
+487
+00:24:02,785 --> 00:24:06,220
+and talk about what kind of loss functions would I
+
+488
+00:24:06,220 --> 00:24:10,765
+use to measure discrepancy between the prediction and the labels, uh,
+
+489
+00:24:10,765 --> 00:24:15,490
+so that I can then optimize this loss function and basically back propagate all
+
+490
+00:24:15,490 --> 00:24:20,690
+the way down to the parameters of the graph neural network, uh, uh, model.
+
+491
+00:24:20,690 --> 00:24:22,890
+So the setting is the following,
+
+492
+00:24:22,890 --> 00:24:25,260
+uh, we have n data points,
+
+493
+00:24:25,260 --> 00:24:28,230
+and each data point can either be an individual node
+
+494
+00:24:28,230 --> 00:24:31,350
+and individual graph or an individual edge.
+
+495
+00:24:31,350 --> 00:24:34,455
+So for node level prediction will say,
+
+496
+00:24:34,455 --> 00:24:38,220
+each node has a - has node i has a label.
+
+497
+00:24:38,220 --> 00:24:39,980
+And here's the predicted label.
+
+498
+00:24:39,980 --> 00:24:41,260
+For edge level again,
+
+499
+00:24:41,260 --> 00:24:43,420
+we'll say each edge has a-
+
+500
+00:24:43,420 --> 00:24:47,050
+each potential edge has a label and we're going to predict that label.
+
+501
+00:24:47,050 --> 00:24:48,970
+Label could be does the edge exist or not?
+
+502
+00:24:48,970 --> 00:24:50,485
+Maybe it's the type of the edge,
+
+503
+00:24:50,485 --> 00:24:52,525
+whether it's fraudulent or not, and so on.
+
+504
+00:24:52,525 --> 00:24:54,535
+And similarly, last, right, for, uh,
+
+505
+00:24:54,535 --> 00:24:57,190
+graph level, I'm denoting this as g, you know,
+
+506
+00:24:57,190 --> 00:25:02,410
+for each graph, you have the true label - the true value versus the predicted value.
+
+507
+00:25:02,410 --> 00:25:05,425
+And I'm going to use this notation y-hat and
+
+508
+00:25:05,425 --> 00:25:09,279
+y to refer to the prediction- to the prediction,
+
+509
+00:25:09,279 --> 00:25:11,380
+uh, predicted value and the true value.
+
+510
+00:25:11,380 --> 00:25:14,620
+And I'm- I'm going to omit the superscript- sorry
+
+511
+00:25:14,620 --> 00:25:18,130
+the subscript so that would basically to denote what,
+
+512
+00:25:18,130 --> 00:25:21,775
+uh, prediction- specific prediction task we're talking about.
+
+513
+00:25:21,775 --> 00:25:25,150
+Because at the end, y is just an output and I can
+
+514
+00:25:25,150 --> 00:25:30,430
+now work with these outputs and compare the y-hat versus y.
+
+515
+00:25:30,430 --> 00:25:33,610
+So, uh, an important distinction is are we
+
+516
+00:25:33,610 --> 00:25:36,475
+doing classification or are we doing regression?
+
+517
+00:25:36,475 --> 00:25:40,105
+Uh, classification means that label's y,
+
+518
+00:25:40,105 --> 00:25:44,410
+uh, have discrete categorical values, right?
+
+519
+00:25:44,410 --> 00:25:47,995
+It would be, you know, what topic does the user like?
+
+520
+00:25:47,995 --> 00:25:51,445
+While in regression, we are predicting continuous values.
+
+521
+00:25:51,445 --> 00:25:57,670
+You want to predict drug likeness of a molecule or toxicity level of a molecule, right?
+
+522
+00:25:57,670 --> 00:26:01,630
+Binary prediction would be or a classification would be is it toxic or not?
+
+523
+00:26:01,630 --> 00:26:05,050
+Regression would be predict the toxicity level.
+
+524
+00:26:05,050 --> 00:26:08,110
+Um, and GNNs can be applied to both of
+
+525
+00:26:08,110 --> 00:26:11,275
+these settings to classification as well as to regression.
+
+526
+00:26:11,275 --> 00:26:13,630
+Um, and the difference will be between
+
+527
+00:26:13,630 --> 00:26:17,710
+classification regression is essentially in the loss function and the,
+
+528
+00:26:17,710 --> 00:26:19,600
+uh, in the evaluation method.
+
+529
+00:26:19,600 --> 00:26:23,125
+So let me first tell you about classification loss.
+
+530
+00:26:23,125 --> 00:26:26,710
+The most popular classification loss is called cross entropy.
+
+531
+00:26:26,710 --> 00:26:29,710
+We have already talked about this in Lecture 6,
+
+532
+00:26:29,710 --> 00:26:35,725
+where basically the idea is if I'm doing a K-way prediction for i-th data point then, uh,
+
+533
+00:26:35,725 --> 00:26:42,325
+cross entropy between the true label and the predicted label y hat is simply a sum over,
+
+534
+00:26:42,325 --> 00:26:45,595
+um, uh all these K different classes, uh,
+
+535
+00:26:45,595 --> 00:26:50,380
+the y value of that class,
+
+536
+00:26:50,380 --> 00:26:53,875
+for i-th data point times the log, uh,
+
+537
+00:26:53,875 --> 00:26:56,770
+predicted, uh, class value and y hat,
+
+538
+00:26:56,770 --> 00:26:59,110
+you can interpret as a probability.
+
+539
+00:26:59,110 --> 00:27:02,800
+Um, and the way this basically works is to - to say the following, right?
+
+540
+00:27:02,800 --> 00:27:04,360
+You can imagine that my,
+
+541
+00:27:04,360 --> 00:27:06,670
+uh, y is, uh, like this.
+
+542
+00:27:06,670 --> 00:27:09,180
+So this is not a binary vector that tells that
+
+543
+00:27:09,180 --> 00:27:13,680
+my particular let's say node belongs to class Number 3.
+
+544
+00:27:13,680 --> 00:27:15,915
+So it is a one-hot label encoding.
+
+545
+00:27:15,915 --> 00:27:18,990
+And then, you know, the y hat would now be,
+
+546
+00:27:18,990 --> 00:27:22,335
+um, a vector, uh, a distribution.
+
+547
+00:27:22,335 --> 00:27:25,250
+Perhaps we can apply, we apply Softmax to it.
+
+548
+00:27:25,250 --> 00:27:27,610
+So it means that all these entries sum to 1.
+
+549
+00:27:27,610 --> 00:27:30,685
+And this,  now you can interpret as the probability that, uh,
+
+550
+00:27:30,685 --> 00:27:33,055
+y is off, uh,
+
+551
+00:27:33,055 --> 00:27:36,535
+class number, uh, number, uh, 3.
+
+552
+00:27:36,535 --> 00:27:39,190
+And the idea is if you look at this equation, right?
+
+553
+00:27:39,190 --> 00:27:43,795
+Because the- the- the predicted probabilities- the probabilities will sum to 1.
+
+554
+00:27:43,795 --> 00:27:45,400
+What we want is that,
+
+555
+00:27:45,400 --> 00:27:47,575
+uh, wherever there is a value of,
+
+556
+00:27:47,575 --> 00:27:51,520
+uh, the true class is- is not here.
+
+557
+00:27:51,520 --> 00:27:56,800
+We want the probability there to be very high because 0 times anything is 0.
+
+558
+00:27:56,800 --> 00:28:01,165
+So we want it- we want the, uh, probabilities, uh,
+
+559
+00:28:01,165 --> 00:28:04,810
+to be- to be low here because log something close to 0
+
+560
+00:28:04,810 --> 00:28:08,470
+gives me a high negative value but if I multiply it with 0, it doesn't matter.
+
+561
+00:28:08,470 --> 00:28:11,710
+So I would want to, uh, predict low numbers here,
+
+562
+00:28:11,710 --> 00:28:14,605
+but wherever the- the value is 1,
+
+563
+00:28:14,605 --> 00:28:17,560
+I want to predict a high probability because, um,
+
+564
+00:28:17,560 --> 00:28:19,720
+here I'd be multiplying with 1,
+
+565
+00:28:19,720 --> 00:28:24,175
+but log of something that is close to 1 is, uh, is 0.
+
+566
+00:28:24,175 --> 00:28:28,720
+So again, the cross entropy loss- the discrepancy in this case will be small.
+
+567
+00:28:28,720 --> 00:28:31,630
+So basically this- this loss will force
+
+568
+00:28:31,630 --> 00:28:35,560
+the predicted values to the class- to other classes that
+
+569
+00:28:35,560 --> 00:28:38,980
+what data point i does not belong to- to have
+
+570
+00:28:38,980 --> 00:28:44,260
+low values, and where whatever class it belongs to, it will force it to have high value.
+
+571
+00:28:44,260 --> 00:28:46,630
+And that's the idea because if this is 1,
+
+572
+00:28:46,630 --> 00:28:49,330
+I want the second term to be as small as possible.
+
+573
+00:28:49,330 --> 00:28:53,680
+The way I make it small is to make it as close to 1 as possible, right?
+
+574
+00:28:53,680 --> 00:28:56,755
+Remember that these entries have to sum to 1.
+
+575
+00:28:56,755 --> 00:28:58,420
+And this is now loss
+
+576
+00:28:58,420 --> 00:29:00,790
+defined at a single data point i.
+
+577
+00:29:00,790 --> 00:29:04,990
+So the total loss is simply a sum over all the data points and
+
+578
+00:29:04,990 --> 00:29:09,190
+then the cross entropy loss for each individual data point.
+
+579
+00:29:09,190 --> 00:29:12,010
+So these is in terms of classification loss,
+
+580
+00:29:12,010 --> 00:29:13,930
+uh, the most popular one.
+
+581
+00:29:13,930 --> 00:29:18,520
+For regression loss, what is a standard loss is called mean squared
+
+582
+00:29:18,520 --> 00:29:23,140
+error or- or equivalently also known as the L2 loss.
+
+583
+00:29:23,140 --> 00:29:25,735
+And essentially what we are doing, we are saying, uh,
+
+584
+00:29:25,735 --> 00:29:28,390
+if I have a K-way prediction task and trying to
+
+585
+00:29:28,390 --> 00:29:32,050
+predict K area and values for a given node, uh, i,
+
+586
+00:29:32,050 --> 00:29:36,190
+I'm simply summing over all the K and I'm taking the discrepancy between
+
+587
+00:29:36,190 --> 00:29:38,650
+the true value minus the predicted value
+
+588
+00:29:38,650 --> 00:29:41,320
+and i square that so that this will always be positive.
+
+589
+00:29:41,320 --> 00:29:44,200
+And basically the idea is like the- the loss will take
+
+590
+00:29:44,200 --> 00:29:48,355
+the smallest value when y and y hat are as aligned as possible.
+
+591
+00:29:48,355 --> 00:29:52,825
+So when these differences are as small as possible.
+
+592
+00:29:52,825 --> 00:29:55,360
+And the reason why we like to take the quadratic loss
+
+593
+00:29:55,360 --> 00:29:57,865
+here is because it's smooth, it's continuous.
+
+594
+00:29:57,865 --> 00:30:00,400
+It's easy to take derivative of.
+
+595
+00:30:00,400 --> 00:30:01,705
+It's always positive.
+
+596
+00:30:01,705 --> 00:30:03,940
+A lot of kind of nice properties.
+
+597
+00:30:03,940 --> 00:30:10,915
+So again, this is a loss- mean squared error loss on- on a- on a pair on one data point.
+
+598
+00:30:10,915 --> 00:30:13,645
+And now over if I have N training examples,
+
+599
+00:30:13,645 --> 00:30:18,070
+then I simply sum up the losses of individual data points.
+
+600
+00:30:18,070 --> 00:30:22,780
+And this is now the - the loss on the entire dataset.
+
+601
+00:30:22,780 --> 00:30:27,250
+So this is the in terms of classification and regression loss.
+
+602
+00:30:27,250 --> 00:30:29,170
+There are also other losses that,
+
+603
+00:30:29,170 --> 00:30:31,150
+uh, they like to use, for example,
+
+604
+00:30:31,150 --> 00:30:35,260
+there are these losses called maximum margin losses that are very useful
+
+605
+00:30:35,260 --> 00:30:39,880
+if you don't care about predicting a binary value,
+
+606
+00:30:39,880 --> 00:30:43,000
+or a regression, but you care about the node ordering.
+
+607
+00:30:43,000 --> 00:30:47,335
+Perhaps you want to sort the nodes according to- according to some value.
+
+608
+00:30:47,335 --> 00:30:51,539
+And the idea is that what you care is for the nodes to be sorted properly,
+
+609
+00:30:51,539 --> 00:30:54,330
+and you don't care so much what exact values they have.
+
+610
+00:30:54,330 --> 00:30:56,535
+You want to know who are the top K nodes.
+
+611
+00:30:56,535 --> 00:30:59,790
+In this case, you would use some kind of triplet based loss it's
+
+612
+00:30:59,790 --> 00:31:04,155
+called, because you want to enforce one node to be ranked higher than,
+
+613
+00:31:04,155 --> 00:31:07,280
+um, than the other node or you would be using,
+
+614
+00:31:07,280 --> 00:31:10,780
+um, some kind of max margin, uh, type loss.
+
+615
+00:31:10,780 --> 00:31:13,570
+So now that we talked about loss functions,
+
+616
+00:31:13,570 --> 00:31:17,365
+uh, let's also talk about, uh, evaluation metrics.
+
+617
+00:31:17,365 --> 00:31:20,410
+So for evaluation metrics, um,
+
+618
+00:31:20,410 --> 00:31:22,840
+we - I - for regre- how we evaluate
+
+619
+00:31:22,840 --> 00:31:25,510
+regression is that we generally compute what is called,
+
+620
+00:31:25,510 --> 00:31:28,540
+uh, the mean square - squared, uh, error.
+
+621
+00:31:28,540 --> 00:31:31,300
+Um, and the way this is defined is, uh, again,
+
+622
+00:31:31,300 --> 00:31:34,465
+it's the squared difference between the predicted value and true value.
+
+623
+00:31:34,465 --> 00:31:37,390
+You defi- you - you take the average, so you, uh,
+
+624
+00:31:37,390 --> 00:31:40,840
+divide it by the total number of data points and then you take the square root.
+
+625
+00:31:40,840 --> 00:31:43,675
+So this is kind of analogous to the, um, uh,
+
+626
+00:31:43,675 --> 00:31:47,560
+to the L2, uh, loss that you optimize.
+
+627
+00:31:47,560 --> 00:31:48,670
+This is now, uh,
+
+628
+00:31:48,670 --> 00:31:50,469
+how you report performance,
+
+629
+00:31:50,469 --> 00:31:51,640
+uh, of your model.
+
+630
+00:31:51,640 --> 00:31:53,755
+You can also do mean absolute error,
+
+631
+00:31:53,755 --> 00:31:57,640
+where now you just take diff- absolute differences and divide,
+
+632
+00:31:57,640 --> 00:31:59,605
+uh, by the number of data points.
+
+633
+00:31:59,605 --> 00:32:01,810
+Um, if you look into Sklearn,
+
+634
+00:32:01,810 --> 00:32:05,890
+so the scikit-learn Python package that all of us will be using during the class, uh,
+
+635
+00:32:05,890 --> 00:32:07,315
+there is a lot of different, uh,
+
+636
+00:32:07,315 --> 00:32:09,490
+metrics, uh, already, uh,
+
+637
+00:32:09,490 --> 00:32:11,650
+implemented there, and here I just give you,
+
+638
+00:32:11,650 --> 00:32:14,425
+uh, two most common ones.
+
+639
+00:32:14,425 --> 00:32:18,025
+Uh, for classification, uh, you can, uh,
+
+640
+00:32:18,025 --> 00:32:21,010
+what is - a very standard way to report is what is
+
+641
+00:32:21,010 --> 00:32:24,220
+called classification accuracy where basically you'll just say,
+
+642
+00:32:24,220 --> 00:32:27,115
+"What number of times did my predicted, uh,
+
+643
+00:32:27,115 --> 00:32:30,265
+variable, uh, predicted class match the true class?"
+
+644
+00:32:30,265 --> 00:32:34,525
+And you say, "What fraction of times did I cor- correctly predict the class?"
+
+645
+00:32:34,525 --> 00:32:36,460
+Uh, this is nice, ah,
+
+646
+00:32:36,460 --> 00:32:39,610
+metric if your classes are, um,
+
+647
+00:32:39,610 --> 00:32:42,055
+about balance, balance meaning is that I know
+
+648
+00:32:42,055 --> 00:32:45,190
+half of the data points is positive and half is negative.
+
+649
+00:32:45,190 --> 00:32:47,485
+If you have very imbalanced classes,
+
+650
+00:32:47,485 --> 00:32:50,095
+imagine that you only have 1%,
+
+651
+00:32:50,095 --> 00:32:52,585
+uh, uh, positive, uh, class, uh,
+
+652
+00:32:52,585 --> 00:32:55,375
+data-points and 99% are negative,
+
+653
+00:32:55,375 --> 00:32:58,150
+then the problem with accuracy is that it's very easy
+
+654
+00:32:58,150 --> 00:33:01,165
+to get high accuracy by just predicting,
+
+655
+00:33:01,165 --> 00:33:03,670
+a negative class all the time, right?
+
+656
+00:33:03,670 --> 00:33:07,210
+So if I - if I'm for example, um,
+
+657
+00:33:07,210 --> 00:33:11,545
+if I have the case where I say is a transaction fraudulent or not,
+
+658
+00:33:11,545 --> 00:33:15,400
+and let's say 99% of transactions are non-fraudulent,
+
+659
+00:33:15,400 --> 00:33:19,625
+then my - my - I can get very high accuracy of 99%
+
+660
+00:33:19,625 --> 00:33:24,150
+if my classifier always says, uh, non-fraudulent, right?
+
+661
+00:33:24,150 --> 00:33:27,420
+So this is the problem with the accuracy is that if classes are imbalanced,
+
+662
+00:33:27,420 --> 00:33:33,300
+then trivial classifiers may have very high, um, uh, accuracy.
+
+663
+00:33:33,300 --> 00:33:36,565
+So, uh, to get more, uh,
+
+664
+00:33:36,565 --> 00:33:40,135
+to go deeper and - and to deal with some of these issues, um,
+
+665
+00:33:40,135 --> 00:33:45,340
+there are other metrics that are more sensitive to the- this decision,
+
+666
+00:33:45,340 --> 00:33:49,495
+what do we, the- what do we call as positive and what do we call as negative?
+
+667
+00:33:49,495 --> 00:33:52,225
+Because the - the models will usually output,
+
+668
+00:33:52,225 --> 00:33:53,380
+let's say some probability,
+
+669
+00:33:53,380 --> 00:33:54,730
+a value between 0 and 1,
+
+670
+00:33:54,730 --> 00:33:56,590
+and we have to decide on the threshold to
+
+671
+00:33:56,590 --> 00:33:58,885
+say everything above this threshold is positive,
+
+672
+00:33:58,885 --> 00:34:01,285
+everything below the threshold, uh, is negative.
+
+673
+00:34:01,285 --> 00:34:03,115
+Um, and the, uh,
+
+674
+00:34:03,115 --> 00:34:05,260
+precision-recall type metrics, uh,
+
+675
+00:34:05,260 --> 00:34:08,409
+uh, are one example to do this, um,
+
+676
+00:34:08,409 --> 00:34:10,299
+and there is also the, uh,
+
+677
+00:34:10,300 --> 00:34:15,940
+ROC AUC so the area under the receiver operating characteristic that I'm also going to,
+
+678
+00:34:15,940 --> 00:34:18,070
+uh, discuss and talk about.
+
+679
+00:34:18,070 --> 00:34:22,225
+So first is if you wanna know more than just accuracy,
+
+680
+00:34:22,225 --> 00:34:24,505
+then what you can define is this notion of, uh,
+
+681
+00:34:24,505 --> 00:34:26,185
+what is called confusion matrix,
+
+682
+00:34:26,185 --> 00:34:27,760
+where you basically say, "A-ha,.
+
+683
+00:34:27,760 --> 00:34:29,650
+What is the predicted value?
+
+684
+00:34:29,650 --> 00:34:33,489
+Is it predict positive or negative versus what is the actual,
+
+685
+00:34:33,489 --> 00:34:35,664
+the true value, is it positive or negative?"
+
+686
+00:34:35,665 --> 00:34:38,469
+And then you can count how many examples,
+
+687
+00:34:38,469 --> 00:34:41,019
+how many data points are each - in,
+
+688
+00:34:41,020 --> 00:34:43,014
+uh, in each of these four cells, right?
+
+689
+00:34:43,014 --> 00:34:47,214
+When you correctly predict negative you - you do plus 1 here,
+
+690
+00:34:47,215 --> 00:34:49,510
+when you correctly predict uh, positive,
+
+691
+00:34:49,510 --> 00:34:52,570
+you do a plus 1 here because predicted and actual match,
+
+692
+00:34:52,570 --> 00:34:54,340
+and then you can make two, uh,
+
+693
+00:34:54,340 --> 00:34:56,965
+types of mistakes called false positives.
+
+694
+00:34:56,965 --> 00:35:00,100
+These are, uh, examples where you predicted positive,
+
+695
+00:35:00,100 --> 00:35:01,525
+but they are actually negative.
+
+696
+00:35:01,525 --> 00:35:04,735
+And you then also have false negatives where,
+
+697
+00:35:04,735 --> 00:35:06,190
+uh, you predicted negative,
+
+698
+00:35:06,190 --> 00:35:08,245
+but the class is actually positive.
+
+699
+00:35:08,245 --> 00:35:12,220
+So, uh, accuracy is simply true positives plus
+
+700
+00:35:12,220 --> 00:35:16,390
+true negatives divided by the sum, uh, of all of them.
+
+701
+00:35:16,390 --> 00:35:19,405
+So this is here, right, it's the number of data points.
+
+702
+00:35:19,405 --> 00:35:23,230
+Precision, it's called out of all - um,
+
+703
+00:35:23,230 --> 00:35:25,405
+it says, "How many true positives are there?"
+
+704
+00:35:25,405 --> 00:35:28,420
+And I normalize this by true positives and false positives.
+
+705
+00:35:28,420 --> 00:35:29,875
+So pre- precision says,
+
+706
+00:35:29,875 --> 00:35:32,805
+"Out of all the positive predictions I made,
+
+707
+00:35:32,805 --> 00:35:34,850
+what fraction of them are true?"
+
+708
+00:35:34,850 --> 00:35:37,330
+And then recall says, um,
+
+709
+00:35:37,330 --> 00:35:38,980
+it says again true positives,
+
+710
+00:35:38,980 --> 00:35:42,040
+but I divide it by true positives and false negatives, right?
+
+711
+00:35:42,040 --> 00:35:43,345
+So I'm basically saying,
+
+712
+00:35:43,345 --> 00:35:45,685
+out of all positive, uh,
+
+713
+00:35:45,685 --> 00:35:47,410
+examples in the data set,
+
+714
+00:35:47,410 --> 00:35:50,050
+how many did I actually predict positive, right?
+
+715
+00:35:50,050 --> 00:35:52,840
+So recall says, "Out of all positives in the data set,
+
+716
+00:35:52,840 --> 00:35:54,865
+how many I have predicted positive?"
+
+717
+00:35:54,865 --> 00:35:57,894
+And precision is, out of predicted positives,
+
+718
+00:35:57,894 --> 00:36:00,505
+how many are actually positive?
+
+719
+00:36:00,505 --> 00:36:03,310
+Um, and then you can combine precision and recall into
+
+720
+00:36:03,310 --> 00:36:05,815
+some - into a single metric that is called, uh,
+
+721
+00:36:05,815 --> 00:36:08,080
+F1 score, uh, defined as
+
+722
+00:36:08,080 --> 00:36:11,800
+2 times precision times recall divided by precision plus recall.
+
+723
+00:36:11,800 --> 00:36:16,590
+This formula is a harmonic mean of precision and a recall.
+
+724
+00:36:16,590 --> 00:36:19,440
+That's why, uh, uh, it is defined this way.
+
+725
+00:36:19,440 --> 00:36:23,340
+This is harmonic mean or harmonic average of precision and recall.
+
+726
+00:36:23,340 --> 00:36:26,130
+Uh, in information retrieval, in, uh,
+
+727
+00:36:26,130 --> 00:36:27,780
+text-mining, people like to use,
+
+728
+00:36:27,780 --> 00:36:30,275
+uh, F1 score, uh, a lot.
+
+729
+00:36:30,275 --> 00:36:32,380
+And then the last, uh,
+
+730
+00:36:32,380 --> 00:36:36,145
+evaluation metric that I wanna talk about is, uh, ROC AUC.
+
+731
+00:36:36,145 --> 00:36:39,190
+So basically a receiver operating characteristic
+
+732
+00:36:39,190 --> 00:36:42,085
+or a receiver operating characteristic curve.
+
+733
+00:36:42,085 --> 00:36:44,320
+And this measures the trade-off between
+
+734
+00:36:44,320 --> 00:36:47,875
+the true positive rate and what is called the false positive rate.
+
+735
+00:36:47,875 --> 00:36:51,160
+Um, and true positive rate is really recall,
+
+736
+00:36:51,160 --> 00:36:53,755
+and false positive rate is defi- divided by
+
+737
+00:36:53,755 --> 00:36:58,045
+false positives divided by false positives plus true, uh, negatives.
+
+738
+00:36:58,045 --> 00:36:59,590
+And the way you usually, uh,
+
+739
+00:36:59,590 --> 00:37:02,005
+write it is that you've - you - you - you
+
+740
+00:37:02,005 --> 00:37:05,770
+draw true posi- a false positive rate versus true positive rate.
+
+741
+00:37:05,770 --> 00:37:08,110
+And - and this, um,
+
+742
+00:37:08,110 --> 00:37:10,525
+e- evaluation matrix comes from the field of, um,
+
+743
+00:37:10,525 --> 00:37:14,995
+medicine where in basically use - rather than thinking of it as - what - who is,
+
+744
+00:37:14,995 --> 00:37:16,795
+I know who is sick or not,
+
+745
+00:37:16,795 --> 00:37:22,270
+or you can kind of think of it as you sort people by a risk of having a disease.
+
+746
+00:37:22,270 --> 00:37:24,760
+And now you can imagine, uh, asking,
+
+747
+00:37:24,760 --> 00:37:25,840
+aha, I will take top,
+
+748
+00:37:25,840 --> 00:37:27,355
+two top, three top, four,
+
+749
+00:37:27,355 --> 00:37:29,830
+and you ask how good is the top,
+
+750
+00:37:29,830 --> 00:37:33,070
+how good - how clean are the to- top k candidates?
+
+751
+00:37:33,070 --> 00:37:36,220
+Because this classification threshold that determines
+
+752
+00:37:36,220 --> 00:37:39,760
+who - what - what points are positive and what points are negative,
+
+753
+00:37:39,760 --> 00:37:42,325
+in some sense is, uh, arbitrary.
+
+754
+00:37:42,325 --> 00:37:44,470
+And uh, what is interesting,
+
+755
+00:37:44,470 --> 00:37:48,310
+if you, um, take the positive and negative examples and, uh,
+
+756
+00:37:48,310 --> 00:37:51,880
+randomly sort them, then the - then you would get this,
+
+757
+00:37:51,880 --> 00:37:54,055
+uh, true positive versus false positive rate,
+
+758
+00:37:54,055 --> 00:37:55,195
+it will be a straight line.
+
+759
+00:37:55,195 --> 00:37:58,375
+So a random classification will give you a straight line.
+
+760
+00:37:58,375 --> 00:38:02,320
+And then, um, if you do better classification than the random,
+
+761
+00:38:02,320 --> 00:38:03,820
+then, uh, this, uh,
+
+762
+00:38:03,820 --> 00:38:06,475
+this particular line is going to approach, uh,
+
+763
+00:38:06,475 --> 00:38:08,170
+kind of more and more,
+
+764
+00:38:08,170 --> 00:38:10,000
+uh, this top corner here.
+
+765
+00:38:10,000 --> 00:38:12,700
+So if - if it would be a perfect classification,
+
+766
+00:38:12,700 --> 00:38:15,715
+basically it would go up immediately and then, er, remain flat.
+
+767
+00:38:15,715 --> 00:38:20,125
+So them, uh, the main trick that people like to use to - to, uh,
+
+768
+00:38:20,125 --> 00:38:26,860
+characterize the performance of a classifier is the area under the ROC curve, right?
+
+769
+00:38:26,860 --> 00:38:29,590
+So a random classifi- classifier will have the area
+
+770
+00:38:29,590 --> 00:38:32,425
+of 0.5 because it cu- covers half of the square,
+
+771
+00:38:32,425 --> 00:38:36,820
+and a perfect classifier would have an area, uh, of one.
+
+772
+00:38:36,820 --> 00:38:40,330
+So ROC AUC is the area under this,
+
+773
+00:38:40,330 --> 00:38:42,370
+uh, ROC curve, this,
+
+774
+00:38:42,370 --> 00:38:43,975
+uh, this is called the ROC curve.
+
+775
+00:38:43,975 --> 00:38:46,270
+And, uh, the higher the area,
+
+776
+00:38:46,270 --> 00:38:47,770
+the better the classifier,
+
+777
+00:38:47,770 --> 00:38:51,445
+uh, and a random classifier has an area of 0.5.
+
+778
+00:38:51,445 --> 00:38:53,125
+So 0.5 is not good,
+
+779
+00:38:53,125 --> 00:38:55,285
+0.5 is bad, it's basically random.
+
+780
+00:38:55,285 --> 00:38:58,030
+Um, one intuition - what did the, uh,
+
+781
+00:38:58,030 --> 00:39:00,550
+area under the AUC, uh,
+
+782
+00:39:00,550 --> 00:39:03,205
+the, uh, uh, ROC curve tells me,
+
+783
+00:39:03,205 --> 00:39:07,480
+is it tells me the probability that if you pick two, uh,
+
+784
+00:39:07,480 --> 00:39:09,730
+a positive and a negative point at random,
+
+785
+00:39:09,730 --> 00:39:14,485
+what's the probability that a positive point will be ranked higher than a negative point?
+
+786
+00:39:14,485 --> 00:39:16,165
+So if it's 1,
+
+787
+00:39:16,165 --> 00:39:18,475
+this means you gave a perfect classification,
+
+788
+00:39:18,475 --> 00:39:21,565
+all the positive points are ranked above all the negatives.
+
+789
+00:39:21,565 --> 00:39:23,680
+And if you give a random classification,
+
+790
+00:39:23,680 --> 00:39:28,195
+then the probability that the positive is above a negative is - is half because,
+
+791
+00:39:28,195 --> 00:39:29,590
+uh, it's random, right?
+
+792
+00:39:29,590 --> 00:39:35,125
+So, um, this is one intuition about the AUC, uh, curve.
+
+793
+00:39:35,125 --> 00:39:42,400
+So, um, we have talked about the training pipeline today, um, about, uh,
+
+794
+00:39:42,400 --> 00:39:44,335
+how do we define the prediction head,
+
+795
+00:39:44,335 --> 00:39:47,020
+we talked about the evaluation metrics,
+
+796
+00:39:47,020 --> 00:39:49,225
+we talked about where the labels come from,
+
+797
+00:39:49,225 --> 00:39:51,640
+and we talked about the loss function.
+
+798
+00:39:51,640 --> 00:39:54,160
+What we are going to talk about, uh,
+
+799
+00:39:54,160 --> 00:39:58,120
+next week is we are actually going to talk about how do you set up training,
+
+800
+00:39:58,120 --> 00:40:01,375
+how do you do training, how do you set up the datasets,
+
+801
+00:40:01,375 --> 00:40:04,870
+how do you split your data between test evaluation,
+
+802
+00:40:04,870 --> 00:40:06,685
+um, and, um, yeah,
+
+803
+00:40:06,685 --> 00:40:09,115
+training datasets to be able to do, uh,
+
+804
+00:40:09,115 --> 00:40:13,970
+efficient, uh, training and to get, uh, good results
+

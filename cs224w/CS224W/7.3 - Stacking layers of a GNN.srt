@@ -1,0 +1,1284 @@
+1
+00:00:05,034 --> 00:00:06,495
+So, uh, good.
+
+2
+00:00:06,495 --> 00:00:11,280
+So far we talked about a single graph neural network layer.
+
+3
+00:00:11,280 --> 00:00:14,850
+What I'm going to talk about next is to talk about, uh,
+
+4
+00:00:14,850 --> 00:00:16,935
+how do we stack, uh,
+
+5
+00:00:16,935 --> 00:00:18,900
+layers into a multi-layer,
+
+6
+00:00:18,900 --> 00:00:21,405
+uh, graph neural network.
+
+7
+00:00:21,405 --> 00:00:24,640
+So, we first talked about, uh,
+
+8
+00:00:24,640 --> 00:00:28,790
+designing and defining a single layer of a graph neural network,
+
+9
+00:00:28,790 --> 00:00:31,130
+where we said that it comp- it composes of
+
+10
+00:00:31,130 --> 00:00:36,215
+a message transformation operation and a message aggregation operation.
+
+11
+00:00:36,215 --> 00:00:38,375
+We also talked about additional,
+
+12
+00:00:38,375 --> 00:00:40,625
+uh, things you can add to training,
+
+13
+00:00:40,625 --> 00:00:42,680
+which is like batch normalization,
+
+14
+00:00:42,680 --> 00:00:45,215
+choice of different activation functions,
+
+15
+00:00:45,215 --> 00:00:47,600
+choice of L2 normalization,
+
+16
+00:00:47,600 --> 00:00:49,265
+um, things like that.
+
+17
+00:00:49,265 --> 00:00:53,875
+What we want to talk next is to talk about how can you stack these, uh,
+
+18
+00:00:53,875 --> 00:00:57,660
+layers one on top of each other and, uh, for example,
+
+19
+00:00:57,660 --> 00:01:01,425
+how can you add or skip connections to graph neural networks?
+
+20
+00:01:01,425 --> 00:01:02,805
+So that's the, uh,
+
+21
+00:01:02,805 --> 00:01:05,860
+topic I wanna, uh, discuss next.
+
+22
+00:01:06,200 --> 00:01:08,575
+So the question is,
+
+23
+00:01:08,575 --> 00:01:11,620
+how do I construct a graph neural network based on
+
+24
+00:01:11,620 --> 00:01:15,315
+the single layer that I have, already defined.
+
+25
+00:01:15,315 --> 00:01:17,105
+And, ah, a standard way,
+
+26
+00:01:17,105 --> 00:01:20,740
+a usual way would be to stack graph neural networks sequentially.
+
+27
+00:01:20,740 --> 00:01:26,290
+So basically the idea is I- under- as the embedding of node at layer 0,
+
+28
+00:01:26,290 --> 00:01:30,565
+I simply use the raw node features of the node and then I'm, you know,
+
+29
+00:01:30,565 --> 00:01:34,630
+transporting them individually layer by layer up to some,
+
+30
+00:01:34,630 --> 00:01:35,980
+uh, number of layers.
+
+31
+00:01:35,980 --> 00:01:37,315
+For example, in this case,
+
+32
+00:01:37,315 --> 00:01:39,330
+we have now a three-layer, uh,
+
+33
+00:01:39,330 --> 00:01:44,365
+graph neural network where on the input I get the raw node features x.
+
+34
+00:01:44,365 --> 00:01:50,140
+They get transformed into the embedding at a level 3 of, uh,
+
+35
+00:01:50,140 --> 00:01:57,220
+node v. That is actually an important issue in,
+
+36
+00:01:57,220 --> 00:02:04,010
+uh, graph neural networks that prevents us from stacking too many layers, uh, together.
+
+37
+00:02:04,010 --> 00:02:07,340
+And the important point here that I want to make
+
+38
+00:02:07,340 --> 00:02:10,914
+is introduce you the notion of over-smoothing,
+
+39
+00:02:10,914 --> 00:02:14,135
+um, and discuss how to prevent it.
+
+40
+00:02:14,135 --> 00:02:17,660
+And then one thing I wanna also make, uh,
+
+41
+00:02:17,660 --> 00:02:21,995
+a point about is that the depth of the graph neural network
+
+42
+00:02:21,995 --> 00:02:27,260
+is different than the depth in terms of number of layers in,
+
+43
+00:02:27,260 --> 00:02:29,405
+let's say convolutional neural networks.
+
+44
+00:02:29,405 --> 00:02:33,830
+So the depth of graph neural networks really tells me how many
+
+45
+00:02:33,830 --> 00:02:38,675
+hops away in the network do I go to collect the information.
+
+46
+00:02:38,675 --> 00:02:43,055
+And it doesn't necessarily say how complex or how expressive, uh,
+
+47
+00:02:43,055 --> 00:02:45,410
+the entire network is,
+
+48
+00:02:45,410 --> 00:02:51,230
+because that depends on the design of each individual layer of the graph neural network.
+
+49
+00:02:51,230 --> 00:02:53,600
+So kind of the point I'm trying to make,
+
+50
+00:02:53,600 --> 00:02:54,830
+the notion of a layer in
+
+51
+00:02:54,830 --> 00:02:58,310
+a graph neural network is different than the notion of a layer in,
+
+52
+00:02:58,310 --> 00:03:00,880
+let's say, a convolutional neural network.
+
+53
+00:03:00,880 --> 00:03:05,270
+So the issue of stacking many GNN layers together is
+
+54
+00:03:05,270 --> 00:03:09,905
+that GNNs tend to suffer from what is called an over-smoothing problem.
+
+55
+00:03:09,905 --> 00:03:14,880
+And the over-smoothing problem is that kind of node embeddings,
+
+56
+00:03:14,880 --> 00:03:18,740
+you know, converge to the same or very similar value.
+
+57
+00:03:18,740 --> 00:03:22,130
+And the reason why this is happening is because,
+
+58
+00:03:22,130 --> 00:03:24,395
+uh, if the receptive fields,
+
+59
+00:03:24,395 --> 00:03:28,880
+as I'm going to define them later of the- of the networks are too big,
+
+60
+00:03:28,880 --> 00:03:33,635
+then basically all the network- all the neural networks collect the same information,
+
+61
+00:03:33,635 --> 00:03:38,630
+so at the end, the final output is also the same for all different nodes.
+
+62
+00:03:38,630 --> 00:03:41,540
+And we don't want to have this problem of over-smoothing
+
+63
+00:03:41,540 --> 00:03:45,260
+because we want embeddings for different nodes to be different.
+
+64
+00:03:45,260 --> 00:03:49,430
+So let me tell you more about what is an over-smoothing problem
+
+65
+00:03:49,430 --> 00:03:53,690
+and why does it happen and how do we, uh, remedy it.
+
+66
+00:03:53,690 --> 00:03:57,995
+So first, we need to define this notion of a receptive field.
+
+67
+00:03:57,995 --> 00:03:59,720
+A receptive field, uh,
+
+68
+00:03:59,720 --> 00:04:04,520
+is a set of nodes that determine the embedding of the node of interest.
+
+69
+00:04:04,520 --> 00:04:07,495
+So in a K layer GNN, uh,
+
+70
+00:04:07,495 --> 00:04:13,610
+each node has a receptive field of k-hops- k-hop neighborhood around that node.
+
+71
+00:04:13,610 --> 00:04:15,395
+And this becomes, uh,
+
+72
+00:04:15,395 --> 00:04:17,180
+important because for example,
+
+73
+00:04:17,180 --> 00:04:20,690
+if you say I wanted to link prediction between the two yellow nodes,
+
+74
+00:04:20,690 --> 00:04:22,135
+uh, in this graph.
+
+75
+00:04:22,135 --> 00:04:23,820
+Then the question is,
+
+76
+00:04:23,820 --> 00:04:25,740
+how ma- as I increase the,
+
+77
+00:04:25,740 --> 00:04:27,585
+uh, depth of the network,
+
+78
+00:04:27,585 --> 00:04:30,210
+how many, uh, and look at
+
+79
+00:04:30,210 --> 00:04:34,610
+the corresponding computation graphs of the two, uh, yellow nodes?
+
+80
+00:04:34,610 --> 00:04:37,550
+uh, the question is, how, um,
+
+81
+00:04:37,550 --> 00:04:41,490
+how big, uh, how big is the receptive field, right?
+
+82
+00:04:41,490 --> 00:04:45,910
+So for example, what I'm trying to show here is for a single node, uh,
+
+83
+00:04:45,910 --> 00:04:47,990
+the receptive field at one layer,
+
+84
+00:04:47,990 --> 00:04:49,820
+so one hop away is, you know,
+
+85
+00:04:49,820 --> 00:04:51,815
+this four, uh, five different,
+
+86
+00:04:51,815 --> 00:04:54,065
+uh, red nodes denoted here.
+
+87
+00:04:54,065 --> 00:04:57,050
+If I say now, let's do a two-layer neural network.
+
+88
+00:04:57,050 --> 00:04:58,640
+This is now the receptive field.
+
+89
+00:04:58,640 --> 00:05:01,520
+It's all neighbors and all the neighbors of neighbors.
+
+90
+00:05:01,520 --> 00:05:04,655
+It's like one-hop neighborhood and two-hop neighborhood.
+
+91
+00:05:04,655 --> 00:05:06,995
+And if I go to a three-layer neural network,
+
+92
+00:05:06,995 --> 00:05:08,825
+in this case of a small graph,
+
+93
+00:05:08,825 --> 00:05:10,400
+now, notice that basically,
+
+94
+00:05:10,400 --> 00:05:13,580
+majority or almost every node in the net- in the- in
+
+95
+00:05:13,580 --> 00:05:18,335
+the underlying network is part of my graph neural network architecture.
+
+96
+00:05:18,335 --> 00:05:22,490
+So this means that this yellow node is going to collect information from
+
+97
+00:05:22,490 --> 00:05:27,880
+every other node in the network to combi- to determine its own, uh, embedding.
+
+98
+00:05:27,880 --> 00:05:32,355
+Now, if you, for example wanna do link prediction, um,
+
+99
+00:05:32,355 --> 00:05:36,240
+then you, uh, you wanna say whether a pair of nodes is,
+
+100
+00:05:36,240 --> 00:05:37,550
+uh, connected or not.
+
+101
+00:05:37,550 --> 00:05:40,970
+And what is interesting in this case is that, um,
+
+102
+00:05:40,970 --> 00:05:45,110
+the- the number of neighbors that are shared grows very
+
+103
+00:05:45,110 --> 00:05:49,565
+quickly as we increase the number of hops in the graph neural network.
+
+104
+00:05:49,565 --> 00:05:52,880
+So now, uh, I have a different visualization here.
+
+105
+00:05:52,880 --> 00:05:56,745
+I have two nodes denoted by yellow and I
+
+106
+00:05:56,745 --> 00:06:01,875
+compute one-hop neighborhoods from each and I say what nodes are in the intersection?
+
+107
+00:06:01,875 --> 00:06:02,970
+What nodes are shared?
+
+108
+00:06:02,970 --> 00:06:04,605
+And here, one node is shared.
+
+109
+00:06:04,605 --> 00:06:07,650
+Then if I say, let's compute 2-hop neighborhood,
+
+110
+00:06:07,650 --> 00:06:10,340
+now, all these neighbors are shared.
+
+111
+00:06:10,340 --> 00:06:14,300
+And if I say how many neighbors are shared, uh,
+
+112
+00:06:14,300 --> 00:06:18,335
+between 3-hops, how many nodes are share- shared within three hops?
+
+113
+00:06:18,335 --> 00:06:21,905
+Again, you see that basically almost all the nodes are shared.
+
+114
+00:06:21,905 --> 00:06:27,995
+And the problem then becomes that as the network is aggregating all this information
+
+115
+00:06:27,995 --> 00:06:34,260
+and all the- all the nodes- all the graph neural networks basically get the same inputs,
+
+116
+00:06:34,260 --> 00:06:39,710
+it will be increasingly hard to differentiate between different nodes, uh, you know,
+
+117
+00:06:39,710 --> 00:06:42,290
+let's say the nodes that are- that are going to be connected in
+
+118
+00:06:42,290 --> 00:06:46,120
+the network and the nodes that are not connected in the network.
+
+119
+00:06:46,120 --> 00:06:48,170
+So, uh, you know,
+
+120
+00:06:48,170 --> 00:06:54,275
+how do we explain the notion of over-smoothing with this definition of a receptive field?
+
+121
+00:06:54,275 --> 00:06:57,220
+Uh, you know, we know that the embedding of a node is-
+
+122
+00:06:57,220 --> 00:07:00,060
+this determined by its receptive field, right?
+
+123
+00:07:00,060 --> 00:07:03,900
+And if two nodes have highly overlapping receptive fields,
+
+124
+00:07:03,900 --> 00:07:09,335
+there- there- then their embeddings are also going to be most likely, uh, similar.
+
+125
+00:07:09,335 --> 00:07:13,490
+So this means that if I stack many GNN layers together,
+
+126
+00:07:13,490 --> 00:07:17,720
+then it means nodes will have highly overlapping receptive fields, uh,
+
+127
+00:07:17,720 --> 00:07:20,255
+which means they will collect information from
+
+128
+00:07:20,255 --> 00:07:23,840
+the same part of the network and they will aggregate it in the same way.
+
+129
+00:07:23,840 --> 00:07:26,915
+So node embeddings will be highly similar.
+
+130
+00:07:26,915 --> 00:07:29,840
+So it means it can be very hard for us to distinguish between
+
+131
+00:07:29,840 --> 00:07:33,680
+different nodes and this is what we call an over-smoothing problem, right?
+
+132
+00:07:33,680 --> 00:07:38,340
+It's like you collect too much information from the neighborhood and then,
+
+133
+00:07:38,340 --> 00:07:40,580
+um, if you collect kind of too much,
+
+134
+00:07:40,580 --> 00:07:43,010
+everyone collects the same information,
+
+135
+00:07:43,010 --> 00:07:46,580
+so every node kind of has the same information,
+
+136
+00:07:46,580 --> 00:07:50,465
+computes the same embedding and it is very hard to differentiate between them.
+
+137
+00:07:50,465 --> 00:07:52,280
+So the question is,
+
+138
+00:07:52,280 --> 00:07:53,885
+how do we overcome over-smoothing?
+
+139
+00:07:53,885 --> 00:07:58,580
+Uh, first is that we are cautious about how many,
+
+140
+00:07:58,580 --> 00:08:02,765
+um, layers, how many GNN layers, uh, do we use.
+
+141
+00:08:02,765 --> 00:08:05,925
+So what this means that, unlike in, uh,
+
+142
+00:08:05,925 --> 00:08:07,955
+neural networks in other domains like
+
+143
+00:08:07,955 --> 00:08:11,030
+convolutional neural networks for image classification,
+
+144
+00:08:11,030 --> 00:08:15,865
+adding more layers to our graph neural network does not always skip.
+
+145
+00:08:15,865 --> 00:08:18,410
+So first, what we need to do, uh,
+
+146
+00:08:18,410 --> 00:08:21,575
+to determine how many layers is good is to analyze then the-
+
+147
+00:08:21,575 --> 00:08:25,760
+the amount of information we need to make a good prediction.
+
+148
+00:08:25,760 --> 00:08:28,400
+So basically, analyze different depths,
+
+149
+00:08:28,400 --> 00:08:31,850
+different receptive fields, and try to get a good, uh,
+
+150
+00:08:31,850 --> 00:08:35,120
+balance between the diameter of the network and the amount of
+
+151
+00:08:35,120 --> 00:08:39,215
+information that a single GNN is aggregating goal.
+
+152
+00:08:39,215 --> 00:08:41,900
+Because if the depth is too big, then basically,
+
+153
+00:08:41,900 --> 00:08:46,610
+the receptive field of a single node may basically be the entire, uh, network.
+
+154
+00:08:46,610 --> 00:08:53,460
+The second thing is that we wanna s- setup the number of GNN layers L to be, uh,
+
+155
+00:08:53,460 --> 00:08:57,530
+a bit, uh, more than the receptive field we, uh,
+
+156
+00:08:57,530 --> 00:09:02,245
+we like, but we don't wanna make L to be unnecessarily large.
+
+157
+00:09:02,245 --> 00:09:04,560
+Um, so that's one way,
+
+158
+00:09:04,560 --> 00:09:06,000
+uh, to deal with this.
+
+159
+00:09:06,000 --> 00:09:08,495
+Another way to deal with this is to say,
+
+160
+00:09:08,495 --> 00:09:14,700
+how do we enhance expressive power of a GNN if the number of layers is smaller?
+
+161
+00:09:15,140 --> 00:09:19,335
+The way we do this is the following.
+
+162
+00:09:19,335 --> 00:09:22,110
+Um, right, how do we make GNNs more- more
+
+163
+00:09:22,110 --> 00:09:26,145
+expressive if we cannot make them more expressive but making them deeper.
+
+164
+00:09:26,145 --> 00:09:31,500
+One option is to- to add more expressive power within a GNN layer.
+
+165
+00:09:31,500 --> 00:09:34,965
+So what this means is that in our previous examples, uh,
+
+166
+00:09:34,965 --> 00:09:40,245
+each transformation or aggregation function was only one linear transformation.
+
+167
+00:09:40,245 --> 00:09:46,170
+But we can make aggregation and transformation become deep neural networks by themselves.
+
+168
+00:09:46,170 --> 00:09:51,030
+So for example, we could make the aggregation operator and the transformation operator,
+
+169
+00:09:51,030 --> 00:09:52,980
+let's say a three-layer- um,
+
+170
+00:09:52,980 --> 00:09:55,950
+uh, multilayer perceptron network, uh,
+
+171
+00:09:55,950 --> 00:09:57,780
+and not just a simple, uh,
+
+172
+00:09:57,780 --> 00:10:00,390
+linear, uh, layer in the network.
+
+173
+00:10:00,390 --> 00:10:02,025
+In this way add, um,
+
+174
+00:10:02,025 --> 00:10:06,000
+express- ex- expressiveness, uh, to the neural network.
+
+175
+00:10:06,000 --> 00:10:11,445
+Right, so now our single layer graph neural network is really a three-layer,
+
+176
+00:10:11,445 --> 00:10:13,590
+uh, deep neural network, right?
+
+177
+00:10:13,590 --> 00:10:17,010
+So the notion of a layer in a GNN and a notion of
+
+178
+00:10:17,010 --> 00:10:21,885
+a layer in terms of transformations, uh, is different.
+
+179
+00:10:21,885 --> 00:10:28,680
+So another way how we can make shallow GNNs more expressive is to add,
+
+180
+00:10:28,680 --> 00:10:31,980
+uh, layers that do not pass messages.
+
+181
+00:10:31,980 --> 00:10:35,325
+So what this means is that a GNN does not
+
+182
+00:10:35,325 --> 00:10:39,375
+necessarily have to contain only GNN layers, right?
+
+183
+00:10:39,375 --> 00:10:41,040
+We can, for example, have, uh,
+
+184
+00:10:41,040 --> 00:10:45,840
+multilayer perceptron layers before and after the GNN layers.
+
+185
+00:10:45,840 --> 00:10:49,980
+And you can think of these as pre-processing and post-processing layers.
+
+186
+00:10:49,980 --> 00:10:51,660
+To give you the idea, right,
+
+187
+00:10:51,660 --> 00:10:53,310
+we could take the input- uh,
+
+188
+00:10:53,310 --> 00:10:57,120
+massive inputs- um, input features,
+
+189
+00:10:57,120 --> 00:11:00,330
+transform them through the preprocessing step of
+
+190
+00:11:00,330 --> 00:11:04,080
+multilayer perceptron, apply the graph neural network layers,
+
+191
+00:11:04,080 --> 00:11:07,979
+and then again have a couple of, um, um, multilayer,
+
+192
+00:11:07,979 --> 00:11:12,255
+uh, perceptron layers that do the post-processing of embeddings.
+
+193
+00:11:12,255 --> 00:11:15,540
+So we can think of these as pre-processing layers that are-
+
+194
+00:11:15,540 --> 00:11:19,289
+that are important when encoding node features.
+
+195
+00:11:19,289 --> 00:11:23,280
+For example, if node features represent images or text,
+
+196
+00:11:23,280 --> 00:11:26,610
+we would want to have an entire CNN here, for example.
+
+197
+00:11:26,610 --> 00:11:30,120
+Um, and then we have our post-processing layers, uh,
+
+198
+00:11:30,120 --> 00:11:32,460
+which are important when we are reasoning,
+
+199
+00:11:32,460 --> 00:11:35,790
+or- or transforming over whether the node, uh, embeddings.
+
+200
+00:11:35,790 --> 00:11:37,950
+Uh, this becomes important if you are doing,
+
+201
+00:11:37,950 --> 00:11:40,890
+for example, graph classification or knowledge graphs,
+
+202
+00:11:40,890 --> 00:11:43,410
+where the transformations here add a lot to
+
+203
+00:11:43,410 --> 00:11:46,290
+the expressive power of the graph neural networks, right?
+
+204
+00:11:46,290 --> 00:11:50,100
+So in practice, adding these pre-processing and post-processing layers,
+
+205
+00:11:50,100 --> 00:11:52,050
+uh, works great in practice.
+
+206
+00:11:52,050 --> 00:11:56,565
+So it means we are combining classical neural network layers with graph,
+
+207
+00:11:56,565 --> 00:11:59,220
+uh, neural network layers.
+
+208
+00:11:59,220 --> 00:12:04,095
+So, uh, the- the last way how we can,
+
+209
+00:12:04,095 --> 00:12:06,105
+um, uh, think about, uh,
+
+210
+00:12:06,105 --> 00:12:08,520
+shallower graph neural networks,
+
+211
+00:12:08,520 --> 00:12:15,030
+but being the more expressive is to add this notion of a skip connection, right?
+
+212
+00:12:15,030 --> 00:12:18,870
+And the observation from Over-Smoothing problem that I discussed was
+
+213
+00:12:18,870 --> 00:12:23,655
+that node embeddings in earlier GNN layers can sometime,
+
+214
+00:12:23,655 --> 00:12:27,030
+um, better differentiate between different nodes earlier,
+
+215
+00:12:27,030 --> 00:12:29,595
+meaning lower layer, uh, embeddings.
+
+216
+00:12:29,595 --> 00:12:32,265
+And the solution is that we can increase the impact of
+
+217
+00:12:32,265 --> 00:12:36,240
+earlier layers on the final known embedding to add the shortcuts,
+
+218
+00:12:36,240 --> 00:12:37,920
+uh, in the neural network,
+
+219
+00:12:37,920 --> 00:12:41,610
+or what do we mean by shortcuts is skip connections, right?
+
+220
+00:12:41,610 --> 00:12:44,520
+So if I go now back to my picture from the previous slide,
+
+221
+00:12:44,520 --> 00:12:45,780
+what I can add is,
+
+222
+00:12:45,780 --> 00:12:49,725
+when I have the, um- the GNN layers,
+
+223
+00:12:49,725 --> 00:12:54,660
+I can add this red connections that basically skip a layer and go from,
+
+224
+00:12:54,660 --> 00:12:56,550
+um connectly- directly connect,
+
+225
+00:12:56,550 --> 00:13:00,150
+let's say the GNN layer 1 to the GNN layer 3,
+
+226
+00:13:00,150 --> 00:13:03,090
+and they skip this layer 2, uh, in-between.
+
+227
+00:13:03,090 --> 00:13:06,795
+So the idea is that this is now a skip connection.
+
+228
+00:13:06,795 --> 00:13:09,540
+Uh, so the message now gets duplicated.
+
+229
+00:13:09,540 --> 00:13:12,330
+One message goes into the transformation layer and,
+
+230
+00:13:12,330 --> 00:13:13,635
+uh, weight update,
+
+231
+00:13:13,635 --> 00:13:16,590
+while the same message also gets dup- duplicated and just kind of
+
+232
+00:13:16,590 --> 00:13:20,025
+sent forward and then the two branches are summed up.
+
+233
+00:13:20,025 --> 00:13:22,890
+So before adding skip connections,
+
+234
+00:13:22,890 --> 00:13:25,125
+we simply took the message and transformed it.
+
+235
+00:13:25,125 --> 00:13:26,895
+Now with a skip connection,
+
+236
+00:13:26,895 --> 00:13:28,740
+we take the message, transform it,
+
+237
+00:13:28,740 --> 00:13:34,395
+but then sum it up or aggregate it with the untransformed, uh, message itself.
+
+238
+00:13:34,395 --> 00:13:36,180
+So that is, um,
+
+239
+00:13:36,180 --> 00:13:39,820
+an interesting, uh, approach, um, as well.
+
+240
+00:13:39,820 --> 00:13:45,200
+So why do we care about skip connections and why do skip connections work?
+
+241
+00:13:45,200 --> 00:13:50,830
+Um, intuition is that skip connections create what is called, uh, mixture models.
+
+242
+00:13:50,830 --> 00:13:53,490
+Mixture model in a sense that now your model is
+
+243
+00:13:53,490 --> 00:13:57,720
+a weighted combination of a previous layer and the current layer message.
+
+244
+00:13:57,720 --> 00:14:00,720
+In this way basically means that you- you have now mixing
+
+245
+00:14:00,720 --> 00:14:04,770
+together two different layers or two different, uh, models.
+
+246
+00:14:04,770 --> 00:14:09,240
+Um, there is a lot of skip connections to add, right?
+
+247
+00:14:09,240 --> 00:14:12,060
+If you, um- if you have, let's say,
+
+248
+00:14:12,060 --> 00:14:17,745
+n skip connections, then there is 2 to the n possible message-passing paths,
+
+249
+00:14:17,745 --> 00:14:23,895
+which really allows you to increase the expressive power and gives neural network,
+
+250
+00:14:23,895 --> 00:14:26,070
+uh, more flexibility in terms of how
+
+251
+00:14:26,070 --> 00:14:29,955
+messages are passed and how messages are, uh, aggregated.
+
+252
+00:14:29,955 --> 00:14:33,915
+Uh, and, uh, first right, um,
+
+253
+00:14:33,915 --> 00:14:38,730
+we can also automatically get a mixture of automa- uh, shallow GNNs,
+
+254
+00:14:38,730 --> 00:14:41,480
+as well as the deep GNNs through the,
+
+255
+00:14:41,480 --> 00:14:43,640
+uh, message-passing layers, right?
+
+256
+00:14:43,640 --> 00:14:46,160
+So basically what I mean by this is you could have a three-layer,
+
+257
+00:14:46,160 --> 00:14:49,505
+uh, neural network and then by adding skip connections,
+
+258
+00:14:49,505 --> 00:14:52,220
+you can basically now have the final output to
+
+259
+00:14:52,220 --> 00:14:55,430
+be some combination of a one-layer neural network,
+
+260
+00:14:55,430 --> 00:14:57,095
+a two-layer neural network,
+
+261
+00:14:57,095 --> 00:14:59,795
+A one-layer neural network fed into the, uh,
+
+262
+00:14:59,795 --> 00:15:02,780
+third layer of the neural network and all this aggregated,
+
+263
+00:15:02,780 --> 00:15:04,520
+um, into the final output.
+
+264
+00:15:04,520 --> 00:15:09,750
+So now you can think that the final output is a- is a- is a combination of, uh,
+
+265
+00:15:09,750 --> 00:15:12,225
+in this case, four different, uh,
+
+266
+00:15:12,225 --> 00:15:15,465
+neural network, uh, architectures, right?
+
+267
+00:15:15,465 --> 00:15:18,150
+And, you know, the way you can- you can think of it is to say, oh,
+
+268
+00:15:18,150 --> 00:15:19,305
+I have three layers,
+
+269
+00:15:19,305 --> 00:15:21,600
+I add these three skip connections.
+
+270
+00:15:21,600 --> 00:15:23,235
+What this really does is,
+
+271
+00:15:23,235 --> 00:15:24,870
+you can think of it now that you have
+
+272
+00:15:24,870 --> 00:15:30,480
+four different neural network architectures that you are mixing or adding together,
+
+273
+00:15:30,480 --> 00:15:32,895
+uh, for, uh- during learning.
+
+274
+00:15:32,895 --> 00:15:38,220
+So it's a very efficient representation that really you can think of it in this,
+
+275
+00:15:38,220 --> 00:15:40,320
+um- in this second way.
+
+276
+00:15:40,320 --> 00:15:43,620
+So how would you apply skip connections,
+
+277
+00:15:43,620 --> 00:15:45,420
+uh, to graph neural networks?
+
+278
+00:15:45,420 --> 00:15:48,690
+For example, if we take a classical, uh,
+
+279
+00:15:48,690 --> 00:15:51,270
+graph convolutional neural network, uh,
+
+280
+00:15:51,270 --> 00:15:54,120
+architecture and add skip connections to it,
+
+281
+00:15:54,120 --> 00:15:55,980
+uh, this is how it would look like.
+
+282
+00:15:55,980 --> 00:15:59,925
+Before in the standard GNN layer- GCN layer,
+
+283
+00:15:59,925 --> 00:16:02,490
+we take the messages from the neighbors, uh,
+
+284
+00:16:02,490 --> 00:16:04,470
+transform them, and, uh,
+
+285
+00:16:04,470 --> 00:16:09,510
+average them together and we can think of this as our f of x from the previous slide.
+
+286
+00:16:09,510 --> 00:16:15,090
+So a GCN layer with a skip connection would be the same f of x plus,
+
+287
+00:16:15,090 --> 00:16:17,250
+uh, the lay- the message, uh,
+
+288
+00:16:17,250 --> 00:16:19,620
+from the previous, uh, layer, right?
+
+289
+00:16:19,620 --> 00:16:22,950
+So here we are just adding in the message from the previous layer and then
+
+290
+00:16:22,950 --> 00:16:26,715
+passing it all through the, um, non-linearity.
+
+291
+00:16:26,715 --> 00:16:28,830
+So this is- what this means is we added
+
+292
+00:16:28,830 --> 00:16:32,280
+the skip connection here in a single layer through this,
+
+293
+00:16:32,280 --> 00:16:34,590
+uh, blue part, uh, here.
+
+294
+00:16:34,590 --> 00:16:36,915
+And of course, um,
+
+295
+00:16:36,915 --> 00:16:40,035
+we have many other options for skip connections.
+
+296
+00:16:40,035 --> 00:16:42,150
+We can make them skip one layer,
+
+297
+00:16:42,150 --> 00:16:45,480
+we can make them skip, uh, multiple layers.
+
+298
+00:16:45,480 --> 00:16:48,750
+Um, there is a- there is an interesting paper, uh,
+
+299
+00:16:48,750 --> 00:16:53,100
+from ICML called Jumping Knowledge Networks, where for example,
+
+300
+00:16:53,100 --> 00:16:57,075
+the proposal is to add these skips from a given layer
+
+301
+00:16:57,075 --> 00:17:01,095
+all the way to the- to the last layer where you basically now can think,
+
+302
+00:17:01,095 --> 00:17:03,690
+Oh, I have a o- one-layer neural network,
+
+303
+00:17:03,690 --> 00:17:05,339
+I have a two-layer neural network,
+
+304
+00:17:05,339 --> 00:17:07,439
+I have a three-layer neural network.
+
+305
+00:17:07,440 --> 00:17:09,480
+I take their inputs and,
+
+306
+00:17:09,480 --> 00:17:13,140
+uh- and then aggregate them to get the final, uh, output.
+
+307
+00:17:13,140 --> 00:17:18,585
+So by basically directly skipping to the- to the last- to the finals- final layer, um,
+
+308
+00:17:18,585 --> 00:17:22,275
+the final layer can then aggregate all these embeddings from
+
+309
+00:17:22,275 --> 00:17:26,339
+neural networks of different depths and this way basically,
+
+310
+00:17:26,339 --> 00:17:30,315
+uh, determine what information is more important,
+
+311
+00:17:30,315 --> 00:17:32,685
+uh, for, let's say for the prediction task.
+
+312
+00:17:32,685 --> 00:17:35,550
+Is it the information from very close by
+
+313
+00:17:35,550 --> 00:17:39,840
+nearby nodes or is it really about aggregating bigger parts of the network?
+
+314
+00:17:39,840 --> 00:17:42,210
+And by adding these skip connections,
+
+315
+00:17:42,210 --> 00:17:47,190
+basically this allows us to weigh or to determine what information is more important,
+
+316
+00:17:47,190 --> 00:17:51,060
+something that has been aggregated across multiple hops, or something that has been,
+
+317
+00:17:51,060 --> 00:17:56,085
+let say, aggregated over zero hops or over only a single hop?
+
+318
+00:17:56,085 --> 00:17:58,455
+Um, and that is very interesting and again,
+
+319
+00:17:58,455 --> 00:18:00,900
+adds to expressivity, uh, and,
+
+320
+00:18:00,900 --> 00:18:03,135
+uh, improves the performance,
+
+321
+00:18:03,135 --> 00:18:06,309
+uh, of graph neural, uh, networks.
+

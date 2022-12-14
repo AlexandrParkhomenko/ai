@@ -1,0 +1,1412 @@
+1
+00:00:04,040 --> 00:00:07,665
+In the last part of the lecture,
+
+2
+00:00:07,665 --> 00:00:10,620
+I wanna now talk about the third generative model,
+
+3
+00:00:10,620 --> 00:00:13,935
+which we call Kronecker graphs, uh, generative model.
+
+4
+00:00:13,935 --> 00:00:15,660
+And this is a very different, uh,
+
+5
+00:00:15,660 --> 00:00:19,695
+model because it will be kind of much more, uh, mathematical,
+
+6
+00:00:19,695 --> 00:00:22,725
+in some sense, much less interpretable,
+
+7
+00:00:22,725 --> 00:00:26,715
+but it allows us to generate very rich, uh, networks.
+
+8
+00:00:26,715 --> 00:00:30,555
+So, uh, let me explain what the Kronecker graph model is.
+
+9
+00:00:30,555 --> 00:00:33,800
+So the way we will think about this is we'll think
+
+10
+00:00:33,800 --> 00:00:37,025
+about it from the viewpoint of recursive graph generation, right?
+
+11
+00:00:37,025 --> 00:00:40,130
+Can we think of network structure recursively?
+
+12
+00:00:40,130 --> 00:00:44,720
+And in particular, can we generate networks that have this type of self-similar,
+
+13
+00:00:44,720 --> 00:00:46,590
+uh, structure where, you know,
+
+14
+00:00:46,590 --> 00:00:49,320
+the object is self-similar if- uh, um,
+
+15
+00:00:49,320 --> 00:00:53,240
+if the object it's- is- is similar to a part of itself,
+
+16
+00:00:53,240 --> 00:00:57,050
+like, you know, the hole has the same shape as one of its parts.
+
+17
+00:00:57,050 --> 00:01:03,780
+Um, and the idea is that we would be able to then generate big graphs from small, uh,
+
+18
+00:01:03,780 --> 00:01:06,440
+building blocks, right, from- and in this way,
+
+19
+00:01:06,440 --> 00:01:12,290
+perhaps imitate different communities and growth of, uh, different communities.
+
+20
+00:01:12,290 --> 00:01:17,960
+And the Kronecker graphs will allow us to do this through this notion of
+
+21
+00:01:17,960 --> 00:01:20,510
+a Kronecker product that will allow us to
+
+22
+00:01:20,510 --> 00:01:23,660
+generate self-similar adjacency matrices, right?
+
+23
+00:01:23,660 --> 00:01:26,750
+So the idea will be that if- that if I start with some starting graph,
+
+24
+00:01:26,750 --> 00:01:30,500
+I somehow would recursively expand the starting graph,
+
+25
+00:01:30,500 --> 00:01:33,205
+uh, into bigger and bigger graphs.
+
+26
+00:01:33,205 --> 00:01:37,070
+So I wanna ge- have a small kind of generator,
+
+27
+00:01:37,070 --> 00:01:39,040
+small building block, and then I wanna
+
+28
+00:01:39,040 --> 00:01:42,150
+generate- use it to generate bigger and bigger graphs.
+
+29
+00:01:42,150 --> 00:01:44,495
+And the way this will work is, I will, uh,
+
+30
+00:01:44,495 --> 00:01:48,050
+take a small generator matrix like the one I have here,
+
+31
+00:01:48,050 --> 00:01:49,460
+let's call it K_1.
+
+32
+00:01:49,460 --> 00:01:51,660
+And then I'm going to, uh,
+
+33
+00:01:51,660 --> 00:01:55,800
+apply Kronecker product to- uh, to itself.
+
+34
+00:01:55,800 --> 00:01:57,285
+So I am going to do K_1,
+
+35
+00:01:57,285 --> 00:02:00,030
+Kronecker product K_1 to get now,
+
+36
+00:02:00,030 --> 00:02:02,400
+uh, a matrix, uh, K_2.
+
+37
+00:02:02,400 --> 00:02:04,680
+And then, you know, I can keep multiplying,
+
+38
+00:02:04,680 --> 00:02:07,790
+and I will get this very nice self-similar structure.
+
+39
+00:02:07,790 --> 00:02:09,440
+Uh, now, let's say, you know,
+
+40
+00:02:09,440 --> 00:02:11,435
+that has size 81 by 81.
+
+41
+00:02:11,435 --> 00:02:13,900
+And just notice that K_1 has this,
+
+42
+00:02:13,900 --> 00:02:15,950
+uh, pattern of, you know, um,
+
+43
+00:02:15,950 --> 00:02:19,880
+uh, 1s kind of along the diagonal band and 0s,
+
+44
+00:02:19,880 --> 00:02:20,990
+uh, off the diagonal.
+
+45
+00:02:20,990 --> 00:02:24,530
+And notice how now this adjacency matrix also has same structure, right?
+
+46
+00:02:24,530 --> 00:02:25,955
+I have this block of 0s,
+
+47
+00:02:25,955 --> 00:02:27,410
+and then I have this block of 1s,
+
+48
+00:02:27,410 --> 00:02:30,175
+but each of these blocks is similar, has 0s,
+
+49
+00:02:30,175 --> 00:02:33,590
+uh, of the diagonal and kind of has non-0s on the diagonal.
+
+50
+00:02:33,590 --> 00:02:37,990
+And then each of these blocks is again similar to the original block.
+
+51
+00:02:37,990 --> 00:02:40,555
+So that's kind of why these Kronecker graphs,
+
+52
+00:02:40,555 --> 00:02:43,775
+uh, uh, model will allow us to do.
+
+53
+00:02:43,775 --> 00:02:46,545
+So now, how do we define it?
+
+54
+00:02:46,545 --> 00:02:49,610
+How do I get what I just showed you on the previous slide?
+
+55
+00:02:49,610 --> 00:02:55,685
+We are going to define the Kronecker product of two matrices A and B the following way.
+
+56
+00:02:55,685 --> 00:02:58,460
+So the idea is, if I have two matrices, A and
+
+57
+00:02:58,460 --> 00:03:01,550
+B and I Kronecker multiply them, then basically,
+
+58
+00:03:01,550 --> 00:03:04,730
+the way to think of this is that I take the matrix B,
+
+59
+00:03:04,730 --> 00:03:10,250
+I put it into every cell of A and multiply with the entry in that cell.
+
+60
+00:03:10,250 --> 00:03:12,970
+So this means I can take two matrices,
+
+61
+00:03:12,970 --> 00:03:15,645
+uh, A and B, that have different sizes,
+
+62
+00:03:15,645 --> 00:03:17,735
+and the Kronecker product of them,
+
+63
+00:03:17,735 --> 00:03:22,290
+the size of the Kronecker product will be the product of the sizes, right?
+
+64
+00:03:22,290 --> 00:03:23,570
+So if, uh, uh,
+
+65
+00:03:23,570 --> 00:03:26,075
+matrix A has n rows and, uh,
+
+66
+00:03:26,075 --> 00:03:28,040
+matrix B has k rows,
+
+67
+00:03:28,040 --> 00:03:31,300
+then the number of rows of the product will be n times k,
+
+68
+00:03:31,300 --> 00:03:33,240
+and the same for columns, right?
+
+69
+00:03:33,240 --> 00:03:34,970
+Then the- you- the way you see now,
+
+70
+00:03:34,970 --> 00:03:39,260
+the product is simply you take B and you put that entire matrix into
+
+71
+00:03:39,260 --> 00:03:44,060
+the every cell of matrix A and multiply with an entry,
+
+72
+00:03:44,060 --> 00:03:46,010
+uh, at the- that- uh, cell.
+
+73
+00:03:46,010 --> 00:03:51,425
+So now that we know what is a Kronecker product of, uh, general matrices,
+
+74
+00:03:51,425 --> 00:03:55,790
+we can define a Kronecker product of two graphs by simply as
+
+75
+00:03:55,790 --> 00:04:00,180
+a Kronecker product of the corresponding adjacency matrices, right?
+
+76
+00:04:00,180 --> 00:04:02,750
+So, uh, now that we have defined this,
+
+77
+00:04:02,750 --> 00:04:05,030
+um, this basically goes- goes here, right?
+
+78
+00:04:05,030 --> 00:04:07,115
+I have a Kronecker- I have,
+
+79
+00:04:07,115 --> 00:04:09,110
+uh, first, adjacency matrix,
+
+80
+00:04:09,110 --> 00:04:12,830
+now I do Kronecker product of this adjacency matrix with itself,
+
+81
+00:04:12,830 --> 00:04:14,420
+and I get this type of structure, right?
+
+82
+00:04:14,420 --> 00:04:18,110
+I have zero here because if I take K_1, put it here,
+
+83
+00:04:18,110 --> 00:04:19,790
+and multiply it by 0,
+
+84
+00:04:19,790 --> 00:04:22,100
+I get a three-by-three block of 0s.
+
+85
+00:04:22,100 --> 00:04:23,990
+While in these other parts,
+
+86
+00:04:23,990 --> 00:04:27,675
+I get simply a copy of K_1 because,
+
+87
+00:04:27,675 --> 00:04:30,540
+um, because I have a coefficient 1 here.
+
+88
+00:04:30,540 --> 00:04:34,275
+So basically, now I get a matrix of size 9-by-9,
+
+89
+00:04:34,275 --> 00:04:38,210
+uh, where I have two blocks of size 3-by-3 of 0s,
+
+90
+00:04:38,210 --> 00:04:40,910
+and the rest are simply copies of this, uh,
+
+91
+00:04:40,910 --> 00:04:44,255
+matrix K. And now that I have a 9-by-9 matrix,
+
+92
+00:04:44,255 --> 00:04:49,980
+I could Kronecker multiply 9-by-9 with another 9-by-9 matrix,
+
+93
+00:04:49,980 --> 00:04:51,225
+and I would get, uh,
+
+94
+00:04:51,225 --> 00:04:53,040
+Kronecker, uh, matrix now on,
+
+95
+00:04:53,040 --> 00:04:57,740
+um, 81 nodes, so I have now a graph of- on- in 81 nodes.
+
+96
+00:04:57,740 --> 00:05:00,965
+So how are we going to define Kronecker graphs?
+
+97
+00:05:00,965 --> 00:05:03,800
+Kronecker graph is obtained by growing- uh,
+
+98
+00:05:03,800 --> 00:05:06,305
+by a growing seq- sequence of graphs by
+
+99
+00:05:06,305 --> 00:05:10,420
+iterating Kronecker product over this initiator matrix K_1.
+
+100
+00:05:10,420 --> 00:05:14,585
+So if I wanna get the Kth Kronecker graph K,
+
+101
+00:05:14,585 --> 00:05:18,095
+I'll simply take my initiar- initiator matrix K- K_1,
+
+102
+00:05:18,095 --> 00:05:22,875
+and I'm going to Kronecker multiply it with itself, uh, m times.
+
+103
+00:05:22,875 --> 00:05:28,825
+So basically, I'm taking the nth Kronecker power of the initiator matrix,
+
+104
+00:05:28,825 --> 00:05:31,805
+uh, to get the- to get the final graph.
+
+105
+00:05:31,805 --> 00:05:33,685
+Um, and of course,
+
+106
+00:05:33,685 --> 00:05:35,090
+and nobody says you have to take
+
+107
+00:05:35,090 --> 00:05:39,080
+one initiator matrix and just power it with itself m times.
+
+108
+00:05:39,080 --> 00:05:44,000
+You would have different-ish initiator matrices and multiply them to get a bigger graph.
+
+109
+00:05:44,000 --> 00:05:46,220
+So there's a lot of flexibility here.
+
+110
+00:05:46,220 --> 00:05:48,765
+To give you an example, uh,
+
+111
+00:05:48,765 --> 00:05:51,500
+here is an initiator matrix on four nodes,
+
+112
+00:05:51,500 --> 00:05:53,225
+here is the corresponding graph,
+
+113
+00:05:53,225 --> 00:05:55,345
+here is the adjacency matrix.
+
+114
+00:05:55,345 --> 00:05:57,050
+Uh, notice basically, uh,
+
+115
+00:05:57,050 --> 00:05:58,515
+we have self-loops, uh,
+
+116
+00:05:58,515 --> 00:06:00,605
+on the diagonal and then kind of,
+
+117
+00:06:00,605 --> 00:06:02,240
+uh, first row, first column,
+
+118
+00:06:02,240 --> 00:06:06,140
+uh, is basically the- the star node linking to other satellite nodes.
+
+119
+00:06:06,140 --> 00:06:08,270
+If now I generate, uh,
+
+120
+00:06:08,270 --> 00:06:11,720
+a Kronecker graph with this initiator here as the adjacency matrix,
+
+121
+00:06:11,720 --> 00:06:14,805
+and again, notice the self-similarity pattern.
+
+122
+00:06:14,805 --> 00:06:17,940
+Uh, here's a different, um, uh, uh,
+
+123
+00:06:17,940 --> 00:06:21,380
+initiator matrix with the corresponding adjacency matrix, right?
+
+124
+00:06:21,380 --> 00:06:23,035
+Again, I have this node,
+
+125
+00:06:23,035 --> 00:06:25,050
+uh, that links to all other nodes,
+
+126
+00:06:25,050 --> 00:06:26,820
+but then there is a triangle, uh,
+
+127
+00:06:26,820 --> 00:06:28,515
+here as well, um,
+
+128
+00:06:28,515 --> 00:06:30,045
+denoted in this part.
+
+129
+00:06:30,045 --> 00:06:32,315
+And now, notice as I create a Kronecker graph,
+
+130
+00:06:32,315 --> 00:06:34,485
+I get the same self-similar structure, right?
+
+131
+00:06:34,485 --> 00:06:36,830
+I get basically band of non-0s.
+
+132
+00:06:36,830 --> 00:06:40,880
+I have these two elements that are 0, corresponds to this area here.
+
+133
+00:06:40,880 --> 00:06:44,300
+I have this- this part corresponds to this part here, right?
+
+134
+00:06:44,300 --> 00:06:45,860
+So you see how I get
+
+135
+00:06:45,860 --> 00:06:52,985
+this recursive self-similar structure where basically this initiator matrix is- uh,
+
+136
+00:06:52,985 --> 00:06:55,610
+its structure is retained at the different, uh,
+
+137
+00:06:55,610 --> 00:06:59,090
+levels, and this is how we define the Kronecker graph.
+
+138
+00:06:59,090 --> 00:07:04,670
+Um, so far, we have defined Kronecker graphs as deterministic, right?
+
+139
+00:07:04,670 --> 00:07:06,260
+We started with a 0,
+
+140
+00:07:06,260 --> 00:07:10,360
+1 adjacency matrix and we generated a bigger adjacency matrix.
+
+141
+00:07:10,360 --> 00:07:11,670
+So what we wanna do next,
+
+142
+00:07:11,670 --> 00:07:12,915
+is we wanna make, uh,
+
+143
+00:07:12,915 --> 00:07:15,840
+these gra- these Kronecker graphs stochastic.
+
+144
+00:07:15,840 --> 00:07:19,000
+We wanna make it so that it generates random graphs.
+
+145
+00:07:19,000 --> 00:07:22,820
+And the way we generate random graphs with Kronecker graphs is that
+
+146
+00:07:22,820 --> 00:07:27,210
+rather than thinking of the initiator matrix as a- as a little,
+
+147
+00:07:27,210 --> 00:07:30,180
+uh, graph, as a little, uh, 0,
+
+148
+00:07:30,180 --> 00:07:33,575
+1 type matrix, we are going to think of it as a probability matrix.
+
+149
+00:07:33,575 --> 00:07:36,170
+So basically, rather than having K_1,
+
+150
+00:07:36,170 --> 00:07:38,085
+we are now going to have Theta 1.
+
+151
+00:07:38,085 --> 00:07:42,690
+And rather than ha- K had either an edge or no edge,
+
+152
+00:07:42,690 --> 00:07:46,490
+now, we will say that every edge has a probability between 0 and 1.
+
+153
+00:07:46,490 --> 00:07:50,240
+So theta is now a matrix of probabilities.
+
+154
+00:07:50,240 --> 00:07:52,570
+Then we are going to take this Theta 1,
+
+155
+00:07:52,570 --> 00:07:55,430
+and we are going to apply Kronecker power to it.
+
+156
+00:07:55,430 --> 00:08:00,245
+We are going to Kronecker power it with itself to get the kth power.
+
+157
+00:08:00,245 --> 00:08:04,460
+And then now that we have this probabilistic adjacency matrix k,
+
+158
+00:08:04,460 --> 00:08:07,610
+we are going to sample edges from it at random
+
+159
+00:08:07,610 --> 00:08:10,980
+according to the probabilities defined by this,
+
+160
+00:08:10,980 --> 00:08:13,080
+uh, in this- uh, in this matrix.
+
+161
+00:08:13,080 --> 00:08:15,450
+So let me basically give you, uh, um,
+
+162
+00:08:15,450 --> 00:08:18,510
+um, a picture that will explain what I mean, right?
+
+163
+00:08:18,510 --> 00:08:21,160
+So the idea is I started with some initiator matrix,
+
+164
+00:08:21,160 --> 00:08:23,610
+the entries have to be between 0 and 1,
+
+165
+00:08:23,610 --> 00:08:25,290
+and they don't have to sum to 1,
+
+166
+00:08:25,290 --> 00:08:29,760
+I Kronecker multiply this initiator matrix to get a bigger,
+
+167
+00:08:29,760 --> 00:08:31,955
+uh, probabilistic adjacency matrix.
+
+168
+00:08:31,955 --> 00:08:35,995
+Now, every cell here can be interpreted as a probability of an edge.
+
+169
+00:08:35,995 --> 00:08:38,015
+So in order to generate the graph,
+
+170
+00:08:38,015 --> 00:08:42,830
+I now simply traverse this matrix and flip a coin where, uh,
+
+171
+00:08:42,830 --> 00:08:45,560
+every entry tells me what is the bias of that coin,
+
+172
+00:08:45,560 --> 00:08:47,420
+and if the coin says, uh, yes,
+
+173
+00:08:47,420 --> 00:08:50,030
+if it lands on tail- uh, sorry,
+
+174
+00:08:50,030 --> 00:08:52,655
+on head, then we actually create a graph.
+
+175
+00:08:52,655 --> 00:08:54,350
+We- we create an edge in the graph,
+
+176
+00:08:54,350 --> 00:08:58,080
+and we then call this- this is now an instance sampled from this,
+
+177
+00:08:58,080 --> 00:09:01,520
+uh, probabilistic, uh, adjacency matrix.
+
+178
+00:09:01,520 --> 00:09:06,400
+Um, right. So the idea is once you have this probabilistic, uh, matrix,
+
+179
+00:09:06,400 --> 00:09:10,810
+you simply go and flip the coins according to the biases, um,
+
+180
+00:09:10,810 --> 00:09:16,705
+that are encoded in the values of the cells and this will give you a, uh, a graph.
+
+181
+00:09:16,705 --> 00:09:17,800
+It will give you, uh,
+
+182
+00:09:17,800 --> 00:09:21,505
+now an instance of a Kronecker graph sampled from this,
+
+183
+00:09:21,505 --> 00:09:23,635
+uh, stochastic Kronecker graph.
+
+184
+00:09:23,635 --> 00:09:28,690
+Uh, this is great because now we can generate graphs, uh, stochastically,
+
+185
+00:09:28,690 --> 00:09:30,925
+but all having kind of similar structure,
+
+186
+00:09:30,925 --> 00:09:37,060
+all being generated from the initia- the same initial, uh, probability matrix.
+
+187
+00:09:37,060 --> 00:09:38,545
+Uh, what is the problem?
+
+188
+00:09:38,545 --> 00:09:41,005
+The problem is that we have to flip all these coins.
+
+189
+00:09:41,005 --> 00:09:43,615
+And if the graph has size n,
+
+190
+00:09:43,615 --> 00:09:46,705
+which means this matrix has size n by n,
+
+191
+00:09:46,705 --> 00:09:50,440
+then we need to flip order n square, uh, coins.
+
+192
+00:09:50,440 --> 00:09:53,470
+Uh, and that's far too many coins to flip if I
+
+193
+00:09:53,470 --> 00:09:56,920
+wanna generate a million node graph because then I need to flip,
+
+194
+00:09:56,920 --> 00:09:58,810
+a million squared, uh, nodes.
+
+195
+00:09:58,810 --> 00:10:01,540
+So it will be- I have to flip 10 to the 12, uh,
+
+196
+00:10:01,540 --> 00:10:05,800
+coins, or if I want to generate a billion node graph, which is, you know,
+
+197
+00:10:05,800 --> 00:10:08,650
+nothing too large, then I would have to flip,
+
+198
+00:10:08,650 --> 00:10:11,275
+uh, 10 to the 18 different coins,
+
+199
+00:10:11,275 --> 00:10:13,885
+um, and that's unfeasible in practice.
+
+200
+00:10:13,885 --> 00:10:17,215
+So let me now tell you how to do this faster, uh,
+
+201
+00:10:17,215 --> 00:10:20,335
+using what is called a ball-dropping, uh,
+
+202
+00:10:20,335 --> 00:10:24,340
+or an edge-dropping mechanism, uh, and it's quite cool.
+
+203
+00:10:24,340 --> 00:10:30,100
+So here is how we are going to generate Kronecker graphs, uh, faster.
+
+204
+00:10:30,100 --> 00:10:33,370
+So think that you had this 2-by-2, um,
+
+205
+00:10:33,370 --> 00:10:36,970
+initiator- probabilistic initiator matrix that has, you know,
+
+206
+00:10:36,970 --> 00:10:39,310
+entries a, b, c, and d. Now,
+
+207
+00:10:39,310 --> 00:10:41,875
+if you Kronecker multiply this with itself,
+
+208
+00:10:41,875 --> 00:10:44,620
+the Kronecker product matrix will look like this, right?
+
+209
+00:10:44,620 --> 00:10:46,360
+The first entry will be a times a,
+
+210
+00:10:46,360 --> 00:10:47,905
+then it would be a times b,
+
+211
+00:10:47,905 --> 00:10:49,930
+b times a, b times b,
+
+212
+00:10:49,930 --> 00:10:51,580
+a times c, and so on. All right?
+
+213
+00:10:51,580 --> 00:10:53,050
+So that's one way to look at it,
+
+214
+00:10:53,050 --> 00:10:54,700
+is basically let- first,
+
+215
+00:10:54,700 --> 00:10:58,210
+you would generate all the cells and then you can flip the coins.
+
+216
+00:10:58,210 --> 00:11:02,500
+But what you can also notice is that we have this kind of hierarchical structure, right?
+
+217
+00:11:02,500 --> 00:11:04,675
+I have a, b, c, and d,
+
+218
+00:11:04,675 --> 00:11:07,615
+and then each of these four- four, uh,
+
+219
+00:11:07,615 --> 00:11:09,490
+quadrants has further a,
+
+220
+00:11:09,490 --> 00:11:11,245
+b, c, d in there, right?
+
+221
+00:11:11,245 --> 00:11:14,905
+So the way you can now think of this is is a two-level structure.
+
+222
+00:11:14,905 --> 00:11:20,365
+And the way you can say what is the probability of a- of a given edge,
+
+223
+00:11:20,365 --> 00:11:24,100
+it simply, um, you can fli- you can basically, uh,
+
+224
+00:11:24,100 --> 00:11:25,810
+separate it out as a set,
+
+225
+00:11:25,810 --> 00:11:27,970
+almost like as a diving,
+
+226
+00:11:27,970 --> 00:11:31,300
+dropping into the underlying adjacency matrix,
+
+227
+00:11:31,300 --> 00:11:33,850
+where at every stage you have to decide which of
+
+228
+00:11:33,850 --> 00:11:36,970
+the four quadrants do you wanna dive into.
+
+229
+00:11:36,970 --> 00:11:39,025
+So let me give you an example.
+
+230
+00:11:39,025 --> 00:11:41,050
+If this is my final, uh, you know,
+
+231
+00:11:41,050 --> 00:11:44,170
+this is my final adjacency matrix size I'd like to create,
+
+232
+00:11:44,170 --> 00:11:46,375
+so this would be number of nodes is,
+
+233
+00:11:46,375 --> 00:11:48,520
+uh, whatever is the number of rows and columns here,
+
+234
+00:11:48,520 --> 00:11:53,575
+then the way I can think of it is I can split this into four quadrants and I can say,
+
+235
+00:11:53,575 --> 00:11:58,225
+a-ha, you know a fraction of times I'm going to go into this part of the network,
+
+236
+00:11:58,225 --> 00:12:01,300
+b fraction of times I'm going to go here, c,
+
+237
+00:12:01,300 --> 00:12:05,140
+and d. And then basically you can pick again, uh, um,
+
+238
+00:12:05,140 --> 00:12:06,910
+uh, according to these values, a,
+
+239
+00:12:06,910 --> 00:12:09,115
+b, c, and d, one of these four quadrants.
+
+240
+00:12:09,115 --> 00:12:10,735
+And now that you have picked it,
+
+241
+00:12:10,735 --> 00:12:12,220
+you now then say, a-ha,
+
+242
+00:12:12,220 --> 00:12:14,740
+I- I- I have now picked this, uh,
+
+243
+00:12:14,740 --> 00:12:17,635
+this quadrant, let me again split it into four parts.
+
+244
+00:12:17,635 --> 00:12:19,360
+And again, let me pick which of
+
+245
+00:12:19,360 --> 00:12:24,040
+these four different subparts do I want to dive into and you would pick one of them.
+
+246
+00:12:24,040 --> 00:12:28,120
+And now you are still not all the way down at- at the bottom of the matrix,
+
+247
+00:12:28,120 --> 00:12:29,290
+you still have, um, um,
+
+248
+00:12:29,290 --> 00:12:31,690
+uh, to choose which cell you go to.
+
+249
+00:12:31,690 --> 00:12:33,370
+So again, you split this into four,
+
+250
+00:12:33,370 --> 00:12:35,245
+and again decide which of these four,
+
+251
+00:12:35,245 --> 00:12:36,670
+uh, to pick, right?
+
+252
+00:12:36,670 --> 00:12:39,715
+So, uh, what this means is that basically, rather than, uh,
+
+253
+00:12:39,715 --> 00:12:43,480
+flipping these, uh, coins kind of row by row,
+
+254
+00:12:43,480 --> 00:12:45,745
+you start at the- at the top,
+
+255
+00:12:45,745 --> 00:12:48,190
+and then you- you descend into one of
+
+256
+00:12:48,190 --> 00:12:52,270
+the four quadrants with probability proportional to a,
+
+257
+00:12:52,270 --> 00:12:55,870
+b, c, and d and you pick one of them and move into that part.
+
+258
+00:12:55,870 --> 00:12:57,925
+And now you say, a-ha, I will again,
+
+259
+00:12:57,925 --> 00:13:01,225
+I have four ways to go to and pick one of the four,
+
+260
+00:13:01,225 --> 00:13:03,565
+uh, ways at random and you'll move to the one part.
+
+261
+00:13:03,565 --> 00:13:04,675
+And then again, you say, Aha,
+
+262
+00:13:04,675 --> 00:13:06,550
+now I'm here, I wanna go deeper.
+
+263
+00:13:06,550 --> 00:13:11,365
+And you keep descending until you hit, uh, the, uh,
+
+264
+00:13:11,365 --> 00:13:14,215
+individual cell, and this is when you,
+
+265
+00:13:14,215 --> 00:13:16,465
+uh, when you stop and you put an edge.
+
+266
+00:13:16,465 --> 00:13:20,170
+Um, this means that you are going to land in a given, um,
+
+267
+00:13:20,170 --> 00:13:24,385
+in a given cell exactly with the probability,
+
+268
+00:13:24,385 --> 00:13:26,410
+um, uh, according to that cell.
+
+269
+00:13:26,410 --> 00:13:30,100
+The only difference is that you may get a couple of edges colliding, right?
+
+270
+00:13:30,100 --> 00:13:32,920
+You may land to the same cell multiple times.
+
+271
+00:13:32,920 --> 00:13:35,155
+If that happens, just ignore it,
+
+272
+00:13:35,155 --> 00:13:36,880
+uh, and try again.
+
+273
+00:13:36,880 --> 00:13:41,590
+And this gives you now a very fast way to generate a- a Kronecker graph, right?
+
+274
+00:13:41,590 --> 00:13:43,660
+So, uh, basically, this, uh,
+
+275
+00:13:43,660 --> 00:13:47,755
+edge-dropping or ball-dropping mechanism basically says,
+
+276
+00:13:47,755 --> 00:13:50,590
+um, take the initia- initial, uh, matrix,
+
+277
+00:13:50,590 --> 00:13:52,270
+whatever are the entries, uh,
+
+278
+00:13:52,270 --> 00:13:55,720
+normalize them and then keep dropping in, um,
+
+279
+00:13:55,720 --> 00:14:00,265
+in- keep descending in until you hit an individual cell and put an edge there, right?
+
+280
+00:14:00,265 --> 00:14:01,495
+Put a value 1 there,
+
+281
+00:14:01,495 --> 00:14:04,180
+and this would mean that you have connected nodes,
+
+282
+00:14:04,180 --> 00:14:06,700
+uh, i and j that are in a column,
+
+283
+00:14:06,700 --> 00:14:08,995
+uh, in the row i and column j.
+
+284
+00:14:08,995 --> 00:14:11,890
+And if you do this, what is interesting is that,
+
+285
+00:14:11,890 --> 00:14:14,380
+for example, with a very simple, uh,
+
+286
+00:14:14,380 --> 00:14:16,945
+adjacent parameter matrix only four values,
+
+287
+00:14:16,945 --> 00:14:18,910
+you can actually generate the graphs,
+
+288
+00:14:18,910 --> 00:14:21,535
+uh, that correspond to real graphs quite well.
+
+289
+00:14:21,535 --> 00:14:26,725
+Here is for example, the- this is now a directed graph in-degree, out-degree,
+
+290
+00:14:26,725 --> 00:14:31,120
+clustering coefficient, uh, diameter which is number of nodes,
+
+291
+00:14:31,120 --> 00:14:32,559
+uh, at a given distance.
+
+292
+00:14:32,559 --> 00:14:35,680
+Uh, these are some other properties that people care about.
+
+293
+00:14:35,680 --> 00:14:41,395
+And you can notice how Kronecker graphs in green and the real graph match really well,
+
+294
+00:14:41,395 --> 00:14:45,550
+and all you have to do is decide on these four different parameters, right?
+
+295
+00:14:45,550 --> 00:14:47,050
+Four different parameter values.
+
+296
+00:14:47,050 --> 00:14:49,270
+So basically with just four parameters,
+
+297
+00:14:49,270 --> 00:14:51,310
+we are able to generate, uh,
+
+298
+00:14:51,310 --> 00:14:55,300
+a realistic graphs using, um, Kronecker graphs.
+
+299
+00:14:55,300 --> 00:14:59,995
+Here the network we are trying to mimic has 75,000 nodes and,
+
+300
+00:14:59,995 --> 00:15:03,010
+uh, uh, more than half a million, uh, edges.
+
+301
+00:15:03,010 --> 00:15:06,445
+Uh, so the cool thing is now we are also able to model
+
+302
+00:15:06,445 --> 00:15:10,540
+degree distribution class- clustering as well as, uh,
+
+303
+00:15:10,540 --> 00:15:13,600
+shortest path, uh, di- distribution,
+
+304
+00:15:13,600 --> 00:15:18,325
+as well as some other properties with just four free, uh, parameters.
+
+305
+00:15:18,325 --> 00:15:19,360
+Here are the, you know,
+
+306
+00:15:19,360 --> 00:15:21,010
+the numbers of those parameters.
+
+307
+00:15:21,010 --> 00:15:23,365
+If you start with this initiator matrix,
+
+308
+00:15:23,365 --> 00:15:29,680
+you can basically generate this social network on 76,000 nodes and half a million edges.
+
+309
+00:15:29,680 --> 00:15:33,160
+So, uh, to conclude the lecture for today, uh,
+
+310
+00:15:33,160 --> 00:15:37,930
+the summary, so today we looked at these traditional generative models for graphs.
+
+311
+00:15:37,930 --> 00:15:40,570
+First, we discussed about, um,
+
+312
+00:15:40,570 --> 00:15:44,140
+what metrics do we use to characterize the graph.
+
+313
+00:15:44,140 --> 00:15:46,375
+And we talked about degree distribution,
+
+314
+00:15:46,375 --> 00:15:50,830
+clustering coefficient, um, the giant connected component,
+
+315
+00:15:50,830 --> 00:15:52,585
+as well as shortest path-length.
+
+316
+00:15:52,585 --> 00:15:55,600
+We started with the simplest possible generative model
+
+317
+00:15:55,600 --> 00:15:57,940
+called Erdos-Renyi random graph model,
+
+318
+00:15:57,940 --> 00:16:02,035
+um, and we- we saw that it generates shortest path-lengths.
+
+319
+00:16:02,035 --> 00:16:04,840
+Realistically, that it gives us connected graphs,
+
+320
+00:16:04,840 --> 00:16:07,870
+but it doesn't generate clustering coefficient.
+
+321
+00:16:07,870 --> 00:16:09,370
+So we then, uh,
+
+322
+00:16:09,370 --> 00:16:13,030
+talked about the small-world, uh, graph generator,
+
+323
+00:16:13,030 --> 00:16:15,985
+and we talked about how you only need a couple of
+
+324
+00:16:15,985 --> 00:16:21,850
+random shortcut edges that bring down the diameter but- but keeps the clustering high.
+
+325
+00:16:21,850 --> 00:16:25,900
+So this is what was in the- the significance of the small-world model.
+
+326
+00:16:25,900 --> 00:16:27,490
+And then we looked at,
+
+327
+00:16:27,490 --> 00:16:31,330
+um, at the different model called, uh, Kronecker graphs.
+
+328
+00:16:31,330 --> 00:16:33,760
+That's kind of more mathematical and, uh,
+
+329
+00:16:33,760 --> 00:16:38,710
+is defined as based on the Kronecker product of graph adjacency matrices.
+
+330
+00:16:38,710 --> 00:16:42,430
+We then defined the stochastic Kronecker graph, uh,
+
+331
+00:16:42,430 --> 00:16:47,410
+where the adjacency matrix is stochastic and we can then generate multiple instances,
+
+332
+00:16:47,410 --> 00:16:50,650
+uh, from the stochastic, uh, matrix.
+
+333
+00:16:50,650 --> 00:16:55,810
+Um, we talked and then- then last about this ball-dropping, uh,
+
+334
+00:16:55,810 --> 00:17:00,955
+mechanism that allows us to generate Kronecker graphs, uh, quick, um,
+
+335
+00:17:00,955 --> 00:17:04,630
+in a fast and efficient way so we can generate graphs with billions of nodes,
+
+336
+00:17:04,630 --> 00:17:06,369
+uh, without any problem.
+
+337
+00:17:06,369 --> 00:17:08,169
+So, um, with this, uh,
+
+338
+00:17:08,170 --> 00:17:10,194
+this finishes the lecture for today.
+
+339
+00:17:10,194 --> 00:17:12,144
+What we are going to talk about, uh,
+
+340
+00:17:12,145 --> 00:17:17,050
+next week is about deep generative models for networks, right?
+
+341
+00:17:17,050 --> 00:17:22,075
+So while today the models were kind of mechanistic with a lot of,
+
+342
+00:17:22,075 --> 00:17:27,265
+uh, insight from the network generative processes that happen in real world,
+
+343
+00:17:27,265 --> 00:17:29,740
+uh, the- in- on Tuesday,
+
+344
+00:17:29,740 --> 00:17:32,710
+we are going to talk about deep generative models where basically we will
+
+345
+00:17:32,710 --> 00:17:36,610
+say let's just formulate this as an- as a machine learning problem,
+
+346
+00:17:36,610 --> 00:17:40,515
+as a kind of complex, uh, prediction problem,
+
+347
+00:17:40,515 --> 00:17:42,450
+and all we care about is to generate a
+
+348
+00:17:42,450 --> 00:17:46,305
+realistic structure and we don't care so much about, uh,
+
+349
+00:17:46,305 --> 00:17:47,640
+whether, uh, you know,
+
+350
+00:17:47,640 --> 00:17:49,425
+what is the true underlying,
+
+351
+00:17:49,425 --> 00:17:52,835
+let's say real-world, uh, generative process.
+
+352
+00:17:52,835 --> 00:17:55,420
+So we learn how to generate graphs,
+
+353
+00:17:55,420 --> 00:17:58,370
+uh, from, uh, raw data.
+

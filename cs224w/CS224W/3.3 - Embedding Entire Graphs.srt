@@ -1,0 +1,1316 @@
+1
+00:00:04,130 --> 00:00:08,910
+Now, we are going to talk about embedding entire graphs.
+
+2
+00:00:08,910 --> 00:00:11,415
+So rather than embedding individual nodes,
+
+3
+00:00:11,415 --> 00:00:13,950
+we're going to talk about how do you embed,
+
+4
+00:00:13,950 --> 00:00:16,274
+or find an embedding for an entire graph.
+
+5
+00:00:16,274 --> 00:00:20,870
+And the method we are going to talk about is based on anonymous, uh, random walks.
+
+6
+00:00:20,870 --> 00:00:23,835
+So we are going to continue the theme of, uh,
+
+7
+00:00:23,835 --> 00:00:27,160
+random walks, but this random walks will be anonymous.
+
+8
+00:00:27,160 --> 00:00:28,830
+So let me explain. All right?
+
+9
+00:00:28,830 --> 00:00:31,760
+The goal now is to embed a sub-graph or
+
+10
+00:00:31,760 --> 00:00:36,290
+an entire graph into the embedding space, uh, z. Um,
+
+11
+00:00:36,290 --> 00:00:39,830
+and, uh, you may wanna do these because you may wanna do for example,
+
+12
+00:00:39,830 --> 00:00:44,790
+molecule classification to predict which molecules are toxic versus which are non-toxic.
+
+13
+00:00:44,790 --> 00:00:47,700
+Or you wanna do some kind of graph anomaly detection,
+
+14
+00:00:47,700 --> 00:00:50,370
+um, and you want to do this in the embedding space.
+
+15
+00:00:50,370 --> 00:00:53,960
+So the goal is to embed an entire graph or you can think of it
+
+16
+00:00:53,960 --> 00:00:58,220
+also as embedding a subset of the nodes in the graph.
+
+17
+00:00:58,220 --> 00:01:02,705
+So first idea, that is very simple and people have tried.
+
+18
+00:01:02,705 --> 00:01:05,885
+So the idea is that you run standard node embedding,
+
+19
+00:01:05,885 --> 00:01:07,440
+uh, uh, technique, uh,
+
+20
+00:01:07,440 --> 00:01:12,465
+like we- what- like we already dis- discussed in terms of node to walk or, uh, deep walk.
+
+21
+00:01:12,465 --> 00:01:15,750
+And then, just sum up or average, uh,
+
+22
+00:01:15,750 --> 00:01:18,130
+node embeddings, either in the entire graph,
+
+23
+00:01:18,130 --> 00:01:19,450
+or in the sub-graph, right?
+
+24
+00:01:19,450 --> 00:01:21,835
+So the idea is, um, to say,
+
+25
+00:01:21,835 --> 00:01:27,205
+the embedding of the graph is simply a sum of the embeddings of the nodes in that graph.
+
+26
+00:01:27,205 --> 00:01:31,430
+And for example, this method was used in 2016, to classify,
+
+27
+00:01:31,430 --> 00:01:34,160
+uh, molecules, uh, based on the graph structure,
+
+28
+00:01:34,160 --> 00:01:36,365
+and it was very, um- very successful.
+
+29
+00:01:36,365 --> 00:01:37,910
+So even though simplistic,
+
+30
+00:01:37,910 --> 00:01:40,900
+um, uh, works quite well in practice.
+
+31
+00:01:40,900 --> 00:01:46,580
+An improvement over this initial idea of averaging node embeddings is
+
+32
+00:01:46,580 --> 00:01:51,785
+to introduce a virtual node to represent an entire graph or a sub-graph,
+
+33
+00:01:51,785 --> 00:01:56,225
+and then run a standard graph embedding or node embedding technique,
+
+34
+00:01:56,225 --> 00:02:00,575
+uh, and then think of the- this virtual node as the embedding for the graph.
+
+35
+00:02:00,575 --> 00:02:02,060
+So let me explain.
+
+36
+00:02:02,060 --> 00:02:03,770
+Uh, here is the idea, right?
+
+37
+00:02:03,770 --> 00:02:05,585
+I will create these virtual node.
+
+38
+00:02:05,585 --> 00:02:08,794
+I will connect it to the set of nodes I want to embed.
+
+39
+00:02:08,794 --> 00:02:11,790
+Now I can run node to walk on this,
+
+40
+00:02:11,790 --> 00:02:17,780
+uh- on this, um- on this graph to determine the embedding of this virtual node.
+
+41
+00:02:17,780 --> 00:02:22,760
+And, uh, now the embedding of the- of the- of the let's say set of nodes s,
+
+42
+00:02:22,760 --> 00:02:26,425
+is simply the embedding of this, uh, virtual node,
+
+43
+00:02:26,425 --> 00:02:30,180
+um, in the embedding space as computed by deep walk or,
+
+44
+00:02:30,180 --> 00:02:31,305
+uh, node to walk.
+
+45
+00:02:31,305 --> 00:02:34,310
+And of course, if I would want to embed the entire graph, then this,
+
+46
+00:02:34,310 --> 00:02:38,235
+uh, virtual node would connect to all other nodes in the network.
+
+47
+00:02:38,235 --> 00:02:39,990
+I'd run, uh, deep walk,
+
+48
+00:02:39,990 --> 00:02:41,670
+uh, or an node to walk over this,
+
+49
+00:02:41,670 --> 00:02:44,000
+determine the embedding of the virtual node and
+
+50
+00:02:44,000 --> 00:02:47,160
+represent the embedding of the entire graph as the embedding,
+
+51
+00:02:47,160 --> 00:02:48,960
+uh, of the red node.So that's,
+
+52
+00:02:48,960 --> 00:02:51,825
+um, idea number, uh, 2.
+
+53
+00:02:51,825 --> 00:02:54,835
+Now, for idea number 3,
+
+54
+00:02:54,835 --> 00:02:59,035
+we are going to define this notion of anonymous, uh, walks.
+
+55
+00:02:59,035 --> 00:03:02,450
+And the way we will think of this is that states in
+
+56
+00:03:02,450 --> 00:03:05,750
+the anonymous walk correspond to the indexes
+
+57
+00:03:05,750 --> 00:03:09,380
+of the first time when a given node was- was visited,
+
+58
+00:03:09,380 --> 00:03:10,610
+uh, on the walk.
+
+59
+00:03:10,610 --> 00:03:13,860
+So for example, here is a- here is a graph,
+
+60
+00:03:13,860 --> 00:03:16,520
+uh, uh, you know, a small subpart of the graph of interest.
+
+61
+00:03:16,520 --> 00:03:19,400
+Then here are a few random walks on this graph.
+
+62
+00:03:19,400 --> 00:03:21,275
+For example, from A we go to B,
+
+63
+00:03:21,275 --> 00:03:23,390
+C, B, uh, and C,
+
+64
+00:03:23,390 --> 00:03:26,030
+or another random walk starts at C, goes to D,
+
+65
+00:03:26,030 --> 00:03:27,650
+goes to B, goes to D,
+
+66
+00:03:27,650 --> 00:03:28,730
+and back to B.
+
+67
+00:03:28,730 --> 00:03:34,595
+But then we are not going to represent the random walk as a sequence of nodes it visits,
+
+68
+00:03:34,595 --> 00:03:38,430
+but a sequence of times when node was first visited.
+
+69
+00:03:38,430 --> 00:03:40,265
+So for example, these two random walks,
+
+70
+00:03:40,265 --> 00:03:43,565
+one and two here, get the- get the same representation.
+
+71
+00:03:43,565 --> 00:03:46,970
+It is one because A was visited at step 1,
+
+72
+00:03:46,970 --> 00:03:50,070
+then it's two because B was visited at step 2.
+
+73
+00:03:50,070 --> 00:03:54,300
+Then it's three because node C was visited at step 3,
+
+74
+00:03:54,300 --> 00:03:55,920
+then we visited B again,
+
+75
+00:03:55,920 --> 00:03:59,195
+but B was already visited so it doesn't get a new- new,
+
+76
+00:03:59,195 --> 00:04:01,655
+uh, index, but it gets value 2.
+
+77
+00:04:01,655 --> 00:04:04,430
+And then we went back to C. So, um,
+
+78
+00:04:04,430 --> 00:04:07,595
+so again, um, we have, uh, number 3.
+
+79
+00:04:07,595 --> 00:04:11,510
+And then this other random walk that started at C went to D,
+
+80
+00:04:11,510 --> 00:04:13,455
+B, D, B, um,
+
+81
+00:04:13,455 --> 00:04:14,930
+gets actually the same sequence, right?
+
+82
+00:04:14,930 --> 00:04:16,339
+C gets one, uh,
+
+83
+00:04:16,339 --> 00:04:18,619
+D gets two, B gets three.
+
+84
+00:04:18,620 --> 00:04:21,110
+Then we go back to D. So it's again two,
+
+85
+00:04:21,110 --> 00:04:23,415
+and then we go to B and it's again three.
+
+86
+00:04:23,415 --> 00:04:26,690
+And then for example, this other random walk now has
+
+87
+00:04:26,690 --> 00:04:32,670
+a different anonymous representation because we go from A to B to A to B to D, right?
+
+88
+00:04:32,670 --> 00:04:35,055
+So it's 1, 2, 1, 2, uh,
+
+89
+00:04:35,055 --> 00:04:37,875
+3 because at time 3 or, uh,
+
+90
+00:04:37,875 --> 00:04:41,515
+node D was visited as a third node, uh, in the graph.
+
+91
+00:04:41,515 --> 00:04:45,005
+So, uh, this anonymous walks,
+
+92
+00:04:45,005 --> 00:04:46,310
+uh, basically this is,
+
+93
+00:04:46,310 --> 00:04:49,295
+uh- this is- they are agnostic to the identity of the nose,
+
+94
+00:04:49,295 --> 00:04:50,555
+of the nodes visited.
+
+95
+00:04:50,555 --> 00:04:52,505
+That's why they're called anonymous.
+
+96
+00:04:52,505 --> 00:04:57,650
+Um, and this means that node- that random nodes that have visited the different nodes,
+
+97
+00:04:57,650 --> 00:05:03,610
+but kind of in the same order that get the same anonymous walk representation.
+
+98
+00:05:03,610 --> 00:05:07,995
+Now, uh, you may wonder how- how does the number of walks,
+
+99
+00:05:07,995 --> 00:05:10,095
+uh, increase with the length?
+
+100
+00:05:10,095 --> 00:05:13,740
+The number of possible anonymous walks increases exponentially.
+
+101
+00:05:13,740 --> 00:05:16,880
+Uh, here's- here's the graphic for example,
+
+102
+00:05:16,880 --> 00:05:22,145
+for- there are five anonymous walks of length 3. You know, here they are.
+
+103
+00:05:22,145 --> 00:05:25,825
+You can basically stay at the same node three times.
+
+104
+00:05:25,825 --> 00:05:30,110
+You can go- you can stay two times at the same node and then navigate to the second node.
+
+105
+00:05:30,110 --> 00:05:32,390
+You can go from first node to the second,
+
+106
+00:05:32,390 --> 00:05:33,700
+back to the first.
+
+107
+00:05:33,700 --> 00:05:36,725
+You can go from first to the second, stay on the second,
+
+108
+00:05:36,725 --> 00:05:40,040
+or you navigate from node 1 to node 2 to node 3.
+
+109
+00:05:40,040 --> 00:05:43,715
+And these are the five possible anonymous walks of length 3.
+
+110
+00:05:43,715 --> 00:05:45,810
+And then, you know, of length 4, uh,
+
+111
+00:05:45,810 --> 00:05:47,130
+it will be- it will be more,
+
+112
+00:05:47,130 --> 00:05:48,225
+that would be 15.
+
+113
+00:05:48,225 --> 00:05:49,920
+And of length 12, that would be,
+
+114
+00:05:49,920 --> 00:05:52,365
+I know, four million as it shows here.
+
+115
+00:05:52,365 --> 00:05:55,640
+So how are we going now to embed a graph?
+
+116
+00:05:55,640 --> 00:06:01,040
+One idea is to simply simulate anonymous walks of length L, uh,
+
+117
+00:06:01,040 --> 00:06:03,440
+and record their counts and then represent
+
+118
+00:06:03,440 --> 00:06:06,700
+the graph as a probability distribution over these walks.
+
+119
+00:06:06,700 --> 00:06:11,509
+So for example, if I pick anonymous walks of length 3,
+
+120
+00:06:11,509 --> 00:06:14,810
+then we can represent a graph as a five dimensional vector
+
+121
+00:06:14,810 --> 00:06:18,515
+because there are five different anonymous walks of length 3.
+
+122
+00:06:18,515 --> 00:06:19,745
+As I explained earlier,
+
+123
+00:06:19,745 --> 00:06:20,900
+where, uh, you know,
+
+124
+00:06:20,900 --> 00:06:22,680
+the embedding of the graph, uh,
+
+125
+00:06:22,680 --> 00:06:27,800
+the ith coordinate of that embedding is simply the probability that anon-, uh,
+
+126
+00:06:27,800 --> 00:06:30,900
+the probability or the fraction of times anonimou-
+
+127
+00:06:30,900 --> 00:06:33,870
+anonymous walk of type I has occurred in
+
+128
+00:06:33,870 --> 00:06:36,770
+the graph G. So now this would basically mean that we are
+
+129
+00:06:36,770 --> 00:06:40,280
+embedding a graph as a five dimensional representation.
+
+130
+00:06:40,280 --> 00:06:42,455
+Now if you want higher number of dimensions,
+
+131
+00:06:42,455 --> 00:06:43,790
+you increase the length, uh,
+
+132
+00:06:43,790 --> 00:06:46,135
+of the anonymous, uh, walk.
+
+133
+00:06:46,135 --> 00:06:50,940
+That's the idea for the- for the anonymous walks, uh,
+
+134
+00:06:50,940 --> 00:06:56,300
+and how you can basically count them and then have a probability distribution over the,
+
+135
+00:06:56,300 --> 00:06:59,330
+uh, fraction of times each anonymous walk occurs on your graph.
+
+136
+00:06:59,330 --> 00:07:04,910
+You, uh, uh, said that the dimensionality of the presentation by basically setting,
+
+137
+00:07:04,910 --> 00:07:06,950
+uh, the- the length of the,
+
+138
+00:07:06,950 --> 00:07:09,510
+uh, anonymous, uh, walk.
+
+139
+00:07:09,570 --> 00:07:12,835
+Now, of course the question also becomes,
+
+140
+00:07:12,835 --> 00:07:16,375
+how- how many random walks do you need?
+
+141
+00:07:16,375 --> 00:07:19,840
+And that is very nice mathematical formula that
+
+142
+00:07:19,840 --> 00:07:23,290
+tells you how many anonymous walks you wanna
+
+143
+00:07:23,290 --> 00:07:27,040
+sample such that your estimates in
+
+144
+00:07:27,040 --> 00:07:31,375
+the frequency or the probabilities of occurrence are, uh, accurate.
+
+145
+00:07:31,375 --> 00:07:35,155
+And you can quantify accuracy by two parameters,
+
+146
+00:07:35,155 --> 00:07:39,205
+Epsilon, um, and, um, and Delta, uh,
+
+147
+00:07:39,205 --> 00:07:43,330
+where basically we say we want the distribution of these, uh, uh,
+
+148
+00:07:43,330 --> 00:07:47,485
+probabilities of anonymous walks to have error of no more than Epsilon,
+
+149
+00:07:47,485 --> 00:07:49,825
+with probability, uh, less than Delta.
+
+150
+00:07:49,825 --> 00:07:51,850
+You can plug in these two numbers into
+
+151
+00:07:51,850 --> 00:07:55,150
+the following equation and that will tell you the number of,
+
+152
+00:07:55,150 --> 00:07:57,400
+uh, anonymous walks you may wanna,
+
+153
+00:07:57,400 --> 00:07:59,410
+uh, you may need to sample.
+
+154
+00:07:59,410 --> 00:08:03,025
+So for example, if you consider anonymous walk of length 7,
+
+155
+00:08:03,025 --> 00:08:05,560
+there is 877 of them.
+
+156
+00:08:05,560 --> 00:08:10,180
+If you set the Epsilon to 0.1 and Delta to, uh, 0.01,
+
+157
+00:08:10,180 --> 00:08:14,740
+then you would need to sample about 120,000, uh,
+
+158
+00:08:14,740 --> 00:08:18,720
+random walks that you can estimate this probability distribution over this,
+
+159
+00:08:18,720 --> 00:08:23,025
+er, 877, uh, different, uh, anonymous walks.
+
+160
+00:08:23,025 --> 00:08:26,655
+So that's the idea in terms of anonymous walks.
+
+161
+00:08:26,655 --> 00:08:30,215
+And, um, we can further, um,
+
+162
+00:08:30,215 --> 00:08:32,620
+enhance this idea, uh,
+
+163
+00:08:32,620 --> 00:08:36,730
+to actually learn embeddings of the walks themselves.
+
+164
+00:08:36,730 --> 00:08:38,799
+So let me explain how we can do this.
+
+165
+00:08:38,799 --> 00:08:44,530
+So rather than simply representing each walk by the fraction of time it occurs,
+
+166
+00:08:44,530 --> 00:08:49,930
+we can learn an embedding Z_i of anonymous walk W_i.
+
+167
+00:08:49,930 --> 00:08:52,960
+And then we can learn also our graph embedding
+
+168
+00:08:52,960 --> 00:08:58,090
+Z- Z_G together with the anonymous walk, uh, embeddings.
+
+169
+00:08:58,090 --> 00:08:59,560
+So this means, uh,
+
+170
+00:08:59,560 --> 00:09:04,090
+for a- for a- we are going to learn- the number of embeddings we're going to learn,
+
+171
+00:09:04,090 --> 00:09:07,600
+will be the number of anonymous walks plus 1 because
+
+172
+00:09:07,600 --> 00:09:11,110
+we are learning an embedding for every anonymous walk plus the embedding,
+
+173
+00:09:11,110 --> 00:09:12,955
+uh, for the graph.
+
+174
+00:09:12,955 --> 00:09:16,180
+Right? So again, how are we going to learn
+
+175
+00:09:16,180 --> 00:09:19,135
+these embeddings of graph and the anonymous walks?
+
+176
+00:09:19,135 --> 00:09:24,295
+We can- we do this in a very similar way to what we did for DeepWalk or node2vec.
+
+177
+00:09:24,295 --> 00:09:26,710
+We wanna embed walks so that,
+
+178
+00:09:26,710 --> 00:09:29,425
+uh, walks adjacent to it can be predicted.
+
+179
+00:09:29,425 --> 00:09:31,240
+So let me explain the idea.
+
+180
+00:09:31,240 --> 00:09:32,920
+So the idea is that again,
+
+181
+00:09:32,920 --> 00:09:36,145
+we will have this vector G that describes the graph.
+
+182
+00:09:36,145 --> 00:09:38,080
+We are going to have the, uh,
+
+183
+00:09:38,080 --> 00:09:41,420
+and this will be the embedding of the entire graph we are going to learn.
+
+184
+00:09:41,420 --> 00:09:45,600
+Let's say we start from some no- node 1 and we sample anonymous,
+
+185
+00:09:45,600 --> 00:09:47,085
+uh, random walks from it.
+
+186
+00:09:47,085 --> 00:09:54,240
+So then the idea is to learn to predict walks that co-occur in some, uh, uh,
+
+187
+00:09:54,240 --> 00:09:57,730
+uh, Delta window size, um, um,
+
+188
+00:09:57,730 --> 00:10:00,310
+around as we are sampling this random walks,
+
+189
+00:10:00,310 --> 00:10:01,465
+uh, from a given node.
+
+190
+00:10:01,465 --> 00:10:05,065
+So the idea is that the objective function is we wanna go,
+
+191
+00:10:05,065 --> 00:10:07,045
+um, over this window size Delta,
+
+192
+00:10:07,045 --> 00:10:13,720
+where this W_t are random wa- are anonymous random walks that all start at,
+
+193
+00:10:13,720 --> 00:10:16,570
+uh, at a starting node 1 and,
+
+194
+00:10:16,570 --> 00:10:19,870
+uh, Z_G is the embedding of the graph.
+
+195
+00:10:19,870 --> 00:10:22,315
+And now we basically sum these-
+
+196
+00:10:22,315 --> 00:10:26,455
+these objective over all starting nodes, uh, in the graph.
+
+197
+00:10:26,455 --> 00:10:32,875
+So the idea is that we will run T different random walks from each, uh,
+
+198
+00:10:32,875 --> 00:10:38,680
+node u of length l. So now our notion of neighborhood is not a set of nodes,
+
+199
+00:10:38,680 --> 00:10:41,665
+but it's a set of anonymous,
+
+200
+00:10:41,665 --> 00:10:43,690
+uh, random walks, uh,
+
+201
+00:10:43,690 --> 00:10:47,200
+here labeled by W. And then we want to learn to predict walks
+
+202
+00:10:47,200 --> 00:10:50,785
+that co-occur in a window of size, uh, Delta.
+
+203
+00:10:50,785 --> 00:10:53,560
+So the idea is that you wanna em- em- estimate
+
+204
+00:10:53,560 --> 00:10:57,190
+the embedding Z_i on anony- of anonymous walks W_i,
+
+205
+00:10:57,190 --> 00:10:59,200
+um, and then, uh,
+
+206
+00:10:59,200 --> 00:11:03,100
+maximize these given objective where basically we go over, uh,
+
+207
+00:11:03,100 --> 00:11:07,990
+er, all the random walks that we run from the- from the- from the given node.
+
+208
+00:11:07,990 --> 00:11:12,580
+Uh, this- this is a sequence of random walks that occ- or anonymous walks that occurred.
+
+209
+00:11:12,580 --> 00:11:17,260
+Our goal is to find the embedding of the graph as well as the embeddings of
+
+210
+00:11:17,260 --> 00:11:22,270
+the anonymous walks so that we can predict what is the next anonymous walk,
+
+211
+00:11:22,270 --> 00:11:26,320
+what is the identity of the next anonymous walk that is going, uh,
+
+212
+00:11:26,320 --> 00:11:27,955
+to occur in these, uh,
+
+213
+00:11:27,955 --> 00:11:30,655
+in these sampling of anonymous walks.
+
+214
+00:11:30,655 --> 00:11:36,055
+So essentially this is the same objective function as we used in note to record DeepWalk,
+
+215
+00:11:36,055 --> 00:11:37,885
+but the difference is the following,
+
+216
+00:11:37,885 --> 00:11:40,525
+is that when we are defining this notion of neighborhood,
+
+217
+00:11:40,525 --> 00:11:44,245
+we don't define neighborhood over the nodes that are visited,
+
+218
+00:11:44,245 --> 00:11:47,695
+but we define it over the, uh,
+
+219
+00:11:47,695 --> 00:11:50,560
+anonymous walks that occur,
+
+220
+00:11:50,560 --> 00:11:52,255
+uh, starting from node u.
+
+221
+00:11:52,255 --> 00:11:56,065
+So here W is an entire anonymous walk,
+
+222
+00:11:56,065 --> 00:11:58,570
+it's an ID of an anonymous walk.
+
+223
+00:11:58,570 --> 00:12:00,730
+If you want more details and, uh,
+
+224
+00:12:00,730 --> 00:12:03,970
+and read more there was- there is a paper link
+
+225
+00:12:03,970 --> 00:12:07,615
+down here that you can read for further details.
+
+226
+00:12:07,615 --> 00:12:10,390
+But the idea here is right that- now that we have learned
+
+227
+00:12:10,390 --> 00:12:14,050
+both the embedding of the node as well as the embedding of the walks,
+
+228
+00:12:14,050 --> 00:12:16,645
+we can- sorry, as we learn the embedding of the graph,
+
+229
+00:12:16,645 --> 00:12:18,460
+you can use these, er, er,
+
+230
+00:12:18,460 --> 00:12:20,440
+Z_G as a- as
+
+231
+00:12:20,440 --> 00:12:26,785
+a descriptor of the graph and we can use it in downstream prediction task, right?
+
+232
+00:12:26,785 --> 00:12:31,285
+So to summarize, we obtain the graph embedding, uh, Z_G,
+
+233
+00:12:31,285 --> 00:12:34,360
+which is learnable after this optimization,
+
+234
+00:12:34,360 --> 00:12:39,505
+and then we can use Z_G to make predictions for example, for graph classification.
+
+235
+00:12:39,505 --> 00:12:41,125
+We can use, uh,
+
+236
+00:12:41,125 --> 00:12:44,425
+the dot product the same way as we were using so far,
+
+237
+00:12:44,425 --> 00:12:47,875
+or we could use a neural network that takes, er, er,
+
+238
+00:12:47,875 --> 00:12:53,920
+Z_G as an- as an input into our classifier and tries to predict some label this,
+
+239
+00:12:53,920 --> 00:12:56,995
+uh, graph G. Uh, both options,
+
+240
+00:12:56,995 --> 00:12:59,845
+uh, are, er, feasible in this case.
+
+241
+00:12:59,845 --> 00:13:03,175
+So in this, ah, part of the lecture,
+
+242
+00:13:03,175 --> 00:13:07,300
+we discussed three ideas about how to embed entire graphs.
+
+243
+00:13:07,300 --> 00:13:12,610
+First was simply average or sum up embeddings of the nodes in
+
+244
+00:13:12,610 --> 00:13:18,445
+the graph where the embeddings of the nodes are computed by DeepWalk or, um, node2vec.
+
+245
+00:13:18,445 --> 00:13:22,330
+The second idea was to create a super-node that spans
+
+246
+00:13:22,330 --> 00:13:27,325
+the subgraph of interest and that embed that super-node.
+
+247
+00:13:27,325 --> 00:13:32,140
+And then the idea number 3 was to use this notion of anonymous walk embeddings,
+
+248
+00:13:32,140 --> 00:13:34,720
+uh, where do we sample anonymous, uh,
+
+249
+00:13:34,720 --> 00:13:40,735
+walks, um, to represent graph as a fraction of times each anonymous walk occurs,
+
+250
+00:13:40,735 --> 00:13:42,205
+so that's one idea.
+
+251
+00:13:42,205 --> 00:13:47,485
+And the second more complex idea was to embed anonymous walks and then,
+
+252
+00:13:47,485 --> 00:13:48,880
+um, either, for example,
+
+253
+00:13:48,880 --> 00:13:55,555
+concatenate their embeddings or use these Z- Z_G to define the notion,
+
+254
+00:13:55,555 --> 00:13:59,270
+uh, of the embedding of the entire graph.
+
+255
+00:13:59,280 --> 00:14:02,245
+What we are going to, um,
+
+256
+00:14:02,245 --> 00:14:05,560
+consider in the future is also more, um,
+
+257
+00:14:05,560 --> 00:14:09,295
+er, different approaches to graph embeddings, and in particular,
+
+258
+00:14:09,295 --> 00:14:12,460
+many times graphs tend to have this type of community or
+
+259
+00:14:12,460 --> 00:14:17,770
+cluster structure so it becomes a good question how do we hierarchically aggregate,
+
+260
+00:14:17,770 --> 00:14:20,110
+um, the- the network, er,
+
+261
+00:14:20,110 --> 00:14:21,940
+to obtain the embedding,
+
+262
+00:14:21,940 --> 00:14:23,375
+uh, of the entire graph.
+
+263
+00:14:23,375 --> 00:14:24,950
+And later in Lecture 8,
+
+264
+00:14:24,950 --> 00:14:28,805
+I'm going to discuss such a- such an approach that uses,
+
+265
+00:14:28,805 --> 00:14:30,170
+uh, graph neural networks,
+
+266
+00:14:30,170 --> 00:14:32,145
+uh, to be able to do this.
+
+267
+00:14:32,145 --> 00:14:35,660
+So, um, to- to conclude,
+
+268
+00:14:35,660 --> 00:14:38,645
+to keep kind of towards- moving towards the ends of the lecture,
+
+269
+00:14:38,645 --> 00:14:39,800
+the next question is,
+
+270
+00:14:39,800 --> 00:14:44,285
+you know, how do we use these embeddings Z_i of the node for example?
+
+271
+00:14:44,285 --> 00:14:46,310
+Um, you can use them, for example,
+
+272
+00:14:46,310 --> 00:14:48,410
+to cluster, uh, the points.
+
+273
+00:14:48,410 --> 00:14:51,080
+Basically, you take the graph, compute the embeddings,
+
+274
+00:14:51,080 --> 00:14:54,700
+and then run a clustering algorithm over the embeddings, for example,
+
+275
+00:14:54,700 --> 00:14:59,090
+the do community detection or any kind of social rolling identification.
+
+276
+00:14:59,090 --> 00:15:01,910
+Uh, you can use these embeddings for a node classification.
+
+277
+00:15:01,910 --> 00:15:06,695
+Simply predict the label of node i based off it- it's embedding Z. Um,
+
+278
+00:15:06,695 --> 00:15:08,330
+and you can also use them for, uh,
+
+279
+00:15:08,330 --> 00:15:11,270
+link prediction where basically you can think nodes, uh,
+
+280
+00:15:11,270 --> 00:15:15,080
+i and j and you can concatenate their embeddings and then,
+
+281
+00:15:15,080 --> 00:15:16,835
+uh, based on the concatenation,
+
+282
+00:15:16,835 --> 00:15:19,020
+uh, you can make a prediction.
+
+283
+00:15:19,020 --> 00:15:23,405
+When, um, when you are combining this node embeddings,
+
+284
+00:15:23,405 --> 00:15:24,710
+you have several options.
+
+285
+00:15:24,710 --> 00:15:27,740
+As I said, one is simply concatenating them, uh,
+
+286
+00:15:27,740 --> 00:15:31,770
+another option would be to combine them by doing per coordinate product.
+
+287
+00:15:31,770 --> 00:15:36,515
+Uh, this is- this is nice for undirected graphs because this operation is commutative.
+
+288
+00:15:36,515 --> 00:15:39,575
+Um, you can also sum or average them.
+
+289
+00:15:39,575 --> 00:15:42,875
+Another communi- commutative operation meaning that, you know,
+
+290
+00:15:42,875 --> 00:15:46,990
+probability of link from i to j is the same as from j to i. Um,
+
+291
+00:15:46,990 --> 00:15:50,570
+or you could measure some kind of L2 distance and then make a prediction
+
+292
+00:15:50,570 --> 00:15:54,440
+based on these kind of different aggregations of the two- of the two embeddings.
+
+293
+00:15:54,440 --> 00:15:57,020
+If you wanna make predictions in directed graphs,
+
+294
+00:15:57,020 --> 00:15:59,450
+then concatenation is nice because you are able to
+
+295
+00:15:59,450 --> 00:16:02,045
+output a different probability depending on,
+
+296
+00:16:02,045 --> 00:16:04,965
+you know, is it from i to j or from j to i?
+
+297
+00:16:04,965 --> 00:16:08,515
+For graph classification, node embedding,
+
+298
+00:16:08,515 --> 00:16:11,135
+uh, ah, can be computed via aggregating, uh,
+
+299
+00:16:11,135 --> 00:16:17,300
+node embeddings or through anonymous walks or through this anonymous walk embedding plus,
+
+300
+00:16:17,300 --> 00:16:18,515
+uh, the graph, ah,
+
+301
+00:16:18,515 --> 00:16:21,690
+embedding approach, uh, that we have discussed.
+
+302
+00:16:21,690 --> 00:16:23,889
+So, uh, to summarize,
+
+303
+00:16:23,889 --> 00:16:26,235
+today, we discussed, um,
+
+304
+00:16:26,235 --> 00:16:31,430
+graph representation learning as a way to learn node and graph embeddings, uh,
+
+305
+00:16:31,430 --> 00:16:38,280
+independent of downstream prediction tasks and without any manual feature engineering.
+
+306
+00:16:38,280 --> 00:16:42,380
+We had discussed this encoder decoder framework, where encoder,
+
+307
+00:16:42,380 --> 00:16:45,680
+you simply an embedding lookup and decoder
+
+308
+00:16:45,680 --> 00:16:49,280
+predicts the score or network-based similarity,
+
+309
+00:16:49,280 --> 00:16:52,235
+uh, based on the pos- the embeddings of the nodes.
+
+310
+00:16:52,235 --> 00:16:54,935
+Um, and we defined, uh,
+
+311
+00:16:54,935 --> 00:16:58,985
+notion of node similarity based on the random walks.
+
+312
+00:16:58,985 --> 00:17:00,825
+We discussed two methods,
+
+313
+00:17:00,825 --> 00:17:05,180
+DeepWalk and node2vec that use the same optimization problem,
+
+314
+00:17:05,180 --> 00:17:07,480
+the same negative sampling approach, uh,
+
+315
+00:17:07,480 --> 00:17:10,119
+but DeepWalk uses a very simple random walk,
+
+316
+00:17:10,119 --> 00:17:13,269
+basically a first-order random walk while node2vec
+
+317
+00:17:13,270 --> 00:17:17,345
+uses a second-order random walk that can- where you can kind of,
+
+318
+00:17:17,345 --> 00:17:21,359
+uh, fine tune the way the network is explored.
+
+319
+00:17:21,359 --> 00:17:24,864
+Um, and then we also discussed extensions, uh,
+
+320
+00:17:24,865 --> 00:17:27,940
+to, uh, graph embeddings, um,
+
+321
+00:17:27,940 --> 00:17:30,230
+which means that we can simply aggregate
+
+322
+00:17:30,230 --> 00:17:34,945
+node embeddings and we also talked about anonymous, er, random walks,
+
+323
+00:17:34,945 --> 00:17:40,580
+where the anonymous random walk represents the walk not by the identities of the nodes,
+
+324
+00:17:40,580 --> 00:17:44,170
+but by the time or by the index at
+
+325
+00:17:44,170 --> 00:17:48,595
+what ti- at what time a given node was first, uh, visited.
+
+326
+00:17:48,595 --> 00:17:51,744
+So, uh, these are- this is a set of approaches,
+
+327
+00:17:51,744 --> 00:17:54,410
+um, I wanted to, uh, discuss today.
+
+328
+00:17:54,410 --> 00:17:57,085
+Um, and thank you very much for watching and,
+
+329
+00:17:57,085 --> 00:17:59,330
+uh, attending the lecture.
+

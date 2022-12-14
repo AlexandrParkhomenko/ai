@@ -1,0 +1,560 @@
+1
+00:00:04,370 --> 00:00:09,930
+What I want to talk about next is to talk about knowledge graphs, and in particular,
+
+2
+00:00:09,930 --> 00:00:13,695
+I wanna talk about knowledge graph completion task, uh,
+
+3
+00:00:13,695 --> 00:00:15,840
+using embeddings and I wanna present you
+
+4
+00:00:15,840 --> 00:00:19,905
+some very interesting knowledge graph completion methods.
+
+5
+00:00:19,905 --> 00:00:22,595
+So knowledge graph, uh,
+
+6
+00:00:22,595 --> 00:00:27,405
+the idea is that you wanna store knowledge about a given domain in a graph form.
+
+7
+00:00:27,405 --> 00:00:30,645
+And the idea is that we wanna capture entities,
+
+8
+00:00:30,645 --> 00:00:34,364
+types, and relationships between different entities.
+
+9
+00:00:34,364 --> 00:00:37,020
+So the idea is that now I will have the nodes,
+
+10
+00:00:37,020 --> 00:00:39,270
+which I will call entities.
+
+11
+00:00:39,270 --> 00:00:43,440
+Entities will be labeled with different, uh, types.
+
+12
+00:00:43,440 --> 00:00:48,600
+Um, and then I will have different types of relationships, uh, between entities.
+
+13
+00:00:48,600 --> 00:00:49,895
+Um, and in this sense,
+
+14
+00:00:49,895 --> 00:00:54,290
+knowledge graph is just an example of a heterogenous graph but generally,
+
+15
+00:00:54,290 --> 00:00:56,810
+we would think of a knowledge graph as something that
+
+16
+00:00:56,810 --> 00:01:00,785
+captures factual knowledge about a given domain.
+
+17
+00:01:00,785 --> 00:01:05,239
+So for example, you could take a bibliographic network where you could say,
+
+18
+00:01:05,239 --> 00:01:07,280
+I'll have different node types like papers,
+
+19
+00:01:07,280 --> 00:01:10,100
+titles, authors, conferences, years.
+
+20
+00:01:10,100 --> 00:01:12,620
+And then I will have, uh, different, uh,
+
+21
+00:01:12,620 --> 00:01:15,760
+relation types like where was the publication done,
+
+22
+00:01:15,760 --> 00:01:17,185
+what year was it done,
+
+23
+00:01:17,185 --> 00:01:19,150
+what title does it have,
+
+24
+00:01:19,150 --> 00:01:20,545
+who is the author of it,
+
+25
+00:01:20,545 --> 00:01:22,130
+who cites it, and so on.
+
+26
+00:01:22,130 --> 00:01:23,255
+And this is, for example,
+
+27
+00:01:23,255 --> 00:01:26,285
+one way to look at the schema of this type of,
+
+28
+00:01:26,285 --> 00:01:28,415
+uh, knowledge graph would be the following, right?
+
+29
+00:01:28,415 --> 00:01:30,140
+Paper links to conference,
+
+30
+00:01:30,140 --> 00:01:31,850
+papers cite each other,
+
+31
+00:01:31,850 --> 00:01:36,300
+papers have titles, have years- publication years, and have authors.
+
+32
+00:01:36,300 --> 00:01:37,710
+And of course, that's multiple authors,
+
+33
+00:01:37,710 --> 00:01:41,720
+multiple conferences, and all these, uh, links to each other.
+
+34
+00:01:41,720 --> 00:01:46,780
+Another example is something I already discussed would be in biomedicine,
+
+35
+00:01:46,780 --> 00:01:48,920
+there is a lot of knowledge graphs where we can have
+
+36
+00:01:48,920 --> 00:01:51,470
+different types- node types in terms of drugs,
+
+37
+00:01:51,470 --> 00:01:54,440
+diseases, adverse events, proteins,
+
+38
+00:01:54,440 --> 00:01:57,045
+uh, disease pathways, and so on.
+
+39
+00:01:57,045 --> 00:01:59,295
+And then we also can have different, uh,
+
+40
+00:01:59,295 --> 00:02:01,530
+types of relations like has function,
+
+41
+00:02:01,530 --> 00:02:04,185
+causes, is associated, treats,
+
+42
+00:02:04,185 --> 00:02:06,860
+uh, is a, type of relationship.
+
+43
+00:02:06,860 --> 00:02:10,970
+And now we have this knowledge about biology and how, uh,
+
+44
+00:02:10,970 --> 00:02:16,260
+how, uh, life works encoded in this, uh, graphical form.
+
+45
+00:02:16,260 --> 00:02:18,350
+And then, uh, of course,
+
+46
+00:02:18,350 --> 00:02:19,880
+there are a lot of, uh,
+
+47
+00:02:19,880 --> 00:02:23,650
+knowledge graphs that are actually publicly available and store knowledge about,
+
+48
+00:02:23,650 --> 00:02:25,610
+uh, other types of entities as well.
+
+49
+00:02:25,610 --> 00:02:28,740
+So for example, about real-world entities, you know,
+
+50
+00:02:28,740 --> 00:02:30,090
+Google is using, uh,
+
+51
+00:02:30,090 --> 00:02:32,055
+Google Knowledge Graph to make,
+
+52
+00:02:32,055 --> 00:02:33,600
+uh, search results better.
+
+53
+00:02:33,600 --> 00:02:36,500
+Uh, Amazon is using their product graph to
+
+54
+00:02:36,500 --> 00:02:40,430
+understand properties of different products and be able f- to,
+
+55
+00:02:40,430 --> 00:02:43,020
+uh, to search and recommend products better.
+
+56
+00:02:43,020 --> 00:02:50,575
+Uh, Facebook has a Graph API because they think of the social network interests,
+
+57
+00:02:50,575 --> 00:02:56,370
+relationships between people's schools they graduated from as nodes in a giant graph.
+
+58
+00:02:56,370 --> 00:03:00,420
+Uh, IBM Watson in the background uses, uh,
+
+59
+00:03:00,420 --> 00:03:05,610
+a giant, uh, graph to be able to answer questions and reason.
+
+60
+00:03:05,610 --> 00:03:10,280
+Uh, Microsoft, uh, search engine and the company is using Microsoft Satori,
+
+61
+00:03:10,280 --> 00:03:12,410
+which is their own proprietary knowledge graph.
+
+62
+00:03:12,410 --> 00:03:14,535
+Uh, you know, LinkedIn,
+
+63
+00:03:14,535 --> 00:03:16,890
+uh, I think, uh, calls its Knowledge Graph,
+
+64
+00:03:16,890 --> 00:03:21,795
+uh, the- the- the Economic Knowledge Graph and- and so on and so forth.
+
+65
+00:03:21,795 --> 00:03:24,590
+So knowledge graphs are basically heavily used in
+
+66
+00:03:24,590 --> 00:03:28,370
+industry to capture background knowledge about a given domain,
+
+67
+00:03:28,370 --> 00:03:32,200
+to capture relationships between the nodes in a given domain.
+
+68
+00:03:32,200 --> 00:03:34,580
+And for example, one way, uh,
+
+69
+00:03:34,580 --> 00:03:38,210
+you can use knowledge graphs is simply to serve information.
+
+70
+00:03:38,210 --> 00:03:41,660
+So for example, if you go to Bing search engine and say, you know,
+
+71
+00:03:41,660 --> 00:03:44,040
+what are the latest movies, uh,
+
+72
+00:03:44,040 --> 00:03:45,900
+by the director of Titanic,
+
+73
+00:03:45,900 --> 00:03:48,300
+this is a- a knowledge graph grid, right?
+
+74
+00:03:48,300 --> 00:03:51,000
+You find Titanic, you say who has directed it?
+
+75
+00:03:51,000 --> 00:03:52,755
+You find that person and you say,
+
+76
+00:03:52,755 --> 00:03:54,570
+which other movies has this,
+
+77
+00:03:54,570 --> 00:03:56,250
+uh- uh, person directed?
+
+78
+00:03:56,250 --> 00:03:57,420
+And you can directly,
+
+79
+00:03:57,420 --> 00:03:58,830
+uh, surface this information.
+
+80
+00:03:58,830 --> 00:04:02,450
+And without having this data encoded in a graphical form,
+
+81
+00:04:02,450 --> 00:04:04,070
+answering this type of query,
+
+82
+00:04:04,070 --> 00:04:05,180
+this type of question,
+
+83
+00:04:05,180 --> 00:04:07,435
+would be practically impossible.
+
+84
+00:04:07,435 --> 00:04:10,070
+Knowledge graphs are also, uh,
+
+85
+00:04:10,070 --> 00:04:14,210
+very important in question answering and conversational ag- agents.
+
+86
+00:04:14,210 --> 00:04:17,550
+And here I show kind of the- the system diagram, uh,
+
+87
+00:04:17,550 --> 00:04:19,440
+for, uh, one of these,
+
+88
+00:04:19,440 --> 00:04:21,690
+uh, one of these, uh, types of,
+
+89
+00:04:21,690 --> 00:04:25,200
+uh- um-uh- uh, agent- uh,
+
+90
+00:04:25,200 --> 00:04:29,535
+systems where basically you- you get in the questions,
+
+91
+00:04:29,535 --> 00:04:32,195
+you wanna have a conversation with an agent
+
+92
+00:04:32,195 --> 00:04:35,210
+and the agent will understand what- what are
+
+93
+00:04:35,210 --> 00:04:38,240
+the entities that- that are contained in the question and how
+
+94
+00:04:38,240 --> 00:04:41,915
+these entities relate to each other so that it can then come back with a,
+
+95
+00:04:41,915 --> 00:04:44,650
+let's say, an intelligent, uh, answer.
+
+96
+00:04:44,650 --> 00:04:46,100
+And you can think, for example,
+
+97
+00:04:46,100 --> 00:04:49,110
+of knowledge encoded in Wikipedia, IMDb,
+
+98
+00:04:49,110 --> 00:04:54,875
+and so on as examples of data sources you can use, uh, for your knowledge graph.
+
+99
+00:04:54,875 --> 00:04:58,865
+Right? So there are many publicly available, uh,
+
+100
+00:04:58,865 --> 00:05:01,325
+knowledge graph, uh- uh- uh,
+
+101
+00:05:01,325 --> 00:05:02,630
+knowledge graphs out there.
+
+102
+00:05:02,630 --> 00:05:05,130
+For example, FreeBase, um,
+
+103
+00:05:05,130 --> 00:05:08,345
+then there is Wikipedia or Wik data,
+
+104
+00:05:08,345 --> 00:05:10,010
+uh, there is DBpedia,
+
+105
+00:05:10,010 --> 00:05:11,870
+uh, and so on and so forth.
+
+106
+00:05:11,870 --> 00:05:14,090
+And one common characteristic of
+
+107
+00:05:14,090 --> 00:05:17,330
+these knowledge graphs is that they- they are massive, they have millions,
+
+108
+00:05:17,330 --> 00:05:19,475
+tens of millions of nodes and edges,
+
+109
+00:05:19,475 --> 00:05:22,310
+but they are also notoriously incomplete,
+
+110
+00:05:22,310 --> 00:05:24,980
+meaning a lot of relationships are missing.
+
+111
+00:05:24,980 --> 00:05:27,370
+And one of the most fundamental tasks in
+
+112
+00:05:27,370 --> 00:05:32,490
+knowledge graph literature is to say given a massive knowledge graph, enumerate,
+
+113
+00:05:32,490 --> 00:05:38,760
+uh, or, uh, identify what task- what relations are missing in the graph.
+
+114
+00:05:38,760 --> 00:05:44,965
+So the question is, can we predict plausible but missing links in the knowledge graph?
+
+115
+00:05:44,965 --> 00:05:48,050
+So gi- to give you an example, so for example,
+
+116
+00:05:48,050 --> 00:05:50,960
+FreeBase is a knowledge graph, uh, that,
+
+117
+00:05:50,960 --> 00:05:53,660
+uh, was acquired by Google and Google uses it,
+
+118
+00:05:53,660 --> 00:05:56,900
+uh- uh- uh as a basis for Google Knowledge Graph.
+
+119
+00:05:56,900 --> 00:06:01,735
+It contains knowledge about real-world entities and their relationships.
+
+120
+00:06:01,735 --> 00:06:04,019
+So it has 50,000 entities,
+
+121
+00:06:04,019 --> 00:06:07,020
+it has 38,000, uh,
+
+122
+00:06:07,020 --> 00:06:10,440
+relation types, and 3 billion edges, right?
+
+123
+00:06:10,440 --> 00:06:12,120
+So- so you know, right,
+
+124
+00:06:12,120 --> 00:06:15,425
+the num- the cardinality of the number of different relationships,
+
+125
+00:06:15,425 --> 00:06:18,410
+it's 38,000, right? So it's huge.
+
+126
+00:06:18,410 --> 00:06:22,070
+And now if you think of this in the context of RGCN,
+
+127
+00:06:22,070 --> 00:06:25,460
+we would need to learn 38,000 different
+
+128
+00:06:25,460 --> 00:06:29,475
+transformation matrices for every layer of the GCN,
+
+129
+00:06:29,475 --> 00:06:32,290
+which clearly becomes intractable, right?
+
+130
+00:06:32,290 --> 00:06:35,040
+But what is interesting is, for example, uh,
+
+131
+00:06:35,040 --> 00:06:38,780
+not- almost like 94% of all the people,
+
+132
+00:06:38,780 --> 00:06:43,250
+person nodes in FreeBase have no place of birth and, you know,
+
+133
+00:06:43,250 --> 00:06:48,760
+78,000, uh, 78% have no, uh, nationality.
+
+134
+00:06:48,760 --> 00:06:53,385
+All right? So these knowledge graphs are notoriously incomplete.
+
+135
+00:06:53,385 --> 00:06:56,150
+Um, and, uh, the question then is,
+
+136
+00:06:56,150 --> 00:07:01,730
+can we automatically infer what is nationality of a given node,
+
+137
+00:07:01,730 --> 00:07:04,730
+or could we automatically infer where was a given node,
+
+138
+00:07:04,730 --> 00:07:06,680
+a given person, uh, born.
+
+139
+00:07:06,680 --> 00:07:08,255
+And this is what is called, uh,
+
+140
+00:07:08,255 --> 00:07:11,490
+knowledge graph, uh, completion.
+

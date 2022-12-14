@@ -1,0 +1,908 @@
+1
+00:00:04,010 --> 00:00:07,065
+Welcome everyone, uh, to the class.
+
+2
+00:00:07,065 --> 00:00:09,840
+What we are going to talk today about is,
+
+3
+00:00:09,840 --> 00:00:11,985
+um, some advanced topics,
+
+4
+00:00:11,985 --> 00:00:15,660
+and in particular we are going first to talk about limitations of,
+
+5
+00:00:15,660 --> 00:00:17,324
+uh, graph neural networks,
+
+6
+00:00:17,324 --> 00:00:20,700
+um, and then we are also going about how do we improve
+
+7
+00:00:20,700 --> 00:00:24,840
+their expressive power and how do we, um,
+
+8
+00:00:24,840 --> 00:00:26,880
+then, uh, study, uh,
+
+9
+00:00:26,880 --> 00:00:33,075
+how robust are graph neural networks against, um, adversarial attacks.
+
+10
+00:00:33,075 --> 00:00:37,470
+So the idea for today's lecture is- lecture is the following.
+
+11
+00:00:37,470 --> 00:00:40,950
+Um, what would the perfect GNN model do, right,
+
+12
+00:00:40,950 --> 00:00:44,960
+if we wanna say about what are some limitations of graph neural networks and
+
+13
+00:00:44,960 --> 00:00:49,525
+especially when we looked at their expressive power in terms of the,
+
+14
+00:00:49,525 --> 00:00:52,665
+um, in terms of the, um,
+
+15
+00:00:52,665 --> 00:00:55,485
+uh, WL kernel, right?
+
+16
+00:00:55,485 --> 00:00:58,070
+If we go through a thought experiment then we could say,
+
+17
+00:00:58,070 --> 00:01:01,430
+what would a perfect graph neural network do?
+
+18
+00:01:01,430 --> 00:01:05,045
+And the k-layer graph neural network embeds a node
+
+19
+00:01:05,045 --> 00:01:09,400
+based on the K-hop neighborhood structure around that node, right?
+
+20
+00:01:09,400 --> 00:01:11,660
+And this picture tries to illustrate that.
+
+21
+00:01:11,660 --> 00:01:16,295
+That is that basically if I wanna embed this particular, um, node here,
+
+22
+00:01:16,295 --> 00:01:20,210
+I can take the graph structure around this node and then,
+
+23
+00:01:20,210 --> 00:01:21,560
+um, through message passing,
+
+24
+00:01:21,560 --> 00:01:23,770
+I wanna compute the embedding of that node;
+
+25
+00:01:23,770 --> 00:01:27,110
+and a perfect GNN would be such that it would build
+
+26
+00:01:27,110 --> 00:01:32,060
+an injective function between the neighborhood structure around the target node,
+
+27
+00:01:32,060 --> 00:01:35,510
+um, and the embedding that it produces.
+
+28
+00:01:35,510 --> 00:01:38,120
+So essentially, what we'd like to do is- with
+
+29
+00:01:38,120 --> 00:01:42,110
+a perfect GNN would take every different node neighborhood structure,
+
+30
+00:01:42,110 --> 00:01:44,990
+uh, and embed it into a different position,
+
+31
+00:01:44,990 --> 00:01:47,160
+uh, in the embedding space.
+
+32
+00:01:47,160 --> 00:01:49,695
+Um, there are two important, uh,
+
+33
+00:01:49,695 --> 00:01:53,195
+observations, uh, building on this intuition.
+
+34
+00:01:53,195 --> 00:01:56,480
+First is that a perfect GNN will do the following, right?
+
+35
+00:01:56,480 --> 00:02:01,070
+If two nodes have the same neighborhood structure around the- around them,
+
+36
+00:02:01,070 --> 00:02:03,215
+then they will have the same embedding.
+
+37
+00:02:03,215 --> 00:02:06,150
+Again, here we are assuming there is no discriminative,
+
+38
+00:02:06,150 --> 00:02:08,120
+uh, feature information given to us.
+
+39
+00:02:08,120 --> 00:02:11,180
+So v1 and v2 in this- in this,
+
+40
+00:02:11,180 --> 00:02:12,560
+uh, graph, with, let's say,
+
+41
+00:02:12,560 --> 00:02:15,620
+two connected components will be embedded into
+
+42
+00:02:15,620 --> 00:02:19,130
+the- exactly the same point because their neighborhood structure,
+
+43
+00:02:19,130 --> 00:02:21,380
+uh, around them is identical,
+
+44
+00:02:21,380 --> 00:02:23,015
+and of course, right?
+
+45
+00:02:23,015 --> 00:02:27,050
+If we have two nodes that have different neighborhood structures, then, um,
+
+46
+00:02:27,050 --> 00:02:30,560
+we'd like them to be embedded into different points in the space
+
+47
+00:02:30,560 --> 00:02:34,890
+because the net- the- the neighborhood structures of these two nodes are different.
+
+48
+00:02:34,890 --> 00:02:36,020
+One is in a triangle,
+
+49
+00:02:36,020 --> 00:02:37,370
+the other one is in a square,
+
+50
+00:02:37,370 --> 00:02:40,020
+so they should be embedded into different points.
+
+51
+00:02:40,020 --> 00:02:42,230
+So that's kind of what we'd like to do.
+
+52
+00:02:42,230 --> 00:02:44,375
+That's what we'd like our perfect,
+
+53
+00:02:44,375 --> 00:02:46,070
+uh, GNN to do.
+
+54
+00:02:46,070 --> 00:02:51,925
+However, these observations, 1 and 2 may not be always, uh, true.
+
+55
+00:02:51,925 --> 00:02:54,795
+For example, the- the observation 1,
+
+56
+00:02:54,795 --> 00:02:57,845
+um, can have kind of the following, uh, issues.
+
+57
+00:02:57,845 --> 00:03:02,300
+Even though two nodes may have the same neighborhood structure around them,
+
+58
+00:03:02,300 --> 00:03:04,115
+we may wanna assign,
+
+59
+00:03:04,115 --> 00:03:06,200
+um, different embeddings to them.
+
+60
+00:03:06,200 --> 00:03:08,450
+Um, and this is because, uh, you know,
+
+61
+00:03:08,450 --> 00:03:14,140
+nodes may appear in different positions or in different locations in the graph.
+
+62
+00:03:14,140 --> 00:03:16,020
+Um, and we, uh,
+
+63
+00:03:16,020 --> 00:03:18,285
+we are going to call, uh, uh,
+
+64
+00:03:18,285 --> 00:03:20,360
+this notion of a position in the graph and
+
+65
+00:03:20,360 --> 00:03:23,555
+these tasks that require us understanding the position,
+
+66
+00:03:23,555 --> 00:03:25,970
+we'll call those position-aware tasks.
+
+67
+00:03:25,970 --> 00:03:27,695
+And I'm going to define this more, uh,
+
+68
+00:03:27,695 --> 00:03:30,350
+precisely throughout, uh, the lecture, right?
+
+69
+00:03:30,350 --> 00:03:33,060
+So basically even a- a perfect GNN,
+
+70
+00:03:33,060 --> 00:03:35,040
+that has that, um, injective,
+
+71
+00:03:35,040 --> 00:03:37,430
+uh, function between the neighborhood structure and
+
+72
+00:03:37,430 --> 00:03:40,595
+the embedding will fail at these, uh, tasks.
+
+73
+00:03:40,595 --> 00:03:46,115
+Uh, for example, here if I have a simple grid graph and I have nodes v1 and v2,
+
+74
+00:03:46,115 --> 00:03:49,850
+and I'd like them to be embedded into different points in space because they
+
+75
+00:03:49,850 --> 00:03:53,840
+are kind of at the opposite ends of the- of the underlying uh,
+
+76
+00:03:53,840 --> 00:03:57,320
+graph, actually a graph neural network is going to embed them, uh,
+
+77
+00:03:57,320 --> 00:04:01,970
+into the same position because the neighborhood structure around them is identical.
+
+78
+00:04:01,970 --> 00:04:03,440
+They are both in the corner,
+
+79
+00:04:03,440 --> 00:04:05,080
+uh, of the grid.
+
+80
+00:04:05,080 --> 00:04:08,830
+Um, so this is kind of one issue that, uh,
+
+81
+00:04:08,830 --> 00:04:11,510
+graph neural networks, as we have defined them so far,
+
+82
+00:04:11,510 --> 00:04:13,055
+uh, are not able to do.
+
+83
+00:04:13,055 --> 00:04:15,410
+Um, the second important, uh,
+
+84
+00:04:15,410 --> 00:04:18,589
+implication of the observation 2 is that,
+
+85
+00:04:18,589 --> 00:04:22,600
+um, GNNs that we have introduced so far are kind of not perfect, right?
+
+86
+00:04:22,600 --> 00:04:24,810
+Their expressive power, um,
+
+87
+00:04:24,810 --> 00:04:26,580
+is not- is not enough, right?
+
+88
+00:04:26,580 --> 00:04:28,820
+Uh, and in- particularly in lecture 9,
+
+89
+00:04:28,820 --> 00:04:32,780
+we discussed that the expressive power of our graph neural network,
+
+90
+00:04:32,780 --> 00:04:37,025
+this message passing graph neural network with indiscriminative features, uh,
+
+91
+00:04:37,025 --> 00:04:41,150
+it's expressive power is upper binded- bounded by the Weisfeiler-Lehman,
+
+92
+00:04:41,150 --> 00:04:43,420
+um, graph isomorphism test.
+
+93
+00:04:43,420 --> 00:04:46,155
+So, uh, for example, um,
+
+94
+00:04:46,155 --> 00:04:52,230
+if I have nodes v1 on a cycle of length 3 and a node v2 on cycle of length 4,
+
+95
+00:04:52,230 --> 00:04:54,860
+if I look at the structure of their computation graphs,
+
+96
+00:04:54,860 --> 00:04:58,490
+um, the structure of the two computation graphs will be the same.
+
+97
+00:04:58,490 --> 00:05:01,715
+So without any discriminative node features
+
+98
+00:05:01,715 --> 00:05:04,040
+or if assuming all node features are the same,
+
+99
+00:05:04,040 --> 00:05:07,775
+graph neural network is not going to be able to distinguish, um,
+
+100
+00:05:07,775 --> 00:05:13,040
+or it won't be able to assign different embeddings to nodes 1 and, uh, 2.
+
+101
+00:05:13,040 --> 00:05:18,380
+So basically nodes v1 and v2 will always be embedded into the same space, uh,
+
+102
+00:05:18,380 --> 00:05:21,260
+under the assumption that there is no useful node features,
+
+103
+00:05:21,260 --> 00:05:23,525
+um, because their computation graphs,
+
+104
+00:05:23,525 --> 00:05:25,880
+uh, are identical even though one
+
+105
+00:05:25,880 --> 00:05:29,485
+resides in a triangle and the other one resides in a square.
+
+106
+00:05:29,485 --> 00:05:33,830
+So, uh, the plan for the lecture today is that we wanna resolve both of
+
+107
+00:05:33,830 --> 00:05:38,060
+these issues by building or designing more expressive graph neural networks.
+
+108
+00:05:38,060 --> 00:05:41,710
+Uh, and the way we are going to fix these issues is the following.
+
+109
+00:05:41,710 --> 00:05:44,980
+Uh, to fix the issue, um, uh, one,
+
+110
+00:05:44,980 --> 00:05:48,500
+we are going to create node embeddings based on their positions in the graph.
+
+111
+00:05:48,500 --> 00:05:52,250
+Um, and the idea will be that we wanna create reference points in
+
+112
+00:05:52,250 --> 00:05:56,930
+the graph and then quantify the position of a node against those,
+
+113
+00:05:56,930 --> 00:05:59,930
+uh, reference points, and the class of models that
+
+114
+00:05:59,930 --> 00:06:03,490
+allow us to do this are called position-aware graph neural networks.
+
+115
+00:06:03,490 --> 00:06:07,365
+And then to fix the issue number- number 2, um,
+
+116
+00:06:07,365 --> 00:06:09,600
+we- we- we are going to build, uh,
+
+117
+00:06:09,600 --> 00:06:14,530
+message-passing GNNs that are more expressive than the WL, uh, test.
+
+118
+00:06:14,530 --> 00:06:18,210
+Um, and the method, an example of such a mes- message- method,
+
+119
+00:06:18,210 --> 00:06:21,060
+is called Identity-aware graph neural network.
+
+120
+00:06:21,060 --> 00:06:23,175
+So this is what is going to be the,
+
+121
+00:06:23,175 --> 00:06:25,425
+uh, plan for the, uh,
+
+122
+00:06:25,425 --> 00:06:27,495
+for the first part of the lecture,
+
+123
+00:06:27,495 --> 00:06:31,585
+and then in the last part I'm going to talk about adversarial attacks.
+
+124
+00:06:31,585 --> 00:06:34,395
+So, uh, here is our approach,
+
+125
+00:06:34,395 --> 00:06:36,345
+and this is how we wanna think about it.
+
+126
+00:06:36,345 --> 00:06:39,285
+So, um, we will use the following thinking.
+
+127
+00:06:39,285 --> 00:06:41,610
+Um, given two different, uh, inputs,
+
+128
+00:06:41,610 --> 00:06:43,710
+for example, nodes, uh, graphs, uh,
+
+129
+00:06:43,710 --> 00:06:45,885
+uh, edges, um, er,
+
+130
+00:06:45,885 --> 00:06:48,165
+let's assume they are labeled differently,
+
+131
+00:06:48,165 --> 00:06:49,910
+and we are going to say that, you know, kind of,
+
+132
+00:06:49,910 --> 00:06:51,650
+the model fails, um,
+
+133
+00:06:51,650 --> 00:06:53,720
+if it- i- if it is always going to
+
+134
+00:06:53,720 --> 00:06:56,750
+assign the same embedding to these different inputs,
+
+135
+00:06:56,750 --> 00:06:57,880
+or these different objects,
+
+136
+00:06:57,880 --> 00:07:02,030
+and a successful model is going to assign different embeddings to these,
+
+137
+00:07:02,030 --> 00:07:04,490
+uh, different, uh, types of objects.
+
+138
+00:07:04,490 --> 00:07:06,110
+Um, so if we focus,
+
+139
+00:07:06,110 --> 00:07:08,705
+let's say on node-level embeddings, then, you know,
+
+140
+00:07:08,705 --> 00:07:11,060
+embeddings in a GNN are determined,
+
+141
+00:07:11,060 --> 00:07:13,570
+uh, by the underlying computation graph.
+
+142
+00:07:13,570 --> 00:07:14,690
+Right? And in my case,
+
+143
+00:07:14,690 --> 00:07:18,050
+imagine again I have a graph with two connected components.
+
+144
+00:07:18,050 --> 00:07:20,300
+I have two vertices, v1 and v2.
+
+145
+00:07:20,300 --> 00:07:23,450
+Imagine v1 and v2 are labeled with different labels.
+
+146
+00:07:23,450 --> 00:07:24,815
+V1 is labeled with A,
+
+147
+00:07:24,815 --> 00:07:26,330
+v2 is labeled with B.
+
+148
+00:07:26,330 --> 00:07:29,480
+The goal will be to build a graph neural network that is
+
+149
+00:07:29,480 --> 00:07:33,065
+going to assign different embeddings to node v1,
+
+150
+00:07:33,065 --> 00:07:34,930
+then to the node v2.
+
+151
+00:07:34,930 --> 00:07:38,910
+Again, under the assumption that node features are the same,
+
+152
+00:07:38,910 --> 00:07:42,675
+uh, or, non-discriminative between uh, v1 and v2;
+
+153
+00:07:42,675 --> 00:07:45,680
+and perhaps what is- you may seem- or you may say
+
+154
+00:07:45,680 --> 00:07:48,425
+striking or interesting is that the models we have,
+
+155
+00:07:48,425 --> 00:07:50,690
+uh, um, developed so far,
+
+156
+00:07:50,690 --> 00:07:53,450
+uh, actually fail to distinguish v1 and v2.
+
+157
+00:07:53,450 --> 00:07:54,740
+Like, even though we have built
+
+158
+00:07:54,740 --> 00:07:58,625
+so much super cool machinery that works amazingly well in practice, uh,
+
+159
+00:07:58,625 --> 00:08:01,680
+and empirically, um, we still cannot
+
+160
+00:08:01,680 --> 00:08:05,565
+distinguish v1 and v2 in this kind of corner case, uh, example.
+
+161
+00:08:05,565 --> 00:08:08,915
+So what we are going to do is to understand how can we resolve this?
+
+162
+00:08:08,915 --> 00:08:13,765
+How can we build a network that- a graph neural network that will be able to distinguish,
+
+163
+00:08:13,765 --> 00:08:15,900
+uh, basically, uh, v1 and v2.
+
+164
+00:08:15,900 --> 00:08:18,240
+So meaning assign them different embeddings,
+
+165
+00:08:18,240 --> 00:08:21,140
+so that then we can assign v1, one label,
+
+166
+00:08:21,140 --> 00:08:23,075
+and we can assign v2, the other label,
+
+167
+00:08:23,075 --> 00:08:27,700
+because we cannot assign them different label if they both map into the same point.
+
+168
+00:08:27,700 --> 00:08:30,300
+So a naive solution to this,
+
+169
+00:08:30,300 --> 00:08:32,700
+that kind of doesn't work, would be,
+
+170
+00:08:32,700 --> 00:08:35,340
+uh, to use one hold and- one-hot encoding.
+
+171
+00:08:35,340 --> 00:08:36,664
+So we would like to say,
+
+172
+00:08:36,664 --> 00:08:38,374
+Okay, we don't have any features,
+
+173
+00:08:38,375 --> 00:08:41,059
+but let us- let's assign each node a
+
+174
+00:08:41,059 --> 00:08:45,335
+different ID and then we can always differentiate different nodes,
+
+175
+00:08:45,335 --> 00:08:48,620
+um, in- in a graph or different edges or even different graphs.
+
+176
+00:08:48,620 --> 00:08:50,120
+So if I have, you know,
+
+177
+00:08:50,120 --> 00:08:51,530
+two- two graphs here,
+
+178
+00:08:51,530 --> 00:08:52,970
+uh, as we had before,
+
+179
+00:08:52,970 --> 00:08:56,695
+I could simply assign a one-hot encoding to every node,
+
+180
+00:08:56,695 --> 00:08:57,950
+um, and now of course,
+
+181
+00:08:57,950 --> 00:09:00,665
+because nodes now have, uh, features,
+
+182
+00:09:00,665 --> 00:09:05,020
+it will be- the computational graphs will be distinguishable because,
+
+183
+00:09:05,020 --> 00:09:07,330
+you know, v1 will have, uh,
+
+184
+00:09:07,330 --> 00:09:10,720
+two children, one with 0100,
+
+185
+00:09:10,720 --> 00:09:12,730
+and the other one with, you know, 001;
+
+186
+00:09:12,730 --> 00:09:14,400
+and v2 is going to have,
+
+187
+00:09:14,400 --> 00:09:17,910
+um, different, um, types of, um, uh,
+
+188
+00:09:17,910 --> 00:09:19,650
+neighbors because their- their,
+
+189
+00:09:19,650 --> 00:09:22,440
+um, one-hot encodings, uh, will be different.
+
+190
+00:09:22,440 --> 00:09:23,820
+Then, even though with the two,
+
+191
+00:09:23,820 --> 00:09:25,755
+if they will be the same at the first level,
+
+192
+00:09:25,755 --> 00:09:27,440
+they won't be the same on the second level.
+
+193
+00:09:27,440 --> 00:09:30,785
+So basically, computational graphs will be different,
+
+194
+00:09:30,785 --> 00:09:35,300
+so our GNN will be able to, uh, distinguish them.
+
+195
+00:09:35,300 --> 00:09:37,920
+Um, what are the issues with this?
+
+196
+00:09:37,920 --> 00:09:40,500
+The- there are two very important issues.
+
+197
+00:09:40,500 --> 00:09:42,810
+First is that this approach is not scalable;
+
+198
+00:09:42,810 --> 00:09:46,169
+meaning we need an order N feature dimensions
+
+199
+00:09:46,169 --> 00:09:49,150
+where N- N is the number of nodes to be able to encode, right?
+
+200
+00:09:49,150 --> 00:09:52,705
+Basically, we need a separate feature for every individual node,
+
+201
+00:09:52,705 --> 00:09:53,740
+and if, you know,
+
+202
+00:09:53,740 --> 00:09:57,475
+if we have a 10,000 or a 100,000 or a million node network,
+
+203
+00:09:57,475 --> 00:09:59,800
+then every node has now a million features,
+
+204
+00:09:59,800 --> 00:10:02,695
+basically a one-hot encoding of its ID.
+
+205
+00:10:02,695 --> 00:10:06,550
+Uh, and then the second problem is that this is in- this is not inductive;
+
+206
+00:10:06,550 --> 00:10:09,490
+meaning it won't generalize to new- new nodes or
+
+207
+00:10:09,490 --> 00:10:13,620
+new graphs because these one-hot encodings are kind of arbitrary,
+
+208
+00:10:13,620 --> 00:10:15,415
+node ordering is arbitrary,
+
+209
+00:10:15,415 --> 00:10:17,290
+so the map- the network,
+
+210
+00:10:17,290 --> 00:10:20,580
+it could basically learn according to that node ordering,
+
+211
+00:10:20,580 --> 00:10:21,835
+and then if we, um,
+
+212
+00:10:21,835 --> 00:10:23,930
+try to transfer this to a new graph,
+
+213
+00:10:23,930 --> 00:10:26,630
+or if a new node appears in the network,
+
+214
+00:10:26,630 --> 00:10:28,700
+this won't- this won't work, right.
+
+215
+00:10:28,700 --> 00:10:33,020
+If a new node appears we'll have to expand- extend the feature dimensionality because
+
+216
+00:10:33,020 --> 00:10:37,655
+we wanna encode- use one-hot encoding for that node as well and we'd have to retrain.
+
+217
+00:10:37,655 --> 00:10:40,055
+Uh, or if we wanna transfer to a new graph,
+
+218
+00:10:40,055 --> 00:10:42,820
+we have no guarantees because, uh,
+
+219
+00:10:42,820 --> 00:10:46,310
+the one-hot encoding and node IDs are kind of arbitrary,
+
+220
+00:10:46,310 --> 00:10:48,980
+so it won't, uh, it won't generalize.
+
+221
+00:10:48,980 --> 00:10:50,540
+So this is why, you know,
+
+222
+00:10:50,540 --> 00:10:52,205
+this is a bad- bad idea,
+
+223
+00:10:52,205 --> 00:10:54,830
+but, ah, this idea kind of to enrich,
+
+224
+00:10:54,830 --> 00:10:57,470
+uh, the nodes so that we can, um,
+
+225
+00:10:57,470 --> 00:11:00,725
+differentiate different computational graphs is a good idea.
+
+226
+00:11:00,725 --> 00:11:02,465
+Just one-hot encoding, uh,
+
+227
+00:11:02,465 --> 00:11:04,560
+doesn't work in this case.
+

@@ -1,0 +1,812 @@
+1
+00:00:04,100 --> 00:00:06,870
+Now that we have looked at,
+
+2
+00:00:06,870 --> 00:00:08,010
+uh, the G_np model.
+
+3
+00:00:08,010 --> 00:00:10,920
+Let's move on and talk about the small-world model,
+
+4
+00:00:10,920 --> 00:00:12,510
+and the small-world model,
+
+5
+00:00:12,510 --> 00:00:15,780
+um, what- the goal of it will be- it,
+
+6
+00:00:15,780 --> 00:00:18,675
+uh, it will try to- to give us two things.
+
+7
+00:00:18,675 --> 00:00:21,930
+It will try to give us the average shortest path length to be small,
+
+8
+00:00:21,930 --> 00:00:25,740
+but it will also give us high clustering coefficient.
+
+9
+00:00:25,740 --> 00:00:29,310
+And the- the point why this is interesting,
+
+10
+00:00:29,310 --> 00:00:33,990
+because these two forces kind of go one against the other, right?
+
+11
+00:00:33,990 --> 00:00:36,570
+You get shortest path length to be small.
+
+12
+00:00:36,570 --> 00:00:38,580
+If you have a random graph where we have a lot of
+
+13
+00:00:38,580 --> 00:00:41,510
+these random connections everywhere, right?
+
+14
+00:00:41,510 --> 00:00:43,609
+But then if you have a lot of random connections,
+
+15
+00:00:43,609 --> 00:00:48,770
+you have- you- you have low clustering coefficient as we see in, uh, G_np, right?
+
+16
+00:00:48,770 --> 00:00:51,570
+So if you want low diameter, uh,
+
+17
+00:00:51,570 --> 00:00:55,010
+be like G_np's, but the problem is you have no triangles,
+
+18
+00:00:55,010 --> 00:00:56,615
+you have no local structure.
+
+19
+00:00:56,615 --> 00:00:58,735
+So we have low clustering coefficient.
+
+20
+00:00:58,735 --> 00:00:59,990
+If you have, let's say
+
+21
+00:00:59,990 --> 00:01:02,630
+a very irregular network like this lattice where, you know,
+
+22
+00:01:02,630 --> 00:01:04,315
+uh, you have this triangle,
+
+23
+00:01:04,315 --> 00:01:07,025
+so you have quite high clustering coefficient.
+
+24
+00:01:07,025 --> 00:01:11,420
+Everything seems nice, but now the diameter of this thing will be long because it
+
+25
+00:01:11,420 --> 00:01:15,800
+takes a huge number of steps to get from one corner to the other corner.
+
+26
+00:01:15,800 --> 00:01:17,765
+So kind of the tangent is the following,
+
+27
+00:01:17,765 --> 00:01:20,630
+is that regular lattice type grounds they have
+
+28
+00:01:20,630 --> 00:01:25,325
+high clustering coefficient because nearby nodes are connected to each other.
+
+29
+00:01:25,325 --> 00:01:29,510
+The problem with the structure is that it has high diameter.
+
+30
+00:01:29,510 --> 00:01:31,340
+You know, on the other hand,
+
+31
+00:01:31,340 --> 00:01:34,175
+random graphs have no local structure,
+
+32
+00:01:34,175 --> 00:01:36,215
+have low clustering, which is bad,
+
+33
+00:01:36,215 --> 00:01:37,789
+but they have low diameter,
+
+34
+00:01:37,789 --> 00:01:39,950
+which we also find in real networks.
+
+35
+00:01:39,950 --> 00:01:41,705
+So the big question is,
+
+36
+00:01:41,705 --> 00:01:42,850
+can I have both?
+
+37
+00:01:42,850 --> 00:01:47,945
+Can I have a small diameter but still a lot of clustering coefficient,
+
+38
+00:01:47,945 --> 00:01:50,750
+a lot of this local clustering structure,
+
+39
+00:01:50,750 --> 00:01:51,890
+a lot of triangles,
+
+40
+00:01:51,890 --> 00:01:55,070
+a lot of friend of a friend is my friend type,
+
+41
+00:01:55,070 --> 00:01:57,130
+uh, structures in the network.
+
+42
+00:01:57,130 --> 00:02:03,920
+So, um, the point is that this clustering implies what we call edge locality, right?
+
+43
+00:02:03,920 --> 00:02:07,940
+It basically, um, it implies that friend of a friend is a friend, right?
+
+44
+00:02:07,940 --> 00:02:10,430
+So it means that if two people, um,
+
+45
+00:02:10,430 --> 00:02:11,720
+have a friend in common,
+
+46
+00:02:11,720 --> 00:02:13,850
+then that is more likely to be edge there.
+
+47
+00:02:13,850 --> 00:02:15,995
+But the problem is that this edge is now just
+
+48
+00:02:15,995 --> 00:02:18,950
+locally connecting two people that are already connected.
+
+49
+00:02:18,950 --> 00:02:22,850
+And you cannot use this edge to connect different parts of the network.
+
+50
+00:02:22,850 --> 00:02:24,995
+So your diameter becomes large.
+
+51
+00:02:24,995 --> 00:02:29,240
+And we saw that the MSN network has seven orders of magnitude,
+
+52
+00:02:29,240 --> 00:02:33,230
+larger clustering coefficient, then the corresponding random graph, right?
+
+53
+00:02:33,230 --> 00:02:34,820
+So it's a huge difference, right?
+
+54
+00:02:34,820 --> 00:02:37,100
+So 0.11 is massive.
+
+55
+00:02:37,100 --> 00:02:39,860
+It's a massive clustering coefficient, right?
+
+56
+00:02:39,860 --> 00:02:43,250
+And to give you an example in- in- in other- for other cases,
+
+57
+00:02:43,250 --> 00:02:46,700
+for example, this is a movie actor collaboration network.
+
+58
+00:02:46,700 --> 00:02:51,305
+Here the- I'm telling you the average shortest path length, uh,
+
+59
+00:02:51,305 --> 00:02:53,390
+on- in the actual graph versus
+
+60
+00:02:53,390 --> 00:02:56,860
+the random graph with the same number of nodes and the same number of edges.
+
+61
+00:02:56,860 --> 00:02:59,515
+Um, and you see that, you know, average, uh,
+
+62
+00:02:59,515 --> 00:03:02,300
+shortest path lengths correspond quite nicely
+
+63
+00:03:02,300 --> 00:03:04,920
+between the actual graph and the random graph.
+
+64
+00:03:04,920 --> 00:03:09,335
+While here I have clustering coefficient between the actual graph, and the random graph.
+
+65
+00:03:09,335 --> 00:03:12,635
+And you see that that is orders of magnitude difference,
+
+66
+00:03:12,635 --> 00:03:14,070
+at least one order of magnitude.
+
+67
+00:03:14,070 --> 00:03:15,515
+So at least factor 10,
+
+68
+00:03:15,515 --> 00:03:17,390
+if not, you know, a few hundred, um,
+
+69
+00:03:17,390 --> 00:03:19,670
+between the actual clustering coefficient,
+
+70
+00:03:19,670 --> 00:03:22,580
+and the clustering coefficient in the corresponding random graph.
+
+71
+00:03:22,580 --> 00:03:25,375
+And this is between movie collaboration networks,
+
+72
+00:03:25,375 --> 00:03:27,855
+uh, electronic power grid, uh,
+
+73
+00:03:27,855 --> 00:03:32,000
+you know, stuff that the ways wires are connected to provide power,
+
+74
+00:03:32,000 --> 00:03:33,500
+like power to Texas.
+
+75
+00:03:33,500 --> 00:03:36,965
+Uh, and the C. elegans network, uh, which, uh,
+
+76
+00:03:36,965 --> 00:03:42,900
+is now a network of how neurons in the C. elegans worm are connected with each other.
+
+77
+00:03:42,900 --> 00:03:45,890
+And again, in all cases you see we have relatively short
+
+78
+00:03:45,890 --> 00:03:50,060
+shortest paths as nicely captured by an Erdos-Renyi random graph,
+
+79
+00:03:50,060 --> 00:03:55,015
+but the clustering coefficient is far higher than what a random graph gives us.
+
+80
+00:03:55,015 --> 00:03:58,695
+So the controversy, or the contradiction,
+
+81
+00:03:58,695 --> 00:04:02,445
+or something that is unclear is- is the following, right?
+
+82
+00:04:02,445 --> 00:04:04,430
+The consequence of expansion,
+
+83
+00:04:04,430 --> 00:04:07,490
+is that shortest paths exist, right?
+
+84
+00:04:07,490 --> 00:04:11,180
+This means basically that networks that have high expansion, um,
+
+85
+00:04:11,180 --> 00:04:13,250
+have small diameter because we can,
+
+86
+00:04:13,250 --> 00:04:14,690
+uh, get it, uh,
+
+87
+00:04:14,690 --> 00:04:18,745
+if we, uh, by simply traversing, uh, the graph.
+
+88
+00:04:18,745 --> 00:04:22,350
+But the problem with- with expansion and problem when
+
+89
+00:04:22,350 --> 00:04:26,835
+you- when you have short paths is that you have no clustering.
+
+90
+00:04:26,835 --> 00:04:28,920
+You have no local structure.
+
+91
+00:04:28,920 --> 00:04:32,660
+Um, triadic closure, meaning friend of a friend is
+
+92
+00:04:32,660 --> 00:04:37,550
+my friend type behavior leads to this local clustering of edges, right?
+
+93
+00:04:37,550 --> 00:04:40,835
+You have this edge that is close to the friend of a friend.
+
+94
+00:04:40,835 --> 00:04:43,580
+But the problem is that with high clustering.
+
+95
+00:04:43,580 --> 00:04:48,289
+You run out of the edges that would serve us kind of shortcuts across,
+
+96
+00:04:48,289 --> 00:04:50,345
+uh, different parts of the network.
+
+97
+00:04:50,345 --> 00:04:53,180
+And the problem then becomes that your clustering,
+
+98
+00:04:53,180 --> 00:04:56,359
+yes would be very high because you close a lot of triangles.
+
+99
+00:04:56,359 --> 00:05:00,380
+But the problem will be that now your diameter is high as well,
+
+100
+00:05:00,380 --> 00:05:04,940
+because it takes a long time to navigate from one part of the network to the other.
+
+101
+00:05:04,940 --> 00:05:08,525
+So the big question is, can we have both?
+
+102
+00:05:08,525 --> 00:05:10,835
+Um, and here's the idea.
+
+103
+00:05:10,835 --> 00:05:12,890
+The idea is that we wanna interpolate between
+
+104
+00:05:12,890 --> 00:05:16,575
+regular lattice graphs and G_np, uh, random graphs.
+
+105
+00:05:16,575 --> 00:05:20,720
+And, uh, the model that allows us to do this is called the small-world model.
+
+106
+00:05:20,720 --> 00:05:25,670
+And it will actually lead to high- to high clustering coefficient and low diameter.
+
+107
+00:05:25,670 --> 00:05:28,580
+So basically we will borrow the best from both sides.
+
+108
+00:05:28,580 --> 00:05:30,290
+We are going to have local structure,
+
+109
+00:05:30,290 --> 00:05:33,380
+so we have high clustering coefficient and we are going also to
+
+110
+00:05:33,380 --> 00:05:36,695
+have shortcuts so that we have, uh, low diameter.
+
+111
+00:05:36,695 --> 00:05:38,710
+So how do we achieve this?
+
+112
+00:05:38,710 --> 00:05:42,465
+So G_np, um, has two, uh,
+
+113
+00:05:42,465 --> 00:05:46,505
+sorry, uh, the small- the small-world model has two components.
+
+114
+00:05:46,505 --> 00:05:52,380
+First is- we wanna start with the low-dimensional regular lattice like a set of nodes,
+
+115
+00:05:52,380 --> 00:05:53,510
+uh, on a circle.
+
+116
+00:05:53,510 --> 00:05:57,395
+And here a node connects with its immediate neighbors and neighbors of neighbors.
+
+117
+00:05:57,395 --> 00:06:00,200
+So that's why this will have high clustering coefficient,
+
+118
+00:06:00,200 --> 00:06:04,640
+but also notice it has high diameter because to get from one- one node to the other,
+
+119
+00:06:04,640 --> 00:06:07,925
+you have to kind of navigate around this, uh, circle.
+
+120
+00:06:07,925 --> 00:06:09,815
+So I have high clustering,
+
+121
+00:06:09,815 --> 00:06:11,480
+I have high diameter.
+
+122
+00:06:11,480 --> 00:06:13,340
+What I will do now is,
+
+123
+00:06:13,340 --> 00:06:14,885
+I will do in the second phase,
+
+124
+00:06:14,885 --> 00:06:16,550
+I'm going to introduce some randomness.
+
+125
+00:06:16,550 --> 00:06:18,725
+I'm going to introduce shortcuts.
+
+126
+00:06:18,725 --> 00:06:21,920
+And what this means is that I'm going to add and remove
+
+127
+00:06:21,920 --> 00:06:25,680
+edges to create shortcuts between the remote pairs,
+
+128
+00:06:25,680 --> 00:06:28,200
+uh, on the- on the lattice- on the circle.
+
+129
+00:06:28,200 --> 00:06:31,070
+So basically for each edge with probability p,
+
+130
+00:06:31,070 --> 00:06:34,235
+I'm going to move the endpoint to a random node.
+
+131
+00:06:34,235 --> 00:06:35,570
+So the idea is that, you know,
+
+132
+00:06:35,570 --> 00:06:39,560
+I pick a- a- a random edge and I take one of its, uh,
+
+133
+00:06:39,560 --> 00:06:43,670
+endpoints and select it at random and rewire that edge to the other end.
+
+134
+00:06:43,670 --> 00:06:44,840
+So this would mean that for example,
+
+135
+00:06:44,840 --> 00:06:46,745
+this edge from black to, uh,
+
+136
+00:06:46,745 --> 00:06:49,050
+from blue to black, I would rewire.
+
+137
+00:06:49,050 --> 00:06:50,775
+It still touches the blue,
+
+138
+00:06:50,775 --> 00:06:54,150
+but it now connects to some other, uh, random node.
+
+139
+00:06:54,150 --> 00:06:56,120
+And then this is p, right?
+
+140
+00:06:56,120 --> 00:06:57,890
+Then the way you can think of it is,
+
+141
+00:06:57,890 --> 00:06:59,375
+um, on the left,
+
+142
+00:06:59,375 --> 00:07:03,625
+I have my starting lattice where I have high clustering and high diameter.
+
+143
+00:07:03,625 --> 00:07:06,430
+On the- when I have p equals 1,
+
+144
+00:07:06,430 --> 00:07:08,674
+when all the edges are rewired,
+
+145
+00:07:08,674 --> 00:07:11,300
+then I have a G_np random graph model.
+
+146
+00:07:11,300 --> 00:07:13,999
+I have low clustering and low diameter.
+
+147
+00:07:13,999 --> 00:07:18,650
+And what turns out is that for some intermediate values of p,
+
+148
+00:07:18,650 --> 00:07:20,495
+I- I retain both.
+
+149
+00:07:20,495 --> 00:07:24,740
+I have enough shortcuts so that enough edges rewire.
+
+150
+00:07:24,740 --> 00:07:26,485
+So the diameter is small.
+
+151
+00:07:26,485 --> 00:07:29,205
+And I still have a lot of, uh,
+
+152
+00:07:29,205 --> 00:07:33,925
+these original edges present so that the clustering, uh, is high.
+
+153
+00:07:33,925 --> 00:07:39,200
+So basically this rewiring mechanism allows us to interpolate between, uh, the, um,
+
+154
+00:07:39,200 --> 00:07:42,530
+uh, high clustering, the regular network,
+
+155
+00:07:42,530 --> 00:07:44,690
+and the, uh, random graph.
+
+156
+00:07:44,690 --> 00:07:48,920
+And if we create a plot of the following where on the x-axis,
+
+157
+00:07:48,920 --> 00:07:50,930
+we create the rewiring probability,
+
+158
+00:07:50,930 --> 00:07:53,750
+and then on one side of the axis we- we
+
+159
+00:07:53,750 --> 00:07:56,825
+plot the clustering coefficient here in dashed line,
+
+160
+00:07:56,825 --> 00:08:00,560
+and on the other axis we plot average shortest path length.
+
+161
+00:08:00,560 --> 00:08:05,450
+And notice how clustering coefficient remains high even as
+
+162
+00:08:05,450 --> 00:08:10,505
+the- as the probability of rewiring increases and only then starts to decrease.
+
+163
+00:08:10,505 --> 00:08:15,410
+But the shortest path length drops very quickly as I keep increasing, uh,
+
+164
+00:08:15,410 --> 00:08:19,535
+the rewiring probability p. So it means that there is this range of
+
+165
+00:08:19,535 --> 00:08:23,810
+p where I have high clustering but low shortest path length.
+
+166
+00:08:23,810 --> 00:08:26,150
+And this is what we call the small-world, right?
+
+167
+00:08:26,150 --> 00:08:32,225
+It's- it's a network that is heavily clustered but still has short, uh, shortest paths.
+
+168
+00:08:32,225 --> 00:08:35,315
+So to summarize the small-world model,
+
+169
+00:08:35,315 --> 00:08:38,470
+um, you know, could we have a network with high clustering?
+
+170
+00:08:38,470 --> 00:08:40,419
+Uh, and the same time,
+
+171
+00:08:40,419 --> 00:08:42,079
+uh, be a small-world,
+
+172
+00:08:42,080 --> 00:08:43,715
+meaning have small diameter?
+
+173
+00:08:43,715 --> 00:08:45,875
+And, uh, the answer is yes.
+
+174
+00:08:45,875 --> 00:08:48,050
+And you know why?
+
+175
+00:08:48,050 --> 00:08:52,670
+Because you don't need more than just a few random links to bring the diameter down.
+
+176
+00:08:52,670 --> 00:08:54,380
+So basically the diameter,
+
+177
+00:08:54,380 --> 00:08:56,090
+the shortest path lengths are
+
+178
+00:08:56,090 --> 00:09:00,395
+much less robust property than the clustering coefficient, right?
+
+179
+00:09:00,395 --> 00:09:03,200
+For- to have a low clustering coefficient,
+
+180
+00:09:03,200 --> 00:09:05,495
+you need a lot of edges in triangles,
+
+181
+00:09:05,495 --> 00:09:07,160
+but to have low diameter,
+
+182
+00:09:07,160 --> 00:09:11,180
+you just need a couple of random shortcuts along distant parts
+
+183
+00:09:11,180 --> 00:09:15,505
+of the network and that will collapse the diameter very- very quickly.
+
+184
+00:09:15,505 --> 00:09:19,390
+So, um, what's the significance of the small-world model?
+
+185
+00:09:19,390 --> 00:09:25,460
+It provides insights into the interplay between the clustering and small diameter.
+
+186
+00:09:25,460 --> 00:09:27,915
+It captures the structure of, uh,
+
+187
+00:09:27,915 --> 00:09:30,420
+many, uh, real-world networks.
+
+188
+00:09:30,420 --> 00:09:34,335
+Uh, and it accounts for high clustering in- in those networks,
+
+189
+00:09:34,335 --> 00:09:36,780
+um, but what is still missing is,
+
+190
+00:09:36,780 --> 00:09:38,490
+uh, the degree distribution, right?
+
+191
+00:09:38,490 --> 00:09:42,350
+The- the- in- in- how- the way we defined the small-world model,
+
+192
+00:09:42,350 --> 00:09:44,175
+uh, all the nodes have the same degree.
+
+193
+00:09:44,175 --> 00:09:45,340
+You know, in our case,
+
+194
+00:09:45,340 --> 00:09:48,460
+I think all the nodes had degree 4 which each- which
+
+195
+00:09:48,460 --> 00:09:51,735
+is kind of unrealistic as we saw from the messenger network.
+
+196
+00:09:51,735 --> 00:09:56,560
+But just, um, basically through these two models that they have presented,
+
+197
+00:09:56,560 --> 00:10:00,100
+I wanted to show you how really you can- you can think of this
+
+198
+00:10:00,100 --> 00:10:03,785
+as a- as a way to explain formation of networks.
+
+199
+00:10:03,785 --> 00:10:06,270
+And you can think of it as a way to,
+
+200
+00:10:06,270 --> 00:10:09,065
+um, capture different properties of the network.
+
+201
+00:10:09,065 --> 00:10:14,330
+And think about what kind of processes might be happening in the real world,
+
+202
+00:10:14,330 --> 00:10:19,670
+in, you know, in our everyday social networks that give rise to the networks.
+
+203
+00:10:19,670 --> 00:10:24,030
+Uh, with properties that we actually observe, uh, in real life.
+

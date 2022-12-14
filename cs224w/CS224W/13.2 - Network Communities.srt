@@ -1,0 +1,1360 @@
+1
+00:00:05,034 --> 00:00:08,595
+What we have seen so far is social science explanations,
+
+2
+00:00:08,595 --> 00:00:12,165
+why clusters, uh, appear in networks.
+
+3
+00:00:12,165 --> 00:00:16,530
+Um, and what do we are going to do next is to start talking about
+
+4
+00:00:16,530 --> 00:00:21,380
+methods that build on the intuition I have just explained and actually,
+
+5
+00:00:21,380 --> 00:00:25,045
+uh, identify, uh, these clusters in networks.
+
+6
+00:00:25,045 --> 00:00:28,910
+So, uh, let's start with what we have learned so far, right?
+
+7
+00:00:28,910 --> 00:00:32,299
+Like Granovetter's theory suggests,
+
+8
+00:00:32,299 --> 00:00:35,660
+that networks are composed from tightly connected,
+
+9
+00:00:35,660 --> 00:00:37,700
+uh, clusters, or sets of nodes.
+
+10
+00:00:37,700 --> 00:00:41,630
+Um, and the connections inside the clusters are strong, uh,
+
+11
+00:00:41,630 --> 00:00:46,475
+interpersonally, socially, and these connections across the clusters are weak,
+
+12
+00:00:46,475 --> 00:00:49,445
+are more like acquaintance uh, relationships,
+
+13
+00:00:49,445 --> 00:00:52,625
+we can call these clusters also communities,
+
+14
+00:00:52,625 --> 00:00:54,160
+we call them groups,
+
+15
+00:00:54,160 --> 00:00:55,625
+we call them modules.
+
+16
+00:00:55,625 --> 00:00:58,740
+It is kind of all the same, right?
+
+17
+00:00:58,740 --> 00:01:02,660
+And, uh, we are going to use the word network communities to
+
+18
+00:01:02,660 --> 00:01:08,000
+refer- to refer to sets of nodes with a lot of internal connections and few,
+
+19
+00:01:08,000 --> 00:01:10,990
+uh, external ones, meaning a few to the rest,
+
+20
+00:01:10,990 --> 00:01:13,820
+uh, of the- of the network.
+
+21
+00:01:13,820 --> 00:01:18,140
+So now the question will be given- given a, uh,
+
+22
+00:01:18,140 --> 00:01:20,615
+a network, how do we find these,
+
+23
+00:01:20,615 --> 00:01:23,125
+uh, densely connected groups of nodes?
+
+24
+00:01:23,125 --> 00:01:26,020
+Ideally, we would like uh, uh,
+
+25
+00:01:26,020 --> 00:01:30,335
+then these densely connected groups of nodes to then
+
+26
+00:01:30,335 --> 00:01:34,580
+correspond to real underlying, uh, social communities.
+
+27
+00:01:34,580 --> 00:01:36,895
+So let me give you a few examples of this.
+
+28
+00:01:36,895 --> 00:01:39,220
+So for example, one, uh,
+
+29
+00:01:39,220 --> 00:01:46,275
+most famous and most used social network is called Zachary's Karate Club network.
+
+30
+00:01:46,275 --> 00:01:50,405
+And Zachary was also a PhD student and he was studying,
+
+31
+00:01:50,405 --> 00:01:53,930
+uh, social relationships in a university karate club.
+
+32
+00:01:53,930 --> 00:01:56,945
+Um, and this is the social network of that,
+
+33
+00:01:56,945 --> 00:01:59,320
+uh, uh, university karate club.
+
+34
+00:01:59,320 --> 00:02:01,940
+But what was interesting is that during the study,
+
+35
+00:02:01,940 --> 00:02:06,925
+the conflicts led this karate club to split into two groups.
+
+36
+00:02:06,925 --> 00:02:11,000
+And what is interesting is that actually here the split is
+
+37
+00:02:11,000 --> 00:02:15,320
+denoted that circles went and created a new karate club,
+
+38
+00:02:15,320 --> 00:02:16,910
+and the squares, uh,
+
+39
+00:02:16,910 --> 00:02:19,235
+remained in the old karate club.
+
+40
+00:02:19,235 --> 00:02:25,460
+And what is striking is that basically this network kind of split in the middle, right?
+
+41
+00:02:25,460 --> 00:02:29,670
+Like the circles went on one end and the squares went on the other.
+
+42
+00:02:29,670 --> 00:02:30,785
+So it's not that, you know,
+
+43
+00:02:30,785 --> 00:02:33,560
+a random set of nodes will decide to form a new club.
+
+44
+00:02:33,560 --> 00:02:38,480
+But it's kind of one part of the network separated out- itself out, right?
+
+45
+00:02:38,480 --> 00:02:42,950
+And actually, the- the- the way you can automatically find this,
+
+46
+00:02:42,950 --> 00:02:45,485
+uh, this split is to simply say,
+
+47
+00:02:45,485 --> 00:02:48,425
+how do I split the nodes of this network into two sets
+
+48
+00:02:48,425 --> 00:02:51,890
+so that the number of edges that crosses between the two sets,
+
+49
+00:02:51,890 --> 00:02:55,880
+meaning goes from one set of nodes to the other, um, is minimized.
+
+50
+00:02:55,880 --> 00:02:58,130
+All right, So basically this was one of
+
+51
+00:02:58,130 --> 00:03:03,320
+the first examples that basically communities happen based on
+
+52
+00:03:03,320 --> 00:03:08,300
+the underlying network structure and that you can predict which humans are going to join
+
+53
+00:03:08,300 --> 00:03:10,460
+one team and which humans are going to join
+
+54
+00:03:10,460 --> 00:03:14,005
+the other team based on the social relationships between them.
+
+55
+00:03:14,005 --> 00:03:17,600
+Perhaps that is kind of obvious and well known to us today.
+
+56
+00:03:17,600 --> 00:03:19,565
+But, uh, back in '60s,
+
+57
+00:03:19,565 --> 00:03:21,530
+this was, uh, totally miraculous, right?
+
+58
+00:03:21,530 --> 00:03:25,730
+It wasn't at all expected that it's actually social connections that
+
+59
+00:03:25,730 --> 00:03:32,200
+make- that play such a big role in how groups and communities form.
+
+60
+00:03:32,200 --> 00:03:37,700
+Another example of groups and communities is in a very different part of the world.
+
+61
+00:03:37,700 --> 00:03:39,110
+So it is in, uh,
+
+62
+00:03:39,110 --> 00:03:43,880
+online advertising where basically if you think you are a Google or a Facebook, um,
+
+63
+00:03:43,880 --> 00:03:46,085
+you have advertisers who say,
+
+64
+00:03:46,085 --> 00:03:49,000
+who- where do they want their ads to be shown.
+
+65
+00:03:49,000 --> 00:03:52,070
+So you can create this bipartite graph where you put, uh,
+
+66
+00:03:52,070 --> 00:03:54,710
+advertisers at the bottom and you put,
+
+67
+00:03:54,710 --> 00:03:56,405
+uh, queries or keywords,
+
+68
+00:03:56,405 --> 00:03:57,635
+uh, on the other side.
+
+69
+00:03:57,635 --> 00:04:01,730
+And then here I'm kind of showing the adjacency matrix where a dot means that
+
+70
+00:04:01,730 --> 00:04:07,055
+a given advertiser wants its ads to be shown when a given query,
+
+71
+00:04:07,055 --> 00:04:12,020
+a given keyword, a given person with a given interest, uh, shows up.
+
+72
+00:04:12,020 --> 00:04:13,190
+And what you'll find out is that there are
+
+73
+00:04:13,190 --> 00:04:16,490
+these well-defined dense clusters where, you know,
+
+74
+00:04:16,490 --> 00:04:19,005
+groups of advertisers, um,
+
+75
+00:04:19,005 --> 00:04:23,330
+bid or advertise on common keywords or on common, uh, interests.
+
+76
+00:04:23,330 --> 00:04:26,120
+And you know, here is one example of, uh, you know,
+
+77
+00:04:26,120 --> 00:04:30,440
+the gambling set of advertisers who are gambling on people,
+
+78
+00:04:30,440 --> 00:04:35,025
+who are advertising on people interested in gambling queries.
+
+79
+00:04:35,025 --> 00:04:37,400
+So it allows you to identify
+
+80
+00:04:37,400 --> 00:04:42,415
+micro markets, subgroups in this type of online advertising space.
+
+81
+00:04:42,415 --> 00:04:44,510
+Another example is, you know,
+
+82
+00:04:44,510 --> 00:04:46,700
+imagine you take a network of, uh,
+
+83
+00:04:46,700 --> 00:04:49,550
+NCAA University football teams
+
+84
+00:04:49,550 --> 00:04:52,910
+and you connect two teams if they play games with each other.
+
+85
+00:04:52,910 --> 00:04:55,400
+Uh, and here's a visualization of the network.
+
+86
+00:04:55,400 --> 00:05:00,500
+And the question is, is that any structure in how teams, uh, play each other?
+
+87
+00:05:00,500 --> 00:05:03,500
+And if you run these community detection methods,
+
+88
+00:05:03,500 --> 00:05:06,205
+you would actually identify the- the groups.
+
+89
+00:05:06,205 --> 00:05:07,940
+Here they are visualized, right?
+
+90
+00:05:07,940 --> 00:05:11,290
+So notice this network is the same as that network, right?
+
+91
+00:05:11,290 --> 00:05:13,430
+So this is just visualize the network.
+
+92
+00:05:13,430 --> 00:05:15,230
+This is what the visualization comes up with.
+
+93
+00:05:15,230 --> 00:05:18,290
+It doesn't seem that is any real structure here, right?
+
+94
+00:05:18,290 --> 00:05:21,710
+Maybe you say, oh, there seems to be something here and maybe there is a cluster here.
+
+95
+00:05:21,710 --> 00:05:23,465
+I don't know, maybe there's something here.
+
+96
+00:05:23,465 --> 00:05:24,830
+It's very hard to say.
+
+97
+00:05:24,830 --> 00:05:27,515
+But after you apply a community detection method,
+
+98
+00:05:27,515 --> 00:05:29,570
+it will actually go and identify,
+
+99
+00:05:29,570 --> 00:05:32,015
+um, the clusters and here they are.
+
+100
+00:05:32,015 --> 00:05:34,070
+And what is interesting and- right,
+
+101
+00:05:34,070 --> 00:05:39,225
+is that they actually exactly correspond to these conferences in which, er,
+
+102
+00:05:39,225 --> 00:05:41,870
+teams are organized where teams play each other
+
+103
+00:05:41,870 --> 00:05:45,615
+inside the conference more than with other conferences.
+
+104
+00:05:45,615 --> 00:05:48,110
+And we even have a couple of themes that are-
+
+105
+00:05:48,110 --> 00:05:50,660
+that are not part of any community because they
+
+106
+00:05:50,660 --> 00:05:53,480
+are part of this Independence conference
+
+107
+00:05:53,480 --> 00:05:56,390
+and they just kind of play the two different teams.
+
+108
+00:05:56,390 --> 00:05:57,680
+So this is how, for example,
+
+109
+00:05:57,680 --> 00:06:00,620
+we can extract structure of them out of the network,
+
+110
+00:06:00,620 --> 00:06:04,700
+even though initially the structure is not obvious.
+
+111
+00:06:04,700 --> 00:06:08,465
+To give you another example now is to say,
+
+112
+00:06:08,465 --> 00:06:10,580
+how do we formalize this, right?
+
+113
+00:06:10,580 --> 00:06:14,650
+How do we identify the sets of tightly connected, uh, nodes?
+
+114
+00:06:14,650 --> 00:06:19,040
+And the way we are going to do this is that we are going to specify,
+
+115
+00:06:19,040 --> 00:06:22,135
+um, a metric that we call modularity.
+
+116
+00:06:22,135 --> 00:06:25,060
+And we are- and this metric will measure how well
+
+117
+00:06:25,060 --> 00:06:28,490
+a network is partitioned into communities.
+
+118
+00:06:28,490 --> 00:06:32,725
+So given a partitioning of the network into groups of nodes,
+
+119
+00:06:32,725 --> 00:06:36,190
+let's assume that right now somebody gave- gives us this partitioning.
+
+120
+00:06:36,190 --> 00:06:39,785
+We are going to compute this modularity score q,
+
+121
+00:06:39,785 --> 00:06:44,380
+and if we have the modularity, uh, score defined,
+
+122
+00:06:44,380 --> 00:06:47,470
+then what we are going to do later is we are going to say,
+
+123
+00:06:47,470 --> 00:06:49,180
+can I search over,
+
+124
+00:06:49,180 --> 00:06:51,425
+can I find a very good, uh,
+
+125
+00:06:51,425 --> 00:06:56,395
+set of partitioning such that my modularity score will be as high as possible.
+
+126
+00:06:56,395 --> 00:06:58,240
+So that's what we are going to do later.
+
+127
+00:06:58,240 --> 00:07:01,810
+But now, let's assume that, uh,
+
+128
+00:07:01,810 --> 00:07:04,015
+groups are given to us, um,
+
+129
+00:07:04,015 --> 00:07:08,045
+and we want to estimate how good of a clustering are we having.
+
+130
+00:07:08,045 --> 00:07:11,150
+And the way the modularity operates is the following, we say,
+
+131
+00:07:11,150 --> 00:07:14,585
+modularity Q will be proportional to the summation
+
+132
+00:07:14,585 --> 00:07:18,050
+over all the groups where for every group,
+
+133
+00:07:18,050 --> 00:07:22,740
+I want to ask how many edges are there between the members of the group?
+
+134
+00:07:22,740 --> 00:07:26,425
+How many edges are within the members of the group S?
+
+135
+00:07:26,425 --> 00:07:31,070
+Minus how many edges would I expect between this,
+
+136
+00:07:31,070 --> 00:07:33,300
+h, group S, um,
+
+137
+00:07:33,300 --> 00:07:34,350
+in some null, uh,
+
+138
+00:07:34,350 --> 00:07:35,820
+random null model, right?
+
+139
+00:07:35,820 --> 00:07:37,985
+And if the group S has much more edges
+
+140
+00:07:37,985 --> 00:07:40,790
+between its members than what is expected at random,
+
+141
+00:07:40,790 --> 00:07:44,065
+then we have found a strong significant cluster.
+
+142
+00:07:44,065 --> 00:07:46,460
+And now you know what is the total modularity of
+
+143
+00:07:46,460 --> 00:07:49,970
+the network is the sum over these modularity scores,
+
+144
+00:07:49,970 --> 00:07:52,185
+uh, of individual clusters.
+
+145
+00:07:52,185 --> 00:07:57,250
+Right? So because we have these expected number of edges within a group s,
+
+146
+00:07:57,250 --> 00:07:59,560
+we need a null- we need a null model, right?
+
+147
+00:07:59,560 --> 00:08:01,990
+We need a random graph null model.
+
+148
+00:08:01,990 --> 00:08:04,690
+So now if we go back to our subgraph mining,
+
+149
+00:08:04,690 --> 00:08:10,360
+we talked about Erdos-Renyi as an example of a round- of a- of a model.
+
+150
+00:08:10,360 --> 00:08:15,115
+Um, and we also talked about configuration model as an example of a null model.
+
+151
+00:08:15,115 --> 00:08:17,170
+So let me now tell you, uh,
+
+152
+00:08:17,170 --> 00:08:19,525
+and remind you about the configuration model,
+
+153
+00:08:19,525 --> 00:08:21,430
+right, which we already talked about,
+
+154
+00:08:21,430 --> 00:08:25,165
+I think two lectures ago when we talked about, uh, subgraph mining.
+
+155
+00:08:25,165 --> 00:08:27,130
+The idea is the following;
+
+156
+00:08:27,130 --> 00:08:30,295
+given a real graph G on N nodes and M edges,
+
+157
+00:08:30,295 --> 00:08:31,809
+we want to create,
+
+158
+00:08:31,809 --> 00:08:33,820
+uh, a random network G prime.
+
+159
+00:08:33,820 --> 00:08:38,860
+And we will refer to this random network as a rewired network because essentially it
+
+160
+00:08:38,860 --> 00:08:44,410
+will mean that we every node keeps its degree number of connections constant,
+
+161
+00:08:44,410 --> 00:08:47,530
+but connects to random nodes rather to- than
+
+162
+00:08:47,530 --> 00:08:50,845
+to the ones that they are really in- connected to in the network.
+
+163
+00:08:50,845 --> 00:08:52,630
+So this means that our network,
+
+164
+00:08:52,630 --> 00:08:54,280
+we'll have the same degree distribution,
+
+165
+00:08:54,280 --> 00:08:55,764
+the same degree sequence,
+
+166
+00:08:55,764 --> 00:08:58,480
+but it will have random connections.
+
+167
+00:08:58,480 --> 00:09:02,410
+Um, and we are going to consider graph g as a multigraph, right?
+
+168
+00:09:02,410 --> 00:09:04,540
+We'll allow multiple edges to exist,
+
+169
+00:09:04,540 --> 00:09:05,890
+uh, between the nodes.
+
+170
+00:09:05,890 --> 00:09:07,405
+So now you can say,
+
+171
+00:09:07,405 --> 00:09:08,560
+I have these nodes,
+
+172
+00:09:08,560 --> 00:09:09,790
+they have these spokes.
+
+173
+00:09:09,790 --> 00:09:11,395
+These are kind of these rough edges.
+
+174
+00:09:11,395 --> 00:09:13,660
+And now I wont to randomly connect,
+
+175
+00:09:13,660 --> 00:09:16,290
+uh, these, uh, endpoints.
+
+176
+00:09:16,290 --> 00:09:18,495
+And of course, maybe between a pair of nodes,
+
+177
+00:09:18,495 --> 00:09:22,265
+I will allow multiple edges because perhaps both of these two end points,
+
+178
+00:09:22,265 --> 00:09:24,400
+randomly, you know, by chance decide to
+
+179
+00:09:24,400 --> 00:09:27,235
+connect to these two end points so it'll be kind of a double-edge.
+
+180
+00:09:27,235 --> 00:09:29,260
+But for the purpose of this, uh,
+
+181
+00:09:29,260 --> 00:09:32,485
+discussion right now, that's completely fine and okay.
+
+182
+00:09:32,485 --> 00:09:34,990
+So then, you can ask yourself,
+
+183
+00:09:34,990 --> 00:09:40,495
+what is the expected number of edges between a pair of nodes i and j,
+
+184
+00:09:40,495 --> 00:09:42,370
+where node i has degree, uh,
+
+185
+00:09:42,370 --> 00:09:46,165
+k_i, and node j has deg- degree k_j.
+
+186
+00:09:46,165 --> 00:09:48,580
+Uh, and the way to derive this equa- er,
+
+187
+00:09:48,580 --> 00:09:49,945
+expression is the following.
+
+188
+00:09:49,945 --> 00:09:53,515
+You say, um, what is the total number of,
+
+189
+00:09:53,515 --> 00:09:55,165
+uh, edge endpoints?
+
+190
+00:09:55,165 --> 00:09:56,545
+Basically the spokes.
+
+191
+00:09:56,545 --> 00:09:58,810
+Number of spokes is 2 times n, right?
+
+192
+00:09:58,810 --> 00:10:00,745
+Every edge has two end points.
+
+193
+00:10:00,745 --> 00:10:02,320
+Every edge gets cut in half.
+
+194
+00:10:02,320 --> 00:10:03,700
+If I have m edges,
+
+195
+00:10:03,700 --> 00:10:06,325
+then I have 2 times m, uh, end points.
+
+196
+00:10:06,325 --> 00:10:09,190
+This is why we have this guy- this thing here.
+
+197
+00:10:09,190 --> 00:10:12,520
+Then what is K sub j, right?
+
+198
+00:10:12,520 --> 00:10:16,150
+K sub j is the degree of, uh, node j.
+
+199
+00:10:16,150 --> 00:10:18,220
+It's the number of spokes it has.
+
+200
+00:10:18,220 --> 00:10:20,230
+So now I say, um,
+
+201
+00:10:20,230 --> 00:10:22,870
+for every node- for every spoke of node i,
+
+202
+00:10:22,870 --> 00:10:25,225
+I randomly pick another spoke.
+
+203
+00:10:25,225 --> 00:10:28,675
+So node, um, er, k_j,
+
+204
+00:10:28,675 --> 00:10:35,050
+accounts for k_j divided by 2m fraction of all available spokes.
+
+205
+00:10:35,050 --> 00:10:39,160
+Right? Because this guy could also decide to link to itself or whatever else, right?
+
+206
+00:10:39,160 --> 00:10:45,640
+So now basically I say out of these k_i different tries, different random, um,
+
+207
+00:10:45,640 --> 00:10:48,190
+end points selections, uh, for, er,
+
+208
+00:10:48,190 --> 00:10:54,580
+each one of them has the probability k_j divided by 2m to connect to node j.
+
+209
+00:10:54,580 --> 00:10:57,415
+So now, um, if I multiply these together,
+
+210
+00:10:57,415 --> 00:11:01,300
+I basically say that the expected number of edges between I and
+
+211
+00:11:01,300 --> 00:11:06,040
+j is simply the degree of i times degree j divided by 2m.
+
+212
+00:11:06,040 --> 00:11:10,300
+Right? So basically what this means is that the probability or the expected number
+
+213
+00:11:10,300 --> 00:11:14,290
+of edges is simply equal to the product of the degrees,
+
+214
+00:11:14,290 --> 00:11:15,730
+uh, of the nodes, uh, uh,
+
+215
+00:11:15,730 --> 00:11:18,580
+um, that we are interested in.
+
+216
+00:11:18,580 --> 00:11:20,365
+All right? So, um,
+
+217
+00:11:20,365 --> 00:11:23,200
+we have this very elegant relationship, uh,
+
+218
+00:11:23,200 --> 00:11:25,720
+about the expected number of edges between a pair of
+
+219
+00:11:25,720 --> 00:11:28,780
+nodes under this random configuration model,
+
+220
+00:11:28,780 --> 00:11:30,670
+where nodes keep their degree,
+
+221
+00:11:30,670 --> 00:11:33,520
+but the edges are assigned, uh, randomly,
+
+222
+00:11:33,520 --> 00:11:36,706
+which basically means these endpoints get randomly connected uh,
+
+223
+00:11:36,706 --> 00:11:39,085
+with each other and we're leaving this kind of,
+
+224
+00:11:39,085 --> 00:11:41,815
+uh, multi graph, uh, world.
+
+225
+00:11:41,815 --> 00:11:44,440
+Right? So now that we have this, uh,
+
+226
+00:11:44,440 --> 00:11:46,330
+expected number of edges between, uh,
+
+227
+00:11:46,330 --> 00:11:48,535
+i and j, then I can say, you know,
+
+228
+00:11:48,535 --> 00:11:51,280
+just like as a- as a- as a- as a side,
+
+229
+00:11:51,280 --> 00:11:52,660
+uh, calculation, I can say, okay,
+
+230
+00:11:52,660 --> 00:11:55,930
+so what is the total expected number of edges in this,
+
+231
+00:11:55,930 --> 00:11:57,850
+uh, graph g prime?
+
+232
+00:11:57,850 --> 00:11:59,185
+So basically I'm saying,
+
+233
+00:11:59,185 --> 00:12:02,560
+let's sum over, um, all the nodes i,
+
+234
+00:12:02,560 --> 00:12:04,795
+all the nodes j. Um,
+
+235
+00:12:04,795 --> 00:12:09,245
+so all pairs of nodes and ask what is the expected number of edges between them?
+
+236
+00:12:09,245 --> 00:12:13,980
+And, of course, I have to multiply this by one-half because when I go over all pairs,
+
+237
+00:12:13,980 --> 00:12:20,585
+it means I will count every edge twice because i, j and j,i will be counted twice.
+
+238
+00:12:20,585 --> 00:12:25,014
+So if I work out these summations explained here, basically,
+
+239
+00:12:25,014 --> 00:12:27,610
+I- I get it's a summation of the,
+
+240
+00:12:27,610 --> 00:12:29,500
+uh, uh, the degrees, uh,
+
+241
+00:12:29,500 --> 00:12:31,960
+times another summation over the degrees, uh,
+
+242
+00:12:31,960 --> 00:12:35,170
+the sum of the degrees is two times n. The sum over
+
+243
+00:12:35,170 --> 00:12:38,380
+the degrees is two times n. And here I have divide by,
+
+244
+00:12:38,380 --> 00:12:43,045
+um, 1- 1 over 2 times n that comes from here times one-half.
+
+245
+00:12:43,045 --> 00:12:44,485
+So I get, um,
+
+246
+00:12:44,485 --> 00:12:49,405
+2 times m times 2 times m divided by 4 times m. Uh, you know, uh,
+
+247
+00:12:49,405 --> 00:12:53,200
+4s cancel out, one m cancel out and I'm left with, uh,
+
+248
+00:12:53,200 --> 00:12:56,860
+m. So this means that this mo- this un- this model,
+
+249
+00:12:56,860 --> 00:13:01,540
+both the degree distribution and the total number of edges, uh, will be preserved.
+
+250
+00:13:01,540 --> 00:13:05,620
+And the expected number of edges between a pair of nodes is de- determined, uh,
+
+251
+00:13:05,620 --> 00:13:10,300
+by this formula, k_i times k_j divided by 2m.
+
+252
+00:13:10,300 --> 00:13:13,870
+So now let's go back to the modularity.
+
+253
+00:13:13,870 --> 00:13:15,595
+So in modularity we said,
+
+254
+00:13:15,595 --> 00:13:18,505
+we have a number of edges between the group s, uh,
+
+255
+00:13:18,505 --> 00:13:22,105
+minus the expected number of edges within, uh,
+
+256
+00:13:22,105 --> 00:13:27,535
+the group s. So notice that we are only interested in the edges inside the group,
+
+257
+00:13:27,535 --> 00:13:33,205
+and we are not explicitly minimizing for the number of edges that cross between groups.
+
+258
+00:13:33,205 --> 00:13:36,715
+This is kind of implicitly accounted for, uh, in modularity.
+
+259
+00:13:36,715 --> 00:13:38,860
+So how do we write this out now,
+
+260
+00:13:38,860 --> 00:13:42,985
+given what we learned about configuration model as our null model?
+
+261
+00:13:42,985 --> 00:13:45,070
+So we are going to write the following.
+
+262
+00:13:45,070 --> 00:13:46,870
+We are going to say modularity, uh,
+
+263
+00:13:46,870 --> 00:13:48,520
+of our group, uh,
+
+264
+00:13:48,520 --> 00:13:50,500
+S in, uh, graph, uh,
+
+265
+00:13:50,500 --> 00:13:55,150
+G is simply a sum over the- uh,
+
+266
+00:13:55,150 --> 00:13:57,325
+all the pairs of nodes,
+
+267
+00:13:57,325 --> 00:13:58,750
+uh, in the group.
+
+268
+00:13:58,750 --> 00:14:00,010
+This is, uh, where the,
+
+269
+00:14:00,010 --> 00:14:02,110
+er, that pair of nodes is connected.
+
+270
+00:14:02,110 --> 00:14:05,425
+This simply counts number of edges between the groups.
+
+271
+00:14:05,425 --> 00:14:07,840
+And the second theorem says, ah-ha,
+
+272
+00:14:07,840 --> 00:14:09,835
+for every pair i, j,
+
+273
+00:14:09,835 --> 00:14:11,275
+I'm going to multiply their,
+
+274
+00:14:11,275 --> 00:14:13,330
+uh, their degrees, divide by 2m.
+
+275
+00:14:13,330 --> 00:14:16,450
+So this is the expected number of edges between a pair of nodes.
+
+276
+00:14:16,450 --> 00:14:18,190
+Right? So this is basically now saying,
+
+277
+00:14:18,190 --> 00:14:20,620
+what is the real number of nodes minus
+
+278
+00:14:20,620 --> 00:14:24,895
+the expected number of nodes over all the pairs of nodes in a given group?
+
+279
+00:14:24,895 --> 00:14:29,515
+And now I sum this up over all the groups, little s, uh,
+
+280
+00:14:29,515 --> 00:14:33,280
+from the partitioning of nodes into grou- into communities
+
+281
+00:14:33,280 --> 00:14:37,525
+into groups, capital S. Um, and this, uh,
+
+282
+00:14:37,525 --> 00:14:40,285
+factor 1 over 2m is, uh,
+
+283
+00:14:40,285 --> 00:14:43,255
+is a normalizing constant so that
+
+284
+00:14:43,255 --> 00:14:47,470
+our modularity metric Q will have range from minus 1 to 1.
+
+285
+00:14:47,470 --> 00:14:51,280
+Right? If all the edges are inside the group,
+
+286
+00:14:51,280 --> 00:14:55,030
+um, uh, uh, uh, uh, group s,
+
+287
+00:14:55,030 --> 00:14:59,110
+and, uh, uh, somehow we would expect very little edges,
+
+288
+00:14:59,110 --> 00:15:00,490
+uh, inside that group,
+
+289
+00:15:00,490 --> 00:15:03,565
+then modularity will be- will be very close to 1.
+
+290
+00:15:03,565 --> 00:15:05,140
+And, uh, if we have
+
+291
+00:15:05,140 --> 00:15:10,150
+kind of an anti-community where we ex- where we have no edges between the- uh,
+
+292
+00:15:10,150 --> 00:15:11,725
+uh, between the group.
+
+293
+00:15:11,725 --> 00:15:13,660
+But based on the degrees of those nodes,
+
+294
+00:15:13,660 --> 00:15:15,505
+we would expect a lot of edges,
+
+295
+00:15:15,505 --> 00:15:18,505
+then the value will be negative, will be minus 1.
+
+296
+00:15:18,505 --> 00:15:21,805
+So as I said, the modularity can take,
+
+297
+00:15:21,805 --> 00:15:23,815
+a value from minus 1 to 1.
+
+298
+00:15:23,815 --> 00:15:26,635
+It is positive if the number of edges within the group
+
+299
+00:15:26,635 --> 00:15:30,340
+exceeds the numb- the expected number of edges.
+
+300
+00:15:30,340 --> 00:15:33,580
+And in reality, in practice, uh,
+
+301
+00:15:33,580 --> 00:15:37,915
+if the modularity Q is greater than let's say, 0.3, 0.7,
+
+302
+00:15:37,915 --> 00:15:42,970
+this means that the graph has a significant community structure that we have identified,
+
+303
+00:15:42,970 --> 00:15:45,115
+uh, really strong, uh, clusters,
+
+304
+00:15:45,115 --> 00:15:47,830
+if our modularity is in this range.
+
+305
+00:15:47,830 --> 00:15:50,110
+So let me recap.
+
+306
+00:15:50,110 --> 00:15:58,660
+Uh, modularity Q is defined over an undirected graph and our partitioning of nodes s. Um,
+
+307
+00:15:58,660 --> 00:16:02,855
+and it is intuitively defined as a summation over all the groups,
+
+308
+00:16:02,855 --> 00:16:06,140
+number of nodes between the members of the group,
+
+309
+00:16:06,140 --> 00:16:08,555
+minus number of, um,
+
+310
+00:16:08,555 --> 00:16:10,325
+expected number of, uh,
+
+311
+00:16:10,325 --> 00:16:12,560
+edges uh, between the members of the group.
+
+312
+00:16:12,560 --> 00:16:17,310
+Uh, given- using the configuration model as a null model,
+
+313
+00:16:17,310 --> 00:16:21,500
+we then instantiate modularity using the following formula,
+
+314
+00:16:21,500 --> 00:16:24,035
+where we basically say for every group s,
+
+315
+00:16:24,035 --> 00:16:27,245
+take pairs of- all pairs of nodes from the group.
+
+316
+00:16:27,245 --> 00:16:30,505
+Ask whether a given pair is connected.
+
+317
+00:16:30,505 --> 00:16:33,154
+So this summation, we now count,
+
+318
+00:16:33,154 --> 00:16:35,020
+uh, the number of edges uh,
+
+319
+00:16:35,020 --> 00:16:38,635
+between the members of the group, minus, uh,
+
+320
+00:16:38,635 --> 00:16:41,015
+degree of one node, the degree of the other node,
+
+321
+00:16:41,015 --> 00:16:43,260
+divided by twice the number of edges in the network.
+
+322
+00:16:43,260 --> 00:16:46,950
+So this is the expected number of edges between i and j,
+
+323
+00:16:46,950 --> 00:16:49,330
+um, uh, under the configuration models.
+
+324
+00:16:49,330 --> 00:16:52,795
+So these difference tells us, um, er, er,
+
+325
+00:16:52,795 --> 00:16:55,580
+how- how many more- what is the difference between
+
+326
+00:16:55,580 --> 00:16:58,420
+the true number of edges and expected number of edges,
+
+327
+00:16:58,420 --> 00:16:59,710
+uh, inside a given group.
+
+328
+00:16:59,710 --> 00:17:03,745
+And now we sum this up over all different groups and we normalize it.
+
+329
+00:17:03,745 --> 00:17:04,829
+So this is how,
+
+330
+00:17:04,829 --> 00:17:06,839
+uh, we can, uh, write it.
+
+331
+00:17:06,839 --> 00:17:08,959
+Now that we have the modularity score,
+
+332
+00:17:08,960 --> 00:17:11,119
+we basically have an objective function.
+
+333
+00:17:11,119 --> 00:17:13,249
+So now the question is,
+
+334
+00:17:13,250 --> 00:17:19,415
+can I identify clusters' communities by maximizing this modularity score,
+
+335
+00:17:19,415 --> 00:17:22,930
+by basically maximizing, uh, this metric?
+
+336
+00:17:22,930 --> 00:17:24,609
+So the question will be, uh,
+
+337
+00:17:24,609 --> 00:17:27,324
+that we're going to address next is, if I, uh,
+
+338
+00:17:27,325 --> 00:17:29,875
+search over these groupings,
+
+339
+00:17:29,875 --> 00:17:32,170
+can I- how do I find, uh, uh,
+
+340
+00:17:32,170 --> 00:17:36,150
+uh, sets that have high modularity score?
+

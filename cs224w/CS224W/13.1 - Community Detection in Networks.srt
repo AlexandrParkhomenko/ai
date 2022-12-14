@@ -1,0 +1,1808 @@
+1
+00:00:04,010 --> 00:00:07,080
+So today, we are going to talk about,
+
+2
+00:00:07,080 --> 00:00:09,435
+er, community detection in networks.
+
+3
+00:00:09,435 --> 00:00:12,420
+So basically, what community detection is,
+
+4
+00:00:12,420 --> 00:00:15,120
+is essentially clustering a set of nodes,
+
+5
+00:00:15,120 --> 00:00:16,335
+uh, in a graph.
+
+6
+00:00:16,335 --> 00:00:18,180
+So, uh, this is what we are, uh,
+
+7
+00:00:18,180 --> 00:00:21,585
+going to do today and the clustering we are going
+
+8
+00:00:21,585 --> 00:00:24,990
+to do will be based on the net structure,
+
+9
+00:00:24,990 --> 00:00:26,790
+er, of the network.
+
+10
+00:00:26,790 --> 00:00:29,250
+So, let's start, uh,
+
+11
+00:00:29,250 --> 00:00:31,360
+by defining this pro-, er,
+
+12
+00:00:31,360 --> 00:00:35,720
+problem of community detection and then I'm going actually to talk to you about-
+
+13
+00:00:35,720 --> 00:00:40,380
+about some social science research that explains why do we see these,
+
+14
+00:00:40,380 --> 00:00:42,180
+uh, clusters in networks,
+
+15
+00:00:42,180 --> 00:00:43,605
+why do they make sense,
+
+16
+00:00:43,605 --> 00:00:46,805
+and they actually inform the development of the methods,
+
+17
+00:00:46,805 --> 00:00:48,320
+er, to be able to do this.
+
+18
+00:00:48,320 --> 00:00:50,610
+So, um, when we write,
+
+19
+00:00:50,610 --> 00:00:53,130
+er, or when we draw, er, networks, let's say,
+
+20
+00:00:53,130 --> 00:00:55,730
+on a- on a piece of paper, we often, er,
+
+21
+00:00:55,730 --> 00:00:58,700
+would like to think of them to have kind of the following,
+
+22
+00:00:58,700 --> 00:01:00,320
+uh, the following structure, right?
+
+23
+00:01:00,320 --> 00:01:03,140
+We think of them as having these, uh, clusters,
+
+24
+00:01:03,140 --> 00:01:08,600
+these communities where the- the edges inside the cluster are more,
+
+25
+00:01:08,600 --> 00:01:10,355
+um, are more than the edges, er,
+
+26
+00:01:10,355 --> 00:01:13,010
+spanning, uh, across, uh, the clusters.
+
+27
+00:01:13,010 --> 00:01:16,910
+And this is kind of how intuitively we like to think of networks,
+
+28
+00:01:16,910 --> 00:01:20,090
+in particular social networks perhaps where
+
+29
+00:01:20,090 --> 00:01:23,435
+these types of clusters could correspond to social communities.
+
+30
+00:01:23,435 --> 00:01:26,200
+We think of them in terms of- in biological networks.
+
+31
+00:01:26,200 --> 00:01:29,750
+We can think of these as some kind of, uh, functional units,
+
+32
+00:01:29,750 --> 00:01:33,680
+modules that are there to do a certain task, um, and so on.
+
+33
+00:01:33,680 --> 00:01:37,460
+So, we'd like to think that the networks are not just kind of messy objects,
+
+34
+00:01:37,460 --> 00:01:41,725
+but that they have this kind of clustering, uh, org- organization.
+
+35
+00:01:41,725 --> 00:01:43,560
+So the question is,
+
+36
+00:01:43,560 --> 00:01:45,900
+how did this picture, uh, arise?
+
+37
+00:01:45,900 --> 00:01:49,430
+What kind of evidence do we have that these types of structure
+
+38
+00:01:49,430 --> 00:01:53,200
+actually appears in networks and what could be some reasons for it?
+
+39
+00:01:53,200 --> 00:01:59,470
+So, um, here is one way to think about this from the viewpoint of, er, social networks.
+
+40
+00:01:59,470 --> 00:02:02,120
+So right now what we'll do is we're going to do a bit of
+
+41
+00:02:02,120 --> 00:02:06,320
+a dive in into classical social science and classical,
+
+42
+00:02:06,320 --> 00:02:08,245
+er, social network analysis.
+
+43
+00:02:08,245 --> 00:02:09,514
+So the question is,
+
+44
+00:02:09,514 --> 00:02:12,710
+how does information flow through networks?
+
+45
+00:02:12,710 --> 00:02:14,360
+Think of a social network, right,
+
+46
+00:02:14,360 --> 00:02:17,750
+where basically we have people connected in a social network and
+
+47
+00:02:17,750 --> 00:02:21,350
+there are different links over which the information flows.
+
+48
+00:02:21,350 --> 00:02:24,830
+And let's call these links short and long.
+
+49
+00:02:24,830 --> 00:02:26,750
+Um, and let's call them, you know,
+
+50
+00:02:26,750 --> 00:02:31,550
+short as the ones that kind of are- are a very kind of, er, local.
+
+51
+00:02:31,550 --> 00:02:33,109
+These are strong friendships,
+
+52
+00:02:33,109 --> 00:02:36,950
+and let's also have these long links that you- which we can think of as
+
+53
+00:02:36,950 --> 00:02:40,820
+links to our acquaintances and kind of colleagues and people we,
+
+54
+00:02:40,820 --> 00:02:42,815
+let's say, meet, uh, less often.
+
+55
+00:02:42,815 --> 00:02:45,080
+And the way we can think of this is that, you know,
+
+56
+00:02:45,080 --> 00:02:47,405
+we have these short, er, short, er,
+
+57
+00:02:47,405 --> 00:02:49,505
+strong links and we have these weak, er,
+
+58
+00:02:49,505 --> 00:02:51,920
+long links, er, to other parts,
+
+59
+00:02:51,920 --> 00:02:53,365
+er, of the network.
+
+60
+00:02:53,365 --> 00:02:56,520
+So, uh, there was a seminal work, er,
+
+61
+00:02:56,520 --> 00:03:00,000
+back in 1960s, uh, by Mark Granovetter,
+
+62
+00:03:00,000 --> 00:03:02,510
+who's a sociologist here at Stanford University,
+
+63
+00:03:02,510 --> 00:03:04,070
+and this is I think the most,
+
+64
+00:03:04,070 --> 00:03:06,380
+er, cited and the most impactful,
+
+65
+00:03:06,380 --> 00:03:08,675
+uh, social science paper ever.
+
+66
+00:03:08,675 --> 00:03:12,320
+And this is really about his research during his PhD,
+
+67
+00:03:12,320 --> 00:03:13,940
+where he was asking about,
+
+68
+00:03:13,940 --> 00:03:18,040
+how do people find information through personal contacts?
+
+69
+00:03:18,040 --> 00:03:21,695
+Um, and, um, what- he was looking at this,
+
+70
+00:03:21,695 --> 00:03:23,465
+how people find jobs.
+
+71
+00:03:23,465 --> 00:03:29,270
+So he was asking people who were on the job market to basically- and have found a job to,
+
+72
+00:03:29,270 --> 00:03:31,820
+er, to tell him, where did you hear about this job?
+
+73
+00:03:31,820 --> 00:03:36,440
+Which, er, which person did you tell- tell you about- about this job opening?
+
+74
+00:03:36,440 --> 00:03:38,225
+How did you apply, things like that.
+
+75
+00:03:38,225 --> 00:03:41,600
+And, uh, what was interesting is that, um,
+
+76
+00:03:41,600 --> 00:03:45,410
+contacts through which these people heard for job openings and
+
+77
+00:03:45,410 --> 00:03:49,050
+found jobs were more often acquaintances than,
+
+78
+00:03:49,050 --> 00:03:51,000
+let's say, close friends, right?
+
+79
+00:03:51,000 --> 00:03:53,150
+So it wasn't that you would, uh,
+
+80
+00:03:53,150 --> 00:03:55,715
+hear that people heard about new job openings
+
+81
+00:03:55,715 --> 00:03:59,030
+from people they have very strong relationship with that, you know,
+
+82
+00:03:59,030 --> 00:04:00,845
+they spend a lot of time together,
+
+83
+00:04:00,845 --> 00:04:04,280
+but they heard about new job openings through these,
+
+84
+00:04:04,280 --> 00:04:10,710
+um, acquaintances, people that would- they would kind of meet less, uh, more rarely.
+
+85
+00:04:10,710 --> 00:04:13,220
+Um, and this is very surprising because you
+
+86
+00:04:13,220 --> 00:04:16,350
+would imagine that it is actually your friends,
+
+87
+00:04:16,350 --> 00:04:19,070
+people you have strong, er, relationships with,
+
+88
+00:04:19,070 --> 00:04:22,130
+whose- whose best interest is to help you,
+
+89
+00:04:22,130 --> 00:04:23,210
+who are closest to you,
+
+90
+00:04:23,210 --> 00:04:26,435
+who are the most motivated to help you find,
+
+91
+00:04:26,435 --> 00:04:28,385
+uh, a job, to connect you,
+
+92
+00:04:28,385 --> 00:04:30,250
+uh, with the job openings, and so on.
+
+93
+00:04:30,250 --> 00:04:32,390
+But what turned out was that it was actually
+
+94
+00:04:32,390 --> 00:04:36,180
+casual acquaintances who- who- through which,
+
+95
+00:04:36,180 --> 00:04:37,815
+um, through whom, uh,
+
+96
+00:04:37,815 --> 00:04:41,610
+the- these job seekers found about, er, new jobs.
+
+97
+00:04:41,610 --> 00:04:45,940
+So what this means is if we go back to the- to the picture that we had before,
+
+98
+00:04:45,940 --> 00:04:47,170
+it was that- basically,
+
+99
+00:04:47,170 --> 00:04:48,530
+it was this- these types of,
+
+100
+00:04:48,530 --> 00:04:50,060
+let say, acquaintance links,
+
+101
+00:04:50,060 --> 00:04:51,470
+these weak links, uh,
+
+102
+00:04:51,470 --> 00:04:52,965
+to- to have, uh,
+
+103
+00:04:52,965 --> 00:04:56,000
+to be the ones through which people heard about the jobs and
+
+104
+00:04:56,000 --> 00:04:59,570
+not necessarily these kind of strong, uh, interpersonal links.
+
+105
+00:04:59,570 --> 00:05:02,330
+So this means that acquaintances are more,
+
+106
+00:05:02,330 --> 00:05:04,790
+uh, were more helpful in this process.
+
+107
+00:05:04,790 --> 00:05:06,625
+And the question was, why?
+
+108
+00:05:06,625 --> 00:05:13,435
+And Granovetter gave these two perspective on a friendship or on a link in the network.
+
+109
+00:05:13,435 --> 00:05:20,015
+So the first struct- the- the first perspective on a link in the network is structural.
+
+110
+00:05:20,015 --> 00:05:24,260
+It's about, what is the structural role of a link in the network?
+
+111
+00:05:24,260 --> 00:05:25,355
+So you can think about,
+
+112
+00:05:25,355 --> 00:05:29,690
+what is the structural role of a friendship in a social network, right?
+
+113
+00:05:29,690 --> 00:05:33,650
+We can think about this particular edge being this kind of, um,
+
+114
+00:05:33,650 --> 00:05:35,840
+connecting different parts of the network,
+
+115
+00:05:35,840 --> 00:05:40,070
+while this particular other edge being very well embedded,
+
+116
+00:05:40,070 --> 00:05:41,600
+uh, inside the network, right?
+
+117
+00:05:41,600 --> 00:05:45,620
+Having all these common friends and being a really strong, uh, relationship.
+
+118
+00:05:45,620 --> 00:05:47,735
+So that's kind of structural.
+
+119
+00:05:47,735 --> 00:05:51,095
+And then there is also the interpersonal, er,
+
+120
+00:05:51,095 --> 00:05:53,420
+view which is about, er,
+
+121
+00:05:53,420 --> 00:05:56,660
+friendships being either kind of strong or weak, right?
+
+122
+00:05:56,660 --> 00:06:00,125
+Having a very strong relationship with someone or having a much,
+
+123
+00:06:00,125 --> 00:06:01,910
+er, weaker relationship with,
+
+124
+00:06:01,910 --> 00:06:03,695
+uh, uh, each other.
+
+125
+00:06:03,695 --> 00:06:09,380
+And, uh, what Granovetter shows is that structural and interpersonal,
+
+126
+00:06:09,380 --> 00:06:11,245
+uh, relationship of the link,
+
+127
+00:06:11,245 --> 00:06:13,185
+they- they are connected.
+
+128
+00:06:13,185 --> 00:06:15,870
+They- they are related to each other.
+
+129
+00:06:15,870 --> 00:06:18,075
+So, uh, let me explain how.
+
+130
+00:06:18,075 --> 00:06:22,670
+So first, uh, point is that Granovetter makes the connection between the
+
+131
+00:06:22,670 --> 00:06:27,440
+social and the structural role of an edge and shows that they are related,
+
+132
+00:06:27,440 --> 00:06:29,320
+they are correlated, they are connected.
+
+133
+00:06:29,320 --> 00:06:31,950
+So first is the structural point, right?
+
+134
+00:06:31,950 --> 00:06:35,175
+The structural, um, edge from, uh, er,
+
+135
+00:06:35,175 --> 00:06:38,250
+from the point of e- edge being in the network, um,
+
+136
+00:06:38,250 --> 00:06:41,640
+he basically say- shows that structurally embedded edges,
+
+137
+00:06:41,640 --> 00:06:43,770
+so edges, uh, that,
+
+138
+00:06:43,770 --> 00:06:45,825
+uh, that happen among co-, er,
+
+139
+00:06:45,825 --> 00:06:48,140
+in the- in the densely-linked parts
+
+140
+00:06:48,140 --> 00:06:50,615
+of the network where there is a lot of common friends,
+
+141
+00:06:50,615 --> 00:06:55,385
+that these edges tend to be strong edges like inter-personally strong.
+
+142
+00:06:55,385 --> 00:06:59,855
+And that these long-range edges that kind of connect the different parts of the network,
+
+143
+00:06:59,855 --> 00:07:03,135
+they tend to be socially weak, right?
+
+144
+00:07:03,135 --> 00:07:05,355
+So, um, what does this mean?
+
+145
+00:07:05,355 --> 00:07:07,240
+This means that, um,
+
+146
+00:07:07,240 --> 00:07:09,380
+there is a relationship between the strength of
+
+147
+00:07:09,380 --> 00:07:13,075
+the relationship and the structure of the relationship.
+
+148
+00:07:13,075 --> 00:07:16,375
+So strength means, uh, strong links, er,
+
+149
+00:07:16,375 --> 00:07:19,100
+between people who have a lot of friends in common,
+
+150
+00:07:19,100 --> 00:07:23,450
+and weak links connecting different parts of the network, right?
+
+151
+00:07:23,450 --> 00:07:27,800
+So weak friendships are ge- generally the ones that
+
+152
+00:07:27,800 --> 00:07:32,900
+connect different parts of the network and strong friendships are the ones that- that,
+
+153
+00:07:32,900 --> 00:07:34,730
+uh, where you have, um,
+
+154
+00:07:34,730 --> 00:07:36,380
+a lot of friends in common, and so on.
+
+155
+00:07:36,380 --> 00:07:38,180
+And what I want to say is,
+
+156
+00:07:38,180 --> 00:07:41,570
+strong friendship is not defined by having a lot of friends in common.
+
+157
+00:07:41,570 --> 00:07:44,280
+You can ask someone who are your strongest friends,
+
+158
+00:07:44,280 --> 00:07:46,100
+and then if you check in the social network,
+
+159
+00:07:46,100 --> 00:07:48,905
+you will see these are the people you have a lot of friends in common.
+
+160
+00:07:48,905 --> 00:07:52,430
+So these are the structurally strong, uh,
+
+161
+00:07:52,430 --> 00:07:58,080
+structurally well embedded relationships are socially strong and structurally,
+
+162
+00:07:58,080 --> 00:08:02,615
+um, uh, kind of di- the relationships that connect different parts of the network,
+
+163
+00:08:02,615 --> 00:08:04,210
+they are socially weak.
+
+164
+00:08:04,210 --> 00:08:06,530
+So those are- those are two connections,
+
+165
+00:08:06,530 --> 00:08:08,480
+two important aspects of a relationship.
+
+166
+00:08:08,480 --> 00:08:10,940
+So social strength of a relationship and
+
+167
+00:08:10,940 --> 00:08:14,585
+a structural role or position of the relationship,
+
+168
+00:08:14,585 --> 00:08:16,030
+that's the first point.
+
+169
+00:08:16,030 --> 00:08:18,765
+And then, the second important point that
+
+170
+00:08:18,765 --> 00:08:22,120
+Granovetter makes is this notion of information flow.
+
+171
+00:08:22,120 --> 00:08:25,490
+And he says that long-range edges allow you to gather
+
+172
+00:08:25,490 --> 00:08:28,910
+information from very different distant parts,
+
+173
+00:08:28,910 --> 00:08:30,205
+uh, of the network.
+
+174
+00:08:30,205 --> 00:08:32,570
+Uh, and this means that now you have access to
+
+175
+00:08:32,570 --> 00:08:37,429
+all these distant information that can come to you and can be very useful to you, right?
+
+176
+00:08:37,429 --> 00:08:40,489
+And, er, he says that structurally embedded edges are
+
+177
+00:08:40,490 --> 00:08:44,159
+heavily re- redundant in terms of information access, right?
+
+178
+00:08:44,159 --> 00:08:45,570
+So if you think that, I don't know,
+
+179
+00:08:45,570 --> 00:08:47,400
+this person A is, uh,
+
+180
+00:08:47,400 --> 00:08:51,050
+is an edge in the network and they are looking for, er, jobs, yes,
+
+181
+00:08:51,050 --> 00:08:53,810
+they have these three strong, uh,
+
+182
+00:08:53,810 --> 00:08:57,050
+social relationships with these three- three other people,
+
+183
+00:08:57,050 --> 00:09:00,185
+but essentially, these relationships are very redundant, right?
+
+184
+00:09:00,185 --> 00:09:02,915
+Whatever, uh, one of these people knows,
+
+185
+00:09:02,915 --> 00:09:05,430
+they can either tell them to node A directly,
+
+186
+00:09:05,430 --> 00:09:06,590
+or perhaps, you know,
+
+187
+00:09:06,590 --> 00:09:09,110
+they are going through casual conversations sa- tell it
+
+188
+00:09:09,110 --> 00:09:11,900
+to this other node who's going to tell it to node A.
+
+189
+00:09:11,900 --> 00:09:14,180
+So in terms of information access,
+
+190
+00:09:14,180 --> 00:09:16,585
+these edges are heavily redundant.
+
+191
+00:09:16,585 --> 00:09:19,220
+Well, for example, this weak long-range
+
+192
+00:09:19,220 --> 00:09:22,595
+edge to some other part of the network to this node B,
+
+193
+00:09:22,595 --> 00:09:26,045
+this is a very useful edge because it gives you access to
+
+194
+00:09:26,045 --> 00:09:30,050
+all this information from these other, uh, community.
+
+195
+00:09:30,050 --> 00:09:32,180
+So this is the second point,
+
+196
+00:09:32,180 --> 00:09:36,230
+is that strongly embedded edges are information redundant and it
+
+197
+00:09:36,230 --> 00:09:40,590
+is weak edges that give you access to very dif- distant parts,
+
+198
+00:09:40,590 --> 00:09:41,849
+uh, of the relationship,
+
+199
+00:09:41,849 --> 00:09:43,230
+uh, of the network.
+
+200
+00:09:43,230 --> 00:09:48,605
+Um, and this is important because if you look how social networks evolve, um,
+
+201
+00:09:48,605 --> 00:09:51,365
+they evolve such as the communities form,
+
+202
+00:09:51,365 --> 00:09:56,630
+in a sense that net- tightly-connected clusters of nodes naturally form.
+
+203
+00:09:56,630 --> 00:09:59,135
+And the reason for this is that, um,
+
+204
+00:09:59,135 --> 00:10:02,380
+the networks tend to evolve using triadic closure.
+
+205
+00:10:02,380 --> 00:10:03,910
+What that means is that,
+
+206
+00:10:03,910 --> 00:10:05,825
+if you have two friends in common,
+
+207
+00:10:05,825 --> 00:10:07,400
+you know, A has a friend B,
+
+208
+00:10:07,400 --> 00:10:08,975
+and A has a friend C,
+
+209
+00:10:08,975 --> 00:10:14,010
+then sooner or later A and B are going to meet and they are going to create,
+
+210
+00:10:14,010 --> 00:10:15,640
+uh, a link with each other.
+
+211
+00:10:15,640 --> 00:10:18,290
+Another important aspect is that we like to
+
+212
+00:10:18,290 --> 00:10:21,130
+connect with others that are similar to us, right?
+
+213
+00:10:21,130 --> 00:10:24,260
+So if I am, I don't know, a computer scientist,
+
+214
+00:10:24,260 --> 00:10:26,870
+or maybe I like soccer, football, right?
+
+215
+00:10:26,870 --> 00:10:28,850
+Maybe I play football with node B,
+
+216
+00:10:28,850 --> 00:10:31,760
+probably I may- play football with node C as well,
+
+217
+00:10:31,760 --> 00:10:34,760
+so they already will have something in common so they can,
+
+218
+00:10:34,760 --> 00:10:36,780
+uh, form that relationship, right?
+
+219
+00:10:36,780 --> 00:10:38,130
+So this is, um,
+
+220
+00:10:38,130 --> 00:10:43,100
+an important thing is that because we like to connect to others that are similar to us,
+
+221
+00:10:43,100 --> 00:10:45,485
+so if I'm connected to two other people,
+
+222
+00:10:45,485 --> 00:10:47,990
+they likely share some similarities,
+
+223
+00:10:47,990 --> 00:10:49,385
+some aspects to myself.
+
+224
+00:10:49,385 --> 00:10:53,110
+This means that they're alw- also going to share that similarity,
+
+225
+00:10:53,110 --> 00:10:55,345
+so they'll be more likely to bond,
+
+226
+00:10:55,345 --> 00:10:57,345
+uh, and create, uh, an edge.
+
+227
+00:10:57,345 --> 00:10:58,920
+So it means in networks,
+
+228
+00:10:58,920 --> 00:11:00,855
+these are the edges that,
+
+229
+00:11:00,855 --> 00:11:03,000
+uh, that ha- that like to form.
+
+230
+00:11:03,000 --> 00:11:04,170
+So for example, uh,
+
+231
+00:11:04,170 --> 00:11:06,900
+A to B is a likely edge, um, and, you know,
+
+232
+00:11:06,900 --> 00:11:09,810
+to- also A to C because there is a fr- a common friend,
+
+233
+00:11:09,810 --> 00:11:11,485
+uh, B, uh, in between.
+
+234
+00:11:11,485 --> 00:11:14,075
+So these are examples of edges that, uh, uh,
+
+235
+00:11:14,075 --> 00:11:17,690
+that are-, uh, happen to in social networks, uh, a lot.
+
+236
+00:11:17,690 --> 00:11:19,790
+So now, you know,
+
+237
+00:11:19,790 --> 00:11:23,540
+why is- why are some reasons that these types of edges happen?
+
+238
+00:11:23,540 --> 00:11:29,330
+Because if you remember early on we were talking about clustering coefficient, right?
+
+239
+00:11:29,330 --> 00:11:32,720
+The fraction of your neighbors that are connected with each other.
+
+240
+00:11:32,720 --> 00:11:37,100
+And this is essentially a metric of this notion of a triadic closure.
+
+241
+00:11:37,100 --> 00:11:40,340
+Because if we have this simple network structure,
+
+242
+00:11:40,340 --> 00:11:42,080
+uh, here, uh, on the right,
+
+243
+00:11:42,080 --> 00:11:43,475
+then you can say, you know,
+
+244
+00:11:43,475 --> 00:11:46,625
+if B and C have a friend A in common,
+
+245
+00:11:46,625 --> 00:11:49,865
+so why should B and C link to each other?
+
+246
+00:11:49,865 --> 00:11:52,280
+First is, they are more likely to meet each
+
+247
+00:11:52,280 --> 00:11:54,965
+other because they have this common friend,
+
+248
+00:11:54,965 --> 00:11:57,710
+uh, A, and maybe he invites them both,
+
+249
+00:11:57,710 --> 00:11:59,210
+uh, for the coffee or something.
+
+250
+00:11:59,210 --> 00:12:03,260
+Second thing is B and C are more likely to trust each other because again,
+
+251
+00:12:03,260 --> 00:12:05,840
+they have this common friend that they both trust so they say,
+
+252
+00:12:05,840 --> 00:12:07,175
+"Oh, you have this guy, uh,
+
+253
+00:12:07,175 --> 00:12:09,320
+as a friend, I- I like him,
+
+254
+00:12:09,320 --> 00:12:11,765
+you like him, obviously we have something in common."
+
+255
+00:12:11,765 --> 00:12:14,330
+And then there is also another important point,
+
+256
+00:12:14,330 --> 00:12:17,060
+which is A has incentive to bring,
+
+257
+00:12:17,060 --> 00:12:19,040
+uh, B, and C together, right?
+
+258
+00:12:19,040 --> 00:12:20,990
+Because from A's point of view,
+
+259
+00:12:20,990 --> 00:12:23,285
+it is hard or costly,
+
+260
+00:12:23,285 --> 00:12:26,060
+it requires effort to maintain, uh,
+
+261
+00:12:26,060 --> 00:12:28,520
+two relationships, uh, together,
+
+262
+00:12:28,520 --> 00:12:31,395
+uh, for, uh for, uh, Node A.
+
+263
+00:12:31,395 --> 00:12:33,610
+So if there is a triangle,
+
+264
+00:12:33,610 --> 00:12:35,695
+so if A links to B, B links to C,
+
+265
+00:12:35,695 --> 00:12:40,080
+then all of them basically can go and hang out together because they are all friends.
+
+266
+00:12:40,080 --> 00:12:42,950
+So these are reasons for, uh, triadic closure.
+
+267
+00:12:42,950 --> 00:12:45,185
+And that is an important aspect,
+
+268
+00:12:45,185 --> 00:12:49,715
+is that actually social science research shows that being embedded,
+
+269
+00:12:49,715 --> 00:12:54,215
+having a lot of the strong edges and a lot of triangles around you,
+
+270
+00:12:54,215 --> 00:12:56,915
+um, is, uh, is, ah, is, ah,
+
+271
+00:12:56,915 --> 00:13:01,040
+kind of, um, is- is- is easier, warmer, um,
+
+272
+00:13:01,040 --> 00:13:02,915
+it's, ah, this is what,
+
+273
+00:13:02,915 --> 00:13:05,165
+ah, what humans, ah, seek for.
+
+274
+00:13:05,165 --> 00:13:06,560
+And actually, for example,
+
+275
+00:13:06,560 --> 00:13:08,660
+there is a famous study, um,
+
+276
+00:13:08,660 --> 00:13:10,790
+of, uh, teenage girls who have,
+
+277
+00:13:10,790 --> 00:13:12,995
+for example, low clustering coefficient.
+
+278
+00:13:12,995 --> 00:13:16,370
+They are, uh, they are found to more likely contemplate suicide.
+
+279
+00:13:16,370 --> 00:13:21,290
+So basically right, it is hard to not have friends who are friends with each other.
+
+280
+00:13:21,290 --> 00:13:24,575
+So it's good to be well embedded in social clusters.
+
+281
+00:13:24,575 --> 00:13:26,705
+That's kind of the social structures, uh,
+
+282
+00:13:26,705 --> 00:13:28,850
+we humans, uh, seek.
+
+283
+00:13:28,850 --> 00:13:31,850
+So now, uh, this, uh,
+
+284
+00:13:31,850 --> 00:13:36,500
+Granovetter explanation was a theory from the 60's, right?
+
+285
+00:13:36,500 --> 00:13:38,330
+Basically what he said was the following.
+
+286
+00:13:38,330 --> 00:13:42,260
+He said, edges that are embedded in the network,
+
+287
+00:13:42,260 --> 00:13:44,555
+so edges that have high clustering coefficient,
+
+288
+00:13:44,555 --> 00:13:46,370
+edges that have a lot of,
+
+289
+00:13:46,370 --> 00:13:47,690
+uh, friends in common,
+
+290
+00:13:47,690 --> 00:13:49,430
+edges that uh, uh,
+
+291
+00:13:49,430 --> 00:13:51,485
+appear in dense parts of the network,
+
+292
+00:13:51,485 --> 00:13:54,845
+these edges tend to be socially strong.
+
+293
+00:13:54,845 --> 00:13:58,295
+And edges that connect distant parts of the network,
+
+294
+00:13:58,295 --> 00:14:00,320
+they tend to be socially weak.
+
+295
+00:14:00,320 --> 00:14:03,515
+Um, and this is a prediction he made,
+
+296
+00:14:03,515 --> 00:14:05,600
+um, based on his research,
+
+297
+00:14:05,600 --> 00:14:08,900
+but it was left untested for,
+
+298
+00:14:08,900 --> 00:14:11,269
+er, 40 plus years.
+
+299
+00:14:11,269 --> 00:14:15,410
+And actually it was only in 2007 that this theory, uh,
+
+300
+00:14:15,410 --> 00:14:21,740
+was actually, uh, kind of validated on real large-scale data.
+
+301
+00:14:21,740 --> 00:14:26,345
+And the study is based on cell phone,
+
+302
+00:14:26,345 --> 00:14:29,090
+uh, data, uh, from one of the European countries.
+
+303
+00:14:29,090 --> 00:14:31,610
+So where you say the strength of a relationship,
+
+304
+00:14:31,610 --> 00:14:34,565
+strength of an edge will be the number of phone calls,
+
+305
+00:14:34,565 --> 00:14:37,400
+um, that- that we make in a given period, right?
+
+306
+00:14:37,400 --> 00:14:40,520
+And the idea is that people who are strong friends with you will make
+
+307
+00:14:40,520 --> 00:14:44,195
+a lot of phone calls with and people you are more acquaintances with,
+
+308
+00:14:44,195 --> 00:14:46,820
+maybe you call them for Christmas, uh, and, you know,
+
+309
+00:14:46,820 --> 00:14:48,620
+wish them a Happy New Year, for example,
+
+310
+00:14:48,620 --> 00:14:51,530
+that would be, you know, once in a year type of, uh, phone call.
+
+311
+00:14:51,530 --> 00:14:56,165
+So the prediction from Granovetter would be that strong edges should be, uh,
+
+312
+00:14:56,165 --> 00:15:01,280
+these edges with lots of phone calls should be clustered together in, uh, small pockets,
+
+313
+00:15:01,280 --> 00:15:04,460
+and then these edges that, uh, that, uh,
+
+314
+00:15:04,460 --> 00:15:06,440
+that span across different parts of the network,
+
+315
+00:15:06,440 --> 00:15:08,465
+there the number of,
+
+316
+00:15:08,465 --> 00:15:11,090
+uh, um, uh, phone calls, uh, will be smaller.
+
+317
+00:15:11,090 --> 00:15:14,450
+That's the prediction. The way- the way, uh,
+
+318
+00:15:14,450 --> 00:15:17,045
+this was operationalized was first to say,
+
+319
+00:15:17,045 --> 00:15:18,830
+um, the notion of, uh, you know,
+
+320
+00:15:18,830 --> 00:15:23,030
+how, uh, how strong or weak is the edge structurally,
+
+321
+00:15:23,030 --> 00:15:26,585
+uh, and you quantify this by the metric called edge overlap.
+
+322
+00:15:26,585 --> 00:15:27,725
+And simply you ask,
+
+323
+00:15:27,725 --> 00:15:32,840
+what is the fraction of neighbors that edge endpoints have in common, right?
+
+324
+00:15:32,840 --> 00:15:34,070
+So for example here,
+
+325
+00:15:34,070 --> 00:15:40,760
+the edge overlap is 0 because these nodes i and j have no friends in common,
+
+326
+00:15:40,760 --> 00:15:42,080
+while here, for example,
+
+327
+00:15:42,080 --> 00:15:46,595
+this is an overlap of 1 because they have all these- all these neighbors,
+
+328
+00:15:46,595 --> 00:15:49,640
+each of them, and they are both mutually connected to all of them.
+
+329
+00:15:49,640 --> 00:15:53,570
+So here we would say this edge is very well embedded, uh,
+
+330
+00:15:53,570 --> 00:15:55,505
+it is structurally strong,
+
+331
+00:15:55,505 --> 00:15:58,280
+and this edge is structurally weak, right?
+
+332
+00:15:58,280 --> 00:16:02,910
+It kind of connects to different parts of the network that don't know each other.
+
+333
+00:16:02,910 --> 00:16:05,095
+Right? And then, um,
+
+334
+00:16:05,095 --> 00:16:10,210
+what Granovetter would say that when edges have low overlap, the, um,
+
+335
+00:16:10,210 --> 00:16:14,615
+the number of phone calls will be very small and when edges have high overlap,
+
+336
+00:16:14,615 --> 00:16:18,845
+the number of, uh, phone calls, uh, will be very high.
+
+337
+00:16:18,845 --> 00:16:22,160
+Here is now the, uh, the result.
+
+338
+00:16:22,160 --> 00:16:26,540
+Uh, this is the edge strength in terms of number of phone calls.
+
+339
+00:16:26,540 --> 00:16:28,865
+Uh, and this is the neighborhood overlap.
+
+340
+00:16:28,865 --> 00:16:30,785
+Uh, and this is the real data.
+
+341
+00:16:30,785 --> 00:16:34,805
+And what you see is that the strong- the more the phone calls,
+
+342
+00:16:34,805 --> 00:16:36,215
+the higher the overlap,
+
+343
+00:16:36,215 --> 00:16:38,855
+which means that highly used links,
+
+344
+00:16:38,855 --> 00:16:42,110
+links where a lot of phone calls happen have high overlap, right?
+
+345
+00:16:42,110 --> 00:16:45,395
+So links where there is a high number of,
+
+346
+00:16:45,395 --> 00:16:48,335
+uh, phone calls, uh, look like this,
+
+347
+00:16:48,335 --> 00:16:52,280
+and links where there is a lower number or phone calls have smaller overlap,
+
+348
+00:16:52,280 --> 00:16:55,280
+so they are structurally, uh, like that.
+
+349
+00:16:55,280 --> 00:16:58,490
+Um, and then here what, also, uh,
+
+350
+00:16:58,490 --> 00:17:01,310
+they show is an example of a null model
+
+351
+00:17:01,310 --> 00:17:04,310
+where they would basically keep the network structure the same,
+
+352
+00:17:04,310 --> 00:17:07,250
+but randomly reassign the edge strands.
+
+353
+00:17:07,250 --> 00:17:09,005
+And then you see that there is no,
+
+354
+00:17:09,005 --> 00:17:10,910
+uh, relationship, just two, uh,
+
+355
+00:17:10,910 --> 00:17:12,859
+and this is expected and it's just kind
+
+356
+00:17:12,859 --> 00:17:17,059
+of a safety check to make sure that this analysis makes sense.
+
+357
+00:17:17,060 --> 00:17:18,935
+So what this means is that, you know,
+
+358
+00:17:18,935 --> 00:17:20,165
+the bigger the overlap,
+
+359
+00:17:20,165 --> 00:17:22,925
+the stronger the edge personally.
+
+360
+00:17:22,925 --> 00:17:26,105
+To give you a picture that is even more telling
+
+361
+00:17:26,105 --> 00:17:29,105
+is that here is a part of this phone call network.
+
+362
+00:17:29,105 --> 00:17:32,000
+And this is the strength of the edge.
+
+363
+00:17:32,000 --> 00:17:34,220
+Red is very strong and yellow,
+
+364
+00:17:34,220 --> 00:17:37,655
+green is- is weak in terms of number of phone calls.
+
+365
+00:17:37,655 --> 00:17:40,565
+And what you see is that these red edges
+
+366
+00:17:40,565 --> 00:17:43,850
+tend to happen in these kind of small clumps here.
+
+367
+00:17:43,850 --> 00:17:46,040
+And you see that these long edges,
+
+368
+00:17:46,040 --> 00:17:47,300
+they are mostly yellow,
+
+369
+00:17:47,300 --> 00:17:51,980
+which means there is a small number of phone calls that happens over them.
+
+370
+00:17:51,980 --> 00:17:55,100
+And just to show you the contrast, now,
+
+371
+00:17:55,100 --> 00:17:57,320
+I will show you the picture of the same network,
+
+372
+00:17:57,320 --> 00:17:59,540
+but I'm going to randomly shuffle,
+
+373
+00:17:59,540 --> 00:18:02,150
+uh, edge strengths across the same structure.
+
+374
+00:18:02,150 --> 00:18:05,255
+Um, and what you will see is that now all of a sudden,
+
+375
+00:18:05,255 --> 00:18:07,730
+this is how the network, uh, looks like, right?
+
+376
+00:18:07,730 --> 00:18:12,800
+So if I randomly assign edge strengths according to the real edge strengths,
+
+377
+00:18:12,800 --> 00:18:15,830
+you see how now these long-range- long-range edges,
+
+378
+00:18:15,830 --> 00:18:19,280
+all of a sudden start to look, uh, red.
+
+379
+00:18:19,280 --> 00:18:22,640
+And why is this? This is the reason because there is a lot of
+
+380
+00:18:22,640 --> 00:18:25,310
+edges- strong grid edges hidden in
+
+381
+00:18:25,310 --> 00:18:28,430
+these clusters and they jus- you just don't get to see them.
+
+382
+00:18:28,430 --> 00:18:32,030
+Uh, and these all these long-range edges, they are all yellow.
+
+383
+00:18:32,030 --> 00:18:34,430
+They all have very small numbers or phone calls in them.
+
+384
+00:18:34,430 --> 00:18:38,720
+But if you now take these edge strengths and randomly permute them,
+
+385
+00:18:38,720 --> 00:18:41,000
+randomly assign them over the edges,
+
+386
+00:18:41,000 --> 00:18:43,265
+then this is how the network would look like.
+
+387
+00:18:43,265 --> 00:18:45,230
+Like all of a sudden, uh,
+
+388
+00:18:45,230 --> 00:18:47,060
+you see that there is actually a lot of long-range,
+
+389
+00:18:47,060 --> 00:18:51,530
+er, red edges that we don't- just don't see in, uh, practice.
+
+390
+00:18:51,530 --> 00:18:53,600
+So what does this mean?
+
+391
+00:18:53,600 --> 00:18:56,030
+Uh, this means that,
+
+392
+00:18:56,030 --> 00:18:58,205
+uh, edges that are strong, uh,
+
+393
+00:18:58,205 --> 00:19:02,914
+interpersonally appear in clu- in densely knit clusters,
+
+394
+00:19:02,914 --> 00:19:06,590
+and edges that are weak connect different parts,
+
+395
+00:19:06,590 --> 00:19:08,210
+uh, of the network.
+
+396
+00:19:08,210 --> 00:19:12,335
+And, uh, another experiment to validate this is to say,
+
+397
+00:19:12,335 --> 00:19:18,230
+what if I take my network and I remove edges one by one, uh, uh,
+
+398
+00:19:18,230 --> 00:19:20,885
+by the decreasing, um, sorry,
+
+399
+00:19:20,885 --> 00:19:24,260
+by the increasing number of, uh, phone calls, right?
+
+400
+00:19:24,260 --> 00:19:26,720
+First I will remove edges with one phone call,
+
+401
+00:19:26,720 --> 00:19:28,700
+then two phone calls and so on.
+
+402
+00:19:28,700 --> 00:19:32,795
+And then here is how I'm removing edges.
+
+403
+00:19:32,795 --> 00:19:34,250
+And here he is, uh,
+
+404
+00:19:34,250 --> 00:19:38,870
+how does my network fall apart into different connected components, right?
+
+405
+00:19:38,870 --> 00:19:40,775
+So as I'm removing edges,
+
+406
+00:19:40,775 --> 00:19:43,655
+the network will start to get disconnected.
+
+407
+00:19:43,655 --> 00:19:49,940
+And what you notice is that if I remove uh,
+
+408
+00:19:49,940 --> 00:19:53,750
+first the edges that have low number of phone calls,
+
+409
+00:19:53,750 --> 00:20:00,050
+the- the network is going to fall apart into multiple disconnected components,
+
+410
+00:20:00,050 --> 00:20:02,300
+um, much faster, if I would,
+
+411
+00:20:02,300 --> 00:20:05,660
+for example, remove, uh, highly, um, uh,
+
+412
+00:20:05,660 --> 00:20:11,525
+edges that are highly used because those edges are embedded in these- in these clusters.
+
+413
+00:20:11,525 --> 00:20:13,265
+So even if I remove them,
+
+414
+00:20:13,265 --> 00:20:14,810
+I don't disconnect the network.
+
+415
+00:20:14,810 --> 00:20:17,300
+But if I disconnect- if I remove these weak edges,
+
+416
+00:20:17,300 --> 00:20:20,510
+then the network gets disconnected, uh, faster.
+
+417
+00:20:20,510 --> 00:20:23,095
+The largest connected component is smaller,
+
+418
+00:20:23,095 --> 00:20:26,350
+so the red line is below, uh, the black line.
+
+419
+00:20:26,350 --> 00:20:29,480
+Um, um, an- and then if I do something
+
+420
+00:20:29,480 --> 00:20:33,095
+similar according let's say now out to the edge overlap where I say,
+
+421
+00:20:33,095 --> 00:20:36,035
+let's remove edges with low overlap first,
+
+422
+00:20:36,035 --> 00:20:41,074
+you see how now the largest connected component super quickly, uh, gets destroyed,
+
+423
+00:20:41,074 --> 00:20:44,915
+which basically the intuition is that if I remove the slow overlap edges,
+
+424
+00:20:44,915 --> 00:20:48,155
+very quickly, uh, I get these separate islands,
+
+425
+00:20:48,155 --> 00:20:50,885
+separate disconnected, uh, components.
+
+426
+00:20:50,885 --> 00:20:52,790
+So, um, you know,
+
+427
+00:20:52,790 --> 00:20:55,010
+why- why did we spend, uh,
+
+428
+00:20:55,010 --> 00:20:57,785
+uh, these 20 minutes discussing about all these?
+
+429
+00:20:57,785 --> 00:20:59,630
+Like what did we learn?
+
+430
+00:20:59,630 --> 00:21:01,985
+What we learned is that
+
+431
+00:21:01,985 --> 00:21:06,770
+this conceptual picture of networks that I try to sh- that I show here,
+
+432
+00:21:06,770 --> 00:21:10,340
+um, is actually well-grounded in sociological,
+
+433
+00:21:10,340 --> 00:21:12,530
+uh, processes and social science.
+
+434
+00:21:12,530 --> 00:21:18,890
+What we have also found out is that the interpersonal strength of a relationship and its,
+
+435
+00:21:18,890 --> 00:21:20,900
+uh, overlap, it, uh,
+
+436
+00:21:20,900 --> 00:21:22,790
+embedding in the network,
+
+437
+00:21:22,790 --> 00:21:25,130
+uh, are related, right?
+
+438
+00:21:25,130 --> 00:21:26,915
+So we- we showed,
+
+439
+00:21:26,915 --> 00:21:29,420
+uh, that these type of, uh,
+
+440
+00:21:29,420 --> 00:21:32,870
+nodes, uh, and these types of edges that have high overlap,
+
+441
+00:21:32,870 --> 00:21:35,105
+that have a lot of friends in common,
+
+442
+00:21:35,105 --> 00:21:38,660
+these tend to be interpersonally strong connections
+
+443
+00:21:38,660 --> 00:21:42,560
+and that edges with low overlap or zero overlap,
+
+444
+00:21:42,560 --> 00:21:45,500
+that kind of connect different parts of the network,
+
+445
+00:21:45,500 --> 00:21:46,805
+they tend to be weak,
+
+446
+00:21:46,805 --> 00:21:48,860
+they tend to be, um, you know,
+
+447
+00:21:48,860 --> 00:21:51,755
+um, don't have high, uh, strength.
+
+448
+00:21:51,755 --> 00:21:54,335
+So, uh, this is now, uh,
+
+449
+00:21:54,335 --> 00:22:00,395
+very cool because this intuition can serve us to identify this type of, uh,
+
+450
+00:22:00,395 --> 00:22:03,455
+bridge connections and be able to, uh,
+
+451
+00:22:03,455 --> 00:22:05,870
+separate and be able to identify,
+
+452
+00:22:05,870 --> 00:22:09,090
+uh, the clusters, uh, in the network.
+

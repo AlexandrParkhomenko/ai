@@ -1,0 +1,2736 @@
+1
+00:00:04,190 --> 00:00:07,470
+Uh, today we are going to talk about new,
+
+2
+00:00:07,470 --> 00:00:10,425
+very interesting, and exciting problem called, uh,
+
+3
+00:00:10,425 --> 00:00:13,710
+subgraph matching and subgraph counting or, uh,
+
+4
+00:00:13,710 --> 00:00:17,250
+frequent subgraph counting and frequent subgraph matching.
+
+5
+00:00:17,250 --> 00:00:19,950
+What is exciting is that we will, uh,
+
+6
+00:00:19,950 --> 00:00:22,575
+talk about how can you do this with neural networks.
+
+7
+00:00:22,575 --> 00:00:25,620
+So basically, how can you take a very,
+
+8
+00:00:25,620 --> 00:00:28,035
+uh, classical, um, uh,
+
+9
+00:00:28,035 --> 00:00:32,775
+problem, uh, kind of classical combinatorial problem and cast it as a,
+
+10
+00:00:32,775 --> 00:00:35,130
+um, machine learning problem.
+
+11
+00:00:35,130 --> 00:00:37,290
+Uh, and this would be the exciting part and we are
+
+12
+00:00:37,290 --> 00:00:39,660
+going to use embeddings and graph neural networks,
+
+13
+00:00:39,660 --> 00:00:41,100
+uh, to make this all work,
+
+14
+00:00:41,100 --> 00:00:44,540
+and we will be able to scale it up and make it accurate, uh,
+
+15
+00:00:44,540 --> 00:00:48,409
+and kind of swap- ste- side-stepping all the kind of complex,
+
+16
+00:00:48,409 --> 00:00:50,150
+um, uh, discrete base,
+
+17
+00:00:50,150 --> 00:00:51,760
+the matching and counting.
+
+18
+00:00:51,760 --> 00:00:55,110
+So, um, here's the idea for today. All right?
+
+19
+00:00:55,110 --> 00:00:57,740
+We are given a big graph and we would like to
+
+20
+00:00:57,740 --> 00:01:01,950
+identify what subgraphs are common in this graph, right?
+
+21
+00:01:01,950 --> 00:01:05,224
+Like we can think of the graph as a- as a being
+
+22
+00:01:05,224 --> 00:01:08,770
+composed of a set of building blocks, meaning small subgraphs,
+
+23
+00:01:08,770 --> 00:01:12,140
+and we can think of a lot of these graphs almost like being composed of
+
+24
+00:01:12,140 --> 00:01:15,640
+these little pieces as the same way as let say, um, you know what, uh,
+
+25
+00:01:15,640 --> 00:01:18,125
+once you build something out of Legos,
+
+26
+00:01:18,125 --> 00:01:21,200
+that object that I know how so- that you built,
+
+27
+00:01:21,200 --> 00:01:24,020
+it's composed of small pieces that combine it,
+
+28
+00:01:24,020 --> 00:01:26,270
+uh, all together and create a house, right?
+
+29
+00:01:26,270 --> 00:01:29,240
+So in some sense, what we'd like to identify is what
+
+30
+00:01:29,240 --> 00:01:32,555
+are the most common Lego bricks that are,
+
+31
+00:01:32,555 --> 00:01:35,025
+uh, uh, that, uh, compose the graph together.
+
+32
+00:01:35,025 --> 00:01:38,340
+So, um, the power here will be that we are able to
+
+33
+00:01:38,340 --> 00:01:42,790
+characterize and discriminate different networks based on these building blocks.
+
+34
+00:01:42,790 --> 00:01:44,360
+And the task today will be,
+
+35
+00:01:44,360 --> 00:01:47,194
+how do we identify and define,
+
+36
+00:01:47,194 --> 00:01:50,155
+uh, these building blocks, uh, for graphs.
+
+37
+00:01:50,155 --> 00:01:52,264
+So to give you an example,
+
+38
+00:01:52,264 --> 00:01:54,110
+you can take a set of molecules,
+
+39
+00:01:54,110 --> 00:01:55,250
+as I show you here,
+
+40
+00:01:55,250 --> 00:01:57,505
+and you can represent them as graphs.
+
+41
+00:01:57,505 --> 00:02:03,330
+and what are common substructures, uh, in these, uh,
+
+42
+00:02:03,330 --> 00:02:03,650
+And now you can ask what are common, better,
+
+43
+00:02:03,650 --> 00:02:05,745
+in these graphs, um, and, uh,
+
+44
+00:02:05,745 --> 00:02:07,700
+this way I'm able to understand,
+
+45
+00:02:07,700 --> 00:02:11,660
+let's say the structure of these molecules and what are the important substructures.
+
+46
+00:02:11,660 --> 00:02:12,860
+In this case, for example,
+
+47
+00:02:12,860 --> 00:02:14,640
+you could identify that this particular,
+
+48
+00:02:14,640 --> 00:02:16,600
+um, substructure is, uh,
+
+49
+00:02:16,600 --> 00:02:18,579
+common across all the molecules,
+
+50
+00:02:18,579 --> 00:02:22,090
+and you know, it turns out that this is actually a very, uh, important, uh,
+
+51
+00:02:22,090 --> 00:02:24,250
+group that, uh, would tell you whether,
+
+52
+00:02:24,250 --> 00:02:26,450
+uh, the molecule is acidic or not, right?
+
+53
+00:02:26,450 --> 00:02:28,010
+So in many domains,
+
+54
+00:02:28,010 --> 00:02:30,470
+you have these recurring structural components
+
+55
+00:02:30,470 --> 00:02:33,150
+that determine the function or the behavior,
+
+56
+00:02:33,150 --> 00:02:37,560
+uh, of the graph similarly as this example in, uh, molecules.
+
+57
+00:02:37,560 --> 00:02:39,005
+And of course the question is,
+
+58
+00:02:39,005 --> 00:02:41,285
+how do we, uh, extract,
+
+59
+00:02:41,285 --> 00:02:45,965
+identify these commonly occurring, uh, substructures?
+
+60
+00:02:45,965 --> 00:02:48,290
+Um, we are going to, uh,
+
+61
+00:02:48,290 --> 00:02:50,440
+approach this problem in three different, uh,
+
+62
+00:02:50,440 --> 00:02:52,715
+kind of as a set of three steps.
+
+63
+00:02:52,715 --> 00:02:56,020
+First, we are going to talk about subgraphs and motifs,
+
+64
+00:02:56,020 --> 00:02:58,540
+where we are going to define what is a subgraph,
+
+65
+00:02:58,540 --> 00:02:59,695
+what is a motif,
+
+66
+00:02:59,695 --> 00:03:04,355
+and then we'll also talk about how do we identify, uh, significant motifs.
+
+67
+00:03:04,355 --> 00:03:06,460
+And then after we will be done with the first step,
+
+68
+00:03:06,460 --> 00:03:08,635
+we'll talk about how can we use
+
+69
+00:03:08,635 --> 00:03:12,910
+graph neural networks and embeddings to represent subgraphs,
+
+70
+00:03:12,910 --> 00:03:16,765
+and how can we then quickly identify common subgraphs, uh,
+
+71
+00:03:16,765 --> 00:03:20,050
+using only the embedding space and no need to do,
+
+72
+00:03:20,050 --> 00:03:21,745
+um, a very expensive, uh,
+
+73
+00:03:21,745 --> 00:03:24,090
+discrete type, uh, matching.
+
+74
+00:03:24,090 --> 00:03:27,105
+So let me first go and define,
+
+75
+00:03:27,105 --> 00:03:29,940
+um, subgraphs and, uh, motifs.
+
+76
+00:03:29,940 --> 00:03:34,985
+So, uh, here are two ways to formalize this idea of,
+
+77
+00:03:34,985 --> 00:03:37,730
+uh, uh, building blocks of networks, all right?
+
+78
+00:03:37,730 --> 00:03:38,870
+So we are given a network,
+
+79
+00:03:38,870 --> 00:03:41,870
+we are given a graph with a set of nodes and a set of edges,
+
+80
+00:03:41,870 --> 00:03:43,320
+and the first, uh,
+
+81
+00:03:43,320 --> 00:03:47,509
+definition we will be using is called node-induced subgraph,
+
+82
+00:03:47,509 --> 00:03:50,525
+where basically the idea is that you take a subset of nodes
+
+83
+00:03:50,525 --> 00:03:53,615
+and all the edges that connect these nodes.
+
+84
+00:03:53,615 --> 00:03:56,015
+So induced means it's,
+
+85
+00:03:56,015 --> 00:03:57,800
+uh, determined by the node set.
+
+86
+00:03:57,800 --> 00:04:02,615
+So the idea is that let's say this G prime on a- on a set of, uh,
+
+87
+00:04:02,615 --> 00:04:05,660
+nodes V prime and a set of edges E prime is
+
+88
+00:04:05,660 --> 00:04:10,335
+a node-induced subgraph if node set is a subset of the nodes,
+
+89
+00:04:10,335 --> 00:04:13,005
+and then edge- edge set is simply, um,
+
+90
+00:04:13,005 --> 00:04:16,620
+a set of all the edges that the- that the- existing the big gra- uh,
+
+91
+00:04:16,620 --> 00:04:21,550
+in the bigger graph where both endpoints are part of my, uh, subgraph, right?
+
+92
+00:04:21,550 --> 00:04:24,590
+So this means that G prime is a subgraph G,
+
+93
+00:04:24,590 --> 00:04:26,715
+uh, induced by the vertex set,
+
+94
+00:04:26,715 --> 00:04:27,960
+uh, V prime, right?
+
+95
+00:04:27,960 --> 00:04:29,565
+So basically, induced means,
+
+96
+00:04:29,565 --> 00:04:31,965
+it takes- it say- it ta- it means take
+
+97
+00:04:31,965 --> 00:04:36,330
+all the edges between the- the vertices that you have determined, right?
+
+98
+00:04:36,330 --> 00:04:39,680
+So, uh, we only get to choose the vertices, the edges.
+
+99
+00:04:39,680 --> 00:04:43,640
+Uh, the edges are determined by the set of vertices, uh, we picked.
+
+100
+00:04:43,640 --> 00:04:48,060
+Um, so this is what people say node-induced subgraph or generally,
+
+101
+00:04:48,060 --> 00:04:49,830
+we just call it induced subgraph.
+
+102
+00:04:49,830 --> 00:04:54,320
+It's basically a subgraph defined by a set of nodes where we take all the edges,
+
+103
+00:04:54,320 --> 00:04:55,765
+uh, between that set.
+
+104
+00:04:55,765 --> 00:04:58,465
+Um, then a second definition, uh,
+
+105
+00:04:58,465 --> 00:05:02,645
+that is less common is to talk about edge-induced subgraphs.
+
+106
+00:05:02,645 --> 00:05:06,665
+Here we take a subset of edges and all the corresponding nodes.
+
+107
+00:05:06,665 --> 00:05:11,175
+So G prime is an edge-induced subgraph, um, er,
+
+108
+00:05:11,175 --> 00:05:14,435
+simply defined by the subset of edges
+
+109
+00:05:14,435 --> 00:05:18,370
+E prime that is a subset of the edges E in the entire network.
+
+110
+00:05:18,370 --> 00:05:20,275
+And then now in- in this case,
+
+111
+00:05:20,275 --> 00:05:21,565
+the V prime, uh,
+
+112
+00:05:21,565 --> 00:05:24,165
+the set of nodes is simply defined,
+
+113
+00:05:24,165 --> 00:05:26,695
+um, through the edges we have selected.
+
+114
+00:05:26,695 --> 00:05:29,445
+Um, so in-in- in,
+
+115
+00:05:29,445 --> 00:05:31,770
+um, the terminology we'll be using, usually,
+
+116
+00:05:31,770 --> 00:05:32,850
+we say this that this is
+
+117
+00:05:32,850 --> 00:05:36,720
+a non-induced subgraph or just a subgraph because it's determined,
+
+118
+00:05:36,720 --> 00:05:40,115
+uh, by the set of edges rather than by the set of nodes.
+
+119
+00:05:40,115 --> 00:05:41,530
+When we say induced subgraph,
+
+120
+00:05:41,530 --> 00:05:44,180
+we would mean select the set of nodes and,
+
+121
+00:05:44,180 --> 00:05:45,690
+um, determine the edges,
+
+122
+00:05:45,690 --> 00:05:46,970
+and when we say non-induced,
+
+123
+00:05:46,970 --> 00:05:49,685
+it would mean just select the node- the edges,
+
+124
+00:05:49,685 --> 00:05:53,300
+and then the nodes get automatically, uh, determined.
+
+125
+00:05:53,300 --> 00:05:57,965
+The- the two ways of formalizing network buil- building blocks,
+
+126
+00:05:57,965 --> 00:05:59,855
+um, it will really depend,
+
+127
+00:05:59,855 --> 00:06:01,880
+uh, on the domain we are interested in.
+
+128
+00:06:01,880 --> 00:06:07,180
+Most often people like to work with induced subgraphs because otherwise if you do edge,
+
+129
+00:06:07,180 --> 00:06:09,360
+uh, induced subgraphs, the, er,
+
+130
+00:06:09,360 --> 00:06:10,635
+the number of, uh,
+
+131
+00:06:10,635 --> 00:06:12,870
+possibilities, uh, explodes.
+
+132
+00:06:12,870 --> 00:06:15,425
+So especially in natural science domains like
+
+133
+00:06:15,425 --> 00:06:18,725
+chemistry and so on where we worry about functional groups,
+
+134
+00:06:18,725 --> 00:06:20,890
+we are going to use node-induced subgraphs.
+
+135
+00:06:20,890 --> 00:06:22,670
+Uh, in other domains, for example,
+
+136
+00:06:22,670 --> 00:06:25,770
+knowledge graphs, it is actually often edge-induced subgraphs.
+
+137
+00:06:25,770 --> 00:06:29,270
+For example, if you think about focusing edges that represent,
+
+138
+00:06:29,270 --> 00:06:32,980
+uh, local logical, uh, relations.
+
+139
+00:06:32,980 --> 00:06:37,955
+So now that we have defined these two no- notions of a subgraph,
+
+140
+00:06:37,955 --> 00:06:39,260
+then, um, you know,
+
+141
+00:06:39,260 --> 00:06:42,500
+the preceding definitions of subgraphs, uh, uh,
+
+142
+00:06:42,500 --> 00:06:47,000
+basically say that V prime is a subset of V and E prime is a subset of E,
+
+143
+00:06:47,000 --> 00:06:50,585
+which mean- basically means that nodes and edges are taken from the original graph,
+
+144
+00:06:50,585 --> 00:06:52,780
+uh, G. Now, um,
+
+145
+00:06:52,780 --> 00:06:54,660
+you could also say, okay, what if,
+
+146
+00:06:54,660 --> 00:06:58,880
+er, V prime and E prime comes from totally different, uh, graphs?
+
+147
+00:06:58,880 --> 00:07:01,535
+For example, you could- can you somehow define that,
+
+148
+00:07:01,535 --> 00:07:02,960
+you know, you have two different graphs,
+
+149
+00:07:02,960 --> 00:07:08,475
+G_1 and G_2, could you somehow say that G_1 is contained in G_2?
+
+150
+00:07:08,475 --> 00:07:10,470
+Right? G_1 is this triangle of three nodes,
+
+151
+00:07:10,470 --> 00:07:11,985
+and we can see that in G_2,
+
+152
+00:07:11,985 --> 00:07:15,615
+this triangle is contained by the subgraph X,
+
+153
+00:07:15,615 --> 00:07:17,340
+uh, Y, uh, and Z.
+
+154
+00:07:17,340 --> 00:07:23,180
+So how do we say that one graph G_1 is contained in another,
+
+155
+00:07:23,180 --> 00:07:25,775
+let's say bigger graph, uh, G_2.
+
+156
+00:07:25,775 --> 00:07:29,765
+The way we do this is that we need to define the- the, uh,
+
+157
+00:07:29,765 --> 00:07:33,530
+problem or the task of graph isomorphism,
+
+158
+00:07:33,530 --> 00:07:36,155
+where the graph isomorphism problem,
+
+159
+00:07:36,155 --> 00:07:38,165
+uh, i- is the following problem,
+
+160
+00:07:38,165 --> 00:07:40,550
+you wanna check basically say, yes,
+
+161
+00:07:40,550 --> 00:07:43,410
+no, whether two graphs are identical.
+
+162
+00:07:43,410 --> 00:07:47,805
+So the idea is on having graph G_1 on some nodes and edges,
+
+163
+00:07:47,805 --> 00:07:49,800
+and I have graph G_2 and again,
+
+164
+00:07:49,800 --> 00:07:51,465
+some nodes, uh, and edges.
+
+165
+00:07:51,465 --> 00:07:54,165
+And I say that G_1 and G_2 are isomorphic.
+
+166
+00:07:54,165 --> 00:07:56,790
+If there exists a bijection, basically,
+
+167
+00:07:56,790 --> 00:07:58,370
+it mea- means there exists
+
+168
+00:07:58,370 --> 00:08:02,570
+a one-to-one mapping between the nodes of one graph to the nodes,
+
+169
+00:08:02,570 --> 00:08:04,930
+uh, of the other graph such that,
+
+170
+00:08:04,930 --> 00:08:07,230
+uh, all the edges, uh, are preserved.
+
+171
+00:08:07,230 --> 00:08:09,225
+Meaning if u and v are connected in,
+
+172
+00:08:09,225 --> 00:08:12,180
+um, uh, in the graph 1,
+
+173
+00:08:12,180 --> 00:08:15,135
+then the mapping of node, uh, uh,
+
+174
+00:08:15,135 --> 00:08:17,610
+u and the mapping of node v,
+
+175
+00:08:17,610 --> 00:08:20,025
+uh, is also connected, uh, in graph 2.
+
+176
+00:08:20,025 --> 00:08:22,200
+So this a and b should actually be, uh,
+
+177
+00:08:22,200 --> 00:08:24,735
+u and v, so we need- we'll fix that, right?
+
+178
+00:08:24,735 --> 00:08:28,410
+So this mapping F is called graph isomorphism.
+
+179
+00:08:28,410 --> 00:08:30,005
+So to give you an example,
+
+180
+00:08:30,005 --> 00:08:32,240
+if I have two graphs here, you know,
+
+181
+00:08:32,240 --> 00:08:33,590
+one- one looks like this,
+
+182
+00:08:33,590 --> 00:08:34,820
+the other one looks like that,
+
+183
+00:08:34,820 --> 00:08:38,570
+they are isomorphic because if I, uh, map, uh,
+
+184
+00:08:38,570 --> 00:08:41,179
+these nodes, uh, one to the, uh,
+
+185
+00:08:41,179 --> 00:08:43,374
+one to the other, as I show it here,
+
+186
+00:08:43,375 --> 00:08:45,200
+then basically, uh, the edges,
+
+187
+00:08:45,200 --> 00:08:47,495
+for example, these two nodes are connected here,
+
+188
+00:08:47,495 --> 00:08:48,995
+they're also connected there,
+
+189
+00:08:48,995 --> 00:08:52,310
+this- there is this connection which is here, and so on.
+
+190
+00:08:52,310 --> 00:08:54,650
+So clearly, these two graphs are isomorphic.
+
+191
+00:08:54,650 --> 00:08:57,180
+I can map nodes from one to the other,
+
+192
+00:08:57,180 --> 00:08:59,354
+and I'm able to preserve,
+
+193
+00:08:59,354 --> 00:09:00,555
+uh, all the edges.
+
+194
+00:09:00,555 --> 00:09:02,390
+In this- in a similar sense,
+
+195
+00:09:02,390 --> 00:09:04,325
+these two graphs are non-isomorphic
+
+196
+00:09:04,325 --> 00:09:07,655
+because there is no way for me to map these four nodes, uh,
+
+197
+00:09:07,655 --> 00:09:10,610
+of the left graph to the nodes of the right graph,
+
+198
+00:09:10,610 --> 00:09:12,950
+such that if two nodes are connected on the left,
+
+199
+00:09:12,950 --> 00:09:15,735
+I'd know they are also connected on the right.
+
+200
+00:09:15,735 --> 00:09:18,220
+Um, so this is the problem of
+
+201
+00:09:18,220 --> 00:09:21,625
+Graph Isomorphism is checking whether two graphs are identical.
+
+202
+00:09:21,625 --> 00:09:24,310
+And- and the issue here is that we
+
+203
+00:09:24,310 --> 00:09:27,425
+don't know how map- how nodes map to each other, right?
+
+204
+00:09:27,425 --> 00:09:34,030
+It goes back to this idea that ordering or- i- i- no- ideas of the nodes are arbitrary.
+
+205
+00:09:34,030 --> 00:09:36,730
+So really there is no special order to them.
+
+206
+00:09:36,730 --> 00:09:38,740
+So we really need to check in some sense,
+
+207
+00:09:38,740 --> 00:09:44,125
+all possible orderings to determine if one graph is the same than the other graph.
+
+208
+00:09:44,125 --> 00:09:45,880
+Um, and if you ask, "Okay,
+
+209
+00:09:45,880 --> 00:09:49,795
+so how hard is this graph isomorphism step um, problem?
+
+210
+00:09:49,795 --> 00:09:55,255
+It is actually not known whether graph isomorphism is NP-hard.
+
+211
+00:09:55,255 --> 00:10:00,700
+But we don't know any polynomial algorithm for solving graph isomorphism.
+
+212
+00:10:00,700 --> 00:10:01,960
+So it seems it's this kind of
+
+213
+00:10:01,960 --> 00:10:07,180
+super interesting problem where we cannot prove that it's NP-hard,
+
+214
+00:10:07,180 --> 00:10:09,940
+at same time, we don't know uh,
+
+215
+00:10:09,940 --> 00:10:12,085
+any algorithm or nobody was able to
+
+216
+00:10:12,085 --> 00:10:15,295
+determine the algorithm that would solve this in polynomial time.
+
+217
+00:10:15,295 --> 00:10:17,815
+So it's somewhere in between. Nobody knows.
+
+218
+00:10:17,815 --> 00:10:20,050
+Still a big open question.
+
+219
+00:10:20,050 --> 00:10:23,350
+So this is now the notion of graph isomorphism.
+
+220
+00:10:23,350 --> 00:10:27,310
+So now we can define the notion of subgraph isomorphism.
+
+221
+00:10:27,310 --> 00:10:29,200
+Where do we say that uh,
+
+222
+00:10:29,200 --> 00:10:35,245
+G- G2 is subgraph isomorphic to G1 if for some subgraph of G2,
+
+223
+00:10:35,245 --> 00:10:38,230
+the subgraph is isomorphic to G1.
+
+224
+00:10:38,230 --> 00:10:45,745
+So um, what they commonly say is also that simply that G1 is a subgraph of G2, right?
+
+225
+00:10:45,745 --> 00:10:50,165
+And we can use either node or edge induced subgraph definition in this case.
+
+226
+00:10:50,165 --> 00:10:53,275
+And this problem is known to be NP-hard.
+
+227
+00:10:53,275 --> 00:10:54,730
+To give you an example, right,
+
+228
+00:10:54,730 --> 00:10:57,085
+this is G1, this is the graph G2.
+
+229
+00:10:57,085 --> 00:11:01,405
+I say G1 is subgraph isomorphic to G2,
+
+230
+00:11:01,405 --> 00:11:04,360
+or G1 is a subgraph of G2.
+
+231
+00:11:04,360 --> 00:11:07,030
+Because if I use this particular node mapping, right?
+
+232
+00:11:07,030 --> 00:11:09,850
+A maps to X, B maps to Y,
+
+233
+00:11:09,850 --> 00:11:11,455
+and C maps to Z,
+
+234
+00:11:11,455 --> 00:11:17,135
+then these connections between the three nodes in G1 are preserved in G2 as well.
+
+235
+00:11:17,135 --> 00:11:20,245
+Notice that we don't care about additional connections.
+
+236
+00:11:20,245 --> 00:11:25,295
+So this doesn't matter because this node- this structure is not part of G1.
+
+237
+00:11:25,295 --> 00:11:28,060
+And the other thing that is also important to note is
+
+238
+00:11:28,060 --> 00:11:30,970
+that this mapping does not need to be unique.
+
+239
+00:11:30,970 --> 00:11:35,500
+It is just enough to find one mapping where I map nodes of one er,
+
+240
+00:11:35,500 --> 00:11:39,835
+sub er, graph to the nodes of the other graph in a unique way,
+
+241
+00:11:39,835 --> 00:11:41,200
+in a one-to-one mapping.
+
+242
+00:11:41,200 --> 00:11:44,195
+So it's- two nodes cannot map to the same nodes.
+
+243
+00:11:44,195 --> 00:11:45,955
+Right, so in this case,
+
+244
+00:11:45,955 --> 00:11:51,415
+we have now been able to mathematically define and determine that
+
+245
+00:11:51,415 --> 00:11:57,250
+G1 is a subgraph of G2 because there exists this bijective mapping,
+
+246
+00:11:57,250 --> 00:12:00,760
+so one-to-one mapping, so that uh, every- any er,
+
+247
+00:12:00,760 --> 00:12:04,885
+nodes from G1 map to G2 and if two nodes in G1 are connected,
+
+248
+00:12:04,885 --> 00:12:08,935
+then their maps, uh their transformations are
+
+249
+00:12:08,935 --> 00:12:12,910
+also connected in G2 and the other way around, right?
+
+250
+00:12:12,910 --> 00:12:16,030
+So that's the- that's the important uh, part here.
+
+251
+00:12:16,030 --> 00:12:19,735
+So now um, we have th- what have we learned so far?
+
+252
+00:12:19,735 --> 00:12:21,670
+We defined the notion of a subgraph.
+
+253
+00:12:21,670 --> 00:12:25,615
+We defined the notion of a graph isomorphism problem,
+
+254
+00:12:25,615 --> 00:12:29,290
+and then we also defined the notion of a subgraph isomorphism problem, right?
+
+255
+00:12:29,290 --> 00:12:33,550
+Basically saying is wha- is a small graph contained in the bigger graph?
+
+256
+00:12:33,550 --> 00:12:35,380
+Now, of course, um,
+
+257
+00:12:35,380 --> 00:12:37,000
+when we talked about subgraphs,
+
+258
+00:12:37,000 --> 00:12:41,550
+usually we are interested in all subgraphs up to a given size.
+
+259
+00:12:41,550 --> 00:12:49,855
+Size, meaning the number of nodes if we talk about different subgraphs of given size.
+
+260
+00:12:49,855 --> 00:12:53,350
+So to show, actually there is a lot of
+
+261
+00:12:53,350 --> 00:12:58,090
+different subgraphs of a given size and this number increases very, very fast.
+
+262
+00:12:58,090 --> 00:13:01,255
+So for example, if here I show an example of
+
+263
+00:13:01,255 --> 00:13:06,220
+all non isomorphic connected undirected graphs of size 4, right?
+
+264
+00:13:06,220 --> 00:13:09,640
+These are all possible graphs on four nodes, um,
+
+265
+00:13:09,640 --> 00:13:11,605
+where the number of nodes is fixed,
+
+266
+00:13:11,605 --> 00:13:13,405
+number of edges can vary,
+
+267
+00:13:13,405 --> 00:13:16,300
+and the other constraint is that these graphs are connected.
+
+268
+00:13:16,300 --> 00:13:21,730
+So there is four different graphs on four nodes undirected.
+
+269
+00:13:21,730 --> 00:13:24,340
+Now, for example, if you say what are
+
+270
+00:13:24,340 --> 00:13:28,810
+non-isomorphic connected directed graphs of size 3,
+
+271
+00:13:28,810 --> 00:13:31,360
+if you look at that, there's already 13 of them, right?
+
+272
+00:13:31,360 --> 00:13:32,530
+It's only three nodes.
+
+273
+00:13:32,530 --> 00:13:34,225
+But because edges are directed,
+
+274
+00:13:34,225 --> 00:13:36,604
+I can have edges in different directions,
+
+275
+00:13:36,604 --> 00:13:40,580
+and this gives me 13 different uh, graphs.
+
+276
+00:13:40,580 --> 00:13:43,225
+So what does- wh- why is this important?
+
+277
+00:13:43,225 --> 00:13:45,775
+Because if I have a directed graph and I say,
+
+278
+00:13:45,775 --> 00:13:49,150
+what are the building blocks of size 3,
+
+279
+00:13:49,150 --> 00:13:52,285
+then I would need to determine the frequency,
+
+280
+00:13:52,285 --> 00:13:56,830
+the number of times this particular subgraph number 1 is included in the big graph.
+
+281
+00:13:56,830 --> 00:14:00,055
+And then I need to determine how often is this guy um,
+
+282
+00:14:00,055 --> 00:14:01,570
+included and so on.
+
+283
+00:14:01,570 --> 00:14:05,840
+So the point is that the number of these building blocks,
+
+284
+00:14:05,840 --> 00:14:09,040
+different subgraphs, increases super exponentially.
+
+285
+00:14:09,040 --> 00:14:15,200
+So in general, people usually only counted these building blocks up to size 4, 5.
+
+286
+00:14:15,200 --> 00:14:16,825
+Because even at the level of 5,
+
+287
+00:14:16,825 --> 00:14:19,840
+there is thousands of them and it's kind of a lot to
+
+288
+00:14:19,840 --> 00:14:23,335
+keep track of and it becomes a very hard computational problem.
+
+289
+00:14:23,335 --> 00:14:28,355
+So now that we have defined the notion of subgraphs inclusion,
+
+290
+00:14:28,355 --> 00:14:29,560
+and I showed you that there are
+
+291
+00:14:29,560 --> 00:14:35,590
+many different possible subgraphs that are non-isomorphic with a given number of nodes.
+
+292
+00:14:35,590 --> 00:14:39,370
+Then, now we define the next concept that um,
+
+293
+00:14:39,370 --> 00:14:41,275
+will be important for today's discussion,
+
+294
+00:14:41,275 --> 00:14:44,225
+and this is the concept of a network motif.
+
+295
+00:14:44,225 --> 00:14:47,540
+A network motif is defined as a recurrent,
+
+296
+00:14:47,540 --> 00:14:51,735
+significant pattern of interconnections in a graph.
+
+297
+00:14:51,735 --> 00:14:57,400
+So now let's unpack this and determine like this, make it precise.
+
+298
+00:14:57,400 --> 00:14:58,810
+What do we mean by this?
+
+299
+00:14:58,810 --> 00:15:03,175
+First is um, we define a network motif as a pattern,
+
+300
+00:15:03,175 --> 00:15:06,440
+which means a small node induced subgraph.
+
+301
+00:15:06,440 --> 00:15:09,220
+Then we need to say what do we mean recurring, right?
+
+302
+00:15:09,220 --> 00:15:12,700
+Recurring means it has to appear multiple times, right?
+
+303
+00:15:12,700 --> 00:15:14,200
+It has to have high frequency.
+
+304
+00:15:14,200 --> 00:15:18,805
+It has to be contained many times in the underlying graph of interest.
+
+305
+00:15:18,805 --> 00:15:22,550
+And then there is another interesting part,
+
+306
+00:15:22,550 --> 00:15:24,565
+where we say significant,
+
+307
+00:15:24,565 --> 00:15:30,205
+and significant means that it's more frequent than what we would expect.
+
+308
+00:15:30,205 --> 00:15:33,670
+And of course, if you say more frequent than what we would expect,
+
+309
+00:15:33,670 --> 00:15:36,040
+then you need to have some way to say,
+
+310
+00:15:36,040 --> 00:15:37,930
+okay, but what would I expect?
+
+311
+00:15:37,930 --> 00:15:40,270
+And this means you need to have a null model,
+
+312
+00:15:40,270 --> 00:15:42,640
+you need to have a random graph null model.
+
+313
+00:15:42,640 --> 00:15:45,175
+So you say, aha, what I would expect in the model,
+
+314
+00:15:45,175 --> 00:15:48,580
+what I see in the reality, is there a big discrepancy?
+
+315
+00:15:48,580 --> 00:15:49,959
+If there is a big discrepancy,
+
+316
+00:15:49,959 --> 00:15:51,940
+this- then this subgraph pattern,
+
+317
+00:15:51,940 --> 00:15:57,625
+this motif must be an important thing so let's surface it out to the scientists.
+
+318
+00:15:57,625 --> 00:15:59,035
+To give you an idea.
+
+319
+00:15:59,035 --> 00:16:03,925
+Imagine I'm interested in this particular motif on three nodes in a directed graph,
+
+320
+00:16:03,925 --> 00:16:06,730
+then when I talk about motifs,
+
+321
+00:16:06,730 --> 00:16:08,560
+these motifs need to be induced.
+
+322
+00:16:08,560 --> 00:16:11,620
+So for example, this is not an instance of the motif
+
+323
+00:16:11,620 --> 00:16:14,690
+of interest because actually this is a triangle of three nodes.
+
+324
+00:16:14,690 --> 00:16:15,970
+It's not so bad, so
+
+325
+00:16:15,970 --> 00:16:17,950
+there's no edge in my motif here,
+
+326
+00:16:17,950 --> 00:16:19,690
+but there is there, for example.
+
+327
+00:16:19,690 --> 00:16:24,190
+So really the instance is here because this- this particular subgraph of interest,
+
+328
+00:16:24,190 --> 00:16:27,475
+this motif appears here and there is one-to-one mapping.
+
+329
+00:16:27,475 --> 00:16:31,705
+So I say, aha, I found this- the incidence of this thing here.
+
+330
+00:16:31,705 --> 00:16:33,070
+Of course, you know,
+
+331
+00:16:33,070 --> 00:16:38,370
+there are many other places where this same motif occurs.
+
+332
+00:16:38,370 --> 00:16:41,000
+So um, the question is,
+
+333
+00:16:41,000 --> 00:16:43,235
+why do we need this notion of motifs?
+
+334
+00:16:43,235 --> 00:16:48,425
+And motifs help us understand how uh, graphs work, how networks work.
+
+335
+00:16:48,425 --> 00:16:52,160
+They help uh, make us- they help us to make predictions based
+
+336
+00:16:52,160 --> 00:16:56,195
+on the presence or lack of presence uh, of a motif in a data set.
+
+337
+00:16:56,195 --> 00:16:59,585
+So for example, uh, feed-forward uh, loops,
+
+338
+00:16:59,585 --> 00:17:02,090
+this is defined as a feed-forward loop motif,
+
+339
+00:17:02,090 --> 00:17:04,714
+were found to be important, um,
+
+340
+00:17:04,714 --> 00:17:09,874
+for, uh, networks of neurons for- so basically for brain networks because they,
+
+341
+00:17:09,875 --> 00:17:13,079
+uh, neutralize what is called biological noise, uh.
+
+342
+00:17:13,079 --> 00:17:18,394
+Parallel loops are important in- in food webs because it says that,
+
+343
+00:17:18,395 --> 00:17:21,349
+um, eh, are given predators preying, uh, uh,
+
+344
+00:17:21,349 --> 00:17:25,864
+on two different uh, species that have a common food source,
+
+345
+00:17:25,865 --> 00:17:27,230
+and you know in, for example,
+
+346
+00:17:27,230 --> 00:17:28,339
+in gene control networks,
+
+347
+00:17:28,339 --> 00:17:32,390
+you have a lot of this type of a single- what is called single input modules
+
+348
+00:17:32,390 --> 00:17:37,655
+where um, this gene regulates uh, a lot of uh, other uh, genes.
+
+349
+00:17:37,655 --> 00:17:40,970
+So these are some examples of uh, significance of
+
+350
+00:17:40,970 --> 00:17:45,470
+motifs uh, for the function of a given underlying network.
+
+351
+00:17:45,470 --> 00:17:50,180
+So now, uh, let's go and define the two things we discussed.
+
+352
+00:17:50,180 --> 00:17:52,175
+First is, we need to define frequency,
+
+353
+00:17:52,175 --> 00:17:54,635
+second, we need to define significance.
+
+354
+00:17:54,635 --> 00:17:57,050
+So let's define frequency first, right?
+
+355
+00:17:57,050 --> 00:18:03,230
+Let's say G_Q is a small uh, sub-graph of interest and Gt be the big target graph.
+
+356
+00:18:03,230 --> 00:18:07,370
+Uh, and then we say that we will define a um, graph, uh,
+
+357
+00:18:07,370 --> 00:18:11,360
+level, subgraph frequency uh, by the following definition.
+
+358
+00:18:11,360 --> 00:18:16,190
+We'll say that frequency G- of this graph G_Q in the bigger graph,
+
+359
+00:18:16,190 --> 00:18:21,065
+G_T is the number of unique subsets of nodes, um, in, uh,
+
+360
+00:18:21,065 --> 00:18:24,635
+the big graph, for each the sub-graph, uh, um,
+
+361
+00:18:24,635 --> 00:18:28,550
+of the big graph induced by- by its nodes is- is,
+
+362
+00:18:28,550 --> 00:18:29,885
+uh, isomorphic to this,
+
+363
+00:18:29,885 --> 00:18:32,300
+let's call it G_Q, so the query graph.
+
+364
+00:18:32,300 --> 00:18:35,030
+So to give you- to give you an example, right,
+
+365
+00:18:35,030 --> 00:18:36,110
+this is kind of a mouthful,
+
+366
+00:18:36,110 --> 00:18:38,450
+but the intuition is actually quite simple.
+
+367
+00:18:38,450 --> 00:18:40,100
+Here I have the query graph,
+
+368
+00:18:40,100 --> 00:18:41,735
+here I have the target graph.
+
+369
+00:18:41,735 --> 00:18:45,005
+This query graph appears twice in the target graph, you know,
+
+370
+00:18:45,005 --> 00:18:47,045
+there two triangles, one is here,
+
+371
+00:18:47,045 --> 00:18:48,260
+the other one is here,
+
+372
+00:18:48,260 --> 00:18:50,120
+so the frequency would be 2.
+
+373
+00:18:50,120 --> 00:18:52,729
+Um, here's a different example,
+
+374
+00:18:52,729 --> 00:18:55,790
+imagine I have this star sub-graph um,
+
+375
+00:18:55,790 --> 00:18:56,885
+and I want to ask it,
+
+376
+00:18:56,885 --> 00:19:00,365
+how often does it appear in this graph, um, of uh,
+
+377
+00:19:00,365 --> 00:19:04,550
+interest? Actually here um, perhaps counter-intuitively,
+
+378
+00:19:04,550 --> 00:19:07,400
+the frequency will- will be super large because, you know,
+
+379
+00:19:07,400 --> 00:19:09,785
+the center node will map to the center node,
+
+380
+00:19:09,785 --> 00:19:11,600
+but then the number of the satellite,
+
+381
+00:19:11,600 --> 00:19:13,550
+these uh, leaf nodes um,
+
+382
+00:19:13,550 --> 00:19:17,195
+is huge because I can select any 6 out of 100,
+
+383
+00:19:17,195 --> 00:19:18,815
+and any 6 I select,
+
+384
+00:19:18,815 --> 00:19:20,405
+it's a different mapping.
+
+385
+00:19:20,405 --> 00:19:23,660
+So I basically count how many different ways am I able to
+
+386
+00:19:23,660 --> 00:19:26,900
+take this graph and map it to the target graphs?
+
+387
+00:19:26,900 --> 00:19:28,010
+So in this case,
+
+388
+00:19:28,010 --> 00:19:31,430
+the number of different mappings would be
+
+389
+00:19:31,430 --> 00:19:36,275
+100 choose 6 because out of the 100 nodes here,
+
+390
+00:19:36,275 --> 00:19:39,485
+uh, I want to choose different subsets of 6
+
+391
+00:19:39,485 --> 00:19:42,785
+because the s- the star graph uh, has uh, 6 nodes.
+
+392
+00:19:42,785 --> 00:19:47,330
+So here the frequency of this um, would be um, would be huge.
+
+393
+00:19:47,330 --> 00:19:54,140
+So um, this is uh, the graph-level sub-graph frequency uh, definition.
+
+394
+00:19:54,140 --> 00:19:56,120
+Uh, there is uh, also
+
+395
+00:19:56,120 --> 00:19:58,730
+a more precise uh, frequency definition ca-
+
+396
+00:19:58,730 --> 00:20:02,435
+called node level uh, sub-graph frequency definition,
+
+397
+00:20:02,435 --> 00:20:06,230
+and here the idea is that uh the query comes
+
+398
+00:20:06,230 --> 00:20:10,685
+with a- uh, comes with the graph as well as with an anchor.
+
+399
+00:20:10,685 --> 00:20:12,620
+And then we do the mapping,
+
+400
+00:20:12,620 --> 00:20:17,390
+we say to how many different nodes can this anchor be mapped?
+
+401
+00:20:17,390 --> 00:20:22,790
+Uh, so that this uh, sub-graph Q is contained uh, in the target graph, right?
+
+402
+00:20:22,790 --> 00:20:24,035
+So here we are saying,
+
+403
+00:20:24,035 --> 00:20:32,390
+I want to be able to map uh, the edges of the- of the graph uh, Q to the graph uh, T,
+
+404
+00:20:32,390 --> 00:20:39,140
+and I want to count to how many different nodes can this anchor uh, node uh, be mapped?
+
+405
+00:20:39,140 --> 00:20:41,030
+So in our case, for example,
+
+406
+00:20:41,030 --> 00:20:43,445
+if I have this star graph from the previous case,
+
+407
+00:20:43,445 --> 00:20:48,875
+and I select a center as- as a uh, as an anchor,
+
+408
+00:20:48,875 --> 00:20:54,185
+then the frequency of this um, graph in my target graph would be uh, 1.
+
+409
+00:20:54,185 --> 00:20:58,265
+So there is only one way to map this anchor uh, to my target graph.
+
+410
+00:20:58,265 --> 00:21:02,100
+For example, if I were to select the anchor as one of the satellites,
+
+411
+00:21:02,100 --> 00:21:08,185
+then the frequency of the sub-graph would be 100 because there is exactly 100 ways to map
+
+412
+00:21:08,185 --> 00:21:12,070
+the anchor to one of these 100 nodes such that the
+
+413
+00:21:12,070 --> 00:21:16,795
+entire sub-graph maps uh, to the uh, to the target graph.
+
+414
+00:21:16,795 --> 00:21:21,130
+So this is um, the node level sub-graph definition,
+
+415
+00:21:21,130 --> 00:21:24,430
+where we have this kind of anchor and we are asking how often can we
+
+416
+00:21:24,430 --> 00:21:28,650
+map the anchor together with the corresponding uh, sub-graph?
+
+417
+00:21:28,650 --> 00:21:34,985
+Okay. So now uh, that we have defined the notion of a sub-graph frequency, uh,
+
+418
+00:21:34,985 --> 00:21:36,740
+the graph level and the node level,
+
+419
+00:21:36,740 --> 00:21:38,360
+the last thing to say is, you know,
+
+420
+00:21:38,360 --> 00:21:40,640
+is it a problem if the graph is disconnected?
+
+421
+00:21:40,640 --> 00:21:43,745
+If I have multiple small connected graphs- disconnected graphs.
+
+422
+00:21:43,745 --> 00:21:45,440
+Solution is very simple,
+
+423
+00:21:45,440 --> 00:21:47,330
+I can s- simply treat
+
+424
+00:21:47,330 --> 00:21:50,780
+all these small um, separate sub-graphs
+
+425
+00:21:50,780 --> 00:21:54,470
+as one giant graph with multiple connected components,
+
+426
+00:21:54,470 --> 00:21:57,110
+so that is uh, no problem uh, at all,
+
+427
+00:21:57,110 --> 00:21:58,850
+just to kind of address this point.
+
+428
+00:21:58,850 --> 00:22:01,715
+So now that we have defined frequency,
+
+429
+00:22:01,715 --> 00:22:03,920
+we need to define the significance,
+
+430
+00:22:03,920 --> 00:22:08,210
+and we will define motif significance um, in a way that we compare
+
+431
+00:22:08,210 --> 00:22:12,709
+it- we p- compare the number of occurrences with some null-model,
+
+432
+00:22:12,709 --> 00:22:16,130
+with some kind of point of comparison and the idea is that if
+
+433
+00:22:16,130 --> 00:22:20,615
+a given sub-graph occurs um, in a real graph much more often,
+
+434
+00:22:20,615 --> 00:22:22,580
+than uh, than in a random network,
+
+435
+00:22:22,580 --> 00:22:26,240
+then this- then it has a signi- functional significance.
+
+436
+00:22:26,240 --> 00:22:31,775
+So let me now define uh, quickly how do we generate random graphs?
+
+437
+00:22:31,775 --> 00:22:35,150
+And the first way to define a random graph is
+
+438
+00:22:35,150 --> 00:22:38,255
+uh, the model called Erdos-Renyi random graph model.
+
+439
+00:22:38,255 --> 00:22:43,385
+And this random graph model has- is a stochastic graph model that has two parameters.
+
+440
+00:22:43,385 --> 00:22:45,605
+It has um, n and a p,
+
+441
+00:22:45,605 --> 00:22:47,015
+n is the number of nodes,
+
+442
+00:22:47,015 --> 00:22:49,010
+and p is a probability of an edge.
+
+443
+00:22:49,010 --> 00:22:51,515
+So how do you generate a graph from this model?
+
+444
+00:22:51,515 --> 00:22:55,910
+You simply create n isolated nodes and then for each pair of nodes,
+
+445
+00:22:55,910 --> 00:22:59,705
+you flip a biased coin with a bias p, and if the-
+
+446
+00:22:59,705 --> 00:23:03,905
+the- the- tai- the coin flip says create an edge,
+
+447
+00:23:03,905 --> 00:23:05,435
+then you would create an edge,
+
+448
+00:23:05,435 --> 00:23:09,140
+and uh, right, the generated graph is a result of a random process,
+
+449
+00:23:09,140 --> 00:23:12,380
+so the more t- the- you can generate multiple graphs and they'll be
+
+450
+00:23:12,380 --> 00:23:15,890
+different because the coin flips uh, will come up uh, differently.
+
+451
+00:23:15,890 --> 00:23:17,630
+Even if you set the same parameters,
+
+452
+00:23:17,630 --> 00:23:19,100
+here, you know, I have five nodes,
+
+453
+00:23:19,100 --> 00:23:23,330
+so n is 5 and probability of an edge is 0.6 and, you know,
+
+454
+00:23:23,330 --> 00:23:25,760
+this would be le- let's say three instances of
+
+455
+00:23:25,760 --> 00:23:30,245
+a random graph generated from this G n, p model.
+
+456
+00:23:30,245 --> 00:23:33,770
+So um, now the next question is,
+
+457
+00:23:33,770 --> 00:23:36,125
+can we have a more precise uh, model?
+
+458
+00:23:36,125 --> 00:23:38,630
+Like- because in this model, all I get to
+
+459
+00:23:38,630 --> 00:23:42,530
+specify is the number of nodes, and the probability of an edge.
+
+460
+00:23:42,530 --> 00:23:47,330
+So actually there is a more precise model uh, that is called configuration
+
+461
+00:23:47,330 --> 00:23:52,250
+model and the goal here is to generate a random graph with a given degree sequence.
+
+462
+00:23:52,250 --> 00:23:56,390
+So what does this mean is, if I have my real graph Gt,
+
+463
+00:23:56,390 --> 00:23:58,880
+I want to generate a random version of it.
+
+464
+00:23:58,880 --> 00:24:02,420
+One way to have a random version of it would simply be to say, you know,
+
+465
+00:24:02,420 --> 00:24:04,220
+my Gt has n nodes,
+
+466
+00:24:04,220 --> 00:24:07,970
+so let me generate an Erdos-Renyi random graph with n nodes.
+
+467
+00:24:07,970 --> 00:24:12,230
+And I will set the value of parameter p such that in expectation
+
+468
+00:24:12,230 --> 00:24:17,315
+this random Erdos-Renyi graph will have the same number of edges as my uh, G_t.
+
+469
+00:24:17,315 --> 00:24:21,440
+So I match in terms of number of nodes and the number of edges.
+
+470
+00:24:21,440 --> 00:24:24,350
+Um, in the configuration model,
+
+471
+00:24:24,350 --> 00:24:26,945
+we are going to match both the number of nodes,
+
+472
+00:24:26,945 --> 00:24:30,575
+number of edges, but also the degrees of the nodes.
+
+473
+00:24:30,575 --> 00:24:33,245
+So basically, we will say I wanna generate
+
+474
+00:24:33,245 --> 00:24:35,960
+a random graph that has a given degree sequence,
+
+475
+00:24:35,960 --> 00:24:38,720
+meaning I have nodes 1- n,
+
+476
+00:24:38,720 --> 00:24:40,970
+and each node has a given degree.
+
+477
+00:24:40,970 --> 00:24:45,290
+But I don't specify how the nodes connect to each other.
+
+478
+00:24:45,290 --> 00:24:46,955
+Um, the way I do this,
+
+479
+00:24:46,955 --> 00:24:48,965
+it's actually quite simple and elegant.
+
+480
+00:24:48,965 --> 00:24:53,930
+I create n nodes and for every node I create, uh, uh, k_i,
+
+481
+00:24:53,930 --> 00:24:56,960
+uh, spokes, right? So for example,
+
+482
+00:24:56,960 --> 00:24:58,475
+node B has degree 4,
+
+483
+00:24:58,475 --> 00:25:00,080
+so it has four spokes.
+
+484
+00:25:00,080 --> 00:25:01,475
+Node C has, uh,
+
+485
+00:25:01,475 --> 00:25:03,829
+degree 2, so it has two spokes.
+
+486
+00:25:03,829 --> 00:25:08,570
+What I can do now is I represent every spoke,
+
+487
+00:25:08,570 --> 00:25:10,280
+uh, as a node, right?
+
+488
+00:25:10,280 --> 00:25:15,980
+I take these spokes and I create spokes as nodes and- and the spokes from,
+
+489
+00:25:15,980 --> 00:25:17,930
+er, every, er, every, er,
+
+490
+00:25:17,930 --> 00:25:21,335
+supernode are- are kind of belong to a given box.
+
+491
+00:25:21,335 --> 00:25:23,885
+What I do now is I go and, uh,
+
+492
+00:25:23,885 --> 00:25:26,870
+I randomly pair up, uh, the spokes, right?
+
+493
+00:25:26,870 --> 00:25:29,240
+I basically- I randomly pair up these nodes.
+
+494
+00:25:29,240 --> 00:25:31,910
+And then I determine, um,
+
+495
+00:25:31,910 --> 00:25:35,150
+an edge between a pair of nodes if at least one spoke
+
+496
+00:25:35,150 --> 00:25:38,450
+from one partition links to the spoken the other partition.
+
+497
+00:25:38,450 --> 00:25:43,340
+So for example here, A and B are connected here because there is a node in,
+
+498
+00:25:43,340 --> 00:25:45,755
+uh, A that links to a node B.
+
+499
+00:25:45,755 --> 00:25:50,900
+Uh, of course, what is the issue here is sometimes it will happen that I will have,
+
+500
+00:25:50,900 --> 00:25:53,420
+uh, multiple spokes linked to each other
+
+501
+00:25:53,420 --> 00:25:55,910
+and that will only result in a single- single edge.
+
+502
+00:25:55,910 --> 00:25:57,500
+So I'm going to ignore that.
+
+503
+00:25:57,500 --> 00:25:59,570
+And of course it can also happen that for example,
+
+504
+00:25:59,570 --> 00:26:01,340
+these two nodes would link to each other.
+
+505
+00:26:01,340 --> 00:26:03,770
+So this would correspond to a self-loop.
+
+506
+00:26:03,770 --> 00:26:06,755
+And I'm also going to, uh, ignore this.
+
+507
+00:26:06,755 --> 00:26:10,325
+And kind of the reason why I can ignore all this is because, uh,
+
+508
+00:26:10,325 --> 00:26:15,710
+in practice, the probability of there being multiple edges between, um, er,
+
+509
+00:26:15,710 --> 00:26:19,070
+spokes coming from the same node or, um,
+
+510
+00:26:19,070 --> 00:26:24,485
+being a se- generating a self-loop is so- is so small that I can, uh,
+
+511
+00:26:24,485 --> 00:26:26,795
+ignore it for all practical, er,
+
+512
+00:26:26,795 --> 00:26:29,120
+purposes and also kind of mathematically,
+
+513
+00:26:29,120 --> 00:26:31,790
+uh, you can ignore it because it is, uh, so rare.
+
+514
+00:26:31,790 --> 00:26:34,160
+So basically this means that now I have
+
+515
+00:26:34,160 --> 00:26:37,430
+a very useful null-model of networks because I can compare
+
+516
+00:26:37,430 --> 00:26:38,990
+the real network with
+
+517
+00:26:38,990 --> 00:26:43,370
+a random version of the network that has the same degree sequence, right?
+
+518
+00:26:43,370 --> 00:26:48,140
+Node have the- nodes have the same degrees as in the, uh, G-real.
+
+519
+00:26:48,140 --> 00:26:53,432
+And now this gives me another different null-model where basically I create spokes, I
+
+520
+00:26:53,432 --> 00:26:59,480
+then create a G n, p by randomly connecting the spokes and then join these spoky nodes.
+
+521
+00:26:59,480 --> 00:27:01,730
+These mini-nodes it to get back,
+
+522
+00:27:01,730 --> 00:27:04,205
+er, a resulting, uh, graph.
+
+523
+00:27:04,205 --> 00:27:07,235
+So now that we have defined, uh,
+
+524
+00:27:07,235 --> 00:27:11,045
+two random models, the configuration model and the Erdos-Renyi model,
+
+525
+00:27:11,045 --> 00:27:14,600
+uh, generally, we would prefer to use the configuration model.
+
+526
+00:27:14,600 --> 00:27:16,865
+Now, we need to def- determine,
+
+527
+00:27:16,865 --> 00:27:19,430
+uh, and define what is motif significance.
+
+528
+00:27:19,430 --> 00:27:23,600
+And the- the intuition is that motif is already represented in a network,
+
+529
+00:27:23,600 --> 00:27:26,780
+uh, when we compare it to this random null-graph.
+
+530
+00:27:26,780 --> 00:27:28,520
+So the idea is the following.
+
+531
+00:27:28,520 --> 00:27:31,430
+I'm going to pick a sub-graph of interest and
+
+532
+00:27:31,430 --> 00:27:34,835
+I'm going to count its frequency in the real graph.
+
+533
+00:27:34,835 --> 00:27:39,335
+Then I'm going to generate a lot of random graphs, um,
+
+534
+00:27:39,335 --> 00:27:44,030
+that kind of match the real graph in terms of some statistics like the number of nodes,
+
+535
+00:27:44,030 --> 00:27:45,500
+number of edges, uh,
+
+536
+00:27:45,500 --> 00:27:47,000
+as well as degree sequence.
+
+537
+00:27:47,000 --> 00:27:50,660
+And I'm going to count the frequency of the same motif in this,
+
+538
+00:27:50,660 --> 00:27:53,405
+um, um, uh, random graph as well.
+
+539
+00:27:53,405 --> 00:27:57,830
+And then I'm going to define next a statistical measure that will
+
+540
+00:27:57,830 --> 00:28:02,690
+tell me kind of how- how- how big is the discrepancy between the,
+
+541
+00:28:02,690 --> 00:28:07,775
+um, frequency of the motif in the real g raph versus in the random version of it.
+
+542
+00:28:07,775 --> 00:28:12,155
+And in the statistic I'm going to define to quantify these is called a Z-score.
+
+543
+00:28:12,155 --> 00:28:15,920
+So let me explain, uh, what the Z-score is.
+
+544
+00:28:15,920 --> 00:28:20,750
+So, z- score,um, uh, of a given sub-graph
+
+545
+00:28:20,750 --> 00:28:25,115
+or a given motif I is- captures its statistically significance.
+
+546
+00:28:25,115 --> 00:28:27,770
+And the way we are going to do this is simply say, uh,
+
+547
+00:28:27,770 --> 00:28:32,555
+what is the number of times this motif I appears in the real graph?
+
+548
+00:28:32,555 --> 00:28:35,660
+What is the average number of times this same
+
+549
+00:28:35,660 --> 00:28:39,020
+motif I appears in the random versions of the real graph?
+
+550
+00:28:39,020 --> 00:28:41,420
+So because we have multiple instantiations,
+
+551
+00:28:41,420 --> 00:28:43,355
+I can compute the average and of course,
+
+552
+00:28:43,355 --> 00:28:45,410
+I can also compute the, uh,
+
+553
+00:28:45,410 --> 00:28:48,070
+ra-standard deviation of the frequency of
+
+554
+00:28:48,070 --> 00:28:51,955
+that motif in these different random instantiations of the,
+
+555
+00:28:51,955 --> 00:28:55,365
+uh, random graph corresponding to the, uh, real graph.
+
+556
+00:28:55,365 --> 00:28:57,155
+And the Z-score now,
+
+557
+00:28:57,155 --> 00:28:59,915
+will basically tell me how much over-
+
+558
+00:28:59,915 --> 00:29:03,575
+represented or under-represented is the motif, right?
+
+559
+00:29:03,575 --> 00:29:05,690
+And we are, uh, doing two things.
+
+560
+00:29:05,690 --> 00:29:07,880
+We compute-we compute, compare
+
+561
+00:29:07,880 --> 00:29:11,585
+the frequency in the real graph versus in the random graph.
+
+562
+00:29:11,585 --> 00:29:13,820
+But then we also, um,
+
+563
+00:29:13,820 --> 00:29:16,010
+divide by the standard deviation,
+
+564
+00:29:16,010 --> 00:29:18,170
+by the variance of that, uh,
+
+565
+00:29:18,170 --> 00:29:21,980
+of that count across multiple instantiations of the random graph, right?
+
+566
+00:29:21,980 --> 00:29:24,350
+So basically, what does this mean is that we somehow
+
+567
+00:29:24,350 --> 00:29:27,740
+normalize the count based on the natural variability,
+
+568
+00:29:27,740 --> 00:29:30,740
+uh, of- of the- of the count of that motif.
+
+569
+00:29:30,740 --> 00:29:34,270
+So now this gives me the Z-score of a given motif I.
+
+570
+00:29:34,270 --> 00:29:38,995
+And then what people compute and define is called network significance profile,
+
+571
+00:29:38,995 --> 00:29:41,185
+where basically we- we do it such that
+
+572
+00:29:41,185 --> 00:29:45,970
+the-the-the sum of the squares of the Z-scores, uh, equals to one.
+
+573
+00:29:45,970 --> 00:29:48,130
+So basically we normalize, um,
+
+574
+00:29:48,130 --> 00:29:53,410
+the significance profile where at the ith- ith component of the significance profile,
+
+575
+00:29:53,410 --> 00:29:55,435
+we take the Z-score of- of, uh,
+
+576
+00:29:55,435 --> 00:30:00,665
+sub-graph i and divide it by the square root of the sum of squares,
+
+577
+00:30:00,665 --> 00:30:02,795
+uh, of the, uh, Z-scores.
+
+578
+00:30:02,795 --> 00:30:04,895
+Uh, notice that Z-score, uh,
+
+579
+00:30:04,895 --> 00:30:07,280
+Z-score is such that if it is 0,
+
+580
+00:30:07,280 --> 00:30:08,405
+this means that, uh,
+
+581
+00:30:08,405 --> 00:30:12,695
+the motif occurs as often in the real graph as in the random graph.
+
+582
+00:30:12,695 --> 00:30:18,500
+And then, um, if you know the Z-score is bigger than plus or- or, uh, minus 2,
+
+583
+00:30:18,500 --> 00:30:21,770
+then we would say that a given motif is statistically significant,
+
+584
+00:30:21,770 --> 00:30:26,630
+appears statistically significantly more often or less often,
+
+585
+00:30:26,630 --> 00:30:29,210
+than, uh, what we- what happens,
+
+586
+00:30:29,210 --> 00:30:31,235
+uh, in the random graph?
+
+587
+00:30:31,235 --> 00:30:34,445
+So, um, and this allows us now to compare
+
+588
+00:30:34,445 --> 00:30:38,360
+networks of different sizes because the row counts can be quite different,
+
+589
+00:30:38,360 --> 00:30:39,935
+but the Z-scores are,
+
+590
+00:30:39,935 --> 00:30:42,320
+uh, size, uh, invariant.
+
+591
+00:30:42,320 --> 00:30:47,420
+So significant- significance profile is that basically for every sub-graph,
+
+592
+00:30:47,420 --> 00:30:50,840
+we have to count how often it appears in the real graph,
+
+593
+00:30:50,840 --> 00:30:53,015
+how often it appears in the random graph.
+
+594
+00:30:53,015 --> 00:30:55,955
+We need to do this over multiple random instantiations
+
+595
+00:30:55,955 --> 00:30:58,835
+so that we can then compute, uh, the Z-score.
+
+596
+00:30:58,835 --> 00:31:01,640
+And we need to do this for every possible sub-graph,
+
+597
+00:31:01,640 --> 00:31:04,265
+uh, of a given, uh, size.
+
+598
+00:31:04,265 --> 00:31:06,005
+And then for example,
+
+599
+00:31:06,005 --> 00:31:07,835
+we can take different networks,
+
+600
+00:31:07,835 --> 00:31:09,890
+like gene regulatory network,
+
+601
+00:31:09,890 --> 00:31:13,505
+neural networks of synaptic connections between neurons.
+
+602
+00:31:13,505 --> 00:31:15,470
+We can take the network of the world wide web,
+
+603
+00:31:15,470 --> 00:31:17,510
+we can take a social network, um,
+
+604
+00:31:17,510 --> 00:31:20,450
+or even like a network def- defined based on text,
+
+605
+00:31:20,450 --> 00:31:23,090
+based on word adjacency and compare, uh,
+
+606
+00:31:23,090 --> 00:31:27,905
+frequencies and significant prof- significance profiles, uh, between them.
+
+607
+00:31:27,905 --> 00:31:30,290
+And what is interesting, for example,
+
+608
+00:31:30,290 --> 00:31:32,450
+here is, these are the 13,
+
+609
+00:31:32,450 --> 00:31:34,805
+uh, sub-graphs of size,
+
+610
+00:31:34,805 --> 00:31:37,355
+uh, size 3 for directed graphs.
+
+611
+00:31:37,355 --> 00:31:38,615
+So these are now, uh,
+
+612
+00:31:38,615 --> 00:31:42,005
+my motifs and the y-axis here, is the Z-score.
+
+613
+00:31:42,005 --> 00:31:47,180
+And here are different instances of the same type of a- of a network.
+
+614
+00:31:47,180 --> 00:31:49,670
+For example, here are three instances of, uh,
+
+615
+00:31:49,670 --> 00:31:52,835
+uh, web graphs and three instances of social networks.
+
+616
+00:31:52,835 --> 00:31:56,915
+And you can see how basically they have the same significance profile.
+
+617
+00:31:56,915 --> 00:32:00,365
+You see, for example, how this triangle of,
+
+618
+00:32:00,365 --> 00:32:04,010
+uh, um, mutual connections is heavily overrepresented.
+
+619
+00:32:04,010 --> 00:32:07,265
+You notice how this particular motif, for example, here,
+
+620
+00:32:07,265 --> 00:32:10,520
+is very, um, is very much under-represented.
+
+621
+00:32:10,520 --> 00:32:12,470
+And for example, in social networks,
+
+622
+00:32:12,470 --> 00:32:14,570
+this makes sense because this says, you know,
+
+623
+00:32:14,570 --> 00:32:16,985
+imagine this is, uh, yourself or myself.
+
+624
+00:32:16,985 --> 00:32:20,885
+This means I have two friends to whom I have very strong relationship,
+
+625
+00:32:20,885 --> 00:32:23,270
+but these two friends are not friends with each other.
+
+626
+00:32:23,270 --> 00:32:27,185
+And actually, social science theory says that what would happen in this case is
+
+627
+00:32:27,185 --> 00:32:32,840
+either these two people become friends with each other and you end up with this motif 13,
+
+628
+00:32:32,840 --> 00:32:37,280
+or one of these edges will break because simply it is too- too hard
+
+629
+00:32:37,280 --> 00:32:42,080
+for you to maintain two separate relationships with two separate persons,
+
+630
+00:32:42,080 --> 00:32:44,240
+um, rather than, you know, bringing them together.
+
+631
+00:32:44,240 --> 00:32:47,240
+It's almost like saying you have to go to two coffees every
+
+632
+00:32:47,240 --> 00:32:50,900
+week versus all three of you going for a coffee and having good time, right?
+
+633
+00:32:50,900 --> 00:32:53,015
+Like this is much more hard,
+
+634
+00:32:53,015 --> 00:32:55,205
+uh, to maintain, uh, in practice.
+
+635
+00:32:55,205 --> 00:32:57,215
+And you see that in, um,
+
+636
+00:32:57,215 --> 00:33:00,980
+social networks, this motif is heavily underrepresented.
+
+637
+00:33:00,980 --> 00:33:02,660
+Um, but for example,
+
+638
+00:33:02,660 --> 00:33:05,510
+you can see that in other types of networks like signaling,
+
+639
+00:33:05,510 --> 00:33:10,640
+it's actually the feed-forward type loops here that are, uh, over-represented.
+
+640
+00:33:10,640 --> 00:33:14,120
+So basically you can get inside into the, um, uh,
+
+641
+00:33:14,120 --> 00:33:17,450
+function of networks by looking at this,
+
+642
+00:33:17,450 --> 00:33:19,700
+uh, motif, uh, profile.
+
+643
+00:33:19,700 --> 00:33:22,325
+So let me summarize.
+
+644
+00:33:22,325 --> 00:33:25,385
+Why did we decide is how do you detect network motifs?
+
+645
+00:33:25,385 --> 00:33:27,650
+You, uh, first count sub-graphs,
+
+646
+00:33:27,650 --> 00:33:29,525
+I in the real network.
+
+647
+00:33:29,525 --> 00:33:35,465
+Then you count the same sub-graph I in the random version of the real network here,
+
+648
+00:33:35,465 --> 00:33:37,295
+denoted as G_rand.
+
+649
+00:33:37,295 --> 00:33:41,120
+Uh, G_rand is a null model that has the same number of nodes,
+
+650
+00:33:41,120 --> 00:33:42,290
+same number of edges,
+
+651
+00:33:42,290 --> 00:33:46,985
+and the same degree distribution or the same degree sequence as the real network.
+
+652
+00:33:46,985 --> 00:33:52,370
+And then you assign or compute a Z-score for every subgraph i, where you simply say,
+
+653
+00:33:52,370 --> 00:33:56,990
+how often did this- this subgraph appear in the real graph minus how
+
+654
+00:33:56,990 --> 00:33:59,225
+often does it tend to occur in a random graph
+
+655
+00:33:59,225 --> 00:34:02,150
+divided by the standard deviation of the count,
+
+656
+00:34:02,150 --> 00:34:04,550
+um, of it in the random graph and,
+
+657
+00:34:04,550 --> 00:34:07,250
+uh, you know, motifs with high absolute z- scores.
+
+658
+00:34:07,250 --> 00:34:09,724
+This means they are either heavily over- represented
+
+659
+00:34:09,724 --> 00:34:12,440
+or heavily under-represented in my graph.
+
+660
+00:34:12,440 --> 00:34:16,489
+And that's why we say that they are, uh, significant.
+
+661
+00:34:16,489 --> 00:34:19,039
+So, um, and, you know,
+
+662
+00:34:19,040 --> 00:34:21,440
+the last thing to say in this case is there are
+
+663
+00:34:21,440 --> 00:34:24,574
+many variations of this notion of a motif concept.
+
+664
+00:34:24,574 --> 00:34:28,474
+You know, there are extensions to directed and undirected graphs.
+
+665
+00:34:28,475 --> 00:34:30,980
+There are extinctions to colored, uh,
+
+666
+00:34:30,980 --> 00:34:33,590
+nodes, so meaning nodes with different types.
+
+667
+00:34:33,590 --> 00:34:36,260
+There is also extensions to, uh,
+
+668
+00:34:36,260 --> 00:34:39,350
+temporal, uh, temporal graphs as well.
+
+669
+00:34:39,350 --> 00:34:41,195
+So in temporal motifs.
+
+670
+00:34:41,195 --> 00:34:45,650
+Um, and then there is also a lot of variations in terms of how do define frequency?
+
+671
+00:34:45,650 --> 00:34:48,320
+How do you define statistical significance?
+
+672
+00:34:48,320 --> 00:34:50,780
+How do you define under-representation?
+
+673
+00:34:50,780 --> 00:34:53,780
+And can you kind of count anti motifs as well.
+
+674
+00:34:53,780 --> 00:34:56,150
+So basically, absence of an edge is important.
+
+675
+00:34:56,150 --> 00:34:59,060
+And also, uh, how do you do different null models?
+
+676
+00:34:59,060 --> 00:35:01,790
+So there is a huge and very rich literature and
+
+677
+00:35:01,790 --> 00:35:06,065
+very active research area in this notion of, uh, motifs.
+
+678
+00:35:06,065 --> 00:35:11,210
+So to summarize, motifs and sub-graphs are building blocks of networks.
+
+679
+00:35:11,210 --> 00:35:16,385
+Sub-graph isomorphism and sub-graph counting are NP-hard problems.
+
+680
+00:35:16,385 --> 00:35:19,280
+Understanding which motifs are frequent or uh,
+
+681
+00:35:19,280 --> 00:35:24,740
+significant in a dataset gives us insights into the unique characteristics of the domain.
+
+682
+00:35:24,740 --> 00:35:26,600
+And we use random graph, uh,
+
+683
+00:35:26,600 --> 00:35:30,320
+null-models as basically as reference points to evaluate
+
+684
+00:35:30,320 --> 00:35:35,490
+significance of a given motif by computing, uh, the Z-score.
+

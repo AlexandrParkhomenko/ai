@@ -1,0 +1,1652 @@
+1
+00:00:04,010 --> 00:00:07,590
+So what I wanna talk next is,
+
+2
+00:00:07,590 --> 00:00:11,100
+how do we solve the PageRank equation?
+
+3
+00:00:11,100 --> 00:00:12,810
+How do we actually compute,
+
+4
+00:00:12,810 --> 00:00:15,360
+uh, the vector r?
+
+5
+00:00:15,360 --> 00:00:20,715
+The idea here is to use the method called, uh, power iteration.
+
+6
+00:00:20,715 --> 00:00:22,545
+And what I would like to do is,
+
+7
+00:00:22,545 --> 00:00:23,775
+we'd like to do the following.
+
+8
+00:00:23,775 --> 00:00:25,770
+Right? Given a graph on n nodes,
+
+9
+00:00:25,770 --> 00:00:31,170
+we want to use an iterate- we will use an iterative procedure that will, uh,
+
+10
+00:00:31,170 --> 00:00:35,280
+update over time our rank vector r. Um,
+
+11
+00:00:35,280 --> 00:00:38,789
+and the idea will be that we- we start the procedure by assigning
+
+12
+00:00:38,789 --> 00:00:42,585
+each node some initial random, uh, PageRank score.
+
+13
+00:00:42,585 --> 00:00:46,590
+And then we are going to repeat our iterative process until this,
+
+14
+00:00:46,590 --> 00:00:48,885
+uh, vector r stabilizes.
+
+15
+00:00:48,885 --> 00:00:51,269
+And the way we are going to measure whether it stabilizes,
+
+16
+00:00:51,269 --> 00:00:54,270
+we'll say, "Here is our previous estimate."
+
+17
+00:00:54,270 --> 00:00:58,005
+Now, t runs over the iteration of our algorithm,
+
+18
+00:00:58,005 --> 00:01:01,590
+where we say this is our previous estimate in the vector r. This is
+
+19
+00:01:01,590 --> 00:01:05,355
+our new estimating vector r. And if the coordinates,
+
+20
+00:01:05,355 --> 00:01:08,100
+the entries in the vector don't change too much,
+
+21
+00:01:08,100 --> 00:01:10,950
+they change less than epsilon, then we are done.
+
+22
+00:01:10,950 --> 00:01:14,625
+And the equation we are going to iterate is written here.
+
+23
+00:01:14,625 --> 00:01:16,875
+Basically, node j will say,
+
+24
+00:01:16,875 --> 00:01:20,040
+"My new estimate of my importance is simply,
+
+25
+00:01:20,040 --> 00:01:24,240
+take the estimate of the nodes i that point to me, uh,
+
+26
+00:01:24,240 --> 00:01:26,400
+from the previous step, you know,
+
+27
+00:01:26,400 --> 00:01:28,650
+divide each one by the out-degree of node i,
+
+28
+00:01:28,650 --> 00:01:31,155
+sum them up, and that is my new importance.
+
+29
+00:01:31,155 --> 00:01:33,990
+And we are just going to iterate this, um, you know,
+
+30
+00:01:33,990 --> 00:01:35,985
+a couple of times and it's ah,
+
+31
+00:01:35,985 --> 00:01:38,550
+it's guaranteed to converge to the,
+
+32
+00:01:38,550 --> 00:01:40,770
+uh, to this- to the solution,
+
+33
+00:01:40,770 --> 00:01:43,260
+which is essentially saying this is guaranteed to find
+
+34
+00:01:43,260 --> 00:01:46,784
+me the leading eigenvector of- of the underlying,
+
+35
+00:01:46,784 --> 00:01:50,490
+uh, matrix, uh, M. So, um,
+
+36
+00:01:50,490 --> 00:01:53,235
+the method that do- does this, what I explained,
+
+37
+00:01:53,235 --> 00:01:55,920
+is called power iteration, where,
+
+38
+00:01:55,920 --> 00:01:58,980
+um, basically, the way we are going to do this,
+
+39
+00:01:58,980 --> 00:02:01,785
+to just write it again in the very simple form,
+
+40
+00:02:01,785 --> 00:02:04,350
+we initialize vector r, you know,
+
+41
+00:02:04,350 --> 00:02:08,610
+let's call in- call it initialization to be times zero, to be simply,
+
+42
+00:02:08,610 --> 00:02:10,169
+uh, you know, every node has,
+
+43
+00:02:10,169 --> 00:02:13,395
+let's say the same importance or you can assign the random importances.
+
+44
+00:02:13,395 --> 00:02:15,615
+And then we will simply iterate, you know,
+
+45
+00:02:15,615 --> 00:02:18,795
+new estimate of r equals M times
+
+46
+00:02:18,795 --> 00:02:22,680
+previous estimate of r. And we are going to iterate this equation, uh,
+
+47
+00:02:22,680 --> 00:02:25,920
+for long enough until the- the, uh,
+
+48
+00:02:25,920 --> 00:02:29,100
+ent- the entry wise differences between estimating
+
+49
+00:02:29,100 --> 00:02:33,090
+the previous round and in the next round when the sum of these differences,
+
+50
+00:02:33,090 --> 00:02:35,055
+uh, is, uh, less than epsilon.
+
+51
+00:02:35,055 --> 00:02:39,510
+Again, notice that this equation is exactly this equation, right?
+
+52
+00:02:39,510 --> 00:02:41,475
+This is just written in two different ways,
+
+53
+00:02:41,475 --> 00:02:43,285
+but it's exactly the same thing.
+
+54
+00:02:43,285 --> 00:02:45,665
+Um, one last thing to say is,
+
+55
+00:02:45,665 --> 00:02:48,140
+you can use the- what is called L_1 norm,
+
+56
+00:02:48,140 --> 00:02:50,525
+so the sum of the absolute differences here.
+
+57
+00:02:50,525 --> 00:02:52,910
+You could also use, let's say, Euclidean norm.
+
+58
+00:02:52,910 --> 00:02:57,040
+So sum of the squares of absolute differences, uh, if you like.
+
+59
+00:02:57,040 --> 00:03:00,210
+Um, and generally, it takes about 50 iterations.
+
+60
+00:03:00,210 --> 00:03:02,430
+You have to compute about 50, uh,
+
+61
+00:03:02,430 --> 00:03:06,105
+50- you have to compute this product 50 times before you
+
+62
+00:03:06,105 --> 00:03:10,350
+reach this stationary distribution or this, uh, limiting solution.
+
+63
+00:03:10,350 --> 00:03:14,475
+So basically, you can compute PageRank by a couple of,
+
+64
+00:03:14,475 --> 00:03:17,505
+uh, matrix vector multiplies, uh, and you are done.
+
+65
+00:03:17,505 --> 00:03:19,620
+And this is important because, you know,
+
+66
+00:03:19,620 --> 00:03:24,885
+Google is computing this PageRank every day over the entire web graph,
+
+67
+00:03:24,885 --> 00:03:27,300
+write off tens of billions of- uh,
+
+68
+00:03:27,300 --> 00:03:30,480
+of nodes, uh, and I know hundreds of billions of edges.
+
+69
+00:03:30,480 --> 00:03:33,780
+All right? So this is really, really scalable and you can- you can compute
+
+70
+00:03:33,780 --> 00:03:37,770
+it on the- on the graph that captures the entire web.
+
+71
+00:03:37,770 --> 00:03:41,865
+So, uh, to give you an example, again, uh,
+
+72
+00:03:41,865 --> 00:03:43,785
+power iteration method, you know,
+
+73
+00:03:43,785 --> 00:03:45,540
+written again, in a different way.
+
+74
+00:03:45,540 --> 00:03:48,780
+Our matrix M, our set of flow equations.
+
+75
+00:03:48,780 --> 00:03:52,335
+Uh, and what I'm going to show you here is the iterations of the algorithm,
+
+76
+00:03:52,335 --> 00:03:55,870
+where we set node importances to be simply, ah,
+
+77
+00:03:55,870 --> 00:03:58,380
+1/3 at the beginning and now we multiply
+
+78
+00:03:58,380 --> 00:04:01,545
+it with matrix M. And you know after we multiply once,
+
+79
+00:04:01,545 --> 00:04:03,120
+here are the new values.
+
+80
+00:04:03,120 --> 00:04:04,590
+We multiply the second time,
+
+81
+00:04:04,590 --> 00:04:06,450
+here are the new values and,
+
+82
+00:04:06,450 --> 00:04:07,740
+you know, the third time,
+
+83
+00:04:07,740 --> 00:04:10,635
+and as we keep multiplying the- the- uh,
+
+84
+00:04:10,635 --> 00:04:13,380
+the value of- values of vector r,
+
+85
+00:04:13,380 --> 00:04:16,170
+then we'll converge to a stationary, uh,
+
+86
+00:04:16,170 --> 00:04:21,570
+vector so that m equals - r equals N times r. Um,
+
+87
+00:04:21,570 --> 00:04:25,890
+and the final importances would be 6/15, 6/15, and 3/15.
+
+88
+00:04:25,890 --> 00:04:30,420
+It means y and a will have importance of 6/15,
+
+89
+00:04:30,420 --> 00:04:34,260
+and m will have a lower importance of, uh, 3/15.
+
+90
+00:04:34,260 --> 00:04:39,135
+So, um, this is- this is what PageRank is going to, uh, give us.
+
+91
+00:04:39,135 --> 00:04:40,860
+So now that we, uh,
+
+92
+00:04:40,860 --> 00:04:44,250
+have seen these equations and everything seems beautiful,
+
+93
+00:04:44,250 --> 00:04:46,800
+uh, we need to ask a few questions.
+
+94
+00:04:46,800 --> 00:04:49,425
+So first question is, does this converge?
+
+95
+00:04:49,425 --> 00:04:53,550
+Second question is, does it converge to where we want?
+
+96
+00:04:53,550 --> 00:04:55,275
+And the third question is,
+
+97
+00:04:55,275 --> 00:04:57,120
+are the results reasonable?
+
+98
+00:04:57,120 --> 00:05:00,800
+Right? So basically, what I said right now is create the, uh,
+
+99
+00:05:00,800 --> 00:05:05,790
+graph represented as this matrix M around this uh, uh,
+
+100
+00:05:05,790 --> 00:05:08,809
+uh, iterative- power iteration procedure,
+
+101
+00:05:08,809 --> 00:05:13,145
+it will converge in about 50 steps and you will get your,
+
+102
+00:05:13,145 --> 00:05:15,155
+uh, vector r out of it.
+
+103
+00:05:15,155 --> 00:05:16,730
+Let's look at this, uh,
+
+104
+00:05:16,730 --> 00:05:18,740
+a bit more, uh, carefully.
+
+105
+00:05:18,740 --> 00:05:23,015
+So it turns out that with what I explained so far,
+
+106
+00:05:23,015 --> 00:05:24,730
+there are two problems.
+
+107
+00:05:24,730 --> 00:05:29,925
+The first problem is that some pages are what is called dead ends.
+
+108
+00:05:29,925 --> 00:05:31,560
+They have no out links.
+
+109
+00:05:31,560 --> 00:05:34,140
+And It turns out that for such web pages,
+
+110
+00:05:34,140 --> 00:05:37,605
+the importance, the votes kind of leak out.
+
+111
+00:05:37,605 --> 00:05:39,450
+I will tell you what I mean by that.
+
+112
+00:05:39,450 --> 00:05:43,920
+And then there is also a second problem called a spid- spider traps,
+
+113
+00:05:43,920 --> 00:05:47,310
+where all outlinks are within the same group
+
+114
+00:05:47,310 --> 00:05:52,035
+and the- the spider traps eventually absorb all- all importance.
+
+115
+00:05:52,035 --> 00:05:55,200
+So let me now give you an example and you will see what's happening.
+
+116
+00:05:55,200 --> 00:05:58,275
+So, um, first, spider traps.
+
+117
+00:05:58,275 --> 00:05:59,880
+Uh, here, in this case, right,
+
+118
+00:05:59,880 --> 00:06:01,170
+we have a links to b,
+
+119
+00:06:01,170 --> 00:06:03,315
+and then b has a self-loop.
+
+120
+00:06:03,315 --> 00:06:07,230
+So if you run this, um, er,
+
+121
+00:06:07,230 --> 00:06:10,530
+power iteration of what an adjacency matrix describing this graph,
+
+122
+00:06:10,530 --> 00:06:13,440
+what will happen is that in the end, a will have,
+
+123
+00:06:13,440 --> 00:06:16,920
+um, importance zero, and b will have importance 1.
+
+124
+00:06:16,920 --> 00:06:18,900
+And if you think of this, why is this happening is
+
+125
+00:06:18,900 --> 00:06:21,705
+because wherever the random walker starts,
+
+126
+00:06:21,705 --> 00:06:24,645
+uh, you know, it will traverse this edge and get into b,
+
+127
+00:06:24,645 --> 00:06:28,784
+and then it is going to- to- to be stuck here in b forever,
+
+128
+00:06:28,784 --> 00:06:30,225
+so really, you know,
+
+129
+00:06:30,225 --> 00:06:31,815
+after some number of time,
+
+130
+00:06:31,815 --> 00:06:35,085
+the random walker is- is in node b with probability 1,
+
+131
+00:06:35,085 --> 00:06:36,930
+and can never go back to a.
+
+132
+00:06:36,930 --> 00:06:41,745
+So this is called a spider trap because the random walker gets trapped, and at the end,
+
+133
+00:06:41,745 --> 00:06:44,265
+you know, this may be, uh, er,
+
+134
+00:06:44,265 --> 00:06:45,870
+all the importance will be,
+
+135
+00:06:45,870 --> 00:06:47,625
+uh, kept here in b.
+
+136
+00:06:47,625 --> 00:06:49,080
+And you can imagine these that, you know,
+
+137
+00:06:49,080 --> 00:06:51,900
+even if- if you have a super huge graph here, eventually,
+
+138
+00:06:51,900 --> 00:06:54,810
+the random walker is going traverse over this edge and then
+
+139
+00:06:54,810 --> 00:06:57,915
+be stuck forever in this, uh, self-loop.
+
+140
+00:06:57,915 --> 00:07:00,900
+So that's the problem of spider traps.
+
+141
+00:07:00,900 --> 00:07:04,050
+Um, and then here is the problem of dead ends.
+
+142
+00:07:04,050 --> 00:07:08,085
+The problem of dead ends is now that node b has no outlink.
+
+143
+00:07:08,085 --> 00:07:12,420
+And what this means that if you would simply create an adjacency matrix for this graph,
+
+144
+00:07:12,420 --> 00:07:13,785
+run the power iteration,
+
+145
+00:07:13,785 --> 00:07:16,245
+it will converge to all zeros.
+
+146
+00:07:16,245 --> 00:07:18,840
+And intuitively, why is this happening is
+
+147
+00:07:18,840 --> 00:07:21,885
+that as soon as the random walker gets to node b,
+
+148
+00:07:21,885 --> 00:07:24,780
+the random walker has nowhere to go so it kind of falls off
+
+149
+00:07:24,780 --> 00:07:27,945
+the cliff and the- and it gets lost.
+
+150
+00:07:27,945 --> 00:07:29,205
+Right? And this way,
+
+151
+00:07:29,205 --> 00:07:34,725
+the- the dead ends kind of this importance doesn't yet sum to one anymore,
+
+152
+00:07:34,725 --> 00:07:37,740
+but it leaks out, uh, of the graph.
+
+153
+00:07:37,740 --> 00:07:40,305
+So, um, this is- uh,
+
+154
+00:07:40,305 --> 00:07:44,385
+these are two problems that we are going to address.
+
+155
+00:07:44,385 --> 00:07:47,130
+And, um, you know, what is the solution?
+
+156
+00:07:47,130 --> 00:07:50,355
+The solution is this notion of,
+
+157
+00:07:50,355 --> 00:07:53,115
+uh, random jumps or teleports.
+
+158
+00:07:53,115 --> 00:07:56,130
+So the solution for spider traps is that
+
+159
+00:07:56,130 --> 00:07:59,415
+we are going to change the random walk processor.
+
+160
+00:07:59,415 --> 00:08:02,115
+So basically saying at every time
+
+161
+00:08:02,115 --> 00:08:05,145
+the random walker will not only choose a link at random,
+
+162
+00:08:05,145 --> 00:08:08,115
+but can also decide to teleport itself.
+
+163
+00:08:08,115 --> 00:08:09,930
+So let me explain what this means.
+
+164
+00:08:09,930 --> 00:08:13,410
+So we are going to have one parameter beta
+
+165
+00:08:13,410 --> 00:08:17,250
+that will allow random walker to do one of the two choices.
+
+166
+00:08:17,250 --> 00:08:19,725
+With probability beta, you know,
+
+167
+00:08:19,725 --> 00:08:22,470
+the random walker will decide and follow a link at
+
+168
+00:08:22,470 --> 00:08:25,710
+random the same way as we discussed, um, so far.
+
+169
+00:08:25,710 --> 00:08:28,095
+But with probability 1 minus beta,
+
+170
+00:08:28,095 --> 00:08:32,985
+the random walker is going to jump teleport to a random page.
+
+171
+00:08:32,985 --> 00:08:37,650
+And the common values of beta usually are between 0.8 to 0.9.
+
+172
+00:08:37,650 --> 00:08:39,150
+So it means that, you know,
+
+173
+00:08:39,150 --> 00:08:42,210
+if a random walker gets stuc- stuck in a spider trap,
+
+174
+00:08:42,210 --> 00:08:44,820
+it will stay here for a few steps,
+
+175
+00:08:44,820 --> 00:08:49,320
+but it's- eventually, it will- it will- it will be able to teleport out, right?
+
+176
+00:08:49,320 --> 00:08:51,495
+Because with some smaller probability,
+
+177
+00:08:51,495 --> 00:08:52,695
+the random walker will say,
+
+178
+00:08:52,695 --> 00:08:55,260
+"Let me just randomly teleport to a random page."
+
+179
+00:08:55,260 --> 00:08:57,869
+So it means that out of every webpage,
+
+180
+00:08:57,869 --> 00:09:02,190
+out of every node, there is a way for you to teleport yourself somewhere else.
+
+181
+00:09:02,190 --> 00:09:04,770
+So basically, randomly jump somewhere else.
+
+182
+00:09:04,770 --> 00:09:06,525
+And this is, um,
+
+183
+00:09:06,525 --> 00:09:11,325
+how now spider traps are no longer the problem because you don't get,
+
+184
+00:09:11,325 --> 00:09:13,740
+er, trapped, you can always, uh, jump out.
+
+185
+00:09:13,740 --> 00:09:15,585
+You can always teleport, you know,
+
+186
+00:09:15,585 --> 00:09:17,940
+the [inaudible] can all you - always kind of give you up.
+
+187
+00:09:17,940 --> 00:09:19,425
+That is kind of the idea.
+
+188
+00:09:19,425 --> 00:09:22,022
+Um, how about the dead ends?
+
+189
+00:09:22,022 --> 00:09:26,545
+The- the- the way you do this is also with teleports.
+
+190
+00:09:26,545 --> 00:09:27,895
+Essentially, what you say,
+
+191
+00:09:27,895 --> 00:09:29,380
+if you come to a dead end,
+
+192
+00:09:29,380 --> 00:09:32,125
+if you come to node m and there's nowhere for you to go,
+
+193
+00:09:32,125 --> 00:09:36,280
+what you- what you do is you simply teleport with probability 1.0, right?
+
+194
+00:09:36,280 --> 00:09:37,720
+So, uh, you know,
+
+195
+00:09:37,720 --> 00:09:40,160
+why were the dead- dead end is the problem?
+
+196
+00:09:40,160 --> 00:09:43,549
+Dead ends were the problem because m has no outlinks,
+
+197
+00:09:43,549 --> 00:09:47,110
+so our column of this, uh, matrix M,
+
+198
+00:09:47,110 --> 00:09:54,535
+the column stochastic adjacency matrix is not- is the- the- the column stochasticity is,
+
+199
+00:09:54,535 --> 00:09:59,515
+uh, violated because column for node m does not sum to 1 because m has no outlinks.
+
+200
+00:09:59,515 --> 00:10:00,740
+So what do we do is,
+
+201
+00:10:00,740 --> 00:10:02,875
+we fix this by basically saying,
+
+202
+00:10:02,875 --> 00:10:04,355
+when you arrive to node m,
+
+203
+00:10:04,355 --> 00:10:08,155
+you can- you can randomly teleport wherever you want,
+
+204
+00:10:08,155 --> 00:10:09,460
+you can jump to any node.
+
+205
+00:10:09,460 --> 00:10:10,570
+So this means in some sense,
+
+206
+00:10:10,570 --> 00:10:14,950
+now- now m is connected to all other nodes in the network,
+
+207
+00:10:14,950 --> 00:10:17,860
+including itself, and, um, you know,
+
+208
+00:10:17,860 --> 00:10:21,800
+the random worker can choose any of these links with equal probability.
+
+209
+00:10:21,800 --> 00:10:24,565
+And this, uh, solves the problem of dead ends.
+
+210
+00:10:24,565 --> 00:10:26,630
+It essentially eliminates them.
+
+211
+00:10:26,630 --> 00:10:30,570
+So why do teleports solve the problem, right?
+
+212
+00:10:30,570 --> 00:10:34,005
+What are- why are dead ends and spider traps a problem,
+
+213
+00:10:34,005 --> 00:10:37,225
+and why do teleports solve both of them, right?
+
+214
+00:10:37,225 --> 00:10:39,205
+Spider traps, in some sense,
+
+215
+00:10:39,205 --> 00:10:40,960
+are not a mathematical problem,
+
+216
+00:10:40,960 --> 00:10:44,980
+in a sense that the eigenve- the eigenvector is still well defined,
+
+217
+00:10:44,980 --> 00:10:47,905
+the power iteration is going to- to converge,
+
+218
+00:10:47,905 --> 00:10:50,470
+everything is fine, uh, mathematically.
+
+219
+00:10:50,470 --> 00:10:54,280
+But the problem is that the PageRank score is not what we want, right?
+
+220
+00:10:54,280 --> 00:10:58,930
+We don't want to say there is one page on the web that is important,
+
+221
+00:10:58,930 --> 00:11:00,695
+uh, has all the importance,
+
+222
+00:11:00,695 --> 00:11:03,700
+and everyone else is zero important, right?
+
+223
+00:11:03,700 --> 00:11:06,940
+So the solution here is to add teleports.
+
+224
+00:11:06,940 --> 00:11:09,265
+This means the random walker never gets,
+
+225
+00:11:09,265 --> 00:11:11,680
+uh, trapped in a spider trap, um,
+
+226
+00:11:11,680 --> 00:11:15,400
+and it will be able to teleport itself out in a finite number of steps,
+
+227
+00:11:15,400 --> 00:11:19,610
+which means that all the nodes on the web will now have some importance.
+
+228
+00:11:19,610 --> 00:11:21,970
+So this basically is,
+
+229
+00:11:21,970 --> 00:11:24,400
+um, solves us, uh, this particular issue.
+
+230
+00:11:24,400 --> 00:11:27,640
+So spider traps are not a mathematical problem,
+
+231
+00:11:27,640 --> 00:11:29,800
+but a problem that PageRank,
+
+232
+00:11:29,800 --> 00:11:33,295
+uh, value is not- becomes not what we want.
+
+233
+00:11:33,295 --> 00:11:37,600
+And then dead ends are a problem mathematically
+
+234
+00:11:37,600 --> 00:11:42,580
+because our matrix M is not column stochastic anymore, uh,
+
+235
+00:11:42,580 --> 00:11:46,435
+and our initial assumptions are not met, so power iteration,
+
+236
+00:11:46,435 --> 00:11:48,890
+as a method, does not- does not, uh,
+
+237
+00:11:48,890 --> 00:11:51,445
+does not work, uh, and does not converge.
+
+238
+00:11:51,445 --> 00:11:54,145
+So the solution here is to make the column-
+
+239
+00:11:54,145 --> 00:11:59,640
+the matrix column stochastic by always teleporting when there is nowhere to go, right?
+
+240
+00:11:59,640 --> 00:12:01,785
+Whenever you come to a node without any outlinks,
+
+241
+00:12:01,785 --> 00:12:03,455
+you always randomly teleport,
+
+242
+00:12:03,455 --> 00:12:05,770
+um, and this is now means that basically,
+
+243
+00:12:05,770 --> 00:12:09,205
+the same solution of teleports both give-
+
+244
+00:12:09,205 --> 00:12:12,935
+gives us PageRank the way we want it to define intuitively,
+
+245
+00:12:12,935 --> 00:12:16,510
+and also fixes the underlying mathematical problems
+
+246
+00:12:16,510 --> 00:12:20,770
+that all these concepts that I discussed, um, are well-defined.
+
+247
+00:12:20,770 --> 00:12:26,080
+So what is the final solution or the Google solution to this problem?
+
+248
+00:12:26,080 --> 00:12:28,835
+Um, the solution is that at each step,
+
+249
+00:12:28,835 --> 00:12:31,315
+the random walker has two options;
+
+250
+00:12:31,315 --> 00:12:32,800
+you know, it flips a coin,
+
+251
+00:12:32,800 --> 00:12:34,795
+and with some probability Beta,
+
+252
+00:12:34,795 --> 00:12:38,015
+it's going to follow an outlink- outlink at random,
+
+253
+00:12:38,015 --> 00:12:40,595
+and with the remaining probability,
+
+254
+00:12:40,595 --> 00:12:43,195
+it's going to jump to a random page.
+
+255
+00:12:43,195 --> 00:12:47,770
+So the way now our PageRank equation that was defined by,
+
+256
+00:12:47,770 --> 00:12:50,395
+um, uh, Sergey and Brin, um,
+
+257
+00:12:50,395 --> 00:12:51,790
+or Page and Brin, uh,
+
+258
+00:12:51,790 --> 00:12:53,245
+back, uh, in, uh,
+
+259
+00:12:53,245 --> 00:12:57,805
+1998, is the following: we say the importance of node j
+
+260
+00:12:57,805 --> 00:13:02,845
+equals the Beta times the importances of node i that,
+
+261
+00:13:02,845 --> 00:13:04,075
+uh, point to it, right?
+
+262
+00:13:04,075 --> 00:13:07,930
+Divided by their outdegrees plus 1 minus Beta,
+
+263
+00:13:07,930 --> 00:13:10,810
+1 over N. So the way you can think of this is to say,
+
+264
+00:13:10,810 --> 00:13:15,665
+if a random if a- how likely is a random walker likely to be at node j right now?
+
+265
+00:13:15,665 --> 00:13:18,245
+It- with probability Beta,
+
+266
+00:13:18,245 --> 00:13:20,260
+it decided to follow on, uh,
+
+267
+00:13:20,260 --> 00:13:22,795
+an outlink, and this means it was,
+
+268
+00:13:22,795 --> 00:13:25,600
+at node i, with what- with some probability r_i,
+
+269
+00:13:25,600 --> 00:13:28,810
+and it decided to follow an out- outlink towards,
+
+270
+00:13:28,810 --> 00:13:31,630
+uh, node j, following, you know,
+
+271
+00:13:31,630 --> 00:13:37,055
+picking the right outlink out of the d_i outlink has the probability 1 over d_i,
+
+272
+00:13:37,055 --> 00:13:38,900
+so that's what's happening here.
+
+273
+00:13:38,900 --> 00:13:41,625
+And then we say, oh, and also,
+
+274
+00:13:41,625 --> 00:13:45,270
+the random walker could come to the node j,
+
+275
+00:13:45,270 --> 00:13:47,655
+um, by basically teleporting,
+
+276
+00:13:47,655 --> 00:13:50,205
+1 minus Beta is probability of teleporting.
+
+277
+00:13:50,205 --> 00:13:54,100
+Now, how likely is the random walker to land at node j?
+
+278
+00:13:54,100 --> 00:13:57,365
+Node j is just one out of N nodes,
+
+279
+00:13:57,365 --> 00:14:04,189
+so the probability that it landed at specific node j is 1 over N. And uh, this is essentially,
+
+280
+00:14:04,189 --> 00:14:05,845
+uh, the PageRank, uh,
+
+281
+00:14:05,845 --> 00:14:08,845
+equation and iteration one can run.
+
+282
+00:14:08,845 --> 00:14:13,390
+Uh, just note that this formulation here assumes M has no dead ends.
+
+283
+00:14:13,390 --> 00:14:17,920
+The way you can do is you can pre-process matrix M to remove all the dead ends,
+
+284
+00:14:17,920 --> 00:14:23,885
+um, and or- or explicitly follow random teleports with probability 1.0 out of dead-ends.
+
+285
+00:14:23,885 --> 00:14:26,425
+So that's how you can, uh, fix this.
+
+286
+00:14:26,425 --> 00:14:30,460
+But you can see again, this is very fast and very simple, uh, to iterate.
+
+287
+00:14:30,460 --> 00:14:34,195
+So I just gave you the equation in this,
+
+288
+00:14:34,195 --> 00:14:37,180
+um, the, uh, flow-based formulation in some sense.
+
+289
+00:14:37,180 --> 00:14:39,490
+You can also write it in a matrix form,
+
+290
+00:14:39,490 --> 00:14:43,480
+where you say my new matrix, uh, uh, G, right?
+
+291
+00:14:43,480 --> 00:14:50,245
+So this should be G equals Beta times the stochastic matrix M plus 1 minus Beta,
+
+292
+00:14:50,245 --> 00:14:52,790
+um, times the, uh,
+
+293
+00:14:52,790 --> 00:14:55,610
+the matrix that has all the entries, uh,
+
+294
+00:14:55,610 --> 00:14:59,360
+1 over N. So this is the random teleportation, uh, matrix,
+
+295
+00:14:59,360 --> 00:15:03,470
+and this is the- the transition matrix over the edges of the graph.
+
+296
+00:15:03,470 --> 00:15:05,350
+Um, and then you have this, again,
+
+297
+00:15:05,350 --> 00:15:08,215
+recursive equation that r equals G times r,
+
+298
+00:15:08,215 --> 00:15:10,255
+and you can iterate this, uh,
+
+299
+00:15:10,255 --> 00:15:13,195
+power i- power iteration would still work, um,
+
+300
+00:15:13,195 --> 00:15:19,329
+and if you ask what should be the Beta value that I- that I set, in practice,
+
+301
+00:15:19,329 --> 00:15:22,835
+we take Beta to be between 0.8, uh, and 0.9,
+
+302
+00:15:22,835 --> 00:15:24,820
+which means that you- the random walker takes
+
+303
+00:15:24,820 --> 00:15:29,215
+about five steps on the average before it decides to jump.
+
+304
+00:15:29,215 --> 00:15:31,420
+Uh, just to be very clear,
+
+305
+00:15:31,420 --> 00:15:33,830
+the random walk is just the intuition,
+
+306
+00:15:33,830 --> 00:15:36,630
+and we'd never simulate the random walk, right?
+
+307
+00:15:36,630 --> 00:15:37,870
+In the previous lecture,
+
+308
+00:15:37,870 --> 00:15:40,120
+we actually said, "Let's simulate the random walk."
+
+309
+00:15:40,120 --> 00:15:42,365
+Here, we don't simulate the random walk,
+
+310
+00:15:42,365 --> 00:15:44,200
+but, uh, in some sense,
+
+311
+00:15:44,200 --> 00:15:47,695
+we think of it as being run infinitely long,
+
+312
+00:15:47,695 --> 00:15:50,125
+and then we say- we show that actually,
+
+313
+00:15:50,125 --> 00:15:53,080
+we can compute this infinitely long random walk
+
+314
+00:15:53,080 --> 00:15:56,075
+by basically solving this recursive equation by basically
+
+315
+00:15:56,075 --> 00:16:03,159
+computing the- the leading eigenvector of this graph-transformed matrix,
+
+316
+00:16:03,159 --> 00:16:04,295
+uh, that I call,
+
+317
+00:16:04,295 --> 00:16:05,930
+uh, G, uh, here.
+
+318
+00:16:05,930 --> 00:16:10,729
+So the random walk is just an intuition because we never truly,
+
+319
+00:16:10,729 --> 00:16:14,930
+um, we never truly, uh, simulated.
+
+320
+00:16:14,930 --> 00:16:18,100
+So to show you how this works, here is my, uh,
+
+321
+00:16:18,100 --> 00:16:20,945
+little graph on three nodes, uh,
+
+322
+00:16:20,945 --> 00:16:24,580
+here's the matrix M. Notice that, uh,
+
+323
+00:16:24,580 --> 00:16:27,670
+the node m is a- is a spider trap,
+
+324
+00:16:27,670 --> 00:16:31,165
+so what do I do now is I add also these,
+
+325
+00:16:31,165 --> 00:16:33,400
+um, random teleport, uh, links,
+
+326
+00:16:33,400 --> 00:16:35,890
+so I have this matrix, uh, uh,
+
+327
+00:16:35,890 --> 00:16:38,824
+1 over N. Let's say that my Beta is 0.8,
+
+328
+00:16:38,824 --> 00:16:45,120
+so now, my new stochastic transition matrix G is written here, right?
+
+329
+00:16:45,120 --> 00:16:47,365
+It's 0.8 times the, uh,
+
+330
+00:16:47,365 --> 00:16:50,800
+matrix of link transitions plus point to the,
+
+331
+00:16:50,800 --> 00:16:53,740
+uh, matrix of random jumps, where basically,
+
+332
+00:16:53,740 --> 00:16:56,110
+you can think of this that every column says,
+
+333
+00:16:56,110 --> 00:16:59,275
+if a no- if a random surfer is at a given node,
+
+334
+00:16:59,275 --> 00:17:03,505
+then this is the probability distribution where the random surfer is going to jump.
+
+335
+00:17:03,505 --> 00:17:04,805
+And if you add these two together,
+
+336
+00:17:04,805 --> 00:17:06,609
+you get a new, um,
+
+337
+00:17:06,609 --> 00:17:10,539
+transition matrix now that includes both traversing over the links of the graph,
+
+338
+00:17:10,540 --> 00:17:12,589
+as well as randomly jumping.
+
+339
+00:17:12,589 --> 00:17:16,379
+Uh, here is how you can think of this in terms of transition probabilities.
+
+340
+00:17:16,380 --> 00:17:17,770
+These are now, in some sense,
+
+341
+00:17:17,770 --> 00:17:19,885
+transition probabilities of a random walker,
+
+342
+00:17:19,885 --> 00:17:22,479
+random surfer, um, and then you can multiply,
+
+343
+00:17:22,479 --> 00:17:24,970
+uh, r with G multiple times.
+
+344
+00:17:24,970 --> 00:17:26,740
+Here is the r_0, and now,
+
+345
+00:17:26,740 --> 00:17:29,950
+we are multiplying it over and over and over again, and you know,
+
+346
+00:17:29,950 --> 00:17:31,300
+after some number of iterations,
+
+347
+00:17:31,300 --> 00:17:32,555
+it's going to converge,
+
+348
+00:17:32,555 --> 00:17:34,990
+and it converges to 7 over 33,
+
+349
+00:17:34,990 --> 00:17:37,630
+5 over 33, and 21 over 33.
+
+350
+00:17:37,630 --> 00:17:41,320
+So it means that node m in this graph will be the most important,
+
+351
+00:17:41,320 --> 00:17:44,350
+followed by y, followed by a, right?
+
+352
+00:17:44,350 --> 00:17:47,810
+And the why m is so important is because it's kind of a spider trap,
+
+353
+00:17:47,810 --> 00:17:50,215
+but we also are able to teleport out.
+
+354
+00:17:50,215 --> 00:17:53,045
+Now, if intuitively, this is, uh, you know,
+
+355
+00:17:53,045 --> 00:17:56,065
+node m kind of collects too much importance,
+
+356
+00:17:56,065 --> 00:17:58,625
+you can increase, uh, value of beta,
+
+357
+00:17:58,625 --> 00:18:02,915
+and the importance of node m is going to, uh, decrease.
+
+358
+00:18:02,915 --> 00:18:06,310
+And just to show you an idea how this-
+
+359
+00:18:06,310 --> 00:18:09,660
+how this looks like in- in a bit more interesting graph,
+
+360
+00:18:09,660 --> 00:18:13,080
+this is a graph where node size corresponds to it's PageRank weight,
+
+361
+00:18:13,080 --> 00:18:16,545
+and also, there is a number that tells you what's the PageRank score of the node?
+
+362
+00:18:16,545 --> 00:18:18,010
+What do you notice?
+
+363
+00:18:18,010 --> 00:18:20,000
+For example, why is PageRank so cool?
+
+364
+00:18:20,000 --> 00:18:21,785
+It's cool because, for example, first,
+
+365
+00:18:21,785 --> 00:18:24,350
+notice all nodes have non-zero importance.
+
+366
+00:18:24,350 --> 00:18:26,080
+So even this nodes here,
+
+367
+00:18:26,080 --> 00:18:27,685
+um, that have no inlinks,
+
+368
+00:18:27,685 --> 00:18:31,620
+they still have some importance because a random jumper can always jump to them.
+
+369
+00:18:31,620 --> 00:18:33,545
+Another thing to notice is that for example,
+
+370
+00:18:33,545 --> 00:18:36,120
+node B has a lot of inlinks,
+
+371
+00:18:36,120 --> 00:18:39,990
+and it- so that's why it has high importance, right?
+
+372
+00:18:39,990 --> 00:18:42,790
+Notice that, for example, node E has, you know,
+
+373
+00:18:42,790 --> 00:18:44,955
+it has five inlinks, six inlinks,
+
+374
+00:18:44,955 --> 00:18:47,710
+and, uh, node B also has six inlinks.
+
+375
+00:18:47,710 --> 00:18:52,135
+But because node E gets most of the inlinks from this unimportant pages,
+
+376
+00:18:52,135 --> 00:18:53,670
+its importance is, you know,
+
+377
+00:18:53,670 --> 00:18:56,120
+eighth, versus B, who is 38,
+
+378
+00:18:56,120 --> 00:18:59,975
+so B is much more important because it gets, uh,
+
+379
+00:18:59,975 --> 00:19:03,525
+inlinks from these other nodes that have higher importance than this,
+
+380
+00:19:03,525 --> 00:19:04,960
+uh, little blue nodes.
+
+381
+00:19:04,960 --> 00:19:07,075
+Um, another thing to notice is,
+
+382
+00:19:07,075 --> 00:19:09,565
+for example, node C has only one inlink,
+
+383
+00:19:09,565 --> 00:19:13,120
+but because it gets it from this super important node B,
+
+384
+00:19:13,120 --> 00:19:16,550
+its importance is also very, very high, right?
+
+385
+00:19:16,550 --> 00:19:17,700
+You see, for example,
+
+386
+00:19:17,700 --> 00:19:19,210
+also that, uh, here,
+
+387
+00:19:19,210 --> 00:19:20,950
+node E has some,
+
+388
+00:19:20,950 --> 00:19:23,495
+uh, s- uh, you know, some importance,
+
+389
+00:19:23,495 --> 00:19:24,860
+uh, D has less,
+
+390
+00:19:24,860 --> 00:19:26,455
+uh, F has less, uh,
+
+391
+00:19:26,455 --> 00:19:29,645
+they both have the same importance, D and F,
+
+392
+00:19:29,645 --> 00:19:34,790
+because they both get one inlink from node E. So notice how these, uh,
+
+393
+00:19:34,790 --> 00:19:36,975
+importances are very nuanced,
+
+394
+00:19:36,975 --> 00:19:42,280
+and they take a lot of different considerations into account that all make sense,
+
+395
+00:19:42,280 --> 00:19:44,675
+in a sense of I want a lot of inlinks,
+
+396
+00:19:44,675 --> 00:19:46,190
+I want inlinks from, uh,
+
+397
+00:19:46,190 --> 00:19:48,730
+important nodes, even if I have one inlink,
+
+398
+00:19:48,730 --> 00:19:50,605
+but some were the very important links to me,
+
+399
+00:19:50,605 --> 00:19:52,564
+that means I am very important,
+
+400
+00:19:52,564 --> 00:19:54,940
+um, and so on- so on and so forth.
+
+401
+00:19:54,940 --> 00:19:58,715
+So, uh, this is why this notion of PageRank is so,
+
+402
+00:19:58,715 --> 00:20:00,220
+so useful, and also,
+
+403
+00:20:00,220 --> 00:20:02,480
+there is a lot of mathematical beauty,
+
+404
+00:20:02,480 --> 00:20:04,110
+um, uh, behind its, uh,
+
+405
+00:20:04,110 --> 00:20:07,385
+its definition, and we can efficiently compute it,
+
+406
+00:20:07,385 --> 00:20:10,315
+uh, for very large-scale, uh, graphs.
+
+407
+00:20:10,315 --> 00:20:15,935
+So to summarize, we talked about how do we solve the PageRank, uh, scores.
+
+408
+00:20:15,935 --> 00:20:18,340
+We solve them by iterating this, uh,
+
+409
+00:20:18,340 --> 00:20:21,260
+equation, r equals G times r, um,
+
+410
+00:20:21,260 --> 00:20:23,500
+and this can be efficiently computed using
+
+411
+00:20:23,500 --> 00:20:26,990
+power iteration of the stochastic matrix G, um,
+
+412
+00:20:26,990 --> 00:20:33,305
+and adding uniform teleportation solves both the issues with dead ends,
+
+413
+00:20:33,305 --> 00:20:36,620
+as well as the issue with spider traps
+

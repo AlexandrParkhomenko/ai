@@ -1,0 +1,2728 @@
+1
+00:00:04,820 --> 00:00:10,950
+Uh, in this lecture, I will introduce the use of hyperbolic graph embeddings in learning,
+
+2
+00:00:10,950 --> 00:00:16,364
+uh, representations for graphs that exhibit certain hierarchical and tree-like structure.
+
+3
+00:00:16,364 --> 00:00:19,935
+Um, so in previous lecture, uh,
+
+4
+00:00:19,935 --> 00:00:23,730
+we have focused on graph representation learning in the Euclidean space,
+
+5
+00:00:23,730 --> 00:00:26,970
+uh, which is the R_ n. Um, however,
+
+6
+00:00:26,970 --> 00:00:31,185
+Euclidean embeddings cannot always capture complex graph structure.
+
+7
+00:00:31,185 --> 00:00:33,840
+So here we have an example of a tree structure,
+
+8
+00:00:33,840 --> 00:00:36,375
+uh, a, uh, complete binary tree,
+
+9
+00:00:36,375 --> 00:00:38,340
+where the first level we observe there,
+
+10
+00:00:38,340 --> 00:00:39,540
+uh, there's one node,
+
+11
+00:00:39,540 --> 00:00:41,370
+and the second level we have two nodes,
+
+12
+00:00:41,370 --> 00:00:44,060
+and the third level we have four nodes, etc.
+
+13
+00:00:44,060 --> 00:00:47,880
+So in this kind of tree-like structure often, there, uh,
+
+14
+00:00:47,880 --> 00:00:51,250
+there is an exponential increase in the number of nodes,
+
+15
+00:00:51,250 --> 00:00:53,960
+uh, as the depth of the tree increases.
+
+16
+00:00:53,960 --> 00:00:56,435
+So these kind of trees are, uh,
+
+17
+00:00:56,435 --> 00:00:59,555
+difficult to be embedded in the Euclidean space, uh,
+
+18
+00:00:59,555 --> 00:01:03,920
+as you have seen, uh, because the slide itself is a 2D plane.
+
+19
+00:01:03,920 --> 00:01:05,775
+And we can see that, uh,
+
+20
+00:01:05,775 --> 00:01:07,410
+as the depth increases,
+
+21
+00:01:07,410 --> 00:01:09,190
+uh, the nodes that are, uh,
+
+22
+00:01:09,190 --> 00:01:14,240
+leaves become closer and closer to each other to the point that they can no longer,
+
+23
+00:01:14,240 --> 00:01:17,120
+uh, the embedding space could no longer represent,
+
+24
+00:01:17,120 --> 00:01:20,855
+uh, the distance between them, um, faithfully, uh,
+
+25
+00:01:20,855 --> 00:01:23,000
+because they are very, very clustered together due
+
+26
+00:01:23,000 --> 00:01:26,000
+to the exponential increase in the number of nodes.
+
+27
+00:01:26,000 --> 00:01:28,835
+So here we are focusing on these kind of,
+
+28
+00:01:28,835 --> 00:01:31,460
+uh, graphs with, uh, such tree-like structure.
+
+29
+00:01:31,460 --> 00:01:34,970
+Um, so we define these kind of tree-like graphs as,
+
+30
+00:01:34,970 --> 00:01:36,810
+uh, graphs that are similar to a tree.
+
+31
+00:01:36,810 --> 00:01:39,590
+For example, the binary tree as shown above,
+
+32
+00:01:39,590 --> 00:01:42,500
+but it can still contain a very few cycles.
+
+33
+00:01:42,500 --> 00:01:45,530
+Uh, for example, in real-life, uh, uh, situations,
+
+34
+00:01:45,530 --> 00:01:50,480
+we can have things like knowledge graph that are organized hierarchically because,
+
+35
+00:01:50,480 --> 00:01:53,480
+uh, many of the human knowledge are organized hierarchically.
+
+36
+00:01:53,480 --> 00:01:55,280
+And, uh, at the same time,
+
+37
+00:01:55,280 --> 00:01:59,870
+there could still exist a certain kind of loops in- in- in the structure.
+
+38
+00:01:59,870 --> 00:02:02,840
+So it's most- mostly a tree but with a certain,
+
+39
+00:02:02,840 --> 00:02:06,355
+uh, a number of loops in- in the graph itself.
+
+40
+00:02:06,355 --> 00:02:10,615
+So here, uh, we're considering this kind of structure and, uh,
+
+41
+00:02:10,615 --> 00:02:15,250
+we want to notice that embedding geometry has been very important in terms of,
+
+42
+00:02:15,250 --> 00:02:17,995
+uh, capturing this kind of special graph structure.
+
+43
+00:02:17,995 --> 00:02:19,840
+Um, here we consider some,
+
+44
+00:02:19,840 --> 00:02:22,090
+uh, other, uh, interesting graph structure.
+
+45
+00:02:22,090 --> 00:02:24,490
+For example, if we have graphs with,
+
+46
+00:02:24,490 --> 00:02:27,070
+uh, very, uh, many, very large cycles.
+
+47
+00:02:27,070 --> 00:02:32,020
+Uh, uh, these kind of graphs are best embedded into spherical geometry.
+
+48
+00:02:32,020 --> 00:02:37,320
+Because in a spherical geometry with the positive curvature, the, um,
+
+49
+00:02:37,320 --> 00:02:38,810
+the graphs, uh, uh,
+
+50
+00:02:38,810 --> 00:02:40,030
+we can actually embed many,
+
+51
+00:02:40,030 --> 00:02:43,835
+many cycles because the sphere contains many, many cycles.
+
+52
+00:02:43,835 --> 00:02:47,355
+Um, whereas a- if you- if we have a grid-like graph,
+
+53
+00:02:47,355 --> 00:02:49,380
+um, Euclidean space is the best.
+
+54
+00:02:49,380 --> 00:02:51,070
+Uh, because as you can see,
+
+55
+00:02:51,070 --> 00:02:54,715
+the Cartesian coordinate itself is a grid-like structure.
+
+56
+00:02:54,715 --> 00:02:59,130
+So it could, uh, a Euclidean space with zero curvature would be the best.
+
+57
+00:02:59,130 --> 00:03:02,405
+So how about hierarchical tree-like graphs?
+
+58
+00:03:02,405 --> 00:03:04,590
+Um, for these kind of graphs,
+
+59
+00:03:04,590 --> 00:03:07,150
+we are considering the use of hyperbolic space,
+
+60
+00:03:07,150 --> 00:03:09,235
+which is an alternative, uh,
+
+61
+00:03:09,235 --> 00:03:10,825
+embedding space to model, uh,
+
+62
+00:03:10,825 --> 00:03:13,795
+embeddings for trees with tree-like structure.
+
+63
+00:03:13,795 --> 00:03:16,615
+Um, the advantage of hyperbolic embedding, uh,
+
+64
+00:03:16,615 --> 00:03:19,170
+space, um, allows it to,
+
+65
+00:03:19,170 --> 00:03:20,610
+uh, naturally model trees.
+
+66
+00:03:20,610 --> 00:03:23,700
+And we will, um, elaborate on these advantages, uh,
+
+67
+00:03:23,700 --> 00:03:24,780
+in the later, uh,
+
+68
+00:03:24,780 --> 00:03:27,480
+later slides where we explain the definition.
+
+69
+00:03:27,480 --> 00:03:30,230
+However, there are certain challenges, uh,
+
+70
+00:03:30,230 --> 00:03:33,540
+when we combine deep learning, and hyperbolic spaces.
+
+71
+00:03:33,540 --> 00:03:38,510
+The primary reason is that existing deep-learning toolboxes can only be applied,
+
+72
+00:03:38,510 --> 00:03:40,790
+uh, to, uh, uh Euclidean space.
+
+73
+00:03:40,790 --> 00:03:42,875
+Uh, whereas in hyperbolic space,
+
+74
+00:03:42,875 --> 00:03:45,530
+we need to define special operators to,
+
+75
+00:03:45,530 --> 00:03:49,600
+uh, to perform this kind of deep-learning, uh, operations.
+
+76
+00:03:49,600 --> 00:03:54,125
+Um, uh, let's first define what is a hyperbolic space.
+
+77
+00:03:54,125 --> 00:03:58,850
+So hyperbolic geometry differs from Euclidean geo- geometry by its, um,
+
+78
+00:03:58,850 --> 00:04:00,740
+uh, fifth axiom of, uh,
+
+79
+00:04:00,740 --> 00:04:03,995
+Euclidean, uh, geometry, which is the parallel postulate.
+
+80
+00:04:03,995 --> 00:04:05,645
+So in Euclidean geometry,
+
+81
+00:04:05,645 --> 00:04:08,405
+the parallel postulate says that in a given plane,
+
+82
+00:04:08,405 --> 00:04:11,480
+given a line and a point that is not on the line itself,
+
+83
+00:04:11,480 --> 00:04:15,665
+at most one line parallel to the given line can be drawn through the point.
+
+84
+00:04:15,665 --> 00:04:19,850
+Um, and- and this- this seems very obvious in the Euclidean space.
+
+85
+00:04:19,850 --> 00:04:24,590
+If we have, uh, if we- if we have a line then the line parallel to itself is, uh,
+
+86
+00:04:24,590 --> 00:04:25,910
+kind of unique, uh,
+
+87
+00:04:25,910 --> 00:04:27,290
+if we only consider,
+
+88
+00:04:27,290 --> 00:04:30,155
+uh, lines that pass through one point.
+
+89
+00:04:30,155 --> 00:04:34,095
+Um, however, in, uh, hyperbolic geometry, uh,
+
+90
+00:04:34,095 --> 00:04:37,720
+there are infinites number of lines that are parallel to a given line through the point.
+
+91
+00:04:37,720 --> 00:04:39,605
+This might not seem very, uh,
+
+92
+00:04:39,605 --> 00:04:43,430
+intuitive because we are very familiar with Euclidean space.
+
+93
+00:04:43,430 --> 00:04:45,530
+But here is a representation of a
+
+94
+00:04:45,530 --> 00:04:47,815
+hyperbolic space in terms of Poincare ball.
+
+95
+00:04:47,815 --> 00:04:50,110
+So we will explain what is a Poincare ball there.
+
+96
+00:04:50,110 --> 00:04:54,510
+Um, but it's basically a way to visualize the hyperbolic space in Euclidean space.
+
+97
+00:04:54,510 --> 00:04:56,915
+And you can see the blue line here.
+
+98
+00:04:56,915 --> 00:04:58,980
+Um, it looks like a curve, uh,
+
+99
+00:04:58,980 --> 00:05:01,050
+but it is actually a straight line, uh,
+
+100
+00:05:01,050 --> 00:05:03,690
+uh, in- in the hyperbolic space.
+
+101
+00:05:03,690 --> 00:05:07,015
+And we can- we can also define a redpoint here,
+
+102
+00:05:07,015 --> 00:05:09,775
+which is another point that is not on the line.
+
+103
+00:05:09,775 --> 00:05:12,520
+Um, and hyperbolic geometry states that, uh,
+
+104
+00:05:12,520 --> 00:05:15,655
+there are infinite number of lines that are parallel to the line.
+
+105
+00:05:15,655 --> 00:05:18,490
+And these lines are actually drawn in the visualization.
+
+106
+00:05:18,490 --> 00:05:20,515
+So all these are curved, uh,
+
+107
+00:05:20,515 --> 00:05:22,690
+black lines that's, uh, we draw here.
+
+108
+00:05:22,690 --> 00:05:25,920
+They're actual- actually straight lines, uh,
+
+109
+00:05:25,920 --> 00:05:29,800
+hyperbolic geometry, and they also pass through the redpoint.
+
+110
+00:05:29,800 --> 00:05:31,075
+And at the same time,
+
+111
+00:05:31,075 --> 00:05:33,490
+they are also parallel to the blue curve, uh,
+
+112
+00:05:33,490 --> 00:05:36,685
+sorry, it- to- to the blue straight line in the hyperbolic space.
+
+113
+00:05:36,685 --> 00:05:38,620
+Uh, and that's, uh,
+
+114
+00:05:38,620 --> 00:05:41,435
+mainly how it differs from the Euclidean space.
+
+115
+00:05:41,435 --> 00:05:45,770
+Uh, so because of these special properties,
+
+116
+00:05:45,770 --> 00:05:48,730
+hyperbolic space cannot be naturally represented in
+
+117
+00:05:48,730 --> 00:05:51,760
+the Euclidean space because it violates the fifth,
+
+118
+00:05:51,760 --> 00:05:54,160
+uh, uh, the fifth axiom of Euclidean space,
+
+119
+00:05:54,160 --> 00:05:55,765
+which is the parallel postulate.
+
+120
+00:05:55,765 --> 00:05:58,200
+So, um, we currently use
+
+121
+00:05:58,200 --> 00:06:02,530
+two geometry models to represent or to visualize hyperbolic space,
+
+122
+00:06:02,530 --> 00:06:06,565
+um, by embedding it as a subspace of the Euclidean space.
+
+123
+00:06:06,565 --> 00:06:08,560
+And, uh, they are also equivalent.
+
+124
+00:06:08,560 --> 00:06:10,270
+So we can also map between
+
+125
+00:06:10,270 --> 00:06:14,275
+these two models that visualize hyperbolic space and Euclidean space.
+
+126
+00:06:14,275 --> 00:06:17,890
+So the first model that we're going to introduce is the Poincare model.
+
+127
+00:06:17,890 --> 00:06:19,675
+Uh, this is a model,
+
+128
+00:06:19,675 --> 00:06:21,310
+uh, where we represent, uh,
+
+129
+00:06:21,310 --> 00:06:25,935
+uh, where you represent the hyperbolic space as a open, uh, an open ball.
+
+130
+00:06:25,935 --> 00:06:28,440
+So, um, a visualization of it is, uh,
+
+131
+00:06:28,440 --> 00:06:29,820
+on the right where,
+
+132
+00:06:29,820 --> 00:06:31,050
+uh, we can see a ball.
+
+133
+00:06:31,050 --> 00:06:34,215
+Um, and this, uh, by open,
+
+134
+00:06:34,215 --> 00:06:37,985
+we mean that's- the set of all points in this hyperbolic space,
+
+135
+00:06:37,985 --> 00:06:41,090
+uh, do not ex, uh, do not include the boundary of the ball.
+
+136
+00:06:41,090 --> 00:06:42,920
+So the- the outer circle,
+
+137
+00:06:42,920 --> 00:06:45,215
+uh, is not part of the, uh, ball,
+
+138
+00:06:45,215 --> 00:06:47,045
+but everything inside the circle, uh,
+
+139
+00:06:47,045 --> 00:06:50,080
+is part of the Poincare, uh, Poincare ball.
+
+140
+00:06:50,080 --> 00:06:52,820
+And the radius is proportional to the square root of
+
+141
+00:06:52,820 --> 00:06:55,450
+K. And we will introduce what is K later.
+
+142
+00:06:55,450 --> 00:06:58,355
+Uh, K is actually the inverse of the curvature.
+
+143
+00:06:58,355 --> 00:07:00,960
+Um, and- and, uh,
+
+144
+00:07:00,960 --> 00:07:05,300
+the important property here is that each triangle in the figure has the same area.
+
+145
+00:07:05,300 --> 00:07:07,640
+So, uh, it might not, uh, again,
+
+146
+00:07:07,640 --> 00:07:10,400
+it's not very intuitive in Euclidean space, uh,
+
+147
+00:07:10,400 --> 00:07:15,185
+as we see like all the triangles in the middle tend to have a larger, uh,
+
+148
+00:07:15,185 --> 00:07:20,330
+seems to have a larger area in the Euclidean definition of, uh, uh, Euclidean metric.
+
+149
+00:07:20,330 --> 00:07:22,310
+Uh, but, um, uh,
+
+150
+00:07:22,310 --> 00:07:25,475
+but every triangle here actually have the same area.
+
+151
+00:07:25,475 --> 00:07:29,540
+And, uh, you can see why this space is very amenable to embedded,
+
+152
+00:07:29,540 --> 00:07:31,835
+uh, hierarchical or tree-like structure.
+
+153
+00:07:31,835 --> 00:07:36,110
+Because you notice that in the middle or in the center, uh, of the, uh,
+
+154
+00:07:36,110 --> 00:07:41,180
+uh, Poincare ball, there are very few of these triangles that are, uh,
+
+155
+00:07:41,180 --> 00:07:44,240
+in- in hyperbolic space, whereas, uh, uh,
+
+156
+00:07:44,240 --> 00:07:45,800
+towards the edge of the,
+
+157
+00:07:45,800 --> 00:07:48,095
+uh, or of the circle, uh,
+
+158
+00:07:48,095 --> 00:07:51,560
+you can see like there are exponentially many of these,
+
+159
+00:07:51,560 --> 00:07:53,960
+uh, smaller triangles, uh,
+
+160
+00:07:53,960 --> 00:07:55,320
+albeit with the same, uh,
+
+161
+00:07:55,320 --> 00:07:57,840
+area, um, that are embedded, uh,
+
+162
+00:07:57,840 --> 00:07:58,985
+towards the edge of
+
+163
+00:07:58,985 --> 00:08:02,555
+the hyperbolic space or the- to- towards the edge of the Poincare ball.
+
+164
+00:08:02,555 --> 00:08:08,225
+So this exponential increase in- in terms of the area or the volume, um, uh,
+
+165
+00:08:08,225 --> 00:08:12,245
+as the, uh, the r- radius or the norm increases,
+
+166
+00:08:12,245 --> 00:08:15,170
+allow us to embed, uh, hyperbolic trees.
+
+167
+00:08:15,170 --> 00:08:17,380
+So basically trees, um,
+
+168
+00:08:17,380 --> 00:08:20,190
+can be embedded by embedding its, uh,
+
+169
+00:08:20,190 --> 00:08:21,540
+roots in the center,
+
+170
+00:08:21,540 --> 00:08:24,190
+um, because there are very few of them.
+
+171
+00:08:24,190 --> 00:08:29,015
+Um, and embedding all the leaves on the edge of the Poincare ball, um,
+
+172
+00:08:29,015 --> 00:08:31,970
+because there are exponentially many of these leaves,
+
+173
+00:08:31,970 --> 00:08:35,655
+uh, uh, at the, uh, as the depth increases.
+
+174
+00:08:35,655 --> 00:08:40,659
+Um, and we're going to introduce another alternative model that, uh,
+
+175
+00:08:40,659 --> 00:08:42,279
+models the hyperbolic space,
+
+176
+00:08:42,280 --> 00:08:44,530
+which is called the hyperboloid model,
+
+177
+00:08:44,530 --> 00:08:46,600
+um, and also called Lorentz model.
+
+178
+00:08:46,600 --> 00:08:49,330
+Um, this is basically an upper sheet of
+
+179
+00:08:49,330 --> 00:08:53,275
+a two sheet hyperboloid and that is visualized in the figure below.
+
+180
+00:08:53,275 --> 00:08:56,185
+And this is also a set of Euclidean space.
+
+181
+00:08:56,185 --> 00:09:00,040
+So, um, unlike Poincare model as you can see,
+
+182
+00:09:00,040 --> 00:09:02,560
+there are exponentially many, um,
+
+183
+00:09:02,560 --> 00:09:04,825
+triangles towards the edge of the,
+
+184
+00:09:04,825 --> 00:09:07,405
+um, Poincare, uh, Poincare ball.
+
+185
+00:09:07,405 --> 00:09:11,380
+And, here hyperboloid model is numerically more stable,
+
+186
+00:09:11,380 --> 00:09:13,135
+meaning that you don't have to have
+
+187
+00:09:13,135 --> 00:09:16,915
+extremely high machine precision to represent all these,
+
+188
+00:09:16,915 --> 00:09:18,820
+uh, small triangles, uh,
+
+189
+00:09:18,820 --> 00:09:20,260
+in terms of their embeddings,
+
+190
+00:09:20,260 --> 00:09:22,630
+uh, towards the edge of the Poincare ball.
+
+191
+00:09:22,630 --> 00:09:26,980
+Uh, here, um, it is basically in the hyperboloid and there is no upper bound.
+
+192
+00:09:26,980 --> 00:09:29,125
+So it can go,
+
+193
+00:09:29,125 --> 00:09:32,530
+um,- um,- um - the numbers can grow very large, but,
+
+194
+00:09:32,530 --> 00:09:36,145
+uh,- uh, it does not require a very high number of, uh,
+
+195
+00:09:36,145 --> 00:09:39,910
+floating-point precisions to represent the, um, uh,
+
+196
+00:09:39,910 --> 00:09:42,265
+exponentially many, um - um, uh,
+
+197
+00:09:42,265 --> 00:09:46,640
+points in that - that are towards the edge of the Poincare ball.
+
+198
+00:09:46,640 --> 00:09:48,480
+So, um - um,
+
+199
+00:09:48,480 --> 00:09:52,425
+papers have shown that hyperbolic model is numerically more stable and,
+
+200
+00:09:52,425 --> 00:09:54,795
+um, it also have the advantage of, uh,
+
+201
+00:09:54,795 --> 00:09:59,220
+having a slightly simpler formula to represent its, uh,
+
+202
+00:09:59,220 --> 00:10:01,500
+metric and, uh, as well as, uh,
+
+203
+00:10:01,500 --> 00:10:04,810
+distances, um, in - in this hyperbolic model.
+
+204
+00:10:04,810 --> 00:10:06,280
+So a lot of times, uh,
+
+205
+00:10:06,280 --> 00:10:09,025
+we do derivation and we, uh,
+
+206
+00:10:09,025 --> 00:10:10,900
+represent the, uh, um,
+
+207
+00:10:10,900 --> 00:10:14,455
+neural network architecture inside this hyperboloid model.
+
+208
+00:10:14,455 --> 00:10:17,005
+Uh, so these two are,
+
+209
+00:10:17,005 --> 00:10:19,510
+um- so the Poincare ball and the hyperboloid model,
+
+210
+00:10:19,510 --> 00:10:22,975
+these two are equivalent in the sense that we can have a mapping, um,
+
+211
+00:10:22,975 --> 00:10:26,710
+that, uh, that are between the Poincare ball and the hyperboloid.
+
+212
+00:10:26,710 --> 00:10:28,420
+And this mapping is one-to-one,
+
+213
+00:10:28,420 --> 00:10:31,400
+so, um, it's a projection.
+
+214
+00:10:31,410 --> 00:10:34,270
+Um, so - so given uh,
+
+215
+00:10:34,270 --> 00:10:36,355
+the brief introduction of the, uh, uh,
+
+216
+00:10:36,355 --> 00:10:38,440
+hyperbolic space, uh,
+
+217
+00:10:38,440 --> 00:10:40,975
+we want to also define our task here.
+
+218
+00:10:40,975 --> 00:10:43,870
+So the task is the typical graph representation learning,
+
+219
+00:10:43,870 --> 00:10:46,645
+uh, which we have, um, uh, we learned, uh,
+
+220
+00:10:46,645 --> 00:10:49,120
+throughout this lecture, and tasks could
+
+221
+00:10:49,120 --> 00:10:52,600
+be things like link prediction or node concentration.
+
+222
+00:10:52,600 --> 00:10:54,700
+Um, and an example, um,
+
+223
+00:10:54,700 --> 00:10:58,015
+um, example embedding space that achieves this, uh,
+
+224
+00:10:58,015 --> 00:11:00,220
+kind of, task is the, uh, Poincare embedding,
+
+225
+00:11:00,220 --> 00:11:03,715
+um, um, by nickel, uh, in 2018.
+
+226
+00:11:03,715 --> 00:11:05,710
+Um, so in this visualization,
+
+227
+00:11:05,710 --> 00:11:07,615
+which is in the form of a Poincare ball,
+
+228
+00:11:07,615 --> 00:11:12,100
+we can see that entities are embedded inside this, um, Poincare ball.
+
+229
+00:11:12,100 --> 00:11:15,700
+Um, and towards the center of it is, um - um,
+
+230
+00:11:15,700 --> 00:11:18,430
+they contain the nodes with very high hierarchy
+
+231
+00:11:18,430 --> 00:11:22,135
+or nodes that there are toward the roots of the tree.
+
+232
+00:11:22,135 --> 00:11:24,430
+So for examples of entities,
+
+233
+00:11:24,430 --> 00:11:25,870
+we have, uh, physical entity,
+
+234
+00:11:25,870 --> 00:11:29,770
+we have, uh, abstraction or - organ, uh, organism.
+
+235
+00:11:29,770 --> 00:11:32,200
+These are all very abstract and high
+
+236
+00:11:32,200 --> 00:11:35,725
+level nodes that can contain many many different childrens.
+
+237
+00:11:35,725 --> 00:11:38,350
+And - and towards the edge of the, uh,
+
+238
+00:11:38,350 --> 00:11:40,870
+uh, embedding space, there are many many different,
+
+239
+00:11:40,870 --> 00:11:43,645
+uh- exponentially many entities can be,
+
+240
+00:11:43,645 --> 00:11:45,310
+um, um, embedded there,
+
+241
+00:11:45,310 --> 00:11:47,530
+and these are typically nodes that are in
+
+242
+00:11:47,530 --> 00:11:51,220
+the lower hierarchy or towards the leaves of the tree like graphs.
+
+243
+00:11:51,220 --> 00:11:54,025
+For example, things like, um, uh,
+
+244
+00:11:54,025 --> 00:11:56,980
+arrival, metabolic, uh, metabolic rates.
+
+245
+00:11:56,980 --> 00:11:58,945
+These are very concrete and, uh,
+
+246
+00:11:58,945 --> 00:12:02,710
+very detailed, uh, um - um, uh,
+
+247
+00:12:02,710 --> 00:12:05,200
+description of certain entity, um,
+
+248
+00:12:05,200 --> 00:12:06,370
+and there are exponentially,
+
+249
+00:12:06,370 --> 00:12:10,015
+many of them which can be embedded towards the edge of the Poincare ball.
+
+250
+00:12:10,015 --> 00:12:12,070
+And this is, uh, basically the, kind of,
+
+251
+00:12:12,070 --> 00:12:15,940
+embedding we want to achieve so that we can perform things like link prediction,
+
+252
+00:12:15,940 --> 00:12:19,435
+which means that we can predict whether an entity and, uh,
+
+253
+00:12:19,435 --> 00:12:21,550
+another entity, uh, in this,
+
+254
+00:12:21,550 --> 00:12:24,160
+uh, in this knowledge graph are connected.
+
+255
+00:12:24,160 --> 00:12:27,010
+Um, um, meaning that, uh, uh, for, uh,
+
+256
+00:12:27,010 --> 00:12:29,875
+for example, whether the bread and food are connected,
+
+257
+00:12:29,875 --> 00:12:32,500
+it could be connected through an hierarchical relations,
+
+258
+00:12:32,500 --> 00:12:36,085
+or it could be connected through a non-hierarchical relation.
+
+259
+00:12:36,085 --> 00:12:41,785
+So, um, um, this is link prediction and we can also perform node classification,
+
+260
+00:12:41,785 --> 00:12:48,080
+um, by, um, um, predicting a label for each of these, uh, nodes in the graph.
+
+261
+00:12:49,320 --> 00:12:52,450
+Okay. And, um, before going into, uh,
+
+262
+00:12:52,450 --> 00:12:55,465
+the detailed architecture, uh, let's first,
+
+263
+00:12:55,465 --> 00:12:58,480
+um, um, also, um, look into, uh,
+
+264
+00:12:58,480 --> 00:13:01,734
+how hyperbolic space are mathematically represented.
+
+265
+00:13:01,734 --> 00:13:04,030
+So formal definition of the hyperbolic, uh,
+
+266
+00:13:04,030 --> 00:13:07,345
+geometry is a manifold, um, um,
+
+267
+00:13:07,345 --> 00:13:09,430
+which is, uh, which is, uh,
+
+268
+00:13:09,430 --> 00:13:11,440
+basically a high dimensional surface,
+
+269
+00:13:11,440 --> 00:13:14,215
+a 2D surface in - but in high dimensional.
+
+270
+00:13:14,215 --> 00:13:16,855
+Um, and a Riemannian Manifold, um,
+
+271
+00:13:16,855 --> 00:13:18,550
+is a special manifold,
+
+272
+00:13:18,550 --> 00:13:20,680
+uh, which is equipped with two things.
+
+273
+00:13:20,680 --> 00:13:22,075
+One is the inner product.
+
+274
+00:13:22,075 --> 00:13:23,395
+So the inner product, uh,
+
+275
+00:13:23,395 --> 00:13:25,270
+between two points had to be defined,
+
+276
+00:13:25,270 --> 00:13:26,650
+and it is, uh, uh,
+
+277
+00:13:26,650 --> 00:13:29,050
+it will define a metric space or like how
+
+278
+00:13:29,050 --> 00:13:32,665
+distances are computed in - in this, uh, Riemannian manifold.
+
+279
+00:13:32,665 --> 00:13:35,110
+And the other thing that is, uh, um,
+
+280
+00:13:35,110 --> 00:13:39,355
+that is necessary for Riemannian manifold is the tangent space, um,
+
+281
+00:13:39,355 --> 00:13:42,870
+which is a Euclidean space that approximates the manifolds,
+
+282
+00:13:42,870 --> 00:13:44,580
+uh, but only locally.
+
+283
+00:13:44,580 --> 00:13:48,510
+So you can I - imagine it is tangent to the surface, um,
+
+284
+00:13:48,510 --> 00:13:52,785
+at a certain point, uh, touching the surface at a certain point at xX. Um,
+
+285
+00:13:52,785 --> 00:13:54,825
+both function has to, uh- Riemannian manifold,
+
+286
+00:13:54,825 --> 00:13:56,325
+states that both functions, uh,
+
+287
+00:13:56,325 --> 00:13:58,305
+which is the inner product and the tangent space,
+
+288
+00:13:58,305 --> 00:14:00,045
+has to vary smoothly,
+
+289
+00:14:00,045 --> 00:14:03,675
+or, uh, called differentiable on a manifold.
+
+290
+00:14:03,675 --> 00:14:05,965
+Um, there are also other, uh,
+
+291
+00:14:05,965 --> 00:14:07,735
+concepts that are, uh, needed.
+
+292
+00:14:07,735 --> 00:14:10,945
+So here, uh, we also considered the geodesics.
+
+293
+00:14:10,945 --> 00:14:14,770
+Geodesics, um, is defined as the shortest path in the manifolds,
+
+294
+00:14:14,770 --> 00:14:17,755
+uh, which is analogous to the straight line in R^n.
+
+295
+00:14:17,755 --> 00:14:21,790
+So if you remember the - the plot where we have the parallel postulate,
+
+296
+00:14:21,790 --> 00:14:23,800
+uh, in hyperbolic space,
+
+297
+00:14:23,800 --> 00:14:26,649
+um, all these curves are actually geodesics,
+
+298
+00:14:26,649 --> 00:14:30,880
+so they are the shortest path between two points in the - in the manifold.
+
+299
+00:14:30,880 --> 00:14:33,115
+And that's why, um, we can say that there are
+
+300
+00:14:33,115 --> 00:14:35,875
+infinitely many straight lines passing through the points,
+
+301
+00:14:35,875 --> 00:14:38,665
+um, that are parallel to a given line.
+
+302
+00:14:38,665 --> 00:14:40,960
+Um, the hyperbolic space, uh,
+
+303
+00:14:40,960 --> 00:14:44,575
+is a Riemannian manifold with a constant negative curvature.
+
+304
+00:14:44,575 --> 00:14:47,605
+Um, here we represented as negative 1 over K,
+
+305
+00:14:47,605 --> 00:14:50,065
+where K has to be greater than 0.
+
+306
+00:14:50,065 --> 00:14:52,300
+Um, so as you can see, uh,
+
+307
+00:14:52,300 --> 00:14:54,835
+when becomes very very large, um, um,
+
+308
+00:14:54,835 --> 00:14:59,110
+the hyperbolic space curvature becomes very very close to zero,
+
+309
+00:14:59,110 --> 00:15:01,270
+um, and zero just means a flat space.
+
+310
+00:15:01,270 --> 00:15:04,225
+So it will become more and more Euclidean as to,
+
+311
+00:15:04,225 --> 00:15:05,920
+um, uh, as K increases.
+
+312
+00:15:05,920 --> 00:15:07,375
+Uh, but , uh,
+
+313
+00:15:07,375 --> 00:15:08,830
+the more negative is the curvature.
+
+314
+00:15:08,830 --> 00:15:10,390
+So when K is small, uh,
+
+315
+00:15:10,390 --> 00:15:12,790
+the more curved the space will be.
+
+316
+00:15:12,790 --> 00:15:16,090
+And, um, here we look at a little bit of how does
+
+317
+00:15:16,090 --> 00:15:20,335
+the curvature affect the - affect the embedding space.
+
+318
+00:15:20,335 --> 00:15:23,515
+Um, so we use our negative 1, uh,
+
+319
+00:15:23,515 --> 00:15:26,755
+1 over K to denote the curvature and,
+
+320
+00:15:26,755 --> 00:15:30,355
+uh, uh, root K is also the radius of the Poincare ball.
+
+321
+00:15:30,355 --> 00:15:32,005
+Um, um and that's how, uh,
+
+322
+00:15:32,005 --> 00:15:34,495
+uh, the radius is related to the curvature.
+
+323
+00:15:34,495 --> 00:15:37,690
+So, um, um, yeah.
+
+324
+00:15:37,690 --> 00:15:40,120
+Uh, uh, if we look at the hyperboloid model, um,
+
+325
+00:15:40,120 --> 00:15:42,805
+the - the - the formula is actually very simple.
+
+326
+00:15:42,805 --> 00:15:45,355
+So this is the, uh, inner product definition,
+
+327
+00:15:45,355 --> 00:15:47,275
+which is also called the Minkowski inner product,
+
+328
+00:15:47,275 --> 00:15:49,105
+uh, in hyperbolic space.
+
+329
+00:15:49,105 --> 00:15:51,955
+Um, so if we have a d-dimensional hyperbolic space,
+
+330
+00:15:51,955 --> 00:15:53,875
+the hyperboloid model, um,
+
+331
+00:15:53,875 --> 00:15:56,140
+will have a d plus 1 dimension.
+
+332
+00:15:56,140 --> 00:15:59,545
+And the, um, the inner product is defined,
+
+333
+00:15:59,545 --> 00:16:01,105
+um, by these two things.
+
+334
+00:16:01,105 --> 00:16:04,450
+So, um, there is the negative parts of the inner product,
+
+335
+00:16:04,450 --> 00:16:07,120
+and there is also the positive part of the inner product,
+
+336
+00:16:07,120 --> 00:16:11,545
+which behaves almost identical to the Euclidean components.
+
+337
+00:16:11,545 --> 00:16:14,200
+But we also have the negative part, which is, uh,
+
+338
+00:16:14,200 --> 00:16:16,510
+um, which has negative sign,
+
+339
+00:16:16,510 --> 00:16:18,580
+uh, in this inner product.
+
+340
+00:16:18,580 --> 00:16:20,455
+And based on this, uh,
+
+341
+00:16:20,455 --> 00:16:22,435
+inner product definition, the, uh,
+
+342
+00:16:22,435 --> 00:16:24,595
+distance between two hyperbolic points,
+
+343
+00:16:24,595 --> 00:16:26,485
+um, can be computed as such.
+
+344
+00:16:26,485 --> 00:16:30,160
+So given two points, x and y in the hyperbolic space, um,
+
+345
+00:16:30,160 --> 00:16:32,500
+you - we can compute this, um, uh,
+
+346
+00:16:32,500 --> 00:16:34,900
+Minkowski inner products and divide by K,
+
+347
+00:16:34,900 --> 00:16:36,640
+which is related to the curvature.
+
+348
+00:16:36,640 --> 00:16:38,860
+And the arcosh means the,
+
+349
+00:16:38,860 --> 00:16:42,730
+uh, the inverse of the hyperbolic cosine function.
+
+350
+00:16:42,730 --> 00:16:44,290
+So we use this function, uh,
+
+351
+00:16:44,290 --> 00:16:47,690
+to compute the distance between two points.
+
+352
+00:16:49,020 --> 00:16:53,530
+Um, and another important concept is called the tangent space.
+
+353
+00:16:53,530 --> 00:16:55,240
+Uh, so as we mentioned that,
+
+354
+00:16:55,240 --> 00:16:58,420
+uh our tangent space is basically a Euclidean, um,
+
+355
+00:16:58,420 --> 00:17:02,500
+uh, Euclidean approximation on a local,
+
+356
+00:17:02,500 --> 00:17:04,359
+uh, point of the manifold.
+
+357
+00:17:04,359 --> 00:17:06,354
+So a local neighborhood of the manifold.
+
+358
+00:17:06,355 --> 00:17:10,795
+Uh - uh we can have a Euclidean space that is tangent to the manifold,
+
+359
+00:17:10,795 --> 00:17:14,220
+but only touching the manifold at, uh, uh, at this one point.
+
+360
+00:17:14,220 --> 00:17:16,099
+So for example, in this visualization,
+
+361
+00:17:16,099 --> 00:17:17,494
+we have this hyperboloid model,
+
+362
+00:17:17,494 --> 00:17:21,139
+again, um, um, representing the hyperbolic space, um,
+
+363
+00:17:21,140 --> 00:17:23,464
+and, um, the, the tangent space,
+
+364
+00:17:23,464 --> 00:17:24,754
+uh, at the North Pole,
+
+365
+00:17:24,755 --> 00:17:26,960
+which is the bottom of the hyperboloid,
+
+366
+00:17:26,960 --> 00:17:28,940
+uh, is drawn over here.
+
+367
+00:17:28,940 --> 00:17:31,895
+Um, and we can, uh, define certain mapping here.
+
+368
+00:17:31,895 --> 00:17:33,885
+So this, um, this line,
+
+369
+00:17:33,885 --> 00:17:36,205
+um, um, this is actually a straight line.
+
+370
+00:17:36,205 --> 00:17:38,840
+Of course it looks like a curve in a hyperbolic space,
+
+371
+00:17:38,840 --> 00:17:42,175
+but if we also map it to the tangent space, this,
+
+372
+00:17:42,175 --> 00:17:46,575
+uh, becomes a straight line because the tangent space is the Euclidean space.
+
+373
+00:17:46,575 --> 00:17:49,095
+And the tangent space is defined, again,
+
+374
+00:17:49,095 --> 00:17:51,515
+through this, uh, Minkowski inner product.
+
+375
+00:17:51,515 --> 00:17:55,160
+Um, uh where, um, if we do inner product between v and x,
+
+376
+00:17:55,160 --> 00:17:56,930
+um - um, it is 0.
+
+377
+00:17:56,930 --> 00:18:00,590
+So that is the, uh, that is the curve - that defines the,
+
+378
+00:18:00,590 --> 00:18:02,375
+uh, the set of all points, uh,
+
+379
+00:18:02,375 --> 00:18:05,480
+v such that the inner product between v and x equals to
+
+380
+00:18:05,480 --> 00:18:08,815
+0 defines the entire, um, tangent space, uh,
+
+381
+00:18:08,815 --> 00:18:12,430
+at the point x. Um,
+
+382
+00:18:12,430 --> 00:18:14,095
+and finally, we, um,
+
+383
+00:18:14,095 --> 00:18:17,150
+we discuss a little bit about geodesic distances.
+
+384
+00:18:17,150 --> 00:18:19,925
+Um, geodesic distance, as- as we mentioned
+
+385
+00:18:19,925 --> 00:18:23,095
+is analogous to the shortest path in the Euclidean space,
+
+386
+00:18:23,095 --> 00:18:27,230
+and, um, it's also the concept of straight line in hyperbolic space.
+
+387
+00:18:27,230 --> 00:18:29,375
+And the more negative the curvature, uh,
+
+388
+00:18:29,375 --> 00:18:33,390
+the more the geodesics will bend inwards towards the center.
+
+389
+00:18:33,390 --> 00:18:35,470
+So - and - and the distance between,
+
+390
+00:18:35,470 --> 00:18:37,015
+uh, two points will also increase.
+
+391
+00:18:37,015 --> 00:18:39,685
+So here is an example plot where, uh,
+
+392
+00:18:39,685 --> 00:18:41,650
+we compute distance between, uh,
+
+393
+00:18:41,650 --> 00:18:43,210
+two points, x and y,
+
+394
+00:18:43,210 --> 00:18:44,590
+with the same coordinate.
+
+395
+00:18:44,590 --> 00:18:46,500
+So, um, uh - uh - uh, say, uh,
+
+396
+00:18:46,500 --> 00:18:48,889
+like imagine something like x is 0.5,
+
+397
+00:18:48,889 --> 00:18:50,720
+0.6, y is 0.2,
+
+398
+00:18:50,720 --> 00:18:54,365
+0.3, and the distance between them actually increases
+
+399
+00:18:54,365 --> 00:18:58,655
+if the curvature increases- sorry if the curvature becomes more negative.
+
+400
+00:18:58,655 --> 00:19:01,340
+So, um, towards, uh, the more active parts,
+
+401
+00:19:01,340 --> 00:19:04,445
+the - the distance between them actually increases more.
+
+402
+00:19:04,445 --> 00:19:08,390
+So it can be more visualized in - in - in this figure, where,
+
+403
+00:19:08,390 --> 00:19:09,995
+um, we have these, uh,
+
+404
+00:19:09,995 --> 00:19:12,785
+two points here, x and y in hyperbolic space.
+
+405
+00:19:12,785 --> 00:19:15,710
+Here we just represent it in the Poincare, um, Poincare ball.
+
+406
+00:19:15,710 --> 00:19:18,195
+And here, uh, 0 is the origin,
+
+407
+00:19:18,195 --> 00:19:20,080
+um, uh, root K is the,
+
+408
+00:19:20,080 --> 00:19:22,010
+uh, is the radius,
+
+409
+00:19:22,010 --> 00:19:26,075
+which is also inversely proportional to the curvature of the space.
+
+410
+00:19:26,075 --> 00:19:27,875
+And the dark blue, um,
+
+411
+00:19:27,875 --> 00:19:30,725
+curve means, um, is the boundary of the uh,
+
+412
+00:19:30,725 --> 00:19:33,140
+hyperbolic space where, um,
+
+413
+00:19:33,140 --> 00:19:35,690
+the curvature, uh, is more negative, right?
+
+414
+00:19:35,690 --> 00:19:37,860
+Uh, and the more negative the curvature is, uh,
+
+415
+00:19:37,860 --> 00:19:40,650
+the- the smaller the radius will be.
+
+416
+00:19:40,650 --> 00:19:44,975
+So, uh, you can see that the geodesics are also drawn here.
+
+417
+00:19:44,975 --> 00:19:46,760
+So, um, if the, uh,
+
+418
+00:19:46,760 --> 00:19:49,970
+in the dark blue - so in higher - higher curvature of
+
+419
+00:19:49,970 --> 00:19:53,735
+space the - the geodesics is more bends towards the center,
+
+420
+00:19:53,735 --> 00:19:57,170
+towards, uh, the center of the hyper- uh hyperbolic space.
+
+421
+00:19:57,170 --> 00:20:00,095
+Uh, whereas, uh, for the lighter blue, um,
+
+422
+00:20:00,095 --> 00:20:03,540
+version or the lighter blue space which has larger curvature,
+
+423
+00:20:03,540 --> 00:20:06,895
+the, uh, geodesic is less bends inward.
+
+424
+00:20:06,895 --> 00:20:09,220
+And, um, in the extreme case where,
+
+425
+00:20:09,220 --> 00:20:11,435
+um, the, um, x, y, uh, uh,
+
+426
+00:20:11,435 --> 00:20:15,560
+the space is Euclidean meaning that the Poincare ball is kind of infinitely large,
+
+427
+00:20:15,560 --> 00:20:17,240
+then the geodesics does,
+
+428
+00:20:17,240 --> 00:20:18,605
+uh, does not bend at all,
+
+429
+00:20:18,605 --> 00:20:21,380
+which recovers our Euclidean concept of shortest path,
+
+430
+00:20:21,380 --> 00:20:24,270
+which is basically a straight line here.
+
+431
+00:20:24,600 --> 00:20:28,405
+Um, and another important concept, um,
+
+432
+00:20:28,405 --> 00:20:32,710
+based on, uh, all these definitions is the exponential and logarithmic manner.
+
+433
+00:20:32,710 --> 00:20:38,245
+So this is a map that we can map from the tangent space to the manifolds and vice versa.
+
+434
+00:20:38,245 --> 00:20:44,165
+So the exponential map maps points- any point in the tangent space to the Euclid- um,
+
+435
+00:20:44,165 --> 00:20:47,520
+um, uh, from the tangent space to the Euclidean- um, uh, sorry,
+
+436
+00:20:47,520 --> 00:20:50,040
+from the Euclidean tangent space to the hyperbolic, um,
+
+437
+00:20:50,040 --> 00:20:53,325
+manifolds and the logarithmic maps, uh,
+
+438
+00:20:53,325 --> 00:20:55,020
+from the, uh, manifolds,
+
+439
+00:20:55,020 --> 00:20:57,345
+um, back to the Euclidean tangent space.
+
+440
+00:20:57,345 --> 00:21:00,060
+Um, so here, uh, it- it is a visualization,
+
+441
+00:21:00,060 --> 00:21:01,950
+and we use the norm, um,
+
+442
+00:21:01,950 --> 00:21:04,050
+to represent the inner product between,
+
+443
+00:21:04,050 --> 00:21:05,640
+uh, two points, uh,
+
+444
+00:21:05,640 --> 00:21:06,690
+u- using this, uh,
+
+445
+00:21:06,690 --> 00:21:10,140
+special, uh, Minkowski in the product definition.
+
+446
+00:21:10,140 --> 00:21:12,990
+Um, so we can uh, conceptually, um,
+
+447
+00:21:12,990 --> 00:21:14,940
+visualize it as, um, you know, uh,
+
+448
+00:21:14,940 --> 00:21:17,595
+we have v in the tangent space of x.
+
+449
+00:21:17,595 --> 00:21:21,015
+And if we want to map it back to the hyperbolic space,
+
+450
+00:21:21,015 --> 00:21:22,470
+it becomes the point y,
+
+451
+00:21:22,470 --> 00:21:24,030
+which is on the hyperbolic space.
+
+452
+00:21:24,030 --> 00:21:29,270
+Uh, and inversely, we can use logarithmic map to map from this y, the blue point,
+
+453
+00:21:29,270 --> 00:21:30,940
+back to the red point v,
+
+454
+00:21:30,940 --> 00:21:32,575
+which is in the Euclidean space,
+
+455
+00:21:32,575 --> 00:21:34,270
+is a Euclidean, uh, coordinate,
+
+456
+00:21:34,270 --> 00:21:36,565
+and it's in the tangent space of x.
+
+457
+00:21:36,565 --> 00:21:39,325
+So here this notation, we use, um,
+
+458
+00:21:39,325 --> 00:21:42,925
+x here as the- the point that is touching- uh,
+
+459
+00:21:42,925 --> 00:21:44,965
+so the tangent space of x, um,
+
+460
+00:21:44,965 --> 00:21:49,240
+is the- is the Euclidean space that we want to map to and from.
+
+461
+00:21:49,240 --> 00:21:50,785
+And K is the curvature,
+
+462
+00:21:50,785 --> 00:21:52,375
+uh, so it is the- uh,
+
+463
+00:21:52,375 --> 00:21:56,755
+this- um, the inverse of the curvature that we have, uh, defined.
+
+464
+00:21:56,755 --> 00:22:01,690
+And here, notice that we have to use this cosh and sinh function,
+
+465
+00:22:01,690 --> 00:22:03,909
+which are the- uh, which are the hyperbolic,
+
+466
+00:22:03,909 --> 00:22:05,545
+uh, uh, trigonometry here.
+
+467
+00:22:05,545 --> 00:22:08,860
+Um, the formulas are- are really very complicated.
+
+468
+00:22:08,860 --> 00:22:11,365
+Um, um, um, but, um, um,
+
+469
+00:22:11,365 --> 00:22:14,170
+if the high-level concept is that there exists- you just
+
+470
+00:22:14,170 --> 00:22:17,230
+need to know that there exists such mapping between the- uh,
+
+471
+00:22:17,230 --> 00:22:19,630
+the tangent space as well as the,
+
+472
+00:22:19,630 --> 00:22:21,145
+uh, um, uh, manifolds.
+
+473
+00:22:21,145 --> 00:22:24,565
+And, um, uh, we can use such mapping to, um,
+
+474
+00:22:24,565 --> 00:22:30,265
+perform operation in the Euclidean space and ma- map it back to the hyperbolic space.
+
+475
+00:22:30,265 --> 00:22:33,249
+Um, so given all these preliminaries,
+
+476
+00:22:33,249 --> 00:22:36,145
+we can now introduce the, uh, hyperbolic GNN.
+
+477
+00:22:36,145 --> 00:22:37,765
+So the main challenge that, uh,
+
+478
+00:22:37,765 --> 00:22:39,910
+we are focusing on here is, uh,
+
+479
+00:22:39,910 --> 00:22:42,580
+that, uh, input features are usually Euclidean.
+
+480
+00:22:42,580 --> 00:22:45,130
+Um, um, but we want to map it, uh,
+
+481
+00:22:45,130 --> 00:22:47,215
+to the hyperbolic space to- uh,
+
+482
+00:22:47,215 --> 00:22:50,005
+to compute the node embedding on the hyperbolic space.
+
+483
+00:22:50,005 --> 00:22:51,940
+And the second challenge is that, uh,
+
+484
+00:22:51,940 --> 00:22:54,610
+we need to perform aggregation in the hyperbolic space,
+
+485
+00:22:54,610 --> 00:22:57,235
+uh, uh, so that we can perform message passing.
+
+486
+00:22:57,235 --> 00:23:00,280
+And, uh, the third challenge is that a hyper- uh,
+
+487
+00:23:00,280 --> 00:23:02,920
+we do not know what is the right amount of curvature
+
+488
+00:23:02,920 --> 00:23:06,025
+for the hyperbolic space that can perfectly embed the graph.
+
+489
+00:23:06,025 --> 00:23:10,030
+So, uh, this is also something that we need to learn in the meantime.
+
+490
+00:23:10,030 --> 00:23:12,340
+Um, so if you recall,
+
+491
+00:23:12,340 --> 00:23:13,570
+the- um, the, um,
+
+492
+00:23:13,570 --> 00:23:16,960
+uh, GNN, uh, formulation is mostly very similar.
+
+493
+00:23:16,960 --> 00:23:19,570
+So, uh, here is an outline of the, uh,
+
+494
+00:23:19,570 --> 00:23:22,120
+GNN architecture where we first compute
+
+495
+00:23:22,120 --> 00:23:25,675
+the messages between all the neighbors as well as the central nodes.
+
+496
+00:23:25,675 --> 00:23:29,410
+And- and then we aggregate all your neighbors', uh, messages, uh,
+
+497
+00:23:29,410 --> 00:23:32,830
+to compute- uh, to compute a representation- uh,
+
+498
+00:23:32,830 --> 00:23:35,394
+the hidden representation after the aggregation.
+
+499
+00:23:35,394 --> 00:23:37,315
+And finally, uh, we will, uh,
+
+500
+00:23:37,315 --> 00:23:39,250
+make an update, uh,
+
+501
+00:23:39,250 --> 00:23:41,470
+um, of the representation, um, so that, uh,
+
+502
+00:23:41,470 --> 00:23:44,875
+the- the next level representation will- um,
+
+503
+00:23:44,875 --> 00:23:49,389
+will, uh, uh, capture the information of the previous layer representation.
+
+504
+00:23:49,389 --> 00:23:51,250
+Um, so this is- this will be the,
+
+505
+00:23:51,250 --> 00:23:52,975
+uh, typical like message,
+
+506
+00:23:52,975 --> 00:23:54,955
+aggregation, and update function,
+
+507
+00:23:54,955 --> 00:23:56,515
+um, but in a hyperbolic space.
+
+508
+00:23:56,515 --> 00:23:58,720
+So notice that here we are writing,
+
+509
+00:23:58,720 --> 00:24:00,475
+um, some, uh, superscripts.
+
+510
+00:24:00,475 --> 00:24:02,800
+For example, like K_l minus 1,
+
+511
+00:24:02,800 --> 00:24:08,620
+so this will indicate the curvature or the inverse of curvature at the layer l minus 1.
+
+512
+00:24:08,620 --> 00:24:11,290
+And here, it is K_l minus 1, K_l,
+
+513
+00:24:11,290 --> 00:24:15,640
+meaning that the update function needs to convert the point from the,
+
+514
+00:24:15,640 --> 00:24:18,685
+uh, uh, hyperbolic space of the previous layer, so, uh,
+
+515
+00:24:18,685 --> 00:24:24,355
+in the layer l minus 1 to the hyperbolic space of a layer l. Um,
+
+516
+00:24:24,355 --> 00:24:26,245
+and the high-level concept, uh,
+
+517
+00:24:26,245 --> 00:24:29,560
+is- is also visualized in the- um, in the figure here.
+
+518
+00:24:29,560 --> 00:24:31,615
+So we have a bunch of points, uh,
+
+519
+00:24:31,615 --> 00:24:36,130
+which are the previous layer embedding of the graph in the previous hyperbolic space.
+
+520
+00:24:36,130 --> 00:24:37,795
+And we perform, um,
+
+521
+00:24:37,795 --> 00:24:39,910
+a message computation of these- um,
+
+522
+00:24:39,910 --> 00:24:43,780
+uh, uh, between these points as well as this center point here.
+
+523
+00:24:43,780 --> 00:24:46,345
+Um, and after we perform these messages,
+
+524
+00:24:46,345 --> 00:24:48,220
+we need to aggregate all these messages.
+
+525
+00:24:48,220 --> 00:24:50,365
+And we perform this aggregation in this,
+
+526
+00:24:50,365 --> 00:24:52,270
+uh, tangent space of the, uh,
+
+527
+00:24:52,270 --> 00:24:55,060
+hyperbolic space because there is no natural definition
+
+528
+00:24:55,060 --> 00:24:58,090
+of neural network operations in the hyperbolic space.
+
+529
+00:24:58,090 --> 00:25:01,000
+Um, but if we map them into the tangent space,
+
+530
+00:25:01,000 --> 00:25:02,050
+then we can, uh,
+
+531
+00:25:02,050 --> 00:25:05,650
+do something like a center of gravity inside this tangent space,
+
+532
+00:25:05,650 --> 00:25:07,420
+uh, at the point x.
+
+533
+00:25:07,420 --> 00:25:09,100
+So we perform this, uh,
+
+534
+00:25:09,100 --> 00:25:10,975
+aggregation in the tangent space.
+
+535
+00:25:10,975 --> 00:25:12,430
+And after the aggregation,
+
+536
+00:25:12,430 --> 00:25:14,590
+we have the green point here which is, um,
+
+537
+00:25:14,590 --> 00:25:17,065
+then mapped back to the- um,
+
+538
+00:25:17,065 --> 00:25:20,005
+an- another hyperbolic space of a different curvature.
+
+539
+00:25:20,005 --> 00:25:21,430
+So you notice that here,
+
+540
+00:25:21,430 --> 00:25:23,725
+it is the layer l minus 1, sorry,
+
+541
+00:25:23,725 --> 00:25:26,275
+layer l plus 1, and in the previous layer, uh,
+
+542
+00:25:26,275 --> 00:25:28,120
+it will be layer l. So this is
+
+543
+00:25:28,120 --> 00:25:32,455
+a completely different hyperbolic space with a different curvature that we- um,
+
+544
+00:25:32,455 --> 00:25:34,360
+but we can use the, uh,
+
+545
+00:25:34,360 --> 00:25:39,860
+exponential and logarithmic map to map the aggregated results back to the- uh,
+
+546
+00:25:39,860 --> 00:25:43,240
+the- um, the hyperbolic points in
+
+547
+00:25:43,240 --> 00:25:47,090
+the new embedding space- in the new embed space with a different curvature.
+
+548
+00:25:47,090 --> 00:25:49,110
+Um, so the, uh,
+
+549
+00:25:49,110 --> 00:25:52,635
+formula for all these computations are very complex,
+
+550
+00:25:52,635 --> 00:25:55,335
+um, and un- understanding them requires like, uh,
+
+551
+00:25:55,335 --> 00:25:58,575
+uh, entire lecture on differential geometry.
+
+552
+00:25:58,575 --> 00:26:00,900
+So I won't go very much into the detail,
+
+553
+00:26:00,900 --> 00:26:02,535
+but there are some high-level, uh,
+
+554
+00:26:02,535 --> 00:26:05,280
+concepts that you can get from- uh, get- get from here.
+
+555
+00:26:05,280 --> 00:26:08,455
+So, for example, in the message computation, because, um,
+
+556
+00:26:08,455 --> 00:26:12,670
+hyperbolic space has no natural neural network operations that can be defined here,
+
+557
+00:26:12,670 --> 00:26:15,280
+we can use this, um, um,
+
+558
+00:26:15,280 --> 00:26:16,600
+um, linear and- uh,
+
+559
+00:26:16,600 --> 00:26:19,690
+so linear layer basi- the linear and addition, um,
+
+560
+00:26:19,690 --> 00:26:21,340
+of the bias term, uh,
+
+561
+00:26:21,340 --> 00:26:23,380
+in the tangent space of- um,
+
+562
+00:26:23,380 --> 00:26:25,450
+of the, um, um,
+
+563
+00:26:25,450 --> 00:26:26,710
+of the hyperbolic space.
+
+564
+00:26:26,710 --> 00:26:28,195
+So here, we use this,
+
+565
+00:26:28,195 --> 00:26:30,340
+um, circle and multiply it, uh,
+
+566
+00:26:30,340 --> 00:26:34,750
+to represent this- like multiply all the linear- linear operation, and this, uh,
+
+567
+00:26:34,750 --> 00:26:37,255
+circle and- um, and, um, plus, uh,
+
+568
+00:26:37,255 --> 00:26:39,850
+inside it, uh, to represent the addition,
+
+569
+00:26:39,850 --> 00:26:41,185
+so the Mobius addition.
+
+570
+00:26:41,185 --> 00:26:43,525
+Uh, and- and these are very ea- um,
+
+571
+00:26:43,525 --> 00:26:44,740
+and- and as you can see,
+
+572
+00:26:44,740 --> 00:26:48,190
+these are, uh, defined through this exponential and logarithmic map here.
+
+573
+00:26:48,190 --> 00:26:50,680
+So we first use the logarithmic map to map
+
+574
+00:26:50,680 --> 00:26:53,680
+the points- the hyperbolic points to the Euclidean,
+
+575
+00:26:53,680 --> 00:26:55,255
+um, tangent space, um,
+
+576
+00:26:55,255 --> 00:26:56,935
+on that point- uh, on the origin.
+
+577
+00:26:56,935 --> 00:26:58,885
+So this- here this o means origin.
+
+578
+00:26:58,885 --> 00:27:00,670
+So we first map it to the orig- um,
+
+579
+00:27:00,670 --> 00:27:02,365
+the tangent space of the origin.
+
+580
+00:27:02,365 --> 00:27:05,845
+We perform this ma- uh, matrix multiplication in the tangent space.
+
+581
+00:27:05,845 --> 00:27:07,900
+And because tangent space is Euclidean,
+
+582
+00:27:07,900 --> 00:27:09,940
+this operation is well-defined.
+
+583
+00:27:09,940 --> 00:27:12,430
+And after we perform this linear operation,
+
+584
+00:27:12,430 --> 00:27:15,040
+you can then map it back to- uh, to the- uh, um,
+
+585
+00:27:15,040 --> 00:27:18,985
+uh, to the hyperbolic space through this exponential map.
+
+586
+00:27:18,985 --> 00:27:21,580
+So, um, compared to the Euclidean operation,
+
+587
+00:27:21,580 --> 00:27:24,640
+basically ask this exponential and logarithmic back to
+
+588
+00:27:24,640 --> 00:27:28,165
+convert to and from the tangent space to perform this operation.
+
+589
+00:27:28,165 --> 00:27:29,980
+And similar is also true for,
+
+590
+00:27:29,980 --> 00:27:32,080
+um, addition, but here,
+
+591
+00:27:32,080 --> 00:27:36,640
+we need to have a special operator called parallel transpor- transport,
+
+592
+00:27:36,640 --> 00:27:41,470
+uh, which- um, which tells you how to move the vector around in the space.
+
+593
+00:27:41,470 --> 00:27:45,805
+So, um, this might not seem very intuitive because in Euclidean space, um,
+
+594
+00:27:45,805 --> 00:27:50,230
+a vector, uh, can be moved around the Euclidean space without affecting its length.
+
+595
+00:27:50,230 --> 00:27:51,730
+But actually, in hyperbolic space,
+
+596
+00:27:51,730 --> 00:27:56,530
+you cannot freely move the vector because as you can see in the visualization,
+
+597
+00:27:56,530 --> 00:28:00,070
+if we move the- uh, if we- we move a vector,
+
+598
+00:28:00,070 --> 00:28:02,365
+um, out towards the edge of it,
+
+599
+00:28:02,365 --> 00:28:03,910
+it will seem smaller, right?
+
+600
+00:28:03,910 --> 00:28:07,510
+The coordinates will- um, the- the norm of that vector will have to change.
+
+601
+00:28:07,510 --> 00:28:11,305
+So there's this also the parallel transport here, um, um,
+
+602
+00:28:11,305 --> 00:28:14,545
+and that, uh, represent the analogy of the,
+
+603
+00:28:14,545 --> 00:28:17,320
+uh, uh, addition operation in the hyperbolic space.
+
+604
+00:28:17,320 --> 00:28:19,645
+Um, and all these- notice that all these functions,
+
+605
+00:28:19,645 --> 00:28:21,670
+although they are very complex, are differentiable.
+
+606
+00:28:21,670 --> 00:28:24,145
+So we can also use PyTorch and any, uh,
+
+607
+00:28:24,145 --> 00:28:27,865
+different- uh, other differentiation software to perform these operations.
+
+608
+00:28:27,865 --> 00:28:29,920
+Um, and in the aggregation,
+
+609
+00:28:29,920 --> 00:28:33,760
+this is basically very similar to graph attention networks that we have learned.
+
+610
+00:28:33,760 --> 00:28:36,505
+So we have this attention, uh, weights here.
+
+611
+00:28:36,505 --> 00:28:38,215
+And we also map it- uh,
+
+612
+00:28:38,215 --> 00:28:39,510
+map the points, uh,
+
+613
+00:28:39,510 --> 00:28:40,945
+to the tangent space, uh,
+
+614
+00:28:40,945 --> 00:28:43,405
+use the, uh, attention weights to aggregate them
+
+615
+00:28:43,405 --> 00:28:46,750
+and then again map it back to the hyperbolic space.
+
+616
+00:28:46,750 --> 00:28:48,835
+And in the hyp- uh, update function,
+
+617
+00:28:48,835 --> 00:28:51,280
+it again follows the same- uh, same, um,
+
+618
+00:28:51,280 --> 00:28:54,310
+uh, rule where we map it to the tangent space,
+
+619
+00:28:54,310 --> 00:28:55,870
+we perform the non-linearity.
+
+620
+00:28:55,870 --> 00:28:57,025
+But note that here, we, uh,
+
+621
+00:28:57,025 --> 00:28:58,945
+map it back to a different curvature,
+
+622
+00:28:58,945 --> 00:29:00,625
+right, um, because the next level has
+
+623
+00:29:00,625 --> 00:29:02,650
+different coverage around different space definition.
+
+624
+00:29:02,650 --> 00:29:06,700
+Uh, so finally, just to show a little bit of results,
+
+625
+00:29:06,700 --> 00:29:11,815
+um, uh, here we can see a GNN embedding of a tree-like structure.
+
+626
+00:29:11,815 --> 00:29:15,025
+Um, and as you can see, because there are exponentially many,
+
+627
+00:29:15,025 --> 00:29:18,040
+uh, uh, points in the space and, um, uh,
+
+628
+00:29:18,040 --> 00:29:21,820
+the- the- the geometry is not very nicely preserved,
+
+629
+00:29:21,820 --> 00:29:23,470
+uh, because, uh, uh,
+
+630
+00:29:23,470 --> 00:29:26,470
+here we visualize the nodes as like the lighter blue nodes
+
+631
+00:29:26,470 --> 00:29:30,130
+represent the leaves and the dark blue nodes represent the, uh, roots.
+
+632
+00:29:30,130 --> 00:29:32,080
+And you can see that some of these leaves are
+
+633
+00:29:32,080 --> 00:29:34,285
+actually very embedded very close to the root,
+
+634
+00:29:34,285 --> 00:29:36,835
+which does not respect the tree structure.
+
+635
+00:29:36,835 --> 00:29:39,235
+Whereas in the hyperbolic geometry, uh,
+
+636
+00:29:39,235 --> 00:29:42,580
+using the hyperbolic GCN, we're able to, uh,
+
+637
+00:29:42,580 --> 00:29:45,700
+recover this tree-like structure very nicely, uh, and,
+
+638
+00:29:45,700 --> 00:29:47,335
+uh, all the points are, uh,
+
+639
+00:29:47,335 --> 00:29:49,900
+embedded in- in their respective hierarchy.
+
+640
+00:29:49,900 --> 00:29:53,140
+And we also discovered that curvature is very important,
+
+641
+00:29:53,140 --> 00:29:56,560
+and there is a sweet spot where we can embed the- um,
+
+642
+00:29:56,560 --> 00:29:58,345
+a tree with a low distortion,
+
+643
+00:29:58,345 --> 00:30:00,430
+but also very unstable- uh,
+
+644
+00:30:00,430 --> 00:30:03,040
+numerically, uh, very stable.
+
+645
+00:30:03,040 --> 00:30:05,530
+And, uh, finally, um,
+
+646
+00:30:05,530 --> 00:30:08,155
+we also evaluated in a bunch of, uh,
+
+647
+00:30:08,155 --> 00:30:09,475
+other- um, other, uh,
+
+648
+00:30:09,475 --> 00:30:11,550
+standard datasets, uh, graph datasets.
+
+649
+00:30:11,550 --> 00:30:14,790
+And we basically use this hyperbolicity to measure, like,
+
+650
+00:30:14,790 --> 00:30:17,220
+how good, uh, is the hyperbolic GNN,
+
+651
+00:30:17,220 --> 00:30:19,860
+uh, will perform in a given dataset.
+
+652
+00:30:19,860 --> 00:30:21,960
+So this metric can be found in this,
+
+653
+00:30:21,960 --> 00:30:24,885
+uh, Gromov, uh, hyperbolicity paper.
+
+654
+00:30:24,885 --> 00:30:26,805
+Um, and basically the lower, uh,
+
+655
+00:30:26,805 --> 00:30:29,740
+hyperbolicity, uh, the graph becomes more tree-like.
+
+656
+00:30:29,740 --> 00:30:32,470
+So here, for example, delta equals to 0,
+
+657
+00:30:32,470 --> 00:30:34,450
+uh, that means that the graph is,
+
+658
+00:30:34,450 --> 00:30:35,830
+uh, kind of a perfect tree.
+
+659
+00:30:35,830 --> 00:30:37,720
+Whereas here, if Delta is 11,
+
+660
+00:30:37,720 --> 00:30:40,795
+then the graph is not very hierarchical or not very tree-like.
+
+661
+00:30:40,795 --> 00:30:44,530
+So we can see that, uh, the hyperbolic GNN will per- tend to
+
+662
+00:30:44,530 --> 00:30:48,325
+perform very well or extremely well when hyperbolicity is 0,
+
+663
+00:30:48,325 --> 00:30:50,980
+so which means that the graph is, uh, very tree-like.
+
+664
+00:30:50,980 --> 00:30:52,360
+Whereas if the graph, uh,
+
+665
+00:30:52,360 --> 00:30:53,530
+does not look like a tree,
+
+666
+00:30:53,530 --> 00:30:57,325
+then the- uh, uh, uh, the performance tend to drop.
+
+667
+00:30:57,325 --> 00:30:59,935
+So, uh, that's why the hyperbolic GNN is
+
+668
+00:30:59,935 --> 00:31:02,875
+especially suitable for hierarchical and on tree-like graphs.
+
+669
+00:31:02,875 --> 00:31:04,840
+Uh, just to summarize,
+
+670
+00:31:04,840 --> 00:31:07,210
+uh, here we introduce the hyperbolic geometry.
+
+671
+00:31:07,210 --> 00:31:09,010
+And we have, uh, two models,
+
+672
+00:31:09,010 --> 00:31:12,970
+the Poincare ball and hyperboloid uh, model, uh, to,
+
+673
+00:31:12,970 --> 00:31:15,370
+uh, visualize and represent the hyperbolic, uh,
+
+674
+00:31:15,370 --> 00:31:19,000
+space in the Euclidean- as a subspace of the Euclidean space.
+
+675
+00:31:19,000 --> 00:31:23,890
+And we can use exponential logarithmic map to map points to and from the tangent space,
+
+676
+00:31:23,890 --> 00:31:26,965
+which is Euclidean, where neural network operations can be performed.
+
+677
+00:31:26,965 --> 00:31:28,885
+And finally, we show that we- uh,
+
+678
+00:31:28,885 --> 00:31:30,400
+we can use a learnable,
+
+679
+00:31:30,400 --> 00:31:31,630
+um, uh, curvature, um,
+
+680
+00:31:31,630 --> 00:31:37,420
+um, at every layer of the GNN so that we can trade off performance and stability.
+
+681
+00:31:37,420 --> 00:31:39,340
+Uh, thank you, and that's- um,
+
+682
+00:31:39,340 --> 00:31:42,200
+that's all for, uh, this part of the content.
+

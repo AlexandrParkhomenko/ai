@@ -1,0 +1,1688 @@
+1
+00:00:05,030 --> 00:00:07,845
+So for today's class,
+
+2
+00:00:07,845 --> 00:00:11,880
+what we are going to talk about is generative models for graphs, right?
+
+3
+00:00:11,880 --> 00:00:14,610
+So far we were working on the assumption,
+
+4
+00:00:14,610 --> 00:00:16,890
+or we talked about methods where, uh,
+
+5
+00:00:16,890 --> 00:00:20,190
+given- where we said the graph is given and we wanna do some modeling,
+
+6
+00:00:20,190 --> 00:00:24,330
+learning, prediction, community detection on top of it.
+
+7
+00:00:24,330 --> 00:00:26,060
+What we are going to, uh,
+
+8
+00:00:26,060 --> 00:00:29,450
+look at for the next two lectures is a different problem.
+
+9
+00:00:29,450 --> 00:00:31,945
+It is a problem about how do we,
+
+10
+00:00:31,945 --> 00:00:33,950
+um, generate a graph, right?
+
+11
+00:00:33,950 --> 00:00:37,700
+How would we generate a synthetic social network?
+
+12
+00:00:37,700 --> 00:00:40,580
+How would we generate a synthetic economic network?
+
+13
+00:00:40,580 --> 00:00:44,110
+How would we generate a synthetic communication network, right?
+
+14
+00:00:44,110 --> 00:00:46,730
+How are- what are some of the processes that would
+
+15
+00:00:46,730 --> 00:00:49,895
+allow us to generate these types of graphs, right?
+
+16
+00:00:49,895 --> 00:00:52,070
+Um, and the way we can, uh,
+
+17
+00:00:52,070 --> 00:00:56,900
+we can do this is that we wanna generate realistic graphs using generative models, right?
+
+18
+00:00:56,900 --> 00:01:00,170
+So the idea will be that we are gi- given a,
+
+19
+00:01:00,170 --> 00:01:03,015
+uh, graph generative model and, uh,
+
+20
+00:01:03,015 --> 00:01:04,840
+we wanna be able then to, uh,
+
+21
+00:01:04,840 --> 00:01:08,590
+generate a synthetic graph that is somehow similar or,
+
+22
+00:01:08,590 --> 00:01:10,750
+uh, matches, uh, the real graph.
+
+23
+00:01:10,750 --> 00:01:12,580
+So, uh, this is what we would,
+
+24
+00:01:12,580 --> 00:01:14,195
+uh, like to do.
+
+25
+00:01:14,195 --> 00:01:19,035
+So why do we wanna do graph generation? Why should we care?
+
+26
+00:01:19,035 --> 00:01:23,430
+Uh, first is that we wanna understand how real graphs form, right?
+
+27
+00:01:23,430 --> 00:01:26,555
+So these- these generative models can provide us insights
+
+28
+00:01:26,555 --> 00:01:29,780
+about what kind of processes take place,
+
+29
+00:01:29,780 --> 00:01:33,140
+let's say in social science, in- in humans,
+
+30
+00:01:33,140 --> 00:01:35,915
+when we generate- when we create our own,
+
+31
+00:01:35,915 --> 00:01:38,795
+uh, social networks and social connections.
+
+32
+00:01:38,795 --> 00:01:41,300
+Uh, it allows us to make predictions in a sense, you know,
+
+33
+00:01:41,300 --> 00:01:45,485
+how do we expect this graph to evolve, uh, in the future?
+
+34
+00:01:45,485 --> 00:01:48,995
+Synthetic graphs are also very useful because they, um,
+
+35
+00:01:48,995 --> 00:01:51,500
+allow us to understand, um,
+
+36
+00:01:51,500 --> 00:01:53,390
+various kinds of processes,
+
+37
+00:01:53,390 --> 00:01:55,280
+uh, that lead to, uh,
+
+38
+00:01:55,280 --> 00:01:57,590
+generation of, uh, new graphs,
+
+39
+00:01:57,590 --> 00:02:01,280
+and then we can use them as datasets for understanding corner cases
+
+40
+00:02:01,280 --> 00:02:05,380
+and understanding the performance of various kinds of, uh, graph methods.
+
+41
+00:02:05,380 --> 00:02:10,220
+Um, and the last is about anomaly detection in a sense that we,
+
+42
+00:02:10,220 --> 00:02:12,500
+many times, require a null model,
+
+43
+00:02:12,500 --> 00:02:13,925
+a model that would say, uh-huh,
+
+44
+00:02:13,925 --> 00:02:15,425
+this is what I would expect.
+
+45
+00:02:15,425 --> 00:02:17,320
+This is the network I would expect.
+
+46
+00:02:17,320 --> 00:02:22,160
+Let me compare it now to the real world network and see what the differences are, right?
+
+47
+00:02:22,160 --> 00:02:25,115
+So we want these type of null models to then be able
+
+48
+00:02:25,115 --> 00:02:28,505
+to have a reference point for what is expected,
+
+49
+00:02:28,505 --> 00:02:30,140
+and then whatever your data we have,
+
+50
+00:02:30,140 --> 00:02:32,305
+we can kind of compare it to that, um,
+
+51
+00:02:32,305 --> 00:02:35,350
+expected, the reference point to the,
+
+52
+00:02:35,350 --> 00:02:37,185
+uh, to the- to the null model.
+
+53
+00:02:37,185 --> 00:02:41,720
+So, uh, the road-map for graph generation and for the lecture today is the following.
+
+54
+00:02:41,720 --> 00:02:46,880
+First, I'm actually going to talk to you about properties of real world graphs, right?
+
+55
+00:02:46,880 --> 00:02:49,335
+Because when I generate a- a graph,
+
+56
+00:02:49,335 --> 00:02:51,569
+I wanna feed some properties,
+
+57
+00:02:51,569 --> 00:02:54,510
+I wanna match some properties of the real network,
+
+58
+00:02:54,510 --> 00:02:56,450
+and the question is, what properties are
+
+59
+00:02:56,450 --> 00:02:59,270
+interesting and what properties should we try to match?
+
+60
+00:02:59,270 --> 00:03:01,535
+And then I'm going to talk about, uh,
+
+61
+00:03:01,535 --> 00:03:05,855
+the second part of the lecture about traditional graph generative models,
+
+62
+00:03:05,855 --> 00:03:09,080
+uh, where basically each comes with a different set of assumptions.
+
+63
+00:03:09,080 --> 00:03:11,435
+These models are relatively simple,
+
+64
+00:03:11,435 --> 00:03:14,150
+but they come up with a lot of insight and they really
+
+65
+00:03:14,150 --> 00:03:17,110
+allow us to kind of understand the network formation.
+
+66
+00:03:17,110 --> 00:03:19,200
+And then, uh, next week, Tuesday,
+
+67
+00:03:19,200 --> 00:03:20,655
+I'm going to talk about,
+
+68
+00:03:20,655 --> 00:03:22,530
+uh, deep graph generative models,
+
+69
+00:03:22,530 --> 00:03:27,060
+where we wanna learn the graph formulation process from data,
+
+70
+00:03:27,060 --> 00:03:29,620
+uh, and this is what we are going to cover in the next lecture.
+
+71
+00:03:29,620 --> 00:03:33,110
+So today's lecture won't be kind of, uh, machine-learning flavored,
+
+72
+00:03:33,110 --> 00:03:37,385
+it will be more about traditional graph generation and a lot of cool insights,
+
+73
+00:03:37,385 --> 00:03:39,650
+and then next lecture we'll be thinking about
+
+74
+00:03:39,650 --> 00:03:42,875
+graph generation as a purely machine learning process.
+
+75
+00:03:42,875 --> 00:03:45,465
+And of course, there is valuing both.
+
+76
+00:03:45,465 --> 00:03:48,540
+There is valuing formulating things as
+
+77
+00:03:48,540 --> 00:03:52,760
+pure machine learning problems where you say I wanna predict the graph, um,
+
+78
+00:03:52,760 --> 00:03:56,090
+and there is also valuing generating graphs through
+
+79
+00:03:56,090 --> 00:03:59,450
+these traditional models because that comes up with a lot of theory,
+
+80
+00:03:59,450 --> 00:04:01,485
+a lot of insights, and, uh,
+
+81
+00:04:01,485 --> 00:04:04,475
+much more kind of inductive bias into
+
+82
+00:04:04,475 --> 00:04:08,890
+underlying processes that could be taking place in these networks.
+
+83
+00:04:08,890 --> 00:04:12,170
+So, uh, the plan is to ask first,
+
+84
+00:04:12,170 --> 00:04:14,840
+what are some of the important properties of networks,
+
+85
+00:04:14,840 --> 00:04:16,130
+uh, that, let's say,
+
+86
+00:04:16,130 --> 00:04:18,529
+these generators should match or that we can
+
+87
+00:04:18,529 --> 00:04:21,629
+compare the generated network and the real network?
+
+88
+00:04:21,630 --> 00:04:24,380
+And in particular, we are going to characterize graphs,
+
+89
+00:04:24,380 --> 00:04:29,145
+we are going to measure graphs according to these four different properties.
+
+90
+00:04:29,145 --> 00:04:33,095
+First, we'll call degree distribution, clustering coefficient,
+
+91
+00:04:33,095 --> 00:04:35,255
+connected components, and, uh,
+
+92
+00:04:35,255 --> 00:04:37,610
+the shortest path lengths.
+
+93
+00:04:37,610 --> 00:04:40,340
+Um, and, uh, we are- we have introduced some of
+
+94
+00:04:40,340 --> 00:04:43,955
+these notions already at the beginning of the class,
+
+95
+00:04:43,955 --> 00:04:46,405
+so let's do a quick, uh, recap.
+
+96
+00:04:46,405 --> 00:04:48,480
+So first, degree distribution.
+
+97
+00:04:48,480 --> 00:04:50,570
+Degree distribution simply says,
+
+98
+00:04:50,570 --> 00:04:55,070
+what is the probability that a randomly chosen node will have a given degree?
+
+99
+00:04:55,070 --> 00:04:58,820
+Um, and simply this is just a normalized count, right?
+
+100
+00:04:58,820 --> 00:05:00,290
+You say, uh, it's,
+
+101
+00:05:00,290 --> 00:05:02,030
+in some sense, a normalized, um,
+
+102
+00:05:02,030 --> 00:05:03,460
+histogram where you say, uh-huh,
+
+103
+00:05:03,460 --> 00:05:04,845
+for every degree k,
+
+104
+00:05:04,845 --> 00:05:07,455
+I wanna ask what fraction of nodes has that degree?
+
+105
+00:05:07,455 --> 00:05:12,425
+And I can simply plot degree versus fraction of nodes with that degree.
+
+106
+00:05:12,425 --> 00:05:15,304
+And I can think of this as normalized histogram,
+
+107
+00:05:15,304 --> 00:05:18,650
+or if I ignore this uh- uh- uh,
+
+108
+00:05:18,650 --> 00:05:23,520
+factor N, then it's simply a histogram of the count versus degree, right?
+
+109
+00:05:23,520 --> 00:05:27,000
+How many nodes have a dif- different- have a given degree.
+
+110
+00:05:27,000 --> 00:05:29,355
+That's what is called degree distribution.
+
+111
+00:05:29,355 --> 00:05:33,575
+The second thing we already talked about is clustering coefficient,
+
+112
+00:05:33,575 --> 00:05:39,445
+which is all about trying to understand how connected are the neighbors of a given node?
+
+113
+00:05:39,445 --> 00:05:41,120
+Um, and in particular,
+
+114
+00:05:41,120 --> 00:05:45,665
+we say clustering coefficient of node i is simply defined twice the number of
+
+115
+00:05:45,665 --> 00:05:48,305
+edges between its neighbors divided by
+
+116
+00:05:48,305 --> 00:05:51,485
+the degree of the node times the degree of the node minus 1.
+
+117
+00:05:51,485 --> 00:05:54,885
+So clustering coefficient will have value between 0 and 1,
+
+118
+00:05:54,885 --> 00:05:57,555
+and the reason why it is this way is basically saying,
+
+119
+00:05:57,555 --> 00:05:59,099
+I have k neighbors,
+
+120
+00:05:59,099 --> 00:06:03,150
+so k times k minus 1 divided by 2 is k choose 2.
+
+121
+00:06:03,150 --> 00:06:06,620
+It's number of possible pairs of neighbors you can select.
+
+122
+00:06:06,620 --> 00:06:12,260
+So this is the- the total number of edges that is possible between a pair of nodes-
+
+123
+00:06:12,260 --> 00:06:14,990
+a- a- a pair of neighbors of a given node with
+
+124
+00:06:14,990 --> 00:06:18,880
+degree k_i and e_i is actually the actual number of,
+
+125
+00:06:18,880 --> 00:06:21,200
+um, edges that- that occur, right?
+
+126
+00:06:21,200 --> 00:06:23,570
+So if I have no edges between the neighbors,
+
+127
+00:06:23,570 --> 00:06:26,120
+then clustering coefficient is 0, if I, let's say,
+
+128
+00:06:26,120 --> 00:06:29,390
+have three out of six possible 1s,
+
+129
+00:06:29,390 --> 00:06:31,670
+then clustering coefficient is,
+
+130
+00:06:31,670 --> 00:06:34,160
+uh, one-half and if I have all the six,
+
+131
+00:06:34,160 --> 00:06:37,175
+uh, edges between the four neighbors that are possible,
+
+132
+00:06:37,175 --> 00:06:39,190
+then my clustering coefficient is 1.
+
+133
+00:06:39,190 --> 00:06:40,969
+And this is now defined,
+
+134
+00:06:40,969 --> 00:06:43,220
+uh, clustering coefficient of a given node.
+
+135
+00:06:43,220 --> 00:06:46,805
+Now if you wanna do the clustering coefficient of an entire network,
+
+136
+00:06:46,805 --> 00:06:49,050
+what people usually do is they simply compute
+
+137
+00:06:49,050 --> 00:06:52,980
+the average clustering coefficient across all the nodes,
+
+138
+00:06:52,980 --> 00:06:55,715
+or they define, uh- or they actually plot
+
+139
+00:06:55,715 --> 00:06:59,480
+the distribution of clustering coefficient, uh, values.
+
+140
+00:06:59,480 --> 00:07:00,860
+Um, so those are, uh,
+
+141
+00:07:00,860 --> 00:07:03,410
+two ways how to characterize this notion of how many
+
+142
+00:07:03,410 --> 00:07:06,920
+triangles- how often friend of a friend is also a friend, right?
+
+143
+00:07:06,920 --> 00:07:11,075
+You can say basically, how likely am I to see this kind of edges between,
+
+144
+00:07:11,075 --> 00:07:13,275
+uh, pairs of nodes that have a friend in common?
+
+145
+00:07:13,275 --> 00:07:15,515
+And in social networks in particular,
+
+146
+00:07:15,515 --> 00:07:18,560
+clustering coefficients tend to be very high because of
+
+147
+00:07:18,560 --> 00:07:20,390
+this triadic closure that we have
+
+148
+00:07:20,390 --> 00:07:23,200
+discussed in the last lecture about community detection.
+
+149
+00:07:23,200 --> 00:07:26,070
+Um, so these were the first two,
+
+150
+00:07:26,070 --> 00:07:28,085
+degree distribution, clustering coefficient.
+
+151
+00:07:28,085 --> 00:07:31,970
+The third one we will look at is connectivity, and in lecture 1,
+
+152
+00:07:31,970 --> 00:07:34,625
+we dis- we dis- defined this notion of the,
+
+153
+00:07:34,625 --> 00:07:36,620
+uh, connected components in the graph.
+
+154
+00:07:36,620 --> 00:07:38,840
+And we said that lets- one thing,
+
+155
+00:07:38,840 --> 00:07:42,020
+how we can simply characterize connectivity is to ask,
+
+156
+00:07:42,020 --> 00:07:44,570
+what is the largest connected component size, right?
+
+157
+00:07:44,570 --> 00:07:46,685
+What- what fraction of nodes,
+
+158
+00:07:46,685 --> 00:07:49,190
+um, belongs to the largest connected component?
+
+159
+00:07:49,190 --> 00:07:52,145
+So if I have some graph that may not be connected,
+
+160
+00:07:52,145 --> 00:07:56,390
+I'm asking what fraction of nodes are in the largest connected component,
+
+161
+00:07:56,390 --> 00:07:59,240
+where connected component is simply a pair of- uh,
+
+162
+00:07:59,240 --> 00:08:01,085
+a set of nodes that can reach each other,
+
+163
+00:08:01,085 --> 00:08:03,025
+let's say, on an undirected network.
+
+164
+00:08:03,025 --> 00:08:07,535
+Um, the way I find connected components is by simple, uh, breadth-first search.
+
+165
+00:08:07,535 --> 00:08:08,750
+And I would say that, you know,
+
+166
+00:08:08,750 --> 00:08:13,100
+giant component exists if- if this largest component is large.
+
+167
+00:08:13,100 --> 00:08:15,840
+I know more than half of the nodes belong,
+
+168
+00:08:15,840 --> 00:08:18,960
+uh, to this largest, uh, connected component.
+
+169
+00:08:18,960 --> 00:08:23,620
+And then the last thing that- the way we are going to characterize networks is
+
+170
+00:08:23,620 --> 00:08:28,120
+through what is called shortest path lengths or the notion of diameter.
+
+171
+00:08:28,120 --> 00:08:31,360
+So mathematically, we define the diameter of the network as
+
+172
+00:08:31,360 --> 00:08:35,590
+the maximum shortest path distance between any pair of nodes in the graph.
+
+173
+00:08:35,590 --> 00:08:37,900
+So you take- essentially to compute it,
+
+174
+00:08:37,900 --> 00:08:42,625
+it would- it would mean take any pair of nodes and find the shortest path between them.
+
+175
+00:08:42,625 --> 00:08:46,000
+Um, now the problem with this maximum is that you can have
+
+176
+00:08:46,000 --> 00:08:50,290
+a long string of edges somewhere and that will severely increase your,
+
+177
+00:08:50,290 --> 00:08:51,865
+uh, diameter of the graph.
+
+178
+00:08:51,865 --> 00:08:53,170
+So for real networks,
+
+179
+00:08:53,170 --> 00:08:56,120
+you wanna use this- some more robust measure of the diameter,
+
+180
+00:08:56,120 --> 00:08:58,930
+for example, average shortest path length, where you say,
+
+181
+00:08:58,930 --> 00:09:01,805
+let me go over all pairs of nodes,
+
+182
+00:09:01,805 --> 00:09:04,125
+i and j, that are connected,
+
+183
+00:09:04,125 --> 00:09:06,930
+and let me, uh- let me compute the average,
+
+184
+00:09:06,930 --> 00:09:11,440
+um, shortest path length between any pair of nodes.
+
+185
+00:09:11,440 --> 00:09:12,940
+Um, and, uh, you know,
+
+186
+00:09:12,940 --> 00:09:15,115
+many times if the graph is disconnected,
+
+187
+00:09:15,115 --> 00:09:17,320
+then the shortest path length between two nodes that
+
+188
+00:09:17,320 --> 00:09:19,490
+are in different components is infinite,
+
+189
+00:09:19,490 --> 00:09:23,290
+so you would only do this over the largest connected component,
+
+190
+00:09:23,290 --> 00:09:24,455
+or you would, uh,
+
+191
+00:09:24,455 --> 00:09:28,030
+ignore the pairs of nodes that are not reachable from, uh, each other.
+
+192
+00:09:28,030 --> 00:09:30,940
+But the idea is that you wanna get some sense of how many hops
+
+193
+00:09:30,940 --> 00:09:34,210
+it takes to get from one node to another on average,
+
+194
+00:09:34,210 --> 00:09:36,345
+uh, in this, uh, network.
+
+195
+00:09:36,345 --> 00:09:39,680
+So these are the now four different ways,
+
+196
+00:09:39,680 --> 00:09:42,470
+how do we mathematically, uh,
+
+197
+00:09:42,470 --> 00:09:45,830
+empirically characterize properties of a given network.
+
+198
+00:09:45,830 --> 00:09:47,165
+And just for the, uh,
+
+199
+00:09:47,165 --> 00:09:50,330
+case- for the kind of- for the rest of the lecture,
+
+200
+00:09:50,330 --> 00:09:56,030
+I'm going to use one realistic large-scale network that we are going to characterize,
+
+201
+00:09:56,030 --> 00:09:57,710
+and then we will say, can we come up with
+
+202
+00:09:57,710 --> 00:10:01,100
+a generative model that could generate this network?
+
+203
+00:10:01,100 --> 00:10:04,805
+So for example, what we are going to use is we are going to use, um, uh,
+
+204
+00:10:04,805 --> 00:10:10,190
+network coming from this chat application called Microsoft Instant Messenger.
+
+205
+00:10:10,190 --> 00:10:14,815
+So this was like a WhatsApp plus Slack, uh, type
+
+206
+00:10:14,815 --> 00:10:19,054
+application before all these- all these other services existed,
+
+207
+00:10:19,054 --> 00:10:21,540
+you know, uh, it has- er,
+
+208
+00:10:21,540 --> 00:10:23,175
+it had- at that time it had,
+
+209
+00:10:23,175 --> 00:10:24,900
+uh, around 250, er,
+
+210
+00:10:24,900 --> 00:10:27,460
+million, er, monthly active users,
+
+211
+00:10:27,460 --> 00:10:30,300
+about 180 million actually exchange- engage in
+
+212
+00:10:30,300 --> 00:10:35,280
+conversations that were more than 30- 30 billion conversations over a month,
+
+213
+00:10:35,280 --> 00:10:38,355
+so about, uh, 1 billion conversations a day,
+
+214
+00:10:38,355 --> 00:10:39,660
+and you know, uh,
+
+215
+00:10:39,660 --> 00:10:42,265
+hundreds of billions of exchanged, uh, messages.
+
+216
+00:10:42,265 --> 00:10:45,510
+So what we can do with this now is we can take this communication,
+
+217
+00:10:45,510 --> 00:10:48,180
+um, data and we can represent this as a graph.
+
+218
+00:10:48,180 --> 00:10:52,130
+So the way we are going to represent this as a graph is we're going to put, uh,
+
+219
+00:10:52,130 --> 00:10:54,000
+we'll have people, um,
+
+220
+00:10:54,000 --> 00:10:57,770
+and we will connect to people if they exchange at least one message, uh,
+
+221
+00:10:57,770 --> 00:10:59,530
+and here is actually the dots,
+
+222
+00:10:59,530 --> 00:11:02,360
+here it represent the geographic locations, uh,
+
+223
+00:11:02,360 --> 00:11:04,950
+of the users of these Microsoft Instant Messenger,
+
+224
+00:11:04,950 --> 00:11:08,685
+and basically what you see is that they come from or- all over the world,
+
+225
+00:11:08,685 --> 00:11:10,865
+um, except from North Korea, right?
+
+226
+00:11:10,865 --> 00:11:13,990
+It seems that, you know, there was no users in North Korea but everywhere else,
+
+227
+00:11:13,990 --> 00:11:15,875
+uh, there are some users of this thing.
+
+228
+00:11:15,875 --> 00:11:17,105
+Um, so in total,
+
+229
+00:11:17,105 --> 00:11:20,550
+we'll now have a network of 180 million people with
+
+230
+00:11:20,550 --> 00:11:25,290
+1.3 billion undirected edges, uh, between them.
+
+231
+00:11:25,290 --> 00:11:28,630
+So now let's start characterizing this network.
+
+232
+00:11:28,630 --> 00:11:30,360
+Let's start measuring it and say,
+
+233
+00:11:30,360 --> 00:11:32,565
+how does this communication network of,
+
+234
+00:11:32,565 --> 00:11:35,220
+you know, people all over the world exchanging,
+
+235
+00:11:35,220 --> 00:11:37,670
+uh, short messages look like.
+
+236
+00:11:37,670 --> 00:11:41,280
+So the first thing we can do is we can characterize the degree distribution.
+
+237
+00:11:41,280 --> 00:11:45,015
+So what I'm plotting here is simply the degree of the node.
+
+238
+00:11:45,015 --> 00:11:47,055
+This is number of different people
+
+239
+00:11:47,055 --> 00:11:51,645
+a given node exchange of messages with in a given month,
+
+240
+00:11:51,645 --> 00:11:55,620
+um, er, times and on the y-axis is the number of,
+
+241
+00:11:55,620 --> 00:11:57,690
+uh, such nodes with such degree.
+
+242
+00:11:57,690 --> 00:11:59,280
+So I- I plot the count,
+
+243
+00:11:59,280 --> 00:12:02,160
+so it's probability times the total number of nodes,
+
+244
+00:12:02,160 --> 00:12:05,070
+so it's kind of an unnormalized, uh, histogram, right?
+
+245
+00:12:05,070 --> 00:12:06,880
+Um, what do you see?
+
+246
+00:12:06,880 --> 00:12:10,275
+You see this super, funny, strange,
+
+247
+00:12:10,275 --> 00:12:12,435
+however you wanna call it, uh,
+
+248
+00:12:12,435 --> 00:12:15,150
+interesting, um, histogram, right?
+
+249
+00:12:15,150 --> 00:12:17,710
+It seems that basically that is this huge number, right?
+
+250
+00:12:17,710 --> 00:12:22,720
+Like notice these dots here of nodes that have the degree very close to 0.
+
+251
+00:12:22,720 --> 00:12:26,145
+So basically we have a lot of people that only communicate with,
+
+252
+00:12:26,145 --> 00:12:29,070
+I don't know, 1 to a couple of different nodes,
+
+253
+00:12:29,070 --> 00:12:30,210
+and then it seems that we have
+
+254
+00:12:30,210 --> 00:12:34,105
+all these other nodes here that have very large degrees but,
+
+255
+00:12:34,105 --> 00:12:35,280
+you know, there's very,
+
+256
+00:12:35,280 --> 00:12:36,420
+very few of them, right?
+
+257
+00:12:36,420 --> 00:12:40,410
+For example, you know, you have maybe only one person with- that talks to 2,000
+
+258
+00:12:40,410 --> 00:12:45,060
+other people and the- and the person or the bot or whatever this thing was,
+
+259
+00:12:45,060 --> 00:12:48,180
+uh, that talks to the most people was about 6,000, right?
+
+260
+00:12:48,180 --> 00:12:50,670
+So it means out of 180 million people,
+
+261
+00:12:50,670 --> 00:12:55,300
+there is one node whose maximum degree is only 6,000, right?
+
+262
+00:12:55,300 --> 00:12:58,635
+Out of 180 million possible people to talk to,
+
+263
+00:12:58,635 --> 00:13:02,370
+these bot only talks to, uh, 6,000.
+
+264
+00:13:02,370 --> 00:13:04,950
+So what is very interesting is that this histogram
+
+265
+00:13:04,950 --> 00:13:07,380
+is kind of very much axis-aligned, right?
+
+266
+00:13:07,380 --> 00:13:11,715
+It seems a lot of people or a lot of nodes with super small degrees and,
+
+267
+00:13:11,715 --> 00:13:13,515
+you know, just one node, er,
+
+268
+00:13:13,515 --> 00:13:17,740
+one- one count for every degree that is- that is,
+
+269
+00:13:17,740 --> 00:13:19,050
+you know, higher than just, you know,
+
+270
+00:13:19,050 --> 00:13:20,675
+this, uh, super small number.
+
+271
+00:13:20,675 --> 00:13:25,035
+Um, so this does not seem- kind of this plot does not reveal too much,
+
+272
+00:13:25,035 --> 00:13:28,140
+but what you can do is you take the same data,
+
+273
+00:13:28,140 --> 00:13:30,375
+but you just plot it differently.
+
+274
+00:13:30,375 --> 00:13:32,970
+The way we are going now to replot this data is we
+
+275
+00:13:32,970 --> 00:13:35,535
+are going to replot it on- on logarithmic,
+
+276
+00:13:35,535 --> 00:13:37,845
+uh, scales, on logarithmic axis.
+
+277
+00:13:37,845 --> 00:13:40,560
+So what we did now it's exactly the same data,
+
+278
+00:13:40,560 --> 00:13:42,435
+the same counts, the same degrees,
+
+279
+00:13:42,435 --> 00:13:44,440
+but now this axis is logarithmic.
+
+280
+00:13:44,440 --> 00:13:46,765
+Right here is 10, here is 100,
+
+281
+00:13:46,765 --> 00:13:51,300
+here is 1,000, and now all of a sudden you see this very nice shape, right?
+
+282
+00:13:51,300 --> 00:13:54,335
+You see that basically I have majority of the nodes.
+
+283
+00:13:54,335 --> 00:13:55,695
+Yeah, this is 10^7,
+
+284
+00:13:55,695 --> 00:13:57,495
+so that's, you know, 10 million,
+
+285
+00:13:57,495 --> 00:13:59,820
+um, 50 million nodes that, you know,
+
+286
+00:13:59,820 --> 00:14:02,130
+have degree 1, 2, 3.
+
+287
+00:14:02,130 --> 00:14:05,820
+So large majority of the nodes have degree less than 10,
+
+288
+00:14:05,820 --> 00:14:09,875
+and then you see how here at the end we have very few nodes.
+
+289
+00:14:09,875 --> 00:14:11,745
+You know, maybe 1, 2 nodes,
+
+290
+00:14:11,745 --> 00:14:14,055
+um, for each degree above,
+
+291
+00:14:14,055 --> 00:14:15,900
+uh, several hundreds and you know,
+
+292
+00:14:15,900 --> 00:14:18,520
+the largest degree here I said is, uh, 6,000.
+
+293
+00:14:18,520 --> 00:14:23,265
+So now you see this beautiful pattern appeared that before it was not obvious at all.
+
+294
+00:14:23,265 --> 00:14:25,380
+Like when I plot this on linear scales,
+
+295
+00:14:25,380 --> 00:14:28,110
+just the histogram, it's just axis-aligned.
+
+296
+00:14:28,110 --> 00:14:30,510
+I- I don't even know how to interpret it.
+
+297
+00:14:30,510 --> 00:14:32,685
+So right here, now on same data,
+
+298
+00:14:32,685 --> 00:14:34,170
+just the axis are different,
+
+299
+00:14:34,170 --> 00:14:37,695
+I'm basically plotting log degree versus log count.
+
+300
+00:14:37,695 --> 00:14:40,560
+I see this, uh, very nice, uh, shape, uh,
+
+301
+00:14:40,560 --> 00:14:44,265
+this kind of what is called a heavy-tailed or a power law, uh,
+
+302
+00:14:44,265 --> 00:14:46,325
+distribution that, uh, people like to,
+
+303
+00:14:46,325 --> 00:14:48,315
+uh, call this types of shapes.
+
+304
+00:14:48,315 --> 00:14:52,215
+So the second thing is how about clustering coefficient?
+
+305
+00:14:52,215 --> 00:14:55,140
+If we take this network and compute clustering coefficient,
+
+306
+00:14:55,140 --> 00:14:59,580
+we find out that the clustering coefficient of this network is, uh, 0.11.
+
+307
+00:14:59,580 --> 00:15:01,125
+So it means that, you know,
+
+308
+00:15:01,125 --> 00:15:02,805
+11 percent of the,
+
+309
+00:15:02,805 --> 00:15:04,455
+uh, of the neighbors,
+
+310
+00:15:04,455 --> 00:15:06,520
+uh, are connected with each other, um,
+
+311
+00:15:06,520 --> 00:15:09,135
+and that may seem a little,
+
+312
+00:15:09,135 --> 00:15:10,490
+but it's actually a lot,
+
+313
+00:15:10,490 --> 00:15:12,720
+and the reason why this is a lot is because you have
+
+314
+00:15:12,720 --> 00:15:15,690
+these super large degree nodes, um, right?
+
+315
+00:15:15,690 --> 00:15:19,485
+That have a lot of possible connections between the friends, um,
+
+316
+00:15:19,485 --> 00:15:23,190
+and the- um, actually it turns out that 0. 11,
+
+317
+00:15:23,190 --> 00:15:24,665
+uh, is- is quite a lot.
+
+318
+00:15:24,665 --> 00:15:26,770
+Right now, it seems like, "Oh, you know,
+
+319
+00:15:26,770 --> 00:15:29,430
+the clustering coefficient is between 0 and 1."
+
+320
+00:15:29,430 --> 00:15:33,050
+You know, 0.11 is kind of closer to 0 than closer to 1,
+
+321
+00:15:33,050 --> 00:15:37,020
+so it seems that clustering of this MSN network is low,
+
+322
+00:15:37,020 --> 00:15:39,675
+but because we will have null models,
+
+323
+00:15:39,675 --> 00:15:43,250
+we are actually able to establish that the clustering is actually quite high,
+
+324
+00:15:43,250 --> 00:15:47,175
+so let me now tell you why- why 0.11 is high and,
+
+325
+00:15:47,175 --> 00:15:50,385
+you know, why is it not low even though it seems kind of a tiny number.
+
+326
+00:15:50,385 --> 00:15:52,965
+So this is what we are going to, uh, figure out.
+
+327
+00:15:52,965 --> 00:15:55,125
+So this was clustering.
+
+328
+00:15:55,125 --> 00:15:59,190
+Now, uh, this- the third metric was connectivity, right?
+
+329
+00:15:59,190 --> 00:16:01,620
+How big is the largest connected component?
+
+330
+00:16:01,620 --> 00:16:03,945
+And what I'm plotting here is the, uh,
+
+331
+00:16:03,945 --> 00:16:07,620
+size of the connected components: how many nodes belong to
+
+332
+00:16:07,620 --> 00:16:12,030
+a given component versus number of components of such a size.
+
+333
+00:16:12,030 --> 00:16:13,240
+What you see is that
+
+334
+00:16:13,240 --> 00:16:17,700
+the largest connected component has about 200 over more than- uh, right?
+
+335
+00:16:17,700 --> 00:16:19,260
+This is 10 to the 8th is,
+
+336
+00:16:19,260 --> 00:16:21,045
+uh, 100 million, um,
+
+337
+00:16:21,045 --> 00:16:22,620
+so this is, you know, uh,
+
+338
+00:16:22,620 --> 00:16:24,450
+almost like close to 200 million,
+
+339
+00:16:24,450 --> 00:16:29,280
+so pretty much 99.9% of all the nodes belong to the largest connected component,
+
+340
+00:16:29,280 --> 00:16:30,780
+so the network is connected,
+
+341
+00:16:30,780 --> 00:16:32,530
+and of course then we have, you know,
+
+342
+00:16:32,530 --> 00:16:36,240
+some small number of very small components of, you know, 20,
+
+343
+00:16:36,240 --> 00:16:38,825
+30 nodes all the way to, uh,
+
+344
+00:16:38,825 --> 00:16:42,179
+let's say 1 million of nodes of- that are isolated,
+
+345
+00:16:42,179 --> 00:16:44,040
+so connected components of size 1.
+
+346
+00:16:44,040 --> 00:16:48,915
+So this means that our graph is well connected with a- with a very small number of,
+
+347
+00:16:48,915 --> 00:16:53,520
+uh, small- small- very small isolated islands,
+
+348
+00:16:53,520 --> 00:16:58,930
+but the giant component is definitely there and 99.9% of all the nodes, uh,
+
+349
+00:16:58,930 --> 00:17:05,285
+belong to, and then the last thing I want to mention is the shortest path length.
+
+350
+00:17:05,285 --> 00:17:08,130
+So here is the distribution of, uh,
+
+351
+00:17:08,130 --> 00:17:10,440
+shortest path lengths between different pair- uh,
+
+352
+00:17:10,440 --> 00:17:12,099
+be- across pairs of nodes.
+
+353
+00:17:12,099 --> 00:17:14,829
+So I ask here how many pairs of nodes,
+
+354
+00:17:14,829 --> 00:17:17,304
+uh, are at shortest path Distance 5.
+
+355
+00:17:17,305 --> 00:17:20,595
+You know, how many are at shortest path Distance 10 and so on,
+
+356
+00:17:20,595 --> 00:17:23,000
+uh, and here the y-axis is logarithmic.
+
+357
+00:17:23,000 --> 00:17:26,670
+So notice that most pairs of nodes are reachable, uh,
+
+358
+00:17:26,670 --> 00:17:28,790
+with each other in around, um,
+
+359
+00:17:28,790 --> 00:17:32,535
+5, 6, uh, 7 hops.
+
+360
+00:17:32,535 --> 00:17:35,760
+So it means actually that the average shortest path length of
+
+361
+00:17:35,760 --> 00:17:40,160
+this giant network of 180 million people living all over the world, uh,
+
+362
+00:17:40,160 --> 00:17:43,665
+is only 6.6, and it turns out that you can reach
+
+363
+00:17:43,665 --> 00:17:48,365
+90% of the nodes of this network on average in less than eight hops.
+
+364
+00:17:48,365 --> 00:17:51,610
+So it takes you eight friendships to get to,
+
+365
+00:17:51,610 --> 00:17:53,195
+uh, 90% of the nodes,
+
+366
+00:17:53,195 --> 00:17:55,115
+and just to give you another way,
+
+367
+00:17:55,115 --> 00:17:56,740
+how you can think of this is to say,
+
+368
+00:17:56,740 --> 00:18:00,135
+"Let's start breadth-first search at a given node."
+
+369
+00:18:00,135 --> 00:18:02,460
+Right? So at zero steps,
+
+370
+00:18:02,460 --> 00:18:03,920
+it is one node.
+
+371
+00:18:03,920 --> 00:18:05,760
+Now this node has degree 10,
+
+372
+00:18:05,760 --> 00:18:09,550
+so at Step 1, there's 10 other nodes I can reach, right?
+
+373
+00:18:09,550 --> 00:18:13,250
+Then these 10 nodes have further connect to other nodes,
+
+374
+00:18:13,250 --> 00:18:16,550
+so at Step 2, I am at 75 nodes,
+
+375
+00:18:16,550 --> 00:18:18,765
+and notice how the-, uh,
+
+376
+00:18:18,765 --> 00:18:22,219
+how the number- how the number of reachable nodes increases,
+
+377
+00:18:22,219 --> 00:18:25,390
+and here for example at Steps, uh,
+
+378
+00:18:25,390 --> 00:18:27,205
+6, 7, and 8,
+
+379
+00:18:27,205 --> 00:18:29,020
+I'm- I- I can reach, you know,
+
+380
+00:18:29,020 --> 00:18:31,220
+28 millions, 80 million,
+
+381
+00:18:31,220 --> 00:18:32,825
+52 million, and then again,
+
+382
+00:18:32,825 --> 00:18:34,280
+you see how this quickly, uh,
+
+383
+00:18:34,280 --> 00:18:36,480
+decays down where, you know,
+
+384
+00:18:36,480 --> 00:18:39,450
+the- the- at hop Distance 25,
+
+385
+00:18:39,450 --> 00:18:42,105
+I can still reach, uh, three more nodes.
+
+386
+00:18:42,105 --> 00:18:46,255
+So notice again basically this kind of shape here
+
+387
+00:18:46,255 --> 00:18:50,730
+demonstrated by this single node, uh, example.
+
+388
+00:18:50,730 --> 00:18:52,310
+So this is, um,
+
+389
+00:18:52,310 --> 00:18:55,720
+what I wanted to show in terms of the shortest path length, right?
+
+390
+00:18:55,720 --> 00:18:57,750
+It's even though our network is massive,
+
+391
+00:18:57,750 --> 00:19:00,300
+the- the amount of, um,
+
+392
+00:19:00,300 --> 00:19:03,680
+the- the shortest path length tend to be very, very,
+
+393
+00:19:03,680 --> 00:19:06,030
+very small, and this is what is called,
+
+394
+00:19:06,030 --> 00:19:08,350
+uh, the small world phenomena, right?
+
+395
+00:19:08,350 --> 00:19:10,955
+That basically, even though the network is large,
+
+396
+00:19:10,955 --> 00:19:15,390
+the diameter, the shortest path lengths are actually quite small in this networks.
+
+397
+00:19:15,390 --> 00:19:18,155
+So what we have seen so far is that there are,
+
+398
+00:19:18,155 --> 00:19:20,900
+uh, key properties of this messenger network, right?
+
+399
+00:19:20,900 --> 00:19:23,085
+The degree distribution is heavily skewed.
+
+400
+00:19:23,085 --> 00:19:25,639
+Average degree is- degree is about 14,
+
+401
+00:19:25,639 --> 00:19:28,495
+clustering coefficient is 0.11, um,
+
+402
+00:19:28,495 --> 00:19:32,685
+connectivity has one giant component with 99.9% of the nodes,
+
+403
+00:19:32,685 --> 00:19:36,020
+and the average shortest path length is 6.6,
+
+404
+00:19:36,020 --> 00:19:37,950
+and as I give you these numbers, right?
+
+405
+00:19:37,950 --> 00:19:39,345
+You should be asking yourself,
+
+406
+00:19:39,345 --> 00:19:43,130
+are these values expected, are they surprising.
+
+407
+00:19:43,130 --> 00:19:46,550
+You know, is there- should I make fuss about it or,
+
+408
+00:19:46,550 --> 00:19:48,010
+you know, we just forget about it.
+
+409
+00:19:48,010 --> 00:19:49,630
+Like is it interesting?
+
+410
+00:19:49,630 --> 00:19:51,790
+What does this teach us, right?
+
+411
+00:19:51,790 --> 00:19:54,275
+And in order for us to determine whether- whether this is
+
+412
+00:19:54,275 --> 00:19:57,165
+interesting is that we need- we need a null model.
+
+413
+00:19:57,165 --> 00:19:59,340
+So basically what we are going to look at next is
+
+414
+00:19:59,340 --> 00:20:01,450
+different null models on which we can
+
+415
+00:20:01,450 --> 00:20:04,195
+make these same measurements and then be able to say,
+
+416
+00:20:04,195 --> 00:20:07,830
+"Ah-ha, you know, messenger network has high clustering coefficient.
+
+417
+00:20:07,830 --> 00:20:10,600
+Messenger network has I don't know,
+
+418
+00:20:10,600 --> 00:20:12,570
+um, low- low- low,
+
+419
+00:20:12,570 --> 00:20:13,810
+uh, average path length."
+
+420
+00:20:13,810 --> 00:20:16,715
+Or something like that because we will have this reference point.
+
+421
+00:20:16,715 --> 00:20:21,065
+So what we are going to talk about next is talk about this reference points,
+
+422
+00:20:21,065 --> 00:20:23,730
+uh, these, uh, types of models.
+
