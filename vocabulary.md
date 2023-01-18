@@ -76,6 +76,7 @@
 | Knowledge Graph | KG | граф знаний | ГЗ |
 | Latent Dirichlet Allocation | LDA | cкрытое распределение Дирихле | СРД |
 | Law of Large Numbers | LLN | Закон больших чисел | ЗБЧ |
+| Large Language Model | LLM | Большая Языковая Модель |  |
 | Limited Memory Influence Diagram | LIMID | диаграмма влияния с ограниченной памятью | ДВОП |
 | Linear Logistic Classifier              | LLC         |                                                    |              |
 | Latent Semantic Analysis | LSA |  |  |
