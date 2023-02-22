@@ -94,6 +94,7 @@
 | Minimum Bayes Risk | MBR | Минимальный байесовский риск | МБР |
 | Mean Reciprocal Rank, Metric | MRR | средний взаимный рейтинг |  |
 | Mixture of Experts | MoE |  |  |
+| Multi-Agent System | MAS | мультиагентная система | МАС |
 | Multi-Headed Attention | MHA | Многоцелевое внимание| МЦВ* |
 | Minimum Description Length | MDL | принцип минимальной длины описания | ПМДО |
 | Model-Agnostic Meta-Learning | MAML | независимое от модели метаобучение | МНМО* |
@@ -113,6 +114,7 @@
 | Partially Observable Markov Game        | POMG        |                                                    |              |
 | Part-of-speach | POS | часть речи | ЧР* |
 | Polypharmacy Knowledge Graph | PKG |  |  |
+| Predictor-Corrector for Collision Avoidance | PCCA | Предиктор-корректор для предотвращения столкновений | ПКПС* |
 | Probabilistic Graphical Model | PGM | вероятностная графовая модель | ВГМ |
 | Probabilistic Relational Model | PRM | вероятностная реляционная модель | ВРМ |
 | Probability Density Function            | PDF         |                                                    |              |
