@@ -12,6 +12,7 @@ title: "AI Projects"
 - (F) Fast.ai (see PyTorch)
 - Scikit Learn [issues](https://github.com/scikit-learn/scikit-learn/issues)
 - Google [JAX](https://github.com/google/jax/)
+- [Paddle](https://github.com/PaddlePaddle/Paddle)
 - [SpaCy](https://github.com/explosion/spaCy)
 - [XGBoost](https://github.com/dmlc/xgboost)
 - Julia Flux
