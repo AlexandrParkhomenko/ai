@@ -80,7 +80,7 @@
 | Limited Memory Influence Diagram | LIMID | диаграмма влияния с ограниченной памятью | ДВОП |
 | Linear Logistic Classifier              | LLC         |                                                    |              |
 | Latent Semantic Analysis | LSA |  |  |
-| (Mean) Average Precision, Metric | MAP | средняя точност |  |
+| (Mean) Average Precision, Metric | MAP | средняя точность |  |
 | Markov Blanket | MB | марковское ограждение | МО |
 | Markov Chain | MC | марковская цепь | МЦ |
 | Markov Chain Monte Carlo | MCMC | марковская цепь Монте-Карло | МЦМК* |
@@ -131,6 +131,7 @@
 | Self-supervised learning | SSL | Самостоятельное обучение |  |
 | Semi-supervised learning | S<sup>4</sup>L | Полуконтролируемое обучение. |  |
 | Semi-Naïve Bayesian Classifier | SNBC | частично наивный байесовский классификатор | ЧНБК |
+| Shapley Additive exPlanations | SHAP | Аддитивные объяснения Шепли |  |
 | network Significance Profile | SP | Профиль значимости сети | ПЗ* |
 | Statistical Machine Translation | SMT | Статистический Машинный Перевод | СМП* |
 | Stochastic Mixing Iterative Learning    | SMILe       |                                                    |              |
