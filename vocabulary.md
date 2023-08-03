@@ -3,6 +3,7 @@
 | Automatic Content Extraction | ACE | Автоматический экстрактор контента | АЭК | 
 | Algebraic Decision Diagram | ADD | алгебраическая диаграмма решений | АДР |
 | Artificial Neural Networks | ANN | искусственная нейронная сеть | ИНС |
+| Artificial General Intelligence | AGI | общий искусственный интеллект | ОИИ |
 | Affiliation Graph Model | AGM | Аффилированная графовая модель | АГМ |
 | Bayesian Additive Regression Trees | BART | Деревья байесовской аддитивной регрессии | ДБАР* |
 | Bayesian Chain Classifier | BCC | байесовская цепь (классификатор) | БЦ |
