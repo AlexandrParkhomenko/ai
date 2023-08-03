@@ -103,6 +103,7 @@
 | Multidimensional Bayesian network Classifier | MBC | многомерная байесовская сеть (классификатор) | МБС |
 | Naïve Bayes Classifier | NBC | наивный байесовский классификатор | НБК |
 | Natural Language Generation | NLG | Генерирование на Естественном Языке | ГЕЯ* |
+| Natural Language Processing | NLP | Обработка естественного языка | ОЕЯ* |
 | Negative Log Likelihood Multiclass      | NLLM        |                                                    |              |
 | Negative Log-Likelihood                 | NLL         |                                                    |              |
 | Neural Machine Translation              | NMT | Нейронный Машинный Перевод | НМП |
