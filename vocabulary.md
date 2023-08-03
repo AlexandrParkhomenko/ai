@@ -123,6 +123,7 @@
 | Rational Spech Act | RSA |  |  |
 | Region Based Convolutional Neural Networks | R-CNN |  |  |
 | Reinforcement Learning                  | RL          |                                                    |              |
+| Reinforcement Learning from Human Feedback |  RLHF | Обучение с подкреплением на основе отзывов людей |  |
 | Relational Graph Convolution Network | RGCN | реляционная графовая сверточная сеть | РГСС |
 | Relational Probabilistic Graphical Model | RPGM | реляционная вероятностная графовая модель | РВГМ |
 | Recurrent neural network | RNN | Рекуррентная нейронная сеть | РНС |
