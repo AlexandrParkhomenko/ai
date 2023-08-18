@@ -115,6 +115,7 @@
 | Partially Observable Markov Decision Process | POMDP | частично наблюдаемый марковский процесс принятия решений | ЧНМПР |
 | Partially Observable Markov Game        | POMG        |                                                    |              |
 | Part-of-speach | POS | часть речи | ЧР* |
+| Pathways Language Model | PaLM | путевая языковая модель | ПЯМ* |
 | Polypharmacy Knowledge Graph | PKG |  |  |
 | Predictor-Corrector for Collision Avoidance | PCCA | Предиктор-корректор для предотвращения столкновений | ПКПС* |
 | Probabilistic Graphical Model | PGM | вероятностная графовая модель | ВГМ |
