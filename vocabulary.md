@@ -95,6 +95,7 @@
 | Minimum Bayes Risk | MBR | Минимальный байесовский риск | МБР |
 | Mean Reciprocal Rank, Metric | MRR | средний взаимный рейтинг |  |
 | Mixture of Experts | MoE |  |  |
+| Masked-Language Modeling | MLM | Моделирование c маскированием языка | ММЯ* |
 | Multi-Agent System | MAS | мультиагентная система | МАС |
 | Multi-Headed Attention | MHA | Многоцелевое внимание| МЦВ* |
 | Minimum Description Length | MDL | принцип минимальной длины описания | ПМДО |
