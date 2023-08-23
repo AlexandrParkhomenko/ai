@@ -19,6 +19,7 @@
 | Breadth-First Search | BFS | поиск в ширину |  |
 | Causal Bayesian Network | CBN | причинно-следственная байесовская сеть | ПСБС |
 | Central Limit Theorem | CLT | Центральная предельная теорема | ЦПТ |
+| Compositional Generalization | COGS | Композиционное обобщение, основанное на семантической интерпретации |  |
 | Constraint Satisfaction Problem | CSP | Задача удовлетворения ограничений | Задача УО |
 | Conditional Mutual Information | CMI | условная взаимная информация | УВИ |
 | Conditional Probability Table | CPT | таблица условных вероятностей | ТУВ |
@@ -125,6 +126,7 @@
 | Probability Mass Function               | PMF         |                                                    |              |
 | Pseudolikelihood | PL | псевдоправдоподобие | ПП |
 | Rational Spech Act | RSA |  |  |
+| Reformatted Compositional Generalization | ReCOGS | Переформатированное Композиционное обобщение |  |
 | Region Based Convolutional Neural Networks | R-CNN |  |  |
 | Reinforcement Learning                  | RL          |                                                    |              |
 | Reinforcement Learning from Human Feedback |  RLHF | Обучение с подкреплением на основе отзывов людей |  |
