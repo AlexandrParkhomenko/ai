@@ -1,5 +1,7 @@
 # [CS224U: Natural Language Understanding](http://web.stanford.edu/class/cs224u/)
 
+Christopher Potts is Professor of Linguistics and, by courtesy, of Computer Science, at Stanford, and Director of the Center for the Study of Language and Information (CSLI) at Stanford. In his research, he develops computational models of linguistic reasoning, emotional expression, and dialogue. He is the author of the 2005 book The Logic of Conventional Implicatures as well as numerous scholarly papers in linguistics and natural language processing.
+
 [github](https://github.com/cgpotts/cs224u)
 
 ### [Lectures](https://www.youtube.com/user/stanfordonline/videos) by Chris Potts
@@ -66,3 +68,6 @@
 - 61 [NLP Conference Submissions](https://www.youtube.com/watch?v=vb7IN-C7fHs)
 - 62 [Giving Talks](https://www.youtube.com/watch?v=GGx7klcahzY)
 - 63 [Conclusion](https://www.youtube.com/watch?v=s0GH2pPnJMk)
+
+- 64 [GPT-3 & Beyond](https://youtu.be/-lnHHWRCDGk)
+
