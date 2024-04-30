@@ -6,6 +6,7 @@ course                                              | |  course name            
 --------------------------------------------------- |-| -----------                                            | --------------
   [math51](https://web.stanford.edu/class/math51/)  | | Mathematica                                            | [Математика](https://github.com/AlexandrParkhomenko/ai/tree/main/math51)
   [cs103 ](https://web.stanford.edu/class/cs103/)   | | Mathematical Foundations of Computing                  | Математические основы вычислений
+  [cs105 ](https://web.stanford.edu/class/cs105/)   | | Introduction to Computers                              | Введение в компьютеры
   [cs106a](https://web.stanford.edu/class/cs106a/)  | | Programming Methodologies                              | [Методологии программирования](https://github.com/AlexandrParkhomenko/ai/tree/main/cs106a)
  [engr108](https://stanford.edu/class/engr108/)     | | Introduction to Matrix Methods                         | Введение в матричные методы
   [cs109 ](https://web.stanford.edu/class/cs109/)   | | Probability for Computer Scientists                    | Вероятность для компьютерных ученых
@@ -43,6 +44,8 @@ course                                              | |  course name            
  cs372 [](https://web.stanford.edu/class/cs372/)    |★| Artificial Intelligence for Disease Diagnosis <br>and Information Recommendations | Искусственный интеллект для диагностики заболеваний <br>и информационных рекомендаций
  cs521                                              |★| AI Safety Seminar                                      | [Семинар по безопасности ИИ](https://github.com/AlexandrParkhomenko/ai/tree/main/cs521)
  cs522                                              |★| Seminar in Artificial Intelligence in Healthcare       | [Семинар по искусственному интеллекту в здравоохранении](https://github.com/AlexandrParkhomenko/ai/tree/main/cs522)
+ [cs336 ](https://web.stanford.edu/class/cs336/)    | | Robot Perception and Decision-Making                   | Восприятие робота и принятие решений
+ [ee100 ](https://online.stanford.edu/courses/xee100-introduction-internet-things)    | | Introduction to Internet of Things                   | Введение в Интернет вещей
  
 <!-- ycs0002 | | [Game Theory II](https://online.stanford.edu/courses/soe-ycs0002-game-theory) | Теория игр
 
