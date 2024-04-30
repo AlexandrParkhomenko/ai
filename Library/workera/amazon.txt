@@ -1,0 +1,136 @@
+Using your private repository of face images, how can you search for a face using its face ID with AWS Rekognition to identify a person in a photo or video?
+
+Using the SearchFaces operation to search for faces in a collection that match a supplied face ID that is returned in the IndexFaces operation response after detection.
+
+Using the SearchFaces operation to search for a suplied face ID that is returned in the IndexFaces operation response after verification.
+
+Using the IndexFaces operation to search for a suplied face ID that is returned in the SearchFaces operation response after verification.
+
+Using the IndexFaces operation to search for faces in a collection that match a supplied face ID that is returned in the SearchFaces operation response after detection.
+
+
+What makes AWS an easy to use platform?
+
+The ability to access needed computing and storage resources backed by Amazon’s massive infrastructure.
+
+The ability to receive a virtual environment that enables loading services that an application requires.
+
+The ability to select an operating system, web application platform, and other services based on needs.
+
+The ability to use the AWS console and web services APIs to access AWS’s application hosting platform.
+
+
+What is the first step of the process of recognizing celebrities in a stored video using AWS Rekognition?
+Analyzing a video by calling an Amazon Rekognition Video Start operation, such as StartPersonTracking.
+
+Publishing the result of the analysis request to an Amazon Simple Notification Service (Amazon SNS) topic.
+
+Using an AWS Lambda function to get the completion status of the video analysis request from the Amazon SNS topic.
+
+Getting the video analysis request results by calling an Amazon Rekognition Get operation, such as GetPersonTracking.
+
+
+What are the major steps of building an AI model on Amazon SageMaker?
+
+Preparing the data, building the model, training the model, deploying and managing the model
+
+Defining the goal, preparing the data, building the model, evaluating the algorithm
+
+Defining the problem, collecting data, creating an algorithm, improving results
+
+Collecting data, training the model, evaluating the algorithm, improving results
+
+
+What does the DevOps engineering learning path at AWS include?
+
+Setting up a version control system, deploying a sample cloud software, and creating a continuous delivery pipeline.
+
+Setting up a version control system, deploying a sample web application, and creating an end-to-end pipeline.
+
+Setting up a version control system, deploying a sample web application, and creating a continuous delivery pipeline.
+
+Setting up a version control system, deploying a sample cloud software, and creating an end-to-end pipeline.
+
+
+Select the correct process of labeling data with the SageMaker Ground Truth service:
+
+    Create a labeling job using custom or built-in workflows.
+    Labelers complete tasks with assistive labeling features.
+    Input the data into Amazon S3.
+    Choose from different groups of labelers.
+
+3, 1, 4, 2
+
++4, 2, 3, 1
+
+2, 3, 1, 4
+
+1, 4, 2, 3
+
+
+Fill in the blanks:
+
+The AWS data administrator learning path includes learning how to migrate data from the source database to a (a) ________ database such as (b) ________.
+
+(a) fully-managed , (b) Amazon EC2
+
+(a) self-managed , (b) Amazon Aurora
+
+(a) self-managed , (b) Amazon EC2
+
+(a) fully-managed , (b) Amazon Aurora
+
+
+Complete the following sentences:
+
+Amazon Web Services (AWS) can be defined as a family of cloud-computing (a) ________ that allows users to rent out Amazon's servers instead of buying their own. AWS is a broadly adopted (b) ________, offering fully featured services from (c) ________ globally.
+
+(a) solutions , (b) cloud application , (c) data lakes
+
+(a) software , (b) cloud solution , (c) data connections
+
+(a) platforms , (b) cloud software , (c) data servers
+
+(a) applications , (b) cloud platform , (c) data centers
+
+
+What does AWS provide in the hobbyist builder learning path?
+
+Increasing the capabilities of a web application by seamlessly integrating it with other cloud solutions provided by Amazon cloud migration.
+
+Expanding the capabilities of cloud services and features by seamlessly integrating them with other AWS applications and solutions.
+
+Building a cloud software with Amazon pre-configured cloud bundles that contain needed cloud resources to manage a software on the cloud.
+
+Deploying a web application with Amazon pre-configured application bundles that contain needed cloud resources to launch an application.
+
+
+AWS provides users with a dynamic environment for using a software or a service for bases on the application requirements, which eases the migration process for existing applications while preserving options for building new solutions.
+
+What does the above scenario stand for?
+
+AWS cost efficiency
+
+AWS reliability
+
+AWS flexibility
+
+AWS scalability
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

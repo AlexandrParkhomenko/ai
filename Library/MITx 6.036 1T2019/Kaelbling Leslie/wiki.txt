@@ -1,0 +1,25 @@
+'''Лесли Пак Кельблинг''' - [[Соединённые Штаты Америки|американский]] [[Робототехника|робототехник]] и Panasonic профессор компьютерных наук и инженерии в [[Массачусетский технологический институт|Массачусетском технологическом институте]].
+
+
+
+==References==
+{{reflist}}
+
+{{Робототехника}}
+{{Authority control}}
+
+{{DEFAULTSORT:Kaelbling, Leslie P.}}
+[[Category:Year of birth missing (living people)]]
+[[Категория:Википедия:Биографии современников]]
+[[Category:Робототехники]]
+[[Category:American women computer scientists]]
+[[Category:American computer scientists]]
+[[Category:Massachusetts Institute of Technology faculty]]
+[[Category:Fellows of the Association for the Advancement of Artificial Intelligence]]
+[[Category:Machine learning researchers]]
+[[Category:Computer science educators]]
+[[Category:Stanford University School of Humanities and Sciences alumni]]
+[[Category:SRI International people]]
+[[Category:Brown University faculty]]
+[[Category:Artificial intelligence researchers]]
+[[Category:Stanford University School of Engineering alumni]]

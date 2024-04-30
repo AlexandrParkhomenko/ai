@@ -1,0 +1,124 @@
+Natural Language Processing 
+---------------------------
+
+
+Consider the following text: 
+
+“I love playing football and also love playing basketball. I love how playing helps me keep fit.”
+
+What is the Bigram Probability of “love playing”?
+
+1
+2/3
+3/2
+1/3
+
+
+
+
+A co-occurrence matrix is needed to be built following a word by word design with a window size of 5 (k = 5). Consider the following sentence:
+
+“I love cooking and experimenting with new recipes. I try cooking without following the traditional recipes. For me cooking is an art. So I don’t bother experimenting with my own recipes while cooking.”
+
+Given the above sentence, which of the following is the value for the co-occurrence of “cooking” and “ recipes” when the window size is 5?
+
+3
+1
+4
+5
+
+
+
+
+
+Consider the following sentence: 
+                “It is going to rain today”
+Which of the following can be calculated using Language Models? (Select all that apply)
+
+P(“is” | “I”)
+P(“today” | “It is going to rain”)
+P(“It is going to rain today”) > P(“It is going to rain yesterday”)
+P(“It is going to rain today”)
+
+
+
+
+
+
+
+A hypothetical two-dimensional vector space represents different countries (A, B, C, D) and their currencies (W, X, Y, Z). Consider the following table:
+
+
+Country     Currency
+
+A (1, 13)   U (7,19)
+B (3, 7)    W (8, 7)
+C (2, 4)    X (8, 4)
+D (2, 1)    Y (8, 15)
+E (3, 15)   Z (9, 12)
+	
+
+
+
+
+
+If Y is the currency of country A, then taking into consideration the vector representation in the table given above, W will be the currency of :
+
+B.
+
+D.
+
+E.
+
+C.
+
+
+
+
+
+
+Which of the following approaches are used in Natural Language Processing? (Select all that apply)
+
+Rule-based, Traditional Machine Learning and Neural Networks.
+
+Lexical, Syntactic and Semantic.
+
+Statistical, Machine Learning and Deep Learning.
+
+Dictionary-based, Supervised, Semi-supervised and Unsupervised.
+
+
+
+
+
+
+
+
+
+
+
+Which of the following statements are true about Bi-LSTM models? (Select all that apply)
+
+Bi-LSTM models are Sequence Models.
+
+Bi-LSTM stands for Bidirectional Long Short Term Memory.
+
+Bi-LSTM models are Attention Models.
+
+Bi-LSTM stands for Bidirectional Long Sentence Translation Model.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
