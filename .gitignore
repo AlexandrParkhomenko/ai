@@ -4,55 +4,32 @@ Library/researches
 *.pdf
 *.mp3
 "cs25 - Transformers United/checkpoints"
-cme193
-cme241
-math51
-stats202
-cs103
-cs106a
-cs106b
-cs106l
-cs107
-cs109
-cs124
-cs129
-cs145
-cs157
-cs161
-cs166
-cs205l
-cs221
-cs223a
-cs224n
-cs224s
-cs224u
-cs224w
-cs224w
-cs225a
-cs228
-cs229
-cs229m
-cs230
-cs231a
-cs231n
-cs231n/2017.slides
-cs231n/2020
-cs231n/readme.md
-cs234
-cs236
-cs237a
-cs237b
-cs238
-cs273a
-cs279
-cs326
-cs327a
-cs330
-cs331b
-cs333
-cs336
-cs372
-cs522
+"cs100 - Information Security"
+"cs105 - Introduction to Computers"
+"cs106l - Standard C++ Programming"
+"cs106 - Programming Methodologies"
+"cs221 - Artificial Intelligence"
+"cs223a - Introduction to Robotics"
+"cs224n - Natural Language Processing"
+"cs224u - Natural Language Understanding"
+"cs224w - Machine Learning with Graphs"
+"cs228 - Probabilistic Graphical Models"
+"cs229 - Machine Learning"
+"cs229m - Statistical Learning Theory"
+"cs231n - Convolutional Neural Networks"
+"cs234 - Reinforcement Learning"
+"cs237a - Principles of Robotic Autonomy"
+"cs238 - Decision Making Under Uncertainty"
+"cs251 - Cryptocurrencies and Blockchain Technologies"
+"cs25 - Transformers United"
+"cs327a - Advanced Robotic Manipulation TESLA"
+"cs330 - Multi-Task and Meta-Learning"
+"cs372 - Artificial Intelligence for Disease Diagnosis"
+"cs41 - Python"
+"cs521 - AI Safety Seminar"
+"cs522 - Artificial Intelligence in Healthcare"
+"Digital Economy Lab"
+"ee100 - Introduction to Internet of Things"
 hai
 me
 nvidia
